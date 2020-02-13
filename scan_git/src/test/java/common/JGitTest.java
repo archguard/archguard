@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 
 class JGitTest {
@@ -33,22 +32,7 @@ class JGitTest {
                 .build();
     }
 
-    @Test
-    void name() throws IOException, GitAPIException {
 
-        Git git = new Git(repository);
-        Iterable<RevCommit> commits = git.log().all().call();
-        for (RevCommit commit : commits) {
-            DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
-            df.setRepository(repository);
-            df.setDiffComparator(RawTextComparator.DEFAULT);
-            df.setDetectRenames(true);
-            List<DiffEntry> diffs = df.scan(commit.getParent(0).getTree(), commit.getTree());
-            for (DiffEntry diff : diffs) {
-                System.out.println(MessageFormat.format("({0} {1} {2})", diff.getChangeType().name(), diff.getNewMode().getBits(), diff.getNewPath()));
-            }
-        }
-    }
 
 
     /*最终采用这种方式*/
@@ -57,13 +41,18 @@ class JGitTest {
         try (Git git = new Git(repository)) {
             DiffFormatter formatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
             formatter.setRepository(repository);
+            formatter.setDiffComparator(RawTextComparator.DEFAULT);
+            formatter.setDetectRenames(true);
+            int count = 0;
             for (RevCommit commit : git.log().call()) {
+                count++;
                 System.out.println("commit:" + commit.getName() + ", message:" + commit.getFullMessage());
                 RevCommit parent = commit.getParentCount() != 0 ? commit.getParent(0) : null;
                 List<DiffEntry> diffEntries = formatter.scan(parent == null ? null : parent.getTree(), commit.getTree());
                 diffEntries.forEach(e ->
                         System.out.println("changeType:=" + e.getChangeType().name() + ",newID=" + e.getNewId() + ",newPath=" + e.getNewPath()));
             }
+            System.out.println("count = " + count);
         }
     }
 
