@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.git.scanner
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffFormatter
+import org.eclipse.jgit.diff.RawTextComparator
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -28,6 +29,8 @@ class JGitAdapter : GitAdapter {
                 git.checkout().setName(config.branch ?: "master").call() //todo : 是否可以不checkout branch ,避免本地库的修改
                 DiffFormatter(DisabledOutputStream.INSTANCE).use { diffFormatter ->
                     diffFormatter.setRepository(repository)
+                    diffFormatter.setDiffComparator(RawTextComparator.DEFAULT)
+                    diffFormatter.isDetectRenames = true
                     val commitList = getCommitList(git, diffFormatter)
                     return GitRepository(repository.branch, commitList)
                 }

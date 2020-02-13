@@ -7,9 +7,10 @@ internal class JGitAdapterTest {
 
     @Test
     fun scan() {
-        //todo : why 必须给后两个参数？
+        //todo : 怎么省略后两个参数？
         val gitRepository = JGitAdapter().scan(Config(path = "/Users/ygdong/Downloads/gittest", branch = null, lastCommit = null))
         val branch = gitRepository.branch
         assertEquals("master", branch)
+        println("gitRepository = ${gitRepository}")
     }
 }
