@@ -6,7 +6,7 @@ data class Commit(val time: Int, val name: String, val committer: Committer, val
 
 data class Committer(val name: String, val email: String)
 
-data class ChangeEntry(var path: String, var mode: String)
+data class ChangeEntry(var oldPath: String, var newPath: String, var mode: String)
 
 //todo: 暂时使用了String
 enum class ChangeMode {
