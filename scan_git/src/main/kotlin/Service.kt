@@ -1,13 +1,17 @@
 package com.thoughtworks.archguard.git.scanner
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
 /* core scanner
 *
 *
 * */
 
-class ScannerService(private val gitAdapter: GitAdapter, private val dbRepository: DBRepository) {
+@Service
+class ScannerService(@Autowired private val gitAdapter: GitAdapter, @Autowired private val dbRepository: DBRepository) {
     fun scan(config: Config) {
         val gitRepository = gitAdapter.scan(config)
-        dbRepository.saveGitRepository(gitRepository)
+        dbRepository.save(gitRepository)
     }
 }

@@ -1,12 +1,38 @@
 package com.thoughtworks.archguard.git.scanner
 
-data class GitRepository(val branch: String, val commits: List<Commit>)
+import org.hibernate.annotations.Cascade
+import org.hibernate.annotations.CascadeType
+import javax.persistence.*
 
-data class Commit(val time: Int, val name: String, val committer: Committer, val changes: List<ChangeEntry>)
+@Entity
+class GitRepository() {
+    @Id
+    var branch: String? = null
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    var commits: List<Commit>? = null
 
-data class Committer(val name: String, val email: String)
+    constructor(branch: String, commits: List<Commit>) : this() {
+        this.branch = branch
+        this.commits = commits
+    }
+}
 
-data class ChangeEntry(var oldPath: String, var newPath: String, var mode: String)
+@Entity
+data class Commit(val time: Int?, @Id val hash: String?, @Embedded val committer: Committer?, @ElementCollection val changes: List<ChangeEntry>?) {
+    constructor() : this(null, null, null, null)
+}
+
+
+@Embeddable
+data class Committer(val name: String?, val email: String?) {
+    constructor() : this(null, null)
+}
+
+@Embeddable
+data class ChangeEntry(var oldPath: String?, var newPath: String?, var mode: String?) {
+    constructor() : this(null, null, null)
+}
 
 //todo: 暂时使用了String
 enum class ChangeMode {

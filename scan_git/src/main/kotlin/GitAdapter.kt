@@ -7,6 +7,7 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.util.io.DisabledOutputStream
+import org.springframework.stereotype.Component
 import java.io.File
 
 interface GitAdapter {
@@ -22,6 +23,7 @@ interface GitAdapter {
 data class Config(val path: String, val branch: String?, val lastCommit: String?)
 
 
+@Component
 class JGitAdapter : GitAdapter {
     override fun scan(config: Config): GitRepository {
         buildRepository(config).use { repository ->

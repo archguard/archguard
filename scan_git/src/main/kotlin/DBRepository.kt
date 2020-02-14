@@ -1,3 +1,6 @@
 package com.thoughtworks.archguard.git.scanner
 
-interface DBRepository
+import org.springframework.data.repository.CrudRepository
+
+interface DBRepository : CrudRepository<GitRepository, String>
+
