@@ -8,11 +8,7 @@ import org.springframework.boot.runApplication
 open class Main
 
 fun main(args: Array<String>) {
-    val context = runApplication<Main>(*args)
-    val service = context.getBean(ScannerService::class.java)
-    val config = Config(path = "/Users/ygdong/Downloads/gittest")
-    service.scan(config)
-
+    runApplication<Main>(*args)
 }
 
 
