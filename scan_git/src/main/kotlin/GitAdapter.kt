@@ -10,45 +10,37 @@ import org.eclipse.jgit.util.io.DisabledOutputStream
 import org.springframework.stereotype.Component
 import java.io.File
 
+
 interface GitAdapter {
-    fun scan(config: Config): GitRepository
+    fun scan(config: Config): CommitHistory
 }
 
 /**
- *
  * @param lastCommit  last commit hash in database
- *
- *
- * */
+ */
 data class Config(val path: String, val branch: String? = null, val lastCommit: String? = null)
 
-fun DiffFormatter.config(repository: Repository): DiffFormatter {
-    setRepository(repository)
-    setDiffComparator(RawTextComparator.DEFAULT)
-    isDetectRenames = true
-    return this
-}
 
+/** this git adaptor utilize  JGit API to access git repository*/
 @Component
 class JGitAdapter : GitAdapter {
-    override fun scan(config: Config): GitRepository {
-        buildRepository(config).use { repository ->
-            Git(repository).use { git ->
-                git.checkout().setName(config.branch ?: "master").call() //todo : 是否可以不checkout branch ,避免本地库的修改
+    override fun scan(config: Config): CommitHistory {
+        FileRepositoryBuilder().path(config.path).use { repository ->
+            Git(repository).specifyBranch(config.branch).use { git ->
                 DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
-                    val commitList = getCommitList(git, diffFormatter)
-                    return GitRepository(repository.branch, commitList)
+                    return git.commitHistory(diffFormatter)
                 }
             }
         }
     }
 
-    private fun getCommitList(git: Git, diffFormatter: DiffFormatter): List<Commit> {
-        return git.log().call().map { revCommit ->
+    private fun Git.commitHistory(diffFormatter: DiffFormatter): CommitHistory {
+        val commits = log().call().map { revCommit ->
             val changes = getChangeList(revCommit, diffFormatter)
             val committer = Committer(revCommit.committerIdent.name, revCommit.committerIdent.emailAddress)
             Commit(revCommit.commitTime, revCommit.name, committer, changes)
         }
+        return CommitHistory(repository.branch, commits)
     }
 
     /*parentCount==0 就是第一个Commit, parentCount>1 意味着 merge */
@@ -59,10 +51,23 @@ class JGitAdapter : GitAdapter {
         }
     }
 
-    private fun buildRepository(config: Config): Repository {
-        return FileRepositoryBuilder()
-                .readEnvironment()
-                .findGitDir(File(config.path))
+
+    private fun DiffFormatter.config(repository: Repository): DiffFormatter {
+        setRepository(repository)
+        setDiffComparator(RawTextComparator.DEFAULT)
+        isDetectRenames = true
+        return this
+    }
+
+    private fun FileRepositoryBuilder.path(path: String): Repository {
+        return readEnvironment()
+                .findGitDir(File(path))
                 .build()
+    }
+
+    /*specify git branch*/
+    private fun Git.specifyBranch(branch: String?): Git {
+        checkout().setName(branch ?: "master").call()
+        return this
     }
 }
