@@ -3,13 +3,14 @@ package com.thoughtworks.archguard.git.scanner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-/* core scanner
-*
-*
-* */
+/*
+* core scanner
+*/
 
 @Service
-class ScannerService(@Autowired private val gitAdapter: GitAdapter, @Autowired private val dbRepository: DBRepository) {
+class ScannerService(
+        @Autowired private val gitAdapter: GitAdapter,
+        @Autowired private val dbRepository: DBRepository) {
     fun scan(config: Config) {
         val gitRepository = gitAdapter.scan(config)
         dbRepository.save(gitRepository)
