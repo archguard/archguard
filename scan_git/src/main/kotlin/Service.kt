@@ -12,7 +12,10 @@ class ScannerService(
         @Autowired private val gitAdapter: GitAdapter,
         @Autowired private val dbRepository: DBRepository) {
     fun scan(config: Config) {
-        val gitRepository = gitAdapter.scan(config)
-        dbRepository.save(gitRepository)
+        val commitHistory = gitAdapter.scan(config)
+        dbRepository.save(commitHistory)
     }
+
+    fun findAll(): MutableIterable<CommitHistory> = dbRepository.findAll()
+
 }
