@@ -22,6 +22,12 @@ interface GitAdapter {
  * */
 data class Config(val path: String, val branch: String? = null, val lastCommit: String? = null)
 
+fun DiffFormatter.config(repository: Repository): DiffFormatter {
+    setRepository(repository)
+    setDiffComparator(RawTextComparator.DEFAULT)
+    isDetectRenames = true
+    return this
+}
 
 @Component
 class JGitAdapter : GitAdapter {
@@ -29,10 +35,7 @@ class JGitAdapter : GitAdapter {
         buildRepository(config).use { repository ->
             Git(repository).use { git ->
                 git.checkout().setName(config.branch ?: "master").call() //todo : 是否可以不checkout branch ,避免本地库的修改
-                DiffFormatter(DisabledOutputStream.INSTANCE).use { diffFormatter ->
-                    diffFormatter.setRepository(repository)
-                    diffFormatter.setDiffComparator(RawTextComparator.DEFAULT)
-                    diffFormatter.isDetectRenames = true
+                DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
                     val commitList = getCommitList(git, diffFormatter)
                     return GitRepository(repository.branch, commitList)
                 }
