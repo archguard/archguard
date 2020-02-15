@@ -5,10 +5,10 @@ import org.hibernate.annotations.CascadeType
 import javax.persistence.*
 
 @Entity
-open class GitRepository(@Id val branch: String? = null, @OneToMany @Cascade(CascadeType.ALL) val commits: List<Commit>? = null)
+class CommitHistory(@Id val branch: String? = null, @OneToMany @Cascade(CascadeType.ALL) val commits: List<Commit>? = null)
 
 @Entity
-open class Commit(val time: Int? = null, @Id val hash: String? = null, @Embedded val committer: Committer? = null, @ElementCollection val changes: List<ChangeEntry>? = null)
+class Commit(val time: Int? = null, @Id val hash: String? = null, @Embedded val committer: Committer? = null, @ElementCollection val changes: List<ChangeEntry>? = null)
 
 @Embeddable
 data class Committer(val name: String? = null, val email: String? = null)
