@@ -20,7 +20,7 @@ interface GitAdapter {
  *
  *
  * */
-data class Config(val path: String, val branch: String?, val lastCommit: String?)
+data class Config(val path: String, val branch: String? = null, val lastCommit: String? = null)
 
 
 @Component
