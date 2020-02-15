@@ -5,21 +5,12 @@ import org.hibernate.annotations.CascadeType
 import javax.persistence.*
 
 @Entity
-class GitRepository() {
-    @Id
-    var branch: String? = null
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    var commits: List<Commit>? = null
-
-    constructor(branch: String, commits: List<Commit>) : this() {
-        this.branch = branch
-        this.commits = commits
-    }
+open class GitRepository(@Id val branch: String?, @OneToMany @Cascade(CascadeType.ALL) val commits: List<Commit>?) {
+    constructor() : this(null, null)
 }
 
 @Entity
-data class Commit(val time: Int?, @Id val hash: String?, @Embedded val committer: Committer?, @ElementCollection val changes: List<ChangeEntry>?) {
+open class Commit(val time: Int?, @Id val hash: String?, @Embedded val committer: Committer?, @ElementCollection val changes: List<ChangeEntry>?) {
     constructor() : this(null, null, null, null)
 }
 
