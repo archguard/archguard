@@ -15,14 +15,14 @@ internal class ScannerServiceTest(
 
     @Test
     internal fun `to scan specified git repository`() {
-        service.scan(Config("/Users/ygdong/Downloads/gittest"))
+        service.scan(Config("test_data"))
     }
 
     @Test
     internal fun `get commit history`() {
-        val findAll = service.findAll()
+        val commitHistory = service.findAll()
         assertAll("",
-                { assertEquals(1, findAll.count()) },
-                { assertEquals("master", findAll.first().branch) })
+                { assertEquals(1, commitHistory.count()) },
+                { assertEquals("master", commitHistory.first().branch) })
     }
 }
