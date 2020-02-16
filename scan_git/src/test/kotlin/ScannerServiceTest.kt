@@ -5,7 +5,6 @@ import com.thoughtworks.archguard.git.scanner.Main
 import com.thoughtworks.archguard.git.scanner.ScannerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -20,9 +19,8 @@ internal class ScannerServiceTest(
 
     @Test
     internal fun `get commit history`() {
-        val commitHistory = service.findAll()
-        assertAll("",
-                { assertEquals(1, commitHistory.count()) },
-                { assertEquals("master", commitHistory.first().branch) })
+        val commitHistory = service.get()
+        assertEquals("master", commitHistory.branch)
+        assertEquals(3, commitHistory.commits!!.size)
     }
 }

@@ -16,6 +16,6 @@ class ScannerService(
         dbRepository.save(commitHistory)
     }
 
-    fun findAll(): MutableIterable<CommitHistory> = dbRepository.findAll()
+    fun get(): CommitHistory = dbRepository.get()
 
 }
