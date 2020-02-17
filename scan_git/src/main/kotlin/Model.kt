@@ -5,24 +5,24 @@ import org.hibernate.annotations.CascadeType
 import javax.persistence.*
 
 @Entity
-class CommitHistory(
+open class CommitHistory(
         @Id val branch: String? = null,
         @OneToMany @Cascade(CascadeType.ALL) val commits: List<Commit>? = null)
 
 @Entity
-class Commit(
+open class Commit(
         val time: Int? = null,
         @Id val hash: String? = null,
         @Embedded val committer: Committer? = null,
         @ElementCollection val changes: List<ChangeEntry>? = null)
 
 @Embeddable
-data class Committer(
+open class Committer(
         val name: String? = null,
         val email: String? = null)
 
 @Embeddable
-data class ChangeEntry(
+open class ChangeEntry(
         var oldPath: String? = null,
         var newPath: String? = null,
         var mode: String? = null)
