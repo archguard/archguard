@@ -21,13 +21,11 @@ open class Committer(
         val name: String? = null,
         val email: String? = null)
 
+
+//todo: mode 字段， 暂时使用了String
 @Embeddable
 open class ChangeEntry(
         var oldPath: String? = null,
         var newPath: String? = null,
         var mode: String? = null)
 
-//todo: 暂时使用了String
-enum class ChangeMode {
-    Add, Delete, Modify
-}

@@ -1,5 +1,3 @@
-// todo: why can not use package base path
-
 import com.thoughtworks.archguard.git.scanner.Config
 import com.thoughtworks.archguard.git.scanner.Main
 import com.thoughtworks.archguard.git.scanner.ScannerService
