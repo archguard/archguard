@@ -1,3 +1,4 @@
-# 运行
-- 修改 Main.kt 代码中的 git 本地库路径； 
-- 运行 main 
+构建：
+ `mvn clean package spring-boot:repackage`
+运行：
+ `java -jar target/scan_git-*.jar`
