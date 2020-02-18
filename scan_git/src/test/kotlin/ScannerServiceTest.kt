@@ -19,6 +19,6 @@ internal class ScannerServiceTest(
     internal fun `get commit history`() {
         val commitHistory = service.get()
         assertEquals("master", commitHistory.branch)
-        assertEquals(3, commitHistory.commits!!.size)
+        assertEquals(3, commitHistory.commits.size)
     }
 }
