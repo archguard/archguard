@@ -24,16 +24,16 @@ data class Config(val path: String, val branch: String? = null, val lastCommit: 
 /** this git adaptor utilize  JGit API to access git repository*/
 @Component
 class JGitAdapter : GitAdapter {
-//    todo: 考虑内存溢出的问题
-override fun scan(config: Config): CommitHistory {
-    FileRepositoryBuilder().path(config.path).use { repository ->
-        Git(repository).specifyBranch(config.branch).use { git ->
-            DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
-                return git.commitHistory(diffFormatter)
+    //    todo: 考虑内存溢出的问题
+    override fun scan(config: Config): CommitHistory {
+        FileRepositoryBuilder().path(config.path).use { repository ->
+            Git(repository).specifyBranch(config.branch).use { git ->
+                DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
+                    return git.commitHistory(diffFormatter)
+                }
             }
         }
     }
-}
 
     private fun Git.commitHistory(diffFormatter: DiffFormatter): CommitHistory {
         val commits = log().call().map { revCommit ->
