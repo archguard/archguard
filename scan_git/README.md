@@ -6,7 +6,7 @@
 
 ### 运行：
 
-`java -jar target/scan_git-*.jar --gitPath=/Users/gittest/ --branch=master`
+`java -jar target/scan_git-*.jar --gitPath=/somepath/gittest/ --branch=master`
 
 选项
 - gitPath,  git repository 本地路径
