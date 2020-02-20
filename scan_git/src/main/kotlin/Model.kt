@@ -1,31 +1,25 @@
 package com.thoughtworks.archguard.git.scanner
 
-import org.hibernate.annotations.Cascade
-import org.hibernate.annotations.CascadeType
-import javax.persistence.*
 
-@Entity
-data class CommitHistory(
-        @Id val branch: String,
-        @OneToMany @Cascade(CascadeType.ALL) val commits: List<Commit>)
+/*为了生成SQL，和DB 表同结构*/
 
-@Entity
+
+data class GitRepository(
+        val repositoryPath: String,
+        val branch: String,
+        val id: Long)
+
 data class Commit(
+        val id: String,
         val time: Int,
-        @Id val hash: String,
-        @Embedded val committer: Committer,
-        @ElementCollection val changes: List<ChangeEntry>)
-
-@Embeddable
-data class Committer(
-        val name: String,
-        val email: String)
+        val committerName: String,
+        val committerEmail: String,
+        val repositoryId: Long)
 
 
-//todo: mode 字段， 暂时使用了String
-@Embeddable
 data class ChangeEntry(
-        var oldPath: String,
-        var newPath: String,
-        var mode: String)
+        val oldPath: String,
+        val newPath: String,
+        val mode: String,
+        val commit: String)
 

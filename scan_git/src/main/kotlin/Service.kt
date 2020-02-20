@@ -2,20 +2,32 @@ package com.thoughtworks.archguard.git.scanner
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.PrintWriter
+import kotlin.reflect.jvm.kotlinProperty
 
 /*
 * core scanner
 */
 
 @Service
-class ScannerService(
-        @Autowired private val gitAdapter: GitAdapter,
-        @Autowired private val dbRepository: DBRepository) {
-    fun scan(config: Config) {
-        val commitHistory = gitAdapter.scan(config)
-        dbRepository.save(commitHistory)
-    }
+class ScannerService(@Autowired private val gitAdapter: GitAdapter) {
 
-    fun get(): CommitHistory = dbRepository.get()
+    fun git2SqlFile(config: Config) {
+        PrintWriter("output.sql").use { out ->
+            gitAdapter.scan(config) { model ->
+                val columns = arrayListOf<String>()
+                val values = arrayListOf<Any>()
+                val clazz = model.javaClass
+                clazz.declaredFields.iterator().forEach {
+                    val property = it.kotlinProperty
+                    columns.add(property!!.name)
+                    values.add(property.call(model)!!)
+                }
+                val valueString = values.joinToString(separator = "','", prefix = "'", postfix = "'")
+                val sql = "insert into ${clazz.simpleName}(${columns.joinToString()}) values($valueString)"
+                out.println(sql)
+            }
+        }
+    }
 
 }

@@ -11,45 +11,49 @@ import org.springframework.stereotype.Component
 import java.io.File
 
 
+/**
+ * @param path  repository location
+ * @param branch  branch name, default is master
+ */
+data class Config(val path: String, val branch: String = "master")
+
+
 interface GitAdapter {
-    fun scan(config: Config): CommitHistory
+    fun scan(config: Config, publish: (Any) -> Unit)
 }
 
-/**
- * @param lastCommit  last commit hash in database
- */
-data class Config(val path: String, val branch: String? = null, val lastCommit: String? = null)
-
-
-/** this git adaptor utilize  JGit API to access git repository*/
 @Component
 class JGitAdapter : GitAdapter {
-    //    todo: 考虑内存溢出的问题
-    override fun scan(config: Config): CommitHistory {
-        FileRepositoryBuilder().path(config.path).use { repository ->
-            Git(repository).specifyBranch(config.branch).use { git ->
-                DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
-                    return git.commitHistory(diffFormatter)
+    override fun scan(config: Config, publish: (Any) -> Unit) {
+        val repPath = File(config.path)
+        val repId = System.nanoTime()
+        publish(GitRepository(repPath.absolutePath, config.branch, id = repId))
+        FileRepositoryBuilder()
+                .findGitDir(repPath)
+                .build()
+                .use { repository ->
+                    Git(repository).specifyBranch(config.branch).use { git ->
+                        DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
+                            git.log().call().forEach { revCommit ->
+                                val commit = Commit(id = revCommit.name,
+                                        time = revCommit.commitTime,
+                                        committerName = revCommit.committerIdent.name,
+                                        committerEmail = revCommit.committerIdent.emailAddress,
+                                        repositoryId = repId)
+                                publish(commit)
+
+                                val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
+                                diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
+                                    val changeEntry = ChangeEntry(oldPath = it.oldPath,
+                                            newPath = it.newPath,
+                                            mode = it.changeType.name,
+                                            commit = revCommit.name)
+                                    publish(changeEntry)
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-
-    private fun Git.commitHistory(diffFormatter: DiffFormatter): CommitHistory {
-        val commits = log().call().map { revCommit ->
-            val changes = getChangeList(revCommit, diffFormatter)
-            val committer = Committer(revCommit.committerIdent.name, revCommit.committerIdent.emailAddress)
-            Commit(revCommit.commitTime, revCommit.name, committer, changes)
-        }
-        return CommitHistory(repository.branch, commits)
-    }
-
-    /*parentCount==0 就是第一个Commit, parentCount>1 意味着 merge */
-    private fun getChangeList(revCommit: RevCommit, diffFormatter: DiffFormatter): List<ChangeEntry> {
-        val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
-        return diffFormatter.scan(parent?.tree, revCommit.tree).map {
-            ChangeEntry(oldPath = it.oldPath, newPath = it.newPath, mode = it.changeType.name)
-        }
     }
 
 
@@ -60,15 +64,11 @@ class JGitAdapter : GitAdapter {
         return this
     }
 
-    private fun FileRepositoryBuilder.path(path: String): Repository {
-        return readEnvironment()
-                .findGitDir(File(path))
-                .build()
-    }
-
     /*specify git branch*/
-    private fun Git.specifyBranch(branch: String?): Git {
-        checkout().setName(branch ?: "master").call()
+    private fun Git.specifyBranch(branch: String): Git {
+        checkout().setName(branch).call()
         return this
     }
 }
+
+
