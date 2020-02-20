@@ -7,6 +7,8 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.util.io.DisabledOutputStream
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -24,8 +26,11 @@ interface GitAdapter {
 
 @Component
 class JGitAdapter : GitAdapter {
+    val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
+
     override fun scan(config: Config, publish: (Any) -> Unit) {
         val repPath = File(config.path)
+        logger.info("git repository locate at {}", repPath.absolutePath)
         val repId = System.nanoTime()
         publish(GitRepository(repPath.absolutePath, config.branch, id = repId))
         FileRepositoryBuilder()
