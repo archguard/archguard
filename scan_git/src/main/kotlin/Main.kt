@@ -21,7 +21,7 @@ open class Main(@Autowired val service: ScannerService) : ApplicationRunner {
 }
 
 fun main(args: Array<String>) {
-    val context = runApplication<Main>(*args)
+    runApplication<Main>(*args)
 }
 
 
