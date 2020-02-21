@@ -26,8 +26,13 @@ class CommonTest {
     internal fun joinList() {
         val listOf = listOf<Any>(1, 3, "String")
 
-        print(listOf.joinToString(":"))
+        val joinToString = listOf.joinToString {
+            if (it is String) "'$it'" else it.toString()
+        }
+        println("joinToString = $joinToString")
     }
+
+
 
 }
 
