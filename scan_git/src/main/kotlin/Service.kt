@@ -23,7 +23,9 @@ class ScannerService(@Autowired private val gitAdapter: GitAdapter) {
                     columns.add(property!!.name)
                     values.add(property.call(model)!!)
                 }
-                val valueString = values.joinToString(separator = "','", prefix = "'", postfix = "'")
+                val valueString = values.joinToString {
+                    if (it is String) "'$it'" else it.toString()
+                }
                 val sql = "insert into ${clazz.simpleName}(${columns.joinToString()}) values($valueString)"
                 out.println(sql)
             }
