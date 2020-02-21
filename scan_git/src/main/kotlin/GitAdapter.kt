@@ -42,15 +42,15 @@ class JGitAdapter : GitAdapter {
                             git.log().call().forEach { revCommit ->
                                 val commit = Commit(id = revCommit.name,
                                         commit_time = revCommit.commitTime,
-                                        committerName = revCommit.committerIdent.name,
-                                        committerEmail = revCommit.committerIdent.emailAddress,
-                                        repositoryId = repId)
+                                        committer_name = revCommit.committerIdent.name,
+                                        commit_email = revCommit.committerIdent.emailAddress,
+                                        rep_id = repId)
                                 publish(commit)
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
-                                    val changeEntry = ChangeEntry(oldPath = it.oldPath,
-                                            newPath = it.newPath,
+                                    val changeEntry = ChangeEntry(old_path = it.oldPath,
+                                            new_path = it.newPath,
                                             mode = it.changeType.name,
                                             commit_id = revCommit.name)
                                     publish(changeEntry)

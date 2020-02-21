@@ -5,21 +5,21 @@ package com.thoughtworks.archguard.git.scanner
 
 
 data class GitRepository(
-        val repositoryPath: String,
+        val rep_path: String,
         val branch: String,
         val id: Long)
 
 data class Commit(
         val id: String,
         val commit_time: Int,
-        val committerName: String,
-        val committerEmail: String,
-        val repositoryId: Long)
+        val committer_name: String,
+        val commit_email: String,
+        val rep_id: Long)
 
 
 data class ChangeEntry(
-        val oldPath: String,
-        val newPath: String,
+        val old_path: String,
+        val new_path: String,
         val mode: String,
         val commit_id: String)
 
