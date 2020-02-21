@@ -11,7 +11,7 @@ data class GitRepository(
 
 data class Commit(
         val id: String,
-        val time: Int,
+        val commit_time: Int,
         val committerName: String,
         val committerEmail: String,
         val repositoryId: Long)
@@ -21,5 +21,5 @@ data class ChangeEntry(
         val oldPath: String,
         val newPath: String,
         val mode: String,
-        val commit: String)
+        val commit_id: String)
 

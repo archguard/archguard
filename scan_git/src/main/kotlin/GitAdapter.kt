@@ -41,7 +41,7 @@ class JGitAdapter : GitAdapter {
                         DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
                             git.log().call().forEach { revCommit ->
                                 val commit = Commit(id = revCommit.name,
-                                        time = revCommit.commitTime,
+                                        commit_time = revCommit.commitTime,
                                         committerName = revCommit.committerIdent.name,
                                         committerEmail = revCommit.committerIdent.emailAddress,
                                         repositoryId = repId)
@@ -52,7 +52,7 @@ class JGitAdapter : GitAdapter {
                                     val changeEntry = ChangeEntry(oldPath = it.oldPath,
                                             newPath = it.newPath,
                                             mode = it.changeType.name,
-                                            commit = revCommit.name)
+                                            commit_id = revCommit.name)
                                     publish(changeEntry)
                                 }
                             }
