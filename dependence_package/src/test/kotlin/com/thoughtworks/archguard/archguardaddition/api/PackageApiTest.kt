@@ -13,7 +13,7 @@ import javax.annotation.Resource
 
 @SpringBootTest
 @WebAppConfiguration
-class ConfigureApiTest {
+class PackageApiTest {
 
     @Resource
     private lateinit var wac: WebApplicationContext
