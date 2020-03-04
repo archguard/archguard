@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.git.scanner
 
+import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
@@ -11,6 +12,7 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -28,7 +30,7 @@ interface GitAdapter {
 }
 
 @Component
-class JGitAdapter : GitAdapter {
+class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
     val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
 
     override fun scan(config: Config, publish: (Any) -> Unit) {
@@ -59,7 +61,12 @@ class JGitAdapter : GitAdapter {
                                                 val objectId = treeWalk.getObjectId(0)
                                                 repository!!.newObjectReader().use { objectReader ->
                                                     val bytes = objectReader.open(objectId).bytes
-                                                    println(String(bytes, StandardCharsets.UTF_8))
+                                                    val code = String(bytes, StandardCharsets.UTF_8)
+                                                    val cplx = cognitiveComplexityParser.processCode(code)
+                                                    cplx.forEach { methodCplx ->
+                                                        println("--------------$methodCplx")
+                                                    }
+                                                    println(code)
                                                 }
                                             }
                                         }
