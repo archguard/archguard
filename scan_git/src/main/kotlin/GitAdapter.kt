@@ -1,16 +1,19 @@
 package com.thoughtworks.archguard.git.scanner
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.File
+import java.nio.charset.StandardCharsets
 
 
 /**
@@ -49,6 +52,18 @@ class JGitAdapter : GitAdapter {
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
+                                    val javaFile = it.newPath.endsWith(".java") && it.changeType != DiffEntry.ChangeType.DELETE
+                                    if (javaFile) {
+                                        TreeWalk.forPath(repository, it.newPath, revCommit.tree).use { treeWalk ->
+                                            if (treeWalk != null) {
+                                                val objectId = treeWalk.getObjectId(0)
+                                                repository!!.newObjectReader().use { objectReader ->
+                                                    val bytes = objectReader.open(objectId).bytes
+                                                    println(String(bytes, StandardCharsets.UTF_8))
+                                                }
+                                            }
+                                        }
+                                    }
                                     val changeEntry = ChangeEntry(old_path = it.oldPath,
                                             new_path = it.newPath,
                                             mode = it.changeType.name,
