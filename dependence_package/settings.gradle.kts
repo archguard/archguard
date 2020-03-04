@@ -1,1 +1,1 @@
-rootProject.name = "archguard-addition"
+rootProject.name = "archguard-package"

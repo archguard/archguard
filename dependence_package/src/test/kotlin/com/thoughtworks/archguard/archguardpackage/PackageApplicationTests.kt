@@ -1,10 +1,10 @@
-package com.thoughtworks.archguard.archguardaddition
+package com.thoughtworks.archguard.archguardpackage
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class AdditionApplicationTests {
+class PackageApplicationTests {
 
 	@Test
 	fun contextLoads() {

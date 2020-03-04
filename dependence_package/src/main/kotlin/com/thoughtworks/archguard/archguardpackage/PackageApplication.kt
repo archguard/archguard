@@ -1,11 +1,11 @@
-package com.thoughtworks.archguard.archguardaddition
+package com.thoughtworks.archguard.archguardpackage
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class AdditionApplication
+class PackageApplication
 
 fun main(args: Array<String>) {
-	runApplication<AdditionApplication>(*args)
+	runApplication<PackageApplication>(*args)
 }

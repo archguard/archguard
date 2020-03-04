@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.archguardaddition.infrostracture
+package com.thoughtworks.archguard.archguardpackage.infrostracture
 
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Value
