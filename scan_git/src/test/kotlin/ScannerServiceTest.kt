@@ -11,7 +11,7 @@ internal class ScannerServiceTest(
 
 
     @Test
-    internal fun `test event`() {
-        service.git2SqlFile(Config("test_data"))
+    internal fun runTest() {
+        service.git2SqlFile(Config("/Users/ygdong/git/junit4_demo"))
     }
 }
