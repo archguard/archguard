@@ -1,11 +1,11 @@
 import com.thoughtworks.archguard.git.scanner.Config
-import com.thoughtworks.archguard.git.scanner.Main
+import com.thoughtworks.archguard.git.scanner.Runner
 import com.thoughtworks.archguard.git.scanner.ScannerService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest(classes = [Main::class])
+@SpringBootTest(classes = [Runner::class])
 internal class ScannerServiceTest(
         @Autowired val service: ScannerService) {
 
