@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.util.function.Consumer
 
 class JGitTest {
@@ -89,4 +90,26 @@ class JGitTest {
             }
         }
     }
+
+
+    /** @see https://stackoverflow.com/questions/45793800/jgit-read-the-content-of-a-file-at-a-commit-in-a-branch*/
+    @Test
+    internal fun getContent_for_path_in_aCommit() {
+        Git(repository).use { git ->
+            git.log().call().forEach { revCommit ->
+                println(revCommit.fullMessage + "++++++++++++++")
+                TreeWalk.forPath(repository, "b", revCommit.tree).use { treeWalk ->
+                    if (treeWalk != null) {
+                        val objectId = treeWalk.getObjectId(0)
+                        repository!!.newObjectReader().use { objectReader ->
+                            val bytes = objectReader.open(objectId).bytes
+                            println(String(bytes, StandardCharsets.UTF_8))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 }
