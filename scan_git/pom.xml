@@ -21,7 +21,6 @@
         <kotlin.version>1.3.30</kotlin.version>
         <antlr4.visitor>true</antlr4.visitor>
         <antlr4.listener>true</antlr4.listener>
-        <ktlint.version>0.36.0</ktlint.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     </properties>
 
@@ -64,23 +63,6 @@
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.7.2</version>
-        </dependency>
-
-        <!-- ktlint-->
-        <dependency>
-            <groupId>com.pinterest.ktlint</groupId>
-            <artifactId>ktlint-core</artifactId>
-            <version>${ktlint.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pinterest.ktlint</groupId>
-            <artifactId>ktlint-ruleset-standard</artifactId>
-            <version>${ktlint.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pinterest.ktlint</groupId>
-            <artifactId>ktlint-ruleset-experimental</artifactId>
-            <version>${ktlint.version}</version>
         </dependency>
 
         <!--test-->
