@@ -20,6 +20,7 @@ data class Commit(
 data class ChangeEntry(
         val old_path: String,
         val new_path: String,
+        val cognitiveComplexity: Int,
         val mode: String,
         val commit_id: String)
 

@@ -54,25 +54,10 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
-                                    val javaFile = it.newPath.endsWith(".java") && it.changeType != DiffEntry.ChangeType.DELETE
-                                    if (javaFile) {
-                                        TreeWalk.forPath(repository, it.newPath, revCommit.tree).use { treeWalk ->
-                                            if (treeWalk != null) {
-                                                val objectId = treeWalk.getObjectId(0)
-                                                repository!!.newObjectReader().use { objectReader ->
-                                                    val bytes = objectReader.open(objectId).bytes
-                                                    val code = String(bytes, StandardCharsets.UTF_8)
-                                                    val cplx = cognitiveComplexityParser.processCode(code)
-                                                    cplx.forEach { methodCplx ->
-                                                        println("--------------$methodCplx")
-                                                    }
-                                                    println(code)
-                                                }
-                                            }
-                                        }
-                                    }
+                                    var classComplexity: Int = cognitiveComplexityForJavaFile(it, repository, revCommit)
                                     val changeEntry = ChangeEntry(old_path = it.oldPath,
                                             new_path = it.newPath,
+                                            cognitiveComplexity = classComplexity,
                                             mode = it.changeType.name,
                                             commit_id = revCommit.name)
                                     publish(changeEntry)
@@ -81,6 +66,25 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
                         }
                     }
                 }
+    }
+
+    private fun cognitiveComplexityForJavaFile(it: DiffEntry, repository: Repository, revCommit: RevCommit): Int {
+        var classComplexity: Int = 0
+        val javaFile = it.newPath.endsWith(".java")
+        if (javaFile) {
+            TreeWalk.forPath(repository, it.newPath, revCommit.tree).use { treeWalk ->
+                if (treeWalk != null) {
+                    val objectId = treeWalk.getObjectId(0)
+                    repository.newObjectReader().use { objectReader ->
+                        val bytes = objectReader.open(objectId).bytes
+                        val code = String(bytes, StandardCharsets.UTF_8)
+                        val cplx = cognitiveComplexityParser.processCode(code)
+                        classComplexity = cplx.sumBy { it.complexity }
+                    }
+                }
+            }
+        }
+        return classComplexity
     }
 
 
