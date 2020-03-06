@@ -12,7 +12,7 @@ class PackageController {
     @Autowired
     private lateinit var packageService: PackageService
 
-    @GetMapping("/dependency/package")
+    @GetMapping("/dependence/all")
     fun getPackageDependence(): PackageGraph {
         return packageService.getPackageDependence()
     }

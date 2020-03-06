@@ -1,5 +1,5 @@
 ## 删除config
-+ ##### URL地址: `/dependency/package`
++ ##### URL地址: `/dependence/all`
 + ##### 请求方式: `GET`
 
 + ##### response:
