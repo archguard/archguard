@@ -11,9 +11,9 @@ class PackageService {
     @Autowired
     lateinit var packageRepository: PackageRepository
 
-    var packageStore: PackageStore = PackageStore()
 
     fun getPackageDependence(): PackageGraph {
+        var packageStore = PackageStore()
         val results = packageRepository.getPackageDependence()
         results.forEach {
             it.aClz = it.aClz.substringBeforeLast('.')
