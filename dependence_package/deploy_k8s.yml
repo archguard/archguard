@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-analysis-package
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: code-analysis-package
+  template:
+    metadata:
+      labels:
+        app: code-analysis-package
+    spec:
+      containers:
+        - name: code-analysis-package
+          image: archguard/package:latest
+          imagePullPolicy: Always
+          env:
+            - name: app_env
+              value: "dev"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: regcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-analysis-package
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: code-analysis-package
+
+
