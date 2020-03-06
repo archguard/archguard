@@ -23,8 +23,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jdbi:jdbi3-kotlin:3.10.1")
 	implementation("org.jdbi:jdbi3-testing:3.10.1")
-	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
+	testImplementation("com.h2database:h2")
+	testImplementation("org.flywaydb:flyway-core:6.2.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
