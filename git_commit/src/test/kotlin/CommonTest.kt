@@ -27,6 +27,7 @@ class CommonTest {
         assertTrue(true)
 
         val result = jdbi!!.withHandle<Int, Exception> { handle ->
+            handle.execute("drop table if exists mytest")
             handle.execute("create table mytest(id int)")
             handle.execute("insert into mytest(id) values(?) ", 100)
 

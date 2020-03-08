@@ -17,10 +17,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.h2database:h2'
-    implementation("org.jdbi:jdbi3-kotlin:3.10.1")
-    implementation("org.jdbi:jdbi3-testing:3.10.1")
-    implementation("org.jdbi:jdbi3-spring4:3.10.1")
+    implementation "org.jdbi:jdbi3-kotlin:3.10.1"
+    implementation "org.jdbi:jdbi3-testing:3.10.1"
+    implementation "org.jdbi:jdbi3-spring4:3.10.1"
+    runtimeOnly "mysql:mysql-connector-java"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
