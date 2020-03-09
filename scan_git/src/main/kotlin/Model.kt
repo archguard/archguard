@@ -9,11 +9,11 @@ data class GitRepository(
         val branch: String,
         val id: Long)
 
-data class Commit(
+data class RevCommit(
         val id: String,
         val commit_time: Int,
         val committer_name: String,
-        val commit_email: String,
+        val committer_email: String,
         val rep_id: Long)
 
 

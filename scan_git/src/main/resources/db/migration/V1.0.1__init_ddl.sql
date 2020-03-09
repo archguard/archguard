@@ -8,12 +8,12 @@ create table GitRepository(
     branch  varchar(100) not null
 );
 
-drop table if exists Commit;
-create table Commit(
+drop table if exists RevCommit;
+create table RevCommit(
     id varchar(50) primary key,
     commit_time  int,
     committer_name varchar(50),
-    commit_email varchar(100),
+    committer_email varchar(100),
     rep_id bigint
 );
 
