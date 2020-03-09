@@ -17,7 +17,9 @@ open class Runner : ApplicationRunner {
 
     @Bean
     open fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
-        return JdbiFactoryBean(ds)
+        val factoryBean = JdbiFactoryBean(ds)
+        factoryBean.setAutoInstallPlugins(true)
+        return factoryBean
     }
 
 }
