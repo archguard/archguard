@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct
 
 interface GitAnalyzer {
 
-    fun findScatterCommits(): List<Commit>
+    fun findScatterCommits(): List<RevCommit>
 }
 
 @Component
@@ -21,8 +21,12 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
         jdbi = jdbiFactoryBean.`object`
     }
 
-    override fun findScatterCommits(): List<Commit> {
-        return listOf<Commit>(Commit("1", 11111111, "adfasfgadfgsdfdsf", "a@b.com", 123123123, setOf(ChangeEntry("a", "b", 3, "ADD", "sdfsfsdff"))))
+    override fun findScatterCommits(): List<RevCommit> {
+        return jdbi.withHandle<List<RevCommit>, Exception> {
+            it.createQuery("select * from RevCommit")
+                    .mapToBean(RevCommit::class.java)
+                    .list()
+        }
     }
 
 }
