@@ -15,12 +15,13 @@ open class Runner : ApplicationRunner {
     }
 
 
-    @Bean
-    open fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
-        val factoryBean = JdbiFactoryBean(ds)
-        factoryBean.setAutoInstallPlugins(true)
-        return factoryBean
-    }
+//    todo: why facgtoryBean not jdbi straightly
+@Bean
+open fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
+    val factoryBean = JdbiFactoryBean(ds)
+    factoryBean.setAutoInstallPlugins(true)
+    return factoryBean
+}
 
 }
 
