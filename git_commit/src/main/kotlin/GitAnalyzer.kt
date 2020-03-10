@@ -27,13 +27,14 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
             val commitMap = RowMapper { rs, ctx ->
                 val commitId = rs.getString("id")
 
+                val entriesSet: Set<ChangeEntry> = selectChangeEntry(commitId)
 
-
-                RevCommit(id = commitId,
+                RevCommit(
+                        id = commitId,
                         commit_time = rs.getInt("commit_time"),
                         committer_name = rs.getString("committer_name"),
                         rep_id = rs.getLong("rep_id"),
-                        entries = setOf(ChangeEntry("", 4, "ADD"))
+                        entries = entriesSet
                 )
             }
 
@@ -41,6 +42,27 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
             val queryCommit = "select id, commit_time, committer_name, rep_id from RevCommit"
             it.createQuery(queryCommit)
                     .map(commitMap).list()
+        }
+    }
+
+    //    todo : SQL 查询中的表明要常量化
+//    todo: 字段名字映射
+    private fun selectChangeEntry(commitId: String): Set<ChangeEntry> {
+        return jdbi.withHandle<Set<ChangeEntry>, Exception> {
+
+            val changeEntryMapper = RowMapper { rs, ctx ->
+                ChangeEntry(
+                        new_path = rs.getString("new_path"),
+                        cognitiveComplexity = rs.getInt("cognitiveComplexity"),
+                        mode = rs.getString("mode")
+                )
+            }
+
+            val queryChangeEntry = "select new_path , cognitiveComplexity, mode from ChangeEntry where commit_id = ?"
+            it.createQuery(queryChangeEntry)
+                    .bind(0, commitId)
+                    .map(changeEntryMapper)
+                    .toSet()
         }
     }
 
