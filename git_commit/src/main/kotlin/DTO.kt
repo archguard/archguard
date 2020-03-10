@@ -10,9 +10,7 @@ data class RevCommit(
 
 
 data class ChangeEntry(
-        val old_path: String, // todo: remove this property
         val new_path: String,
         val cognitiveComplexity: Int,
-        val mode: String,
-        val commit_id: String)
+        val mode: String)
 
