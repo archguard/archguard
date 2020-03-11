@@ -1,0 +1,1 @@
+mysql -uroot -e "drop database if exists archguard; create database archguard"
