@@ -12,6 +12,7 @@ data class GitRepository(
 data class RevCommit(
         val id: String,
         val commit_time: Int,
+        val shortMessage: String,
         val committer_name: String,
         val committer_email: String,
         val rep_id: Long)

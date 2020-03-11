@@ -47,6 +47,7 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
                             git.log().call().forEach { revCommit ->
                                 val commit = RevCommit(id = revCommit.name,
                                         commit_time = revCommit.commitTime,
+                                        shortMessage = revCommit.shortMessage,
                                         committer_name = revCommit.committerIdent.name,
                                         committer_email = revCommit.committerIdent.emailAddress,
                                         rep_id = repId)
@@ -54,7 +55,7 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
-                                    var classComplexity: Int = cognitiveComplexityForJavaFile(it, repository, revCommit)
+                                    val classComplexity: Int = cognitiveComplexityForJavaFile(it, repository, revCommit)
                                     val changeEntry = ChangeEntry(old_path = it.oldPath,
                                             new_path = it.newPath,
                                             cognitiveComplexity = classComplexity,
@@ -69,7 +70,7 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
     }
 
     private fun cognitiveComplexityForJavaFile(it: DiffEntry, repository: Repository, revCommit: RevCommit): Int {
-        var classComplexity: Int = 0
+        var classComplexity = 0
         val javaFile = it.newPath.endsWith(".java")
         if (javaFile) {
             TreeWalk.forPath(repository, it.newPath, revCommit.tree).use { treeWalk ->
