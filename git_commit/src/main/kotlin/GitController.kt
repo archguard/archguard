@@ -12,7 +12,7 @@ class GitController(@Autowired val git: GitAnalyzer) {
 
 
     @GetMapping("scatterCommits")
-    fun scatterCommits(): List<RevCommit> {
+    fun scatterCommits(): List<CommitLog> {
         return git.findScatterCommits()
     }
 }

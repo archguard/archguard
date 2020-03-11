@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct
 
 interface GitAnalyzer {
 
-    fun findScatterCommits(): List<RevCommit>
+    fun findScatterCommits(): List<CommitLog>
 }
 
 @Component
@@ -26,11 +26,11 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
         jdbi = jdbiFactoryBean.`object`
     }
 
-    override fun findScatterCommits(): List<RevCommit> {
-        return jdbi.withHandle<List<RevCommit>, Exception> {
-            val queryCommit = "select id, commit_time, shortMessage, committer_name, rep_id from RevCommit"
+    override fun findScatterCommits(): List<CommitLog> {
+        return jdbi.withHandle<List<CommitLog>, Exception> {
+            val queryCommit = "select id, commit_time, shortMessage, committer_name, rep_id from CommitLog"
             val resultIterable = it.createQuery(queryCommit).map(commitRowMapper())
-            resultIterable.withStream<List<RevCommit>, Exception> { stream ->
+            resultIterable.withStream<List<CommitLog>, Exception> { stream ->
                 stream.filter { revCommit ->
 //                  过滤掉复杂度没有变化的 commit
                     isScatterCommit(revCommit)
@@ -39,12 +39,12 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
         }
     }
 
-    private fun commitRowMapper(): RowMapper<RevCommit> {
+    private fun commitRowMapper(): RowMapper<CommitLog> {
         return RowMapper { rs, ctx ->
             val commitId = rs.getString("id")
             val entriesSet: Set<ChangeEntry> = selectChangeEntry(commitId)
 
-            RevCommit(
+            CommitLog(
                     id = commitId,
                     commit_time = rs.getInt("commit_time"),
                     shortMessage = rs.getString("shortMessage"),
@@ -56,14 +56,14 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     }
 
     /*判断一个提交是否符合符合霰弹提交的条件*/
-    private fun isScatterCommit(revCommit: RevCommit): Boolean {
+    private fun isScatterCommit(commitLog: CommitLog): Boolean {
         var count = 0 // 复杂度变化的文件数量
         val standard = 2 // 复杂度变化的文件数量的标准，达到这个值则视为霰弹提交
-        selectChangeEntry(revCommit.id).filter { changeEntry ->
+        selectChangeEntry(commitLog.id).filter { changeEntry ->
             changeEntry.new_path.endsWith(".java") && changeEntry.mode.equals("MODIFY") // java file
         }.forEach { changeEntry ->
-            logger.info("本次提交{},msg={}", revCommit.id, revCommit.shortMessage)
-            val pre = previousCommitComplexity(changeEntry.new_path, revCommit.commit_time)
+            logger.info("本次提交{},msg={}", commitLog.id, commitLog.shortMessage)
+            val pre = previousCommitComplexity(changeEntry.new_path, commitLog.commit_time)
             if (changeEntry.cognitiveComplexity != pre) {
                 if (++count == standard)
                     return true
@@ -76,7 +76,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     private fun previousCommitComplexity(path: String, commitTime: Int): Int {
         val sql = """
             select e.cognitiveComplexity 
-            from  RevCommit c join ChangeEntry e on c.id=commit_id 
+            from  CommitLog c join ChangeEntry e on c.id=commit_id 
             where  e.new_path=? and c.commit_time<? order by c.commit_time desc
             """.trimIndent()
         logger.info("查询{}上一次提交的复杂度", path)

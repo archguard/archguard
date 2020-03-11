@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.git.analyzer
 
-data class RevCommit(
+data class CommitLog(
         val id: String,
         val commit_time: Int,
         val shortMessage: String,
