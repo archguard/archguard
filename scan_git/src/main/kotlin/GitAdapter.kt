@@ -46,12 +46,12 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
                         DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
                             git.log().call().forEach { revCommit ->
 //                                logger.info("提交：{},commitTime{},authorTime:{}",revCommit.shortMessage,revCommit.commitTime,revCommit.)
-                                val author = revCommit.authorIdent
+                                val committer = revCommit.committerIdent
                                 val commit = CommitLog(id = revCommit.name,
-                                        commit_time = author.`when`.time,
+                                        commit_time = committer.`when`.time,
                                         shortMessage = revCommit.shortMessage,
-                                        committer_name = author.name,
-                                        committer_email = author.emailAddress,
+                                        committer_name = committer.name,
+                                        committer_email = committer.emailAddress,
                                         rep_id = repId)
                                 publish(commit)
 
