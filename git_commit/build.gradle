@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "org.jdbi:jdbi3-kotlin:3.10.1" // mapping data class
     implementation "org.jdbi:jdbi3-spring4:3.10.1" // provide JdbiFactoryBean
+    compile 'ch.qos.logback:logback-classic'
     runtimeOnly "mysql:mysql-connector-java"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
