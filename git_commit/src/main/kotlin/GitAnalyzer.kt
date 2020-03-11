@@ -33,7 +33,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
             resultIterable.withStream<List<RevCommit>, Exception> { stream ->
                 stream.filter { revCommit ->
 //                  过滤掉复杂度没有变化的 commit
-                    clutterCommit(revCommit.id, revCommit.commit_time)
+                    isScatterCommit(revCommit)
                 }.collect(Collectors.toList())
             }
         }
@@ -56,14 +56,14 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     }
 
     /*判断一个提交是否符合符合霰弹提交的条件*/
-    private fun clutterCommit(revCommitId: String, commitTime: Int): Boolean {
+    private fun isScatterCommit(revCommit: RevCommit): Boolean {
         var count = 0 // 复杂度变化的文件数量
         val standard = 2 // 复杂度变化的文件数量的标准，达到这个值则视为霰弹提交
-        selectChangeEntry(revCommitId).filter { changeEntry ->
+        selectChangeEntry(revCommit.id).filter { changeEntry ->
             changeEntry.new_path.endsWith(".java") && changeEntry.mode.equals("MODIFY") // java file
         }.forEach { changeEntry ->
-            logger.info("本次提交{}", revCommitId)
-            val pre = previousCommitComplexity(changeEntry.new_path, commitTime)
+            logger.info("本次提交{},msg={}", revCommit.id, revCommit.shortMessage)
+            val pre = previousCommitComplexity(changeEntry.new_path, revCommit.commit_time)
             if (changeEntry.cognitiveComplexity != pre) {
                 if (++count == standard)
                     return true
