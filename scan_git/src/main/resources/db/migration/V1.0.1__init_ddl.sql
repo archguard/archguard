@@ -9,7 +9,7 @@ create table GitRepository(
 
 create table CommitLog(
     id varchar(50) primary key,
-    commit_time  int,
+    commit_time  bigint,
     shortMessage varchar(200),
     committer_name varchar(50),
     committer_email varchar(100),

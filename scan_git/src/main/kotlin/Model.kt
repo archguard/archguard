@@ -11,7 +11,7 @@ data class GitRepository(
 
 data class CommitLog(
         val id: String,
-        val commit_time: Int,
+        val commit_time: Long,
         val shortMessage: String,
         val committer_name: String,
         val committer_email: String,
