@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.archguardpackage
+package com.thoughtworks.archguard
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

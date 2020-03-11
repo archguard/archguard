@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.archguardpackage.controller
+package com.thoughtworks.archguard.dependence_package.controller
 
 import com.thoughtworks.archguard.archguardpackage.domain.dto.PackageGraph
 import com.thoughtworks.archguard.archguardpackage.domain.service.PackageService

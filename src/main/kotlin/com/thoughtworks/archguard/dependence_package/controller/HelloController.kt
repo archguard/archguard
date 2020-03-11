@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.archguardpackage.controller
+package com.thoughtworks.archguard.dependence_package.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

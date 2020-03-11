@@ -1,8 +1,9 @@
-package com.thoughtworks.archguard.archguardpackage.domain.util
+package com.thoughtworks.archguard.dependence_package.domain.util
 
-import com.thoughtworks.archguard.archguardpackage.domain.dto.Edge
-import com.thoughtworks.archguard.archguardpackage.domain.dto.Node
-import com.thoughtworks.archguard.archguardpackage.domain.dto.PackageGraph
+import com.thoughtworks.archguard.dependence_package.domain.dto.Edge
+import com.thoughtworks.archguard.dependence_package.domain.dto.Node
+import com.thoughtworks.archguard.dependence_package.domain.dto.PackageGraph
+
 
 class PackageStore {
 

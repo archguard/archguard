@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.archguardpackage.domain.service
+package com.thoughtworks.archguard.dependence_package.domain.service
 
-import com.thoughtworks.archguard.archguardpackage.domain.dto.PackageGraph
-import com.thoughtworks.archguard.archguardpackage.domain.repository.PackageRepository
-import com.thoughtworks.archguard.archguardpackage.domain.util.PackageStore
+import com.thoughtworks.archguard.dependence_package.domain.dto.PackageGraph
+import com.thoughtworks.archguard.dependence_package.domain.repository.PackageRepository
+import com.thoughtworks.archguard.dependence_package.domain.util.PackageStore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
