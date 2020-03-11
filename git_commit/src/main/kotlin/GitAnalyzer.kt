@@ -46,7 +46,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
 
             CommitLog(
                     id = commitId,
-                    commit_time = rs.getInt("commit_time"),
+                    commit_time = rs.getLong("commit_time"),
                     shortMessage = rs.getString("shortMessage"),
                     committer_name = rs.getString("committer_name"),
                     rep_id = rs.getLong("rep_id"),
@@ -73,7 +73,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     }
 
     //    上一次提交的文件复杂度
-    private fun previousCommitComplexity(path: String, commitTime: Int): Int {
+    private fun previousCommitComplexity(path: String, commitTime: Long): Int {
         val sql = """
             select e.cognitiveComplexity 
             from  CommitLog c join ChangeEntry e on c.id=commit_id 
