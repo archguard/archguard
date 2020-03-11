@@ -33,7 +33,19 @@ class CommonTest {
     }
 
 
-
+    @Test
+    internal fun testSequence() {
+        val list = sequenceOf<Int>(1, 2, 3, 4, 5, 6)
+        list.filter {
+            println(">$it")
+            it % 2 == 0
+        }.map {
+            println(it)
+            it.toString()
+        }.map {
+            println("-----$it")
+        }.toList()
+    }
 }
 
 data class User(val id: Int, val name: String)
