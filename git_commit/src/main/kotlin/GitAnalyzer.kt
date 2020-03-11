@@ -28,7 +28,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
 
     override fun findScatterCommits(): List<RevCommit> {
         return jdbi.withHandle<List<RevCommit>, Exception> {
-            val queryCommit = "select id, commit_time, committer_name, rep_id from RevCommit"
+            val queryCommit = "select id, commit_time, shortMessage, committer_name, rep_id from RevCommit"
             val resultIterable = it.createQuery(queryCommit).map(commitRowMapper())
             resultIterable.withStream<List<RevCommit>, Exception> { stream ->
                 stream.filter { revCommit ->
@@ -47,6 +47,7 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
             RevCommit(
                     id = commitId,
                     commit_time = rs.getInt("commit_time"),
+                    shortMessage = rs.getString("shortMessage"),
                     committer_name = rs.getString("committer_name"),
                     rep_id = rs.getLong("rep_id"),
                     entries = entriesSet
