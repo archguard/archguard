@@ -9,7 +9,7 @@ data class GitRepository(
         val branch: String,
         val id: Long)
 
-data class RevCommit(
+data class CommitLog(
         val id: String,
         val commit_time: Int,
         val shortMessage: String,

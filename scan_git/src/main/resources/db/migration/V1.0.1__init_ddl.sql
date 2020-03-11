@@ -7,7 +7,7 @@ create table GitRepository(
     branch  varchar(100) not null
 );
 
-create table RevCommit(
+create table CommitLog(
     id varchar(50) primary key,
     commit_time  int,
     shortMessage varchar(200),
