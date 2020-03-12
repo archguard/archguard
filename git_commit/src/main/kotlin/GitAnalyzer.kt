@@ -61,8 +61,8 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
         entriesIn(commitLog.id).filter { changeEntry ->
             changeEntry.new_path.endsWith(".java") && changeEntry.mode == ("MODIFY") // java file
         }.forEach { changeEntry ->
-            val pre = previousCommitComplexity(changeEntry.new_path, commitLog)
-            if (changeEntry.cognitiveComplexity != pre) {
+            val pre = previousCommit(changeEntry.new_path, commitLog)
+            if (changeEntry.cognitiveComplexity != pre["cognitiveComplexity"]) {
                 logger.info("{}上一次提交的复杂度{},本次{}", changeEntry.new_path, pre, changeEntry.cognitiveComplexity)
 
                 if (++count == standard) {
@@ -75,17 +75,17 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     }
 
     //    上一次提交的文件复杂度
-    private fun previousCommitComplexity(path: String, commitLog: CommitLog): Int {
+    private fun previousCommit(path: String, commitLog: CommitLog): Map<String, Any> {
         val sql = """
-            select e.cognitiveComplexity 
+            select c.id, e.cognitiveComplexity 
             from  CommitLog c join ChangeEntry e on c.id=commit_id 
             where  e.new_path=? and c.commit_time<=? and c.id<>? order by c.commit_time desc
             """.trimIndent()
-        return jdbi.withHandle<Int, Exception> { handle ->
+        return jdbi.withHandle<Map<String, Any>, Exception> { handle ->
             handle.createQuery(sql)
                     .bind(0, path)
                     .bind(1, commitLog.commit_time)
-                    .bind(2, commitLog.id).mapTo(Int::class.java).first()
+                    .bind(2, commitLog.id).mapToMap().first()
         }
     }
 
