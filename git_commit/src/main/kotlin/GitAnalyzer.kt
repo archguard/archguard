@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.git.analyzer
 
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.RowMapper
+import org.jdbi.v3.core.result.ResultIterable
 import org.jdbi.v3.spring4.JdbiFactoryBean
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
 
@@ -29,20 +29,18 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     override fun findScatterCommits(): List<CommitLog> {
         return jdbi.withHandle<List<CommitLog>, Exception> {
             val queryCommit = "select id, commit_time, shortMessage, committer_name, rep_id from CommitLog"
-            val resultIterable = it.createQuery(queryCommit).map(commitRowMapper())
-            resultIterable.withStream<List<CommitLog>, Exception> { stream ->
-                stream.filter { revCommit ->
-//                  过滤掉复杂度没有变化的 commit
-                    isScatterCommit(revCommit)
-                }.collect(Collectors.toList())
-            }
+            val resultIterable: ResultIterable<CommitLog> = it.createQuery(queryCommit).map(commitRowMapper())
+
+            resultIterable.filter { commitLog ->
+                isScatterCommit(commitLog)
+            }.toList()
         }
     }
 
     private fun commitRowMapper(): RowMapper<CommitLog> {
         return RowMapper { rs, ctx ->
             val commitId = rs.getString("id")
-            val entriesSet: Set<ChangeEntry> = selectChangeEntry(commitId)
+            val entriesSet: Set<ChangeEntry> = entriesIn(commitId)
 
             CommitLog(
                     id = commitId,
@@ -59,36 +57,42 @@ class GitAnalyzerByJdbi(@Autowired val jdbiFactoryBean: JdbiFactoryBean) : GitAn
     private fun isScatterCommit(commitLog: CommitLog): Boolean {
         var count = 0 // 复杂度变化的文件数量
         val standard = 2 // 复杂度变化的文件数量的标准，达到这个值则视为霰弹提交
-        selectChangeEntry(commitLog.id).filter { changeEntry ->
-            changeEntry.new_path.endsWith(".java") && changeEntry.mode.equals("MODIFY") // java file
+        logger.info("评估本次递交：{}", commitLog.id)
+        entriesIn(commitLog.id).filter { changeEntry ->
+            changeEntry.new_path.endsWith(".java") && changeEntry.mode == ("MODIFY") // java file
         }.forEach { changeEntry ->
-            logger.info("本次提交{},msg={}", commitLog.id, commitLog.shortMessage)
-            val pre = previousCommitComplexity(changeEntry.new_path, commitLog.commit_time)
+            val pre = previousCommitComplexity(changeEntry.new_path, commitLog)
             if (changeEntry.cognitiveComplexity != pre) {
-                if (++count == standard)
+                logger.info("{}上一次提交的复杂度{},本次{}", changeEntry.new_path, pre, changeEntry.cognitiveComplexity)
+
+                if (++count == standard) {
+                    logger.info("以达到条件+++++++++++++")
                     return true
+                }
             }
         }
         return false
     }
 
     //    上一次提交的文件复杂度
-    private fun previousCommitComplexity(path: String, commitTime: Long): Int {
+    private fun previousCommitComplexity(path: String, commitLog: CommitLog): Int {
         val sql = """
             select e.cognitiveComplexity 
             from  CommitLog c join ChangeEntry e on c.id=commit_id 
-            where  e.new_path=? and c.commit_time<? order by c.commit_time desc
+            where  e.new_path=? and c.commit_time<=? and c.id<>? order by c.commit_time desc
             """.trimIndent()
-        logger.info("查询{}上一次提交的复杂度", path)
         return jdbi.withHandle<Int, Exception> { handle ->
-            handle.createQuery(sql).bind(0, path).bind(1, commitTime).mapTo(Int::class.java).first()
+            handle.createQuery(sql)
+                    .bind(0, path)
+                    .bind(1, commitLog.commit_time)
+                    .bind(2, commitLog.id).mapTo(Int::class.java).first()
         }
     }
 
     //    todo : SQL 查询中的表明要常量化
 //    todo: 字段名字映射
     /*查询一个 Commit 中涉及的所有文件*/
-    private fun selectChangeEntry(commitId: String): Set<ChangeEntry> {
+    private fun entriesIn(commitId: String): Set<ChangeEntry> {
         return jdbi.withHandle<Set<ChangeEntry>, Exception> {
 
             val changeEntryMapper = RowMapper { rs, ctx ->
