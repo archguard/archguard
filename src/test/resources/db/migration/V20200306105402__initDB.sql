@@ -29,3 +29,13 @@ create table _MethodCallees
 alter table _MethodCallees
     add primary key (id);
 
+create table Modules
+(
+    id        char(36)                not null,
+    name      char(128)                           not null,
+    packages  text                                not null,
+    updatedAt timestamp default CURRENT_TIMESTAMP not null,
+    createdAt timestamp default CURRENT_TIMESTAMP not null
+
+)
+
