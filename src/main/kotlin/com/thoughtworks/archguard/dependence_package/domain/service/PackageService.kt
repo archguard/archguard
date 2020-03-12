@@ -19,10 +19,12 @@ class PackageService {
             it.aClz = it.aClz.substringBeforeLast('.')
             it.bClz = it.bClz.substringBeforeLast('.')
         }
-        results.groupBy { it.aClz }
-                .mapValues { it.value.groupBy { i -> i.bClz }.mapValues { i -> i.value.size } }
-                .mapValues { it.value.mapKeys { i -> Pair(it.key, i.key) } }
-                .forEach { it.value.forEach { i -> packageStore.addEdge(i.key.first, i.key.second, i.value) } }
+        results
+                .groupBy { it.aClz }
+                .forEach {
+                    it.value.groupBy { i -> i.bClz }
+                            .forEach { i -> packageStore.addEdge(it.key, i.key, i.value.size) }
+                }
 
         return packageStore.getPackageGraph()
     }
