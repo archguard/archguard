@@ -1,15 +1,15 @@
 package com.thoughtworks.archguard.dependence_package.domain.util
 
-import com.thoughtworks.archguard.dependence_package.domain.dto.Edge
-import com.thoughtworks.archguard.dependence_package.domain.dto.Node
+import com.thoughtworks.archguard.dependence_package.domain.dto.PackageEdge
+import com.thoughtworks.archguard.dependence_package.domain.dto.PackageNode
 import com.thoughtworks.archguard.dependence_package.domain.dto.PackageGraph
 
 
 class PackageStore {
 
-    private var nodes: ArrayList<Node> = ArrayList()
+    private var packageNodes: ArrayList<PackageNode> = ArrayList()
 
-    private var edges: ArrayList<Edge> = ArrayList()
+    private var packageEdges: ArrayList<PackageEdge> = ArrayList()
 
     private var index: Int = 0
 
@@ -18,46 +18,46 @@ class PackageStore {
             getNodeId(name)
         } else {
             index++
-            val node: Node = if (!name.contains('.')) {
-                Node(index, name, 0)
+            val packageNode: PackageNode = if (!name.contains('.')) {
+                PackageNode(index, name, 0)
             } else {
-                Node(index, name, getNodeId(name.substringBeforeLast('.')))
+                PackageNode(index, name, getNodeId(name.substringBeforeLast('.')))
             }
-            nodes.add(node)
-            node.id
+            packageNodes.add(packageNode)
+            packageNode.id
         }
     }
 
     private fun getNodeId(name: String): Int {
-        return nodes.find { it.name == name }?.id ?: addNode(name)
+        return packageNodes.find { it.name == name }?.id ?: addNode(name)
     }
 
     private fun nodeContains(name: String): Boolean {
-        return nodes.any { it.name == name }
+        return packageNodes.any { it.name == name }
     }
 
     fun addEdge(a: String, b: String, num: Int) {
         val aId = getNodeId(a)
         val bId = getNodeId(b)
-        edges.add(Edge(aId, bId, num))
+        packageEdges.add(PackageEdge(aId, bId, num))
     }
 
     fun getPackageGraph(): PackageGraph {
         val indexs = ArrayList<Pair<Int, Int>>()
-        nodes.sortBy { it.name }
-        nodes.forEachIndexed { index, node ->
+        packageNodes.sortBy { it.name }
+        packageNodes.forEachIndexed { index, node ->
             indexs.add(Pair(node.id, index + 1))
             node.id = index + 1
         }
-        nodes.forEach {
+        packageNodes.forEach {
             it.parent = indexs.find { i -> i.first == it.parent }?.second ?: 0
             it.name = it.name.substringAfterLast('.')
         }
-        edges.forEach {
+        packageEdges.forEach {
             it.a = indexs.find { i -> i.first == it.a }?.second ?: -1
             it.b = indexs.find { i -> i.first == it.b }?.second ?: -1
         }
-        return PackageGraph(nodes, edges.filter { it.a != it.b}.sortedBy { i -> i.a * 1000 + i.b})
+        return PackageGraph(packageNodes, packageEdges.filter { it.a != it.b}.sortedBy { i -> i.a * 1000 + i.b})
     }
 
 }
