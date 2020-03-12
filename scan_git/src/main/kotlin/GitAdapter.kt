@@ -47,9 +47,11 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
                             git.log().call().forEach { revCommit ->
 //                                logger.info("提交：{},commitTime{},authorTime:{}",revCommit.shortMessage,revCommit.commitTime,revCommit.)
                                 val committer = revCommit.committerIdent
+                                val msg = revCommit.shortMessage
+
                                 val commit = CommitLog(id = revCommit.name,
                                         commit_time = committer.`when`.time,
-                                        shortMessage = revCommit.shortMessage,
+                                        shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
                                         committer_name = committer.name,
                                         committer_email = committer.emailAddress,
                                         rep_id = repId)
