@@ -12,6 +12,6 @@ internal class ScannerServiceTest(
 
     @Test
     internal fun runTest() {
-        service.git2SqlFile(Config("/Users/ygdong/git/spring-framework"))
+        service.git2SqlFile(Config("/Users/ygdong/git/jeesite"))
     }
 }
