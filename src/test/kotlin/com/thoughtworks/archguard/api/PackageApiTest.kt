@@ -34,7 +34,7 @@ class PackageApiTest {
 
     @Test
     fun should_get_package_dependence_when_send_package_dependency_api() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/dependence/all")
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/package/dependence/all")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
