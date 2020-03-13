@@ -30,9 +30,9 @@ dependencies {
 
 	implementation("org.jdbi:jdbi3-core:3.8.2")
 
-//	implementation("io.ktor:ktor-server-core:1.1.4")
-//	implementation("io.ktor:ktor-server-netty:1.1.4")
-//	implementation("io.ktor:ktor-gson:1.1.4")
+	implementation("io.ktor:ktor-server-core:1.1.4")
+	implementation("io.ktor:ktor-server-netty:1.1.4")
+	implementation("io.ktor:ktor-gson:1.1.4")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.30")
 
@@ -73,6 +73,6 @@ tasks.withType<KotlinCompile> {
 tasks.generateGrammarSource {
 	maxHeapSize = "64m"
 	arguments = arguments + listOf("-visitor", "-long-messages")
-	arguments = arguments + listOf("-package", "dev.evolution.plsql")
+	arguments = arguments + listOf("-package", "com.thoughtworks.archguard.plsql")
 }
 
