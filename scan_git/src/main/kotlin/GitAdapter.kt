@@ -49,21 +49,21 @@ class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityP
                                 val msg = revCommit.shortMessage
 
                                 val commit = CommitLog(id = revCommit.name,
-                                        commit_time = committer.`when`.time,
+                                        commitTime = committer.`when`.time,
                                         shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
-                                        committer_name = committer.name,
-                                        committer_email = committer.emailAddress,
-                                        rep_id = repId)
+                                        committerName = committer.name,
+                                        committerEmail = committer.emailAddress,
+                                        repositoryId = repId)
                                 publish(commit)
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
                                     val classComplexity: Int = cognitiveComplexityForJavaFile(it, repository, revCommit)
-                                    val changeEntry = ChangeEntry(old_path = it.oldPath,
-                                            new_path = it.newPath,
+                                    val changeEntry = ChangeEntry(oldPath = it.oldPath,
+                                            newPath = it.newPath,
                                             cognitiveComplexity = classComplexity,
-                                            mode = it.changeType.name,
-                                            commit_id = revCommit.name)
+                                            changeMode = it.changeType.name,
+                                            commitId = revCommit.name)
                                     publish(changeEntry)
                                 }
                             }
