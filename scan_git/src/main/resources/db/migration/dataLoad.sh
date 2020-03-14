@@ -1,1 +1,0 @@
-mysql --force --verbose --host=localhost --port=3306 --database=archguard --user=root --password= -e "source /Users/ygdong/git/code-scanners/scan_git/output.sql"
