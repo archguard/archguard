@@ -69,4 +69,53 @@ class ProjectInoApiATest {
 
         assertEquals("spring1", re)
     }
+
+    @Test
+    @Order(3)
+    fun should_get_exists_massage_when_sent_add_project_info_api_given_there_is_already_project_info_in_database() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
+                .contentType("application/json")
+                .content("{\"projectName\":\"spring\",\"gitRepo\":\"https://github.com/spring-projects/spring-framework.git\"}")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val content = result.response.contentAsString
+        val status = result.response.status
+        val except = "{\"success\":false,\"message\":\"There is already project info\",\"id\":\"null\"}"
+
+        assertEquals(200, status)
+        assertEquals(except, content)
+    }
+
+    @Test
+    @Order(4)
+    fun should_get_success_massage_when_sent_add_project_info_api_given_there_is_no_project_info_in_database() {
+        jdbi.withHandle<Int, Nothing> {
+            it.createUpdate("delete from ProjectInfo")
+                    .execute()
+        }
+        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
+                .contentType("application/json")
+                .content("{\"projectName\":\"spring\",\"gitRepo\":\"https://github.com/spring-projects/spring-framework.git\"}")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val content = result.response.contentAsString
+        val status = result.response.status
+
+        assertEquals(200, status)
+
+        val re = jdbi.withHandle<List<String>, Nothing> {
+            it.createQuery("select id from ProjectInfo where `name` = 'spring'")
+                    .mapTo(String::class.java)
+                    .list()
+        }
+        assertEquals(1, re.size)
+
+        val except = "{\"success\":true,\"message\":\"add new project info success\",\"id\":\"${re[0]}\"}"
+        assertEquals(except, content)
+
+    }
 }
