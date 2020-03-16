@@ -12,6 +12,8 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -27,7 +29,8 @@ interface GitAdapter {
     fun scan(config: Config, publish: (Any) -> Unit)
 }
 
-class JGitAdapter( val cognitiveComplexityParser:CognitiveComplexityParser) : GitAdapter {
+@Component
+class JGitAdapter(@Autowired val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
     val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
 
     override fun scan(config: Config, publish: (Any) -> Unit) {
