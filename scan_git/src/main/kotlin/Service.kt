@@ -1,7 +1,5 @@
 package com.thoughtworks.archguard.git.scanner
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 import java.io.PrintWriter
 import kotlin.reflect.jvm.kotlinProperty
 
@@ -9,8 +7,7 @@ import kotlin.reflect.jvm.kotlinProperty
 * core scanner
 */
 
-@Service
-class ScannerService(@Autowired private val gitAdapter: GitAdapter) {
+class ScannerService(private val gitAdapter: GitAdapter) {
 
     fun git2SqlFile(config: Config) {
         PrintWriter("output.sql").use { out ->
