@@ -19,4 +19,11 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
                         .mapTo(ProjectInfoDTO::class.java)
                         .one()
             }
+
+    override fun updateProjectInfo(projectInfo: ProjectInfoDTO): Int =
+            jdbi.withHandle<Int, Nothing> {
+                it.createUpdate("update ProjectInfo set `name` = '${projectInfo.projectName}', repo = '${projectInfo.gitRepo}' where id = '${projectInfo.id}'")
+                        .execute()
+            }
+
 }
