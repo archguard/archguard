@@ -39,3 +39,16 @@ create table Modules
 
 )
 
+create table ProjectInfo
+(
+    id        char(36)    not null,
+    name      mediumtext  not null,
+    repo      mediumtext  not null,
+    updatedAt datetime(3) not null,
+    createdAt datetime(3) not null,
+);
+
+alter table ProjectInfo
+    add primary key (id);
+
+
