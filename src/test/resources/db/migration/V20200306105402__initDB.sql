@@ -37,7 +37,7 @@ create table Modules
     updatedAt timestamp default CURRENT_TIMESTAMP not null,
     createdAt timestamp default CURRENT_TIMESTAMP not null
 
-)
+);
 
 create table ProjectInfo
 (
@@ -45,7 +45,7 @@ create table ProjectInfo
     name      mediumtext  not null,
     repo      mediumtext  not null,
     updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
+    createdAt datetime(3) not null
 );
 
 alter table ProjectInfo
