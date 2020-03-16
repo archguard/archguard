@@ -1,3 +1,5 @@
+package com.thoughtworks.archguard.git.scanner
+
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.diff.DiffEntry

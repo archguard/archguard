@@ -1,3 +1,5 @@
+package com.thoughtworks.archguard.git.scanner
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.createType
