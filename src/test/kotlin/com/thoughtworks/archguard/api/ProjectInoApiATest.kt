@@ -1,10 +1,12 @@
 package com.thoughtworks.archguard.api
 
+import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.web.WebAppConfiguration
@@ -18,6 +20,9 @@ import javax.annotation.Resource
 @WebAppConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class ProjectInoApiATest {
+
+    @Autowired
+    lateinit var jdbi: Jdbi
 
     @Resource
     private lateinit var wac: WebApplicationContext
@@ -39,5 +44,29 @@ class ProjectInoApiATest {
         assertEquals(except, content)
     }
 
+    @Test
+    @Order(2)
+    fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project/info")
+                .contentType("application/json")
+                .content("{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring1\",\"gitRepo\":\"https://github.com/spring-projects/spring-framework.git\"}")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
 
+        val content = result.response.contentAsString
+        val status = result.response.status
+        val except = "{\"success\":true,\"message\":\"update project info success\"}"
+
+        assertEquals(200, status)
+        assertEquals(except, content)
+
+        val re = jdbi.withHandle<String, Nothing> {
+            it.createQuery("select `name` from ProjectInfo where id = 'c06da91f-6742-11ea-8188-0242ac110002'")
+                    .mapTo(String::class.java)
+                    .one()
+        }
+
+        assertEquals("spring1", re)
+    }
 }
