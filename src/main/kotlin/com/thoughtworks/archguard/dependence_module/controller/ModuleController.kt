@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.dependence_package.controller
+package com.thoughtworks.archguard.dependence_module.controller
 
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleGraph
-import com.thoughtworks.archguard.dependence_package.domain.service.ModuleService
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleGraph
+import com.thoughtworks.archguard.dependence_module.domain.service.ModuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.dependence_package.domain.util
+package com.thoughtworks.archguard.dependence_module.domain.store
 
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleEdge
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleGraph
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleNode
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleEdge
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleGraph
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleNode
 
 class ModuleStore {
 

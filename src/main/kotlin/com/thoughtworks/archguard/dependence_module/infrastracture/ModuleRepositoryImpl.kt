@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.dependence_package.infrastracture
+package com.thoughtworks.archguard.dependence_module.infrastracture
 
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleDefineDTO
-import com.thoughtworks.archguard.dependence_package.domain.dto.ModuleDependenceDTO
-import com.thoughtworks.archguard.dependence_package.domain.repository.ModuleRepository
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleDefineDTO
+import com.thoughtworks.archguard.dependence_module.domain.dto.ModuleDependenceDTO
+import com.thoughtworks.archguard.dependence_module.domain.repository.ModuleRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

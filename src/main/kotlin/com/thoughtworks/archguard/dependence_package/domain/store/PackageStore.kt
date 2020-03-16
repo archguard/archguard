@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.dependence_package.domain.util
+package com.thoughtworks.archguard.dependence_package.domain.store
 
 import com.thoughtworks.archguard.dependence_package.domain.dto.PackageEdge
 import com.thoughtworks.archguard.dependence_package.domain.dto.PackageNode

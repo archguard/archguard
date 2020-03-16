@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.dependence_package.infrastracture
+package com.thoughtworks.archguard.util
 
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Value
