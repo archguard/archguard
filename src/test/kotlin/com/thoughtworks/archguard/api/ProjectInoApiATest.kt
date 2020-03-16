@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.api
 
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
@@ -33,7 +33,7 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.contentAsString
 
-        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"project_name\":\"spring\",\"git_repo\":\"https://github.com/spring-projects/spring-framework.git\"}"
+        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"gitRepo\":\"https://github.com/spring-projects/spring-framework.git\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)

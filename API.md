@@ -99,16 +99,16 @@
     ###### 样例
     ```Json
   {
-      "project_name": "spring", 
-      "git_repo": "https://github.com/spring-projects/spring-framework.git"
+      "projectName": "spring", 
+      "gitRepo": "https://github.com/spring-projects/spring-framework.git"
   }
     ```
   
     ###### 详细
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
-    `project_name` | 项目名称 | `String` | | N
-    `git_repo` | 项目git仓库地址 | `String` | | N
+    `projectName` | 项目名称 | `String` | | N
+    `gitRepo` | 项目git仓库地址 | `String` | | N
     
     
 + ##### response:
@@ -142,16 +142,16 @@
     ```Json
   {
       "id": "c06da91f-6742-11ea-8188-0242ac110002",
-      "project_name": "spring", 
-      "git_repo": "https://github.com/spring-projects/spring-framework.git"
+      "projectName": "spring", 
+      "gitRepo": "https://github.com/spring-projects/spring-framework.git"
   }
     ```
   
     ###### 详细
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
-    `project_name` | 项目名称 | `String` | | N
-    `git_repo` | 项目git仓库地址 | `String` | | N
+    `projectName` | 项目名称 | `String` | | N
+    `gitRepo` | 项目git仓库地址 | `String` | | N
     
     
 + #### Status
@@ -168,16 +168,16 @@
     ```Json
   {
       "id": "c06da91f-6742-11ea-8188-0242ac110002",
-      "project_name": "spring", 
-      "git_repo": "https://github.com/spring-projects/spring-framework.git"
+      "projectName": "spring", 
+      "gitRepo": "https://github.com/spring-projects/spring-framework.git"
   }
     ```
   
     ###### 详细
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
-    `project_name` | 项目名称 | `String` | | N
-    `git_repo` | 项目git仓库地址 | `String` | | N
+    `projectName` | 项目名称 | `String` | | N
+    `gitRepo` | 项目git仓库地址 | `String` | | N
     
     
 + ##### response:
