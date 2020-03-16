@@ -1,11 +1,9 @@
 package com.thoughtworks.archguard.git.scanner.helper
 
 import com.thoughtworks.archguard.git.scanner.Sql
-import org.springframework.stereotype.Component
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.kotlinProperty
 
-@Component
 class Bean2Sql {
     fun bean2Sql(bean: Any): String {
         val clazz = bean.javaClass

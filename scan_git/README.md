@@ -10,7 +10,7 @@ mysql --force --verbose --host=localhost --port=3306 --database=archguard --user
 
 ### 运行：
 
-`java -jar target/scan_git-*.jar --gitPath=/somepath/gittest/ --branch=master`
+`java -jar target/scan_git-*.jar --git-path=/somepath/gittest/ --branch=master`
 
 选项
 - gitPath,  git repository 本地路径
