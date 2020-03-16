@@ -27,7 +27,7 @@ interface GitAdapter {
     fun scan(config: Config, publish: (Any) -> Unit)
 }
 
-class JGitAdapter( val cognitiveComplexityParser:CognitiveComplexityParser) : GitAdapter {
+class JGitAdapter(val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
     val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
 
     override fun scan(config: Config, publish: (Any) -> Unit) {
