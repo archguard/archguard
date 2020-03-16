@@ -23,7 +23,7 @@ class JGitTest {
     @Throws(IOException::class)
     fun setUp() {
         repository = FileRepositoryBuilder()
-                .findGitDir(File("test_data"))
+                .findGitDir(File("../"))
                 .build()
     }
 
