@@ -13,6 +13,7 @@ create table commit_log(
     short_msg       varchar(200),
     cmttr_name      varchar(50),
     cmttr_email     varchar(100),
+    chgd_entry_cnt  int,            -- 这次提交中，认知复杂度变更的文件的数量
     rep_id          bigint
 );
 
