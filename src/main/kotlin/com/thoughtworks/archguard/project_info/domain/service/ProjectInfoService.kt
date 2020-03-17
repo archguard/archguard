@@ -14,7 +14,7 @@ class ProjectInfoService {
     @Autowired
     lateinit var projectInfoRepository: ProjectInfoRepository
 
-    fun getProjectInfo(): ProjectInfoDTO = projectInfoRepository.getProjectInfo()
+    fun getProjectInfo(): ProjectInfoDTO = projectInfoRepository.getProjectInfo() ?: ProjectInfoDTO("", "", ArrayList())
 
     fun updateProjectInfo(projectInfo: ProjectInfoDTO) =
             if (projectInfoRepository.updateProjectInfo(projectInfo) == 1) {

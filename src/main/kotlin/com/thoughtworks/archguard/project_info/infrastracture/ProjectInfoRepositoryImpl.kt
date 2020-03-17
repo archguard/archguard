@@ -13,12 +13,12 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi
-    override fun getProjectInfo(): ProjectInfoDTO =
+    override fun getProjectInfo(): ProjectInfoDTO? =
             jdbi.withHandle<ProjectInfoDTO, Nothing> {
                 it
                         .createQuery("select id, name projectName, repo gitRepo from ProjectInfo")
                         .map { rs, _ -> ProjectInfoDTO(rs.getString("id"), rs.getString("projectName"), rs.getString("gitRepo").split(',')) }
-                        .first()
+                        .firstOrNull()
             }
 
     override fun updateProjectInfo(projectInfo: ProjectInfoDTO): Int =
