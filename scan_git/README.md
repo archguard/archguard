@@ -1,9 +1,6 @@
 ### 说明：
-程序会扫描指定的 GIT 仓库， 并在命令当前目录下生成SQL文件 output.sql, 可以通过一下命令倒入到DB ：
-` 
-mysql --force --verbose --host=localhost --port=3306 --database=archguard --user=root --password= -e "source /Users/ygdong/git/code-scanners/scan_git/output.sql"
-`
-应用启动时，会调用 flyway 变更DB，DB Schema 版本脚本 在 src/resources/db/migration 目录下
+程序会扫描指定的 GIT 仓库， 并在命令当前目录下生成SQL文件 output.sql
+
 
 ### 构建：
 -  `mvn clean package spring-boot:repackage -DskipTests`
@@ -15,3 +12,7 @@ mysql --force --verbose --host=localhost --port=3306 --database=archguard --user
 选项
 - gitPath,  git repository 本地路径
 - branch, 分支名称， 可选
+
+
+### 工具
+src/main/resources/db/migration/db_recreate_and_load.sh ， 运行此工具新建DB，并导入 output.sql 到DB 
