@@ -2,7 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.toolscanners
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 
-internal interface ScannerLifecycle {
+interface ScannerLifecycle {
     fun preProcess(context: ScanContext?)
     fun scan(context: ScanContext?)
     fun storeReport(context: ScanContext?)
