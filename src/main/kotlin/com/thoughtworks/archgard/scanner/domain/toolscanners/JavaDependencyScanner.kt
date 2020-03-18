@@ -2,7 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.toolscanners
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 
-class JavaBytecodeScanner : ScannerLifecycle {
+class JavaDependencyScanner : ScannerLifecycle {
 
     override fun preProcess(context: ScanContext?) {
     }
