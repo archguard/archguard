@@ -1,12 +1,13 @@
 -- for mysql
 
-
+drop table if exists git_rep;
 create table git_rep(
     id          bigint primary key,
     rep_path    varchar(300) not null,
     branch      varchar(100) not null
 );
 
+drop table if exists commit_log;
 create table commit_log(
     id              varchar(50) primary key,
     commit_time     bigint,
@@ -18,6 +19,8 @@ create table commit_log(
 );
 
 
+
+drop table if exists change_entry;
 create table change_entry(
     old_path            varchar(200),
     new_path            varchar(200),
