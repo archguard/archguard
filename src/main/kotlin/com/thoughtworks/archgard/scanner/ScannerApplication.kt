@@ -1,11 +1,11 @@
-package com.thoughtworks.archgard.scaner
+package com.thoughtworks.archgard.scanner
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ScanerApplication
+class ScannerApplication
 
 fun main(args: Array<String>) {
-	runApplication<ScanerApplication>(*args)
+    runApplication<ScannerApplication>(*args)
 }
