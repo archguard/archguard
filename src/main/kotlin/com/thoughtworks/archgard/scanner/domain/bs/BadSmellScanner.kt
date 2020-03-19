@@ -4,18 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.Scanner
 import com.thoughtworks.archgard.scanner.domain.toolscanners.CocaScanner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class BadSmellService {
+class BadSmellScanner : Scanner {
     @Autowired
     lateinit var badSmellRepo: BadSmellRepo
 
     private val mapper = jacksonObjectMapper()
 
-    fun scan(context: ScanContext) {
+    override fun scan(context: ScanContext) {
         val cocaScanner = CocaScanner("http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca",
                 context.projectRoot)
         val report = cocaScanner.getBadSmellReport()
