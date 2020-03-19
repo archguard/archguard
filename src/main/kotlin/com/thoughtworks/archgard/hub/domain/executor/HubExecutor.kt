@@ -3,6 +3,7 @@ package com.thoughtworks.archgard.hub.domain.executor
 import com.thoughtworks.archgard.hub.domain.helper.ScannerManager
 import com.thoughtworks.archgard.hub.domain.model.HubLifecycle
 import com.thoughtworks.archgard.hub.domain.repository.HubRepository
+import com.thoughtworks.archgard.hub.util.FileUtil
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import org.eclipse.jgit.api.Git
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,9 @@ class HubExecutor : HubLifecycle {
 
     @Autowired
     lateinit var hubRepository: HubRepository
+
+    @Autowired
+    lateinit var fileUtil: FileUtil
 
     override fun projectInfo(context: ScanContext) {
         context.repo = hubRepository.getProjectInfo().gitRepo
@@ -37,5 +41,7 @@ class HubExecutor : HubLifecycle {
     override fun execute(context: ScanContext, manager: ScannerManager) = manager.execute(context)
 
     override fun clean(context: ScanContext) {
+        fileUtil.cleanAll(context.workspace)
     }
+
 }
