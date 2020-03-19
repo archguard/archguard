@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CocaScannerTest {
+internal class CocaScannerTests {
     private val mapper = jacksonObjectMapper()
 
     @Test

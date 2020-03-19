@@ -8,6 +8,7 @@ import com.thoughtworks.archgard.scanner.domain.Scanner
 import com.thoughtworks.archgard.scanner.domain.toolscanners.CocaScanner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class BadSmellScanner : Scanner {
@@ -33,21 +34,21 @@ class BadSmellScanner : Scanner {
                                  val longParameterList: List<CocaBadSmellItem>?,
                                  val repeatedSwitches: List<CocaBadSmellItem>?) {
         fun toBadSmell(): List<BadSmell> {
-            return listOf(complexCondition?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "complexCondition") }
+            return listOf(complexCondition?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "complexCondition") }
                     ?: emptyList(),
-                    dataClass?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "dataClass") }
+                    dataClass?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "dataClass") }
                             ?: emptyList(),
-                    graphConnectedCall?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "graphConnectedCall") }
+                    graphConnectedCall?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "graphConnectedCall") }
                             ?: emptyList(),
-                    largeClass?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "largeClass") }
+                    largeClass?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "largeClass") }
                             ?: emptyList(),
-                    lazyElement?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "lazyElement") }
+                    lazyElement?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "lazyElement") }
                             ?: emptyList(),
-                    longMethod?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "longMethod") }
+                    longMethod?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "longMethod") }
                             ?: emptyList(),
-                    longParameterList?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "longParameterList") }
+                    longParameterList?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "longParameterList") }
                             ?: emptyList(),
-                    repeatedSwitches?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "repeatedSwitches") }
+                    repeatedSwitches?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "repeatedSwitches") }
                             ?: emptyList()
             ).flatten()
         }
