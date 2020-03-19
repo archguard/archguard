@@ -17,6 +17,6 @@ internal class CocaScannerTest {
         val cocaScanner = CocaScanner(url, root)
         val badSmell = mapper.readValue<BadSmellScanner.CocaBadSmellModel>(cocaScanner.getBadSmellReport()).toBadSmell()
         assertEquals(badSmell.size, 2)
-        assertEquals(badSmell.get(0).type, "long")
+        assertEquals(badSmell.get(0).type, "longMethod")
     }
 }

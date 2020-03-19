@@ -9,13 +9,13 @@ class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellR
 
     override fun getBadSmellReport(): String {
         download()
-        scan("./coca bs -s type")
+        scan(listOf("./coca", "bs", "-s", "type"))
         val badSmellReport = File(projectRoot.toString() + "/coca_reporter/bs.json").readText()
         return badSmellReport
     }
 
     @Throws(IOException::class, InterruptedException::class)
-    private fun scan(cmd: String) {
+    private fun scan(cmd: List<String>) {
         val badSmell = ProcessBuilder(cmd)
         badSmell.directory(projectRoot)
         badSmell.start().waitFor()
