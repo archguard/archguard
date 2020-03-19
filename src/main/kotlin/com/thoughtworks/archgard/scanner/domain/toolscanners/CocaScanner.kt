@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.toolscanners
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archgard.scanner.domain.ScanContext
@@ -14,7 +15,8 @@ import java.net.URL
 
 @Component
 class CocaScanner : ScannerLifecycle {
-    private val latestCocaUrl = URL("https://github.com/phodal/coca/releases/download/v1.9.9-beta/coca_linux")
+    var latestCocaUrl = URL("http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca")
+
     private val mapper = jacksonObjectMapper()
 
     @Autowired
@@ -26,6 +28,10 @@ class CocaScanner : ScannerLifecycle {
 
     @Throws(IOException::class, InterruptedException::class)
     override fun scan(context: ScanContext?) {
+        val chmod = ProcessBuilder("chmod", "+x", "coca")
+        chmod.directory(context?.projectRoot)
+        chmod.start().waitFor()
+
         val badSmell = ProcessBuilder("./coca", "bs", "-s", "type")
         badSmell.directory(context?.projectRoot)
         badSmell.start().waitFor()
@@ -42,18 +48,35 @@ class CocaScanner : ScannerLifecycle {
         File(context.projectRoot.toString() + "/coca_reporter/bs.json").delete()
     }
 
-    data class CocaBadSmellModel(val complexCondition: List<CocaBadSmellItem>,
-                                 val dataClass: List<CocaBadSmellItem>,
-                                 val graphConnectedCall: List<CocaBadSmellItem>,
-                                 val largeClass: List<CocaBadSmellItem>,
-                                 val lazyElement: List<CocaBadSmellItem>,
-                                 val longMethod: List<CocaBadSmellItem>,
-                                 val longParameterList: List<CocaBadSmellItem>,
-                                 val repeatedSwitches: List<CocaBadSmellItem>) {
-        fun toBadSmell(): BadSmell {
-            TODO("Not yet implemented")
+    data class CocaBadSmellModel(val complexCondition: List<CocaBadSmellItem>?,
+                                 val dataClass: List<CocaBadSmellItem>?,
+                                 val graphConnectedCall: List<CocaBadSmellItem>?,
+                                 val largeClass: List<CocaBadSmellItem>?,
+                                 val lazyElement: List<CocaBadSmellItem>?,
+                                 val longMethod: List<CocaBadSmellItem>?,
+                                 val longParameterList: List<CocaBadSmellItem>?,
+                                 val repeatedSwitches: List<CocaBadSmellItem>?) {
+        fun toBadSmell(): List<BadSmell> {
+            return listOf(complexCondition?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "complexCondition") }
+                    ?: emptyList(),
+                    dataClass?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "dataClass") }
+                            ?: emptyList(),
+                    graphConnectedCall?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "graphConnectedCall") }
+                            ?: emptyList(),
+                    largeClass?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "largeClass") }
+                            ?: emptyList(),
+                    lazyElement?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "lazyElement") }
+                            ?: emptyList(),
+                    longMethod?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "longMethod") }
+                            ?: emptyList(),
+                    longParameterList?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "longParameterList") }
+                            ?: emptyList(),
+                    repeatedSwitches?.map { c -> BadSmell(c.EntityName, c.Line, c.Description, c.Size, "repeatedSwitches") }
+                            ?: emptyList()
+            ).flatten()
         }
     }
 
-    data class CocaBadSmellItem(val EntityName: String, val Line: String, val Description: String, val Size: String)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    data class CocaBadSmellItem(val EntityName: String, val Line: Int, val Description: String, val Size: Int)
 }

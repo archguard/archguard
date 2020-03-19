@@ -8,7 +8,11 @@ class ScanContext {
 =======
 import java.io.File
 
+<<<<<<< HEAD
 class ScanContext {
     val projectRoot: File = TODO("initialize me")
 >>>>>>> feat: add badsmell
+=======
+data class ScanContext(val projectRoot: File) {
+>>>>>>> feat: add test for bad smell
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class BadSmellRepoImpl : BadSmellRepo {
-    override fun save(badSmell: BadSmell) {
+    override fun save(badSmell: List<BadSmell>) {
         TODO("Not yet implemented")
     }
 }
