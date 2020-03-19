@@ -5,9 +5,9 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 
-class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) {
+class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellReport {
 
-    fun getBadSmellReport(): String {
+    override fun getBadSmellReport(): String {
         download()
         scan("./coca bs -s type")
         val badSmellReport = File(projectRoot.toString() + "/coca_reporter/bs.json").readText()

@@ -18,10 +18,9 @@ class BadSmellService {
     fun scan(context: ScanContext) {
         val cocaScanner = CocaScanner("http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca",
                 context.projectRoot)
-        val resport = cocaScanner.getBadSmellReport()
-        val badSmell = mapper.readValue<CocaBadSmellModel>(resport).toBadSmell()
+        val report = cocaScanner.getBadSmellReport()
+        val badSmell = mapper.readValue<CocaBadSmellModel>(report).toBadSmell()
         badSmellRepo.save(badSmell)
-
     }
 
     data class CocaBadSmellModel(val complexCondition: List<CocaBadSmellItem>?,
