@@ -6,7 +6,7 @@ WDR=/home/jenkin/sampleData4Git/
 DDL=$WDR/ddl.sql
 DML=$WDR/output.sql
 
-ssh $REMOTE 'mkdir $WDR'
+ssh $REMOTE "mkdir $WDR"
 
 scp $PRO_DIR/src/main/resources/db/migration/ddl.sql   $REMOTE:$DDL
 scp $PRO_DIR/output.sql   $REMOTE:$DML
