@@ -22,5 +22,4 @@ class PackageRepositoryImpl : PackageRepository {
                     .list()
         }
     }
-
 }
