@@ -1,8 +1,7 @@
 package com.thoughtworks.archguard.project_info.controller
 
-import com.thoughtworks.archguard.project_info.domain.dto.ProjectInfoAddDTO
-import com.thoughtworks.archguard.project_info.domain.dto.ProjectInfoDTO
-import com.thoughtworks.archguard.project_info.domain.service.ProjectInfoService
+import com.thoughtworks.archguard.project_info.domain.ProjectInfo
+import com.thoughtworks.archguard.project_info.domain.ProjectInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -17,8 +16,8 @@ class ProjectInfoController {
     fun getProjectInfo() = projectInfoService.getProjectInfo()
 
     @PutMapping("/project/info")
-    fun updateProjectInfo(@RequestBody projectInfo: ProjectInfoDTO) = projectInfoService.updateProjectInfo(projectInfo)
+    fun updateProjectInfo(@RequestBody projectInfo: ProjectInfo) = projectInfoService.updateProjectInfo(projectInfo)
 
     @PostMapping("/project/info")
-    fun addProjectInfo(@RequestBody projectInfo: ProjectInfoAddDTO) = projectInfoService.addProjectInfo(projectInfo)
+    fun addProjectInfo(@RequestBody projectInfo: ProjectInfo) = projectInfoService.addProjectInfo(projectInfo)
 }
