@@ -9,8 +9,8 @@ class BadSmellRepo(@Autowired private val jdbi: Jdbi) {
 
     fun getBadSmellCount(): List<BadSmellCountDBO> {
         return jdbi.withHandle<List<BadSmellCountDBO>, Nothing> { handle ->
-            handle.createQuery("select count(id),type from badSmell group by type")
-                    .mapTo(BadSmellCountDBO::class.java)
+            handle.createQuery("select type, count(id) as size from badSmell group by type")
+                    .mapToBean(BadSmellCountDBO::class.java)
                     .list()
         }
     }
