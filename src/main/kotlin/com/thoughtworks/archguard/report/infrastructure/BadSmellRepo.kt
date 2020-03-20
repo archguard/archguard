@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import com.thoughtworks.archguard.dependence.infrastructure.modules.ModuleDependenceDTO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
