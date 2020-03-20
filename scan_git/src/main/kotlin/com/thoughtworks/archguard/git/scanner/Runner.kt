@@ -7,12 +7,13 @@ import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityPars
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
 
 class Runner : CliktCommand() {
-    private val gitPath: String by option(help = "git path").default("scan_git/test_data")
-    private val branch: String by option(help = "git branch").default("master")
+    private val gitPath: String by option(help = "git repository local path").default("scan_git/test_data")
+    private val branch: String by option(help = "git repository branch").default("master")
+    private val after: String by option(help = "scanner only scan commits after this timestamp").default("0")
 
     override fun run() {
         val service = ScannerService(JGitAdapter(CognitiveComplexityParser()), Bean2Sql())
-        service.git2SqlFile(Config(gitPath, branch))
+        service.git2SqlFile(Config(gitPath, branch, after))
     }
 }
 

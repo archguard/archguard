@@ -20,19 +20,21 @@ import java.nio.charset.StandardCharsets
  * @param path  repository location
  * @param branch  branch name, default is master
  */
-data class Config(val path: String, val branch: String = "master")
+data class Config(val path: String, val branch: String = "master", val after: String = "0")
 
 
 interface GitAdapter {
     fun scan(config: Config, publish: (Any) -> Unit)
 }
 
-class JGitAdapter(val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
-    val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
+class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
+    private val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
 
     override fun scan(config: Config, publish: (Any) -> Unit) {
         val repPath = File(config.path)
-        logger.info("git repository locate at {}", repPath.absolutePath)
+        val from = config.after.toLong()
+        logger.info("git repository locate at {}, only get commits whose timestamp after {}",
+                repPath.absolutePath, config.after)
         val repId = System.nanoTime()
         publish(GitRepository(repPath.absolutePath, config.branch, id = repId))
         FileRepositoryBuilder()
@@ -41,17 +43,20 @@ class JGitAdapter(val cognitiveComplexityParser: CognitiveComplexityParser) : Gi
                 .use { repository ->
                     Git(repository).specifyBranch(config.branch).use { git ->
                         DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
-                            git.log().call().forEach { revCommit ->
-                                val committer = revCommit.committerIdent
-                                val msg = revCommit.shortMessage
+                            git.log().call()
+                                    .asSequence().takeWhile {
+                                        it.commitTime * 1000L > from
+                                    }.forEach { revCommit ->
+                                        val committer = revCommit.committerIdent
+                                        val msg = revCommit.shortMessage
 
-                                val commit = CommitLog(id = revCommit.name,
-                                        commitTime = committer.`when`.time,
-                                        shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
-                                        committerName = committer.name,
-                                        committerEmail = committer.emailAddress,
-                                        repositoryId = repId)
-                                publish(commit)
+                                        val commit = CommitLog(id = revCommit.name,
+                                                commitTime = committer.`when`.time,
+                                                shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
+                                                committerName = committer.name,
+                                                committerEmail = committer.emailAddress,
+                                                repositoryId = repId)
+                                        publish(commit)
 
                                 val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
                                 diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
