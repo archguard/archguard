@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner
 
 import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
@@ -33,6 +34,11 @@ class ScannerApplication {
     @Bean
     fun badSmellModelDao(jdbi: Jdbi): BadSmellDao {
         return jdbi.onDemand(BadSmellDao::class.java)
+    }
+
+    @Bean
+    fun testBadSmellModelDao(jdbi: Jdbi): TestBadSmellDao {
+        return jdbi.onDemand(TestBadSmellDao::class.java)
     }
 }
 

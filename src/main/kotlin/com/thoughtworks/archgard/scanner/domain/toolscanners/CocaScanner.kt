@@ -5,12 +5,19 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 
-class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellReport {
+class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellReport, TestBadSmellReport {
 
     override fun getBadSmellReport(): String {
         download()
         scan(listOf("./coca", "bs", "-s", "type"))
         val badSmellReport = File(projectRoot.toString() + "/coca_reporter/bs.json").readText()
+        return badSmellReport
+    }
+
+    override fun getTestBadSmellReport(): String {
+        download()
+        scan(listOf("./coca", "tbs"))
+        val badSmellReport = File(projectRoot.toString() + "/coca_reporter/tbs.json").readText()
         return badSmellReport
     }
 
@@ -32,5 +39,4 @@ class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellR
         chmod.directory(projectRoot)
         chmod.start().waitFor()
     }
-
 }
