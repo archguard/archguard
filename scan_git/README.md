@@ -7,11 +7,12 @@
 
 ### 运行：
 
-`java -jar target/scan_git-*.jar --git-path=/somepath/gittest/ --branch=master`
+`java -jar target/scan_git-*.jar --git-path=/somepath/gittest/ --branch=master  --after=1400000000000`
 
 选项
 - gitPath,  git repository 本地路径
 - branch, 分支名称， 可选
+- after, 时间戳， 仅仅扫描after 之后的提交
 
 
 ### 工具
