@@ -1,5 +1,6 @@
-package com.thoughtworks.archgard.scanner
+package com.thoughtworks.archgard
 
+import com.thoughtworks.archgard.hub.domain.service.HubService
 import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
 import org.jdbi.v3.core.Jdbi
