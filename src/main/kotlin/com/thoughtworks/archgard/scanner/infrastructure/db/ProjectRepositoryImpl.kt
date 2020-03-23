@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.infrastructure
+package com.thoughtworks.archgard.scanner.infrastructure.db
 
 import com.thoughtworks.archgard.scanner.domain.project.ProjectInfo
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
