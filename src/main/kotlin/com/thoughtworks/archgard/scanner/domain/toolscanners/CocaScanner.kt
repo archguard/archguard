@@ -5,20 +5,24 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 
-class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellReport, TestBadSmellReport {
+class CocaScanner(val projectRoot: File?) : BadSmellReport, TestBadSmellReport {
 
     override fun getBadSmellReport(): String {
         download()
         scan(listOf("./coca", "bs", "-s", "type"))
-        val badSmellReport = File(projectRoot.toString() + "/coca_reporter/bs.json").readText()
+        val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
+        val badSmellReport = report.readText()
+        clean(report)
         return badSmellReport
     }
 
     override fun getTestBadSmellReport(): String {
         download()
         scan(listOf("./coca", "tbs"))
-        val badSmellReport = File(projectRoot.toString() + "/coca_reporter/tbs.json").readText()
-        return badSmellReport
+        val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
+        val testBadSmellReport = report.readText()
+        clean(report)
+        return testBadSmellReport
     }
 
     @Throws(IOException::class, InterruptedException::class)
@@ -28,13 +32,21 @@ class CocaScanner(val latestCocaUrl: String, val projectRoot: File?) : BadSmellR
         badSmell.start().waitFor()
     }
 
-    private fun clean() {
+    private fun clean(report: File) {
         File(projectRoot.toString() + "/coca").delete()
-        File(projectRoot.toString() + "/coca_reporter/bs.json").delete()
+        report.delete()
     }
 
     private fun download() {
-        FileDownloader.download(URL(latestCocaUrl), File(projectRoot.toString() + "/coca"))
+        val system = System.getProperty("os.name").toLowerCase()
+        val downloadUrl =
+                if (system.indexOf("mac") >= 0) {
+                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_macos"
+                } else {
+                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_linux"
+                }
+
+        FileDownloader.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
         val chmod = ProcessBuilder("chmod", "+x", "coca")
         chmod.directory(projectRoot)
         chmod.start().waitFor()

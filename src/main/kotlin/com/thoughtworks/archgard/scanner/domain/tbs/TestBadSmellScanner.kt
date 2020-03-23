@@ -16,14 +16,8 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
     private val mapper = jacksonObjectMapper()
 
     override fun scan(context: ScanContext) {
-        val system = System.getProperty("os.name").toLowerCase()
-        val downloadUrl =
-                if (system.indexOf("mac") >= 0) {
-                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_macos"
-                } else {
-                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_linux"
-                }
-        val cocaScanner = CocaScanner(downloadUrl, context.projectRoot)
+
+        val cocaScanner = CocaScanner(context.projectRoot)
         val report = cocaScanner.getTestBadSmellReport()
         val testBadSmells = mapper.readValue<List<CocaTestBadSmellModel>>(report)
                 .map { m -> TestBadSmell(UUID.randomUUID().toString(), m.Line, m.FileName, m.Description, m.Type) }
