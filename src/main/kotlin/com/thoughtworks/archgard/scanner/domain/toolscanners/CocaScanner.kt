@@ -2,32 +2,36 @@ package com.thoughtworks.archgard.scanner.domain.toolscanners
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
 class CocaScanner(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
 
+    private val log = LoggerFactory.getLogger(CocaScanner::class.java)
+
     override fun getBadSmellReport(): String {
-        try {
-            download()
-            scan(listOf("./coca", "bs", "-s", "type"))
-            val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
-            val badSmellReport = report.readText()
-            return badSmellReport
-        } catch (ex: Exception) {
-            return "{}"
+        download()
+        scan(listOf("./coca", "bs", "-s", "type"))
+        val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
+        return if (report.exists()) {
+            report.readText()
+        } else {
+            log.error("failed to get bad smell")
+            "{}"
         }
     }
 
     override fun getTestBadSmellReport(): String {
-        try {
-            download()
-            scan(listOf("./coca", "tbs"))
-            val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
-            val testBadSmellReport = report.readText()
-            return testBadSmellReport
-        } catch (ex: Exception) {
-            return "[]"
+        download()
+        scan(listOf("./coca", "tbs"))
+        val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
+        val testBadSmellReport = report.readText()
+        return if (report.exists()) {
+            report.readText()
+        } else {
+            log.error("failed to get test bad smell")
+            "[]"
         }
     }
 
