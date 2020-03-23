@@ -11,4 +11,7 @@ interface TestBadSmellDao {
             "values (:testBadSmell.id, :testBadSmell.line, :testBadSmell.description, :testBadSmell.fileName,:testBadSmell.type)")
     fun saveAll(@BindBean("testBadSmell") testBadSmellList: List<TestBadSmell>)
 
+    @SqlBatch("delete from testBadSmell where 1=1 ")
+    fun deleteAll()
+
 }

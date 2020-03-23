@@ -43,11 +43,6 @@ class ScannerApplication {
     fun testBadSmellModelDao(jdbi: Jdbi): TestBadSmellDao {
         return jdbi.onDemand(TestBadSmellDao::class.java)
     }
-
-    @Bean
-    fun scanManager(badSmellScanner: BadSmellScanner, testBadSmellScanner: TestBadSmellScanner): List<Scanner> {
-        return listOf(badSmellScanner, testBadSmellScanner)
-    }
 }
 
 fun main(args: Array<String>) {

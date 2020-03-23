@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class TestBadSmellRepoImpl(@Autowired private val testBadSmellDao: TestBadSmellDao) : TestBadSmellRepo {
+
     override fun save(testBadSmells: List<TestBadSmell>) {
+        testBadSmellDao.deleteAll()
         testBadSmellDao.saveAll(testBadSmells)
     }
 }
