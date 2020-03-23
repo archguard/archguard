@@ -6,11 +6,7 @@ import java.io.File
 @Component
 class FileUtil {
 
-    fun cleanAll(path: String) {
-        deleteDirectory(File(path))
-    }
-
-    private fun deleteDirectory(dir: File) {
+    fun deleteDirectory(dir: File) {
         if (!dir.exists()) {
             return
         }

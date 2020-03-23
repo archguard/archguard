@@ -17,7 +17,7 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
 
     override fun scan(context: ScanContext) {
 
-        val cocaScanner = CocaScanner(context.projectRoot)
+        val cocaScanner = CocaScanner(context.workspace)
         val report = cocaScanner.getTestBadSmellReport()
         val testBadSmells = mapper.readValue<List<CocaTestBadSmellModel>>(report)
                 .map { m -> TestBadSmell(UUID.randomUUID().toString(), m.Line, m.FileName, m.Description, m.Type) }

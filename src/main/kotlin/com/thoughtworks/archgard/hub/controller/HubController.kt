@@ -17,9 +17,4 @@ class HubController {
     fun getModuleDependence() {
         return hubService.doScan()
     }
-
-    @GetMapping("/hello")
-    fun hello(): String{
-        return "hello"
-    }
 }

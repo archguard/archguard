@@ -11,9 +11,11 @@ class ScannerManager {
 
     @Autowired
     lateinit var badSmellScanner: Scanner
+    lateinit var testBadSmellScanner: Scanner
 
     fun load() {
         scanners.add(badSmellScanner)
+        scanners.add(testBadSmellScanner)
     }
 
     fun execute(context: ScanContext) {
