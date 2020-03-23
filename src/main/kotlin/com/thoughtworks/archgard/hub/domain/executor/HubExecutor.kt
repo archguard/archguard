@@ -23,8 +23,7 @@ class HubExecutor : HubLifecycle {
     lateinit var fileUtil: FileUtil
 
     override fun projectInfo(context: ScanContext) {
-//        context.repo = hubRepository.getProjectInfo().gitRepo
-        context.repo = "https://github.com/spring-projects/spring-framework.git"
+        context.repo = hubRepository.getProjectInfo().gitRepo
     }
 
     override fun getSource(context: ScanContext) {

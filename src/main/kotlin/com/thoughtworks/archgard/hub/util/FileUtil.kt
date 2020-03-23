@@ -11,14 +11,14 @@ class FileUtil {
     }
 
     private fun deleteDirectory(dir: File) {
-        if (!dir.exists() || !dir.isDirectory) {
+        if (!dir.exists()) {
             return
         }
         dir.listFiles().orEmpty().forEach {
-            if (it.isFile)
-                it.delete()
-            else if (it.isDirectory)
+            if (it.isDirectory) {
                 deleteDirectory(it)
+            }
+            it.delete()
         }
     }
 }
