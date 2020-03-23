@@ -23,14 +23,11 @@ class HubExecutor(private val context: ScanContext, private val manager: Scanner
                 .setDirectory(context.workspace)
                 .setURI(context.repo)
                 .call()
-                .repository
-                .directory
-                .absolutePath
     }
 
     private fun buildSource() {
         val pb = if (context.workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
-            ProcessBuilder("mvn", "clean", "package", "-DskipTests")
+            ProcessBuilder("./mvnw", "clean", "package", "-DskipTests")
         } else {
             ProcessBuilder("./gradlew", "clean", "build", "-x", "test")
         }
