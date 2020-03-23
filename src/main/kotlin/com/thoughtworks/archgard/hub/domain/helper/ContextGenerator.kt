@@ -12,11 +12,10 @@ class ContextGenerator {
     @Value("\${workspace}")
     private lateinit var workspace: String
 
-
     @Bean
     fun getContext(): ScanContext {
         val context = ScanContext()
-        context.workspace = workspace + "/" + Date().time
+        context.workspace = workspace
         return context
     }
 
