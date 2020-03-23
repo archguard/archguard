@@ -1,13 +1,13 @@
-package com.thoughtworks.archgard.hub.infrastracture
+package com.thoughtworks.archgard.scanner.infrastructure
 
-import com.thoughtworks.archgard.hub.domain.model.ProjectInfo
-import com.thoughtworks.archgard.hub.domain.repository.HubRepository
+import com.thoughtworks.archgard.scanner.domain.project.ProjectInfo
+import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class HubRepositoryImpl : HubRepository {
+class ProjectRepositoryImpl : ProjectRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi

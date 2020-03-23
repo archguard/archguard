@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.toolscanners
 
-import com.thoughtworks.archgard.scanner.infrastructure.FileDownloader
+import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import java.io.File
 import java.io.IOException
 import java.net.URL
@@ -46,7 +46,7 @@ class CocaScanner(val projectRoot: File?) : BadSmellReport, TestBadSmellReport {
                     "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_linux"
                 }
 
-        FileDownloader.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
+        FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
         val chmod = ProcessBuilder("chmod", "+x", "coca")
         chmod.directory(projectRoot)
         chmod.start().waitFor()

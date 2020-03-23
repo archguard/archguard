@@ -1,3 +1,3 @@
-package com.thoughtworks.archgard.hub.domain.model
+package com.thoughtworks.archgard.scanner.domain.project
 
 data class ProjectInfo(val id: String, val projectName: String, val gitRepo: String)

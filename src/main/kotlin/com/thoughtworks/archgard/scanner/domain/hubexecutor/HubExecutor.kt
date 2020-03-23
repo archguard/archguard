@@ -1,23 +1,24 @@
-package com.thoughtworks.archgard.hub.domain.executor
+package com.thoughtworks.archgard.scanner.domain.hubexecutor
 
-import com.thoughtworks.archgard.hub.domain.helper.ScannerManager
-import com.thoughtworks.archgard.hub.domain.model.HubLifecycle
-import com.thoughtworks.archgard.hub.util.FileUtil
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import org.eclipse.jgit.api.Git
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import java.io.InputStream
 import java.io.InputStreamReader
 
+class HubExecutor(private val context: ScanContext, private val manager: ScannerManager) : HubLifecycle {
 
-@Component
-class HubExecutor : HubLifecycle {
+    override fun execute() {
+        getSource()
+        buildSource()
+        manager.execute(context)
+    }
 
-    @Autowired
-    lateinit var fileUtil: FileUtil
+    override fun clean() {
+        FileOperator.deleteDirectory(context.workspace)
+    }
 
-    override fun getSource(context: ScanContext) {
+    private fun getSource() {
         Git.cloneRepository()
                 .setDirectory(context.workspace)
                 .setURI(context.repo)
@@ -27,7 +28,7 @@ class HubExecutor : HubLifecycle {
                 .absolutePath
     }
 
-    override fun buildSource(context: ScanContext) {
+    private fun buildSource() {
         val pb = if (context.workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
             ProcessBuilder("mvn", "clean", "package", "-DskipTests")
         } else {
@@ -51,12 +52,5 @@ class HubExecutor : HubLifecycle {
         inputStream.close()
     }
 
-    override fun getScanner(context: ScanContext, manager: ScannerManager) = manager.load()
-
-    override fun execute(context: ScanContext, manager: ScannerManager) = manager.execute(context)
-
-    override fun clean(context: ScanContext) {
-        fileUtil.deleteDirectory(context.workspace)
-    }
 
 }
