@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/coverage")
-class JacocoController(@Autowired val jacocoAnalyzer: JacocoAnalyzer) {
+class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
 
     @GetMapping("/bundle")
     fun bundleCoverage(): Coverage {
-        return jacocoAnalyzer.analyzeExecFile()
+        return coverageAnalyzer.analyzeExecFile()
     }
 }
 

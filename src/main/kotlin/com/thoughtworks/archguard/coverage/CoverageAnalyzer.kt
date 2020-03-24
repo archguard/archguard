@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.coverage
 import org.springframework.stereotype.Component
 
 @Component
-class JacocoAnalyzer {
+class CoverageAnalyzer {
 
     fun analyzeExecFile(): Coverage {
         return Coverage(1,2,3,4,5,6,7,8,9,10,11,12)
