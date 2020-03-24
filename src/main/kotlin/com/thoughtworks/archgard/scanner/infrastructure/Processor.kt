@@ -17,11 +17,9 @@ object Processor {
         val inputStreamReader = InputStreamReader(inputStream, "gbk")
         var len: Int
         val c = CharArray(1024)
-        val outputString = StringBuffer()
         //读取进程输入流中的内容
         while (inputStreamReader.read(c).also { len = it } != -1) {
             val s = String(c, 0, len)
-            outputString.append(s)
             log.info(s)
         }
         inputStream.close()
