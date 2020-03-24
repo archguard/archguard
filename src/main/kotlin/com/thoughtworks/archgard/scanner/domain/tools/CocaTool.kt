@@ -26,7 +26,6 @@ class CocaTool(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
         download()
         scan(listOf("./coca", "tbs"))
         val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
-        val testBadSmellReport = report.readText()
         return if (report.exists()) {
             report
         } else {
