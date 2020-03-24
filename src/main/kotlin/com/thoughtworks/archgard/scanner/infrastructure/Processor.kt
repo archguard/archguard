@@ -1,10 +1,12 @@
 package com.thoughtworks.archgard.scanner.infrastructure
 
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 
 object Processor {
+    private val log = LoggerFactory.getLogger(Processor::class.java)
 
     fun executeWithLogs(pb: ProcessBuilder, workspace: File) {
         pb.redirectErrorStream(true)
@@ -20,7 +22,7 @@ object Processor {
         while (inputStreamReader.read(c).also { len = it } != -1) {
             val s = String(c, 0, len)
             outputString.append(s)
-            print(s)
+            log.info(s)
         }
         inputStream.close()
     }
