@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 class JavaDependencyScanner(@Value("spring.datasource.url") val dbUrl: String) : Scanner {
 
     override fun scan(context: ScanContext) {
-        val javaByteCodeScanner = JavaByteCodeTool(context.workspace, dbUrl)
-        javaByteCodeScanner.getDependencyReport()
+        val javaByteCodeTool = JavaByteCodeTool(context.workspace, dbUrl)
+        javaByteCodeTool.getDependencyReport()
     }
 
 }

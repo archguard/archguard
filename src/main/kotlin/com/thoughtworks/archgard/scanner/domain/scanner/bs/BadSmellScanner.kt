@@ -18,8 +18,8 @@ class BadSmellScanner : Scanner {
     private val mapper = jacksonObjectMapper()
 
     override fun scan(context: ScanContext) {
-        val cocaScanner = CocaTool(context.workspace)
-        val report = cocaScanner.getBadSmellReport()
+        val cocaTool = CocaTool(context.workspace)
+        val report = cocaTool.getBadSmellReport()
         val badSmell = mapper.readValue<CocaBadSmellModel>(report?.readText()?:"{}").toBadSmell()
         badSmellRepo.save(badSmell)
     }

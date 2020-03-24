@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service
 class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
 
     override fun scan(context: ScanContext) {
-        val gitScanner = GitScannerTool(context.workspace, "master")
-        val gitReport = gitScanner.getGitReport()
+        val gitScannerTool = GitScannerTool(context.workspace, "master")
+        val gitReport = gitScannerTool.getGitReport()
         if (gitReport != null) {
             sqlScriptRunner.run(gitReport)
         }
