@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "2.2.4.RELEASE"
@@ -57,6 +58,11 @@ dependencies {
 	testImplementation("junit:junit:4.11")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
 
+}
+
+
+tasks.getByName<BootJar>("bootJar") {
+	requiresUnpack("org.jetbrains.kotlin:kotlin-compiler")
 }
 
 tasks.withType<Test> {
