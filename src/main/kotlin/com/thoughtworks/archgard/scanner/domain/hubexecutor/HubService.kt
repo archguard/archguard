@@ -23,10 +23,6 @@ class HubService {
 
         val context = ScanContext(gitRepo, workspace)
         val hubExecutor = HubExecutor(context, manager)
-        try {
-            hubExecutor.execute()
-        } finally {
-            hubExecutor.clean()
-        }
+        hubExecutor.execute()
     }
 }
