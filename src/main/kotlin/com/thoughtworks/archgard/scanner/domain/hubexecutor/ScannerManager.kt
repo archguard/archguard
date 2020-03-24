@@ -1,7 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.Scanner
+import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

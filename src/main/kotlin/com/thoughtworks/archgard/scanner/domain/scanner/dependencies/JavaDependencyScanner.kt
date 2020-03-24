@@ -1,8 +1,8 @@
-package com.thoughtworks.archgard.scanner.domain.dependencies
+package com.thoughtworks.archgard.scanner.domain.scanner.dependencies
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.Scanner
-import com.thoughtworks.archgard.scanner.domain.toolscanners.JavaByteCodeScanner
+import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archgard.scanner.domain.tools.JavaByteCodeTool
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class JavaDependencyScanner(@Value("spring.datasource.url") val dbUrl: String) : Scanner {
 
     override fun scan(context: ScanContext) {
-        val javaByteCodeScanner = JavaByteCodeScanner(context.workspace, dbUrl)
+        val javaByteCodeScanner = JavaByteCodeTool(context.workspace, dbUrl)
         javaByteCodeScanner.getDependencyReport()
     }
 

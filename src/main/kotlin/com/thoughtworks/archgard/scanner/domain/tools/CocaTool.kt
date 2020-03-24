@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.toolscanners
+package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class CocaScanner(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
+class CocaTool(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
 
-    private val log = LoggerFactory.getLogger(CocaScanner::class.java)
+    private val log = LoggerFactory.getLogger(CocaTool::class.java)
 
     override fun getBadSmellReport(): File? {
         download()

@@ -1,11 +1,11 @@
-package com.thoughtworks.archgard.scanner.domain.toolscanners
+package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeScanner(val projectRoot: File, val dbUrl: String) : JavaDependencyReport {
+class JavaByteCodeTool(val projectRoot: File, val dbUrl: String) : JavaDependencyReport {
 
     override fun getDependencyReport(): File? {
         download()

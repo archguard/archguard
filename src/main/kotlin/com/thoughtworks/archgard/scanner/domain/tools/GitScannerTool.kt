@@ -1,11 +1,11 @@
-package com.thoughtworks.archgard.scanner.domain.toolscanners
+package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import java.io.File
 import java.net.URL
 
-class GitScanner(val projectRoot: File, val branch: String): GitReport {
+class GitScannerTool(val projectRoot: File, val branch: String): GitReport {
 
     override fun getGitReport(): File? {
         download()

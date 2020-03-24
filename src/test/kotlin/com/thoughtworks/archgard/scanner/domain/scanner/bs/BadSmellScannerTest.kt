@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.bs
+package com.thoughtworks.archgard.scanner.domain.scanner.bs
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import org.jdbi.v3.core.Handle

@@ -1,11 +1,11 @@
-package com.thoughtworks.archgard.scanner.domain.bs
+package com.thoughtworks.archgard.scanner.domain.scanner.bs
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.Scanner
-import com.thoughtworks.archgard.scanner.domain.toolscanners.CocaScanner
+import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archgard.scanner.domain.tools.CocaTool
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,7 +18,7 @@ class BadSmellScanner : Scanner {
     private val mapper = jacksonObjectMapper()
 
     override fun scan(context: ScanContext) {
-        val cocaScanner = CocaScanner(context.workspace)
+        val cocaScanner = CocaTool(context.workspace)
         val report = cocaScanner.getBadSmellReport()
         val badSmell = mapper.readValue<CocaBadSmellModel>(report?.readText()?:"{}").toBadSmell()
         badSmellRepo.save(badSmell)
