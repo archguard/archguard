@@ -2,15 +2,24 @@ package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class GitScannerTool(val projectRoot: File, val branch: String): GitReport {
+class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
+
+    private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
 
     override fun getGitReport(): File? {
         download()
         scan(listOf("java", "-jar", "scan_git.jar", "--git-path=.", "--branch=" + branch))
-        return File(projectRoot.toString() + "output.sql")
+        val report = File(projectRoot.toString() + "/output.sql")
+        return if (report.exists()) {
+            report
+        } else {
+            log.info("failed to get output.sql")
+            null
+        }
     }
 
     private fun download() {
