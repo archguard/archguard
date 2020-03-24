@@ -14,11 +14,11 @@ import kotlin.collections.ArrayList
 class CheckstyleScanner : Scanner {
 
     @Autowired
-    lateinit var checkStyleRepo: CheckStyleRepo
+    private lateinit var checkStyleRepo: CheckStyleRepo
 
-    lateinit var buildTool: String
+    private lateinit var buildTool: String
 
-    lateinit var reportFile: ArrayList<String>
+    private lateinit var reportFile: ArrayList<String>
 
     val reports = ArrayList<CheckStyle>()
 
@@ -53,5 +53,6 @@ class CheckstyleScanner : Scanner {
     }
 
     private fun save() {
+        checkStyleRepo.save(reports)
     }
 }

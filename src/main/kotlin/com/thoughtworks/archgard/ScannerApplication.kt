@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard
 
 import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.CheckStyleDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import java.util.function.Consumer
 import javax.sql.DataSource
+import kotlin.concurrent.fixedRateTimer
 
 
 @SpringBootApplication
@@ -39,6 +41,11 @@ class ScannerApplication {
     @Bean
     fun testBadSmellModelDao(jdbi: Jdbi): TestBadSmellDao {
         return jdbi.onDemand(TestBadSmellDao::class.java)
+    }
+
+    @Bean
+    fun checkStylesDao(jdbi: Jdbi): CheckStyleDao {
+        return jdbi.onDemand(CheckStyleDao::class.java)
     }
 }
 
