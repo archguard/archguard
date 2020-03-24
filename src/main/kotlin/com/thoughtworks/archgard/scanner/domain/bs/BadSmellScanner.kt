@@ -20,7 +20,7 @@ class BadSmellScanner : Scanner {
     override fun scan(context: ScanContext) {
         val cocaScanner = CocaScanner(context.workspace)
         val report = cocaScanner.getBadSmellReport()
-        val badSmell = mapper.readValue<CocaBadSmellModel>(report).toBadSmell()
+        val badSmell = mapper.readValue<CocaBadSmellModel>(report?.readText()?:"{}").toBadSmell()
         badSmellRepo.save(badSmell)
     }
 

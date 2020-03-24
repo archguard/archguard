@@ -7,9 +7,10 @@ import java.net.URL
 
 class JavaByteCodeScanner(val projectRoot: File, val dbUrl: String) : JavaDependencyReport {
 
-    override fun getDependencyReport() {
+    override fun getDependencyReport(): File? {
         download()
-        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode", projectRoot.toString()))
+        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode", "."))
+        return null
     }
 
     private fun download() {

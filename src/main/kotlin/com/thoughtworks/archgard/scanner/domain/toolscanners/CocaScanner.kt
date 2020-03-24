@@ -10,28 +10,28 @@ class CocaScanner(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
 
     private val log = LoggerFactory.getLogger(CocaScanner::class.java)
 
-    override fun getBadSmellReport(): String {
+    override fun getBadSmellReport(): File? {
         download()
         scan(listOf("./coca", "bs", "-s", "type"))
         val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
         return if (report.exists()) {
-            report.readText()
+            report
         } else {
             log.error("failed to get bad smell")
-            "{}"
+            null
         }
     }
 
-    override fun getTestBadSmellReport(): String {
+    override fun getTestBadSmellReport(): File? {
         download()
         scan(listOf("./coca", "tbs"))
         val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
         val testBadSmellReport = report.readText()
         return if (report.exists()) {
-            report.readText()
+            report
         } else {
             log.error("failed to get test bad smell")
-            "[]"
+            null
         }
     }
 
