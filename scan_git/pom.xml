@@ -41,8 +41,20 @@
                     <artifactId>bcpg-jdk15on</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>com.jcraft</groupId>
+                    <artifactId>jsch</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.jcraft</groupId>
+                    <artifactId>jzlib</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.googlecode.javaewah</groupId>
+                    <artifactId>JavaEWAH</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
@@ -60,13 +72,6 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-
-
         <!--antlr-->
         <dependency>
             <groupId>org.antlr</groupId>
@@ -119,8 +124,8 @@
                 </executions>
                 <configuration>
                     <fork>true</fork>
-                    <meminitial>2024m</meminitial>
-                    <maxmem>2024m</maxmem>
+                    <meminitial>2048m</meminitial>
+                    <maxmem>2048m</maxmem>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
