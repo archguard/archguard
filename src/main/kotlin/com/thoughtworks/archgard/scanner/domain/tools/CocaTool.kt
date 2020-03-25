@@ -42,9 +42,9 @@ class CocaTool(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
         val system = System.getProperty("os.name").toLowerCase()
         val downloadUrl =
                 if (system.indexOf("mac") >= 0) {
-                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_macos"
+                    "http://ci.archguard.org/job/coca/lastSuccessfulBuild/artifact/coca_macos"
                 } else {
-                    "http://ci.archguard.org/view/ThirdPartyTool/job/coca/lastSuccessfulBuild/artifact/coca_linux"
+                    "http://ci.archguard.org/job/coca/lastSuccessfulBuild/artifact/coca_linux"
                 }
 
         FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
