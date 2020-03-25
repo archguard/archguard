@@ -12,4 +12,8 @@ class CheckStyleRepoImpl(@Autowired private val checkStylesDao: CheckStyleDao) :
         checkStylesDao.saveAll(checkStyle)
     }
 
+    override fun deleteAll() {
+        checkStylesDao.deleteAll()
+    }
+
 }
