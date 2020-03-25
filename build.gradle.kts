@@ -31,6 +31,7 @@ dependencies {
 	implementation("io.pebbletemplates:pebble:3.0.8")
 
 	implementation("org.jdbi:jdbi3-core:3.8.2")
+	implementation("org.jdbi:jdbi3-spring4:3.10.1") // provide JdbiFactoryBean
 
 	implementation("io.ktor:ktor-server-core:1.1.4")
 	implementation("io.ktor:ktor-server-netty:1.1.4")
