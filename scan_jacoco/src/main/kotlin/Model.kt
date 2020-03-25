@@ -13,7 +13,9 @@ data class Coverage(
         @Sql("method_missed") val methodMissed: Int,
         @Sql("method_covered") val methodCovered: Int,
         @Sql("class_missed") val classMissed: Int,
-        @Sql("class_covered") val classCovered: Int
+        @Sql("class_covered") val classCovered: Int,
+        @Sql("project") val project: String,
+        @Sql("scan_time") val sacnTime: Long
 )
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)

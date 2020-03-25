@@ -14,7 +14,9 @@ create table coverage(
         method_covered  int,
         class_missed    int,
         class_covered   int,
-        project varchar(50)
+        project varchar(50),
+        scan_time bigint,
+        primary key(project,scan_time)
 )
 
 
