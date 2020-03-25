@@ -23,6 +23,7 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	antlr("org.antlr:antlr4:4.7.2")
 	implementation("org.antlr:antlr4-runtime:4.7.2")
@@ -62,7 +63,7 @@ dependencies {
 
 
 tasks.getByName<BootJar>("bootJar") {
-	requiresUnpack("org.jetbrains.kotlin:kotlin-compiler")
+	requiresUnpack("**/kotlin-compiler-embeddable-*.jar")
 }
 
 tasks.withType<Test> {
