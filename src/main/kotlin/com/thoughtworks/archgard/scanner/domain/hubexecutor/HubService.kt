@@ -21,7 +21,9 @@ class HubService {
         val workspace = createTempDir()
         log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
 
-        val context = ScanContext(gitRepo, workspace)
+        val config: Map<String, Any> = HashMap()
+
+        val context = ScanContext(gitRepo, workspace, config)
         val hubExecutor = HubExecutor(context, manager)
         hubExecutor.execute()
     }
