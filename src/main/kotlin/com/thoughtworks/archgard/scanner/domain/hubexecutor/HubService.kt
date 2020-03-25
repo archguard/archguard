@@ -22,7 +22,7 @@ class HubService {
         log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
 
         val context = ScanContext(gitRepo, workspace)
-//        val hubExecutor = HubExecutor(context, manager)
-//        hubExecutor.execute()
+        val hubExecutor = HubExecutor(context, manager)
+        hubExecutor.execute()
     }
 }
