@@ -1,7 +1,7 @@
 package com.thoghtworks.archguard.scan_jacoco
 
-@Sql("coverage")
-data class Coverage(
+
+open class Coverage(
         @Sql("instruction_missed") val instructionMissed: Int,
         @Sql("instruction_covered") val instructionCovered: Int,
         @Sql("line_missed") val lineMissed: Int,
@@ -14,9 +14,32 @@ data class Coverage(
         @Sql("method_covered") val methodCovered: Int,
         @Sql("class_missed") val classMissed: Int,
         @Sql("class_covered") val classCovered: Int,
-        @Sql("project") val project: String,
-        @Sql("scan_time") val scanTime: Long
+        @Sql("name") val name: String
 )
+
+@Sql("bundle")
+class Bundle(
+        instructionMissed: Int,
+        instructionCovered: Int,
+        lineMissed: Int,
+        lineCovered: Int,
+        branchMissed: Int,
+        branchCovered: Int,
+        complexityMissed: Int,
+        complexityCovered: Int,
+        methodMissed: Int,
+        methodCovered: Int,
+        classMissed: Int,
+        classCovered: Int,
+        name: String,
+        @Sql("scan_time") val scanTime: Long
+) : Coverage(instructionMissed, instructionCovered, lineMissed, lineCovered, branchMissed, branchCovered, complexityMissed, complexityCovered, methodMissed, methodCovered, classMissed, classCovered, name)
+
+class Item(val type: ItemType)
+
+enum class ItemType {
+    PACKAGE, FILE
+}
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Sql(val value: String)

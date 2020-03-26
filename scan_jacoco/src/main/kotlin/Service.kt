@@ -18,7 +18,7 @@ class Service(val bean2Sql: Bean2Sql) {
 
         val bundle = builder.getBundle(projectPath.split("/").last())
 
-        val coverage = Coverage(
+        val coverage = Bundle(
                 instructionCovered = bundle.instructionCounter.coveredCount,
                 instructionMissed = bundle.instructionCounter.missedCount,
                 lineCovered = bundle.lineCounter.coveredCount,
@@ -31,7 +31,7 @@ class Service(val bean2Sql: Bean2Sql) {
                 methodMissed = bundle.methodCounter.missedCount,
                 classCovered = bundle.classCounter.coveredCount,
                 classMissed = bundle.classCounter.missedCount,
-                project = projectPath.split(File.separator).last(),
+                name = projectPath.split(File.separator).last(),
                 scanTime = System.currentTimeMillis()
         )
 
