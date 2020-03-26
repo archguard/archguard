@@ -29,21 +29,12 @@ class StyleScanner : Scanner {
     private fun mapTo(file: File): List<Style>? {
         val saxReader = SAXReader()
         try {
-            val document = saxReader.read(file)
-            val rootElement = document.rootElement
+            val rootElement = saxReader.read(file).rootElement
             if (rootElement.name == "checkstyle") {
                 val list = rootElement.elements().map { e ->
                     e as Element
                     val name = e.attributeValue("name")
-                    e.elements().map {
-                        val element = it as Element
-                        Style(UUID.randomUUID().toString(), name,
-                                element.attributeValue("source"),
-                                element.attributeValue("message"),
-                                element.attributeValue("line").toInt(),
-                                element.attributeValue("column").orEmpty().toIntOrNull() ?: 0,
-                                element.attributeValue("severity"))
-                    }
+                    e.elements().map { elementToStyle(it as Element, name) }
                 }
                 return list.flatten()
             }
@@ -51,6 +42,15 @@ class StyleScanner : Scanner {
             log.error("failed to parse checkstyle ", e)
         }
         return null
+    }
+
+    private fun elementToStyle(element: Element, name: String): Style {
+        return Style(UUID.randomUUID().toString(), name,
+                element.attributeValue("source"),
+                element.attributeValue("message"),
+                element.attributeValue("line").toInt(),
+                element.attributeValue("column").orEmpty().toIntOrNull() ?: 0,
+                element.attributeValue("severity"))
     }
 
     private fun save(reports: List<Style>) {
