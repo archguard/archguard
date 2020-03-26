@@ -9,14 +9,14 @@ import java.io.PrintWriter
 
 class Service(val bean2Sql: Bean2Sql) {
 
-    fun readJacoco(projectPath: String, bin: String, exec: String) {
+    fun readJacoco(config: Config) {
         val builder = CoverageBuilder()
         val execFileLoader = ExecFileLoader()
-        execFileLoader.load(File("$projectPath/$exec"))
+        execFileLoader.load(File("${config.execPath}"))
         val analyzer = Analyzer(execFileLoader.executionDataStore, builder)
-        analyzer.analyzeAll(File("$projectPath/$bin"))
+        analyzer.analyzeAll(File("${config.binPath}"))
 
-        val bundleCoverage = builder.getBundle(projectPath.split("/").last())
+        val bundleCoverage = builder.getBundle(config.projectPath.split("/").last())
 
         PrintWriter("output.sql").use { writer ->
 
@@ -33,7 +33,7 @@ class Service(val bean2Sql: Bean2Sql) {
                     methodMissed = bundleCoverage.methodCounter.missedCount,
                     classCovered = bundleCoverage.classCounter.coveredCount,
                     classMissed = bundleCoverage.classCounter.missedCount,
-                    bundleName = projectPath.split(File.separator).last(),
+                    bundleName = config.projectPath.split(File.separator).last(),
                     scanTime = System.currentTimeMillis()
             )
             writer.println(bean2Sql.bean2Sql(bundle))
@@ -86,4 +86,9 @@ class Service(val bean2Sql: Bean2Sql) {
 
         }
     }
+}
+
+data class Config(val projectPath: String, val bin: String, val exec: String) {
+    val execPath = projectPath + File.separator + exec
+    val binPath = projectPath + File.separator + bin
 }
