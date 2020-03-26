@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard
 
 import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.StatisticDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.StyleDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
 import org.jdbi.v3.core.Jdbi
@@ -45,6 +46,11 @@ class ScannerApplication {
     @Bean
     fun checkStylesDao(jdbi: Jdbi): StyleDao {
         return jdbi.onDemand(StyleDao::class.java)
+    }
+
+    @Bean
+    fun statisticDao(jdbi: Jdbi): StatisticDao{
+        return jdbi.onDemand(StatisticDao::class.java)
     }
 }
 
