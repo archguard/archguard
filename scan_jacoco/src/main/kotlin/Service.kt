@@ -3,6 +3,7 @@ package com.thoghtworks.archguard.scan_jacoco
 import com.thoghtworks.archguard.scan_jacoco.helper.Bean2Sql
 import org.jacoco.core.analysis.Analyzer
 import org.jacoco.core.analysis.CoverageBuilder
+import org.jacoco.core.analysis.IBundleCoverage
 import org.jacoco.core.tools.ExecFileLoader
 import java.io.File
 import java.io.PrintWriter
@@ -10,16 +11,10 @@ import java.io.PrintWriter
 class Service(val bean2Sql: Bean2Sql) {
 
     fun readJacoco(config: Config) {
-        val builder = CoverageBuilder()
-        val execFileLoader = ExecFileLoader()
-        execFileLoader.load(File("${config.execPath}"))
-        val analyzer = Analyzer(execFileLoader.executionDataStore, builder)
-        analyzer.analyzeAll(File("${config.binPath}"))
 
-        val bundleCoverage = builder.getBundle(config.projectPath.split("/").last())
+        val bundleCoverage = getBundleCoverage(config)
 
         PrintWriter("output.sql").use { writer ->
-
             val bundle = Bundle(
                     instructionCovered = bundleCoverage.instructionCounter.coveredCount,
                     instructionMissed = bundleCoverage.instructionCounter.missedCount,
@@ -78,13 +73,21 @@ class Service(val bean2Sql: Bean2Sql) {
                             bundleName = bundle.bundleName,
                             scanTime = bundle.scanTime
                     )
-
                     writer.println(bean2Sql.bean2Sql(fileItem))
-
                 }
             }
 
         }
+    }
+
+    fun getBundleCoverage(config: Config): IBundleCoverage {
+        val builder = CoverageBuilder()
+        val execFileLoader = ExecFileLoader()
+        execFileLoader.load(File("${config.execPath}"))
+        val analyzer = Analyzer(execFileLoader.executionDataStore, builder)
+        analyzer.analyzeAll(File("${config.binPath}"))
+
+        return builder.getBundle(config.projectPath.split("/").last())
     }
 }
 
