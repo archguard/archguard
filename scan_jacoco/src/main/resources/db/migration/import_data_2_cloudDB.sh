@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PRO_DIR=/Users/ygdong/git/code-scanners/scan_jacoco
+PRO_DIR=../../../../../
 REMOTE=jenkin@archguard-pipeline.southeastasia.cloudapp.azure.com
 WDR=/home/jenkin/sampleData4Git/
 DDL=$WDR/ddl.sql
