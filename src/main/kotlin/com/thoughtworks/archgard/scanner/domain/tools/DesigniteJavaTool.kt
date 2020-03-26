@@ -20,6 +20,19 @@ class DesigniteJavaTool(val projectRoot: File) : BadSmellReport {
         }
     }
 
+    fun getTypeMetricsReport(): File? {
+        val report = File(projectRoot.toString() + "/typeMetrics.csv")
+        if (report.exists()) {
+            return report
+        }
+        process()
+        return if (report.exists()) {
+            report
+        } else {
+            null
+        }
+    }
+
     private fun process() {
         download()
         scan(listOf("java", "-jar", "DesigniteJava.jar", "-i", ".", "-o", "."))
