@@ -1,19 +1,19 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.checkstyle.CheckStyle
-import com.thoughtworks.archgard.scanner.domain.scanner.checkstyle.CheckStyleRepo
+import com.thoughtworks.archgard.scanner.domain.scanner.style.Style
+import com.thoughtworks.archgard.scanner.domain.scanner.style.StyleRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class CheckStyleRepoImpl(@Autowired private val checkStylesDao: CheckStyleDao) : CheckStyleRepo {
+class StyleRepoImpl(@Autowired private val stylesDao: StyleDao) : StyleRepo {
 
-    override fun save(checkStyle: List<CheckStyle>) {
-        checkStylesDao.saveAll(checkStyle)
+    override fun save(style: List<Style>) {
+        stylesDao.saveAll(style)
     }
 
     override fun deleteAll() {
-        checkStylesDao.deleteAll()
+        stylesDao.deleteAll()
     }
 
 }

@@ -1,11 +1,11 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.checkstyle.Style
+import com.thoughtworks.archgard.scanner.domain.scanner.style.Style
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
-interface CheckStyleDao {
+interface StyleDao {
     @SqlBatch("insert into CheckStyle (id, file, source, message, line, `column`, severity) " +
             "values (:checkStyle.id, :checkStyle.file, :checkStyle.source, :checkStyle.message, :checkStyle.line, :checkStyle.column, :checkStyle.severity)")
     fun saveAll(@BindBean("checkStyle") styleList: List<Style>)

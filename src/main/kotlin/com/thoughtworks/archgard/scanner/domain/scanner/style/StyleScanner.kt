@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.checkstyle
+package com.thoughtworks.archgard.scanner.domain.scanner.style
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
@@ -13,12 +13,12 @@ import java.io.File
 import java.util.*
 
 @Service
-class CheckstyleScanner : Scanner {
+class StyleScanner : Scanner {
 
     private val log = LoggerFactory.getLogger(JavaDependencyScanner::class.java)
 
     @Autowired
-    private lateinit var checkStyleRepo: CheckStyleRepo
+    private lateinit var styleRepo: StyleRepo
 
     override fun scan(context: ScanContext) {
         val styleReport = CheckStyleTool(context).getStyleReport()
@@ -26,7 +26,7 @@ class CheckstyleScanner : Scanner {
         save(checkStyles)
     }
 
-    private fun mapTo(file: File): List<CheckStyle>? {
+    private fun mapTo(file: File): List<Style>? {
         val saxReader = SAXReader()
         try {
             val document = saxReader.read(file)
@@ -37,7 +37,7 @@ class CheckstyleScanner : Scanner {
                     val name = e.attributeValue("name")
                     e.elements().map {
                         val element = it as Element
-                        CheckStyle(UUID.randomUUID().toString(), name,
+                        Style(UUID.randomUUID().toString(), name,
                                 element.attributeValue("source"),
                                 element.attributeValue("message"),
                                 element.attributeValue("line").toInt(),
@@ -53,8 +53,8 @@ class CheckstyleScanner : Scanner {
         return null
     }
 
-    private fun save(reports: List<CheckStyle>) {
-        checkStyleRepo.deleteAll()
-        checkStyleRepo.save(reports)
+    private fun save(reports: List<Style>) {
+        styleRepo.deleteAll()
+        styleRepo.save(reports)
     }
 }
