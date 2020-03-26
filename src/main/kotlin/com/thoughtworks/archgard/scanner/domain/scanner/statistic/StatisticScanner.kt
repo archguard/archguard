@@ -17,8 +17,8 @@ class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report")
         val statistics = getStatistic(context)
-        statisticRepo.save(statistics)
         statisticRepo.delete()
+        statisticRepo.save(statistics)
         log.info("finished scan statistic report")
     }
 
