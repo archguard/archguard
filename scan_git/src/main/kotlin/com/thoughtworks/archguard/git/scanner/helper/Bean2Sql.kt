@@ -2,16 +2,16 @@ package com.thoughtworks.archguard.git.scanner.helper
 
 import com.thoughtworks.archguard.git.scanner.Sql
 import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.jvm.kotlinProperty
+import kotlin.reflect.full.memberProperties
 
 class Bean2Sql {
     fun bean2Sql(bean: Any): String {
-        val clazz = bean.javaClass
-        val table = clazz.getDeclaredAnnotation(Sql::class.java).value
+        val clazz = bean::class
+
+        val table = clazz.findAnnotation<Sql>()?.value ?: clazz.simpleName
         val columns = arrayListOf<String>()
         val values = arrayListOf<Any?>()
-        clazz.declaredFields.forEach {
-            val property = it.kotlinProperty!!
+        clazz.memberProperties.forEach { property ->
             val column = property.findAnnotation<Sql>()?.value ?: property.name
             columns.add(column)
             values.add(property.call(bean))
