@@ -32,7 +32,7 @@ class Service(val bean2Sql: Bean2Sql) {
                 classCovered = bundle.classCounter.coveredCount,
                 classMissed = bundle.classCounter.missedCount,
                 project = projectPath.split(File.separator).last(),
-                sacnTime = System.currentTimeMillis()
+                scanTime = System.currentTimeMillis()
         )
 
         PrintWriter("output.sql").use {
