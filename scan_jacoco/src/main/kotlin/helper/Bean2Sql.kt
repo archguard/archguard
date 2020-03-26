@@ -2,24 +2,25 @@ package com.thoghtworks.archguard.scan_jacoco.helper
 
 import com.thoghtworks.archguard.scan_jacoco.Sql
 import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.jvm.kotlinProperty
+import kotlin.reflect.full.memberProperties
 
 
 class Bean2Sql {
     fun bean2Sql(bean: Any): String {
-        val clazz = bean.javaClass
-        val table = clazz.getDeclaredAnnotation(Sql::class.java).value
+        val clazz = bean::class
+        val table = clazz.findAnnotation<Sql>()?.value ?: clazz.simpleName
         val columns = arrayListOf<String>()
         val values = arrayListOf<Any?>()
-        clazz.declaredFields.forEach {
-            val property = it.kotlinProperty!!
+        clazz.memberProperties.forEach { property ->
             val column = property.findAnnotation<Sql>()?.value ?: property.name
             columns.add(column)
             values.add(property.call(bean))
         }
         val valueString = values.joinToString {
             if (it is String) {
-                "'${it.replace("'", "''")}'"
+                "'${it.replace("'", "''")}'"// do with like it's -- there is a ' within string
+            } else if (it is Enum<*>) {
+                "'$it'"
             } else it.toString()
         }
 
