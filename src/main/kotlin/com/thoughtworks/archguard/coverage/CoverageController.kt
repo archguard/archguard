@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
 
     @GetMapping("/bundle")
-    fun bundleCoverage(): Coverage {
+    fun bundleCoverage(): Bundle {
         return coverageAnalyzer.analyzeExecFile()
     }
 }

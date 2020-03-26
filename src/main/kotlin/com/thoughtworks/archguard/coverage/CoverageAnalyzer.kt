@@ -6,40 +6,33 @@ import org.springframework.stereotype.Component
 @Component
 class CoverageAnalyzer(val jdbi: Jdbi) {
 
-    fun analyzeExecFile(): Coverage {
-        return jdbi.withHandle<Coverage, Exception> {
+    fun analyzeExecFile(): Bundle {
+        return jdbi.withHandle<Bundle, Exception> {
             val queryCoverage = """
 |               select 
-|                   instruction_missed as instructionMissed, 
-|                   instruction_covered as instructionCovered, 
-                    line_missed as lineMissed,
-|                   line_covered as lineCovered, 
-                    branch_missed as branchMissed, 
-                    branch_covered as branchCovered, 
-                    complexity_missed as complexityMissed, 
-                    complexity_covered as complexityCovered, 
-                    method_missed as methodMissed,
-                    method_covered as methodCovered, 
-                    class_missed as classMissed, 
-                    class_covered as classCovered, 
-                    project, 
-                    scan_time as scanTime
-|               from coverage 
-|               order by scanTime desc
+|                   instruction_missed ,instruction_covered , 
+                    line_missed ,line_covered , 
+                    branch_missed , branch_covered , 
+                    complexity_missed , complexity_covered , 
+                    method_missed ,method_covered , 
+                    class_missed , class_covered , 
+                    bundle_name, scan_time
+|               from bundle 
+|               order by scan_time desc
 |               limit 1
 |               """.trimMargin()
 
 
             it.createQuery(queryCoverage)
-                    .mapToBean(Coverage::class.java)
-                    .findFirst().orElse(Coverage())
+                    .mapToBean(Bundle::class.java)
+                    .findFirst().orElse(Bundle())
         }
 
     }
 
 }
 
-data class Coverage(
+data class Bundle(
         var instructionMissed: Int,
         var instructionCovered: Int,
         var lineMissed: Int,
@@ -52,7 +45,7 @@ data class Coverage(
         var methodCovered: Int,
         var classMissed: Int,
         var classCovered: Int,
-        var project: String,
+        var bundleName: String,
         var scanTime: Long
 ) {
     constructor() : this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "no info in db", 0)
