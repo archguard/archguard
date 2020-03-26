@@ -16,27 +16,74 @@ class Service(val bean2Sql: Bean2Sql) {
         val analyzer = Analyzer(execFileLoader.executionDataStore, builder)
         analyzer.analyzeAll(File("$projectPath/$bin"))
 
-        val bundle = builder.getBundle(projectPath.split("/").last())
+        val bundleCoverage = builder.getBundle(projectPath.split("/").last())
 
-        val coverage = Bundle(
-                instructionCovered = bundle.instructionCounter.coveredCount,
-                instructionMissed = bundle.instructionCounter.missedCount,
-                lineCovered = bundle.lineCounter.coveredCount,
-                lineMissed = bundle.lineCounter.missedCount,
-                branchCovered = bundle.branchCounter.coveredCount,
-                branchMissed = bundle.branchCounter.missedCount,
-                complexityCovered = bundle.complexityCounter.coveredCount,
-                complexityMissed = bundle.complexityCounter.missedCount,
-                methodCovered = bundle.methodCounter.coveredCount,
-                methodMissed = bundle.methodCounter.missedCount,
-                classCovered = bundle.classCounter.coveredCount,
-                classMissed = bundle.classCounter.missedCount,
-                name = projectPath.split(File.separator).last(),
-                scanTime = System.currentTimeMillis()
-        )
+        PrintWriter("output.sql").use { writer ->
 
-        PrintWriter("output.sql").use {
-            it.println(bean2Sql.bean2Sql(coverage))
+            val bundle = Bundle(
+                    instructionCovered = bundleCoverage.instructionCounter.coveredCount,
+                    instructionMissed = bundleCoverage.instructionCounter.missedCount,
+                    lineCovered = bundleCoverage.lineCounter.coveredCount,
+                    lineMissed = bundleCoverage.lineCounter.missedCount,
+                    branchCovered = bundleCoverage.branchCounter.coveredCount,
+                    branchMissed = bundleCoverage.branchCounter.missedCount,
+                    complexityCovered = bundleCoverage.complexityCounter.coveredCount,
+                    complexityMissed = bundleCoverage.complexityCounter.missedCount,
+                    methodCovered = bundleCoverage.methodCounter.coveredCount,
+                    methodMissed = bundleCoverage.methodCounter.missedCount,
+                    classCovered = bundleCoverage.classCounter.coveredCount,
+                    classMissed = bundleCoverage.classCounter.missedCount,
+                    bundleName = projectPath.split(File.separator).last(),
+                    scanTime = System.currentTimeMillis()
+            )
+            writer.println(bean2Sql.bean2Sql(bundle))
+
+            bundleCoverage.packages.forEach { pcg ->
+                val packageItem = Item(
+                        instructionCovered = pcg.instructionCounter.coveredCount,
+                        instructionMissed = pcg.instructionCounter.missedCount,
+                        lineCovered = pcg.lineCounter.coveredCount,
+                        lineMissed = pcg.lineCounter.missedCount,
+                        branchCovered = pcg.branchCounter.coveredCount,
+                        branchMissed = pcg.branchCounter.missedCount,
+                        complexityCovered = pcg.complexityCounter.coveredCount,
+                        complexityMissed = pcg.complexityCounter.missedCount,
+                        methodCovered = pcg.methodCounter.coveredCount,
+                        methodMissed = pcg.methodCounter.missedCount,
+                        classCovered = pcg.classCounter.coveredCount,
+                        classMissed = pcg.classCounter.missedCount,
+                        itemName = pcg.name,
+                        itemType = ItemType.PACKAGE,
+                        bundleName = bundle.bundleName,
+                        scanTime = bundle.scanTime
+                )
+                writer.println(bean2Sql.bean2Sql(packageItem))
+
+                pcg.sourceFiles.forEach { file ->
+                    val fileItem = Item(
+                            instructionCovered = file.instructionCounter.coveredCount,
+                            instructionMissed = file.instructionCounter.missedCount,
+                            lineCovered = file.lineCounter.coveredCount,
+                            lineMissed = file.lineCounter.missedCount,
+                            branchCovered = file.branchCounter.coveredCount,
+                            branchMissed = file.branchCounter.missedCount,
+                            complexityCovered = file.complexityCounter.coveredCount,
+                            complexityMissed = file.complexityCounter.missedCount,
+                            methodCovered = file.methodCounter.coveredCount,
+                            methodMissed = file.methodCounter.missedCount,
+                            classCovered = file.classCounter.coveredCount,
+                            classMissed = file.classCounter.missedCount,
+                            itemName = file.packageName + "/" + file.name,
+                            itemType = ItemType.FILE,
+                            bundleName = bundle.bundleName,
+                            scanTime = bundle.scanTime
+                    )
+
+                    writer.println(bean2Sql.bean2Sql(fileItem))
+
+                }
+            }
+
         }
     }
 }

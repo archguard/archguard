@@ -13,8 +13,7 @@ open class Coverage(
         @Sql("method_missed") val methodMissed: Int,
         @Sql("method_covered") val methodCovered: Int,
         @Sql("class_missed") val classMissed: Int,
-        @Sql("class_covered") val classCovered: Int,
-        @Sql("name") val name: String
+        @Sql("class_covered") val classCovered: Int
 )
 
 @Sql("bundle")
@@ -31,11 +30,33 @@ class Bundle(
         methodCovered: Int,
         classMissed: Int,
         classCovered: Int,
-        name: String,
+        @Sql("bundle_name") val bundleName: String,
         @Sql("scan_time") val scanTime: Long
-) : Coverage(instructionMissed, instructionCovered, lineMissed, lineCovered, branchMissed, branchCovered, complexityMissed, complexityCovered, methodMissed, methodCovered, classMissed, classCovered, name)
+) : Coverage(instructionMissed, instructionCovered,
+        lineMissed, lineCovered,
+        branchMissed, branchCovered,
+        complexityMissed, complexityCovered,
+        methodMissed, methodCovered,
+        classMissed, classCovered)
 
-class Item(val type: ItemType)
+/*represent coverage of  package, file, class and method */
+@Sql("item")
+class Item(instructionMissed: Int, instructionCovered: Int,
+           lineMissed: Int, lineCovered: Int,
+           branchMissed: Int, branchCovered: Int,
+           complexityMissed: Int, complexityCovered: Int,
+           methodMissed: Int, methodCovered: Int,
+           classMissed: Int, classCovered: Int,
+           @Sql("item_name") val itemName: String,
+           @Sql("Item_type") val itemType: ItemType,
+           @Sql("bundle_name") val bundleName: String, @Sql("scan_time") val scanTime: Long
+) : Coverage(instructionMissed, instructionCovered,
+        lineMissed, lineCovered,
+        branchMissed, branchCovered,
+        complexityMissed, complexityCovered,
+        methodMissed, methodCovered,
+        classMissed, classCovered)
+
 
 enum class ItemType {
     PACKAGE, FILE
