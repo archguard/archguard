@@ -208,10 +208,12 @@
 + ##### response:
     ###### 样例
     ```Json
-    {
-        "message": "Line is longer than 80 characters (found 82).",
-        "count": 1
-    }
+    [
+      {
+         "message": "Line is longer than 80 characters (found 82).",
+         "count": 1
+      }
+    ]
     ```
 
     ###### 详细
