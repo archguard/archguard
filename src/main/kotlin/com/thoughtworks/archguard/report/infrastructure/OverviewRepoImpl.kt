@@ -12,7 +12,7 @@ class OverviewRepoImpl(@Autowired val jdbi: Jdbi) : OverviewRepository {
             jdbi.withHandle<List<GitCommitDBO>, Nothing> {
                 it.registerRowMapper(ConstructorMapper.factory(GitCommitDBO::class.java))
                 it
-                        .createQuery("select id, cmttr_email from commit_log where 1 == 1")
+                        .createQuery("select id, cmttr_email from commit_log where 1 = 1")
                         .mapTo(GitCommitDBO::class.java)
                         .list()
             }
@@ -20,7 +20,7 @@ class OverviewRepoImpl(@Autowired val jdbi: Jdbi) : OverviewRepository {
     override fun getCodeLinesCount(): Int =
             jdbi.withHandle<Int, Nothing> {
                 it
-                        .createQuery("select sum(`lines`) from Statistic where 1 == 1")
+                        .createQuery("select sum(`lines`) from Statistic where 1 = 1")
                         .mapTo(Int::class.java)
                         .first()
             }
