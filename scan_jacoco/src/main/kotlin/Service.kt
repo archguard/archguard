@@ -14,7 +14,7 @@ class Service(val bean2Sql: Bean2Sql) {
 
         val bundleCoverage = getBundleCoverage(config)
 
-        PrintWriter("output.sql").use { writer ->
+        PrintWriter("jacoco.sql").use { writer ->
             val bundle = Bundle(
                     instructionCovered = bundleCoverage.instructionCounter.coveredCount,
                     instructionMissed = bundleCoverage.instructionCounter.missedCount,
