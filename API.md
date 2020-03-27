@@ -201,7 +201,7 @@
     `200` | 正常返回 | 
     
     
-## 修改项目信息
+## 获取checkstyle概览
 + ##### URL地址: `/checkstyle/overview`
 + ##### 请求方式: `GET`
 
@@ -221,6 +221,32 @@
     :---:|:---:|:---:|:---:|:---:
     `message` | 检查的类型信息 | `String` | | N
     `count` | 总数 | `Int` | | N
+
++ #### Status
+    状态码 | 说明 | 备注
+    :---:|:---:|:---:
+    `200` | 正常返回 | 
+    
+## 获取信息
++ ##### URL地址: `/reports/overview`
++ ##### 请求方式: `GET`
+
++ ##### response:
+    ###### 样例
+    ```Json
+    {
+      "codeLines": 181811,
+      "commitCount": 0,
+      "contributors": 0
+    }
+    ```
+
+    ###### 详细
+    字段 | 说明 | 类型 | 备注 | 是否可空
+    :---:|:---:|:---:|:---:|:---:
+    `codeLines` | 代码行数 | `Int` | | N
+    `commitCount` | git提交次数 | `Int` | | N
+    `contributors` | git贡献者的数量 | `Int` | | N
 
 + #### Status
     状态码 | 说明 | 备注
