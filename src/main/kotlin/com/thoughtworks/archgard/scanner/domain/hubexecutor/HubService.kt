@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,8 @@ class HubService {
 
     @Autowired
     private lateinit var hubRepository: ProjectRepository
+    @Autowired
+    private lateinit var configureRepository: ConfigureRepository
 
     fun doScan(): Boolean {
         if (!isRunning) {
@@ -24,7 +27,7 @@ class HubService {
             val workspace = createTempDir()
             log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
 
-            val config: Map<String, Any> = HashMap()
+            val config = configureRepository.getConfigures()
 
             val context = ScanContext(gitRepo, workspace, config)
             val hubExecutor = HubExecutor(context, manager)

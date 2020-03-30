@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.bs
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.ScannerConfigure
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions
@@ -15,7 +16,7 @@ import java.io.File
 internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_get_bad_smell_report() {
-        val scanContext = ScanContext("repo", File(javaClass.classLoader.getResource("TestProject").toURI()), HashMap())
+        val scanContext = ScanContext("repo", File(javaClass.classLoader.getResource("TestProject").toURI()), ArrayList())
         badSmellScanner.scan(scanContext)
 
         val count = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
