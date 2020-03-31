@@ -1,18 +1,20 @@
 package com.thoughtworks.archgard
 
-import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
-import com.thoughtworks.archgard.scanner.infrastructure.db.StatisticDao
-import com.thoughtworks.archgard.scanner.infrastructure.db.StyleDao
-import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
+import com.thoughtworks.archgard.scanner.domain.hubexecutor.ScannerManager
+import com.thoughtworks.archgard.scanner.infrastructure.db.*
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
 import org.jdbi.v3.sqlobject.SqlObjectPlugin
 import org.jdbi.v3.sqlobject.kotlin.KotlinSqlObjectPlugin
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.ApplicationArguments
+import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
+import org.springframework.stereotype.Component
 import java.util.function.Consumer
 import javax.sql.DataSource
 
@@ -52,8 +54,24 @@ class ScannerApplication {
     fun statisticDao(jdbi: Jdbi): StatisticDao{
         return jdbi.onDemand(StatisticDao::class.java)
     }
+
+    @Bean
+    fun configDao(jdbi: Jdbi): ConfigDao {
+        return jdbi.onDemand(ConfigDao::class.java)
+    }
 }
 
 fun main(args: Array<String>) {
     runApplication<ScannerApplication>(*args)
+}
+
+@Component
+class ApplicationRunnerImpl : ApplicationRunner {
+    @Autowired
+    private lateinit var scannerManager: ScannerManager
+
+    override fun run(args: ApplicationArguments?) {
+        scannerManager.register()
+    }
+
 }
