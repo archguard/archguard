@@ -11,4 +11,8 @@ interface ConfigureRepository {
     fun deleteConfigure(id: String): Int
 
     fun updateConfigure(id: String, type: String?, key: String?, value: String?): Int
+
+    fun register(scanners: List<String>)
+
+    fun getRegistered(): List<ScannerConfigure>
 }

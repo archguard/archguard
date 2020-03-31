@@ -11,7 +11,7 @@ import java.util.*
 
 
 @Repository
-class ConfigureRepositoryImpl : ConfigureRepository {
+class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi
@@ -56,4 +56,16 @@ class ConfigureRepositoryImpl : ConfigureRepository {
                         .execute()
             }
 
+    override fun register(scanners: List<String>) {
+        configDao.saveAll(scanners.map { ScannerConfigure(UUID.randomUUID().toString(), it, "available", "false") })
+    }
+
+    override fun getRegistered(): List<ScannerConfigure>  =
+            jdbi.withHandle<List<ScannerConfigure>, Nothing> { handle ->
+                handle.registerRowMapper(ConstructorMapper.factory(ScannerConfigure::class.java))
+                handle
+                        .createQuery("select id, `type`, `key`, `value` from ScannerConfigure where `key` = 'available'")
+                        .mapTo(ScannerConfigure::class.java)
+                        .list()
+            }
 }
