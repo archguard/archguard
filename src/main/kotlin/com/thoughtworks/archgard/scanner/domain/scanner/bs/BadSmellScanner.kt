@@ -18,6 +18,7 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
     private val log = LoggerFactory.getLogger(BadSmellScanner::class.java)
 
     private val mapper = jacksonObjectMapper()
+    override val name: String = "BadSmell"
 
     override fun scan(context: ScanContext) {
         log.info("start scan bad smell report")

@@ -19,6 +19,7 @@ class StyleScanner : Scanner {
 
     @Autowired
     private lateinit var styleRepo: StyleRepo
+    override val name: String = "CheckStyle"
 
     override fun scan(context: ScanContext) {
         val styleReport = CheckStyleTool(context).getStyleReport()

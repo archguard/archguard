@@ -16,6 +16,7 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
     private val DELETE_CHANGE_ENTRY = "delete from change_entry where 1=1"
 
     private val log = LoggerFactory.getLogger(GitSourceScanner::class.java)
+    override val name: String = "GitSource"
 
     override fun scan(context: ScanContext) {
         log.info("start scan git source")

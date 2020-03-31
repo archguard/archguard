@@ -12,7 +12,7 @@ import java.util.*
 class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(StatisticScanner::class.java)
-
+    override val name: String = "Statistic"
 
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report")

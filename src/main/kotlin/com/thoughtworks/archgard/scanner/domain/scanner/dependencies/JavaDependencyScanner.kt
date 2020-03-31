@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class JavaDependencyScanner(@Value("spring.datasource.url") val dbUrl: String) : Scanner {
     private val log = LoggerFactory.getLogger(JavaDependencyScanner::class.java)
+    override val name: String = "JavaDependency"
 
     override fun scan(context: ScanContext) {
         log.info("start scan java dependency")
