@@ -16,7 +16,12 @@ class PackageService {
             it.aClz = it.aClz.substringBeforeLast('.')
             it.bClz = it.bClz.substringBeforeLast('.')
         }
-        results
+        results.filter {
+            !it.aClz.contains("$")
+                    && !it.aClz.contains("[")
+                    && !it.bClz.contains("$")
+                    && !it.bClz.contains("[")
+        }
                 .groupBy { it.aClz }
                 .forEach {
                     it.value.groupBy { i -> i.bClz }
