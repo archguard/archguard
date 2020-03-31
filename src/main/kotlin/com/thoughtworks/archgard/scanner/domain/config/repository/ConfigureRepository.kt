@@ -8,11 +8,11 @@ interface ConfigureRepository {
 
     fun getConfigures(): List<ScannerConfigure>
 
-    fun deleteConfigure(id: String): Int
-
     fun updateConfigure(id: String, type: String?, key: String?, value: String?): Int
 
     fun register(scanners: List<String>)
 
     fun getRegistered(): List<ScannerConfigure>
+
+    fun cleanRegistered(configs: List<String>)
 }

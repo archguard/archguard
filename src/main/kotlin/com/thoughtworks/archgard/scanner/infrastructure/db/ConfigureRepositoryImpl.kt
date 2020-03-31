@@ -39,13 +39,6 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
                         .list()
             }
 
-    override fun deleteConfigure(id: String): Int {
-        return jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("DELETE FROM ScannerConfigure where id = ?;", id)
-        }
-
-    }
-
     override fun updateConfigure(id: String, type: String?, key: String?, value: String?): Int =
             jdbi.withHandle<Int, Nothing> { handle ->
                 handle.createUpdate("update ScannerConfigure set `type` = :type, `key` = :key, `value` = :value, `updatedAt` = NOW() where id = :id")
@@ -60,7 +53,7 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
         configDao.saveAll(scanners.map { ScannerConfigure(UUID.randomUUID().toString(), it, "available", "false") })
     }
 
-    override fun getRegistered(): List<ScannerConfigure>  =
+    override fun getRegistered(): List<ScannerConfigure> =
             jdbi.withHandle<List<ScannerConfigure>, Nothing> { handle ->
                 handle.registerRowMapper(ConstructorMapper.factory(ScannerConfigure::class.java))
                 handle
@@ -68,4 +61,12 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
                         .mapTo(ScannerConfigure::class.java)
                         .list()
             }
+
+    override fun cleanRegistered(configs: List<String>) {
+        configs.forEach {
+            jdbi.withHandle<Int, Nothing> { handle ->
+                handle.execute("DELETE FROM ScannerConfigure where `type` = ?;", it)
+            }
+        }
+    }
 }

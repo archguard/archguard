@@ -38,6 +38,8 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
 
     fun register() {
         val types = configureRepository.getRegistered().map { it.type }
-        configureRepository.register(scanners.map { it.name }.filter { !types.contains(it) })
+        val names = scanners.map { it.name }
+        configureRepository.register(names.filter { !types.contains(it) })
+        configureRepository.cleanRegistered(types.filter { !names.contains(it) })
     }
 }
