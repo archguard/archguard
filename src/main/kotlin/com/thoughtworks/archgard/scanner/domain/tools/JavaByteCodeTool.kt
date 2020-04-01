@@ -9,7 +9,7 @@ class JavaByteCodeTool(val projectRoot: File, val dbUrl: String) : JavaDependenc
 
     override fun getDependencyReport(): File? {
         download()
-        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode", "."))
+        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "."))
         return null
     }
 
