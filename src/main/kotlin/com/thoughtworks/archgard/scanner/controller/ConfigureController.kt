@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.controller
 
-import com.thoughtworks.archgard.scanner.domain.config.model.ScannerConfigure
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archgard.scanner.domain.config.dto.UpdateDTO
 import com.thoughtworks.archgard.scanner.domain.config.service.ConfigureService
@@ -14,13 +14,9 @@ class ConfigureController {
     @Autowired
     private lateinit var configureService: ConfigureService
 
-    @PutMapping("/config")
-    fun addConfigure(@RequestBody configs: List<ConfigureDTO>): List<String> {
-        return configureService.addConfigure(configs)
-    }
 
     @GetMapping("/config")
-    fun getConfigures(): List<ScannerConfigure> {
+    fun getConfigures(): List<ToolConfigure> {
         return configureService.getConfigures()
     }
 

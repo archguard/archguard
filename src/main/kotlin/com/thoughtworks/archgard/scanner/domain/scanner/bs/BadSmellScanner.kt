@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.CocaTool
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaTool
@@ -18,7 +19,14 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
     private val log = LoggerFactory.getLogger(BadSmellScanner::class.java)
 
     private val mapper = jacksonObjectMapper()
-    override val name: String = "BadSmell"
+    override fun toolListGenerator(): List<ToolConfigure> {
+        val result = ArrayList<ToolConfigure>()
+        val config = HashMap<String, String>()
+        config["available"] = "false"
+        result.add(ToolConfigure("BadSmell", config))
+        return result
+    }
+
 
     override fun scan(context: ScanContext) {
         log.info("start scan bad smell report")

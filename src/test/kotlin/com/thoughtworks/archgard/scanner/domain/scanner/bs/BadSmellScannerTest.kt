@@ -1,7 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.bs
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ScannerConfigure
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions

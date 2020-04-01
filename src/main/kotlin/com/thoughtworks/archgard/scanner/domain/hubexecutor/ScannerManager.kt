@@ -19,7 +19,6 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
     fun execute(context: ScanContext) {
 //        val WORKER_THREAD_POOL = Executors.newFixedThreadPool(4)
 
-        val registered = configureRepository.getRegistered().filter { it.value == "true" }.map { it.type }
 
 //        val callables: List<Callable<Unit>> = scanners.map { s ->
 //            Callable {
@@ -44,9 +43,10 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
     }
 
     fun register() {
-        val types = configureRepository.getRegistered().map { it.type }
-        val names = scanners.map { it.name }
-        configureRepository.register(names.filter { !types.contains(it) })
-        configureRepository.cleanRegistered(types.filter { !names.contains(it) })
+        val toRegister = scanners.map { it.toolList }.flatten().map { it.getConfigNames() }.flatten()
+        val registered = configureRepository.getConfigures().map { it.getConfigNames() }.flatten()
+
+        configureRepository.register(toRegister.filter { !registered.contains(it) })
+        configureRepository.cleanRegistered(registered.filter { !toRegister.contains(it) })
     }
 }

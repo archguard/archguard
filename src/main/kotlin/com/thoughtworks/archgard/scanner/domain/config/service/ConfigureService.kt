@@ -2,7 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.config.service
 
 import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archgard.scanner.domain.config.dto.UpdateDTO
-import com.thoughtworks.archgard.scanner.domain.config.model.ScannerConfigure
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,10 +13,7 @@ class ConfigureService {
     @Autowired
     private lateinit var configureRepository: ConfigureRepository
 
-    fun addConfigure(configs: List<ConfigureDTO>): List<String> =
-            configs.map { configureRepository.addConfigure(it) }
-
-    fun getConfigures(): List<ScannerConfigure> {
+    fun getConfigures(): List<ToolConfigure> {
         return configureRepository.getConfigures()
     }
 
