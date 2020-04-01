@@ -32,13 +32,12 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
                 temp
             }.map { ToolConfigure(it.key, it.value) }
 
-    override fun updateConfigure(id: String, type: String?, key: String?, value: String?): Int =
+    override fun updateConfigure(type: String, key: String, value: String): Int =
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.createUpdate("update ScannerConfigure set `type` = :type, `key` = :key, `value` = :value, `updatedAt` = NOW() where id = :id")
+                handle.createUpdate("update ScannerConfigure set `value` = :value, `updatedAt` = NOW() where `type` = :type and `key` = :key")
                         .bind("type", type)
                         .bind("key", key)
                         .bind("value", value)
-                        .bind("id", id)
                         .execute()
             }
 

@@ -1,6 +1,5 @@
 package com.thoughtworks.archgard.scanner.domain.config.service
 
-import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archgard.scanner.domain.config.dto.UpdateDTO
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
@@ -17,9 +16,9 @@ class ConfigureService {
         return configureRepository.getConfigures()
     }
 
-    fun updateConfigure(configs: List<ConfigureDTO>): UpdateDTO {
-        val result = configs.map { configureRepository.updateConfigure(it.id, it.type, it.key, it.value) }.sumBy { it }
-        return if (result == configs.size) {
+    fun updateConfigure(configs: List<ToolConfigure>): UpdateDTO {
+        val result = configs.map { it.configs.map { i -> configureRepository.updateConfigure(it.type, i.key, i.value) } }.flatten().sumBy { it }
+        return if (result > 0) {
             UpdateDTO(true, "Update config success")
         } else {
             UpdateDTO(false, "There is no such config refer to this id")

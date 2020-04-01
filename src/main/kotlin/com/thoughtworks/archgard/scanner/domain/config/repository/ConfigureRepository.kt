@@ -7,7 +7,7 @@ interface ConfigureRepository {
 
     fun getConfigures(): List<ToolConfigure>
 
-    fun updateConfigure(id: String, type: String?, key: String?, value: String?): Int
+    fun updateConfigure(type: String, key: String, value: String): Int
 
     fun cleanRegistered(configs: List<String>)
 

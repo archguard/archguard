@@ -21,7 +21,7 @@ class ConfigureController {
     }
 
     @PostMapping("/config")
-    fun updateConfigure(@RequestBody configs: List<ConfigureDTO>): UpdateDTO {
+    fun updateConfigure(@RequestBody configs: List<ToolConfigure>): UpdateDTO {
         return configureService.updateConfigure(configs)
     }
 }

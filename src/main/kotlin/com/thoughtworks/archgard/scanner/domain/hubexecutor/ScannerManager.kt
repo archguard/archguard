@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.getConfigNames
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import org.slf4j.LoggerFactory
@@ -43,8 +44,8 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
     }
 
     fun register() {
-        val toRegister = scanners.map { it.toolList }.flatten().map { it.getConfigNames() }.flatten()
-        val registered = configureRepository.getConfigures().map { it.getConfigNames() }.flatten()
+        val toRegister = scanners.map { it.toolList }.flatten().map { getConfigNames(it) }.flatten()
+        val registered = configureRepository.getConfigures().map { getConfigNames(it) }.flatten()
 
         configureRepository.register(toRegister.filter { !registered.contains(it) })
         configureRepository.cleanRegistered(registered.filter { !toRegister.contains(it) })
