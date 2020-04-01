@@ -23,7 +23,7 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
 
         val registered = configureRepository.getRegistered().filter { it.value == "true" }.map { it.type }
 
-        val callables: List<Callable<Unit>> = scanners.filter { registered.contains(it.name) }.map { s ->
+        val callables: List<Callable<Unit>> = scanners.map { s ->
             Callable {
                 try {
                     s.scan(context)
