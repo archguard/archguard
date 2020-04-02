@@ -12,4 +12,8 @@ interface ConfigureRepository {
     fun cleanRegistered(configs: List<String>)
 
     fun register(scanners: List<String>)
+
+    fun getRegistered(): List<String>
+
+    fun ifAvailable(type: String): Boolean
 }

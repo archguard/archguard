@@ -56,4 +56,22 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
             }
         }
     }
+
+    override fun getRegistered(): List<String> =
+            jdbi.withHandle<List<String>, Nothing> { handle ->
+                handle
+                        .createQuery("select `type` from ScannerConfigure where `key` = 'available' and `value` = 'true'")
+                        .mapTo(String::class.java)
+                        .list()
+            }
+
+    override fun ifAvailable(type: String): Boolean =
+            jdbi.withHandle<Boolean, Nothing> { handle ->
+                handle
+                        .createQuery("select `value` from ScannerConfigure where `key` = 'available' and `type` = :type")
+                        .bind("type", type)
+                        .mapTo(Boolean::class.java)
+                        .findFirst()
+                        .orElse(false)
+            }
 }
