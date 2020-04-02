@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/coverage")
 class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
 
+    /**获得整个项目的覆盖率信息，数据包含六个维度，按 covered/missed 分成12项*/
     @GetMapping("/bundle")
     fun bundleCoverage(): Bundle {
         return coverageAnalyzer.analyzeExecFile()
     }
 
 
+    /**
+     * 获得覆盖率在指定区间的文件个数
+     * @param dms - dimension of coverage, such as instruction,line,branch,complexity,class,method
+     */
     @GetMapping("/rateBetween")
     fun countRateBetween(@RequestParam(name = "dms", defaultValue = "line") dms: String,
                          @RequestParam(name = "left", defaultValue = "0") left: Float,
@@ -25,6 +30,10 @@ class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
     }
 
 
+    /**
+     *
+     * @param dms - dimension of coverage, such as instruction,line,branch,complexity,class,method
+     */
     @GetMapping("/top")
     fun topN(@RequestParam(name = "dms", defaultValue = "line") dms: String,
              @RequestParam(name = "n", defaultValue = "5") n: Int
