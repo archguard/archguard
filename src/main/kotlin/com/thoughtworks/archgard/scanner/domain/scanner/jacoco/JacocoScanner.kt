@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.jacoco
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.JacocoTool
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
@@ -14,7 +15,13 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
     private val DELETE_ITEM = "delete from item where 1=1"
 
     private val log = LoggerFactory.getLogger(JacocoScanner::class.java)
-    override val name: String = "Jacoco"
+    override fun toolListGenerator(): List<ToolConfigure> {
+        val result = ArrayList<ToolConfigure>()
+        val config = HashMap<String, String>()
+        config["available"] = "false"
+        result.add(ToolConfigure("Jacoco", config))
+        return result
+    }
 
     override fun scan(context: ScanContext) {
         log.info("start scan Jacoco source")
