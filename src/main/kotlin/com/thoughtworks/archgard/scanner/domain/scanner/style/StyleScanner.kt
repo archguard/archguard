@@ -32,9 +32,11 @@ class StyleScanner : Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        val styleReport = CheckStyleTool(context).getStyleReport()
-        val checkStyles = styleReport.mapNotNull { mapTo(it) }.flatten()
-        save(checkStyles)
+        if (context.config.find { it.type == "CheckStyle" }?.configs?.get("available") == "true") {
+            val styleReport = CheckStyleTool(context).getStyleReport()
+            val checkStyles = styleReport.mapNotNull { mapTo(it) }.flatten()
+            save(checkStyles)
+        }
     }
 
     private fun mapTo(file: File): List<Style>? {
