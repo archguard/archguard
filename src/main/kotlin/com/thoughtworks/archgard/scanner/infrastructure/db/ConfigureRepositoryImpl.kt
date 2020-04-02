@@ -1,7 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
 import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
@@ -17,26 +16,19 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
     lateinit var jdbi: Jdbi
 
 
-    override fun getConfigures(): List<ToolConfigure> =
+    override fun getConfigures(): List<ConfigureDTO> =
             jdbi.withHandle<List<ConfigureDTO>, Nothing> { handle ->
                 handle.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
                 handle
                         .createQuery("select id, `type`, `key`, `value` from ScannerConfigure")
                         .mapTo(ConfigureDTO::class.java)
                         .list()
-            }.groupBy { it.type }.mapValues {
-                val temp = HashMap<String, String>()
-                it.value.forEach { i ->
-                    temp[i.key] = i.value
-                }
-                temp
-            }.map { ToolConfigure(it.key, it.value) }
+            }
 
-    override fun updateConfigure(type: String, key: String, value: String): Int =
+    override fun updateConfigure(id: String, value: String): Int =
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.createUpdate("update ScannerConfigure set `value` = :value, `updatedAt` = NOW() where `type` = :type and `key` = :key")
-                        .bind("type", type)
-                        .bind("key", key)
+                handle.createUpdate("update ScannerConfigure set `value` = :value, `updatedAt` = NOW() where `id` = :id")
+                        .bind("id", id)
                         .bind("value", value)
                         .execute()
             }

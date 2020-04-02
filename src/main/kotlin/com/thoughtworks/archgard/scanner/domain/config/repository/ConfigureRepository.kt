@@ -5,9 +5,9 @@ import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 
 interface ConfigureRepository {
 
-    fun getConfigures(): List<ToolConfigure>
+    fun getConfigures(): List<ConfigureDTO>
 
-    fun updateConfigure(type: String, key: String, value: String): Int
+    fun updateConfigure(id: String, value: String): Int
 
     fun cleanRegistered(configs: List<String>)
 
