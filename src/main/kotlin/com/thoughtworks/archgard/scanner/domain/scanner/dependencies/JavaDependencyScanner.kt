@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JavaDependencyScanner(@Value("spring.datasource.url") val dbUrl: String) : Scanner {
+class JavaDependencyScanner(@Value("${spring.datasource.url}") val dbUrl: String) : Scanner {
     private val log = LoggerFactory.getLogger(JavaDependencyScanner::class.java)
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
