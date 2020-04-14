@@ -3,7 +3,7 @@ package com.thoughtworks.archgard.scanner.domain.scanner.style
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archgard.scanner.domain.scanner.dependencies.JavaDependencyScanner
+import com.thoughtworks.archgard.scanner.domain.scanner.dependencies.JavaDependencyAnalysis
 import com.thoughtworks.archgard.scanner.domain.tools.CheckStyleTool
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
@@ -18,7 +18,7 @@ import kotlin.collections.HashMap
 @Service
 class StyleScanner : Scanner {
 
-    private val log = LoggerFactory.getLogger(JavaDependencyScanner::class.java)
+    private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
 
     @Autowired
     private lateinit var styleRepo: StyleRepo

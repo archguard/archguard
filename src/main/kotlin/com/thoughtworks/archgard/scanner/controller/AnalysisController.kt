@@ -1,19 +1,20 @@
 package com.thoughtworks.archgard.scanner.controller
 
+import com.thoughtworks.archgard.scanner.domain.scanner.dependencies.JavaDependencyAnalysis
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class AnalysisController {
+class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalysis) {
 
     @PostMapping("/dependency-analyses")
-    fun analyseDependency(): String {
-        return "Hello !"
+    fun analyseDependency() {
+        dependencyAnalysis.analysis();
     }
 
     @PostMapping("/sql-analyses")
-    fun analyseSql(): String {
-        return "Hello !"
+    fun analyseSql() {
     }
 }

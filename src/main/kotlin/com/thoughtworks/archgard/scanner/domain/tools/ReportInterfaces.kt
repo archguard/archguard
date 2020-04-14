@@ -6,10 +6,6 @@ interface BadSmellReport {
     fun getBadSmellReport(): File?
 }
 
-interface JavaDependencyReport {
-    fun getDependencyReport(): File?
-}
-
 interface GitReport {
     fun getGitReport(): File?
 }

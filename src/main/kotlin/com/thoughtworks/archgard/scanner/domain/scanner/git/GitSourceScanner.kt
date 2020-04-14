@@ -3,7 +3,6 @@ package com.thoughtworks.archgard.scanner.domain.scanner.git
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archgard.scanner.domain.scanner.dependencies.JavaDependencyScanner
 import com.thoughtworks.archgard.scanner.domain.tools.GitScannerTool
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory

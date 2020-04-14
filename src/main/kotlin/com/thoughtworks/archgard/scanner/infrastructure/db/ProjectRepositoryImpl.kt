@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.project.ProjectInfo
+import com.thoughtworks.archgard.scanner.domain.project.Project
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,11 +12,11 @@ class ProjectRepositoryImpl : ProjectRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getProjectInfo(): ProjectInfo =
-            jdbi.withHandle<ProjectInfo, Nothing> {
+    override fun getProjectInfo(): Project =
+            jdbi.withHandle<Project, Nothing> {
                 it
                         .createQuery("select id, name projectName, repo gitRepo from ProjectInfo")
-                        .mapTo(ProjectInfo::class.java)
+                        .mapTo(Project::class.java)
                         .first()
             }
 }

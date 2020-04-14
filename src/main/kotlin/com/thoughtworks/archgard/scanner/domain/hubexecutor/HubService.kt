@@ -26,10 +26,7 @@ class HubService {
     fun doScan(): Boolean {
         if (!isRunning) {
             isRunning = true
-            val gitRepo = hubRepository.getProjectInfo().gitRepo
-            val workspace = createTempDir()
-            log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
-
+            val project = hubRepository.getProjectInfo().build()
             val config = configureRepository.getConfigures()
                     .groupBy { it.type }.mapValues {
                         val temp = HashMap<String, String>()
@@ -39,7 +36,7 @@ class HubService {
                         temp
                     }.map { ToolConfigure(it.key, it.value) }
 
-            val context = ScanContext(gitRepo, workspace, config)
+            val context = ScanContext(project.gitRepo, project.workspace, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
             isRunning = false

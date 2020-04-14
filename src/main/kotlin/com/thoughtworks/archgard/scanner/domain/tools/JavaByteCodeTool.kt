@@ -5,12 +5,11 @@ import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeTool(val projectRoot: File, val dbUrl: String) : JavaDependencyReport {
+class JavaByteCodeTool(val projectRoot: File, val dbUrl: String) {
 
-    override fun getDependencyReport(): File? {
+    fun analyse() {
         download()
         scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "."))
-        return null
     }
 
     private fun download() {
