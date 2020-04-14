@@ -3,7 +3,7 @@ package com.thoughtworks.archgard.scanner.domain.scanner.style
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archgard.scanner.domain.scanner.dependencies.JavaDependencyAnalysis
+import com.thoughtworks.archgard.scanner.domain.analyser.JavaDependencyAnalysis
 import com.thoughtworks.archgard.scanner.domain.tools.CheckStyleTool
 import org.dom4j.Element
 import org.dom4j.io.SAXReader

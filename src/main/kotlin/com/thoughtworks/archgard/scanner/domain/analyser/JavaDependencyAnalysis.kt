@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.dependencies
+package com.thoughtworks.archgard.scanner.domain.analyser
 
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import com.thoughtworks.archgard.scanner.domain.tools.JavaByteCodeTool
@@ -14,7 +14,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                              @Autowired val projectRepository: ProjectRepository) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
 
-    fun analysis() {
+    fun analyse() {
         log.info("start scan java analysis")
         val build = projectRepository.getProjectInfo().build()
         val url = dbUrl.replace("://", "://" + username + ":" + password+"@")
