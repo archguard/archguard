@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
+                             @Value("\${spring.datasource.username}") val username: String,
+                             @Value("\${spring.datasource.password}") val password: String,
                              @Autowired val projectRepository: ProjectRepository) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
 
     fun analysis() {
         log.info("start scan java analysis")
         val build = projectRepository.getProjectInfo().build()
-        val javaByteCodeTool = JavaByteCodeTool(build.workspace, dbUrl)
+        val url = dbUrl.replace("://", "://" + username + ":" + password)
+        val javaByteCodeTool = JavaByteCodeTool(build.workspace, url)
         javaByteCodeTool.analyse()
         log.info("finished scan java analysis")
     }
