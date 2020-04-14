@@ -17,7 +17,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
     fun analysis() {
         log.info("start scan java analysis")
         val build = projectRepository.getProjectInfo().build()
-        val url = dbUrl.replace("://", "://" + username + ":" + password)
+        val url = dbUrl.replace("://", "://" + username + ":" + password+"@")
         val javaByteCodeTool = JavaByteCodeTool(build.workspace, url)
         javaByteCodeTool.analyse()
         log.info("finished scan java analysis")
