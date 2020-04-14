@@ -16,6 +16,13 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
         return CompiledProject(gitRepo, workspace)
     }
 
+    fun getSource(): CompiledProject {
+        val workspace = createTempDir()
+        log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
+        getSource(workspace, this.gitRepo)
+        return CompiledProject(gitRepo, workspace)
+    }
+
     private fun getSource(workspace: File, repo: String) {
         Git.cloneRepository()
                 .setDirectory(workspace)
