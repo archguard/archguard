@@ -24,7 +24,7 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        log.info("start scan Jacoco source")
+        log.info("start scan jacoco exec file")
         val jacocoTool = JacocoTool(context.workspace)
         val jacocoSql = jacocoTool.execToSql()
         if (jacocoSql != null) {
@@ -32,7 +32,7 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
             sqlScriptRunner.run(DELETE_ITEM)
             sqlScriptRunner.run(jacocoSql)
         }
-        log.info("finished scan git source")
+        log.info("finished scan jacoco exec file")
     }
 
 }
