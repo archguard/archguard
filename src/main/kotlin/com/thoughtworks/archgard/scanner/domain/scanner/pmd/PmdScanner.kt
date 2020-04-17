@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.pmd
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.PmdTool
 import org.dom4j.Element
@@ -14,7 +15,15 @@ import java.io.File
 @Service
 class PmdScanner(@Autowired val pmdRepoitory: PmdRepository) : Scanner {
     val log: Logger = LoggerFactory.getLogger(PmdScanner::class.java)
-    override val name: String = "pmd"
+
+    override fun toolListGenerator(): List<ToolConfigure> {
+        val result = ArrayList<ToolConfigure>()
+        val config = HashMap<String, String>()
+        config["available"] = "false"
+        config["reportFile"] = ""
+        result.add(ToolConfigure("pmd", config))
+        return result
+    }
 
     override fun scan(context: ScanContext) {
         val reportFiles = PmdTool(context).getReportFiles()
