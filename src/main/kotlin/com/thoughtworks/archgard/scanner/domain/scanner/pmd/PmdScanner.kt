@@ -44,7 +44,7 @@ class PmdScanner(@Autowired val pmdRepoitory: PmdRepository) : Scanner {
                 return list.flatten()
             }
         } catch (e: Exception) {
-            log.error("failed to parse checkstyle ", e)
+            log.error("failed to parse PMD ", e)
         }
         return null
     }
