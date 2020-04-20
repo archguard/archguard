@@ -32,9 +32,9 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
 
     private fun buildSource(workspace: File) {
         val pb = if (workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
-            ProcessBuilder("./mvnw", "clean", "package", "-DskipTests")
+            ProcessBuilder("./mvnw", "clean", "package", "-Dmaven.test.failure.ignore=true")
         } else {
-            ProcessBuilder("./gradlew", "clean", "build", "-x", "test")
+            ProcessBuilder("./gradlew", "--continue","clean", "build")
         }
         Processor.executeWithLogs(pb, workspace)
     }
