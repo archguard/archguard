@@ -1,5 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.project
 
+import com.thoughtworks.archgard.scanner.domain.project.BuildTool.GRADLE
+import com.thoughtworks.archgard.scanner.domain.project.BuildTool.MAVEN
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.eclipse.jgit.api.Git
 import org.slf4j.LoggerFactory
@@ -31,12 +33,17 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
     }
 
     private fun buildSource(workspace: File) {
-        val pb = if (workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
-            ProcessBuilder("./mvnw", "clean", "package", "-Dmaven.test.failure.ignore=true")
-        } else {
-            ProcessBuilder("./gradlew", "--continue","clean", "build")
+        val pb: ProcessBuilder = when (getBuildTool(workspace)) {
+            MAVEN -> ProcessBuilder("./mvnw", "clean", "package", "-Dmaven.test.failure.ignore=true")
+            GRADLE -> ProcessBuilder("./gradlew", "--continue", "clean", "build")
         }
         Processor.executeWithLogs(pb, workspace)
     }
 
+    private fun getBuildTool(workspace: File): BuildTool {
+        if (workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
+            return MAVEN
+        }
+        return GRADLE
+    }
 }
