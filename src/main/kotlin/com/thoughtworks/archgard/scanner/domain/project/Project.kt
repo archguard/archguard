@@ -14,15 +14,16 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
         val workspace = createTempDir()
         log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
         getSource(workspace, this.gitRepo)
-        buildSource(workspace)
-        return CompiledProject(gitRepo, workspace)
+        val buildTool = getBuildTool(workspace)
+        buildSource(workspace, buildTool)
+        return CompiledProject(gitRepo, workspace, buildTool)
     }
 
     fun getSource(): CompiledProject {
         val workspace = createTempDir()
         log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
         getSource(workspace, this.gitRepo)
-        return CompiledProject(gitRepo, workspace)
+        return CompiledProject(gitRepo, workspace, getBuildTool(workspace))
     }
 
     private fun getSource(workspace: File, repo: String) {
@@ -32,8 +33,8 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
                 .call()
     }
 
-    private fun buildSource(workspace: File) {
-        val pb: ProcessBuilder = when (getBuildTool(workspace)) {
+    private fun buildSource(workspace: File, buildTool: BuildTool) {
+        val pb: ProcessBuilder = when (buildTool) {
             MAVEN -> ProcessBuilder("./mvnw", "clean", "package", "-Dmaven.test.failure.ignore=true")
             GRADLE -> ProcessBuilder("./gradlew", "--continue", "clean", "build")
         }
