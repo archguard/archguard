@@ -1,8 +1,10 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.pmd
+package com.thoughtworks.archgard.scanner.infrastructure.db
 
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Repository
 
+@Repository
 class PmdRepository(@Autowired val jdbi: Jdbi) {
 
     fun save(vs: List<Violation>) {

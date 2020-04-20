@@ -4,6 +4,8 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.PmdTool
+import com.thoughtworks.archgard.scanner.infrastructure.db.PmdRepository
+import com.thoughtworks.archgard.scanner.infrastructure.db.Violation
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import org.slf4j.Logger

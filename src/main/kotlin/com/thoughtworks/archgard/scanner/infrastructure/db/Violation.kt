@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.pmd
+package com.thoughtworks.archgard.scanner.infrastructure.db
 
 
 data class Violation(val file: String,
