@@ -36,7 +36,7 @@ class HubService {
                         temp
                     }.map { ToolConfigure(it.key, it.value) }
 
-            val context = ScanContext(project.gitRepo, project.workspace, config)
+            val context = ScanContext(project.gitRepo, project.buildTool, project.workspace, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
             isRunning = false
