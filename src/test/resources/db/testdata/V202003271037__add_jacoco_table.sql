@@ -14,7 +14,7 @@ create table bundle(
         method_covered  int,
         class_missed    int,
         class_covered   int,
-        bundle_name varchar(5000),
+        bundle_name varchar(2000),
         scan_time bigint,
         primary key(bundle_name,scan_time)
 );
@@ -35,8 +35,9 @@ create table item(
         class_missed    int,
         class_covered   int,
         item_type varchar(10),
-        item_name varchar(5000),
-        bundle_name varchar(5000),
+        item_name varchar(2000),
+        bundle_name varchar(2000),
         scan_time bigint,
         primary key(item_name,bundle_name,scan_time)
 );
+
