@@ -149,7 +149,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.thoughtworks.archguard.jacoco.scanner.RunnerKt</mainClass>
+                                    <mainClass>com.thoghtworks.archguard.scan_jacoco.RunnerKt</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
