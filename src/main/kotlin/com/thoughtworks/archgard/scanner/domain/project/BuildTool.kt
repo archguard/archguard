@@ -1,8 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.project
 
-import java.io.File
+enum class BuildTool(val target: String) {
 
-enum class BuildTool {
-    GRADLE,
-    MAVEN;
+    GRADLE("build"),
+    MAVEN("target");
 }

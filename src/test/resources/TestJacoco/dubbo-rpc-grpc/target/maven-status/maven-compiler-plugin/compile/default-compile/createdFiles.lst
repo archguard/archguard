@@ -1,0 +1,13 @@
+org/apache/dubbo/rpc/protocol/grpc/interceptors/RpcContextInterceptor.class
+org/apache/dubbo/rpc/protocol/grpc/interceptors/GrpcConfigurator.class
+org/apache/dubbo/rpc/protocol/grpc/interceptors/ClientInterceptor.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcConfig.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcInvoker.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcProtocol.class
+org/apache/dubbo/rpc/protocol/grpc/ReferenceCountManagedChannel.class
+org/apache/dubbo/rpc/protocol/grpc/interceptors/ServerTransportFilter.class
+org/apache/dubbo/rpc/protocol/grpc/interceptors/ServerInterceptor.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcProtocol$GrpcRemotingServer.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcConstants.class
+org/apache/dubbo/rpc/protocol/grpc/GrpcOptionsUtils.class
+org/apache/dubbo/rpc/protocol/grpc/DubboHandlerRegistry.class

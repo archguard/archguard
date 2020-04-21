@@ -8,6 +8,7 @@ import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.io.File
 
 @Component
 class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
@@ -25,14 +26,23 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
 
     override fun scan(context: ScanContext) {
         log.info("start scan jacoco exec file")
-        val jacocoTool = JacocoTool(context.workspace)
-        val jacocoSql = jacocoTool.execToSql()
-        if (jacocoSql != null) {
-            sqlScriptRunner.run(DELETE_BUNDLE)
-            sqlScriptRunner.run(DELETE_ITEM)
-            sqlScriptRunner.run(jacocoSql)
-        }
+        sqlScriptRunner.run(DELETE_BUNDLE)
+        sqlScriptRunner.run(DELETE_ITEM)
+        getTargetProjects(context.workspace)
+                .forEach { w -> runSql(JacocoTool(context.workspace, w, context.buildTool).execToSql()) }
         log.info("finished scan jacoco exec file")
     }
 
+    private fun runSql(sqlFile: File?) {
+        if (sqlFile != null) {
+            sqlScriptRunner.run(sqlFile)
+        }
+    }
+
+    private fun getTargetProjects(workspace: File): List<File> {
+        return workspace.walkTopDown()
+                .filter { f -> f.absolutePath.endsWith("jacoco.exec") }
+                .map { f -> f.parentFile.parentFile }
+                .toList()
+    }
 }

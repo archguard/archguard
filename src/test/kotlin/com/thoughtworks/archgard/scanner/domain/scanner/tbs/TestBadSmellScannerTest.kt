@@ -4,7 +4,6 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.project.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
-import org.junit.Ignore
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

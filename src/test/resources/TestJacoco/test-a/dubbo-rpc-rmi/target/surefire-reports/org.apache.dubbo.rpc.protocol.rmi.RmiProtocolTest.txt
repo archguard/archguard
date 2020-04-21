@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.dubbo.rpc.protocol.rmi.RmiProtocolTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 7.704 s - in org.apache.dubbo.rpc.protocol.rmi.RmiProtocolTest

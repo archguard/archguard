@@ -1,0 +1,7 @@
+org/apache/dubbo/rpc/protocol/rmi/Type.class
+org/apache/dubbo/rpc/protocol/rmi/RmiProtocolTest.class
+org/apache/dubbo/rpc/protocol/rmi/RemoteService.class
+org/apache/dubbo/rpc/protocol/rmi/RemoteServiceImpl.class
+org/apache/dubbo/rpc/protocol/rmi/DemoServiceImpl.class
+org/apache/dubbo/rpc/protocol/rmi/DemoService.class
+org/apache/dubbo/rpc/protocol/rmi/RmiProtocolTest$NonStdRmiInterface.class

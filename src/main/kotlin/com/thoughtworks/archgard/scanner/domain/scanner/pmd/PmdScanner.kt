@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 @Service
-class PmdScanner(@Autowired val pmdRepoitory: PmdRepository) : Scanner {
+class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
     val log: Logger = LoggerFactory.getLogger(PmdScanner::class.java)
 
     override fun toolListGenerator(): List<ToolConfigure> {
@@ -60,8 +60,8 @@ class PmdScanner(@Autowired val pmdRepoitory: PmdRepository) : Scanner {
     }
 
     private fun save(vioList: List<Violation>) {
-        pmdRepoitory.clean()
-        pmdRepoitory.save(vioList)
+        pmdRepository.clean()
+        pmdRepository.save(vioList)
     }
 
 }
