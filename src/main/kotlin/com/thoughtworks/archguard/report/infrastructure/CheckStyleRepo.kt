@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class CheckStyleRepoIml : CheckStyleRepository {
+class CheckStyleRepo : CheckStyleRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi

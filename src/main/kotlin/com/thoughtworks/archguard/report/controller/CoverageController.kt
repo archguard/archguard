@@ -1,5 +1,9 @@
-package com.thoughtworks.archguard.coverage
+package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.domain.model.Bundle
+import com.thoughtworks.archguard.report.infrastructure.CoverageRepo
+import com.thoughtworks.archguard.report.domain.model.Dimension
+import com.thoughtworks.archguard.report.domain.model.TopItem
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -8,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/coverage")
-class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
+class CoverageController(@Autowired val coverageRepo: CoverageRepo) {
 
     /**获得整个项目的覆盖率信息，数据包含六个维度，按 covered/missed 分成12项*/
     @GetMapping("/bundle")
     fun bundleCoverage(): Bundle {
-        return coverageAnalyzer.analyzeExecFile()
+        return coverageRepo.analyzeExecFile()
     }
 
 
@@ -26,7 +30,7 @@ class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
                          @RequestParam(name = "left", defaultValue = "0") left: Float,
                          @RequestParam(name = "right", defaultValue = "2") right: Float): Int {
 
-        return coverageAnalyzer.countRateBetween(Dimension.valueOf(dms.toUpperCase()), left, right)
+        return coverageRepo.countRateBetween(Dimension.valueOf(dms.toUpperCase()), left, right)
     }
 
 
@@ -39,7 +43,7 @@ class CoverageController(@Autowired val coverageAnalyzer: CoverageAnalyzer) {
              @RequestParam(name = "n", defaultValue = "5") n: Int
     ): List<TopItem> {
         val dmsType = Dimension.valueOf(dms.toUpperCase())
-        return coverageAnalyzer.top(dmsType, n)
+        return coverageRepo.top(dmsType, n)
     }
 }
 

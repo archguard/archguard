@@ -1,10 +1,13 @@
-package com.thoughtworks.archguard.coverage
+package com.thoughtworks.archguard.report.infrastructure
 
+import com.thoughtworks.archguard.report.domain.model.Bundle
+import com.thoughtworks.archguard.report.domain.model.Dimension
+import com.thoughtworks.archguard.report.domain.model.TopItem
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Component
 
 @Component
-class CoverageAnalyzer(val jdbi: Jdbi) {
+class CoverageRepo(val jdbi: Jdbi) {
 
     fun analyzeExecFile(): Bundle {
         return jdbi.withHandle<Bundle, Exception> {
@@ -54,38 +57,5 @@ class CoverageAnalyzer(val jdbi: Jdbi) {
                     .bind("n", n)
                     .mapToBean(TopItem::class.java).list()
         }
-    }
-}
-
-data class Bundle(
-        var instructionMissed: Int,
-        var instructionCovered: Int,
-        var lineMissed: Int,
-        var lineCovered: Int,
-        var branchMissed: Int,
-        var branchCovered: Int,
-        var complexityMissed: Int,
-        var complexityCovered: Int,
-        var methodMissed: Int,
-        var methodCovered: Int,
-        var classMissed: Int,
-        var classCovered: Int,
-        var bundleName: String,
-        var scanTime: Long
-) {
-    constructor() : this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "no info in db", 0)
-}
-
-
-data class TopItem(var itemName: String, var coverageRate: Float) {
-    constructor() : this("", 0.0F)
-}
-
-enum class Dimension {
-    INSTRUCTION, LINE, BRANCH, COMPLEXITY, METHOD, CLASS;
-
-    fun rateSnippet(): String {
-        val dms = this.toString().toLowerCase()
-        return "${dms}_covered*1.00/(${dms}_covered+${dms}_missed)"
     }
 }

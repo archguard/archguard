@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class OverviewRepoImpl(@Autowired val jdbi: Jdbi) : OverviewRepository {
+class OverviewRepo(@Autowired val jdbi: Jdbi) : OverviewRepository {
     override fun getGitCommit(): List<GitCommitDBO> =
             jdbi.withHandle<List<GitCommitDBO>, Nothing> {
                 it.registerRowMapper(ConstructorMapper.factory(GitCommitDBO::class.java))
