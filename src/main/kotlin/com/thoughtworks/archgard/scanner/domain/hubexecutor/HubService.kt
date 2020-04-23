@@ -4,7 +4,7 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
-import org.slf4j.LoggerFactory
+import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -15,10 +15,12 @@ class HubService {
     private lateinit var manager: ScannerManager
 
     private var isRunning: Boolean = false
-    private val log = LoggerFactory.getLogger(HubService::class.java)
 
     @Autowired
     private lateinit var hubRepository: ProjectRepository
+
+    @Autowired
+    private lateinit var evaluationReportClient: EvaluationReportClient
 
     @Autowired
     private lateinit var configureRepository: ConfigureRepository
@@ -43,4 +45,11 @@ class HubService {
         }
         return isRunning
     }
+
+    fun evaluate(type: String): Boolean {
+        doScan()
+        evaluationReportClient.generate(type)
+        return isRunning
+    }
+
 }
