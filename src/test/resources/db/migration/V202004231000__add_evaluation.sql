@@ -6,4 +6,4 @@ create table evaluationReport(
         comment TEXT,
         improvements TEXT ,
         createdDate DATETIME
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;;

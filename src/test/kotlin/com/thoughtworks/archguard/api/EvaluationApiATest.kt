@@ -2,8 +2,12 @@ package com.thoughtworks.archguard.api
 
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
+import org.json.JSONArray
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
@@ -16,6 +20,7 @@ import javax.annotation.Resource
 
 @SpringBootTest
 @WebAppConfiguration
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class EvaluationApiATest {
 
     @Autowired
@@ -25,6 +30,7 @@ class EvaluationApiATest {
     private lateinit var wac: WebApplicationContext
 
     @Test
+    @Order(1)
     fun should_generate_evaluation() {
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/quality-evaluations")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -38,5 +44,22 @@ class EvaluationApiATest {
                     .mapTo(String::class.java).one()
         }
         assertEquals(idSaved, content)
+    }
+
+    @Test
+    @Order(2)
+    fun should_get_evaluations() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluations")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val jsonArray = JSONArray(result.response.contentAsString)
+        assertEquals(jsonArray.length(), 1)
+
+        val evaluation = jsonArray.getJSONObject(0)
+
+        assertEquals(evaluation.getString("name"), "质量评估")
+        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[\"测试保护\",\"数据库耦合\",\"模块耦合\",\"分层架构\",\"代码规范\",\"变更影响\"]")
     }
 }

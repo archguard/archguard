@@ -20,4 +20,20 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
         }
         return uuid
     }
+
+    fun findAll(): List<EvaluationReport> {
+        return jdbi.withHandle<List<EvaluationReport>, Nothing> {
+            it
+                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport order by createdDate desc")
+                    .map { rs, _ ->
+                        EvaluationReport(rs.getString("id"),
+                                rs.getTimestamp("createdDate").toLocalDateTime(),
+                                rs.getString("name"),
+                                rs.getString("dimensions").split(","),
+                                rs.getString("comment"),
+                                rs.getString("improvements").split(","))
+                    }.list()
+        }
+
+    }
 }
