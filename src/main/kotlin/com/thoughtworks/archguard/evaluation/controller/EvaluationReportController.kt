@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/evaluations")
+@RequestMapping("/evaluations", produces = ["application/json;charset=utf8"])
 class EvaluationReportController(@Autowired val evaluationService: EvaluationService) {
 
 
     @GetMapping("/{id}")
-    fun getEvaluation(@PathVariable id: String) {
-
+    fun getEvaluation(@PathVariable id: String):EvaluationReport? {
+        return evaluationService.getById(id)
     }
 
-    @GetMapping(produces = ["application/json;charset=utf8"])
+    @GetMapping
     fun getEvaluations(): List<EvaluationReport> {
-       return evaluationService.getAll()
+        return evaluationService.getAll()
     }
 
 }

@@ -36,4 +36,19 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
         }
 
     }
+
+    fun findById(id: String): EvaluationReport? {
+        return jdbi.withHandle<EvaluationReport?, Nothing> {
+            it
+                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport order where id='${id}'")
+                    .map { rs, _ ->
+                        EvaluationReport(rs.getString("id"),
+                                rs.getTimestamp("createdDate").toLocalDateTime(),
+                                rs.getString("name"),
+                                rs.getString("dimensions").split(","),
+                                rs.getString("comment"),
+                                rs.getString("improvements").split(","))
+                    }.firstOrNull()
+        }
+    }
 }

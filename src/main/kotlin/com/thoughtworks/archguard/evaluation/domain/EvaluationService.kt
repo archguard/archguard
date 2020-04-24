@@ -9,4 +9,8 @@ class EvaluationService(@Autowired val evaluationRepository: EvaluationRepositor
     fun getAll(): List<EvaluationReport> {
         return evaluationRepository.findAll()
     }
+
+    fun getById(id: String): EvaluationReport? {
+        return evaluationRepository.findById(id)
+    }
 }
