@@ -25,6 +25,14 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
                     .mapTo(Int::class.java).one()
         }
         assertEquals(count, 12)
+
+        val testCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
+            handle.createQuery("select overview_value from overview where overview_type='test'")
+                    .mapTo(Int::class.java).one()
+        }
+
+        assertEquals(testCount, 1)
+
     }
 
 }
