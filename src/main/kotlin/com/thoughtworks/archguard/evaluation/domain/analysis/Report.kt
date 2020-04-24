@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.evaluation.domain.report
+package com.thoughtworks.archguard.evaluation.domain.analysis
 
 interface Report {
     fun getImprovements(): List<String>
