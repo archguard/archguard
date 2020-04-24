@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.api
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -58,6 +59,24 @@ class EvaluationApiATest {
         assertEquals(jsonArray.length(), 1)
 
         val evaluation = jsonArray.getJSONObject(0)
+
+        assertEquals(evaluation.getString("name"), "质量评估")
+        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[\"测试保护\",\"数据库耦合\",\"模块耦合\",\"分层架构\",\"代码规范\",\"变更影响\"]")
+    }
+
+    @Test
+    @Order(3)
+    fun should_get_evaluation_by_id() {
+        val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
+            handle.createQuery("select id from evaluationReport")
+                    .mapTo(String::class.java).one()
+        }
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluations/$id")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val evaluation = JSONObject(result.response.contentAsString)
 
         assertEquals(evaluation.getString("name"), "质量评估")
         assertEquals(evaluation.getJSONArray("dimensions").toString(), "[\"测试保护\",\"数据库耦合\",\"模块耦合\",\"分层架构\",\"代码规范\",\"变更影响\"]")
