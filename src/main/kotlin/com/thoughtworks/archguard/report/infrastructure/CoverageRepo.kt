@@ -33,6 +33,28 @@ class CoverageRepo(val jdbi: Jdbi) {
 
     }
 
+    fun getAll(): List<Bundle> {
+        return jdbi.withHandle<List<Bundle>, Exception> {
+            val queryCoverage = """
+|               select 
+|                   instruction_missed ,instruction_covered , 
+                    line_missed ,line_covered , 
+                    branch_missed , branch_covered , 
+                    complexity_missed , complexity_covered , 
+                    method_missed ,method_covered , 
+                    class_missed , class_covered , 
+                    bundle_name, scan_time
+|               from bundle 
+|               """.trimMargin()
+
+
+            it.createQuery(queryCoverage)
+                    .mapToBean(Bundle::class.java)
+                    .list()
+        }
+
+    }
+
 
     fun countRateBetween(dmsType: Dimension, left: Float, right: Float): Int {
         return jdbi.withHandle<Int, Exception> {
@@ -52,7 +74,6 @@ class CoverageRepo(val jdbi: Jdbi) {
                 select item_name, ${dmsType.rateSnippet()} coverageRate 
                 from item where item_type='FILE'
                 order by coverageRate desc limit :n """.trimIndent()
-            println("sql = ${sql}")
             it.createQuery(sql)
                     .bind("n", n)
                     .mapToBean(TopItem::class.java).list()
