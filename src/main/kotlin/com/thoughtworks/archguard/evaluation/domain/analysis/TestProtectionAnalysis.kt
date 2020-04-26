@@ -17,8 +17,16 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
 
     override fun getQualityReport(): Report {
         return TestProtectionQualityReport(calculateUselessPercent(),
+                calculateLatestUselessTest(),
                 calculateLatestTestCoverage(),
                 calculateLatestModuleTestCoverage())
+    }
+
+    private fun calculateLatestUselessTest(): Int {
+        val hotSpotTest = hotSpotRepo.queryLatestHotSpotTest(100).distinct()
+        return testBadSmellRepo.getTestBadSmellByTest(hotSpotTest)
+                .filter { enumContains<TestBadSmellType>(it.type) }
+                .sumBy { it.size }
     }
 
     private fun calculateUselessPercent(): Double {
@@ -46,9 +54,10 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
     }
 }
 
-data class TestProtectionQualityReport(var uselessPercent: Double,
-                                       var latestTestCoverage: Double,
-                                       var latestModuleTestCoverage: Double) : Report {
+data class TestProtectionQualityReport(val UselessPercent: Double,
+                                       val latestUselessTest: Int,
+                                       val latestTestCoverage: Double,
+                                       val latestModuleTestCoverage: Double) : Report {
     override fun getImprovements(): List<String> {
         TODO("Not yet implemented")
     }

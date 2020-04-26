@@ -24,4 +24,15 @@ class TestBadSmellRepo(@Autowired private val jdbi: Jdbi) {
                     .mapTo(Int::class.java).one()
         }
     }
+
+    fun getTestBadSmellByTest(fileNames: List<String>): List<TestBadSmellCountDBO> {
+        return jdbi.withHandle<List<TestBadSmellCountDBO>, Nothing> { handle ->
+            handle.registerRowMapper(ConstructorMapper.factory(TestBadSmellCountDBO::class.java))
+            handle.createQuery("select type, count(id) as size from testBadSmell " +
+                    "where file_name in ( ${fileNames.joinToString("','", "'", "'")} )" +
+                    "group by type ")
+                    .mapTo(TestBadSmellCountDBO::class.java)
+                    .list()
+        }
+    }
 }

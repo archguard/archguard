@@ -43,4 +43,23 @@ class HotSpotRepo(@Autowired private val jdbi: Jdbi) {
         }
     }
 
+    fun queryLatestHotSpotTest(number: Int): List<String> {
+        return jdbi.withHandle<List<String>, Exception> {
+            val sql = """
+                select change_entry.new_path as new_path,
+                commit_log.commit_time as commit_time
+                from commit_log, change_entry 
+                where change_entry.cmt_id = commit_log.id 
+                    and (new_path like '%.java' or new_path like '%.kotlin')
+                    and new_path like '%test%'
+                    and change_entry.chng_mode <> 'DELETE'
+                order by commit_time
+                """.trimIndent()
+            it.createQuery(sql).setMaxRows(number)
+                    .map { rs, _ ->
+                        rs.getString("new_path")
+                    }.list()
+        }
+    }
+
 }
