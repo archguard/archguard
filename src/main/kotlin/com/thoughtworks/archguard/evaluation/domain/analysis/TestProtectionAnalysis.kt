@@ -18,7 +18,7 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
         return "测试保护"
     }
 
-    override fun getQualityReport(): Report {
+    override fun getQualityReport(): Report? {
         return TestProtectionQualityReport(calculateUselessPercent(),
                 calculateLatestUselessTest(),
                 calculateLatestTestCoverage(),
@@ -35,9 +35,13 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
     private fun calculateUselessPercent(): Double {
         val uselessTest = testBadSmellRepo.getTestBadSmellCount()
                 .filter { enumContains<TestBadSmellType>(it.type) }
-                .sumBy { it.size }.toDouble()
-        val totalTest = testBadSmellRepo.getTotalTestCount().toDouble()
-        return uselessTest / totalTest
+                .sumBy { it.size }
+        if (uselessTest == 0) {
+            return 0.0;
+        }
+        val totalTest = testBadSmellRepo.getTotalTestCount()
+
+        return uselessTest.toDouble() / totalTest
     }
 
     private fun calculateLatestTestCoverage(): Double {
@@ -65,14 +69,14 @@ data class TestProtectionQualityReport(val uselessPercent: Double,
         return getLevel().filterValues { it == ReportLevel.NEED_IMPROVED }
                 .keys.mapNotNull {
                     when (it) {
-                        TestProtectionQualityReportDms.LatestModuleTestCoverage -> {
-                            String.format("核心模块测试覆盖率是有%f，且存在%d个无效测试,对于核心模块，自动化测试不足，可能出现核心功能业务Bug。", latestModuleTestCoverage)
+                        ReportDms.LatestModuleTestCoverage -> {
+                            String.format("核心模块测试覆盖率是有%f，且存在%d个无效测试，对于核心模块，自动化测试不足，可能出现核心功能业务Bug。", latestModuleTestCoverage, latestUselessTest)
                         }
-                        TestProtectionQualityReportDms.LatestTestCoverage -> {
-                            String.format("核心模块测试覆盖率是有%f，且存在%d个无效测试,对于最近新增的功能，自动化测试不足，可能需要更多的手动测试来覆盖。", latestTestCoverage, latestUselessTest)
+                        ReportDms.LatestTestCoverage -> {
+                            String.format("核心模块测试覆盖率是有%f，且存在%d个无效测试，对于最近新增的功能，自动化测试不足，可能需要更多的手动测试来覆盖。", latestTestCoverage, latestUselessTest)
                         }
-                        TestProtectionQualityReportDms.UselessPercent -> {
-                            String.format("系统存无效测试占比%f, 这些测试不能有效显示功能是否遭到破坏，易误导测试人员，出现少测，漏侧现象。", uselessPercent)
+                        ReportDms.UselessTestPercent -> {
+                            String.format("系统存无效测试占比%f，这些测试不能有效显示功能是否遭到破坏，易误导测试人员，出现少测，漏侧现象。", uselessPercent)
                         }
 
                         else -> null
@@ -84,39 +88,39 @@ data class TestProtectionQualityReport(val uselessPercent: Double,
         val result = HashMap<ReportDms, ReportLevel>()
         when {
             uselessPercent > 0.05 -> {
-                result[TestProtectionQualityReportDms.UselessPercent] = ReportLevel.NEED_IMPROVED
+                result[ReportDms.UselessTestPercent] = ReportLevel.NEED_IMPROVED
             }
             uselessPercent > 0.03 -> {
-                result[TestProtectionQualityReportDms.UselessPercent] = ReportLevel.WELL
+                result[ReportDms.UselessTestPercent] = ReportLevel.WELL
             }
             uselessPercent < 0.03 -> {
-                result[TestProtectionQualityReportDms.UselessPercent] = ReportLevel.GOOD
+                result[ReportDms.UselessTestPercent] = ReportLevel.GOOD
             }
         }
 
         val testCoverage = latestTestCoverage - latestUselessTest * 0.01
         when {
             testCoverage > 0.8 -> {
-                result[TestProtectionQualityReportDms.LatestTestCoverage] = ReportLevel.GOOD
+                result[ReportDms.LatestTestCoverage] = ReportLevel.GOOD
             }
             testCoverage > 0.6 -> {
-                result[TestProtectionQualityReportDms.LatestTestCoverage] = ReportLevel.WELL
+                result[ReportDms.LatestTestCoverage] = ReportLevel.WELL
             }
             testCoverage < 0.6 -> {
-                result[TestProtectionQualityReportDms.LatestTestCoverage] = ReportLevel.NEED_IMPROVED
+                result[ReportDms.LatestTestCoverage] = ReportLevel.NEED_IMPROVED
             }
         }
 
         val coverage = latestModuleTestCoverage - latestUselessTest * 0.01
         when {
             coverage > 0.8 -> {
-                result[TestProtectionQualityReportDms.LatestModuleTestCoverage] = ReportLevel.GOOD
+                result[ReportDms.LatestModuleTestCoverage] = ReportLevel.GOOD
             }
             uselessPercent > 0.6 -> {
-                result[TestProtectionQualityReportDms.LatestModuleTestCoverage] = ReportLevel.WELL
+                result[ReportDms.LatestModuleTestCoverage] = ReportLevel.WELL
             }
             uselessPercent < 0.6 -> {
-                result[TestProtectionQualityReportDms.LatestModuleTestCoverage] = ReportLevel.NEED_IMPROVED
+                result[ReportDms.LatestModuleTestCoverage] = ReportLevel.NEED_IMPROVED
             }
         }
         return result
@@ -138,24 +142,6 @@ data class TestProtectionQualityReport(val uselessPercent: Double,
             }
         }
         return ReportLevel.NEED_IMPROVED
-    }
-}
-
-enum class TestProtectionQualityReportDms : ReportDms {
-    LatestModuleTestCoverage {
-        override fun getDms(): String {
-            return "latestModuleTestCoverage"
-        }
-    },
-    LatestTestCoverage {
-        override fun getDms(): String {
-            return "latestTestCoverage"
-        }
-    },
-    UselessPercent {
-        override fun getDms(): String {
-            return "uselessPercent"
-        }
     }
 }
 

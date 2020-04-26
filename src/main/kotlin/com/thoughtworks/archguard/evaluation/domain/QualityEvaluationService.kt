@@ -24,20 +24,20 @@ class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRe
 
 
     fun generateEvaluation(): String {
-        val analysesReports = analyses.keysToMap { it.getQualityReport() }
+        val analysesReports = analyses.keysToMap { it.getQualityReport() }.filterValues { it != null }
 
         return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(), name,
-                analysesReports.map { Dimension(it.key.getName(), it.value.getLevel()) },
+                analysesReports.map { Dimension(it.key.getName(), it.value!!.getLevel()) },
                 getComment(analysesReports),
-                analysesReports.values.flatMap { it.getImprovements() }))
+                analysesReports.values.flatMap { it!!.getImprovements() }))
     }
 
-    private fun getComment(analysesReports: Map<Analysis, Report>): String {
+    private fun getComment(analysesReports: Map<Analysis, Report?>): String {
         val commentTemplate: String = "质量考虑，系统" +
                 "%s方面做的不错，" +
                 "%s方面有待提升"
-        val goodComment = analysesReports.filterValues { it.getComment() == ReportLevel.GOOD }.map { it.key }.joinToString(",")
-        val improvedComment = analysesReports.filterValues { it.getComment() == ReportLevel.NEED_IMPROVED }.map { it.key }.joinToString(",")
+        val goodComment = analysesReports.filterValues { it!!.getComment() == ReportLevel.GOOD }.map { it.key.getName() }.joinToString(",")
+        val improvedComment = analysesReports.filterValues { it!!.getComment() == ReportLevel.NEED_IMPROVED }.map { it.key.getName() }.joinToString(",")
         return String.format(commentTemplate, goodComment, improvedComment)
     }
 }

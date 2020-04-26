@@ -61,7 +61,7 @@ class EvaluationApiATest {
         val evaluation = jsonArray.getJSONObject(0)
 
         assertEquals(evaluation.getString("name"), "质量评估")
-        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[\"测试保护\",\"数据库耦合\",\"模块耦合\",\"分层架构\",\"代码规范\",\"变更影响\"]")
+        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[{\"reportDms\":{\"LatestModuleTestCoverage\":\"NEED_IMPROVED\",\"UselessTestPercent\":\"GOOD\"},\"name\":\"测试保护\"}]")
     }
 
     @Test
@@ -79,6 +79,6 @@ class EvaluationApiATest {
         val evaluation = JSONObject(result.response.contentAsString)
 
         assertEquals(evaluation.getString("name"), "质量评估")
-        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[\"测试保护\",\"数据库耦合\",\"模块耦合\",\"分层架构\",\"代码规范\",\"变更影响\"]")
+        assertEquals(evaluation.getJSONArray("dimensions").toString(), "[{\"reportDms\":{\"LatestModuleTestCoverage\":\"NEED_IMPROVED\",\"UselessTestPercent\":\"GOOD\"},\"name\":\"测试保护\"}]")
     }
 }

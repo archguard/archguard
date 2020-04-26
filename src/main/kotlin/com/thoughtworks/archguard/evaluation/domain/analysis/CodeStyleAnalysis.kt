@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class CodeStyleAnalysis : Analysis {
-    override fun getQualityReport(): Report {
-        TODO("Not yet implemented")
+    override fun getQualityReport(): Report? {
+        return null
     }
 
     override fun getName(): String {

@@ -6,8 +6,10 @@ interface Report {
     fun getComment(): ReportLevel
 }
 
-interface ReportDms {
-    fun getDms(): String
+enum class ReportDms {
+    LatestModuleTestCoverage,
+    LatestTestCoverage,
+    UselessTestPercent
 }
 
 enum class ReportLevel {

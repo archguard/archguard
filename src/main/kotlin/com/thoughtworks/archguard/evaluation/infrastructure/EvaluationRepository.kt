@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.evaluation.infrastructure
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.thoughtworks.archguard.evaluation.domain.Dimension
 import com.thoughtworks.archguard.evaluation.domain.EvaluationReport
@@ -34,7 +35,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                         EvaluationReport(rs.getString("id"),
                                 rs.getTimestamp("createdDate").toLocalDateTime(),
                                 rs.getString("name"),
-                                mapper.readValue(rs.getString("dimensions"), List::class.java) as List<Dimension>,
+                                mapper.readValue(rs.getString("dimensions"), object : TypeReference<List<Dimension>>() {}),
                                 rs.getString("comment"),
                                 rs.getString("improvements").split(","))
                     }.list()
@@ -50,7 +51,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                         EvaluationReport(rs.getString("id"),
                                 rs.getTimestamp("createdDate").toLocalDateTime(),
                                 rs.getString("name"),
-                                mapper.readValue(rs.getString("dimensions"), List::class.java) as List<Dimension>,
+                                mapper.readValue(rs.getString("dimensions"), object : TypeReference<List<Dimension>>() {}),
                                 rs.getString("comment"),
                                 rs.getString("improvements").split(","))
                     }.firstOrNull()
