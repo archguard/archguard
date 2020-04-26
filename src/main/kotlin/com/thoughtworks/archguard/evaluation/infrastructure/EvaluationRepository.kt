@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.evaluation.infrastructure
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.thoughtworks.archguard.evaluation.domain.Dimension
 import com.thoughtworks.archguard.evaluation.domain.EvaluationReport
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,11 +11,14 @@ import java.util.*
 @Repository
 class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
 
+    private val mapper = ObjectMapper()
+
     fun save(evaluationReport: EvaluationReport): String {
+        val dimensions = mapper.writeValueAsString(evaluationReport.dimensions)
         val uuid = UUID.randomUUID().toString()
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("insert into evaluationReport(id, name, dimensions, comment, improvements, createdDate) " +
-                    "values ('${uuid}', '${evaluationReport.name}', '${evaluationReport.dimensions.joinToString(",")}'," +
+                    "values ('${uuid}', '${evaluationReport.name}', '${dimensions}'," +
                     " '${evaluationReport.comment}', '${evaluationReport.improvements.joinToString(",")}'," +
                     "'${evaluationReport.createdDate}')")
                     .execute()
@@ -29,7 +34,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                         EvaluationReport(rs.getString("id"),
                                 rs.getTimestamp("createdDate").toLocalDateTime(),
                                 rs.getString("name"),
-                                rs.getString("dimensions").split(","),
+                                mapper.readValue(rs.getString("dimensions"), List::class.java) as List<Dimension>,
                                 rs.getString("comment"),
                                 rs.getString("improvements").split(","))
                     }.list()
@@ -45,7 +50,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                         EvaluationReport(rs.getString("id"),
                                 rs.getTimestamp("createdDate").toLocalDateTime(),
                                 rs.getString("name"),
-                                rs.getString("dimensions").split(","),
+                                mapper.readValue(rs.getString("dimensions"), List::class.java) as List<Dimension>,
                                 rs.getString("comment"),
                                 rs.getString("improvements").split(","))
                     }.firstOrNull()

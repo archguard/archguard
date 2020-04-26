@@ -1,7 +1,10 @@
 package com.thoughtworks.archguard.evaluation.domain
 
 import com.thoughtworks.archguard.evaluation.domain.analysis.*
+import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
+import com.thoughtworks.archguard.evaluation.domain.analysis.report.ReportLevel
 import com.thoughtworks.archguard.evaluation.infrastructure.EvaluationRepository
+import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -18,18 +21,23 @@ class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRe
     private val name: String = "质量评估"
     private val analyses: List<Analysis> = listOf(testProtectionAnalysis, dbCouplingAnalysis, moduleCouplingAnalysis,
             layerAnalysis, codeStyleAnalysis, changeImpactAnalysis)
-    private val comment: String = "质量考虑，系统" +
-            "在测试保护，数据库耦合，模块耦合方面做的不错，" +
-            "在代码规范，变更影响方面阻碍较多，" +
-            "在分层架构方面有待提升"
-    private val improvements: List<String> = listOf("目前的分层架构检测出调用混乱，极易出现每层代码功能不单一")
+
 
     fun generateEvaluation(): String {
-        val analysesReports = analyses.map { it.getQualityReport() }
+        val analysesReports = analyses.keysToMap { it.getQualityReport() }
 
         return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(), name,
-                analyses.map { it.getName() },
-                comment,
-                analysesReports.flatMap { it.getImprovements() }))
+                analysesReports.map { Dimension(it.key.getName(), it.value.getLevel()) },
+                getComment(analysesReports),
+                analysesReports.values.flatMap { it.getImprovements() }))
+    }
+
+    private fun getComment(analysesReports: Map<Analysis, Report>): String {
+        val commentTemplate: String = "质量考虑，系统" +
+                "%s方面做的不错，" +
+                "%s方面有待提升"
+        val goodComment = analysesReports.filterValues { it.getComment() == ReportLevel.GOOD }.map { it.key }.joinToString(",")
+        val improvedComment = analysesReports.filterValues { it.getComment() == ReportLevel.NEED_IMPROVED }.map { it.key }.joinToString(",")
+        return String.format(commentTemplate, goodComment, improvedComment)
     }
 }
