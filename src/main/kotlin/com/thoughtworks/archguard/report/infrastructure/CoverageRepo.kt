@@ -33,7 +33,7 @@ class CoverageRepo(val jdbi: Jdbi) {
 
     }
 
-    fun getAll(): List<Bundle> {
+    fun getAllBundles(): List<Bundle> {
         return jdbi.withHandle<List<Bundle>, Exception> {
             val queryCoverage = """
 |               select 
@@ -77,6 +77,19 @@ class CoverageRepo(val jdbi: Jdbi) {
             it.createQuery(sql)
                     .bind("n", n)
                     .mapToBean(TopItem::class.java).list()
+        }
+    }
+
+    fun getClassCoverageByFiles(files: List<String>): List<Pair<Double, Double>> {
+        return jdbi.withHandle<List<Pair<Double, Double>>, Exception> {
+            val sql = """
+                select class_missed, class_covered 
+                from item where item_name in (${files.joinToString("','", "'", "'")})
+                """.trimIndent()
+            it.createQuery(sql)
+                    .map { rs, _ ->
+                        Pair(rs.getDouble("class_missed"), rs.getDouble("class_covered"))
+                    }.list()
         }
     }
 }

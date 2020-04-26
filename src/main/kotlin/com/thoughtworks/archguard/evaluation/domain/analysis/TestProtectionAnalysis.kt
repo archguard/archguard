@@ -2,19 +2,21 @@ package com.thoughtworks.archguard.evaluation.domain.analysis
 
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
 import com.thoughtworks.archguard.report.infrastructure.CoverageRepo
+import com.thoughtworks.archguard.report.infrastructure.HotSpotRepo
 import com.thoughtworks.archguard.report.infrastructure.TestBadSmellRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
-                             @Autowired val coverageRepo: CoverageRepo) : Analysis {
+                             @Autowired val coverageRepo: CoverageRepo,
+                             @Autowired val hotSpotRepo: HotSpotRepo) : Analysis {
     override fun getName(): String {
         return "测试保护"
     }
 
     override fun getQualityReport(): Report {
-        return TestProtectionQualityReport(calculateUselessPercent())
+        return TestProtectionQualityReport(calculateUselessPercent(), calculateLatestTestCoverage())
     }
 
     private fun calculateUselessPercent(): Double {
@@ -25,13 +27,16 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
         return uselessTest / totalTest
     }
 
-    private fun calculateTestCoverage(): Double {
-        val bundles = coverageRepo.getAll()
-
+    private fun calculateLatestTestCoverage(): Double {
+        val hotSpotFile = hotSpotRepo.queryLatestHotSpotPath(100)
+                .map { it.split("/src/main/java/")[1] }
+        return coverageRepo.getClassCoverageByFiles(hotSpotFile)
+                .map { it.second / it.first + it.second }
+                .average()
     }
 }
 
-data class TestProtectionQualityReport(val uselessPercent: Double) : Report {
+data class TestProtectionQualityReport(val uselessPercent: Double, val latestTestCoverage: Double) : Report {
 
     override fun getImprovements(): List<String> {
         TODO("Not yet implemented")
