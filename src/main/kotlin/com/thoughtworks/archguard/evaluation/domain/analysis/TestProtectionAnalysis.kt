@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.evaluation.domain.analysis
 
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.TestProtectionQualityReport
+import com.thoughtworks.archguard.evaluation.infrastructure.enumContains
 import com.thoughtworks.archguard.report.infrastructure.CoverageRepo
 import com.thoughtworks.archguard.report.infrastructure.HotSpotRepo
 import com.thoughtworks.archguard.report.infrastructure.TestBadSmellRepo
@@ -12,6 +13,13 @@ import org.springframework.stereotype.Service
 class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
                              @Autowired val coverageRepo: CoverageRepo,
                              @Autowired val hotSpotRepo: HotSpotRepo) : Analysis {
+    enum class TestBadSmellType {
+        IgnoreTest,
+        EmptyTest,
+        RedundantAssertionTest,
+        UnknownTest;
+    }
+
     override fun getName(): String {
         return "测试保护"
     }
@@ -58,15 +66,5 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
                 .average()
     }
 
-    enum class TestBadSmellType {
-        IgnoreTest,
-        EmptyTest,
-        RedundantAssertionTest,
-        UnknownTest;
 
-    }
-}
-
-inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
-    return enumValues<T>().any { it.name == name }
 }
