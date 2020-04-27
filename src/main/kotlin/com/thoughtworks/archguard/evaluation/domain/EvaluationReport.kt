@@ -13,5 +13,5 @@ data class EvaluationReport(val id: String?,
                             val improvements: List<String>)
 
 data class Dimension(val name: String, val reportDms: Map<ReportDms, ReportLevel>) : Serializable {
-    constructor() : this("", emptyMap())
+    constructor() : this("", LinkedHashMap())
 }
