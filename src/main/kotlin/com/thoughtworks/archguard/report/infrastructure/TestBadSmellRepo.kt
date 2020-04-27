@@ -20,7 +20,7 @@ class TestBadSmellRepo(@Autowired private val jdbi: Jdbi) {
 
     fun getTotalTestCount(): Int {
         return jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select overview_value from overview where overview_type='test'")
+            handle.createQuery("select overview_value from Overview where overview_type='test'")
                     .mapTo(Int::class.java).firstOrNull()
         }
     }
