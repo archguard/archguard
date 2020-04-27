@@ -4,6 +4,8 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.GitScannerTool
+import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
+import com.thoughtworks.archgard.scanner.infrastructure.client.GitReportClient
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +14,7 @@ import java.util.ArrayList
 import java.util.HashMap
 
 @Service
-class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
+class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner, @Autowired val gitReportClient: GitReportClient) : Scanner {
     private val DELETE_GIT_REPO = "delete from git_rep where 1=1"
     private val DELETE_COMMIT_LOG = "delete from commit_log where 1=1"
     private val DELETE_CHANGE_ENTRY = "delete from change_entry where 1=1"
@@ -36,6 +38,7 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
             sqlScriptRunner.run(DELETE_CHANGE_ENTRY)
             sqlScriptRunner.run(gitReport)
         }
+        gitReportClient.analyse()
         log.info("finished scan git source")
     }
 
