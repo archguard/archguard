@@ -54,4 +54,8 @@ class HubService {
         return isRunning
     }
 
+    fun getEvaluationStatus(type: String): Boolean {
+        return isRunning;
+    }
+
 }
