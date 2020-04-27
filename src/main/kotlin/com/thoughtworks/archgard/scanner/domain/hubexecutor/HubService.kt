@@ -48,7 +48,9 @@ class HubService {
 
     fun evaluate(type: String): Boolean {
         doScan()
-        evaluationReportClient.generate(type)
+        if (!isRunning) {
+            evaluationReportClient.generate(type)
+        }
         return isRunning
     }
 
