@@ -22,7 +22,7 @@ class HubController {
     }
 
     @GetMapping("/evaluations/status")
-    fun evaluate(@PathVariable type: String): ModuleScanResponse {
+    fun evaluate(@RequestParam type: String): ModuleScanResponse {
         return ModuleScanResponse(hubService.getEvaluationStatus(type))
     }
 
