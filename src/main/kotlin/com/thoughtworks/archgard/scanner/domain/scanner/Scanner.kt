@@ -7,7 +7,13 @@ interface Scanner {
     val toolList: List<ToolConfigure>
         get() = toolListGenerator()
 
+    fun getScannerName(): String
+
     fun toolListGenerator(): List<ToolConfigure>
 
     fun scan(context: ScanContext)
+
+    fun canScan(context: ScanContext): Boolean {
+        return context.canScan(getScannerName())
+    }
 }

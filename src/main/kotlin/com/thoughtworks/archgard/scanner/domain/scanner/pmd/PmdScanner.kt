@@ -17,13 +17,16 @@ import java.io.File
 @Service
 class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
     val log: Logger = LoggerFactory.getLogger(PmdScanner::class.java)
+    override fun getScannerName(): String {
+        return "pmd"
+    }
 
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
         config["reportFile"] = ""
-        result.add(ToolConfigure("pmd", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

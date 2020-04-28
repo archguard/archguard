@@ -30,13 +30,6 @@ class HubService {
             isRunning = true
             val project = hubRepository.getProjectInfo().build()
             val config = configureRepository.getConfigures()
-                    .groupBy { it.type }.mapValues {
-                        val temp = HashMap<String, String>()
-                        it.value.forEach { i ->
-                            temp[i.key] = i.value
-                        }
-                        temp
-                    }.map { ToolConfigure(it.key, it.value) }
 
             val context = ScanContext(project.gitRepo, project.buildTool, project.workspace, config)
             val hubExecutor = HubExecutor(context, manager)

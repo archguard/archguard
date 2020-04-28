@@ -1,9 +1,9 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.style
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.analyser.JavaDependencyAnalysis
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archgard.scanner.domain.analyser.JavaDependencyAnalysis
 import com.thoughtworks.archgard.scanner.domain.tools.CheckStyleTool
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
@@ -22,12 +22,16 @@ class StyleScanner : Scanner {
 
     @Autowired
     private lateinit var styleRepo: StyleRepo
+    override fun getScannerName(): String {
+        return "CheckStyle"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
         config["filePath"] = ""
-        result.add(ToolConfigure("CheckStyle", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

@@ -13,11 +13,15 @@ import java.util.*
 class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(StatisticScanner::class.java)
+    override fun getScannerName(): String {
+        return "Statistic"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
-        result.add(ToolConfigure("Statistic", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

@@ -16,11 +16,15 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
     private val DELETE_ITEM = "delete from item where 1=1"
 
     private val log = LoggerFactory.getLogger(JacocoScanner::class.java)
+    override fun getScannerName(): String {
+        return "Jacoco"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
-        result.add(ToolConfigure("Jacoco", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

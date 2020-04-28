@@ -1,11 +1,10 @@
 package com.thoughtworks.archgard.scanner.domain.config.repository
 
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
-import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 
 interface ConfigureRepository {
 
-    fun getConfigures(): List<ConfigureDTO>
+    fun getConfigures(): List<ToolConfigure>
 
     fun updateConfigure(id: String, value: String): Int
 

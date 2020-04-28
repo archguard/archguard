@@ -18,11 +18,15 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
     private val log = LoggerFactory.getLogger(TestBadSmellScanner::class.java)
 
     private val mapper = jacksonObjectMapper()
+    override fun getScannerName(): String {
+        return "TestBadSmell"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
-        result.add(ToolConfigure("TestBadSmell", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

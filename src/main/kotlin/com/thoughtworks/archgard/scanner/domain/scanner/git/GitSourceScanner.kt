@@ -4,14 +4,12 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.GitScannerTool
-import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import com.thoughtworks.archgard.scanner.infrastructure.client.GitReportClient
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 @Service
 class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner, @Autowired val gitReportClient: GitReportClient) : Scanner {
@@ -20,11 +18,15 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner, @Autowir
     private val DELETE_CHANGE_ENTRY = "delete from change_entry where 1=1"
 
     private val log = LoggerFactory.getLogger(GitSourceScanner::class.java)
+    override fun getScannerName(): String {
+        return "GitSource"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
-        result.add(ToolConfigure("GitSource", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
 

@@ -1,8 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
-import com.thoughtworks.archgard.scanner.domain.config.model.getConfigNames
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import org.slf4j.LoggerFactory
@@ -27,7 +25,9 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
         val callables: List<Callable<Unit>> = scanners.map { s ->
             Callable {
                 try {
-                    s.scan(context)
+                    if (s.canScan(context)) {
+                        s.scan(context)
+                    }
                 } catch (e: Exception) {
                     log.error("failed to scan {}", s.javaClass.simpleName, e)
                 }
@@ -38,15 +38,8 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
     }
 
     fun register() {
-        val toRegister = scanners.map { it.toolList }.flatten().map { getConfigNames(it) }.flatten()
-        val registered = configureRepository.getConfigures()
-                .groupBy { it.type }.mapValues {
-                    val temp = HashMap<String, String>()
-                    it.value.forEach { i ->
-                        temp[i.key] = i.value
-                    }
-                    temp
-                }.map { ToolConfigure(it.key, it.value) }.map { getConfigNames(it) }.flatten()
+        val toRegister = scanners.map { it.toolList }.flatten().map { it.getConfigNames() }.flatten()
+        val registered = configureRepository.getConfigures().map { it.getConfigNames() }.flatten()
 
         configureRepository.register(toRegister.filter { !registered.contains(it) })
         configureRepository.cleanRegistered(registered.filter { !toRegister.contains(it) })

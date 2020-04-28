@@ -17,16 +17,18 @@ import java.util.*
 class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(BadSmellScanner::class.java)
-
     private val mapper = jacksonObjectMapper()
+    override fun getScannerName(): String {
+        return "BadSmell"
+    }
+
     override fun toolListGenerator(): List<ToolConfigure> {
         val result = ArrayList<ToolConfigure>()
         val config = HashMap<String, String>()
         config["available"] = "false"
-        result.add(ToolConfigure("BadSmell", config))
+        result.add(ToolConfigure(getScannerName(), config))
         return result
     }
-
 
     override fun scan(context: ScanContext) {
         log.info("start scan bad smell report")
