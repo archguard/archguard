@@ -39,7 +39,7 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
 
     fun register() {
         val toRegister = scanners.map { it.toolList }.flatten().map { it.getConfigNames() }.flatten()
-        val registered = configureRepository.getConfigures().map { it.getConfigNames() }.flatten()
+        val registered = configureRepository.getToolConfigures().map { it.getConfigNames() }.flatten()
 
         configureRepository.register(toRegister.filter { !registered.contains(it) })
         configureRepository.cleanRegistered(registered.filter { !toRegister.contains(it) })

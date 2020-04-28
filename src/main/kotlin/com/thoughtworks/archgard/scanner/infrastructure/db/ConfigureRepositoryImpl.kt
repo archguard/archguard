@@ -17,7 +17,7 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
     lateinit var jdbi: Jdbi
 
 
-    override fun getConfigures(): List<ToolConfigure> =
+    override fun getConfigures(): List<ConfigureDTO> =
             jdbi.withHandle<List<ConfigureDTO>, Nothing> { handle ->
                 handle.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
                 handle
@@ -25,11 +25,15 @@ class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRe
                         .mapTo(ConfigureDTO::class.java)
                         .list()
             }
+
+    override fun getToolConfigures(): List<ToolConfigure> =
+            getConfigures()
                     .groupBy { it.type }
                     .mapValues {
                         it.value.map { i -> i.key to i.value }.toMap()
                     }
                     .map { ToolConfigure(it.key, it.value) }
+
 
     override fun updateConfigure(id: String, value: String): Int =
             jdbi.withHandle<Int, Nothing> { handle ->
