@@ -88,7 +88,20 @@ class CoverageRepo(val jdbi: Jdbi) {
                 """.trimIndent()
             it.createQuery(sql)
                     .map { rs, _ ->
-                        Pair(rs.getDouble("class_missed"), rs.getDouble("class_covered"))
+                        Pair(rs.getDouble("class_covered"), rs.getDouble("class_missed") + rs.getDouble("class_covered"))
+                    }.list()
+        }
+    }
+
+    fun getClassCoverageByBundle(files: List<String>): List<Pair<Double, Double>> {
+        return jdbi.withHandle<List<Pair<Double, Double>>, Exception> {
+            val sql = """
+                select class_missed, class_covered 
+                from item where item_type='PACKAGE' and bundle_name in (${files.joinToString("','", "'", "'")})
+                """.trimIndent()
+            it.createQuery(sql)
+                    .map { rs, _ ->
+                        Pair(rs.getDouble("class_covered"), rs.getDouble("class_missed") + rs.getDouble("class_covered"))
                     }.list()
         }
     }

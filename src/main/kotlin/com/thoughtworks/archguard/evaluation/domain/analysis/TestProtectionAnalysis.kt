@@ -53,16 +53,29 @@ class TestProtectionAnalysis(@Autowired val testBadSmellRepo: TestBadSmellRepo,
     private fun calculateLatestTestCoverage(): Double {
         val hotSpotFile = hotSpotRepo.queryLatestHotSpotPath(100)
                 .map { it.split("/src/main/java/")[1] }
-        return coverageRepo.getClassCoverageByFiles(hotSpotFile)
-                .map { it.second / it.first + it.second }
-                .average()
+        val classCoverageByFiles = coverageRepo.getClassCoverageByFiles(hotSpotFile)
+        return classCoverageByFiles
+                .map {
+                    if (it.second < 1) {
+                        0.0
+                    } else {
+                        it.first / it.second
+                    }
+                }
+                .average() * classCoverageByFiles.size / hotSpotFile.size
     }
 
     private fun calculateLatestModuleTestCoverage(): Double {
         val hotSpotFile = hotSpotRepo.queryLatestHotSpotPath(100)
                 .map { it.split("/src/main/java/")[0] }.distinct()
-        return coverageRepo.getClassCoverageByFiles(hotSpotFile)
-                .map { it.second / it.first + it.second }
+        return coverageRepo.getClassCoverageByBundle(hotSpotFile)
+                .map {
+                    if (it.second < 1) {
+                        0.0
+                    } else {
+                        it.first / it.second
+                    }
+                }
                 .average()
     }
 
