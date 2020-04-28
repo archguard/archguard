@@ -12,13 +12,13 @@ data class TestProtectionQualityReport(val uselessPercent: Double,
                 .keys.map {
                     when (it) {
                         ReportDms.LatestModuleTestCoverage -> {
-                            String.format("核心模块测试覆盖率是有%f%，且存在%d个无效测试，对于核心模块，自动化测试不足，可能出现核心功能业务Bug。", latestModuleTestCoverage*100, latestUselessTest)
+                            String.format("核心模块测试覆盖率是有%f%%，且存在%d个无效测试，对于核心模块，自动化测试不足，可能出现核心功能业务Bug。", latestModuleTestCoverage*100, latestUselessTest)
                         }
                         ReportDms.LatestTestCoverage -> {
-                            String.format("核心模块测试覆盖率是有%f%，且存在%d个无效测试，对于最近新增的功能，自动化测试不足，可能需要更多的手动测试来覆盖。", latestTestCoverage*100, latestUselessTest)
+                            String.format("核心模块测试覆盖率是有%f%%，且存在%d个无效测试，对于最近新增的功能，自动化测试不足，可能需要更多的手动测试来覆盖。", latestTestCoverage*100, latestUselessTest)
                         }
                         ReportDms.UselessTestPercent -> {
-                            String.format("系统存无效测试占比%f%，这些测试不能有效显示功能是否遭到破坏，易误导测试人员，出现少测，漏侧现象。", uselessPercent*100)
+                            String.format("系统存无效测试占比%f%%，这些测试不能有效显示功能是否遭到破坏，易误导测试人员，出现少测，漏侧现象。", uselessPercent*100)
                         }
                     }
                 }
