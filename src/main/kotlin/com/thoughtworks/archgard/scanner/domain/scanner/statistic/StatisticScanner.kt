@@ -42,7 +42,8 @@ class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
         val result = ArrayList<Statistic>()
         for (line in readLines) {
             val elements = line.split(",")
-            result.add(Statistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2], elements[7].toInt()))
+            result.add(Statistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
+                    elements[7].toInt(), elements[12].toInt(), elements[13].toInt()))
         }
         return result
     }
