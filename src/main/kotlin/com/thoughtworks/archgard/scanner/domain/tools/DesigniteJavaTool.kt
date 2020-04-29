@@ -35,7 +35,7 @@ class DesigniteJavaTool(val projectRoot: File) : BadSmellReport {
 
     private fun process() {
         download()
-        scan(listOf("java", "-jar", "DesigniteJava.jar", "-i", ".", "-o", "."))
+        scan(listOf("java", "-jar", "-Xmx1024m","DesigniteJava.jar", "-i", ".", "-o", "."))
     }
 
 
