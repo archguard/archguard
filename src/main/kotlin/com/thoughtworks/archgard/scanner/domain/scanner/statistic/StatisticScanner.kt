@@ -7,6 +7,7 @@ import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 import java.util.*
 
 @Service
@@ -35,7 +36,12 @@ class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
 
     private fun getStatistic(context: ScanContext): List<Statistic> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        val statisticReport = designiteJavaTool.getTypeMetricsReport()
+        return getTargetFile(context.workspace)
+                .map { toStatistic(designiteJavaTool.getTypeMetricsReport(it)) }
+                .flatten()
+    }
+
+    private fun toStatistic(statisticReport: File?): List<Statistic> {
         val lines = statisticReport?.readLines()
         val readLines = lines?.subList(1, lines.size).orEmpty()
 
@@ -46,5 +52,17 @@ class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
                     elements[7].toInt(), elements[12].toInt(), elements[13].toInt()))
         }
         return result
+    }
+
+    private fun getTargetFile(workspace: File): List<File> {
+        val target = workspace.walkTopDown()
+                .filter { f -> f.absolutePath.endsWith("pom.xml") || f.absolutePath.endsWith("build.gradle") }
+                .map { f -> f.parentFile.parentFile }
+                .toList()
+        if (target.size > 1) {
+            return target.filter { it.absolutePath != workspace.absolutePath }
+        } else {
+            return target
+        }
     }
 }

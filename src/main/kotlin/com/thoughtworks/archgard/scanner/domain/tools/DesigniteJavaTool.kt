@@ -5,14 +5,11 @@ import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import java.io.File
 import java.net.URL
 
-class DesigniteJavaTool(val projectRoot: File) : BadSmellReport {
+class DesigniteJavaTool(val projectRoot: File) {
 
-    override fun getBadSmellReport(): File? {
+    fun getBadSmellReport(target: File): File? {
         val report = File(projectRoot.toString() + "/designCodeSmells.csv")
-        if (report.exists()) {
-            return report
-        }
-        process()
+        process(target)
         return if (report.exists()) {
             report
         } else {
@@ -20,12 +17,9 @@ class DesigniteJavaTool(val projectRoot: File) : BadSmellReport {
         }
     }
 
-    fun getTypeMetricsReport(): File? {
+    fun getTypeMetricsReport(target: File): File? {
         val report = File(projectRoot.toString() + "/typeMetrics.csv")
-        if (report.exists()) {
-            return report
-        }
-        process()
+        process(target)
         return if (report.exists()) {
             report
         } else {
@@ -33,15 +27,19 @@ class DesigniteJavaTool(val projectRoot: File) : BadSmellReport {
         }
     }
 
-    private fun process() {
+    private fun process(target: File) {
         download()
-        scan(listOf("java", "-jar", "-Xmx2G","DesigniteJava.jar", "-i", ".", "-o", "."))
+        scan(listOf("java", "-jar", "DesigniteJava.jar", "-i", target.absolutePath, "-o", "."))
     }
 
 
     private fun download() {
+        val file = File(projectRoot.toString() + "/DesigniteJava.jar")
+        if (file.exists()) {
+            return
+        }
         val downloadUrl = "http://ci.archguard.org/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
-        FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/DesigniteJava.jar"))
+        FileOperator.download(URL(downloadUrl), file)
         val chmod = ProcessBuilder("chmod", "+x", "DesigniteJava.jar")
         chmod.directory(projectRoot)
         chmod.start().waitFor()
