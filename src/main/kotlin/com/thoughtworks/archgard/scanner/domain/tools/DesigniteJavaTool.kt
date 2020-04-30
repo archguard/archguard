@@ -7,7 +7,22 @@ import java.net.URL
 
 class DesigniteJavaTool(val projectRoot: File) {
 
-    fun getBadSmellReport(target: File): File? {
+    fun getBadSmellReport(): List<String> {
+        return getTargetFile(projectRoot).map { getBadSmellReport(it)?.readLines() }
+                .filterNotNull()
+                .filter { !it.contains("Project Name") }
+                .flatten()
+    }
+
+    fun getTypeMetricsReport(): List<String> {
+        return getTargetFile(projectRoot)
+                .map { getTypeMetricsReport(it)?.readLines() }
+                .filterNotNull()
+                .filter { !it.contains("Project Name") }
+                .flatten()
+    }
+
+    private fun getBadSmellReport(target: File): File? {
         val report = File(projectRoot.toString() + "/designCodeSmells.csv")
         process(target)
         return if (report.exists()) {
@@ -17,7 +32,7 @@ class DesigniteJavaTool(val projectRoot: File) {
         }
     }
 
-    fun getTypeMetricsReport(target: File): File? {
+    private fun getTypeMetricsReport(target: File): File? {
         val report = File(projectRoot.toString() + "/typeMetrics.csv")
         process(target)
         return if (report.exists()) {
@@ -49,5 +64,16 @@ class DesigniteJavaTool(val projectRoot: File) {
         Processor.executeWithLogs(ProcessBuilder(cmd), projectRoot)
     }
 
+    private fun getTargetFile(workspace: File): List<File> {
+        val target = workspace.walkTopDown()
+                .filter { f -> f.absolutePath.endsWith("pom.xml") || f.absolutePath.endsWith("build.gradle") }
+                .map { f -> f.parentFile.parentFile }
+                .toList()
+        if (target.size > 1) {
+            return target.filter { it.absolutePath != workspace.absolutePath }
+        } else {
+            return target
+        }
+    }
 
 }

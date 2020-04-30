@@ -43,17 +43,11 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
     private fun getDesigniteJavaBadSmell(context: ScanContext): List<BadSmell> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        val badSmellReport = designiteJavaTool.getBadSmellReport()
-        val lines = badSmellReport?.readLines()
-        val readLines = lines?.subList(1, lines.size).orEmpty()
-
-        val result = ArrayList<BadSmell>()
-        for (line in readLines) {
-            val elements = line.split(",")
-            result.add(BadSmell(UUID.randomUUID().toString(), elements[1] + "." + elements[2], 0,
-                    elements[3], 0, elements[3]))
+        return designiteJavaTool.getBadSmellReport().map {
+            val elements = it.split(",")
+            BadSmell(UUID.randomUUID().toString(), elements[1] + "." + elements[2], 0,
+                    elements[3], 0, elements[3])
         }
-        return result
     }
 
     private fun getCocaBadSmell(context: ScanContext): List<BadSmell> {
