@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class CocaTool(val projectRoot: File) : BadSmellReport, TestBadSmellReport {
+class CocaTool(val projectRoot: File) : TestBadSmellReport {
 
     private val log = LoggerFactory.getLogger(CocaTool::class.java)
 
-    override fun getBadSmellReport(): File? {
+    fun getBadSmellReport(): File? {
         download()
         scan(listOf("./coca", "bs", "-s", "type"))
         val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
