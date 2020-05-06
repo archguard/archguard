@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class OverviewRepo(@Autowired val jdbi: Jdbi) : OverviewRepository {
+class OverviewRepo(@Autowired val jdbi: Jdbi, @Autowired val statisticRepo: StatisticRepo) : OverviewRepository {
     override fun getGitCommit(): List<GitCommitDBO> =
             jdbi.withHandle<List<GitCommitDBO>, Nothing> {
                 it.registerRowMapper(ConstructorMapper.factory(GitCommitDBO::class.java))
@@ -17,12 +17,7 @@ class OverviewRepo(@Autowired val jdbi: Jdbi) : OverviewRepository {
                         .list()
             }
 
-    override fun getCodeLinesCount(): Int =
-            jdbi.withHandle<Int, Nothing> {
-                it
-                        .createQuery("select sum(`lines`) from Statistic where 1 = 1")
-                        .mapTo(Int::class.java)
-                        .first()
-            }
+    override fun getCodeLinesCount(): Int = statisticRepo.getCodeLinesCount()
+
 
 }
