@@ -1,37 +1,76 @@
 package com.thoughtworks.archguard.evaluation.domain.analysis
 
+import com.thoughtworks.archguard.evaluation.domain.analysis.report.ModuleCouplingQuality
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.ModuleCouplingQualityReport
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
-import com.thoughtworks.archguard.report.infrastructure.FanInOutDBO
+import com.thoughtworks.archguard.report.infrastructure.HotSpotRepo
 import com.thoughtworks.archguard.report.infrastructure.StatisticRepo
+import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo) : Analysis {
+class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
+                             @Autowired val hotSpotRepo: HotSpotRepo) : Analysis {
     override fun getName(): String {
         return "模块耦合"
     }
 
     override fun getQualityReport(): Report? {
-        val moduleFanInFanOut = statisticRepo.getModuleFanInFanOut()
-        val moduleCe = getModuleCe(moduleFanInFanOut)
-        val moduleCa = getModuleCa(moduleFanInFanOut)
-        return ModuleCouplingQualityReport(getModuleInstability(moduleCe, moduleCa),
-                moduleCe, moduleCa)
+        return ModuleCouplingQualityReport(getModuleCouplingQuality())
     }
 
-    private fun getModuleInstability(ce: Int, ca: Int): Double {
-        return ce.toDouble() / (ce + ca)
+    private fun getLatestModule(): List<String> {
+        return hotSpotRepo.queryLatestHotSpotPath(100).map { it.replace("/", ".") }
     }
 
-    /*离心耦合。被该包依赖的外部包的数目，该数值越大，说明该包越不独立（因为依赖了别的包），也越不稳定*/
-    private fun getModuleCe(fanInFanOut: List<FanInOutDBO>): Int {
-        return 0
+    private fun getModuleInstability(fanout: Int, fanin: Int): Double {
+        return fanout.toDouble() / (fanout + fanin)
     }
 
-    /*向心耦合。依赖该包（包含的类）的外部包（类）的数目，该数值越大，说明该包的担当的职责越大，也就越稳定*/
-    private fun getModuleCa(fanInFanOut: List<FanInOutDBO>): Int {
-        return 0
+    private fun getModuleCouplingQuality(): List<ModuleCouplingQuality> {
+        val fanInFanOut = statisticRepo.getModuleFanInFanOut()
+        val result = HashMap(initMap(fanInFanOut.map { it.packageName }, getLatestModule()))
+        fanInFanOut.forEach {
+            val key = getKeyLike(result.keys, it.packageName)
+            if (key != null) {
+                val fanOutsum: Int = result[key]?.second ?: 0 + it.fanout
+                val fanInsum: Int = result[key]?.first ?: 0 + it.fanin
+                result[key] = Pair(fanOutsum, fanInsum)
+            }
+        }
+        return result.map {
+            ModuleCouplingQuality(it.key,
+                    getModuleInstability(it.value.first, it.value.second),
+                    it.value.second, it.value.first)
+        }
+    }
+
+    private fun initMap(keys: List<String>, latestKeys: List<String>): Map<String, Pair<Int, Int>> {
+        val grouped = ArrayList<String>(keys)
+        keys.forEach {
+            if (keys.filter { k -> k != it }.find { k -> it.startsWith(k) } != null) {
+                grouped.remove(it)
+            }
+        }
+
+        val latest = ArrayList<String>()
+        for (latestKey in latestKeys) {
+            val mappedKey = ArrayList(grouped).find { latestKey.contains(it) }
+            if (mappedKey != null) {
+                latest.add(mappedKey)
+            }
+
+        }
+        return latest.keysToMap { Pair(0, 0) }
+    }
+
+    private fun getKeyLike(keys: Set<String>, key: String): String? {
+        keys.forEach {
+            if (key.startsWith(it)) {
+                return it
+            }
+        }
+        return null
     }
 }
