@@ -25,6 +25,9 @@ class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
     }
 
     private fun getModuleInstability(fanout: Int, fanin: Int): Double {
+        if (fanout == 0) {
+            return 0.0
+        }
         return fanout.toDouble() / (fanout + fanin)
     }
 
@@ -34,8 +37,8 @@ class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
         fanInFanOut.forEach {
             val key = getKeyLike(result.keys, it.packageName)
             if (key != null) {
-                val fanOutsum: Int = result[key]?.second ?: 0 + it.fanout
-                val fanInsum: Int = result[key]?.first ?: 0 + it.fanin
+                val fanOutsum: Int = it.fanout.plus(result[key]?.first ?: 0)
+                val fanInsum: Int = it.fanin.plus(result[key]?.second ?: 0)
                 result[key] = Pair(fanOutsum, fanInsum)
             }
         }

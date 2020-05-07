@@ -19,8 +19,8 @@ data class ModuleCouplingQualityReport(val latestQualityList: List<ModuleCouplin
     }
 
     override fun getLevel(): Map<ReportDms, ReportLevel> {
-        val count8 = latestQualityList.filter { it.moduleInstability > 0.9 }.size
-        val count8To6 = latestQualityList.filter { it.moduleInstability < 0.9 && it.moduleInstability > 0.6 }.size
+        val count8 = latestQualityList.filter { it.moduleInstability > 0.8 }.size
+        val count8To6 = latestQualityList.filter { it.moduleInstability < 0.8 && it.moduleInstability > 0.6 }.size
         val count6 = latestQualityList.filter { it.moduleInstability < 0.6 }.size
         val max = listOf(count8, count8To6, count6).max()
         val result = HashMap<ReportDms, ReportLevel>()
