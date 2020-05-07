@@ -29,7 +29,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
             jdbi.withHandle<Int, Nothing> {
                 it.createUpdate("update ProjectInfo set " +
                         "`name` = '${projectInfo.projectName}', " +
-                        "repo = '${projectInfo.gitRepo.joinToString(",")}' " +
+                        "repo = '${projectInfo.gitRepo.joinToString(",")}', " +
                         "sql_table = '${projectInfo.sql}'" +
                         "where id = '${projectInfo.id}'")
                         .execute()

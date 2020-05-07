@@ -28,7 +28,8 @@ enum class ReportDms {
     LatestModuleTestCoverage,
     LatestTestCoverage,
     UselessTestPercent,
-    LatestModuleInstability
+    LatestModuleInstability,
+    ScatteredCommit
 }
 
 enum class ReportLevel {
