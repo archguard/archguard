@@ -16,9 +16,9 @@ class ChangeImpactQualityReport(val scatteredPercent: Double) : Report {
     override fun getLevel(): Map<ReportDms, ReportLevel> {
         val result = HashMap<ReportDms, ReportLevel>()
         when {
-            scatteredPercent > 0.2 -> result[ReportDms.ScatteredCommit] = ReportLevel.NEED_IMPROVED
-            scatteredPercent > 0.1 -> result[ReportDms.ScatteredCommit] = ReportLevel.WELL
-            scatteredPercent < 0.1 -> result[ReportDms.ScatteredCommit] = ReportLevel.GOOD
+            scatteredPercent > 0.1 -> result[ReportDms.ScatteredCommit] = ReportLevel.NEED_IMPROVED
+            scatteredPercent > 0.05 -> result[ReportDms.ScatteredCommit] = ReportLevel.WELL
+            scatteredPercent < 0.05 -> result[ReportDms.ScatteredCommit] = ReportLevel.GOOD
         }
         return result
     }
