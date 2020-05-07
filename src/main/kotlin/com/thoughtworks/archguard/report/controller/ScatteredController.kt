@@ -32,7 +32,7 @@ class ScatteredController(@Autowired val service: ScatteredService) {
     }
 
     data class ResultOut(val commitLogOutList: List<CommitLogOut>) {
-        var commitCount: Int = 0
+        private var commitCount: Int = 0
 
         init {
             commitCount = commitLogOutList.size
