@@ -7,7 +7,7 @@ import org.eclipse.jgit.api.Git
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class Project(val id: String, val projectName: String, val gitRepo: String) {
+class Project(val id: String, val projectName: String, val gitRepo: String, val sql: String) {
     private val log = LoggerFactory.getLogger(Project::class.java)
 
     fun build(): CompiledProject {
@@ -16,14 +16,14 @@ class Project(val id: String, val projectName: String, val gitRepo: String) {
         getSource(workspace, this.gitRepo)
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
-        return CompiledProject(gitRepo, workspace, buildTool)
+        return CompiledProject(gitRepo, workspace, buildTool, sql)
     }
 
     fun getSource(): CompiledProject {
         val workspace = createTempDir()
         log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
         getSource(workspace, this.gitRepo)
-        return CompiledProject(gitRepo, workspace, getBuildTool(workspace))
+        return CompiledProject(gitRepo, workspace, getBuildTool(workspace), sql)
     }
 
     private fun getSource(workspace: File, repo: String) {
