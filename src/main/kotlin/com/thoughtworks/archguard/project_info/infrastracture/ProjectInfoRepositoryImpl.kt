@@ -15,21 +15,32 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun getProjectInfo(): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
                 it
-                        .createQuery("select id, name projectName, repo gitRepo from ProjectInfo")
-                        .map { rs, _ -> ProjectInfo(rs.getString("id"), rs.getString("projectName"), rs.getString("gitRepo").split(',')) }
+                        .createQuery("select id, name projectName, repo gitRepo, sql_table sql from ProjectInfo")
+                        .map { rs, _ ->
+                            ProjectInfo(rs.getString("id"),
+                                    rs.getString("projectName"),
+                                    rs.getString("gitRepo").split(','),
+                                    rs.getString("sql"))
+                        }
                         .firstOrNull()
             }
 
     override fun updateProjectInfo(projectInfo: ProjectInfo): Int =
             jdbi.withHandle<Int, Nothing> {
-                it.createUpdate("update ProjectInfo set `name` = '${projectInfo.projectName}', repo = '${projectInfo.gitRepo.joinToString(",")}' where id = '${projectInfo.id}'")
+                it.createUpdate("update ProjectInfo set " +
+                        "`name` = '${projectInfo.projectName}', " +
+                        "repo = '${projectInfo.gitRepo.joinToString(",")}' " +
+                        "sql_table = '${projectInfo.sql}'" +
+                        "where id = '${projectInfo.id}'")
                         .execute()
             }
 
     override fun addProjectInfo(projectInfo: ProjectInfo): String {
         val uuid = UUID.randomUUID().toString()
         jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("insert into ProjectInfo(id, name, repo, updatedAt, createdAt) values ('${uuid}', '${projectInfo.projectName}', '${projectInfo.gitRepo.joinToString(",")}', NOW(), NOW())")
+            it.createUpdate("insert into ProjectInfo(id, name, repo,sql_table, updatedAt, createdAt) values (" +
+                    "'${uuid}', '${projectInfo.projectName}', " +
+                    "'${projectInfo.gitRepo.joinToString(",")}', '${projectInfo.sql}', NOW(), NOW())")
                     .execute()
         }
         return uuid
