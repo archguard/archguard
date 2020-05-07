@@ -17,7 +17,9 @@ class ChangeImpactAnalysis(@Autowired val scatteredRepo: ScatteredRepo) : Analys
     override fun getQualityReport(): Report? {
         val time = Timestamp.valueOf(LocalDateTime.now().minusMonths(3)).time
         val scatteredCommits = scatteredRepo.findScatteredCommits(time, 8)
-        return ChangeImpactQualityReport(scatteredCommits)
+        val allCommits = scatteredRepo.findAllCommitLogs(time)
+        val scatteredPercent = scatteredCommits.size.toDouble() / allCommits.size
+        return ChangeImpactQualityReport(scatteredPercent)
     }
 
 }

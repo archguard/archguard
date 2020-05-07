@@ -39,6 +39,21 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
         }
     }
 
+    fun findAllCommitLogs(time: Long): List<CommitLog> {
+        return jdbi.withHandle<List<CommitLog>, Exception> {
+            val sql = """
+|                   select id, commit_time, short_msg, cmttr_name, rep_id , chgd_entry_cnt
+|                   from commit_log
+|                   where commit_time>:time
+|                   order by commit_time desc
+|                   """.trimMargin()
+            it.createQuery(sql)
+                    .bind("time", time)
+                    .map(commitRowMapper)
+                    .toList()
+        }
+    }
+
     fun appendChangedEntriesQuantityToCommitLog(): Int {
         var count = 0
         jdbi.useHandle<Exception> {
