@@ -15,7 +15,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun getProjectInfo(): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
                 it
-                        .createQuery("select id, name projectName, repo gitRepo, sql_table sql from ProjectInfo")
+                        .createQuery("select id, name projectName, repo gitRepo, sql_table `sql` from ProjectInfo")
                         .map { rs, _ ->
                             ProjectInfo(rs.getString("id"),
                                     rs.getString("projectName"),
@@ -40,7 +40,8 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("insert into ProjectInfo(id, name, repo,sql_table, updatedAt, createdAt) values (" +
                     "'${uuid}', '${projectInfo.projectName}', " +
-                    "'${projectInfo.gitRepo.joinToString(",")}', '${projectInfo.sql}', NOW(), NOW())")
+                    "'${projectInfo.gitRepo.joinToString(",")}', " +
+                    "'${projectInfo.sql}', NOW(), NOW())")
                     .execute()
         }
         return uuid
