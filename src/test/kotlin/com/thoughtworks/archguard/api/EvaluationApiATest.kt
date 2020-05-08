@@ -92,7 +92,7 @@ class EvaluationApiATest {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        assertEquals(result.response.contentAsString, "\n" +
+        assertEquals(result.response.contentAsString,
                 "{\"changeImpactReportDetail\":{\"scatteredCommits\":[],\"allCommits\":[],\"scatteredPercent\":\"NaN\"},\"codeStyleReportDetail\":null,\"dbCouplingReportDetail\":null,\"layerReportDetail\":null,\"moduleCouplingReportDetail\":{\"latestQualityList\":[],\"moduleInstabilityAverage\":\"NaN\",\"count8\":0,\"count8To6\":0,\"count6\":0},\"testProtectionReportDetail\":{\"testBs\":[],\"totalTest\":0,\"hotSpotTest\":[],\"hotSpotTestBadSmell\":[],\"classCoverageByFiles\":[],\"hotSpotFile\":[],\"classCoverageByModules\":[],\"hotSpotModule\":[],\"uselessTest\":0,\"latestUselessTest\":0,\"uselessPercent\":0.0,\"latestTestCoverage\":\"NaN\",\"latestModuleTestCoverage\":\"NaN\",\"testCoverage\":\"NaN\",\"modelCoverage\":\"NaN\"}}")
     }
 }
