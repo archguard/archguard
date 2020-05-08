@@ -16,15 +16,10 @@ class ChangeImpactAnalysis(@Autowired val scatteredRepo: ScatteredRepo) : Analys
 
     override fun getQualityReport(): Report? {
         scatteredRepo.appendChangedEntriesQuantityToCommitLog()
-        val scatteredPercent = getScatteredPercent(3)
-        return ChangeImpactQualityReport(scatteredPercent)
-    }
-
-    private fun getScatteredPercent(month: Long): Double {
-        val time = Timestamp.valueOf(LocalDateTime.now().minusMonths(month)).time
+        val time = Timestamp.valueOf(LocalDateTime.now().minusMonths(3)).time
         val scatteredCommits = scatteredRepo.findScatteredCommits(time, 8)
         val allCommits = scatteredRepo.findAllCommitLogs(time)
-        return scatteredCommits.size.toDouble() / allCommits.size
+        return ChangeImpactQualityReport(scatteredCommits, allCommits)
     }
 
 }

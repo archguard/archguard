@@ -22,6 +22,12 @@ interface Report {
         }
         return ReportLevel.NEED_IMPROVED
     }
+
+    fun getReportDetail(): ReportDetail
+}
+
+interface ReportDetail {
+
 }
 
 enum class ReportDms {
