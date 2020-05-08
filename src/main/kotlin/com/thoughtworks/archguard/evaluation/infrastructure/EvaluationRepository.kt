@@ -17,7 +17,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
 
     fun save(evaluationReport: EvaluationReport, evaluationReportDetail: EvaluationReportDetail): String {
         val dimensions = mapper.writeValueAsString(evaluationReport.dimensions)
-        val detail = mapper.writeValueAsString(evaluationReportDetail)
+        val detail = mapper.writeValueAsString(evaluationReportDetail).replace("'", "''")
         val uuid = UUID.randomUUID().toString()
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("insert into evaluationReport(id, name, dimensions, comment, improvements, detail, createdDate) " +
