@@ -29,7 +29,8 @@ class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRe
         return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(), name,
                 analysesReports.map { Dimension(it.key.getName(), it.value!!.getLevel()) },
                 getComment(analysesReports),
-                analysesReports.values.flatMap { it!!.getImprovements() }))
+                analysesReports.values.flatMap { it!!.getImprovements() }),
+                EvaluationReportDetail(analysesReports.values.map { it!!.getReportDetail() }))
     }
 
     private fun getComment(analysesReports: Map<Analysis, Report?>): String {

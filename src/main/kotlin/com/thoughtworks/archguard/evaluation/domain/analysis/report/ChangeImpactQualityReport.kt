@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.report.domain.model.CommitLog
 
 class ChangeImpactQualityReport(scatteredCommits: List<CommitLog>, allCommits: List<CommitLog>) : Report {
 
-    private val changeImpactReportDetail: ChangeImpactReportDetail = ChangeImpactReportDetail(scatteredCommits, allCommits)
+    private val detail: ChangeImpactReportDetail = ChangeImpactReportDetail(scatteredCommits, allCommits)
 
     override fun getImprovements(): List<String> {
         return getLevel().filterValues { it == ReportLevel.NEED_IMPROVED }
@@ -13,7 +13,7 @@ class ChangeImpactQualityReport(scatteredCommits: List<CommitLog>, allCommits: L
                     when (it) {
                         ReportDms.ScatteredCommit -> {
                             String.format("最近三个月提交的中有%f%%的散弹式提交，代码内聚性差，可能存在未识别的领域模型。",
-                                    changeImpactReportDetail.scatteredPercent * 100)
+                                    detail.scatteredPercent * 100)
                         }
                         else -> ""
                     }
@@ -22,7 +22,7 @@ class ChangeImpactQualityReport(scatteredCommits: List<CommitLog>, allCommits: L
 
     override fun getLevel(): Map<ReportDms, ReportLevel> {
         val result = HashMap<ReportDms, ReportLevel>()
-        val scatteredPercent = changeImpactReportDetail.scatteredPercent
+        val scatteredPercent = detail.scatteredPercent
         when {
             scatteredPercent > 0.1 -> result[ReportDms.ScatteredCommit] = ReportLevel.NEED_IMPROVED
             scatteredPercent > 0.05 -> result[ReportDms.ScatteredCommit] = ReportLevel.WELL
@@ -32,6 +32,6 @@ class ChangeImpactQualityReport(scatteredCommits: List<CommitLog>, allCommits: L
     }
 
     override fun getReportDetail(): ReportDetail {
-        return changeImpactReportDetail
+        return detail
     }
 }
