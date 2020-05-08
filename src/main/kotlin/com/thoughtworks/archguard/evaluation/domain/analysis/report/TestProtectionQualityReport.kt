@@ -1,12 +1,20 @@
 package com.thoughtworks.archguard.evaluation.domain.analysis.report
 
 import com.thoughtworks.archguard.evaluation.domain.TestProtectionReportDetail
+import com.thoughtworks.archguard.report.infrastructure.TestBadSmellCountDBO
 
-class TestProtectionQualityReport(uselessPercent: Double,
-                                  latestUselessTest: Int,
-                                  latestTestCoverage: Double,
-                                  latestModuleTestCoverage: Double) : Report {
-    private val detail: TestProtectionReportDetail = TestProtectionReportDetail(uselessPercent, latestUselessTest, latestTestCoverage, latestModuleTestCoverage)
+class TestProtectionQualityReport(testBs: List<TestBadSmellCountDBO>,
+                                  totalTest: Int,
+                                  hotSpotTest: List<String>,
+                                  hotSpotTestBadSmell: List<TestBadSmellCountDBO>,
+                                  classCoverageByFiles: List<Pair<Double, Double>>,
+                                  hotSpotFile: List<String>,
+                                  classCoverageByModules: List<Pair<Double, Double>>,
+                                  hotSpotModule: List<String>) : Report {
+    private val detail: TestProtectionReportDetail = TestProtectionReportDetail(testBs, totalTest,
+            hotSpotTest, hotSpotTestBadSmell,
+            classCoverageByFiles, hotSpotFile,
+            classCoverageByModules, hotSpotModule)
 
     override fun getImprovements(): List<String> {
         return getLevel().filterValues { it == ReportLevel.NEED_IMPROVED }

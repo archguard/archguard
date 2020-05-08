@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.evaluation.domain.analysis
 
-import com.thoughtworks.archguard.evaluation.domain.analysis.report.ModuleCouplingQuality
+import com.thoughtworks.archguard.evaluation.domain.ModuleCouplingQuality
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.ModuleCouplingQualityReport
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
 import com.thoughtworks.archguard.report.infrastructure.HotSpotRepo

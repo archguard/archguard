@@ -1,7 +1,9 @@
 package com.thoughtworks.archguard.evaluation.domain
 
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.ReportDetail
+import com.thoughtworks.archguard.evaluation.infrastructure.enumContains
 import com.thoughtworks.archguard.report.domain.model.CommitLog
+import com.thoughtworks.archguard.report.infrastructure.TestBadSmellCountDBO
 
 data class EvaluationReportDetail(var changeImpactReportDetail: ChangeImpactReportDetail?,
                                   var codeStyleReportDetail: CodeStyleReportDetail?,
@@ -25,9 +27,41 @@ data class EvaluationReportDetail(var changeImpactReportDetail: ChangeImpactRepo
 
 }
 
-data class TestProtectionReportDetail(val uselessPercent: Double, val latestUselessTest: Int, val latestTestCoverage: Double, val latestModuleTestCoverage: Double) : ReportDetail {
+data class TestProtectionReportDetail(val testBs: List<TestBadSmellCountDBO>, val totalTest: Int,
+                                      val hotSpotTest: List<String>,
+                                      val hotSpotTestBadSmell: List<TestBadSmellCountDBO>,
+                                      val classCoverageByFiles: List<Pair<Double, Double>>,
+                                      val hotSpotFile: List<String>,
+                                      val classCoverageByModules: List<Pair<Double, Double>>,
+                                      val hotSpotModule: List<String>) : ReportDetail {
+    val uselessTest = testBs.filter { enumContains<TestBadSmellType>(it.type) }.sumBy { it.size }
+    val latestUselessTest = hotSpotTestBadSmell.filter { enumContains<TestBadSmellType>(it.type) }.sumBy { it.size }
+    val uselessPercent = generateUselessPercent()
+    val latestTestCoverage = classCoverageByFiles.map {
+        if (it.second < 1) {
+            0.0
+        } else {
+            it.first / it.second
+        }
+    }.average() * classCoverageByFiles.size / hotSpotFile.size
+
+    val latestModuleTestCoverage = classCoverageByModules.map {
+        if (it.second < 1) {
+            0.0
+        } else {
+            it.first / it.second
+        }
+    }.average()
     val testCoverage = latestTestCoverage - latestUselessTest * 0.01
     val modelCoverage = latestModuleTestCoverage - latestUselessTest * 0.01
+
+    private fun generateUselessPercent(): Double {
+        if (uselessTest == 0) {
+            return 0.0
+        }
+        return uselessTest.toDouble() / totalTest
+    }
+
 }
 
 data class ModuleCouplingReportDetail(val latestQualityList: List<ModuleCouplingQuality>) : ReportDetail {
@@ -57,4 +91,11 @@ class CodeStyleReportDetail : ReportDetail {
 
 data class ChangeImpactReportDetail(val scatteredCommits: List<CommitLog>, val allCommits: List<CommitLog>) : ReportDetail {
     val scatteredPercent = scatteredCommits.size.toDouble() / allCommits.size
+}
+
+enum class TestBadSmellType {
+    IgnoreTest,
+    EmptyTest,
+    RedundantAssertionTest,
+    UnknownTest;
 }
