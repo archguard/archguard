@@ -79,4 +79,19 @@ class EvaluationApiATest {
 
         assertEquals(evaluation.getString("name"), "质量评估")
     }
+
+    @Test
+    @Order(4)
+    fun should_get_evaluation_detail_by_id() {
+        val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
+            handle.createQuery("select id from evaluationReport")
+                    .mapTo(String::class.java).one()
+        }
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluation-details/$id")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        assertEquals(result.response.contentAsString, "质量评估")
+    }
 }

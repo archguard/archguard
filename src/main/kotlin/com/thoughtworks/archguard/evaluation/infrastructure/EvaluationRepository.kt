@@ -60,4 +60,14 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                     }.firstOrNull()
         }
     }
+
+    fun findDetailById(id: String): EvaluationReportDetail? {
+        return jdbi.withHandle<EvaluationReportDetail?, Nothing> {
+            it
+                    .createQuery("select detail from evaluationReport where id='${id}'")
+                    .map { rs, _ ->
+                        mapper.readValue(rs.getString("detail"), EvaluationReportDetail::class.java)
+                    }.firstOrNull()
+        }
+    }
 }

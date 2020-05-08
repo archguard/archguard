@@ -13,4 +13,8 @@ class EvaluationService(@Autowired val evaluationRepository: EvaluationRepositor
     fun getById(id: String): EvaluationReport? {
         return evaluationRepository.findById(id)
     }
+
+    fun getDetailById(id: String): EvaluationReportDetail? {
+        return evaluationRepository.findDetailById(id)
+    }
 }
