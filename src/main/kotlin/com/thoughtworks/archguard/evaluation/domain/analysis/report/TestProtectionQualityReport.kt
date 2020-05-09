@@ -1,15 +1,16 @@
 package com.thoughtworks.archguard.evaluation.domain.analysis.report
 
+import com.thoughtworks.archguard.evaluation.domain.TestBadSmellCount
 import com.thoughtworks.archguard.evaluation.domain.TestProtectionReportDetail
-import com.thoughtworks.archguard.report.infrastructure.TestBadSmellCountDBO
+import com.thoughtworks.archguard.report.domain.model.Bundle
 
-class TestProtectionQualityReport(testBs: List<TestBadSmellCountDBO>,
+class TestProtectionQualityReport(testBs: List<TestBadSmellCount>,
                                   totalTest: Int,
                                   hotSpotTest: List<String>,
-                                  hotSpotTestBadSmell: List<TestBadSmellCountDBO>,
-                                  classCoverageByFiles: List<Pair<Double, Double>>,
+                                  hotSpotTestBadSmell: List<TestBadSmellCount>,
+                                  classCoverageByFiles: List<Bundle>,
                                   hotSpotFile: List<String>,
-                                  classCoverageByModules: List<Pair<Double, Double>>,
+                                  classCoverageByModules: List<Bundle>,
                                   hotSpotModule: List<String>) : Report {
     private val detail: TestProtectionReportDetail = TestProtectionReportDetail(testBs, totalTest,
             hotSpotTest, hotSpotTestBadSmell,

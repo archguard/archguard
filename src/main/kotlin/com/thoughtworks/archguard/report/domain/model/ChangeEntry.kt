@@ -5,4 +5,6 @@ data class ChangeEntry(
         val cognitiveComplexity: Int,
         val mode: String,
         val prvsCmtId: String?,
-        val prvsCgnCmplxty: Int)
+        val prvsCgnCmplxty: Int) {
+    constructor() : this("", 0, "", null, 0)
+}

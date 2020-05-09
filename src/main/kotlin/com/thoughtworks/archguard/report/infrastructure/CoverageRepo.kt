@@ -80,29 +80,27 @@ class CoverageRepo(val jdbi: Jdbi) {
         }
     }
 
-    fun getClassCoverageByFiles(files: List<String>): List<Pair<Double, Double>> {
-        return jdbi.withHandle<List<Pair<Double, Double>>, Exception> {
+    fun getClassCoverageByFiles(files: List<String>): List<Bundle> {
+        return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
-                select class_missed, class_covered 
+                select bundle_name, class_missed, class_covered 
                 from item where item_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)
-                    .map { rs, _ ->
-                        Pair(rs.getDouble("class_covered"), rs.getDouble("class_missed") + rs.getDouble("class_covered"))
-                    }.list()
+                    .mapToBean(Bundle::class.java)
+                    .list()
         }
     }
 
-    fun getClassCoverageByBundle(files: List<String>): List<Pair<Double, Double>> {
-        return jdbi.withHandle<List<Pair<Double, Double>>, Exception> {
+    fun getClassCoverageByBundle(files: List<String>): List<Bundle> {
+        return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
-                select class_missed, class_covered 
+                select bundle_name, class_missed, class_covered 
                 from item where item_type='PACKAGE' and bundle_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)
-                    .map { rs, _ ->
-                        Pair(rs.getDouble("class_covered"), rs.getDouble("class_missed") + rs.getDouble("class_covered"))
-                    }.list()
+                    .mapToBean(Bundle::class.java)
+                    .list()
         }
     }
 }

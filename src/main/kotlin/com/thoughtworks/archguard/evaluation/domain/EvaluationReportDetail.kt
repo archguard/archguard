@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.evaluation.domain
 
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.ReportDetail
 import com.thoughtworks.archguard.evaluation.infrastructure.enumContains
+import com.thoughtworks.archguard.report.domain.model.Bundle
 import com.thoughtworks.archguard.report.domain.model.CommitLog
-import com.thoughtworks.archguard.report.infrastructure.TestBadSmellCountDBO
 
 data class EvaluationReportDetail(var changeImpactReportDetail: ChangeImpactReportDetail? = null,
                                   var codeStyleReportDetail: CodeStyleReportDetail? = null,
@@ -27,30 +27,34 @@ data class EvaluationReportDetail(var changeImpactReportDetail: ChangeImpactRepo
 
 }
 
-data class TestProtectionReportDetail(val testBs: List<TestBadSmellCountDBO>? = null, val totalTest: Int? = null,
+data class TestProtectionReportDetail(val testBs: List<TestBadSmellCount>? = null, val totalTest: Int? = null,
                                       val hotSpotTest: List<String>? = null,
-                                      val hotSpotTestBadSmell: List<TestBadSmellCountDBO>? = null,
-                                      val classCoverageByFiles: List<Pair<Double, Double>>? = null,
+                                      val hotSpotTestBadSmell: List<TestBadSmellCount>? = null,
+                                      val classCoverageByFiles: List<Bundle>? = null,
                                       val hotSpotFile: List<String>? = null,
-                                      val classCoverageByModules: List<Pair<Double, Double>>? = null,
+                                      val classCoverageByModules: List<Bundle>? = null,
                                       val hotSpotModule: List<String>? = null) : ReportDetail {
-    val uselessTest = (testBs?.filter { enumContains<TestBadSmellType>(it.type) }?.sumBy { it.size }) ?: 0
-    val latestUselessTest = (hotSpotTestBadSmell?.filter { enumContains<TestBadSmellType>(it.type) }?.sumBy { it.size })
+    val uselessTest = (testBs?.filter {
+        enumContains<TestBadSmellType>(it.type)
+    }?.sumBy { it.size }) ?: 0
+    val latestUselessTest = (hotSpotTestBadSmell?.filter {
+        enumContains<TestBadSmellType>(it.type)
+    }?.sumBy { it.size })
             ?: 0
     val uselessPercent = generateUselessPercent()
     val latestTestCoverage = (classCoverageByFiles?.map {
-        if (it.second < 1) {
+        if (it.classCovered.plus(it.classMissed) < 1) {
             0.0
         } else {
-            it.first.div(it.second)
+            it.classCovered.toDouble().div(it.classCovered.plus(it.classMissed))
         }
     }?.average()?.times(classCoverageByFiles.size)?.div((hotSpotFile?.size) ?: 1)) ?: 0.0
 
     val latestModuleTestCoverage = (classCoverageByModules?.map {
-        if (it.second < 1) {
+        if (it.classCovered.plus(it.classMissed) < 1) {
             0.0
         } else {
-            it.first.div(it.second)
+            it.classCovered.toDouble().div(it.classCovered.plus(it.classMissed))
         }
     }?.average()) ?: 0.0
     val testCoverage = latestTestCoverage.minus(latestUselessTest.times(0.01))
@@ -62,7 +66,10 @@ data class TestProtectionReportDetail(val testBs: List<TestBadSmellCountDBO>? = 
         }
         return uselessTest.toDouble().div(totalTest ?: 1)
     }
+}
 
+class TestBadSmellCount(val type: String, val size: Int) {
+    constructor() : this("", 0)
 }
 
 data class ModuleCouplingReportDetail(val latestQualityList: List<ModuleCouplingQuality>? = null) : ReportDetail {
@@ -76,7 +83,9 @@ data class ModuleCouplingReportDetail(val latestQualityList: List<ModuleCoupling
 data class ModuleCouplingQuality(val packageName: String,
                                  val moduleInstability: Double,
                                  val moduleFanIn: Int,
-                                 val moduleFanOut: Int)
+                                 val moduleFanOut: Int) {
+    constructor() : this("", 0.0, 0, 0)
+}
 
 class LayerReportDetail : ReportDetail {
 
