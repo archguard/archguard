@@ -15,7 +15,7 @@ class ProjectRepositoryImpl : ProjectRepository {
     override fun getProjectInfo(): Project =
             jdbi.withHandle<Project, Nothing> {
                 it
-                        .createQuery("select id, name projectName, repo gitRepo, sql_table from ProjectInfo")
+                        .createQuery("select id, name projectName, repo gitRepo, sql_table `sql` from ProjectInfo")
                         .mapTo(Project::class.java)
                         .first()
             }
