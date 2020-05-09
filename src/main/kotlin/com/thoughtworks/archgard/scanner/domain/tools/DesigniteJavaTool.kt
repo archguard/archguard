@@ -46,7 +46,7 @@ class DesigniteJavaTool(val projectRoot: File) {
 
     private fun process(target: File) {
         download(target)
-        scan(listOf("java", "-jar", "-Xmx", "${target.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "."))
+        scan(listOf("java", "-jar", "-Xmx1G", "${target.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "."))
     }
 
     private fun download(target: File) {
