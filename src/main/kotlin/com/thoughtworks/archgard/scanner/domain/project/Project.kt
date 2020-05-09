@@ -4,10 +4,11 @@ import com.thoughtworks.archgard.scanner.domain.project.BuildTool.GRADLE
 import com.thoughtworks.archgard.scanner.domain.project.BuildTool.MAVEN
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.eclipse.jgit.api.Git
+import org.jdbi.v3.core.mapper.reflect.ColumnName
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class Project(val id: String, val projectName: String, val gitRepo: String, val sql: String) {
+class Project(val id: String, val projectName: String, val gitRepo: String, @ColumnName("sql_table") val sql: String) {
     private val log = LoggerFactory.getLogger(Project::class.java)
 
     fun build(): CompiledProject {
