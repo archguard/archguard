@@ -8,7 +8,7 @@ import org.jdbi.v3.core.mapper.reflect.ColumnName
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class Project(val id: String, val projectName: String, val gitRepo: String, val sql: String) {
+class Project(val id: String, val projectName: String, val gitRepo: String, val sql: String?) {
     private val log = LoggerFactory.getLogger(Project::class.java)
 
     fun build(): CompiledProject {
