@@ -7,4 +7,6 @@ data class CommitLog(
         val committer_name: String,
         val repId: Long,
         val chgdEntryCnt: Int,
-        val entries: Set<ChangeEntry>)
+        val entries: Set<ChangeEntry>) {
+    constructor() : this("", 1L, "", "", 1L, 1, emptySet())
+}
