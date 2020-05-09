@@ -14,7 +14,14 @@ data class Bundle(
         var classMissed: Int,
         var classCovered: Int,
         var bundleName: String,
-        var scanTime: Long
-) {
+        var scanTime: Long) {
     constructor() : this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "no info in db", 0)
+
+    fun getClassCoveredPercent(): Double {
+        return if (classCovered.plus(classMissed) < 1) {
+            0.0
+        } else {
+            classCovered.toDouble().div(classCovered.plus(classMissed))
+        }
+    }
 }

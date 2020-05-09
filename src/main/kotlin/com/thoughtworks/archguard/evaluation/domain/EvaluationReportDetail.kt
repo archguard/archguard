@@ -34,31 +34,20 @@ data class TestProtectionReportDetail(val testBs: List<TestBadSmellCount>? = nul
                                       val hotSpotFile: List<String>? = null,
                                       val classCoverageByModules: List<Bundle>? = null,
                                       val hotSpotModule: List<String>? = null) : ReportDetail {
-    val uselessTest = (testBs?.filter {
-        enumContains<TestBadSmellType>(it.type)
-    }?.sumBy { it.size }) ?: 0
-    val latestUselessTest = (hotSpotTestBadSmell?.filter {
-        enumContains<TestBadSmellType>(it.type)
-    }?.sumBy { it.size })
-            ?: 0
+    val uselessTest = getUselessTest(testBs)
+    val latestUselessTest = getUselessTest(hotSpotTestBadSmell)
     val uselessPercent = generateUselessPercent()
-    val latestTestCoverage = (classCoverageByFiles?.map {
-        if (it.classCovered.plus(it.classMissed) < 1) {
-            0.0
-        } else {
-            it.classCovered.toDouble().div(it.classCovered.plus(it.classMissed))
-        }
-    }?.average()?.times(classCoverageByFiles.size)?.div((hotSpotFile?.size) ?: 1)) ?: 0.0
-
-    val latestModuleTestCoverage = (classCoverageByModules?.map {
-        if (it.classCovered.plus(it.classMissed) < 1) {
-            0.0
-        } else {
-            it.classCovered.toDouble().div(it.classCovered.plus(it.classMissed))
-        }
-    }?.average()) ?: 0.0
+    val latestTestCoverage = (classCoverageByFiles?.map { it.getClassCoveredPercent() }?.average()?.times(classCoverageByFiles.size)?.div((hotSpotFile?.size)
+            ?: 1)) ?: 0.0
+    val latestModuleTestCoverage = (classCoverageByModules?.map { it.getClassCoveredPercent() }?.average()) ?: 0.0
     val testCoverage = latestTestCoverage.minus(latestUselessTest.times(0.01))
     val modelCoverage = latestModuleTestCoverage.minus(latestUselessTest.times(0.01))
+
+    private fun getUselessTest(testBadSmell: List<TestBadSmellCount>?): Int {
+        return (testBadSmell?.filter {
+            enumContains<TestBadSmellType>(it.type)
+        }?.sumBy { it.size }) ?: 0
+    }
 
     private fun generateUselessPercent(): Double {
         if (uselessTest == 0) {
