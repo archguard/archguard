@@ -31,7 +31,7 @@ data class Bundle(
         var scanTime: Long) {
     constructor() : this("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-    fun getClassCoveredPercent(): Double {
+    fun calculateClassCoveredPercent(): Double {
         return if (classCovered.plus(classMissed) < 1) {
             0.0
         } else {

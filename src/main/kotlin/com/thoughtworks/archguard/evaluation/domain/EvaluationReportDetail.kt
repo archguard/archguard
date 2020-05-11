@@ -37,9 +37,9 @@ data class TestProtectionReportDetail(val testBs: List<TestBadSmellCount>? = nul
     val uselessTest = getUselessTest(testBs)
     val latestUselessTest = getUselessTest(hotSpotTestBadSmell)
     val uselessPercent = generateUselessPercent()
-    val latestTestCoverage = (classCoverageByFiles?.map { it.getClassCoveredPercent() }?.average()?.times(classCoverageByFiles.size)?.div((hotSpotFile?.size)
+    val latestTestCoverage = (classCoverageByFiles?.map { it.calculateClassCoveredPercent() }?.average()?.times(classCoverageByFiles.size)?.div((hotSpotFile?.size)
             ?: 1)) ?: 0.0
-    val latestModuleTestCoverage = (classCoverageByModules?.map { it.getClassCoveredPercent() }?.average()) ?: 0.0
+    val latestModuleTestCoverage = (classCoverageByModules?.map { it.calculateClassCoveredPercent() }?.average()) ?: 0.0
     val testCoverage = latestTestCoverage.minus(latestUselessTest.times(0.01))
     val modelCoverage = latestModuleTestCoverage.minus(latestUselessTest.times(0.01))
 
