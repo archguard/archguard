@@ -83,7 +83,7 @@ class CoverageRepo(val jdbi: Jdbi) {
     fun getClassCoverageByFiles(files: List<String>): List<Bundle> {
         return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
-                select bundle_name, class_missed, class_covered 
+                select item_name, bundle_name, class_missed, class_covered 
                 from item where item_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)
@@ -95,7 +95,7 @@ class CoverageRepo(val jdbi: Jdbi) {
     fun getClassCoverageByBundle(files: List<String>): List<Bundle> {
         return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
-                select bundle_name, class_missed, class_covered 
+                select item_name, bundle_name, class_missed, class_covered 
                 from item where item_type='PACKAGE' and bundle_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class Bundle(
         var bundleName: String,
+        var itemName: String,
         var classMissed: Int,
         var classCovered: Int,
         @JsonIgnore
@@ -28,7 +29,7 @@ data class Bundle(
         var methodCovered: Int,
         @JsonIgnore
         var scanTime: Long) {
-    constructor() : this("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    constructor() : this("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     fun getClassCoveredPercent(): Double {
         return if (classCovered.plus(classMissed) < 1) {
