@@ -1,21 +1,34 @@
 package com.thoughtworks.archguard.report.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 data class Bundle(
-        var instructionMissed: Int,
-        var instructionCovered: Int,
-        var lineMissed: Int,
-        var lineCovered: Int,
-        var branchMissed: Int,
-        var branchCovered: Int,
-        var complexityMissed: Int,
-        var complexityCovered: Int,
-        var methodMissed: Int,
-        var methodCovered: Int,
+        var bundleName: String,
         var classMissed: Int,
         var classCovered: Int,
-        var bundleName: String,
+        @JsonIgnore
+        var instructionMissed: Int,
+        @JsonIgnore
+        var instructionCovered: Int,
+        @JsonIgnore
+        var lineMissed: Int,
+        @JsonIgnore
+        var lineCovered: Int,
+        @JsonIgnore
+        var branchMissed: Int,
+        @JsonIgnore
+        var branchCovered: Int,
+        @JsonIgnore
+        var complexityMissed: Int,
+        @JsonIgnore
+        var complexityCovered: Int,
+        @JsonIgnore
+        var methodMissed: Int,
+        @JsonIgnore
+        var methodCovered: Int,
+        @JsonIgnore
         var scanTime: Long) {
-    constructor() : this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "no info in db", 0)
+    constructor() : this("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     fun getClassCoveredPercent(): Double {
         return if (classCovered.plus(classMissed) < 1) {
