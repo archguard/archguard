@@ -9,8 +9,9 @@ class InvokeSqlTool(val projectRoot: File) {
     fun analyse(): List<File> {
         download()
         scan(listOf("java", "-jar", "invokes_plsql.jar", "."))
-        return listOf(File(projectRoot.toString() + "/CALLEE_INSERT.sql"),
-                File(projectRoot.toString() + "/Procedure_INSERT.sql"))
+        return listOf(
+                File(projectRoot.toString() + "/Procedure_INSERT.sql"),
+                File(projectRoot.toString() + "/CALLEE_INSERT.sql"))
     }
 
     private fun download() {

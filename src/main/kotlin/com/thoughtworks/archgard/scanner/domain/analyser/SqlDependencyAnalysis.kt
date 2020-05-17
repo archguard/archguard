@@ -14,6 +14,9 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository,
 
     private val log = LoggerFactory.getLogger(SqlDependencyAnalysis::class.java)
 
+    private val DELETE_PROCEDURE = "delete from  where 1=1"
+    private val DELETE_PROCEDURE_CALLEE = "delete from _PLProcedureCallees where 1=1"
+    private val DELETE_ACTION = "delete from _PLProcedureSqlAction where 1=1"
     fun analyse() {
         log.info("start scan sql analysis")
         val project = projectRepository.getProjectInfo().getSource()
@@ -21,7 +24,12 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository,
         deleteDirectory(git)
         val invokeSqlTool = InvokeSqlTool(project.workspace)
         val analyseFile = invokeSqlTool.analyse()
-        sqlScriptRunner.run(analyseFile)
+        if (analyseFile.find { !it.exists() } == null) {
+            sqlScriptRunner.run(DELETE_ACTION)
+            sqlScriptRunner.run(DELETE_PROCEDURE_CALLEE)
+            sqlScriptRunner.run(DELETE_PROCEDURE)
+            sqlScriptRunner.run(analyseFile)
+        }
         log.info("finished scan sql analysis")
     }
 
