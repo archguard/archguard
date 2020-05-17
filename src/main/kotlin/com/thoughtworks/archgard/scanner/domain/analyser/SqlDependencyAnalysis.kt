@@ -2,6 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.analyser
 
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import com.thoughtworks.archgard.scanner.domain.tools.InvokeSqlTool
+import com.thoughtworks.archgard.scanner.infrastructure.FileOperator.deleteDirectory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,11 +17,10 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository)
         log.info("start scan sql analysis")
         val project = projectRepository.getProjectInfo().getSource()
         val git = File(project.workspace.path + "/.git")
-        git.deleteOnExit()
+        deleteDirectory(git)
         val invokeSqlTool = InvokeSqlTool(project.workspace)
         invokeSqlTool.analyse()
         log.info("finished scan sql analysis")
-
     }
 
 }
