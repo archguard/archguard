@@ -3,13 +3,14 @@ package com.thoughtworks.archgard.scanner.domain.analyser
 import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import com.thoughtworks.archgard.scanner.domain.tools.InvokeSqlTool
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator.deleteDirectory
+import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.File
 
 @Service
-class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository) {
+class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository, @Autowired val sqlScriptRunner: SqlScriptRunner) {
 
     private val log = LoggerFactory.getLogger(SqlDependencyAnalysis::class.java)
 
@@ -19,7 +20,8 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository)
         val git = File(project.workspace.path + "/.git")
         deleteDirectory(git)
         val invokeSqlTool = InvokeSqlTool(project.workspace)
-        invokeSqlTool.analyse()
+        val analyseFile = invokeSqlTool.analyse()
+        sqlScriptRunner.run(analyseFile)
         log.info("finished scan sql analysis")
     }
 

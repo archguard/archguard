@@ -6,9 +6,11 @@ import java.io.File
 import java.net.URL
 
 class InvokeSqlTool(val projectRoot: File) {
-    fun analyse() {
+    fun analyse(): List<File> {
         download()
         scan(listOf("java", "-jar", "invokes_plsql.jar", "."))
+        return listOf(File(projectRoot.toString() + "/CALLEE_INSERT.sql"),
+                File(projectRoot.toString() + "/Procedure_INSERT.sql"))
     }
 
     private fun download() {
