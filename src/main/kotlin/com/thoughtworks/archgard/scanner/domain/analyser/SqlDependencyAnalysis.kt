@@ -5,6 +5,7 @@ import com.thoughtworks.archgard.scanner.domain.tools.InvokeSqlTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 
 @Service
 class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository) {
@@ -14,6 +15,8 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository)
     fun analyse() {
         log.info("start scan sql analysis")
         val project = projectRepository.getProjectInfo().getSource()
+        val git = File(project.workspace.path + "/.git")
+        git.deleteOnExit()
         val invokeSqlTool = InvokeSqlTool(project.workspace)
         invokeSqlTool.analyse()
         log.info("finished scan sql analysis")
