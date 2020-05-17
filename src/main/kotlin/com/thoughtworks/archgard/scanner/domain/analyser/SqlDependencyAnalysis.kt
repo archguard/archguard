@@ -14,7 +14,7 @@ class SqlDependencyAnalysis(@Autowired val projectRepository: ProjectRepository,
 
     private val log = LoggerFactory.getLogger(SqlDependencyAnalysis::class.java)
 
-    private val DELETE_PROCEDURE = "delete from  where 1=1"
+    private val DELETE_PROCEDURE = "delete from PLProcedure where 1=1"
     private val DELETE_PROCEDURE_CALLEE = "delete from _PLProcedureCallees where 1=1"
     private val DELETE_ACTION = "delete from _PLProcedureSqlAction where 1=1"
     fun analyse() {
