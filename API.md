@@ -100,7 +100,8 @@
     ```Json
   {
       "projectName": "spring", 
-      "gitRepo": ["https://github.com/spring-projects/spring-framework.git"]
+      "repo": ["https://github.com/spring-projects/spring-framework.git"],
+      "repoType": "GIT"  
   }
     ```
   
@@ -108,7 +109,8 @@
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
     `projectName` | 项目名称 | `String` | | N
-    `gitRepo` | 项目git仓库地址 | `String` | | N
+    `repo` | 项目仓库地址 | `String` | | N
+    `repoType` | 项目仓库类型 | `String` | | N
     
     
 + ##### response:
@@ -143,7 +145,8 @@
   {
       "id": "c06da91f-6742-11ea-8188-0242ac110002",
       "projectName": "spring", 
-      "gitRepo": ["https://github.com/spring-projects/spring-framework.git"]
+      "repo": ["https://github.com/spring-projects/spring-framework.git"],
+      "repoType": "GIT"
   }
     ```
   
@@ -151,7 +154,8 @@
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
     `projectName` | 项目名称 | `String` | | N
-    `gitRepo` | 项目git仓库地址 | `String` | | N
+    `repo` | 项目仓库地址 | `String` | | N
+    `repoType` | 项目仓库类型 | `String` | | N
     
     
 + #### Status
@@ -169,7 +173,8 @@
   {
       "id": "c06da91f-6742-11ea-8188-0242ac110002",
       "projectName": "spring", 
-      "gitRepo": ["https://github.com/spring-projects/spring-framework.git"]
+      "repo": ["https://github.com/spring-projects/spring-framework.git"],
+      "repoType": "GIT"  
   }
     ```
   
@@ -177,7 +182,8 @@
     字段 | 说明 | 类型 | 备注 | 是否可空
     :----:|:---:|:---:|:---:|:---:
     `projectName` | 项目名称 | `String` | | N
-    `gitRepo` | 项目git仓库地址 | `String` | | N
+    `repo` | 项目仓库地址 | `String` | | N
+    `repoType` | 项目仓库类型 | `String` | | N
     
     
 + ##### response:

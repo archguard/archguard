@@ -38,7 +38,7 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.status
 
-        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"gitRepo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":null}"
+        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":null,\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -49,7 +49,7 @@ class ProjectInoApiATest {
     fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
         val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project/info")
                 .contentType("application/json")
-                .content("{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring1\",\"gitRepo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":\"\"}")
+                .content("{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring1\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":\"\",\"repoType\":\"GIT\"}")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -75,7 +75,7 @@ class ProjectInoApiATest {
     fun should_get_exists_massage_when_sent_add_project_info_api_given_there_is_already_project_info_in_database() {
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
                 .contentType("application/json")
-                .content("{\"projectName\":\"spring\",\"gitRepo\":[\"https://github.com/spring-projects/spring-framework.git\"]}")
+                .content("{\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"repoType\": \"GIT\"}")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -97,7 +97,7 @@ class ProjectInoApiATest {
         }
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
                 .contentType("application/json")
-                .content("{\"projectName\":\"spring\",\"gitRepo\":[\"https://github.com/spring-projects/spring-framework.git\"]}")
+                .content("{\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"repoType\": \"GIT\"}")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()

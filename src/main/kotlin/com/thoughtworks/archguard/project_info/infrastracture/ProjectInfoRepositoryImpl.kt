@@ -15,12 +15,13 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun getProjectInfo(): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
                 it
-                        .createQuery("select id, name projectName, repo gitRepo, sql_table `sql` from ProjectInfo")
+                        .createQuery("select id, name projectName, repo repo, sql_table `sql`, repo_type repoType from ProjectInfo")
                         .map { rs, _ ->
                             ProjectInfo(rs.getString("id"),
                                     rs.getString("projectName"),
-                                    rs.getString("gitRepo").split(','),
-                                    rs.getString("sql"))
+                                    rs.getString("repo").split(','),
+                                    rs.getString("sql"),
+                                    rs.getString("repoType"))
                         }
                         .firstOrNull()
             }
@@ -29,8 +30,9 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
             jdbi.withHandle<Int, Nothing> {
                 it.createUpdate("update ProjectInfo set " +
                         "`name` = '${projectInfo.projectName}', " +
-                        "repo = '${projectInfo.gitRepo.joinToString(",")}', " +
-                        "sql_table = '${projectInfo.sql}'" +
+                        "repo = '${projectInfo.repo.joinToString(",")}', " +
+                        "sql_table = '${projectInfo.sql}', " +
+                        "repo_type = '${projectInfo.repoType}' " +
                         "where id = '${projectInfo.id}'")
                         .execute()
             }
@@ -38,10 +40,12 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun addProjectInfo(projectInfo: ProjectInfo): String {
         val uuid = UUID.randomUUID().toString()
         jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("insert into ProjectInfo(id, name, repo,sql_table, updatedAt, createdAt) values (" +
-                    "'${uuid}', '${projectInfo.projectName}', " +
-                    "'${projectInfo.gitRepo.joinToString(",")}', " +
-                    "'${projectInfo.sql}', NOW(), NOW())")
+            it.createUpdate("insert into ProjectInfo(id, name, repo, sql_table, repo_type, updatedAt, createdAt) " +
+                    "values ('${uuid}', '${projectInfo.projectName}', " +
+                    "'${projectInfo.repo.joinToString(",")}', " +
+                    "'${projectInfo.sql}', " +
+                    "'${projectInfo.repoType}', " +
+                    "NOW(), NOW())")
                     .execute()
         }
         return uuid
