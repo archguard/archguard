@@ -2,12 +2,14 @@ package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 class DesigniteJavaTool(val projectRoot: File) {
+    private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
 
     fun getBadSmellReport(): List<String> {
         return getTargetFile(projectRoot).map { getBadSmellReport(it)?.readLines() }
@@ -45,27 +47,35 @@ class DesigniteJavaTool(val projectRoot: File) {
     }
 
     private fun process(target: File) {
-        download(target)
+        prepareTool(target)
         scan(listOf("java", "-jar", "-Xmx1G", "${target.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "."))
     }
 
-    private fun download(target: File) {
+    private fun prepareTool(target: File) {
         val file = File(projectRoot.toString() + "/DesigniteJava.jar")
         if (file.exists()) {
+            log.info("DesigniteJava.jar already exists in projectRoot")
             Files.copy(file.toPath(),
                     File(target.toString() + "/DesigniteJava.jar").toPath(),
                     StandardCopyOption.REPLACE_EXISTING)
-            return
+        } else if (checkIfExistInLocal()) {
+            log.info("DesigniteJava.jar exists in local")
+            Files.copy(File("DesigniteJava.jar").toPath(),
+                    File(target.toString() + "/DesigniteJava.jar").toPath(),
+                    StandardCopyOption.REPLACE_EXISTING)
+        } else {
+            log.info("Download DesigniteJava.jar from remote")
+            val downloadUrl = "http://ci.archguard.org/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
+            FileOperator.download(URL(downloadUrl), File(target.toString() + "/DesigniteJava.jar"))
         }
-        val downloadUrl = "http://ci.archguard.org/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
-        FileOperator.download(URL(downloadUrl), file)
-        Files.copy(file.toPath(),
-                File(target.toString() + "/DesigniteJava.jar").toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
 
         val chmod = ProcessBuilder("chmod", "+x", "DesigniteJava.jar")
         chmod.directory(target)
         chmod.start().waitFor()
+    }
+
+    private fun checkIfExistInLocal(): Boolean {
+        return File("DesigniteJava.jar").exists()
     }
 
     private fun scan(cmd: List<String>) {

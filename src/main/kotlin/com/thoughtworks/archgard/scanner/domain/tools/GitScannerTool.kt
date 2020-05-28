@@ -11,7 +11,7 @@ class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
 
     override fun getGitReport(): File? {
-        download()
+        prepareTool()
         scan(listOf("java", "-jar", "scan_git.jar", "--git-path=.", "--branch=" + branch))
         val report = File(projectRoot.toString() + "/output.sql")
         return if (report.exists()) {
@@ -20,6 +20,27 @@ class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
             log.info("failed to get output.sql")
             null
         }
+    }
+
+    private fun prepareTool() {
+        val jarExist = checkIfExistInLocal()
+        if (jarExist) {
+            copyIntoProjectRoot()
+        } else {
+            download()
+        }
+    }
+
+    private fun copyIntoProjectRoot() {
+        log.info("copy jar tool from local")
+        FileOperator.copyTo(File("scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(projectRoot.toString() + "/scan_git.jar"))
+        val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
+        chmod.directory(projectRoot)
+        chmod.start().waitFor()
+    }
+
+    private fun checkIfExistInLocal(): Boolean {
+        return File("scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar").exists()
     }
 
     private fun download() {

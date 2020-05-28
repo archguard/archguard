@@ -12,7 +12,7 @@ class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: Buil
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
 
     fun execToSql(): File? {
-        prepareJar()
+        prepareTool()
         call(listOf("java", "-jar", "scan_jacoco.jar", "--target-project=${projectRoot.absolutePath}",
                 "--bin=${buildTool.target}/classes",
                 "--exec=${buildTool.target}/jacoco.exec"))
@@ -25,7 +25,28 @@ class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: Buil
         }
     }
 
-    private fun prepareJar() {
+    private fun prepareTool() {
+        val jarExist = checkIfExistInLocal()
+        if (jarExist) {
+            copyIntoProjectRoot()
+        } else {
+            download()
+        }
+    }
+
+    private fun copyIntoProjectRoot() {
+        log.info("copy jar tool from local")
+        FileOperator.copyTo(File("scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(workspace.absolutePath.toString() + "/scan_jacoco.jar"))
+        val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
+        chmod.directory(workspace)
+        chmod.start().waitFor()
+    }
+
+    private fun checkIfExistInLocal(): Boolean {
+        return File("scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar").exists()
+    }
+
+    private fun download() {
         if (File(workspace.absolutePath + "/scan_jacoco.jar").exists()) {
             return
         }

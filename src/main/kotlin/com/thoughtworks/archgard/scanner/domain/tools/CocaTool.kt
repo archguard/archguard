@@ -10,8 +10,40 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
 
     private val log = LoggerFactory.getLogger(CocaTool::class.java)
 
+    private fun prepareTool() {
+        val jarExist = checkIfExistInLocal()
+        if (jarExist) {
+            copyIntoProjectRoot()
+        } else {
+            download()
+        }
+    }
+
+    private fun copyIntoProjectRoot() {
+        val system = System.getProperty("os.name").toLowerCase()
+        if (system.indexOf("mac") >= 0) {
+            log.info("copy coca_macos jar tool from local")
+            FileOperator.copyTo(File("coca_macos"), File(projectRoot.toString() + "/coca"))
+        } else {
+            log.info("copy coca_linux jar tool from local")
+            FileOperator.copyTo(File("coca_linux"), File(projectRoot.toString() + "/coca"))
+        }
+        val chmod = ProcessBuilder("chmod", "+x", "coca")
+        chmod.directory(projectRoot)
+        chmod.start().waitFor()
+    }
+
+    private fun checkIfExistInLocal(): Boolean {
+        val system = System.getProperty("os.name").toLowerCase()
+        if (system.indexOf("mac") >= 0) {
+            return File("coca_macos").exists()
+        } else {
+            return File("coca_linux").exists()
+        }
+    }
+
     fun getBadSmellReport(): File? {
-        download()
+        prepareTool()
         scan(listOf("./coca", "bs", "-s", "type"))
         val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
         return if (report.exists()) {
@@ -23,7 +55,7 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
     }
 
     override fun getTestBadSmellReport(): File? {
-        download()
+        prepareTool()
         scan(listOf("./coca", "tbs"))
         val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
         return if (report.exists()) {

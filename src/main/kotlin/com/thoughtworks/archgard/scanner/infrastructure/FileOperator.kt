@@ -6,6 +6,10 @@ import java.net.URL
 
 object FileOperator {
 
+    fun copyTo(file: File, destination: File) {
+        file.copyTo(destination, true)
+    }
+
     fun download(url: URL, file: File) {
         url.openStream().use { input ->
             FileOutputStream(file).use { output ->

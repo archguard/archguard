@@ -2,16 +2,40 @@ package com.thoughtworks.archgard.scanner.domain.tools
 
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
 class InvokeSqlTool(val projectRoot: File) {
+    private val log = LoggerFactory.getLogger(InvokeSqlTool::class.java)
+
     fun analyse(): List<File> {
-        download()
+        prepareTool()
         scan(listOf("java", "-jar", "invokes_plsql.jar", "."))
         return listOf(
                 File(projectRoot.toString() + "/Procedure_INSERT.sql"),
                 File(projectRoot.toString() + "/CALLEE_INSERT.sql"))
+    }
+
+    private fun prepareTool() {
+        val jarExist = checkIfExistInLocal()
+        if (jarExist) {
+            copyIntoProjectRoot()
+        } else {
+            download()
+        }
+    }
+
+    private fun copyIntoProjectRoot() {
+        log.info("copy jar tool from local")
+        FileOperator.copyTo(File("invokes_plsql-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(projectRoot.toString() + "/invokes_plsql.jar"))
+        val chmod = ProcessBuilder("chmod", "+x", "invokes_plsql.jar")
+        chmod.directory(projectRoot)
+        chmod.start().waitFor()
+    }
+
+    private fun checkIfExistInLocal(): Boolean {
+        return File("invokes_plsql-1.0-SNAPSHOT-jar-with-dependencies.jar").exists()
     }
 
     private fun download() {
