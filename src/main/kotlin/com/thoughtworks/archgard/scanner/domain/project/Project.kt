@@ -4,34 +4,39 @@ import com.thoughtworks.archgard.scanner.domain.project.BuildTool.GRADLE
 import com.thoughtworks.archgard.scanner.domain.project.BuildTool.MAVEN
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.eclipse.jgit.api.Git
-import org.jdbi.v3.core.mapper.reflect.ColumnName
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.nio.file.Paths
 
-class Project(val id: String, val projectName: String, val gitRepo: String, val sql: String?) {
+class Project(val id: String, val projectName: String, val repo: String, val sql: String?, val repoType: String) {
     private val log = LoggerFactory.getLogger(Project::class.java)
 
     fun build(): CompiledProject {
         val workspace = createTempDir()
-        log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
-        getSource(workspace, this.gitRepo)
+        log.info("workspace is: {}, repo is: {}", workspace.toPath().toString(), repo)
+        getSource(workspace, this.repo, this.repoType)
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
-        return CompiledProject(gitRepo, workspace, buildTool, sql)
+        return CompiledProject(repo, workspace, buildTool, sql)
     }
 
     fun getSource(): CompiledProject {
         val workspace = createTempDir()
-        log.info("workspace is: {}, gitRepo is: {}", workspace.toPath().toString(), gitRepo)
-        getSource(workspace, this.gitRepo)
-        return CompiledProject(gitRepo, workspace, getBuildTool(workspace), sql)
+        log.info("workspace is: {}, repo is: {}", workspace.toPath().toString(), repo)
+        getSource(workspace, this.repo, this.repoType)
+        return CompiledProject(repo, workspace, getBuildTool(workspace), sql)
     }
 
-    private fun getSource(workspace: File, repo: String) {
-        Git.cloneRepository()
-                .setDirectory(workspace)
-                .setURI(repo)
-                .call()
+    private fun getSource(workspace: File, repo: String, repoType: String) {
+        if ("GIT" == repoType) {
+            Git.cloneRepository()
+                    .setDirectory(workspace)
+                    .setURI(repo)
+                    .call()
+        } else if ("SVN" == repoType) {
+            val pb = ProcessBuilder(listOf("svn", "checkout", repo, Paths.get("./").normalize().toString()))
+            Processor.executeWithLogs(pb, workspace)
+        }
     }
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {

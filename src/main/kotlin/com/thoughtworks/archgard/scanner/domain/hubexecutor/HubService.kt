@@ -29,7 +29,7 @@ class HubService {
             val project = hubRepository.getProjectInfo().build()
             val config = configureRepository.getToolConfigures()
 
-            val context = ScanContext(project.gitRepo, project.buildTool, project.workspace, config)
+            val context = ScanContext(project.repo, project.buildTool, project.workspace, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
             isRunning = false
