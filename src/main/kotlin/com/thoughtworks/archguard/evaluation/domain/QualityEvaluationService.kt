@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.time.ZoneId
 
 @Service
 class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRepository,
@@ -27,7 +26,7 @@ class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRe
     fun generateEvaluation(): String {
         val analysesReports = analyses.keysToMap { it.getQualityReport() }.filterValues { it != null }
 
-        return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(ZoneId.of("Asia/Shanghai")), name,
+        return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(), name,
                 analysesReports.map { Dimension(it.key.getName(), it.value!!.getLevel()) },
                 getComment(analysesReports),
                 analysesReports.values.flatMap { it!!.getImprovements() }),

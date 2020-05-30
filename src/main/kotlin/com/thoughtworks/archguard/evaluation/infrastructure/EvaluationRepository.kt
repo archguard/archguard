@@ -8,7 +8,9 @@ import com.thoughtworks.archguard.evaluation.domain.EvaluationReportDetail
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 import java.util.*
+
 
 @Repository
 class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
@@ -38,7 +40,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                     .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport order by createdDate desc")
                     .map { rs, _ ->
                         EvaluationReport(rs.getString("id"),
-                                rs.getTimestamp("createdDate").toLocalDateTime(),
+                                rs.getObject("createdDate", LocalDateTime::class.java),
                                 rs.getString("name"),
                                 mapper.readValue(rs.getString("dimensions"), object : TypeReference<List<Dimension>>() {}),
                                 rs.getString("comment"),
@@ -54,7 +56,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                     .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport where id='${id}'")
                     .map { rs, _ ->
                         EvaluationReport(rs.getString("id"),
-                                rs.getTimestamp("createdDate").toLocalDateTime(),
+                                rs.getObject("createdDate", LocalDateTime::class.java),
                                 rs.getString("name"),
                                 mapper.readValue(rs.getString("dimensions"), object : TypeReference<List<Dimension>>() {}),
                                 rs.getString("comment"),
