@@ -6,12 +6,14 @@ import com.thoughtworks.archgard.scanner.domain.project.ProjectRepository
 import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.concurrent.thread
 
 @Service
 class HubService {
     @Autowired
     private lateinit var manager: ScannerManager
 
+    @Volatile
     private var isRunning: Boolean = false
 
     @Autowired
@@ -23,26 +25,34 @@ class HubService {
     @Autowired
     private lateinit var configureRepository: ConfigureRepository
 
-    fun doScan(): Boolean {
+    fun doScanIfNotRunning(): Boolean {
         if (!isRunning) {
             isRunning = true
-            val project = hubRepository.getProjectInfo().build()
-            val config = configureRepository.getToolConfigures()
-
-            val context = ScanContext(project.repo, project.buildTool, project.workspace, config)
-            val hubExecutor = HubExecutor(context, manager)
-            hubExecutor.execute()
+            doScan()
             isRunning = false
         }
         return isRunning
     }
 
     fun evaluate(type: String): Boolean {
-        doScan()
         if (!isRunning) {
-            evaluationReportClient.generate(type)
+            isRunning = true
+            thread {
+                doScan()
+                isRunning = false
+                evaluationReportClient.generate(type)
+            }
         }
         return isRunning
+    }
+
+    private fun doScan() {
+        val project = hubRepository.getProjectInfo().build()
+        val config = configureRepository.getToolConfigures()
+
+        val context = ScanContext(project.repo, project.buildTool, project.workspace, config)
+        val hubExecutor = HubExecutor(context, manager)
+        hubExecutor.execute()
     }
 
     fun getEvaluationStatus(type: String): Boolean {

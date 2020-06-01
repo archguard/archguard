@@ -13,7 +13,7 @@ class HubController {
 
     @PostMapping("/reports")
     fun scanModule(): ModuleScanResponse {
-        return ModuleScanResponse(hubService.doScan())
+        return ModuleScanResponse(hubService.doScanIfNotRunning())
     }
 
     @PostMapping("/evaluations")
