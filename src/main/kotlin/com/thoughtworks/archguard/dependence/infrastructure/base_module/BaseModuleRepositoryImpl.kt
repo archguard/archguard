@@ -1,0 +1,24 @@
+package com.thoughtworks.archguard.dependence.infrastructure.base_module
+
+import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
+import org.jdbi.v3.core.Jdbi
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Repository
+
+@Repository
+class BaseModuleRepositoryImpl : BaseModuleRepository {
+
+    @Autowired
+    lateinit var jdbi: Jdbi
+
+    override fun getBaseModules(): List<String> {
+        return jdbi.withHandle<List<String>, Nothing> {
+            it.createQuery("select distinct module from JClass")
+                    .mapTo(String::class.java)
+                    .list()
+                    .filter{ it -> it != "null"}
+        }
+    }
+
+
+}
