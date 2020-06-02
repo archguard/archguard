@@ -8,4 +8,5 @@ interface LogicModuleRepository {
     fun getDependence(caller: String, callee: String): List<ModuleDependency>
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
+    fun getAllDependence(members: List<String>): List<ModuleGraphDependency>
 }

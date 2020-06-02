@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.dependence.infrastructure.logic_module
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleRepository
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
+import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraphDependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +16,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     lateinit var jdbi: Jdbi
 
     override fun getAll(): List<LogicModule> {
-        var modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
+        val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
             it.createQuery("select id, name, members from logic_module")
                     .mapTo(LogicModuleDTO::class.java)
@@ -36,7 +37,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun create(logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", logicModule.id, logicModule.name, logicModule.members.joinToString(","));
+            handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", logicModule.id, logicModule.name, logicModule.members.joinToString(","))
         }
     }
 
@@ -55,19 +56,17 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun saveAll(logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", it.id, it.name, it.members.joinToString(","));
+                handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", it.id, it.name, it.members.joinToString(","))
             }
         }
     }
 
-
     override fun getDependence(caller: String, callee: String): List<ModuleDependency> {
-        var callerTemplate = defineTableTemplate(getMembers(caller))
-        var calleeTemplate = defineTableTemplate(getMembers(callee))
+        val callerTemplate = defineTableTemplate(getMembers(caller))
+        val calleeTemplate = defineTableTemplate(getMembers(callee))
 
-        var sql = "select a.clzname callerClass, a.name callerMethod, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($callerTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
+        val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
 
-        println(sql)
         return jdbi.withHandle<List<ModuleDependency>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ModuleDependency::class.java))
             it.createQuery(sql)
@@ -77,12 +76,24 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     }
 
+    override fun getAllDependence(members: List<String>): List<ModuleGraphDependency> {
+        val tableTemplate = defineTableTemplate(members)
+
+        val sql = "select concat(a.module, a.clzname) caller, concat(concat(b.module, '.'), b.clzname) callee from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc where a.id = mc.a and b.id = mc.b"
+        return jdbi.withHandle<List<ModuleGraphDependency>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ModuleGraphDependency::class.java))
+            it.createQuery(sql)
+                    .mapTo(ModuleGraphDependency::class.java)
+                    .list()
+        }
+    }
+
     fun getMembers(name: String): List<String> {
-        var sql = "select members from logic_module where name = '$name'"
-        var members = jdbi.withHandle<String, Nothing> {
+        val sql = "select members from logic_module where name = '$name'"
+        val members = jdbi.withHandle<String, Nothing> {
             it.createQuery(sql)
                     .mapTo(String::class.java)
-                    .first();
+                    .first()
         }
 
         return members.split(',')
@@ -90,18 +101,19 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     fun defineTableTemplate(members: List<String>): String {
         var tableTemplate = "select * from JMethod where ("
-        var filterConditions = ArrayList<String>()
+        val filterConditions = ArrayList<String>()
         members.forEach { s ->
-            var member = s.split('.')
+            val member = s.split('.')
             if (member.size == 1) {
                 filterConditions.add("module = '${member[0]}'")
             }
             if (member.size > 1) {
-                filterConditions.add("module = '${member[0]}' and clzname like '${member.subList(1, member.size).joinToString(".")}%")
+                filterConditions.add("(module = '${member[0]}' and clzname like '${member.subList(1, member.size).joinToString(".")}%')")
             }
         }
         tableTemplate += filterConditions.joinToString(" or ")
         tableTemplate += ")"
+        println(tableTemplate)
         return tableTemplate
     }
 
