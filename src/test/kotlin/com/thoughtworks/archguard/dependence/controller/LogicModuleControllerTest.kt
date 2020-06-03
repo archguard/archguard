@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.dependence.controller
 
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleService
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCoupling
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCouplingReport
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
