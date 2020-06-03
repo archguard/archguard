@@ -43,12 +43,7 @@ class LogicModuleService {
     }
 
     fun getLogicModuleGraph(): ModuleGraph {
-        val moduleMap = HashMap<String, List<String>>()
-        logicModuleRepository.getAll().forEach { moduleMap[it.name] = it.members }
-        val membersList = moduleMap.map { it.value }.flatten()
-        val results = logicModuleRepository.getAllDependence(membersList)
-
-        mapToModule(results, moduleMap)
+        val results = getModuleDependency()
 
         val moduleStore = ModuleStore()
         results
@@ -61,18 +56,47 @@ class LogicModuleService {
         return moduleStore.getModuleGraph()
     }
 
-    private fun mapToModule(results: List<ModuleGraphDependency>, moduleMap: java.util.HashMap<String, List<String>>) {
+    private fun getModuleDependency(): List<ModuleGraphDependency> {
+        val modules = logicModuleRepository.getAll()
+        val members = modules.map { it.members }.flatten()
+        val results = logicModuleRepository.getAllDependence(members)
+
+        mapToModule(results, modules)
+        return results
+    }
+
+    private fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>) {
         // TODO[如果module配置时有重叠部分怎么办]
         results.forEach {
-            it.caller = moduleMap
-                    .filter { i -> i.value.any { j -> it.caller.startsWith(j) } }
-                    .map { i -> i.key }[0]
-            it.callee = moduleMap
-                    .filter { i -> i.value.any { j -> it.callee.startsWith(j) } }
-                    .map { i -> i.key }[0]
+            it.caller = modules
+                    .filter { logicModule -> logicModule.members.any { j -> it.caller.startsWith(j) } }
+                    .map { logicModule -> logicModule.name }[0]
+            it.callee = modules
+                    .filter { logicModule -> logicModule.members.any { j -> it.callee.startsWith(j) } }
+                    .map { logicModule -> logicModule.name }[0]
         }
     }
 
+    fun getLogicModuleCoupling(): ModuleCoupling {
+        val moduleDependency = getModuleDependency()
+        val reports = getLogicModules().map { getModuleCouplingReport(it, moduleDependency) }
+        return ModuleCoupling(reports)
+    }
 
+    fun getModuleCouplingReport(module: LogicModule,
+                                moduleDependency: List<ModuleGraphDependency>): ModuleCouplingReport {
+        val fanOut = moduleDependency.filter { it.caller == module.name }.count()
+        val fanIn = moduleDependency.filter { it.callee == module.name }.count()
+        return ModuleCouplingReport(module.name, fanIn, fanOut)
+    }
 
+}
+
+data class ModuleCouplingReport(val module: String,
+                                val fanIn: Int,
+                                val fanOut: Int) {
+    val moduleInstability: Double = fanOut.toDouble() / (fanOut + fanIn)
+    val moduleCoupling: Double = 1 - 1.0 / (fanOut + fanIn)
+
+    constructor() : this("", 0, 0)
 }

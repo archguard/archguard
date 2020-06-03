@@ -55,11 +55,9 @@ dependencies {
 
 	testImplementation("org.flywaydb:flyway-core:6.2.2")
     testImplementation("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
-    testImplementation("junit:junit:4.11")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
+    testImplementation("io.mockk:mockk:1.10.0")
 
 }
 
