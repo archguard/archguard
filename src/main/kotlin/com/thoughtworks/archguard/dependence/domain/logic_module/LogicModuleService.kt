@@ -77,10 +77,9 @@ class LogicModuleService {
         }
     }
 
-    fun getLogicModuleCoupling(): ModuleCoupling {
+    fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
         val moduleDependency = getModuleDependency()
-        val reports = getLogicModules().map { getModuleCouplingReport(it, moduleDependency) }
-        return ModuleCoupling(reports)
+        return getLogicModules().map { getModuleCouplingReport(it, moduleDependency) }
     }
 
     fun getModuleCouplingReport(module: LogicModule,

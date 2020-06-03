@@ -1,10 +1,6 @@
 package com.thoughtworks.archguard.dependence.controller
 
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleService
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraph
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCoupling
+import com.thoughtworks.archguard.dependence.domain.logic_module.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -46,12 +42,11 @@ class LogicModuleController {
     }
 
     @GetMapping("/graph")
-    fun getLogicModuleGraph(): ModuleGraph {
-        return logicModuleService.getLogicModuleGraph()
+    fun getLogicModuleGraph(): ModuleGraph {        return logicModuleService.getLogicModuleGraph()
     }
 
-
-    fun getLogicModuleCoupling(): ModuleCoupling {
+    @GetMapping("/coupling")
+    fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
         return logicModuleService.getLogicModuleCoupling()
     }
 }

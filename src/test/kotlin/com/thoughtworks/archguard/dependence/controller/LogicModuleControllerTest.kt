@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.dependence.controller
 
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleService
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCoupling
+import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCouplingReport
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -24,12 +25,13 @@ class LogicModuleControllerTest {
     @Test
     fun `should get module coupling`() {
         //given
-        val moduleCoupling = ModuleCoupling()
+        val moduleCoupling = listOf(ModuleCouplingReport())
         every { service.getLogicModuleCoupling() } returns moduleCoupling
 
         //when
         val logicModuleCoupling = controller.getLogicModuleCoupling()
         //then
-        assertThat(logicModuleCoupling).isEqualToComparingFieldByField(moduleCoupling)
+        assertThat(logicModuleCoupling).isNotEmpty
+        assertThat(logicModuleCoupling.size).isEqualTo(1)
     }
 }
