@@ -91,8 +91,8 @@ class LogicModuleService {
 data class ModuleCouplingReport(val module: String,
                                 val fanIn: Int,
                                 val fanOut: Int) {
-    val moduleInstability: Double = fanOut.toDouble() / (fanOut + fanIn)
-    val moduleCoupling: Double = 1 - 1.0 / (fanOut + fanIn)
+    val moduleInstability: Double = if (fanIn + fanOut == 0) 0.0 else fanOut.toDouble() / (fanOut + fanIn)
+    val moduleCoupling: Double = if (fanIn + fanOut == 0) 0.0 else 1-1.0 / (fanOut+fanIn)
 
     constructor() : this("", 0, 0)
 }

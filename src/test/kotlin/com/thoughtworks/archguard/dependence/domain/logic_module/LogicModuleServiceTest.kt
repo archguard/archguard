@@ -41,4 +41,18 @@ class LogicModuleServiceTest {
         assertThat(logicModuleCoupling.filter { it.module == "module3" }[0].fanIn).isEqualTo(0)
         assertThat(logicModuleCoupling.filter { it.module == "module3" }[0].fanOut).isEqualTo(0)
     }
+
+    @Test
+    fun `should be zero when no dependence`() {
+        //given
+        val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
+        val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
+        every { logicModuleRepository.getAll() } returns listOf(element, element2)
+        every { logicModuleRepository.getAllDependence(any()) } returns listOf()
+        //when
+        val logicModuleCoupling = service.getLogicModuleCoupling()
+        //then
+        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleInstability).isEqualTo(0.0)
+        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleCoupling).isEqualTo(0.0)
+    }
 }
