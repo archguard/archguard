@@ -60,21 +60,18 @@ class LogicModuleService {
         val modules = logicModuleRepository.getAll()
         val members = modules.map { it.members }.flatten()
         val results = logicModuleRepository.getAllDependence(members)
-
-        mapToModule(results, modules)
-        return results
+        return mapToModule(results, modules)
     }
 
-    private fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>) {
+    private fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
         // TODO[如果module配置时有重叠部分怎么办]
-        results.forEach {
-            it.caller = modules
-                    .filter { logicModule -> logicModule.members.any { j -> it.caller.startsWith(j) } }
+        return results.map {
+            val caller = modules.filter { logicModule -> logicModule.members.any { j -> it.caller.startsWith(j) } }
                     .map { logicModule -> logicModule.name }[0]
-            it.callee = modules
-                    .filter { logicModule -> logicModule.members.any { j -> it.callee.startsWith(j) } }
+            val callee = modules.filter { logicModule -> logicModule.members.any { j -> it.callee.startsWith(j) } }
                     .map { logicModule -> logicModule.name }[0]
-        }
+            ModuleGraphDependency(caller, callee)
+        }.filter { it.caller != it.callee }
     }
 
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
