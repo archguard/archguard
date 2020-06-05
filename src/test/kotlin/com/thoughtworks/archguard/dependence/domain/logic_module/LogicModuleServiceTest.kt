@@ -12,13 +12,67 @@ import org.junit.jupiter.api.Test
 class LogicModuleServiceTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
-    @MockK
-    lateinit var baseModuleRepository: BaseModuleRepository
     @InjectMockKs
     var service : LogicModuleService = LogicModuleService()
     @BeforeEach
     fun setUp() {
         init(this)
+    }
+
+    @Test
+    fun `should get logic modules`() {
+        // given
+        val logicModule1 = LogicModule("1", "m1", listOf("bm1", "bm2"))
+        val logicModule2 = LogicModule("2", "m2", listOf("bm3", "bm4"))
+        val logicModules = listOf(logicModule1, logicModule2)
+        every { logicModuleRepository.getAll() } returns logicModules
+
+        // when
+        val actual = service.getLogicModules()
+
+        // then
+        assertThat(actual.size).isEqualTo(logicModules.size)
+    }
+
+    @Test
+    fun `should get dependency between logic modules`() {
+        // given
+        val caller = "module1"
+        val callee = "module2"
+        val dependency1 = ModuleDependency("module1", "any", "any", "module2", "any", "any")
+        val dependency2 = ModuleDependency("module2", "any", "any", "module3", "any", "any")
+        val dependencies = listOf(dependency1, dependency2)
+        every { logicModuleRepository.getDependence(caller, callee) } returns dependencies
+
+        // when
+        val actual = service.getLogicModulesDependencies(caller, callee)
+
+        // then
+        assertThat(actual.size).isEqualTo(dependencies.size)
+    }
+
+    @Test
+    fun `should get graph of all logic modules dependency`() {
+        // given
+        val logicModule1 = LogicModule("1", "module1", listOf("bm1", "bm2"))
+        val logicModule2 = LogicModule("2", "module2", listOf("bm3", "bm4"))
+        val logicModule3 = LogicModule("3", "module3", listOf("bm5"))
+        val logicModules = listOf(logicModule1, logicModule2, logicModule3)
+
+        val dependency1 = ModuleGraphDependency("bm1.any", "bm3.any")
+        val dependency2 = ModuleGraphDependency("bm3.any", "bm2.any")
+        val dependency3 = ModuleGraphDependency("bm5.any", "bm4.any")
+        val dependencies = listOf(dependency1, dependency2, dependency3)
+
+        every { logicModuleRepository.getAll() } returns logicModules
+        every { logicModuleRepository.getAllDependence(any()) } returns dependencies
+
+        // when
+        val moduleGraph = service.getLogicModuleGraph()
+
+        // then
+        assertThat(moduleGraph.nodes.size).isEqualTo(3)
+        assertThat(moduleGraph.edges.size).isEqualTo(3)
     }
 
     @Test
