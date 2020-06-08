@@ -1,9 +1,10 @@
 package com.thoughtworks.archguard.dependence.domain.logic_module
 
 import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
+import com.thoughtworks.archguard.dependence.domain.base_module.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class LogicModuleService {
@@ -38,8 +39,34 @@ class LogicModuleService {
 
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
-        val defaultModules = baseModuleRepository.getBaseModules().map { it -> LogicModule(UUID.randomUUID().toString(), it, mutableListOf(it)) }
+        val defaultModules = baseModuleRepository.getBaseModules()
+                .map { LogicModule(UUID.randomUUID().toString(), it, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
+    }
+
+    fun autoDefineLogicModuleWithInterface() {
+        logicModuleRepository.deleteAll()
+        val jClassesHasModules: List<JClass> = baseModuleRepository.getJClassesHasModules()
+        val defineLogicModuleWithInterface = getLogicModulesForAllJClass(jClassesHasModules)
+        logicModuleRepository.saveAll(defineLogicModuleWithInterface)
+    }
+
+    fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
+        return jClassesHasModules
+                .map { getLogicModuleForJClass(it) }
+                .groupBy({ it.name }, { it.members })
+                .mapValues { entry -> entry.value.flatten().toSet().toList() }
+                .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
+    }
+
+    fun getLogicModuleForJClass(jClass: JClass): LogicModule {
+        val (id, _, moduleName) = jClass
+        val parentClassIds = logicModuleRepository.getParentClassId(id)
+        val moduleNames = parentClassIds.map { id -> baseModuleRepository.getJClassesById(id) }
+                .map { j -> j.module }
+                .toSet().toMutableList()
+        moduleNames.add(moduleName)
+        return LogicModule(null, moduleName, moduleNames)
     }
 
     fun getLogicModuleGraph(): ModuleGraph {

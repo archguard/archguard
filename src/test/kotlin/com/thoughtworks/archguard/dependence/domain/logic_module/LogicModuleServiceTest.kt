@@ -1,10 +1,12 @@
 package com.thoughtworks.archguard.dependence.domain.logic_module
 
 import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
+import com.thoughtworks.archguard.dependence.domain.base_module.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.spyk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -12,8 +14,13 @@ import org.junit.jupiter.api.Test
 class LogicModuleServiceTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
+
+    @MockK
+    lateinit var baseModuleRepository: BaseModuleRepository
+
     @InjectMockKs
-    var service : LogicModuleService = LogicModuleService()
+    var service: LogicModuleService = LogicModuleService()
+
     @BeforeEach
     fun setUp() {
         init(this)
@@ -108,5 +115,34 @@ class LogicModuleServiceTest {
         //then
         assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleInstability).isEqualTo(0.0)
         assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleCoupling).isEqualTo(0.0)
+    }
+
+    @Test
+    fun `should get logic module with interface members  for one JClass`() {
+        val jClass = JClass("id1", "ServiceImpl", "module1")
+        every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
+        every { baseModuleRepository.getJClassesById("id2") } returns JClass("id2", "Service", "module2")
+        every { baseModuleRepository.getJClassesById("id3") } returns JClass("id3", "ParentClass", "module3")
+        val logicModule = service.getLogicModuleForJClass(jClass)
+        assertThat(logicModule.name).isEqualTo("module1")
+        assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2", "module3"))
+    }
+
+    @Test
+    fun `should get logic module with interface members for all JClasses`() {
+        val jClass1 = JClass("id1", "Service1Impl", "module1")
+        val jClass2 = JClass("id2", "Controller", "module2")
+        val jClass3 = JClass("id3", "Service2Impl", "module1")
+        val jClasses = listOf(jClass1, jClass2, jClass3)
+        service = spyk(service)
+        every { service.getLogicModuleForJClass(jClass1) } returns LogicModule(null, "module1", listOf("module1", "module3", "module4"))
+        every { service.getLogicModuleForJClass(jClass2) } returns LogicModule(null, "module2", listOf("module2"))
+        every { service.getLogicModuleForJClass(jClass3) } returns LogicModule(null, "module1", listOf("module1", "module3", "module5"))
+
+        val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
+        assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).isEqualTo(setOf("module1", "module3", "module4", "module5"))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).isEqualTo(setOf("module2"))
+
     }
 }

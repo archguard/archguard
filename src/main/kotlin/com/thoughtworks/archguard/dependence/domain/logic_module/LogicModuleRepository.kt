@@ -9,4 +9,5 @@ interface LogicModuleRepository {
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
     fun getAllDependence(members: List<String>): List<ModuleGraphDependency>
+    fun getParentClassId(id: String): List<String>
 }

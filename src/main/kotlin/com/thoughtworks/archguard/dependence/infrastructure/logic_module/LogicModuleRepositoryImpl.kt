@@ -99,6 +99,15 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         return members.split(',')
     }
 
+    override fun getParentClassId(id: String): List<String> {
+        val sql = "select b from _ClassParent where a = '$id'"
+        return jdbi.withHandle<List<String>, Nothing> {
+            it.createQuery(sql)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
+
     fun defineTableTemplate(members: List<String>): String {
         var tableTemplate = "select * from JMethod where ("
         val filterConditions = ArrayList<String>()
