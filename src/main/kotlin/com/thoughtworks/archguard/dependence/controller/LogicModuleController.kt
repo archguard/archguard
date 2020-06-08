@@ -1,8 +1,20 @@
 package com.thoughtworks.archguard.dependence.controller
 
-import com.thoughtworks.archguard.dependence.domain.logic_module.*
+import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
+import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleService
+import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCouplingReport
+import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
+import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraph
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/logic-modules")
