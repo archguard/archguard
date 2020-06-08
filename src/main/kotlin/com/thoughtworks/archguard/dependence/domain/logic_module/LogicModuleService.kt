@@ -63,7 +63,7 @@ class LogicModuleService {
         val (id, _, moduleName) = jClass
         val parentClassIds = logicModuleRepository.getParentClassId(id)
         val moduleNames = parentClassIds.map { id -> baseModuleRepository.getJClassesById(id) }
-                .map { j -> j.module }
+                .map { j -> j.module + "." + j.name }
                 .toSet().toMutableList()
         moduleNames.add(moduleName)
         return LogicModule(null, moduleName, moduleNames)

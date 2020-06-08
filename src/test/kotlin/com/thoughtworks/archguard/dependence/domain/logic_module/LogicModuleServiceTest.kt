@@ -125,7 +125,7 @@ class LogicModuleServiceTest {
         every { baseModuleRepository.getJClassesById("id3") } returns JClass("id3", "ParentClass", "module3")
         val logicModule = service.getLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2", "module3"))
+        assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2.Service", "module3.ParentClass"))
     }
 
     @Test
