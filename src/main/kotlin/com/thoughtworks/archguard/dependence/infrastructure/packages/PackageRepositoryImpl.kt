@@ -22,4 +22,15 @@ class PackageRepositoryImpl : PackageRepository {
                     .list()
         }
     }
+
+    override fun getPackageDependenceByModule(module: String): List<PackageDependenceDTO> {
+        return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> {handle ->
+            handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
+            handle
+                    .createQuery("select a.clzname aClz, b.clzname bClz from JMethod a, JMethod b, _MethodCallees mc " +
+                            "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module'")
+                    .mapTo(PackageDependenceDTO::class.java)
+                    .list()
+        }
+    }
 }

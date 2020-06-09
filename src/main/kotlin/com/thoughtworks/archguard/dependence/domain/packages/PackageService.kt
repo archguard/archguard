@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.dependence.domain.packages
 
+import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
+import com.thoughtworks.archguard.dependence.infrastructure.packages.PackageDependenceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -8,10 +10,17 @@ class PackageService {
     @Autowired
     lateinit var packageRepository: PackageRepository
 
+    @Autowired
+    lateinit var moduleRepository: BaseModuleRepository
+
 
     fun getPackageDependence(): PackageGraph {
-        val packageStore = PackageStore()
         val results = packageRepository.getPackageDependence()
+        return getPackageGraph(results)
+    }
+
+    private fun getPackageGraph(results: List<PackageDependenceDTO>): PackageGraph {
+        val packageStore = PackageStore()
         results.forEach {
             it.aClz = it.aClz.substringBeforeLast('.')
             it.bClz = it.bClz.substringBeforeLast('.')
@@ -29,5 +38,12 @@ class PackageService {
                 }
 
         return packageStore.getPackageGraph()
+    }
+
+    fun getPackageDependencies(): List<ModulePackage> {
+        return moduleRepository.getBaseModules().map {
+            val dependencies = packageRepository.getPackageDependenceByModule(it)
+            ModulePackage(it, getPackageGraph(dependencies))
+        }
     }
 }

@@ -58,6 +58,8 @@ class PackageStore {
 
 }
 
+data class ModulePackage(val module: String, val packageGraph: PackageGraph)
 data class PackageGraph(var nodes: List<PackageNode>, var edges: List<PackageEdge>)
 data class PackageEdge(var a: Int, var b: Int, var num: Int)
 data class PackageNode(var id: Int, var name: String, var parent: Int)
+
