@@ -157,8 +157,10 @@ class LogicModuleServiceTest {
     @Test
     fun `should get class module by start with match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
-                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")))
-        val classModule = service.getClassModule(logicModules, "abc.e.d.f")
-        assertThat(classModule).isEqualTo("lg2")
+                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
+                LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
+                LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
+        val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
+        assertThat(classModule).isEqualTo("lg3")
     }
 }

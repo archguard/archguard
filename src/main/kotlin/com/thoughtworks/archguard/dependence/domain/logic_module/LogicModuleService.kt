@@ -117,10 +117,22 @@ class LogicModuleService {
     }
 
     private fun startsWithMatch(callerClass: String, modules: List<LogicModule>): String {
-        val fullMatchModule = modules.firstOrNull { logicModule ->
-            logicModule.members.any { member -> callerClass.startsWith(member) }
-        } ?: throw RuntimeException("No LogicModule matched!")
-        return fullMatchModule.name
+        var maxMatchSize = 0
+        var matchModule: String? = null
+        for (logicModule in modules) {
+            val maxMatchSizeInLogicModule = logicModule.members
+                    .filter { member -> callerClass.startsWith(member) }
+                    .maxBy { it.length }
+                    ?: continue
+            if (maxMatchSizeInLogicModule.length > maxMatchSize) {
+                maxMatchSize = maxMatchSizeInLogicModule.length
+                matchModule = logicModule.name
+            }
+        }
+        if (matchModule == null) {
+            throw RuntimeException("No LogicModule matched!")
+        }
+        return matchModule
     }
 
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
