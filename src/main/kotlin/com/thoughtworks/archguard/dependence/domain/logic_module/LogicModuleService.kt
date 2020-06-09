@@ -118,7 +118,7 @@ class LogicModuleService {
 
     private fun startsWithMatch(callerClass: String, modules: List<LogicModule>): String {
         val fullMatchModule = modules.firstOrNull { logicModule ->
-            logicModule.members.any { member -> callerClass.split(".")[0] == member }
+            logicModule.members.any { member -> callerClass.startsWith(member) }
         } ?: throw RuntimeException("No LogicModule matched!")
         return fullMatchModule.name
     }
