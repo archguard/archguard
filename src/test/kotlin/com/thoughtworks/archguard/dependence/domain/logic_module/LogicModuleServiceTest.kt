@@ -145,4 +145,20 @@ class LogicModuleServiceTest {
         assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).isEqualTo(setOf("module2"))
 
     }
+
+    @Test
+    fun `should get class module by full match`() {
+        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
+                LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
+        val classModule = service.getClassModule(logicModules, "a.b.c")
+        assertThat(classModule).isEqualTo("lg2")
+    }
+
+    @Test
+    fun `should get class module by start with match`() {
+        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
+                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")))
+        val classModule = service.getClassModule(logicModules, "abc.e.d.f")
+        assertThat(classModule).isEqualTo("lg2")
+    }
 }

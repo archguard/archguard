@@ -79,7 +79,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun getAllDependence(members: List<String>): List<ModuleGraphDependency> {
         val tableTemplate = defineTableTemplate(members)
 
-        val sql = "select concat(a.module, a.clzname) caller, concat(concat(b.module, '.'), b.clzname) callee from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc where a.id = mc.a and b.id = mc.b"
+        val sql = "select concat(concat(a.module, '.'), a.clzname) caller, concat(concat(b.module, '.'), b.clzname) callee from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc where a.id = mc.a and b.id = mc.b"
         return jdbi.withHandle<List<ModuleGraphDependency>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ModuleGraphDependency::class.java))
             it.createQuery(sql)

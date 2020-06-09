@@ -91,14 +91,34 @@ class LogicModuleService {
     }
 
     private fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
-        // TODO[如果module配置时有重叠部分怎么办]
+        // TODO[一个Service有多个实现？]
         return results.map {
-            val caller = modules.filter { logicModule -> logicModule.members.any { j -> it.caller.startsWith(j) } }
-                    .map { logicModule -> logicModule.name }[0]
-            val callee = modules.filter { logicModule -> logicModule.members.any { j -> it.callee.startsWith(j) } }
-                    .map { logicModule -> logicModule.name }[0]
+            val caller = getClassModule(modules, it.caller)
+            val callee = getClassModule(modules, it.callee)
             ModuleGraphDependency(caller, callee)
         }.filter { it.caller != it.callee }
+    }
+
+    fun getClassModule(modules: List<LogicModule>, className: String): String {
+        val callerByFullMatch = fullMatch(className, modules)
+        if (callerByFullMatch != null) {
+            return callerByFullMatch
+        }
+        return startsWithMatch(className, modules)
+    }
+
+    private fun fullMatch(className: String, modules: List<LogicModule>): String? {
+        val fullMatchModule = modules.firstOrNull { logicModule ->
+            logicModule.members.any { javaClass -> className == javaClass }
+        }
+        return fullMatchModule?.name
+    }
+
+    private fun startsWithMatch(callerClass: String, modules: List<LogicModule>): String {
+        val fullMatchModule = modules.firstOrNull { logicModule ->
+            logicModule.members.any { member -> callerClass.split(".")[0] == member }
+        } ?: throw RuntimeException("No LogicModule matched!")
+        return fullMatchModule.name
     }
 
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
