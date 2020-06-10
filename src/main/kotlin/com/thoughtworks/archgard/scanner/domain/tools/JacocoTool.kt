@@ -10,6 +10,7 @@ import java.net.URL
 class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: BuildTool) {
 
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
+    private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun execToSql(): File? {
         prepareTool()
@@ -50,7 +51,7 @@ class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: Buil
         if (File(workspace.absolutePath + "/scan_jacoco.jar").exists()) {
             return
         }
-        val jarLink = "http://ci.archguard.org/job/code-scanners/lastSuccessfulBuild/artifact/scan_jacoco/target/scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"
+        val jarLink = "http://$host/job/code-scanners/lastSuccessfulBuild/artifact/scan_jacoco/target/scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"
         FileOperator.download(URL(jarLink), File(workspace.absolutePath + "/scan_jacoco.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
         chmod.directory(workspace)

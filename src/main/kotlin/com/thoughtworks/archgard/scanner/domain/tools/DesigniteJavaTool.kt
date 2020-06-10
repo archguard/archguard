@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption
 
 class DesigniteJavaTool(val projectRoot: File) {
     private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
+    private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun getBadSmellReport(): List<String> {
         return getTargetFile(projectRoot).map { getBadSmellReport(it)?.readLines() }
@@ -65,7 +66,7 @@ class DesigniteJavaTool(val projectRoot: File) {
                     StandardCopyOption.REPLACE_EXISTING)
         } else {
             log.info("Download DesigniteJava.jar from remote")
-            val downloadUrl = "http://ci.archguard.org/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
+            val downloadUrl = "http://$host/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
             FileOperator.download(URL(downloadUrl), File(target.toString() + "/DesigniteJava.jar"))
         }
 

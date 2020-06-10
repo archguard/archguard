@@ -8,6 +8,7 @@ import java.net.URL
 
 class CocaTool(val projectRoot: File) : TestBadSmellReport {
 
+    private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
     private val log = LoggerFactory.getLogger(CocaTool::class.java)
 
     private fun prepareTool() {
@@ -74,9 +75,9 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
         val system = System.getProperty("os.name").toLowerCase()
         val downloadUrl =
                 if (system.indexOf("mac") >= 0) {
-                    "http://ci.archguard.org/job/coca/lastSuccessfulBuild/artifact/coca_macos"
+                    "http://$host/job/coca/lastSuccessfulBuild/artifact/coca_macos"
                 } else {
-                    "http://ci.archguard.org/job/coca/lastSuccessfulBuild/artifact/coca_linux"
+                    "http://$host/job/coca/lastSuccessfulBuild/artifact/coca_linux"
                 }
 
         FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
