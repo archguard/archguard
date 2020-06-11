@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.dependence.domain.logic_module
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
 import com.thoughtworks.archguard.dependence.domain.base_module.JClass
 import org.springframework.beans.factory.annotation.Autowired
@@ -147,13 +148,43 @@ class LogicModuleService {
         return ModuleCouplingReport(module.name, fanIn, fanOut)
     }
 
+    fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
+        val modules = logicModuleRepository.getAll()
+        val members = modules.map { it.members }.flatten()
+        val dependency = logicModuleRepository.getAllDependence(members)
+        return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
+                .map { getClassCouplingReport(it, dependency) }
+                .groupBy { getClassModule(modules, it.clazz) }
+                .map { NewModuleCouplingReport(it.key, it.value) }
+    }
+
+    fun getClassCouplingReport(clazz: String,
+                               dependency: List<ModuleGraphDependency>): ClassCouplingReport {
+        val fanIn = dependency.filter { it.caller == clazz }.count()
+        val fanOut = dependency.filter { it.callee == clazz }.count()
+        return ClassCouplingReport(clazz, fanIn, fanOut)
+    }
+
 }
 
 data class ModuleCouplingReport(val module: String,
                                 val fanIn: Int,
                                 val fanOut: Int) {
     val moduleInstability: Double = if (fanIn + fanOut == 0) 0.0 else fanOut.toDouble() / (fanOut + fanIn)
-    val moduleCoupling: Double = if (fanIn + fanOut == 0) 0.0 else 1-1.0 / (fanOut+fanIn)
+    val moduleCoupling: Double = if (fanIn + fanOut == 0) 0.0 else 1 - 1.0 / (fanOut + fanIn)
 
     constructor() : this("", 0, 0)
+}
+
+data class NewModuleCouplingReport(val module: String,
+                                   @JsonIgnore val classCouplingReports: List<ClassCouplingReport>) {
+    val moduleInstability: Double = classCouplingReports.map { it.moduleInstability }.average()
+    val moduleCoupling: Double = classCouplingReports.map { it.moduleCoupling }.average()
+}
+
+data class ClassCouplingReport(val clazz: String,
+                               val fanIn: Int,
+                               val fanOut: Int) {
+    val moduleInstability: Double = if (fanIn + fanOut == 0) 0.0 else fanOut.toDouble() / (fanOut + fanIn)
+    val moduleCoupling: Double = if (fanIn + fanOut == 0) 0.0 else 1 - 1.0 / (fanOut + fanIn)
 }

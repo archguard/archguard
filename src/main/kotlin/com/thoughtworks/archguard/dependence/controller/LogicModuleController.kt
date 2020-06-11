@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleServ
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCouplingReport
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraph
+import com.thoughtworks.archguard.dependence.domain.logic_module.NewModuleCouplingReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -67,5 +68,10 @@ class LogicModuleController {
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
         return logicModuleService.getLogicModuleCoupling()
     }
+        @GetMapping("/coupling-by-class")
+    fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
+        return logicModuleService.getLogicModuleCouplingByClass()
+    }
+
 }
 
