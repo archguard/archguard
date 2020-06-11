@@ -160,8 +160,8 @@ class LogicModuleService {
 
     fun getClassCouplingReport(clazz: String,
                                dependency: List<ModuleGraphDependency>): ClassCouplingReport {
-        val fanIn = dependency.filter { it.caller == clazz }.count()
-        val fanOut = dependency.filter { it.callee == clazz }.count()
+        val fanIn = dependency.filter { it.callee == clazz }.count()
+        val fanOut = dependency.filter { it.caller == clazz }.count()
         return ClassCouplingReport(clazz, fanIn, fanOut)
     }
 
