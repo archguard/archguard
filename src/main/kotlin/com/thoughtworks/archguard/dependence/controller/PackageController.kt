@@ -15,11 +15,6 @@ class PackageController {
     @Autowired
     private lateinit var packageService: PackageService
 
-    @GetMapping("/dependence/all")
-    fun getPackageDependence(): PackageGraph {
-        return packageService.getPackageDependence()
-    }
-
     @GetMapping("dependencies")
     fun getPackageDependencies(): List<ModulePackage> {
         return packageService.getPackageDependencies()

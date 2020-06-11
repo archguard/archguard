@@ -13,16 +13,6 @@ class PackageRepositoryImpl : PackageRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getPackageDependence(): List<PackageDependenceDTO> {
-        return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
-            handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
-            handle
-                    .createQuery("select a.clzname aClz, b.clzname bClz from JMethod a, JMethod b, _MethodCallees mc where a.id = mc.a and b.id = mc.b")
-                    .mapTo(PackageDependenceDTO::class.java)
-                    .list()
-        }
-    }
-
     override fun getPackageDependenceByModule(module: String): List<PackageDependenceDTO> {
         return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> {handle ->
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))

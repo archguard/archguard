@@ -13,10 +13,11 @@ class PackageService {
     @Autowired
     lateinit var moduleRepository: BaseModuleRepository
 
-
-    fun getPackageDependence(): PackageGraph {
-        val results = packageRepository.getPackageDependence()
-        return getPackageGraph(results)
+    fun getPackageDependencies(): List<ModulePackage> {
+        return moduleRepository.getBaseModules().map {
+            val dependencies = packageRepository.getPackageDependenceByModule(it)
+            ModulePackage(it, getPackageGraph(dependencies))
+        }
     }
 
     private fun getPackageGraph(results: List<PackageDependenceDTO>): PackageGraph {
@@ -38,12 +39,5 @@ class PackageService {
                 }
 
         return packageStore.getPackageGraph()
-    }
-
-    fun getPackageDependencies(): List<ModulePackage> {
-        return moduleRepository.getBaseModules().map {
-            val dependencies = packageRepository.getPackageDependenceByModule(it)
-            ModulePackage(it, getPackageGraph(dependencies))
-        }
     }
 }
