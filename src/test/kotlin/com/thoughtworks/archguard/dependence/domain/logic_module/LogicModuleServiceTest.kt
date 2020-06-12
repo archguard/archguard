@@ -180,7 +180,8 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
-                LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")))
+                LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")),
+                LogicModule("id6", "lg6", listOf("a", "a.b", "abc.d.e.d.f.g.h", "abc.d.e")))
         val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
     }
@@ -192,8 +193,11 @@ class LogicModuleServiceTest {
         val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
                 LogicModule("id2", "module2", listOf("callee.method1")),
                 LogicModule("id3", "module3", listOf("callee.method1")),
-                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")))
+                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
+                LogicModule("id5", "module5", listOf("caller.method1")))
         val moduleDependency = service.mapToModule(results, modules)
-        assertThat(moduleDependency).containsAnyElementsOf(listOf(ModuleGraphDependency("module1", "module2"), ModuleGraphDependency("module1", "module3")))
+        assertThat(moduleDependency.size).isEqualTo(4)
+        assertThat(moduleDependency).containsAll(listOf(ModuleGraphDependency("module1", "module2"), ModuleGraphDependency("module1", "module3"),
+                ModuleGraphDependency("module5", "module2"), ModuleGraphDependency("module5", "module3")))
     }
 }

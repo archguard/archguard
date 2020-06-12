@@ -3,12 +3,15 @@ package com.thoughtworks.archguard.dependence.domain.logic_module
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
 import com.thoughtworks.archguard.dependence.domain.base_module.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class LogicModuleService {
+    private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
+
     @Autowired
     lateinit var logicModuleRepository: LogicModuleRepository
 
@@ -94,24 +97,24 @@ class LogicModuleService {
     }
 
     fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
-        // 一个Service有多个实现: 就多条依赖关系
+        // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         return results.map {
             val caller = getClassModule(modules, it.caller)
-            if (caller.size > 1) {
-                throw RuntimeException("Get Defined Caller more than one!")
-            }
-
             val callee = getClassModule(modules, it.callee)
-            callee.map { callee -> ModuleGraphDependency(caller[0], callee) }.toList()
+            caller.flatMap { callerElem -> callee.map { calleeElem -> callerElem to calleeElem } }
+                    .map { it -> ModuleGraphDependency(it.first, it.second) }
         }.flatten().filter { it.caller != it.callee }
     }
 
     fun getClassModule(modules: List<LogicModule>, className: String): List<String> {
         val callerByFullMatch = fullMatch(className, modules)
         if (callerByFullMatch.isNotEmpty()) {
+            log.info("Class is {} match module {} by fullMatch", className, callerByFullMatch)
             return callerByFullMatch
         }
-        return startsWithMatch(className, modules)
+        val startsWithMatch = startsWithMatch(className, modules)
+        log.info("Class is {} match module {} by startsWithMatch", className, startsWithMatch)
+        return startsWithMatch
     }
 
     private fun fullMatch(className: String, modules: List<LogicModule>): List<String> {
@@ -125,7 +128,7 @@ class LogicModuleService {
         val matchModule: MutableList<String> = mutableListOf()
         for (logicModule in modules) {
             val maxMatchSizeInLogicModule = logicModule.members
-                    .filter { member -> callerClass.startsWith(member) }
+                    .filter { member -> callerClass.startsWith(member + ".") }
                     .maxBy { it.length }
                     ?: continue
             if (maxMatchSizeInLogicModule.length > maxMatchSize) {
