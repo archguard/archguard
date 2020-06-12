@@ -147,20 +147,53 @@ class LogicModuleServiceTest {
     }
 
     @Test
-    fun `should get class module by full match`() {
+    fun `should get class module by single full match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
         val classModule = service.getClassModule(logicModules, "a.b.c")
-        assertThat(classModule).isEqualTo("lg2")
+        assertThat(classModule).isEqualTo(listOf("lg2"))
     }
 
     @Test
-    fun `should get class module by start with match`() {
+    fun `should get class module by multi full match`() {
+        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
+                LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")),
+                LogicModule("id3", "lg3", listOf("a", "a.b", "a.b.c")),
+                LogicModule("id4", "lg4", listOf("a", "a.b.c", "a.b.c.d")))
+        val classModule = service.getClassModule(logicModules, "a.b.c")
+        assertThat(classModule).isEqualTo(listOf("lg2", "lg3", "lg4"))
+    }
+
+    @Test
+    fun `should get class module by single start with match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
                 LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
         val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
-        assertThat(classModule).isEqualTo("lg3")
+        assertThat(classModule).isEqualTo(listOf("lg3"))
+    }
+
+    @Test
+    fun `should get class module by multi start with match`() {
+        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
+                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
+                LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
+                LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
+                LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")))
+        val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
+        assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
+    }
+
+    @Test
+    fun `should map to module`() {
+        val results = listOf(ModuleGraphDependency("caller.method1", "callee.method1"),
+                ModuleGraphDependency("caller.method2", "callee.method2"))
+        val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
+                LogicModule("id2", "module2", listOf("callee.method1")),
+                LogicModule("id3", "module3", listOf("callee.method1")),
+                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")))
+        val moduleDependency = service.mapToModule(results, modules)
+        assertThat(moduleDependency).containsAnyElementsOf(listOf(ModuleGraphDependency("module1", "module2"), ModuleGraphDependency("module1", "module3")))
     }
 }

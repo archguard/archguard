@@ -93,33 +93,36 @@ class LogicModuleService {
         return mapToModule(results, modules)
     }
 
-    private fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
-        // TODO[一个Service有多个实现？]
+    fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
+        // 一个Service有多个实现: 就多条依赖关系
         return results.map {
             val caller = getClassModule(modules, it.caller)
+            if (caller.size > 1) {
+                throw RuntimeException("Get Defined Caller more than one!")
+            }
+
             val callee = getClassModule(modules, it.callee)
-            ModuleGraphDependency(caller, callee)
-        }.filter { it.caller != it.callee }
+            callee.map { callee -> ModuleGraphDependency(caller[0], callee) }.toList()
+        }.flatten().filter { it.caller != it.callee }
     }
 
-    fun getClassModule(modules: List<LogicModule>, className: String): String {
+    fun getClassModule(modules: List<LogicModule>, className: String): List<String> {
         val callerByFullMatch = fullMatch(className, modules)
-        if (callerByFullMatch != null) {
+        if (callerByFullMatch.isNotEmpty()) {
             return callerByFullMatch
         }
         return startsWithMatch(className, modules)
     }
 
-    private fun fullMatch(className: String, modules: List<LogicModule>): String? {
-        val fullMatchModule = modules.firstOrNull { logicModule ->
+    private fun fullMatch(className: String, modules: List<LogicModule>): List<String> {
+        return modules.filter { logicModule ->
             logicModule.members.any { javaClass -> className == javaClass }
-        }
-        return fullMatchModule?.name
+        }.map { it.name }
     }
 
-    private fun startsWithMatch(callerClass: String, modules: List<LogicModule>): String {
+    private fun startsWithMatch(callerClass: String, modules: List<LogicModule>): List<String> {
         var maxMatchSize = 0
-        var matchModule: String? = null
+        val matchModule: MutableList<String> = mutableListOf()
         for (logicModule in modules) {
             val maxMatchSizeInLogicModule = logicModule.members
                     .filter { member -> callerClass.startsWith(member) }
@@ -127,13 +130,16 @@ class LogicModuleService {
                     ?: continue
             if (maxMatchSizeInLogicModule.length > maxMatchSize) {
                 maxMatchSize = maxMatchSizeInLogicModule.length
-                matchModule = logicModule.name
+                matchModule.clear()
+                matchModule.add(logicModule.name)
+            } else if (maxMatchSizeInLogicModule.length == maxMatchSize) {
+                matchModule.add(logicModule.name)
             }
         }
-        if (matchModule == null) {
+        if (matchModule.isEmpty()) {
             throw RuntimeException("No LogicModule matched!")
         }
-        return matchModule
+        return matchModule.toList()
     }
 
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
@@ -154,7 +160,7 @@ class LogicModuleService {
         val dependency = logicModuleRepository.getAllDependence(members)
         return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
                 .map { getClassCouplingReport(it, dependency) }
-                .groupBy { getClassModule(modules, it.clazz) }
+                .groupBy { getClassModule(modules, it.clazz)[0] }
                 .map { NewModuleCouplingReport(it.key, it.value) }
     }
 
