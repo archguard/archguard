@@ -22,7 +22,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map { LogicModule(it.id, it.name, it.members.split(',')) }
+        return modules.map { LogicModule(it.id, it.name, it.members.split(',').sorted()) }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
