@@ -161,11 +161,29 @@ class LogicModuleService {
         val modules = logicModuleRepository.getAll()
         val members = modules.map { it.members }.flatten()
         val dependency = logicModuleRepository.getAllDependence(members)
-        return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
-                .map { getClassCouplingReport(it, dependency) }
-                .groupBy { getClassModule(modules, it.clazz)[0] }
-                .map { NewModuleCouplingReport(it.key, it.value) }
+        val classCouplingReports = getClassCouplingReports(dependency)
+        return groupClassCouplingReportsByModuleName(classCouplingReports, modules).map { NewModuleCouplingReport(it.key, it.value) }
     }
+
+    fun groupClassCouplingReportsByModuleName(classCouplingReports: List<ClassCouplingReport>,
+                                              modules: List<LogicModule>): MutableMap<String, MutableList<ClassCouplingReport>> {
+        val classCouplingReportMap: MutableMap<String, MutableList<ClassCouplingReport>> = mutableMapOf<String, MutableList<ClassCouplingReport>>()
+        for (classCouplingReport in classCouplingReports) {
+            val reportRelatedModules = getClassModule(modules, classCouplingReport.clazz)
+            for (module in reportRelatedModules) {
+                if (classCouplingReportMap.containsKey(module)) {
+                    classCouplingReportMap[module]?.add(classCouplingReport)
+                    continue
+                }
+                classCouplingReportMap[module] = mutableListOf(classCouplingReport)
+            }
+        }
+        return classCouplingReportMap
+    }
+
+    private fun getClassCouplingReports(dependency: List<ModuleGraphDependency>): List<ClassCouplingReport> =
+            dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
+                    .map { getClassCouplingReport(it, dependency) }
 
     fun getClassCouplingReport(clazz: String,
                                dependency: List<ModuleGraphDependency>): ClassCouplingReport {

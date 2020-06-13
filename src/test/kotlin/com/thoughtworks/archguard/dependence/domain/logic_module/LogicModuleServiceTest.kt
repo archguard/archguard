@@ -200,4 +200,25 @@ class LogicModuleServiceTest {
         assertThat(moduleDependency).containsAll(listOf(ModuleGraphDependency("module1", "module2"), ModuleGraphDependency("module1", "module3"),
                 ModuleGraphDependency("module5", "module2"), ModuleGraphDependency("module5", "module3")))
     }
+
+    @Test
+    fun `group class coupling reports by module name`() {
+        val classCouplingReport1 = ClassCouplingReport("class1", 0, 0)
+        val classCouplingReport2 = ClassCouplingReport("class2", 1, 1)
+        val classCouplingReport3 = ClassCouplingReport("class3", 1, 1)
+        val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
+        val modules: List<LogicModule> = listOf()
+        service = spyk(service)
+        every { service.getClassModule(modules, "class1") } returns listOf("module1", "module2")
+        every { service.getClassModule(modules, "class2") } returns listOf("module2")
+        every { service.getClassModule(modules, "class3") } returns listOf("module1", "module3")
+        val groupClassCouplingReportsByModuleName = service.groupClassCouplingReportsByModuleName(classCouplingReports, modules)
+        assertThat(groupClassCouplingReportsByModuleName.size).isEqualTo(3)
+        assertThat(groupClassCouplingReportsByModuleName["module1"]?.size).isEqualTo(2)
+        assertThat(groupClassCouplingReportsByModuleName["module2"]?.size).isEqualTo(2)
+        assertThat(groupClassCouplingReportsByModuleName["module3"]?.size).isEqualTo(1)
+        assertThat(groupClassCouplingReportsByModuleName["module1"]).containsAll(mutableListOf(classCouplingReport1, classCouplingReport3))
+        assertThat(groupClassCouplingReportsByModuleName["module2"]).containsAll(mutableListOf(classCouplingReport1, classCouplingReport2))
+        assertThat(groupClassCouplingReportsByModuleName["module3"]).containsAll(mutableListOf(classCouplingReport3))
+    }
 }

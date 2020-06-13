@@ -68,7 +68,8 @@ class LogicModuleController {
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
         return logicModuleService.getLogicModuleCoupling()
     }
-        @GetMapping("/coupling-by-class")
+
+    @GetMapping("/coupling-by-class")
     fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
         return logicModuleService.getLogicModuleCouplingByClass()
     }
