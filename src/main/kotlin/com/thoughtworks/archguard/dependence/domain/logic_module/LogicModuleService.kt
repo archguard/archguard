@@ -220,14 +220,14 @@ data class ModuleCouplingReport(val module: String,
 
 data class NewModuleCouplingReport(val module: String,
                                    @JsonIgnore val classCouplingReports: List<ClassCouplingReport>) {
-    val innerModuleInstabilityAverage: Double = classCouplingReports.map { it.innerClassInstability }.average()
-    val innerModuleCouplingAverage: Double = classCouplingReports.map { it.innerClassCoupling }.average()
-    val innerModuleInstabilityMedian: Double = classCouplingReports.map { it.innerClassInstability }.median()
-    val innerModuleCouplingMedian: Double = classCouplingReports.map { it.innerClassCoupling }.median()
     val outerModuleInstabilityAverage: Double = classCouplingReports.map { it.outerClassInstability }.average()
-    val outerModuleCouplingAverage: Double = classCouplingReports.map { it.outerClassCoupling }.average()
     val outerModuleInstabilityMedian: Double = classCouplingReports.map { it.outerClassInstability }.median()
+    val outerModuleCouplingAverage: Double = classCouplingReports.map { it.outerClassCoupling }.average()
     val outerModuleCouplingMedian: Double = classCouplingReports.map { it.outerClassCoupling }.median()
+    val innerModuleInstabilityAverage: Double = classCouplingReports.map { it.innerClassInstability }.average()
+    val innerModuleInstabilityMedian: Double = classCouplingReports.map { it.innerClassInstability }.median()
+    val innerModuleCouplingAverage: Double = classCouplingReports.map { it.innerClassCoupling }.average()
+    val innerModuleCouplingMedian: Double = classCouplingReports.map { it.innerClassCoupling }.median()
 
 }
 
