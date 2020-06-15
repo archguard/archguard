@@ -85,6 +85,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
             it.createQuery(sql)
                     .mapTo(ModuleGraphDependency::class.java)
                     .list()
+                    .filter { it -> it.caller != it.callee }
         }
     }
 
