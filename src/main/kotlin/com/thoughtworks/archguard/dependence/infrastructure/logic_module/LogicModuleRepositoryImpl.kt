@@ -18,11 +18,11 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun getAll(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members from logic_module")
+            it.createQuery("select id, name, members, status from logic_module where status='NORMAL'")
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map { LogicModule(it.id, it.name, it.members.split(',').sorted()) }
+        return modules.map { LogicModule(it.id, it.name, it.members.split(',').sorted(), it.status) }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
@@ -30,6 +30,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
             it.createUpdate("update logic_module set " +
                     "name = '${logicModule.name}', " +
                     "members = '${logicModule.members.joinToString(",")}'" +
+                    "status = '${logicModule.status}', " +
                     "where id = '${logicModule.id}'")
                     .execute()
         }
@@ -37,7 +38,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun create(logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", logicModule.id, logicModule.name, logicModule.members.joinToString(","))
+            handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
+                    logicModule.id, logicModule.name, logicModule.members.joinToString(","), logicModule.status)
         }
     }
 
@@ -56,7 +58,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun saveAll(logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("insert into logic_module (id, name, members) values (?, ?, ?)", it.id, it.name, it.members.joinToString(","))
+                handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
+                        it.id, it.name, it.members.joinToString(","), it.status)
             }
         }
     }

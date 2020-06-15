@@ -56,7 +56,7 @@ class LogicModuleService {
         logicModuleRepository.saveAll(defineLogicModuleWithInterface)
     }
 
-    fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
+    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
         return jClassesHasModules
                 .map { getLogicModuleForJClass(it) }
                 .groupBy({ it.name }, { it.members })
@@ -64,7 +64,7 @@ class LogicModuleService {
                 .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
-    fun getLogicModuleForJClass(jClass: JClass): LogicModule {
+    internal fun getLogicModuleForJClass(jClass: JClass): LogicModule {
         val (id, _, moduleName) = jClass
         val parentClassIds = logicModuleRepository.getParentClassId(id)
         val moduleNames = parentClassIds.asSequence().map { id -> baseModuleRepository.getJClassesById(id) }
@@ -112,8 +112,7 @@ class LogicModuleService {
         if (callerByFullMatch.isNotEmpty()) {
             return callerByFullMatch
         }
-        val startsWithMatch = startsWithMatch(className, modules)
-        return startsWithMatch
+        return startsWithMatch(className, modules)
     }
 
     private fun fullMatch(className: String, modules: List<LogicModule>): List<String> {
