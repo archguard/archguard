@@ -121,7 +121,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                 filterConditions.add("module = '${member[0]}'")
             }
             if (member.size > 1) {
-                filterConditions.add("(module = '${member[0]}' and clzname like '${member.subList(1, member.size).joinToString(".")}%')")
+                filterConditions.add("(module = '${member[0]}' and clzname like '${member.subList(1, member.size).joinToString(".") + "."}%')")
+                filterConditions.add("(module = '${member[0]}' and clzname='${member.subList(1, member.size).joinToString(".")}')")
             }
         }
         tableTemplate += filterConditions.joinToString(" or ")

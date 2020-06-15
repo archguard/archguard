@@ -100,9 +100,9 @@ class LogicModuleService {
     fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         return results.map {
-            val caller = getClassModule(modules, it.caller)
-            val callee = getClassModule(modules, it.callee)
-            caller.flatMap { callerElem -> callee.map { calleeElem -> callerElem to calleeElem } }
+            val callerModules = getClassModule(modules, it.caller)
+            val calleeModules = getClassModule(modules, it.callee)
+            callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
                     .map { it -> ModuleGraphDependency(it.first, it.second) }
         }.flatten().filter { it.caller != it.callee }
     }
@@ -138,7 +138,8 @@ class LogicModuleService {
             }
         }
         if (matchModule.isEmpty()) {
-            throw RuntimeException("No LogicModule matched!")
+            log.error("{} No LogicModule matched!", callerClass)
+            throw RuntimeException(callerClass + "No LogicModule matched!")
         }
         return matchModule.toList()
     }
