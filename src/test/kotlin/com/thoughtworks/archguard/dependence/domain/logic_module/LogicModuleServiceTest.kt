@@ -203,9 +203,9 @@ class LogicModuleServiceTest {
 
     @Test
     fun `group class coupling reports by module name`() {
-        val classCouplingReport1 = ClassCouplingReport("class1", 0, 0)
-        val classCouplingReport2 = ClassCouplingReport("class2", 1, 1)
-        val classCouplingReport3 = ClassCouplingReport("class3", 1, 1)
+        val classCouplingReport1 = ClassCouplingReport("class1", 0, 0, 0, 0)
+        val classCouplingReport2 = ClassCouplingReport("class2", 1, 1, 0, 0)
+        val classCouplingReport3 = ClassCouplingReport("class3", 1, 1, 0, 0)
         val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
         val modules: List<LogicModule> = listOf()
         service = spyk(service)

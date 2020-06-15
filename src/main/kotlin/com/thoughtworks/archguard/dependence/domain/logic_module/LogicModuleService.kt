@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.dependence.domain.logic_module
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
 import com.thoughtworks.archguard.dependence.domain.base_module.JClass
+import org.nield.kotlinstatistics.median
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -109,11 +110,9 @@ class LogicModuleService {
     fun getClassModule(modules: List<LogicModule>, className: String): List<String> {
         val callerByFullMatch = fullMatch(className, modules)
         if (callerByFullMatch.isNotEmpty()) {
-            log.info("Class is {} match module {} by fullMatch", className, callerByFullMatch)
             return callerByFullMatch
         }
         val startsWithMatch = startsWithMatch(className, modules)
-        log.info("Class is {} match module {} by startsWithMatch", className, startsWithMatch)
         return startsWithMatch
     }
 
@@ -158,16 +157,21 @@ class LogicModuleService {
     }
 
     fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
+        log.info("Start to get module couplings.")
         val modules = logicModuleRepository.getAll()
+        log.info("Get modules info done.")
         val members = modules.map { it.members }.flatten()
         val dependency = logicModuleRepository.getAllDependence(members)
-        val classCouplingReports = getClassCouplingReports(dependency)
-        return groupClassCouplingReportsByModuleName(classCouplingReports, modules).map { NewModuleCouplingReport(it.key, it.value) }
+        log.info("Get dependency info done.")
+        val classCouplingReports = getClassCouplingReports(dependency, modules)
+        log.info("Get class Coupling reports done.")
+        return groupClassCouplingReportsByModuleName(classCouplingReports, modules)
+                .map { NewModuleCouplingReport(it.key, it.value) }
     }
 
     fun groupClassCouplingReportsByModuleName(classCouplingReports: List<ClassCouplingReport>,
                                               modules: List<LogicModule>): MutableMap<String, MutableList<ClassCouplingReport>> {
-        val classCouplingReportMap: MutableMap<String, MutableList<ClassCouplingReport>> = mutableMapOf<String, MutableList<ClassCouplingReport>>()
+        val classCouplingReportMap: MutableMap<String, MutableList<ClassCouplingReport>> = mutableMapOf()
         for (classCouplingReport in classCouplingReports) {
             val reportRelatedModules = getClassModule(modules, classCouplingReport.clazz)
             for (module in reportRelatedModules) {
@@ -178,18 +182,29 @@ class LogicModuleService {
                 classCouplingReportMap[module] = mutableListOf(classCouplingReport)
             }
         }
+        log.info("Group class to module done.")
         return classCouplingReportMap
     }
 
-    private fun getClassCouplingReports(dependency: List<ModuleGraphDependency>): List<ClassCouplingReport> =
+    private fun getClassCouplingReports(dependency: List<ModuleGraphDependency>,
+                                        modules: List<LogicModule>): List<ClassCouplingReport> =
             dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
-                    .map { getClassCouplingReport(it, dependency) }
+                    .map { getClassCouplingReport(it, dependency, modules) }
 
     fun getClassCouplingReport(clazz: String,
-                               dependency: List<ModuleGraphDependency>): ClassCouplingReport {
-        val fanIn = dependency.filter { it.callee == clazz }.count()
-        val fanOut = dependency.filter { it.caller == clazz }.count()
-        return ClassCouplingReport(clazz, fanIn, fanOut)
+                               dependency: List<ModuleGraphDependency>,
+                               modules: List<LogicModule>): ClassCouplingReport {
+        val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
+        val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
+        val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
+        val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
+        return ClassCouplingReport(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
+    }
+
+    private fun isInSameModule(modules: List<LogicModule>, it: ModuleGraphDependency): Boolean {
+        val callerModules = getClassModule(modules, it.caller)
+        val calleeModules = getClassModule(modules, it.callee)
+        return callerModules.intersect(calleeModules).isEmpty()
     }
 
 }
@@ -205,13 +220,24 @@ data class ModuleCouplingReport(val module: String,
 
 data class NewModuleCouplingReport(val module: String,
                                    @JsonIgnore val classCouplingReports: List<ClassCouplingReport>) {
-    val moduleInstability: Double = classCouplingReports.map { it.moduleInstability }.average()
-    val moduleCoupling: Double = classCouplingReports.map { it.moduleCoupling }.average()
+    val innerModuleInstabilityAverage: Double = classCouplingReports.map { it.innerClassInstability }.average()
+    val innerModuleCouplingAverage: Double = classCouplingReports.map { it.innerClassCoupling }.average()
+    val innerModuleInstabilityMedian: Double = classCouplingReports.map { it.innerClassInstability }.median()
+    val innerModuleCouplingMedian: Double = classCouplingReports.map { it.innerClassCoupling }.median()
+    val outerModuleInstabilityAverage: Double = classCouplingReports.map { it.outerClassInstability }.average()
+    val outerModuleCouplingAverage: Double = classCouplingReports.map { it.outerClassCoupling }.average()
+    val outerModuleInstabilityMedian: Double = classCouplingReports.map { it.outerClassInstability }.median()
+    val outerModuleCouplingMedian: Double = classCouplingReports.map { it.outerClassCoupling }.median()
+
 }
 
 data class ClassCouplingReport(val clazz: String,
-                               val fanIn: Int,
-                               val fanOut: Int) {
-    val moduleInstability: Double = if (fanIn + fanOut == 0) 0.0 else fanOut.toDouble() / (fanOut + fanIn)
-    val moduleCoupling: Double = if (fanIn + fanOut == 0) 0.0 else 1 - 1.0 / (fanOut + fanIn)
+                               val innerFanIn: Int,
+                               val innerFanOut: Int,
+                               val outerFanIn: Int,
+                               val outerFanOut: Int) {
+    val innerClassInstability: Double = if (innerFanIn + innerFanOut == 0) 0.0 else innerFanOut.toDouble() / (innerFanOut + innerFanIn)
+    val innerClassCoupling: Double = if (innerFanIn + innerFanOut == 0) 0.0 else 1 - 1.0 / (innerFanOut + innerFanIn)
+    val outerClassInstability: Double = if (outerFanIn + outerFanOut == 0) 0.0 else outerFanOut.toDouble() / (outerFanOut + outerFanIn)
+    val outerClassCoupling: Double = if (outerFanIn + outerFanOut == 0) 0.0 else 1 - 1.0 / (outerFanOut + outerFanIn)
 }

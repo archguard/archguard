@@ -50,6 +50,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.10.1")
+    implementation("org.nield:kotlinstatistics:0.3.0")
 
     runtimeOnly("mysql:mysql-connector-java")
 
