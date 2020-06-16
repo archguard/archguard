@@ -29,7 +29,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("update logic_module set " +
                     "name = '${logicModule.name}', " +
-                    "members = '${logicModule.members.joinToString(",")}'" +
+                    "members = '${logicModule.members.joinToString(",")}', " +
                     "status = '${logicModule.status}', " +
                     "where id = '${logicModule.id}'")
                     .execute()
