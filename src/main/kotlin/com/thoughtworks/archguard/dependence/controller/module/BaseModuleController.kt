@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.dependence.controller
+package com.thoughtworks.archguard.dependence.controller.module
 
-import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleService
+import com.thoughtworks.archguard.dependence.domain.module.BaseModuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

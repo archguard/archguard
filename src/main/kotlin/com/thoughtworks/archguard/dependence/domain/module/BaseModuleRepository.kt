@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.dependence.domain.base_module
+package com.thoughtworks.archguard.dependence.domain.module
 
 interface BaseModuleRepository {
     fun getBaseModules(): List<String>

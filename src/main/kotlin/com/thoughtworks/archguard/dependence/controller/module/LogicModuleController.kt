@@ -1,11 +1,11 @@
-package com.thoughtworks.archguard.dependence.controller
+package com.thoughtworks.archguard.dependence.controller.module
 
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleService
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleCouplingReport
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraph
-import com.thoughtworks.archguard.dependence.domain.logic_module.NewModuleCouplingReport
+import com.thoughtworks.archguard.dependence.domain.module.LogicModule
+import com.thoughtworks.archguard.dependence.domain.module.LogicModuleService
+import com.thoughtworks.archguard.dependence.domain.module.ModuleCouplingReport
+import com.thoughtworks.archguard.dependence.domain.module.ModuleDependency
+import com.thoughtworks.archguard.dependence.domain.module.ModuleGraph
+import com.thoughtworks.archguard.dependence.domain.module.NewModuleCouplingReport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,8 +1,6 @@
-package com.thoughtworks.archguard.dependence.domain.logic_module
+package com.thoughtworks.archguard.dependence.domain.module
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
-import com.thoughtworks.archguard.dependence.domain.base_module.JClass
 import org.nield.kotlinstatistics.median
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

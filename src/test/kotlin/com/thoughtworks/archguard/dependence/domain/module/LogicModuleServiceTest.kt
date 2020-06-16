@@ -1,7 +1,5 @@
-package com.thoughtworks.archguard.dependence.domain.logic_module
+package com.thoughtworks.archguard.dependence.domain.module
 
-import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
-import com.thoughtworks.archguard.dependence.domain.base_module.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

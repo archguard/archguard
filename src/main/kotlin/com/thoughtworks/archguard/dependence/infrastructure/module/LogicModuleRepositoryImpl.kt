@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.dependence.infrastructure.logic_module
+package com.thoughtworks.archguard.dependence.infrastructure.module
 
-import com.thoughtworks.archguard.dependence.domain.logic_module.CallerCalleeCouple
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleRepository
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
+import com.thoughtworks.archguard.dependence.domain.module.CallerCalleeCouple
+import com.thoughtworks.archguard.dependence.domain.module.LogicModule
+import com.thoughtworks.archguard.dependence.domain.module.LogicModuleRepository
+import com.thoughtworks.archguard.dependence.domain.module.ModuleDependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.dependence.infrastructure.logic_module
+package com.thoughtworks.archguard.dependence.infrastructure.module
 
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleRepository
-import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleStatus
+import com.thoughtworks.archguard.dependence.domain.module.LogicModule
+import com.thoughtworks.archguard.dependence.domain.module.LogicModuleRepository
+import com.thoughtworks.archguard.dependence.domain.module.LogicModuleStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

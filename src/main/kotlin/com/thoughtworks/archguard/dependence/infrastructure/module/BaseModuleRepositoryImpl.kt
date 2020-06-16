@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.dependence.infrastructure.base_module
+package com.thoughtworks.archguard.dependence.infrastructure.module
 
-import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
-import com.thoughtworks.archguard.dependence.domain.base_module.JClass
+import com.thoughtworks.archguard.dependence.domain.module.BaseModuleRepository
+import com.thoughtworks.archguard.dependence.domain.module.JClass
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

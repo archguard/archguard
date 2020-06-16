@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.dependence.domain.packages
 
-import com.thoughtworks.archguard.dependence.domain.base_module.BaseModuleRepository
+import com.thoughtworks.archguard.dependence.domain.module.BaseModuleRepository
 import com.thoughtworks.archguard.dependence.infrastructure.packages.PackageDependenceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

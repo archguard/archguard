@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.dependence.domain.base_module
+package com.thoughtworks.archguard.dependence.domain.module
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

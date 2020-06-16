@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.dependence.domain.logic_module
+package com.thoughtworks.archguard.dependence.domain.module
 
 class ModuleStore {
 
