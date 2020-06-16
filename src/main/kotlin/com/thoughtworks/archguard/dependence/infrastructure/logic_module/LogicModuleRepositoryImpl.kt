@@ -30,7 +30,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
             it.createUpdate("update logic_module set " +
                     "name = '${logicModule.name}', " +
                     "members = '${logicModule.members.joinToString(",")}', " +
-                    "status = '${logicModule.status}', " +
+                    "status = '${logicModule.status}' " +
                     "where id = '${logicModule.id}'")
                     .execute()
         }
