@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.dependence.infrastructure.logic_module
 
+import com.thoughtworks.archguard.dependence.domain.logic_module.CallerCalleeCouple
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModule
 import com.thoughtworks.archguard.dependence.domain.logic_module.LogicModuleRepository
 import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleDependency
-import com.thoughtworks.archguard.dependence.domain.logic_module.ModuleGraphDependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -79,14 +79,17 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     }
 
-    override fun getAllDependence(members: List<String>): List<ModuleGraphDependency> {
+    override fun getAllCallerCalleeCoupleAtClassLevel(members: List<String>): List<CallerCalleeCouple> {
         val tableTemplate = defineTableTemplate(members)
 
-        val sql = "select concat(concat(a.module, '.'), a.clzname) caller, concat(concat(b.module, '.'), b.clzname) callee from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<ModuleGraphDependency>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ModuleGraphDependency::class.java))
+        val sql = "select concat(concat(a.module, '.'), a.clzname) caller, " +
+                "concat(concat(b.module, '.'), b.clzname) callee " +
+                "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
+                "where a.id = mc.a and b.id = mc.b"
+        return jdbi.withHandle<List<CallerCalleeCouple>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(CallerCalleeCouple::class.java))
             it.createQuery(sql)
-                    .mapTo(ModuleGraphDependency::class.java)
+                    .mapTo(CallerCalleeCouple::class.java)
                     .list()
                     .filter { it -> it.caller != it.callee }
         }

@@ -90,24 +90,24 @@ class LogicModuleService {
         return moduleStore.getModuleGraph()
     }
 
-    private fun getModuleDependency(): List<ModuleGraphDependency> {
+    private fun getModuleDependency(): List<CallerCalleeCouple> {
         val modules = logicModuleRepository.getAll()
         val members = modules.map { it.members }.flatten()
-        val results = logicModuleRepository.getAllDependence(members)
-        return mapToModule(results, modules)
+        val classCallerCalleeCouple = logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(members)
+        return mapClassCoupleToModuleCouple(classCallerCalleeCouple, modules)
     }
 
-    fun mapToModule(results: List<ModuleGraphDependency>, modules: List<LogicModule>): List<ModuleGraphDependency> {
+    fun mapClassCoupleToModuleCouple(classCallerCalleeCouple: List<CallerCalleeCouple>, modules: List<LogicModule>): List<CallerCalleeCouple> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
-        return results.map {
-            val callerModules = getClassModule(modules, it.caller)
-            val calleeModules = getClassModule(modules, it.callee)
+        return classCallerCalleeCouple.map {
+            val callerModules = getModuleByClassName(modules, it.caller)
+            val calleeModules = getModuleByClassName(modules, it.callee)
             callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
-                    .map { it -> ModuleGraphDependency(it.first, it.second) }
+                    .map { it -> CallerCalleeCouple(it.first, it.second) }
         }.flatten().filter { it.caller != it.callee }
     }
 
-    fun getClassModule(modules: List<LogicModule>, className: String): List<String> {
+    fun getModuleByClassName(modules: List<LogicModule>, className: String): List<String> {
         val callerByFullMatch = fullMatch(className, modules)
         if (callerByFullMatch.isNotEmpty()) {
             return callerByFullMatch
@@ -150,20 +150,18 @@ class LogicModuleService {
     }
 
     fun getModuleCouplingReport(module: LogicModule,
-                                moduleDependency: List<ModuleGraphDependency>): ModuleCouplingReport {
+                                moduleDependency: List<CallerCalleeCouple>): ModuleCouplingReport {
         val fanOut = moduleDependency.filter { it.caller == module.name }.count()
         val fanIn = moduleDependency.filter { it.callee == module.name }.count()
         return ModuleCouplingReport(module.name, fanIn, fanOut)
     }
 
     fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
-        log.info("Start to get module couplings.")
         val modules = logicModuleRepository.getAll()
-        log.info("Get modules info done.")
         val members = modules.map { it.members }.flatten()
-        val dependency = logicModuleRepository.getAllDependence(members)
-        log.info("Get dependency info done.")
-        val classCouplingReports = getClassCouplingReports(dependency, modules)
+        val classCallerCalleeCouple = logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(members)
+
+        val classCouplingReports = getClassCouplingReports(classCallerCalleeCouple, modules)
         log.info("Get class Coupling reports done.")
         return groupClassCouplingReportsByModuleName(classCouplingReports, modules)
                 .map { NewModuleCouplingReport(it.key, it.value) }
@@ -173,7 +171,7 @@ class LogicModuleService {
                                               modules: List<LogicModule>): MutableMap<String, MutableList<ClassCouplingReport>> {
         val classCouplingReportMap: MutableMap<String, MutableList<ClassCouplingReport>> = mutableMapOf()
         for (classCouplingReport in classCouplingReports) {
-            val reportRelatedModules = getClassModule(modules, classCouplingReport.clazz)
+            val reportRelatedModules = getModuleByClassName(modules, classCouplingReport.clazz)
             for (module in reportRelatedModules) {
                 if (classCouplingReportMap.containsKey(module)) {
                     classCouplingReportMap[module]?.add(classCouplingReport)
@@ -186,13 +184,13 @@ class LogicModuleService {
         return classCouplingReportMap
     }
 
-    private fun getClassCouplingReports(dependency: List<ModuleGraphDependency>,
+    private fun getClassCouplingReports(dependency: List<CallerCalleeCouple>,
                                         modules: List<LogicModule>): List<ClassCouplingReport> =
             dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
                     .map { getClassCouplingReport(it, dependency, modules) }
 
     fun getClassCouplingReport(clazz: String,
-                               dependency: List<ModuleGraphDependency>,
+                               dependency: List<CallerCalleeCouple>,
                                modules: List<LogicModule>): ClassCouplingReport {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
@@ -201,9 +199,9 @@ class LogicModuleService {
         return ClassCouplingReport(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
-    private fun isInSameModule(modules: List<LogicModule>, it: ModuleGraphDependency): Boolean {
-        val callerModules = getClassModule(modules, it.caller)
-        val calleeModules = getClassModule(modules, it.callee)
+    private fun isInSameModule(modules: List<LogicModule>, it: CallerCalleeCouple): Boolean {
+        val callerModules = getModuleByClassName(modules, it.caller)
+        val calleeModules = getModuleByClassName(modules, it.callee)
         return callerModules.intersect(calleeModules).isEmpty()
     }
 

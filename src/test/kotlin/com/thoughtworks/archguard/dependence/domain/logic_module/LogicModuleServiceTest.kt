@@ -66,13 +66,13 @@ class LogicModuleServiceTest {
         val logicModule3 = LogicModule("3", "module3", listOf("bm5"))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = ModuleGraphDependency("bm1.any", "bm3.any")
-        val dependency2 = ModuleGraphDependency("bm3.any", "bm2.any")
-        val dependency3 = ModuleGraphDependency("bm5.any", "bm4.any")
+        val dependency1 = CallerCalleeCouple("bm1.any", "bm3.any")
+        val dependency2 = CallerCalleeCouple("bm3.any", "bm2.any")
+        val dependency3 = CallerCalleeCouple("bm5.any", "bm4.any")
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAll() } returns logicModules
-        every { logicModuleRepository.getAllDependence(any()) } returns dependencies
+        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraph()
@@ -88,10 +88,10 @@ class LogicModuleServiceTest {
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
         val element3 = LogicModule(null, "module3", listOf("com.test5", "com.test6"))
-        val dependency1 = ModuleGraphDependency("com.test1", "com.test3")
-        val dependency2 = ModuleGraphDependency("com.test4", "com.test2")
+        val dependency1 = CallerCalleeCouple("com.test1", "com.test3")
+        val dependency2 = CallerCalleeCouple("com.test4", "com.test2")
         every { logicModuleRepository.getAll() } returns listOf(element, element2, element3)
-        every { logicModuleRepository.getAllDependence(any()) } returns listOf(dependency1, dependency2)
+        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()
         //then
@@ -109,7 +109,7 @@ class LogicModuleServiceTest {
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
         every { logicModuleRepository.getAll() } returns listOf(element, element2)
-        every { logicModuleRepository.getAllDependence(any()) } returns listOf()
+        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()
         //then
@@ -150,7 +150,7 @@ class LogicModuleServiceTest {
     fun `should get class module by single full match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
-        val classModule = service.getClassModule(logicModules, "a.b.c")
+        val classModule = service.getModuleByClassName(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2"))
     }
 
@@ -160,7 +160,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id4", "lg4", listOf("a", "a.b.c", "a.b.c.d")))
-        val classModule = service.getClassModule(logicModules, "a.b.c")
+        val classModule = service.getModuleByClassName(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2", "lg3", "lg4"))
     }
 
@@ -170,7 +170,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
-        val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
+        val classModule = service.getModuleByClassName(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3"))
     }
 
@@ -182,23 +182,23 @@ class LogicModuleServiceTest {
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
                 LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")),
                 LogicModule("id6", "lg6", listOf("a", "a.b", "abc.d.e.d.f.g.h", "abc.d.e")))
-        val classModule = service.getClassModule(logicModules, "abc.d.e.d.f.g")
+        val classModule = service.getModuleByClassName(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
     }
 
     @Test
     fun `should map to module`() {
-        val results = listOf(ModuleGraphDependency("caller.method1", "callee.method1"),
-                ModuleGraphDependency("caller.method2", "callee.method2"))
+        val results = listOf(CallerCalleeCouple("caller.method1", "callee.method1"),
+                CallerCalleeCouple("caller.method2", "callee.method2"))
         val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
                 LogicModule("id2", "module2", listOf("callee.method1")),
                 LogicModule("id3", "module3", listOf("callee.method1")),
                 LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
                 LogicModule("id5", "module5", listOf("caller.method1")))
-        val moduleDependency = service.mapToModule(results, modules)
+        val moduleDependency = service.mapClassCoupleToModuleCouple(results, modules)
         assertThat(moduleDependency.size).isEqualTo(4)
-        assertThat(moduleDependency).containsAll(listOf(ModuleGraphDependency("module1", "module2"), ModuleGraphDependency("module1", "module3"),
-                ModuleGraphDependency("module5", "module2"), ModuleGraphDependency("module5", "module3")))
+        assertThat(moduleDependency).containsAll(listOf(CallerCalleeCouple("module1", "module2"), CallerCalleeCouple("module1", "module3"),
+                CallerCalleeCouple("module5", "module2"), CallerCalleeCouple("module5", "module3")))
     }
 
     @Test
@@ -209,9 +209,9 @@ class LogicModuleServiceTest {
         val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
         val modules: List<LogicModule> = listOf()
         service = spyk(service)
-        every { service.getClassModule(modules, "class1") } returns listOf("module1", "module2")
-        every { service.getClassModule(modules, "class2") } returns listOf("module2")
-        every { service.getClassModule(modules, "class3") } returns listOf("module1", "module3")
+        every { service.getModuleByClassName(modules, "class1") } returns listOf("module1", "module2")
+        every { service.getModuleByClassName(modules, "class2") } returns listOf("module2")
+        every { service.getModuleByClassName(modules, "class3") } returns listOf("module1", "module3")
         val groupClassCouplingReportsByModuleName = service.groupClassCouplingReportsByModuleName(classCouplingReports, modules)
         assertThat(groupClassCouplingReportsByModuleName.size).isEqualTo(3)
         assertThat(groupClassCouplingReportsByModuleName["module1"]?.size).isEqualTo(2)
