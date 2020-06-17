@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.dependence.infrastructure.module
 
-import com.thoughtworks.archguard.dependence.domain.module.CallerCalleeCouple
+import com.thoughtworks.archguard.dependence.domain.module.Dependency
 import com.thoughtworks.archguard.dependence.domain.module.LogicModule
 import com.thoughtworks.archguard.dependence.domain.module.LogicModuleRepository
 import com.thoughtworks.archguard.dependence.domain.module.LogicModuleStatus
@@ -16,8 +16,11 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getAllNormal(): List<LogicModule> {
-        return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
+    override fun getAllByShowStatus(isShow: Boolean): List<LogicModule> {
+        if (isShow) {
+            return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
+        }
+        return this.getAll().filter { it.status == LogicModuleStatus.HIDE }
     }
 
     override fun getAll(): List<LogicModule> {
@@ -84,17 +87,17 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     }
 
-    override fun getAllCallerCalleeCoupleAtClassLevel(members: List<String>): List<CallerCalleeCouple> {
+    override fun getAllClassDependency(members: List<String>): List<Dependency> {
         val tableTemplate = defineTableTemplate(members)
 
         val sql = "select concat(concat(a.module, '.'), a.clzname) caller, " +
                 "concat(concat(b.module, '.'), b.clzname) callee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<CallerCalleeCouple>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(CallerCalleeCouple::class.java))
+        return jdbi.withHandle<List<Dependency>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(Dependency::class.java))
             it.createQuery(sql)
-                    .mapTo(CallerCalleeCouple::class.java)
+                    .mapTo(Dependency::class.java)
                     .list()
                     .filter { it -> it.caller != it.callee }
         }

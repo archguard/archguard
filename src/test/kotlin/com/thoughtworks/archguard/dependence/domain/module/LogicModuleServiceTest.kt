@@ -64,13 +64,13 @@ class LogicModuleServiceTest {
         val logicModule3 = LogicModule("3", "module3", listOf("bm5"))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = CallerCalleeCouple("bm1.any", "bm3.any")
-        val dependency2 = CallerCalleeCouple("bm3.any", "bm2.any")
-        val dependency3 = CallerCalleeCouple("bm5.any", "bm4.any")
+        val dependency1 = Dependency("bm1.any", "bm3.any")
+        val dependency2 = Dependency("bm3.any", "bm2.any")
+        val dependency3 = Dependency("bm5.any", "bm4.any")
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { logicModuleRepository.getAllNormal() } returns logicModules
-        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns dependencies
+        every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
+        every { logicModuleRepository.getAllClassDependency(any()) } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraph()
@@ -86,10 +86,10 @@ class LogicModuleServiceTest {
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
         val element3 = LogicModule(null, "module3", listOf("com.test5", "com.test6"))
-        val dependency1 = CallerCalleeCouple("com.test1", "com.test3")
-        val dependency2 = CallerCalleeCouple("com.test4", "com.test2")
-        every { logicModuleRepository.getAllNormal() } returns listOf(element, element2, element3)
-        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf(dependency1, dependency2)
+        val dependency1 = Dependency("com.test1", "com.test3")
+        val dependency2 = Dependency("com.test4", "com.test2")
+        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
+        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()
         //then
@@ -106,8 +106,8 @@ class LogicModuleServiceTest {
         //given
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
-        every { logicModuleRepository.getAllNormal() } returns listOf(element, element2)
-        every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf()
+        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
+        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()
         //then
@@ -186,17 +186,17 @@ class LogicModuleServiceTest {
 
     @Test
     fun `should map to module`() {
-        val results = listOf(CallerCalleeCouple("caller.method1", "callee.method1"),
-                CallerCalleeCouple("caller.method2", "callee.method2"))
+        val results = listOf(Dependency("caller.method1", "callee.method1"),
+                Dependency("caller.method2", "callee.method2"))
         val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
                 LogicModule("id2", "module2", listOf("callee.method1")),
                 LogicModule("id3", "module3", listOf("callee.method1")),
                 LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
                 LogicModule("id5", "module5", listOf("caller.method1")))
-        val moduleDependency = service.mapClassCoupleToModuleCouple(results, modules)
+        val moduleDependency = service.mapClassDependencyToModuleDependency(results, modules)
         assertThat(moduleDependency.size).isEqualTo(4)
-        assertThat(moduleDependency).containsAll(listOf(CallerCalleeCouple("module1", "module2"), CallerCalleeCouple("module1", "module3"),
-                CallerCalleeCouple("module5", "module2"), CallerCalleeCouple("module5", "module3")))
+        assertThat(moduleDependency).containsAll(listOf(Dependency("module1", "module2"), Dependency("module1", "module3"),
+                Dependency("module5", "module2"), Dependency("module5", "module3")))
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.dependence.domain.module
 
 interface LogicModuleRepository {
-    fun getAllNormal(): List<LogicModule>
+    fun getAllByShowStatus(isShow: Boolean): List<LogicModule>
     fun getAll(): List<LogicModule>
     fun update(id: String, logicModule: LogicModule)
     fun create(logicModule: LogicModule)
@@ -9,6 +9,6 @@ interface LogicModuleRepository {
     fun getDependence(caller: String, callee: String): List<ModuleDependency>
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
-    fun getAllCallerCalleeCoupleAtClassLevel(members: List<String>): List<CallerCalleeCouple>
+    fun getAllClassDependency(members: List<String>): List<Dependency>
     fun getParentClassId(id: String): List<String>
 }
