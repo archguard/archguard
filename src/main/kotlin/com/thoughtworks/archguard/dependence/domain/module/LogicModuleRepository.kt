@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.dependence.domain.module
 
 interface LogicModuleRepository {
+    fun getAllNormal(): List<LogicModule>
     fun getAll(): List<LogicModule>
     fun update(id: String, logicModule: LogicModule)
     fun create(logicModule: LogicModule)

@@ -19,7 +19,7 @@ internal class LogicModuleRepositoryImplTest {
 
     @Test
     internal fun `should only select normal data from logic module`() {
-        val normalLogicModules = logicModuleRepository.getAll()
+        val normalLogicModules = logicModuleRepository.getAllNormal()
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).isEqualTo(
                 LogicModule("id1", "dubbo-provider", listOf("dubbo-provider"), LogicModuleStatus.NORMAL))

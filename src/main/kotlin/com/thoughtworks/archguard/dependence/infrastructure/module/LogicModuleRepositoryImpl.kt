@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.dependence.infrastructure.module
 import com.thoughtworks.archguard.dependence.domain.module.CallerCalleeCouple
 import com.thoughtworks.archguard.dependence.domain.module.LogicModule
 import com.thoughtworks.archguard.dependence.domain.module.LogicModuleRepository
+import com.thoughtworks.archguard.dependence.domain.module.LogicModuleStatus
 import com.thoughtworks.archguard.dependence.domain.module.ModuleDependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
@@ -15,10 +16,14 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
+    override fun getAllNormal(): List<LogicModule> {
+        return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
+    }
+
     override fun getAll(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, status from logic_module where status='NORMAL'")
+            it.createQuery("select id, name, members, status from logic_module")
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }

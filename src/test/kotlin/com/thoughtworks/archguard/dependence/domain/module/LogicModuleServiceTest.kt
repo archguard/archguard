@@ -69,7 +69,7 @@ class LogicModuleServiceTest {
         val dependency3 = CallerCalleeCouple("bm5.any", "bm4.any")
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { logicModuleRepository.getAll() } returns logicModules
+        every { logicModuleRepository.getAllNormal() } returns logicModules
         every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns dependencies
 
         // when
@@ -88,7 +88,7 @@ class LogicModuleServiceTest {
         val element3 = LogicModule(null, "module3", listOf("com.test5", "com.test6"))
         val dependency1 = CallerCalleeCouple("com.test1", "com.test3")
         val dependency2 = CallerCalleeCouple("com.test4", "com.test2")
-        every { logicModuleRepository.getAll() } returns listOf(element, element2, element3)
+        every { logicModuleRepository.getAllNormal() } returns listOf(element, element2, element3)
         every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()
@@ -106,7 +106,7 @@ class LogicModuleServiceTest {
         //given
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
-        every { logicModuleRepository.getAll() } returns listOf(element, element2)
+        every { logicModuleRepository.getAllNormal() } returns listOf(element, element2)
         every { logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCoupling()

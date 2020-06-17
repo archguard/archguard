@@ -21,6 +21,10 @@ class LogicModuleService {
         return logicModuleRepository.getAll()
     }
 
+    fun getNormalLogicModules(): List<LogicModule> {
+        return logicModuleRepository.getAllNormal()
+    }
+
     fun updateLogicModule(id: String, logicModule: LogicModule) {
         logicModuleRepository.update(id, logicModule)
     }
@@ -89,7 +93,7 @@ class LogicModuleService {
     }
 
     private fun getModuleDependency(): List<CallerCalleeCouple> {
-        val modules = logicModuleRepository.getAll()
+        val modules = logicModuleRepository.getAllNormal()
         val members = modules.map { it.members }.flatten()
         val classCallerCalleeCouple = logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(members)
         return mapClassCoupleToModuleCouple(classCallerCalleeCouple, modules)
@@ -144,7 +148,7 @@ class LogicModuleService {
 
     fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
         val moduleDependency = getModuleDependency()
-        return getLogicModules().map { getModuleCouplingReport(it, moduleDependency) }
+        return getNormalLogicModules().map { getModuleCouplingReport(it, moduleDependency) }
     }
 
     fun getModuleCouplingReport(module: LogicModule,
@@ -155,7 +159,7 @@ class LogicModuleService {
     }
 
     fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
-        val modules = logicModuleRepository.getAll()
+        val modules = logicModuleRepository.getAllNormal()
         val members = modules.map { it.members }.flatten()
         val classCallerCalleeCouple = logicModuleRepository.getAllCallerCalleeCoupleAtClassLevel(members)
 
