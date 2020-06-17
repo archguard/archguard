@@ -200,7 +200,7 @@ class LogicModuleService {
     private fun isInSameModule(modules: List<LogicModule>, it: CallerCalleeCouple): Boolean {
         val callerModules = getModuleByClassName(modules, it.caller)
         val calleeModules = getModuleByClassName(modules, it.callee)
-        return callerModules.intersect(calleeModules).isEmpty()
+        return callerModules.intersect(calleeModules).isNotEmpty()
     }
 
 }
