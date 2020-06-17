@@ -41,8 +41,8 @@ class Project(val id: String, val projectName: String, val repo: String, val sql
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
         val pb: ProcessBuilder = when (buildTool) {
-            MAVEN -> ProcessBuilder("./mvnw", "clean", "package", "-Dmaven.test.skip=true")
-            GRADLE -> ProcessBuilder("./gradlew", "--continue", "clean", "build", "-x", "test")
+            MAVEN -> ProcessBuilder("./mvnw", "clean", "compile")
+            GRADLE -> ProcessBuilder("./gradlew", "clean", "classes")
         }
         Processor.executeWithLogs(pb, workspace)
     }
