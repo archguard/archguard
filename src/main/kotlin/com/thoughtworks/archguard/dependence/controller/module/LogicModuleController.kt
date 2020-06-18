@@ -31,17 +31,17 @@ class LogicModuleController {
 
     @PostMapping("/hide-all")
     fun hideAllLogicModules() {
-        return logicModuleService.hideAllLogicModules()
+        logicModuleService.hideAllLogicModules()
     }
 
     @PostMapping("/show-all")
     fun showAllLogicModules() {
-        return logicModuleService.showAllLogicModules()
+        logicModuleService.showAllLogicModules()
     }
 
     @PostMapping("/reverse-all")
     fun reverseAllLogicModules() {
-        return logicModuleService.reverseAllLogicModulesStatus()
+        logicModuleService.reverseAllLogicModulesStatus()
     }
 
     @PutMapping("/{id}")
