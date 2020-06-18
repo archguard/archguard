@@ -1,7 +1,7 @@
 # code-analysis-addition
 
 ## 项目简介
-此项目包含code-analysis-module的后端接口。
+此项目包含code-analysis-backend以外的后台接口。
 
 ## 技术选型
 开发语言：Kotlin  
