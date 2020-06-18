@@ -72,6 +72,12 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
+    override fun updateAll(logicModules: List<LogicModule>) {
+        logicModules.forEach {
+            update(it.id.toString(), it)
+        }
+    }
+
     override fun getDependence(caller: String, callee: String): List<ModuleDependency> {
         val callerTemplate = defineTableTemplate(getMembers(caller))
         val calleeTemplate = defineTableTemplate(getMembers(callee))

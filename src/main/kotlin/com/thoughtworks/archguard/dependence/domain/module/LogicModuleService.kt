@@ -21,6 +21,24 @@ class LogicModuleService {
         return logicModuleRepository.getAll()
     }
 
+    fun hideAllLogicModules() {
+        val logicModules = getLogicModules()
+        logicModules.forEach { it.hide() }
+        logicModuleRepository.updateAll(logicModules)
+    }
+
+    fun showAllLogicModules() {
+        val logicModules = getLogicModules()
+        logicModules.forEach { it.show() }
+        logicModuleRepository.updateAll(logicModules)
+    }
+
+    fun reverseAllLogicModulesStatus() {
+        val logicModules = getLogicModules()
+        logicModules.forEach { it.reverse() }
+        logicModuleRepository.updateAll(logicModules)
+    }
+
     fun getNormalLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAllByShowStatus(true)
     }
