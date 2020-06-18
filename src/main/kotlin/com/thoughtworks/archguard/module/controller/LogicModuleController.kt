@@ -29,6 +29,21 @@ class LogicModuleController {
         return logicModuleService.getLogicModules()
     }
 
+    @PostMapping("/hide-all")
+    fun hideAllLogicModules() {
+        logicModuleService.hideAllLogicModules()
+    }
+
+    @PostMapping("/show-all")
+    fun showAllLogicModules() {
+        logicModuleService.showAllLogicModules()
+    }
+
+    @PostMapping("/reverse-all")
+    fun reverseAllLogicModules() {
+        logicModuleService.reverseAllLogicModulesStatus()
+    }
+
     @PutMapping("/{id}")
     fun updateLogicModule(@PathVariable id: String, @RequestBody logicModule: LogicModule) {
         logicModuleService.updateLogicModule(id, logicModule)
