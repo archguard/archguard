@@ -86,19 +86,17 @@ class LogicModuleServiceTest {
         val element = LogicModule(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModule(null, "module2", listOf("com.test3", "com.test4"))
         val element3 = LogicModule(null, "module3", listOf("com.test5", "com.test6"))
-        val dependency1 = Dependency("com.test1", "com.test3")
-        val dependency2 = Dependency("com.test4", "com.test2")
+        val dependency1 = Dependency("com.test1.clazz", "com.test3.clazz")
+        val dependency2 = Dependency("com.test4.clazz", "com.test2.clazz")
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
         every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
         //when
-        val logicModuleCoupling = service.getLogicModuleCoupling()
+        val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
-        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].fanIn).isEqualTo(1)
-        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].fanOut).isEqualTo(1)
-        assertThat(logicModuleCoupling.filter { it.module == "module2" }[0].fanIn).isEqualTo(1)
-        assertThat(logicModuleCoupling.filter { it.module == "module2" }[0].fanOut).isEqualTo(1)
-        assertThat(logicModuleCoupling.filter { it.module == "module3" }[0].fanIn).isEqualTo(0)
-        assertThat(logicModuleCoupling.filter { it.module == "module3" }[0].fanOut).isEqualTo(0)
+        assertThat(logicModuleCoupling.filter { it.moduleName == "module1" }[0].outerModuleCouplingAverage).isEqualTo(0.0)
+        assertThat(logicModuleCoupling.filter { it.moduleName == "module1" }[0].outerModuleInstabilityAverage).isEqualTo(0.5)
+        assertThat(logicModuleCoupling.filter { it.moduleName == "module2" }[0].outerModuleCouplingAverage).isEqualTo(0.0)
+        assertThat(logicModuleCoupling.filter { it.moduleName == "module2" }[0].outerModuleInstabilityAverage).isEqualTo(0.5)
     }
 
     @Test
@@ -109,10 +107,9 @@ class LogicModuleServiceTest {
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
         every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
         //when
-        val logicModuleCoupling = service.getLogicModuleCoupling()
+        val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
-        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleInstability).isEqualTo(0.0)
-        assertThat(logicModuleCoupling.filter { it.module == "module1" }[0].moduleCoupling).isEqualTo(0.0)
+        assertThat(logicModuleCoupling.size).isEqualTo(0)
     }
 
     @Test
@@ -148,7 +145,7 @@ class LogicModuleServiceTest {
     fun `should get class module by single full match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
-        val classModule = service.getModuleByClassName(logicModules, "a.b.c")
+        val classModule = service.getModule(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2"))
     }
 
@@ -158,7 +155,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id4", "lg4", listOf("a", "a.b.c", "a.b.c.d")))
-        val classModule = service.getModuleByClassName(logicModules, "a.b.c")
+        val classModule = service.getModule(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2", "lg3", "lg4"))
     }
 
@@ -168,7 +165,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
-        val classModule = service.getModuleByClassName(logicModules, "abc.d.e.d.f.g")
+        val classModule = service.getModule(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3"))
     }
 
@@ -180,7 +177,7 @@ class LogicModuleServiceTest {
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
                 LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")),
                 LogicModule("id6", "lg6", listOf("a", "a.b", "abc.d.e.d.f.g.h", "abc.d.e")))
-        val classModule = service.getModuleByClassName(logicModules, "abc.d.e.d.f.g")
+        val classModule = service.getModule(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
     }
 
@@ -201,22 +198,20 @@ class LogicModuleServiceTest {
 
     @Test
     fun `group class coupling reports by module name`() {
-        val classCouplingReport1 = ClassCouplingReport("class1", 0, 0, 0, 0)
-        val classCouplingReport2 = ClassCouplingReport("class2", 1, 1, 0, 0)
-        val classCouplingReport3 = ClassCouplingReport("class3", 1, 1, 0, 0)
+        val classCouplingReport1 = ClassCouplingReport("com.thoughtworks.archguard.test1.class1", 0, 0, 0, 0)
+        val classCouplingReport2 = ClassCouplingReport("com.thoughtworks.archguard.test1.class2", 1, 1, 0, 0)
+        val classCouplingReport3 = ClassCouplingReport("com.thoughtworks.archguard.test2.class3", 1, 1, 0, 0)
         val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
         val modules: List<LogicModule> = listOf()
         service = spyk(service)
-        every { service.getModuleByClassName(modules, "class1") } returns listOf("module1", "module2")
-        every { service.getModuleByClassName(modules, "class2") } returns listOf("module2")
-        every { service.getModuleByClassName(modules, "class3") } returns listOf("module1", "module3")
-        val groupClassCouplingReportsByModuleName = service.groupClassCouplingReportsByModuleName(classCouplingReports, modules)
-        assertThat(groupClassCouplingReportsByModuleName.size).isEqualTo(3)
-        assertThat(groupClassCouplingReportsByModuleName["module1"]?.size).isEqualTo(2)
-        assertThat(groupClassCouplingReportsByModuleName["module2"]?.size).isEqualTo(2)
-        assertThat(groupClassCouplingReportsByModuleName["module3"]?.size).isEqualTo(1)
-        assertThat(groupClassCouplingReportsByModuleName["module1"]).containsAll(mutableListOf(classCouplingReport1, classCouplingReport3))
-        assertThat(groupClassCouplingReportsByModuleName["module2"]).containsAll(mutableListOf(classCouplingReport1, classCouplingReport2))
-        assertThat(groupClassCouplingReportsByModuleName["module3"]).containsAll(mutableListOf(classCouplingReport3))
+        every { service.getModule(modules, "class1") } returns listOf("module1", "module2")
+        every { service.getModule(modules, "class2") } returns listOf("module2")
+        every { service.getModule(modules, "class3") } returns listOf("module1", "module3")
+        val packageReport = service.groupToPackage(classCouplingReports)
+        assertThat(packageReport.size).isEqualTo(2)
+        assertThat(packageReport.filter { it.packageName == "com.thoughtworks.archguard.test1" }?.get(0).classCouplingReports)
+                .containsAll(mutableListOf(classCouplingReport1, classCouplingReport2))
+        assertThat(packageReport.filter { it.packageName == "com.thoughtworks.archguard.test2" }?.get(0).classCouplingReports)
+                .containsAll(mutableListOf(classCouplingReport3))
     }
 }

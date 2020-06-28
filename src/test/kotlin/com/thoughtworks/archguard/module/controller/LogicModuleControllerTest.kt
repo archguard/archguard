@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
-import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -58,16 +57,4 @@ class LogicModuleControllerTest {
         verify { service.updateLogicModule(any(), any()) }
     }
 
-    @Test
-    fun `should get module coupling`() {
-        //given
-        val moduleCoupling = listOf(ModuleCouplingReport())
-        every { service.getLogicModuleCoupling() } returns moduleCoupling
-
-        //when
-        val logicModuleCoupling = controller.getLogicModuleCoupling()
-        //then
-        assertThat(logicModuleCoupling).isNotEmpty
-        assertThat(logicModuleCoupling.size).isEqualTo(1)
-    }
 }

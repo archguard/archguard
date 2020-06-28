@@ -2,10 +2,10 @@ package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
-import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleGraph
-import com.thoughtworks.archguard.module.domain.NewModuleCouplingReport
+import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
+import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -79,14 +79,14 @@ class LogicModuleController {
         return logicModuleService.getLogicModuleGraph()
     }
 
-    @GetMapping("/coupling")
-    fun getLogicModuleCoupling(): List<ModuleCouplingReport> {
-        return logicModuleService.getLogicModuleCoupling()
+    @GetMapping("/coupling-by-class")
+    fun getLogicModuleCouplingByClass(): List<ModuleCouplingReportDTO> {
+        return logicModuleService.getLogicModuleCouplingReport()
     }
 
-    @GetMapping("/coupling-by-class")
-    fun getLogicModuleCouplingByClass(): List<NewModuleCouplingReport> {
-        return logicModuleService.getLogicModuleCouplingByClass()
+    @GetMapping("/coupling-detail")
+    fun getLogicModuleCouplingDetail(): List<ModuleCouplingReport> {
+        return logicModuleService.getLogicModuleCouplingReportDetail()
     }
 
 }
