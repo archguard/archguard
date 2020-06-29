@@ -142,7 +142,7 @@ class LogicModuleService {
         val matchModule: MutableList<String> = mutableListOf()
         for (logicModule in modules) {
             val maxMatchSizeInLogicModule = logicModule.members
-                    .filter { member -> name.startsWith(member + ".") }
+                    .filter { member -> name.startsWith("$member.") }
                     .maxBy { it.length }
                     ?: continue
             if (maxMatchSizeInLogicModule.length > maxMatchSize) {
@@ -155,7 +155,7 @@ class LogicModuleService {
         }
         if (matchModule.isEmpty()) {
             log.error("{} No LogicModule matched!", name)
-            throw RuntimeException(name + " No LogicModule matched!")
+            throw RuntimeException("$name No LogicModule matched!")
         }
         return matchModule.toList()
     }
