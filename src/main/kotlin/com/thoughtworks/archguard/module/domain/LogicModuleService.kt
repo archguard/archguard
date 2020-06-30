@@ -17,6 +17,9 @@ class LogicModuleService {
     @Autowired
     lateinit var baseModuleRepository: BaseModuleRepository
 
+    @Autowired
+    lateinit var xmlConfigService: XmlConfigService
+
     fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
     }
@@ -93,10 +96,10 @@ class LogicModuleService {
     }
 
     fun getLogicModuleGraph(): ModuleGraph {
-        val results = getModuleDependency()
+        val moduleDependencies = getModuleDependency()
 
         val moduleStore = ModuleStore()
-        results
+        moduleDependencies
                 .groupBy { it.caller }
                 .forEach {
                     it.value.groupBy { i -> i.callee }

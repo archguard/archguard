@@ -1,10 +1,5 @@
-package com.thoughtworks.archguard.module.infrastructure
+package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.module.domain.DubboConfigRepository
-import com.thoughtworks.archguard.module.domain.JClass
-import com.thoughtworks.archguard.module.domain.LogicModule
-import com.thoughtworks.archguard.module.domain.SubModule
-import com.thoughtworks.archguard.module.domain.XmlConfigService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,9 +12,9 @@ class XmlConfigServiceImpl : XmlConfigService {
     lateinit var dubboConfigRepository: DubboConfigRepository
 
 
-    override fun getModuleByDependency(callerClass: JClass, calleeClass: JClass, modules: List<LogicModule>): List<SubModule> {
+    override fun getRealCalleeModuleByDependency(callerClass: JClass, calleeClass: JClass): List<SubModule> {
         val callerModule = callerClass.module
-        val callerSubModule = dubboConfigRepository.getModuleBy(callerModule)
+        val callerSubModule = dubboConfigRepository.getModuleByName(callerModule)
         val referenceConfigs = dubboConfigRepository.getReferenceConfigBy(callerClass.name, callerSubModule)
         val serviceConfigs = referenceConfigs.map { referenceConfig -> dubboConfigRepository.getServiceConfigBy(referenceConfig) }.flatten()
         return serviceConfigs.map { it.subModule }
