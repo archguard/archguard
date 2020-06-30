@@ -118,7 +118,7 @@ class LogicModuleServiceTest {
         every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
         every { baseModuleRepository.getJClassesById("id2") } returns JClass("id2", "Service", "module2")
         every { baseModuleRepository.getJClassesById("id3") } returns JClass("id3", "ParentClass", "module3")
-        val logicModule = service.getLogicModuleForJClass(jClass)
+        val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
         assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2.Service", "module3.ParentClass"))
     }
@@ -130,9 +130,9 @@ class LogicModuleServiceTest {
         val jClass3 = JClass("id3", "Service2Impl", "module1")
         val jClasses = listOf(jClass1, jClass2, jClass3)
         service = spyk(service)
-        every { service.getLogicModuleForJClass(jClass1) } returns LogicModule(null, "module1", listOf("module1", "module3", "module4"))
-        every { service.getLogicModuleForJClass(jClass2) } returns LogicModule(null, "module2", listOf("module2"))
-        every { service.getLogicModuleForJClass(jClass3) } returns LogicModule(null, "module1", listOf("module1", "module3", "module5"))
+        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule(null, "module1", listOf("module1", "module3", "module4"))
+        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule(null, "module2", listOf("module2"))
+        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule(null, "module1", listOf("module1", "module3", "module5"))
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)

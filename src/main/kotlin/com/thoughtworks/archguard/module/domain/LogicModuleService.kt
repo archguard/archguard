@@ -74,22 +74,22 @@ class LogicModuleService {
 
     internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
         return jClassesHasModules
-                .map { getLogicModuleForJClass(it) }
+                .map { getIncompleteLogicModuleForJClass(it) }
                 .groupBy({ it.name }, { it.members })
                 .mapValues { entry -> entry.value.flatten().toSet().toList() }
                 .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
-    internal fun getLogicModuleForJClass(jClass: JClass): LogicModule {
+    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
         val (id, _, moduleName) = jClass
         val parentClassIds = logicModuleRepository.getParentClassId(id)
-        val moduleNames = parentClassIds.asSequence().map { id -> baseModuleRepository.getJClassesById(id) }
+        val membersGeneratedByParentClasses = parentClassIds.asSequence().map { id -> baseModuleRepository.getJClassesById(id) }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
                 .map { j -> j.module + "." + j.name }
                 .toSet().toMutableList()
-        moduleNames.add(moduleName)
-        return LogicModule(null, moduleName, moduleNames)
+        membersGeneratedByParentClasses.add(moduleName)
+        return LogicModule(null, moduleName, membersGeneratedByParentClasses)
     }
 
     fun getLogicModuleGraph(): ModuleGraph {
