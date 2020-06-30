@@ -26,7 +26,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
     }
 
     override fun getReferenceConfigBy(interfaceName: String, subModule: SubModule): List<ReferenceConfig> {
-        val sql = "select id, referenceId, interface as interfaceName, version, group, module_id as moduleId " +
+        val sql = "select id, referenceId, interface as interfaceName, version, `group`, module_id as moduleId " +
                 "from dubbo_reference_config where interface='$interfaceName' and module_id='${subModule.id}'"
         val referenceConfigDtos = jdbi.withHandle<List<ReferenceConfigDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ReferenceConfigDto::class.java))
@@ -57,17 +57,21 @@ class ReferenceConfigDto(val id: String, private val referenceId: String, privat
                          private val version: String, private val group: String, private val moduleId: String) {
     fun toReferenceConfigWithSubModule(subModule: SubModule): ReferenceConfig {
         if (subModule.id == moduleId) {
-            return ReferenceConfig(id, referenceId, interfaceName, version, group, subModule)
+            return ReferenceConfig(id, referenceId, interfaceName, convertToNullIfStringValueEqualsNull(version),
+                    convertToNullIfStringValueEqualsNull(group), subModule)
         }
         throw RuntimeException("SubModule Not Matching!")
     }
 }
 
-class ServiceConfigDto(val id: String, val interfaceName: String, val ref: String, val version: String,
-                       val group: String, val moduleId: String, val name: String, val path: String) {
+class ServiceConfigDto(val id: String, private val interfaceName: String, private val ref: String, private val version: String,
+                       private val group: String, private val moduleId: String, val name: String, private val path: String) {
     fun toServiceConfig(): ServiceConfig {
-        return ServiceConfig(id, interfaceName, ref, version, group, SubModule(moduleId, name, path))
+        return ServiceConfig(id, interfaceName, ref, convertToNullIfStringValueEqualsNull(version),
+                convertToNullIfStringValueEqualsNull(group), SubModule(moduleId, name, path))
     }
 }
 
-
+fun convertToNullIfStringValueEqualsNull(value: String): String? {
+    return if (value == "null") null else value
+}
