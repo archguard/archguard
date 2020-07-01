@@ -44,4 +44,18 @@ internal class GraphServiceImplTest {
         assertThat(moduleGraph.edges.size).isEqualTo(3)
     }
 
+    @Test
+    fun `should map to module`() {
+        val results = listOf(Dependency("caller.method1", "callee.method1"),
+                Dependency("caller.method2", "callee.method2"))
+        val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
+                LogicModule("id2", "module2", listOf("callee.method1")),
+                LogicModule("id3", "module3", listOf("callee.method1")),
+                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
+                LogicModule("id5", "module5", listOf("caller.method1")))
+        val moduleDependency = mapClassDependencyToModuleDependency(results, modules)
+        assertThat(moduleDependency.size).isEqualTo(4)
+        assertThat(moduleDependency).containsAll(listOf(Dependency("module1", "module2"), Dependency("module1", "module3"),
+                Dependency("module5", "module2"), Dependency("module5", "module3")))
+    }
 }

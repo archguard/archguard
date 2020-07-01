@@ -29,3 +29,13 @@ class GraphServiceImpl : GraphService {
         return mapClassDependencyToModuleDependency(classDependencies, modules)
     }
 }
+
+fun mapClassDependencyToModuleDependency(classDependency: List<Dependency>, logicModules: List<LogicModule>): List<Dependency> {
+    // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
+    return classDependency.map {
+        val callerModules = getModule(logicModules, it.caller)
+        val calleeModules = getModule(logicModules, it.callee)
+        callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
+                .map { it -> Dependency(it.first, it.second) }
+    }.flatten().filter { it.caller != it.callee }
+}

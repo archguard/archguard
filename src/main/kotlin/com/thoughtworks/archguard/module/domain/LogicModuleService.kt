@@ -79,7 +79,8 @@ class LogicModuleService {
     }
 
     internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
-        val (id, _, moduleName) = jClass
+        val id = jClass.id
+        val moduleName = jClass.module
         val parentClassIds = logicModuleRepository.getParentClassId(id)
         val membersGeneratedByParentClasses = parentClassIds.asSequence().map { id -> baseModuleRepository.getJClassesById(id) }
                 .filter { j -> j.module != "null" }
@@ -125,14 +126,4 @@ private fun startsWithMatch(name: String, modules: List<LogicModule>): List<Stri
         throw RuntimeException("$name No LogicModule matched!")
     }
     return matchModule.toList()
-}
-
-fun mapClassDependencyToModuleDependency(classDependency: List<Dependency>, modules: List<LogicModule>): List<Dependency> {
-    // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
-    return classDependency.map {
-        val callerModules = getModule(modules, it.caller)
-        val calleeModules = getModule(modules, it.callee)
-        callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
-                .map { it -> Dependency(it.first, it.second) }
-    }.flatten().filter { it.caller != it.callee }
 }
