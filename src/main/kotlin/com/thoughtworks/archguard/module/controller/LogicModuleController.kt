@@ -1,11 +1,12 @@
 package com.thoughtworks.archguard.module.controller
 
+import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
-import com.thoughtworks.archguard.module.domain.ModuleDependency
-import com.thoughtworks.archguard.module.domain.ModuleGraph
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
+import com.thoughtworks.archguard.module.domain.ModuleDependency
+import com.thoughtworks.archguard.module.domain.ModuleGraph
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -23,6 +24,9 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var logicModuleService: LogicModuleService
+
+    @Autowired
+    private lateinit var graphService: GraphService
 
     @GetMapping
     fun getLogicModules(): List<LogicModule> {
@@ -76,7 +80,7 @@ class LogicModuleController {
 
     @GetMapping("/graph")
     fun getLogicModuleGraph(): ModuleGraph {
-        return logicModuleService.getLogicModuleGraph()
+        return graphService.getLogicModuleGraph()
     }
 
     @GetMapping("/coupling-by-class")

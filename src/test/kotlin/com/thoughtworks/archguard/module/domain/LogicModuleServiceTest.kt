@@ -4,6 +4,7 @@ import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockkStatic
 import io.mockk.spyk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -54,30 +55,6 @@ class LogicModuleServiceTest {
 
         // then
         assertThat(actual.size).isEqualTo(dependencies.size)
-    }
-
-    @Test
-    fun `should get graph of all logic modules dependency`() {
-        // given
-        val logicModule1 = LogicModule("1", "module1", listOf("bm1", "bm2"))
-        val logicModule2 = LogicModule("2", "module2", listOf("bm3", "bm4"))
-        val logicModule3 = LogicModule("3", "module3", listOf("bm5"))
-        val logicModules = listOf(logicModule1, logicModule2, logicModule3)
-
-        val dependency1 = Dependency("bm1.any", "bm3.any")
-        val dependency2 = Dependency("bm3.any", "bm2.any")
-        val dependency3 = Dependency("bm5.any", "bm4.any")
-        val dependencies = listOf(dependency1, dependency2, dependency3)
-
-        every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { logicModuleRepository.getAllClassDependency(any()) } returns dependencies
-
-        // when
-        val moduleGraph = service.getLogicModuleGraph()
-
-        // then
-        assertThat(moduleGraph.nodes.size).isEqualTo(3)
-        assertThat(moduleGraph.edges.size).isEqualTo(3)
     }
 
     @Test
@@ -145,7 +122,7 @@ class LogicModuleServiceTest {
     fun `should get class module by single full match`() {
         val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
-        val classModule = service.getModule(logicModules, "a.b.c")
+        val classModule = getModule(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2"))
     }
 
@@ -155,7 +132,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "a.b.c")),
                 LogicModule("id4", "lg4", listOf("a", "a.b.c", "a.b.c.d")))
-        val classModule = service.getModule(logicModules, "a.b.c")
+        val classModule = getModule(logicModules, "a.b.c")
         assertThat(classModule).isEqualTo(listOf("lg2", "lg3", "lg4"))
     }
 
@@ -165,7 +142,7 @@ class LogicModuleServiceTest {
                 LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
                 LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
-        val classModule = service.getModule(logicModules, "abc.d.e.d.f.g")
+        val classModule = getModule(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3"))
     }
 
@@ -177,7 +154,7 @@ class LogicModuleServiceTest {
                 LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
                 LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")),
                 LogicModule("id6", "lg6", listOf("a", "a.b", "abc.d.e.d.f.g.h", "abc.d.e")))
-        val classModule = service.getModule(logicModules, "abc.d.e.d.f.g")
+        val classModule = getModule(logicModules, "abc.d.e.d.f.g")
         assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
     }
 
@@ -190,7 +167,7 @@ class LogicModuleServiceTest {
                 LogicModule("id3", "module3", listOf("callee.method1")),
                 LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
                 LogicModule("id5", "module5", listOf("caller.method1")))
-        val moduleDependency = service.mapClassDependencyToModuleDependency(results, modules)
+        val moduleDependency = mapClassDependencyToModuleDependency(results, modules)
         assertThat(moduleDependency.size).isEqualTo(4)
         assertThat(moduleDependency).containsAll(listOf(Dependency("module1", "module2"), Dependency("module1", "module3"),
                 Dependency("module5", "module2"), Dependency("module5", "module3")))
@@ -204,9 +181,10 @@ class LogicModuleServiceTest {
         val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
         val modules: List<LogicModule> = listOf()
         service = spyk(service)
-        every { service.getModule(modules, "class1") } returns listOf("module1", "module2")
-        every { service.getModule(modules, "class2") } returns listOf("module2")
-        every { service.getModule(modules, "class3") } returns listOf("module1", "module3")
+        mockkStatic("com.thoughtworks.archguard.module.domain.LogicModuleServiceKt")
+        every { getModule(modules, "class1") } returns listOf("module1", "module2")
+        every { getModule(modules, "class2") } returns listOf("module2")
+        every { getModule(modules, "class3") } returns listOf("module1", "module3")
         val packageReport = service.groupToPackage(classCouplingReports)
         assertThat(packageReport.size).isEqualTo(2)
         assertThat(packageReport.filter { it.packageName == "com.thoughtworks.archguard.test1" }?.get(0).classCouplingReports)

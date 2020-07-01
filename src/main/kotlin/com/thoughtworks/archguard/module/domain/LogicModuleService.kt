@@ -95,72 +95,11 @@ class LogicModuleService {
         return LogicModule(null, moduleName, membersGeneratedByParentClasses)
     }
 
-    fun getLogicModuleGraph(): ModuleGraph {
-        val moduleDependencies = getModuleDependency()
-
-        val moduleStore = ModuleStore()
-        moduleDependencies
-                .groupBy { it.caller }
-                .forEach {
-                    it.value.groupBy { i -> i.callee }
-                            .forEach { i -> moduleStore.addEdge(it.key, i.key, i.value.size) }
-                }
-
-        return moduleStore.getModuleGraph()
-    }
-
     private fun getModuleDependency(): List<Dependency> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten()
         val classDependencies = logicModuleRepository.getAllClassDependency(members)
         return mapClassDependencyToModuleDependency(classDependencies, modules)
-    }
-
-    fun mapClassDependencyToModuleDependency(classDependency: List<Dependency>, modules: List<LogicModule>): List<Dependency> {
-        // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
-        return classDependency.map {
-            val callerModules = getModule(modules, it.caller)
-            val calleeModules = getModule(modules, it.callee)
-            callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
-                    .map { it -> Dependency(it.first, it.second) }
-        }.flatten().filter { it.caller != it.callee }
-    }
-
-    fun getModule(modules: List<LogicModule>, name: String): List<String> {
-        val callerByFullMatch = fullMatch(name, modules)
-        if (callerByFullMatch.isNotEmpty()) {
-            return callerByFullMatch
-        }
-        return startsWithMatch(name, modules)
-    }
-
-    private fun fullMatch(name: String, modules: List<LogicModule>): List<String> {
-        return modules.filter { logicModule ->
-            logicModule.members.any { javaClass -> name == javaClass }
-        }.map { it.name }
-    }
-
-    private fun startsWithMatch(name: String, modules: List<LogicModule>): List<String> {
-        var maxMatchSize = 0
-        val matchModule: MutableList<String> = mutableListOf()
-        for (logicModule in modules) {
-            val maxMatchSizeInLogicModule = logicModule.members
-                    .filter { member -> name.startsWith("$member.") }
-                    .maxBy { it.length }
-                    ?: continue
-            if (maxMatchSizeInLogicModule.length > maxMatchSize) {
-                maxMatchSize = maxMatchSizeInLogicModule.length
-                matchModule.clear()
-                matchModule.add(logicModule.name)
-            } else if (maxMatchSizeInLogicModule.length == maxMatchSize) {
-                matchModule.add(logicModule.name)
-            }
-        }
-        if (matchModule.isEmpty()) {
-            log.error("{} No LogicModule matched!", name)
-            throw RuntimeException("$name No LogicModule matched!")
-        }
-        return matchModule.toList()
     }
 
     fun getLogicModuleCouplingReport(): List<ModuleCouplingReportDTO> {
@@ -282,4 +221,50 @@ data class ClassCouplingReport(val className: String,
     val innerClassCoupling: Double = if (innerFanIn + innerFanOut == 0) 0.0 else 1 - 1.0 / (innerFanOut + innerFanIn)
     val outerClassInstability: Double = if (outerFanIn + outerFanOut == 0) 0.0 else outerFanOut.toDouble() / (outerFanOut + outerFanIn)
     val outerClassCoupling: Double = if (outerFanIn + outerFanOut == 0) 0.0 else 1 - 1.0 / (outerFanOut + outerFanIn)
+}
+
+fun getModule(modules: List<LogicModule>, name: String): List<String> {
+    val callerByFullMatch = fullMatch(name, modules)
+    if (callerByFullMatch.isNotEmpty()) {
+        return callerByFullMatch
+    }
+    return startsWithMatch(name, modules)
+}
+
+private fun fullMatch(name: String, modules: List<LogicModule>): List<String> {
+    return modules.filter { logicModule ->
+        logicModule.members.any { javaClass -> name == javaClass }
+    }.map { it.name }
+}
+
+private fun startsWithMatch(name: String, modules: List<LogicModule>): List<String> {
+    var maxMatchSize = 0
+    val matchModule: MutableList<String> = mutableListOf()
+    for (logicModule in modules) {
+        val maxMatchSizeInLogicModule = logicModule.members
+                .filter { member -> name.startsWith("$member.") }
+                .maxBy { it.length }
+                ?: continue
+        if (maxMatchSizeInLogicModule.length > maxMatchSize) {
+            maxMatchSize = maxMatchSizeInLogicModule.length
+            matchModule.clear()
+            matchModule.add(logicModule.name)
+        } else if (maxMatchSizeInLogicModule.length == maxMatchSize) {
+            matchModule.add(logicModule.name)
+        }
+    }
+    if (matchModule.isEmpty()) {
+        throw RuntimeException("$name No LogicModule matched!")
+    }
+    return matchModule.toList()
+}
+
+fun mapClassDependencyToModuleDependency(classDependency: List<Dependency>, modules: List<LogicModule>): List<Dependency> {
+    // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
+    return classDependency.map {
+        val callerModules = getModule(modules, it.caller)
+        val calleeModules = getModule(modules, it.callee)
+        callerModules.flatMap { callerModule -> calleeModules.map { calleeModule -> callerModule to calleeModule } }
+                .map { it -> Dependency(it.first, it.second) }
+    }.flatten().filter { it.caller != it.callee }
 }
