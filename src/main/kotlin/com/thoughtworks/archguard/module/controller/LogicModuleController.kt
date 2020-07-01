@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
+import com.thoughtworks.archguard.module.domain.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
@@ -31,6 +32,9 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var reportService: ReportService
+
+    @Autowired
+    private lateinit var dependencyService: DependencyService
 
     @GetMapping
     fun getLogicModules(): List<LogicModule> {
@@ -79,7 +83,7 @@ class LogicModuleController {
 
     @GetMapping("/dependencies")
     fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<ModuleDependency> {
-        return logicModuleService.getLogicModulesDependencies(caller, callee)
+        return dependencyService.getLogicModulesDependencies(caller, callee)
     }
 
     @GetMapping("/graph")

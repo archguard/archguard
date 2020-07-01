@@ -55,10 +55,6 @@ class LogicModuleService {
         logicModuleRepository.delete(id)
     }
 
-    fun getLogicModulesDependencies(caller: String, callee: String): List<ModuleDependency> {
-        return logicModuleRepository.getDependence(caller, callee)
-    }
-
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
         val defaultModules = baseModuleRepository.getBaseModules()

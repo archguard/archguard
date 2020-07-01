@@ -40,23 +40,6 @@ class LogicModuleServiceTest {
     }
 
     @Test
-    fun `should get dependency between logic modules`() {
-        // given
-        val caller = "module1"
-        val callee = "module2"
-        val dependency1 = ModuleDependency("module1", "any", "any", "module2", "any", "any")
-        val dependency2 = ModuleDependency("module2", "any", "any", "module3", "any", "any")
-        val dependencies = listOf(dependency1, dependency2)
-        every { logicModuleRepository.getDependence(caller, callee) } returns dependencies
-
-        // when
-        val actual = service.getLogicModulesDependencies(caller, callee)
-
-        // then
-        assertThat(actual.size).isEqualTo(dependencies.size)
-    }
-
-    @Test
     fun `should get logic module with interface members  for one JClass`() {
         val jClass = JClass("id1", "ServiceImpl", "module1")
         every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
