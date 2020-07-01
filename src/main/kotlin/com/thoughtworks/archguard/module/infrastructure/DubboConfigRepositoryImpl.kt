@@ -55,7 +55,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id"
 
         return sqlPrefix +
-                generateSqlRelatedGroup(referenceConfig) +
+                generateSqlGroupRelated(referenceConfig) +
                 generateSqlVersionRelated(referenceConfig) +
                 sqlSuffix
     }
@@ -76,7 +76,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         return sqlVersionRelated
     }
 
-    private fun generateSqlRelatedGroup(referenceConfig: ReferenceConfig): String {
+    private fun generateSqlGroupRelated(referenceConfig: ReferenceConfig): String {
         var sqlGroupRelated = ""
         if (referenceConfig.hasSpecificGroups()) {
             val groups = referenceConfig.getGroups()

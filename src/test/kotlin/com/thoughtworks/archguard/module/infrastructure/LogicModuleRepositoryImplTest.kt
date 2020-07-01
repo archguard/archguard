@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.web.WebAppConfiguration
 
 @SpringBootTest
@@ -17,6 +18,7 @@ internal class LogicModuleRepositoryImplTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @Test
+    @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should only select normal data from logic module`() {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(true)
         assertThat(normalLogicModules.size).isEqualTo(1)
