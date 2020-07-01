@@ -54,17 +54,36 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
                 "from dubbo_service_config as sc, dubbo_module as m where "
         val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id"
 
-        val singleVersion = "sc.version='${referenceConfig.version}' and "
-        val singleGroup = "sc.`group`='${referenceConfig.group}' and "
+        return sqlPrefix +
+                generateSqlRelatedGroup(referenceConfig) +
+                generateSqlVersionRelated(referenceConfig) +
+                sqlSuffix
+    }
 
-        var sql = sqlPrefix
-        if (referenceConfig.group != "*") {
-            sql += singleGroup
+    private fun generateSqlVersionRelated(referenceConfig: ReferenceConfig): String {
+        var sqlVersionRelated = ""
+        if (referenceConfig.hasSpecificVersions()) {
+            val versions = referenceConfig.getVersions()
+            sqlVersionRelated += "sc.`version`='${versions[0]}' "
+            for (version in versions.subList(1, versions.size)) {
+                sqlVersionRelated += "or sc.`version`='${version}' "
+            }
+            sqlVersionRelated += "and "
         }
-        if (referenceConfig.version != "*") {
-            sql += singleVersion
+        return sqlVersionRelated
+    }
+
+    private fun generateSqlRelatedGroup(referenceConfig: ReferenceConfig): String {
+        var sqlGroupRelated = ""
+        if (referenceConfig.hasSpecificGroups()) {
+            val groups = referenceConfig.getGroups()
+            sqlGroupRelated += "sc.`group`='${groups[0]}' "
+            for (group in groups.subList(1, groups.size)) {
+                sqlGroupRelated += "or sc.`group`='${group}' "
+            }
+            sqlGroupRelated += "and "
         }
-        return sql + sqlSuffix
+        return sqlGroupRelated
     }
 }
 

@@ -34,7 +34,7 @@ internal class DubboConfigRepositoryImplTest {
 
     @Test
     @Sql("classpath:sqls/dubbo_service_config.sql")
-    internal fun should_get_service_config_by_reference_config() {
+    internal fun should_get_service_config_by_reference_config_when_single_group() {
         val serviceConfigs = dubboConfigRepository.getServiceConfigBy(ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
                 null, "groupA", SubModule("ce818d60-f54e-41b7-9851-9b0eb212548d", "dubbo-samples-group", "../dubbo-samples/java/dubbo-samples-group")))
         assertThat(serviceConfigs.size).isEqualTo(1)

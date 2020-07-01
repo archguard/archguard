@@ -25,14 +25,16 @@ internal class XmlConfigServiceImplTest {
         val callerClass = JClass("id1", "caller1", "module1")
         val calleeClass = JClass("id2", "callee1", "module2")
         val callerSubModule = SubModule("id_module1", "module1", "module_path1")
-        every { dubboConfigRepository.getModuleByName("module1") } returns callerSubModule
-        val referenceConfig = ReferenceConfig("reference_id1", "bean_id1", "callee1", null, "g1", callerSubModule)
-        every { dubboConfigRepository.getReferenceConfigBy("callee1", callerSubModule) } returns listOf(referenceConfig)
         val calleeImplSubModule = SubModule("id_module2", "module2", "module_path2")
+        val referenceConfig = ReferenceConfig("reference_id1", "bean_id1", "callee1", null, "g1", callerSubModule)
         val serviceConfig = ServiceConfig("service_id1", "callee1", "callee1A", null, "g1", calleeImplSubModule)
-        every { dubboConfigRepository.getServiceConfigBy(referenceConfig) } returns listOf(serviceConfig)
-        val module = service.getRealCalleeModuleByDependency(callerClass, calleeClass)
-        assertThat(module).isEqualTo(listOf(calleeImplSubModule))
 
+        every { dubboConfigRepository.getModuleByName("module1") } returns callerSubModule
+        every { dubboConfigRepository.getReferenceConfigBy("callee1", callerSubModule) } returns listOf(referenceConfig)
+        every { dubboConfigRepository.getServiceConfigBy(referenceConfig) } returns listOf(serviceConfig)
+
+        val module = service.getRealCalleeModuleByDependency(callerClass, calleeClass)
+
+        assertThat(module).isEqualTo(listOf(calleeImplSubModule))
     }
 }
