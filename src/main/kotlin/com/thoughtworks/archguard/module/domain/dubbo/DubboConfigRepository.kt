@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.module.domain.dubbo
 
 interface DubboConfigRepository {
     fun getReferenceConfigBy(interfaceName: String, module: SubModule): List<ReferenceConfig>

@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.dubbo.XmlConfigService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

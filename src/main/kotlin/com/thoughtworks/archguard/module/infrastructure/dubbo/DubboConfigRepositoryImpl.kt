@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.module.infrastructure
+package com.thoughtworks.archguard.module.infrastructure.dubbo
 
-import com.thoughtworks.archguard.module.domain.DubboConfigRepository
-import com.thoughtworks.archguard.module.domain.ReferenceConfig
-import com.thoughtworks.archguard.module.domain.ServiceConfig
-import com.thoughtworks.archguard.module.domain.SubModule
+import com.thoughtworks.archguard.module.domain.dubbo.DubboConfigRepository
+import com.thoughtworks.archguard.module.domain.dubbo.ReferenceConfig
+import com.thoughtworks.archguard.module.domain.dubbo.ServiceConfig
+import com.thoughtworks.archguard.module.domain.dubbo.SubModule
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
