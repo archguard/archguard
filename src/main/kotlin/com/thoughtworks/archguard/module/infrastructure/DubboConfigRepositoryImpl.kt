@@ -64,11 +64,14 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         var sqlVersionRelated = ""
         if (referenceConfig.hasSpecificVersions()) {
             val versions = referenceConfig.getVersions()
-            sqlVersionRelated += "sc.`version`='${versions[0]}' "
+            if (versions.isEmpty()) {
+                throw RuntimeException("versions is empty!")
+            }
+            sqlVersionRelated += "(sc.`version`='${versions[0]}' "
             for (version in versions.subList(1, versions.size)) {
                 sqlVersionRelated += "or sc.`version`='${version}' "
             }
-            sqlVersionRelated += "and "
+            sqlVersionRelated += ")and "
         }
         return sqlVersionRelated
     }
@@ -77,11 +80,14 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         var sqlGroupRelated = ""
         if (referenceConfig.hasSpecificGroups()) {
             val groups = referenceConfig.getGroups()
-            sqlGroupRelated += "sc.`group`='${groups[0]}' "
+            if (groups.isEmpty()) {
+                throw RuntimeException("groups is empty!")
+            }
+            sqlGroupRelated += "(sc.`group`='${groups[0]}' "
             for (group in groups.subList(1, groups.size)) {
                 sqlGroupRelated += "or sc.`group`='${group}' "
             }
-            sqlGroupRelated += "and "
+            sqlGroupRelated += ")and "
         }
         return sqlGroupRelated
     }
