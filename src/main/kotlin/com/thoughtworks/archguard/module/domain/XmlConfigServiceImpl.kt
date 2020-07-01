@@ -15,7 +15,7 @@ class XmlConfigServiceImpl : XmlConfigService {
     override fun getRealCalleeModuleByDependency(callerClass: JClass, calleeClass: JClass): List<SubModule> {
         val callerModule = callerClass.module
         val callerSubModule = dubboConfigRepository.getModuleByName(callerModule)
-        val referenceConfigs = dubboConfigRepository.getReferenceConfigBy(callerClass.name, callerSubModule)
+        val referenceConfigs = dubboConfigRepository.getReferenceConfigBy(calleeClass.name, callerSubModule)
         val serviceConfigs = referenceConfigs.map { referenceConfig -> dubboConfigRepository.getServiceConfigBy(referenceConfig) }.flatten()
         return serviceConfigs.map { it.subModule }
     }

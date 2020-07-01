@@ -38,11 +38,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
     }
 
     override fun getServiceConfigBy(referenceConfig: ReferenceConfig): List<ServiceConfig> {
-        val sql = "select sc.id, sc.interface as interfaceName, sc.ref, sc.version, sc.`group`, " +
-                "sc.module_id as moduleId, m.name, m.path " +
-                "from dubbo_service_config as sc, dubbo_module as m where sc.version='${referenceConfig.version}' and " +
-                "sc.`group`='${referenceConfig.group}' and " +
-                "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id"
+        val sql = generateSqlWithReferenceConfig(referenceConfig)
         val serviceConfigDto = jdbi.withHandle<List<ServiceConfigDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ServiceConfigDto::class.java))
             it.createQuery(sql)
@@ -50,6 +46,25 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
                     .list()
         }
         return serviceConfigDto.map { it.toServiceConfig() }
+    }
+
+    private fun generateSqlWithReferenceConfig(referenceConfig: ReferenceConfig): String {
+        val sqlPrefix = "select sc.id, sc.interface as interfaceName, sc.ref, sc.version, sc.`group`, " +
+                "sc.module_id as moduleId, m.name, m.path " +
+                "from dubbo_service_config as sc, dubbo_module as m where "
+        val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id"
+
+        val singleVersion = "sc.version='${referenceConfig.version}' and "
+        val singleGroup = "sc.`group`='${referenceConfig.group}' and "
+
+        var sql = sqlPrefix
+        if (referenceConfig.group != "*") {
+            sql += singleGroup
+        }
+        if (referenceConfig.version != "*") {
+            sql += singleVersion
+        }
+        return sql + sqlSuffix
     }
 }
 
