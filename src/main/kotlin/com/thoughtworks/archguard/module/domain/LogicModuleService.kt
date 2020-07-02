@@ -58,7 +58,7 @@ class LogicModuleService {
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
         val defaultModules = baseModuleRepository.getBaseModules()
-                .map { LogicModule(UUID.randomUUID().toString(), it, mutableListOf(it)) }
+                .map { NewLogicModule(UUID.randomUUID().toString(), it, mutableListOf(SubModule(it))) }
         logicModuleRepository.saveAll(defaultModules)
     }
 
@@ -69,25 +69,25 @@ class LogicModuleService {
         logicModuleRepository.saveAll(defineLogicModuleWithInterface)
     }
 
-    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
+    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<NewLogicModule> {
         return jClassesHasModules
                 .map { getIncompleteLogicModuleForJClass(it) }
                 .groupBy({ it.name }, { it.members })
                 .mapValues { entry -> entry.value.flatten().toSet().toList() }
-                .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
+                .map { NewLogicModule(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
-    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
+    // TODO: use interface not parent class
+    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): NewLogicModule {
         val id = jClass.id
         val moduleName = jClass.module
         val parentClassIds = logicModuleRepository.getParentClassId(id)
-        val membersGeneratedByParentClasses = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
+        val membersGeneratedByParentClasses: MutableList<ModuleMember> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
-                .map { j -> j.module + "." + j.name }
                 .toSet().toMutableList()
-        membersGeneratedByParentClasses.add(moduleName)
-        return LogicModule(null, moduleName, membersGeneratedByParentClasses)
+        membersGeneratedByParentClasses.add(SubModule(moduleName))
+        return NewLogicModule(null, moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 

@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
+import com.thoughtworks.archguard.module.domain.NewLogicModule
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -63,11 +64,11 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun saveAll(logicModules: List<LogicModule>) {
+    override fun saveAll(logicModules: List<NewLogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
                 handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
-                        it.id, it.name, it.members.joinToString(","), it.status)
+                        it.id, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
             }
         }
     }

@@ -50,7 +50,7 @@ class LogicModuleServiceTest {
         every { jClassRepository.getJClassById("id3") } returns JClass("id3", "ParentClass", "module3")
         val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2.Service", "module3.ParentClass"))
+        assertThat(logicModule.members.toSet()).isEqualTo(setOf(SubModule("module1"), JClass("id2", "Service", "module2"), JClass("id3", "ParentClass", "module3")))
     }
 
     @Test
@@ -60,14 +60,14 @@ class LogicModuleServiceTest {
         val jClass3 = JClass("id3", "Service2Impl", "module1")
         val jClasses = listOf(jClass1, jClass2, jClass3)
         service = spyk(service)
-        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule(null, "module1", listOf("module1", "module3", "module4"))
-        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule(null, "module2", listOf("module2"))
-        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule(null, "module1", listOf("module1", "module3", "module5"))
+        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns NewLogicModule(null, "module1", listOf(SubModule("module1"), JClass("Service1", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns NewLogicModule(null, "module2", listOf(SubModule("module2")))
+        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns NewLogicModule(null, "module1", listOf(SubModule("module1"), JClass("Service2", "module-api")))
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).isEqualTo(setOf("module1", "module3", "module4", "module5"))
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).isEqualTo(setOf("module2"))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).isEqualTo(setOf(SubModule("module1"), JClass("Service1", "module-api"), JClass("Service2", "module-api")))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).isEqualTo(setOf(SubModule("module2")))
 
     }
 
