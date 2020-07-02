@@ -81,7 +81,7 @@ class LogicModuleService {
         val id = jClass.id
         val moduleName = jClass.module
         val parentClassIds = logicModuleRepository.getParentClassId(id)
-        val membersGeneratedByParentClasses = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id) }
+        val membersGeneratedByParentClasses = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
                 .map { j -> j.module + "." + j.name }

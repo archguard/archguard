@@ -12,7 +12,7 @@ class JClassRepositoryImpl : JClassRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getJClassBy(name: String, module: String): JClass {
+    override fun getJClassBy(name: String, module: String): JClass? {
         val sql = "select id, name, module from JClass where name='$name' and module='$module'"
         return jdbi.withHandle<JClass, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClass::class.java))
@@ -22,7 +22,7 @@ class JClassRepositoryImpl : JClassRepository {
         }
     }
 
-    override fun getJClassById(id: String): JClass {
+    override fun getJClassById(id: String): JClass? {
         val sql = "select id, name, module from JClass where id='$id'"
         return jdbi.withHandle<JClass, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClass::class.java))
