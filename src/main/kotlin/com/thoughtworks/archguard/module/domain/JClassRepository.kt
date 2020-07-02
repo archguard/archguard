@@ -1,5 +1,5 @@
 package com.thoughtworks.archguard.module.domain
 
 interface JClassRepository {
-    fun getJClassByName(name: String): JClass
+    fun getJClassBy(name: String, module: String): JClass
 }

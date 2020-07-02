@@ -12,8 +12,8 @@ class JClassRepositoryImpl : JClassRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getJClassByName(name: String): JClass {
-        val sql = "select id, name, module from JClass where name='$name'"
+    override fun getJClassBy(name: String, module: String): JClass {
+        val sql = "select id, name, module from JClass where name='$name' and module='$module'"
         return jdbi.withHandle<JClass, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClass::class.java))
             it.createQuery(sql)

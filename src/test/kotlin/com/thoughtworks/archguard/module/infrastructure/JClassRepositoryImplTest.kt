@@ -18,7 +18,7 @@ internal class JClassRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/insert_jclass.sql")
     internal fun should_get_jclass_by_name() {
-        val jClass = jClassRepository.getJClassByName("org.apache.dubbo.demo.GreetingService")
+        val jClass = jClassRepository.getJClassBy("org.apache.dubbo.demo.GreetingService", "dubbo-demo-interface")
         assertThat(jClass).isEqualToComparingFieldByField(JClass("c1983476-7bd8-4e52-a523-71c4f3f5098e", "org.apache.dubbo.demo.GreetingService", "dubbo-demo-interface"))
     }
 }
