@@ -2,22 +2,21 @@ package com.thoughtworks.archguard.module.domain
 
 import io.mockk.MockKAnnotations
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class GraphServiceImplTest {
+internal class DefaultGraphServiceImplTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
-    @InjectMockKs
-    var service: GraphServiceImpl = GraphServiceImpl(DefaultDependencyAnalysisHelper())
+    private lateinit var service: DefaultGraphServiceImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
+        service = DefaultGraphServiceImpl(logicModuleRepository)
     }
 
     @Test

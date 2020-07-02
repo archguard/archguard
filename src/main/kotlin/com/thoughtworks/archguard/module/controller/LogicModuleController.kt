@@ -10,6 +10,7 @@ import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleGraph
 import com.thoughtworks.archguard.module.domain.ReportService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,7 +29,12 @@ class LogicModuleController {
     private lateinit var logicModuleService: LogicModuleService
 
     @Autowired
+    @Qualifier("Default")
     private lateinit var graphService: GraphService
+
+    @Autowired
+    @Qualifier("Dubbo")
+    private lateinit var graphServiceDubbo: GraphService
 
     @Autowired
     private lateinit var reportService: ReportService
@@ -89,6 +95,11 @@ class LogicModuleController {
     @GetMapping("/graph")
     fun getLogicModuleGraph(): ModuleGraph {
         return graphService.getLogicModuleGraph()
+    }
+
+    @GetMapping("/graph-dubbo")
+    fun getLogicModuleGraphDubbo(): ModuleGraph {
+        return graphServiceDubbo.getLogicModuleGraph()
     }
 
     @GetMapping("/coupling-by-class")

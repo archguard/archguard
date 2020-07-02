@@ -1,23 +1,9 @@
 package com.thoughtworks.archguard.module.domain
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.stereotype.Service
 
-@Service
-class GraphServiceImpl : GraphService {
-    private val log = LoggerFactory.getLogger(GraphServiceImpl::class.java)
-
-    @Autowired
-    lateinit var logicModuleRepository: LogicModuleRepository
-
-    var dependencyAnalysisHelper: DependencyAnalysisHelper
-
-    constructor(@Qualifier("Default") dependencyAnalysisHelper: DependencyAnalysisHelper) {
-        this.dependencyAnalysisHelper = dependencyAnalysisHelper
-    }
-
+abstract class DefaultGraphService(var logicModuleRepository: LogicModuleRepository) : GraphService {
+    private val log = LoggerFactory.getLogger(DefaultGraphService::class.java)
 
     override fun getLogicModuleGraph(): ModuleGraph {
         val moduleDependencies = getModuleDependency()
@@ -46,16 +32,5 @@ class GraphServiceImpl : GraphService {
                 .filter { it.caller != it.callee }
     }
 
-    private fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, classDependency: Dependency): List<Dependency> {
-        val callerModules = getModule(logicModules, classDependency.caller)
-        if (callerModules.size > 1) {
-            log.error("Caller Class belong to more than one Module!", callerModules)
-        }
-        val callerModule = callerModules[0]
-        val calleeModules = getModule(logicModules, classDependency.callee)
-
-        val calleeModulesByXml = dependencyAnalysisHelper.analysis(classDependency, logicModules, calleeModules)
-
-        return calleeModulesByXml.map { Dependency(callerModule, it) }
-    }
+    abstract fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, it: Dependency): List<Dependency>
 }
