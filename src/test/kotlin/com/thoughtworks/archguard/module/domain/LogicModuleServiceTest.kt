@@ -16,6 +16,9 @@ class LogicModuleServiceTest {
     @MockK
     lateinit var baseModuleRepository: BaseModuleRepository
 
+    @MockK
+    lateinit var jClassRepository: JClassRepository
+
     @InjectMockKs
     var service: LogicModuleService = LogicModuleService()
 
@@ -43,8 +46,8 @@ class LogicModuleServiceTest {
     fun `should get logic module with interface members  for one JClass`() {
         val jClass = JClass("id1", "ServiceImpl", "module1")
         every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
-        every { baseModuleRepository.getJClassesById("id2") } returns JClass("id2", "Service", "module2")
-        every { baseModuleRepository.getJClassesById("id3") } returns JClass("id3", "ParentClass", "module3")
+        every { jClassRepository.getJClassById("id2") } returns JClass("id2", "Service", "module2")
+        every { jClassRepository.getJClassById("id3") } returns JClass("id3", "ParentClass", "module3")
         val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
         assertThat(logicModule.members.toSet()).isEqualTo(setOf("module1", "module2.Service", "module3.ParentClass"))

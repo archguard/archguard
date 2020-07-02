@@ -32,16 +32,4 @@ class BaseModuleRepositoryImpl : BaseModuleRepository {
                     .filter { it -> it.module != "null" }
         }
     }
-
-    override fun getJClassesById(id: String): JClass {
-        val sql = "select id, name, module from JClass where id='$id'"
-        return jdbi.withHandle<JClass, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClass::class.java))
-            it.createQuery(sql)
-                    .mapTo(JClass::class.java)
-                    .one()
-        }
-    }
-
-
 }

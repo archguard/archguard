@@ -5,5 +5,4 @@ interface BaseModuleRepository {
 
     fun getJClassesHasModules(): List<JClass>
 
-    fun getJClassesById(id: String): JClass
 }
