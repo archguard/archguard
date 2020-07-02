@@ -13,7 +13,7 @@ internal class GraphServiceImplTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @InjectMockKs
-    var service: GraphService = GraphServiceImpl()
+    var service: GraphServiceImpl = GraphServiceImpl(DefaultDependencyAnalysisHelper())
 
     @BeforeEach
     fun setUp() {
@@ -51,11 +51,9 @@ internal class GraphServiceImplTest {
         val modules = listOf(LogicModule("id1", "module1", listOf("caller.method1")),
                 LogicModule("id2", "module2", listOf("callee.method1")),
                 LogicModule("id3", "module3", listOf("callee.method1")),
-                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")),
-                LogicModule("id5", "module5", listOf("caller.method1")))
-        val moduleDependency = mapClassDependencyToModuleDependency(results, modules)
-        assertThat(moduleDependency.size).isEqualTo(4)
-        assertThat(moduleDependency).containsAll(listOf(Dependency("module1", "module2"), Dependency("module1", "module3"),
-                Dependency("module5", "module2"), Dependency("module5", "module3")))
+                LogicModule("id4", "module4", listOf("caller.method2", "callee.method2")))
+        val moduleDependency = service.mapClassDependenciesToModuleDependencies(results, modules)
+        assertThat(moduleDependency.size).isEqualTo(2)
+        assertThat(moduleDependency).containsAll(listOf(Dependency("module1", "module2"), Dependency("module1", "module3")))
     }
 }

@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.module.domain.dubbo.XmlConfigService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -15,9 +14,6 @@ class LogicModuleService {
 
     @Autowired
     lateinit var baseModuleRepository: BaseModuleRepository
-
-    @Autowired
-    lateinit var xmlConfigService: XmlConfigService
 
     fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
