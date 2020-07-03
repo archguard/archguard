@@ -17,6 +17,7 @@ import java.util.*
 class LogicModuleControllerTest {
     @MockK
     lateinit var service: LogicModuleService
+
     @InjectMockKs
     var controller = LogicModuleController()
 
@@ -33,7 +34,7 @@ class LogicModuleControllerTest {
     fun `should get all logic modules`() {
         // given
         val logicModules = listOf(createLogicModule())
-        every { service.getLogicModules() } returns logicModules
+        every { service.getLogicModulesLegacy() } returns logicModules
 
         // when
         val actual = controller.getLogicModules()
@@ -51,7 +52,7 @@ class LogicModuleControllerTest {
         every { service.updateLogicModule(any(), any()) } just runs
 
         // when
-        controller.updateLogicModule(id ,logicModule)
+        controller.updateLogicModule(id, logicModule)
 
         // then
         verify { service.updateLogicModule(any(), any()) }

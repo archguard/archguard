@@ -1,8 +1,9 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
+import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
+import com.thoughtworks.archguard.module.domain.createModuleMember
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +24,6 @@ internal class LogicModuleRepositoryImplTest {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).isEqualTo(
-                LogicModuleLegacy("id1", "dubbo-provider", listOf("dubbo-provider"), LogicModuleStatus.NORMAL))
+                LogicModule("id1", "dubbo-provider", listOf(createModuleMember("dubbo-provider")), LogicModuleStatus.NORMAL))
     }
 }

@@ -1,16 +1,17 @@
 package com.thoughtworks.archguard.module.infrastructure
 
+import com.thoughtworks.archguard.module.domain.Dependency
 import com.thoughtworks.archguard.module.domain.DependencyLegacy
 import com.thoughtworks.archguard.module.domain.JClass
+import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
-import com.thoughtworks.archguard.module.domain.Dependency
-import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.createModuleMember
+import com.thoughtworks.archguard.module.domain.fromLogicModule
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,31 +23,21 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getAllByShowStatus(isShow: Boolean): List<LogicModuleLegacy> {
+    override fun getAllByShowStatusLegacy(isShow: Boolean): List<LogicModuleLegacy> {
+        if (isShow) {
+            return this.getAllByShowStatus(isShow).map { fromLogicModule(it) }.filter { it.status == LogicModuleStatus.NORMAL }
+        }
+        return this.getAllByShowStatus(isShow).map { fromLogicModule(it) }.filter { it.status == LogicModuleStatus.HIDE }
+    }
+
+    override fun getAllByShowStatus(isShow: Boolean): List<LogicModule> {
         if (isShow) {
             return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
         }
         return this.getAll().filter { it.status == LogicModuleStatus.HIDE }
     }
 
-    override fun getAllByShowStatusNew(isShow: Boolean): List<LogicModule> {
-        if (isShow) {
-            return this.getAllNew().filter { it.status == LogicModuleStatus.NORMAL }
-        }
-        return this.getAllNew().filter { it.status == LogicModuleStatus.HIDE }
-    }
-
-    override fun getAll(): List<LogicModuleLegacy> {
-        val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, status from logic_module")
-                    .mapTo(LogicModuleDTO::class.java)
-                    .list()
-        }
-        return modules.map { LogicModuleLegacy(it.id, it.name, it.members.split(',').sorted(), it.status) }
-    }
-
-    override fun getAllNew(): List<LogicModule> {
+    override fun getAll(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
             it.createQuery("select id, name, members, status from logic_module")
@@ -59,11 +50,11 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun update(id: String, logicModule: LogicModuleLegacy) {
+    override fun update(id: String, logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("update logic_module set " +
                     "name = '${logicModule.name}', " +
-                    "members = '${logicModule.members.joinToString(",")}', " +
+                    "members = '${logicModule.members.map { moduleMember -> moduleMember.getFullName() }.joinToString(",")}', " +
                     "status = '${logicModule.status}' " +
                     "where id = '${logicModule.id}'")
                     .execute()
@@ -98,7 +89,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun updateAll(logicModules: List<LogicModuleLegacy>) {
+    override fun updateAll(logicModules: List<LogicModule>) {
         logicModules.forEach {
             update(it.id.toString(), it)
         }
@@ -119,7 +110,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     }
 
-    override fun getAllClassDependency(members: List<String>): List<DependencyLegacy> {
+    override fun getAllClassDependencyLegacy(members: List<String>): List<DependencyLegacy> {
         val tableTemplate = defineTableTemplate(members)
 
         val sql = "select concat(concat(a.module, '.'), a.clzname) caller, " +
@@ -135,7 +126,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun getAllClassDependencyNew(members: List<ModuleMember>): List<Dependency<JClass>> {
+    override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
         val tableTemplate = defineTableTemplateNew(members)
 
         val sql = "select a.module, a.clzname caller, " +

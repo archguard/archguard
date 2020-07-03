@@ -50,8 +50,8 @@ internal class ReportServiceImplTest {
         val element3 = LogicModuleLegacy(null, "module3", listOf("com.test5", "com.test6"))
         val dependency1 = DependencyLegacy("com.test1.clazz", "com.test3.clazz")
         val dependency2 = DependencyLegacy("com.test4.clazz", "com.test2.clazz")
-        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
-        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
+        every { logicModuleRepository.getAllByShowStatusLegacy(true) } returns listOf(element, element2, element3)
+        every { logicModuleRepository.getAllClassDependencyLegacy(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
@@ -66,8 +66,8 @@ internal class ReportServiceImplTest {
         //given
         val element = LogicModuleLegacy(null, "module1", listOf("com.test1", "com.test2"))
         val element2 = LogicModuleLegacy(null, "module2", listOf("com.test3", "com.test4"))
-        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
-        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
+        every { logicModuleRepository.getAllByShowStatusLegacy(true) } returns listOf(element, element2)
+        every { logicModuleRepository.getAllClassDependencyLegacy(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then

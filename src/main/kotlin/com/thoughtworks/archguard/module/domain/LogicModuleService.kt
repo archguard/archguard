@@ -18,7 +18,12 @@ class LogicModuleService {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    fun getLogicModules(): List<LogicModuleLegacy> {
+    @Deprecated("replace by getLogicModules in the future")
+    fun getLogicModulesLegacy(): List<LogicModuleLegacy> {
+        return getLogicModules().map { fromLogicModule(it) }
+    }
+
+    fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
     }
 
@@ -41,7 +46,7 @@ class LogicModuleService {
     }
 
     fun updateLogicModule(id: String, logicModule: LogicModuleLegacy) {
-        logicModuleRepository.update(id, logicModule)
+        logicModuleRepository.update(id, logicModule.toLogicModule())
     }
 
     fun createLogicModule(logicModule: LogicModuleLegacy): String {

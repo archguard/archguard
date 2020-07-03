@@ -30,8 +30,8 @@ class LogicModuleServiceTest {
     @Test
     fun `should get logic modules`() {
         // given
-        val logicModule1 = LogicModuleLegacy("1", "m1", listOf("bm1", "bm2"))
-        val logicModule2 = LogicModuleLegacy("2", "m2", listOf("bm3", "bm4"))
+        val logicModule1 = LogicModule("1", "m1", listOf(createModuleMember("bm1"), createModuleMember("bm2")))
+        val logicModule2 = LogicModule("2", "m2", listOf(createModuleMember("bm3"), createModuleMember("bm4")))
         val logicModules = listOf(logicModule1, logicModule2)
         every { logicModuleRepository.getAll() } returns logicModules
 

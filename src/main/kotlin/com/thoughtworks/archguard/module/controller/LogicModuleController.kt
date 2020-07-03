@@ -43,8 +43,9 @@ class LogicModuleController {
     private lateinit var dependencyService: DependencyService
 
     @GetMapping
+    // FIXME
     fun getLogicModules(): List<LogicModuleLegacy> {
-        return logicModuleService.getLogicModules()
+        return logicModuleService.getLogicModulesLegacy()
     }
 
     @PostMapping("/hide-all")

@@ -2,29 +2,6 @@ package com.thoughtworks.archguard.module.domain
 
 @Deprecated(message = "we are going to replace with LogicModule")
 class LogicModuleLegacy(var id: String?, val name: String, val members: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
-    fun hide() {
-        this.status = LogicModuleStatus.HIDE
-    }
-
-    fun show() {
-        this.status = LogicModuleStatus.NORMAL
-    }
-
-    fun reverse() {
-        if (isNormalStatus()) {
-            hide()
-            return
-        }
-        if (isHideStatus()) {
-            show()
-            return
-        }
-        throw RuntimeException("Illegal logic module status!")
-    }
-
-    private fun isHideStatus() = this.status == LogicModuleStatus.HIDE
-
-    private fun isNormalStatus() = this.status == LogicModuleStatus.NORMAL
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -48,9 +25,11 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         return result
     }
 
-
+    fun toLogicModule(): LogicModule {
+        return LogicModule(id, name, members.map { createModuleMember(it) }, status)
+    }
 }
 
-enum class LogicModuleStatus {
-    NORMAL, HIDE
+fun fromLogicModule(logicModule: LogicModule): LogicModuleLegacy {
+    return LogicModuleLegacy(logicModule.id, logicModule.name, logicModule.members.map { it.getFullName() }, logicModule.status)
 }

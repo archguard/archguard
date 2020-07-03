@@ -32,8 +32,8 @@ internal class DefaultGraphServiceImplTest {
         val dependency3 = Dependency(createJClassFromFullName("bm5.any"), createJClassFromFullName("bm4.any"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { logicModuleRepository.getAllByShowStatusNew(true) } returns logicModules
-        every { logicModuleRepository.getAllClassDependencyNew(any()) } returns dependencies
+        every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
+        every { logicModuleRepository.getAllClassDependency(any()) } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraph()
