@@ -18,10 +18,6 @@ class LogicModuleService {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    fun getLogicModulesLegacy(): List<LogicModuleLegacy> {
-        return getLogicModules().map { fromLogicModule(it) }
-    }
-
     fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
     }

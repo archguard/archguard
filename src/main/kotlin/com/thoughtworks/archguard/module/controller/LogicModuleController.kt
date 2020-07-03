@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.module.domain.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
-import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
@@ -45,7 +44,7 @@ class LogicModuleController {
     @GetMapping
     // FIXME
     fun getLogicModules(): List<LogicModuleLegacy> {
-        return logicModuleService.getLogicModulesLegacy()
+        return logicModuleService.getLogicModules().map { fromLogicModule(it) }
     }
 
     @PostMapping("/hide-all")

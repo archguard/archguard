@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
+import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
+import com.thoughtworks.archguard.module.domain.createModuleMember
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -26,15 +27,15 @@ class LogicModuleControllerTest {
         init(this)
     }
 
-    private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModuleLegacy {
-        return LogicModuleLegacy(id, name, members)
+    private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {
+        return LogicModule(id, name, members.map { createModuleMember(it) })
     }
 
     @Test
     fun `should get all logic modules`() {
         // given
         val logicModules = listOf(createLogicModule())
-        every { service.getLogicModulesLegacy() } returns logicModules
+        every { service.getLogicModules() } returns logicModules
 
         // when
         val actual = controller.getLogicModules()
@@ -52,7 +53,7 @@ class LogicModuleControllerTest {
         every { service.updateLogicModule(any(), any()) } just runs
 
         // when
-        controller.updateLogicModule(id, logicModule)
+        controller.updateLogicModule(id, fromLogicModule(logicModule))
 
         // then
         verify { service.updateLogicModule(any(), any()) }
