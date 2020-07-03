@@ -4,7 +4,6 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockkStatic
 import io.mockk.spyk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -28,12 +27,7 @@ internal class ReportServiceImplTest {
         val classCouplingReport2 = ClassCouplingReport("com.thoughtworks.archguard.test1.class2", 1, 1, 0, 0)
         val classCouplingReport3 = ClassCouplingReport("com.thoughtworks.archguard.test2.class3", 1, 1, 0, 0)
         val classCouplingReports: List<ClassCouplingReport> = listOf(classCouplingReport1, classCouplingReport2, classCouplingReport3)
-        val modules: List<LogicModuleLegacy> = listOf()
         service = spyk(service)
-        mockkStatic("com.thoughtworks.archguard.module.domain.LogicModuleServiceKt")
-        every { getModuleLegacy(modules, "class1") } returns listOf("module1", "module2")
-        every { getModuleLegacy(modules, "class2") } returns listOf("module2")
-        every { getModuleLegacy(modules, "class3") } returns listOf("module1", "module3")
         val packageReport = service.groupToPackage(classCouplingReports)
         assertThat(packageReport.size).isEqualTo(2)
         assertThat(packageReport.filter { it.packageName == "com.thoughtworks.archguard.test1" }.get(0).classCouplingReports)

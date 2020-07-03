@@ -95,15 +95,6 @@ class LogicModuleService {
     }
 }
 
-@Deprecated(message = "we are going to replace with getModule")
-fun getModuleLegacy(modules: List<LogicModuleLegacy>, name: String): List<String> {
-    val callerByFullMatch = fullMatchLegacy(name, modules)
-    if (callerByFullMatch.isNotEmpty()) {
-        return callerByFullMatch
-    }
-    return startsWithMatchLegacy(name, modules)
-}
-
 fun getModule(modules: List<LogicModule>, jClass: ModuleMember): List<LogicModule> {
     val callerByFullMatch = fullMatch(jClass, modules)
     if (callerByFullMatch.isNotEmpty()) {
@@ -112,38 +103,10 @@ fun getModule(modules: List<LogicModule>, jClass: ModuleMember): List<LogicModul
     return startsWithMatch(jClass, modules)
 }
 
-private fun fullMatchLegacy(name: String, modules: List<LogicModuleLegacy>): List<String> {
-    return modules.filter { logicModule ->
-        logicModule.members.any { javaClass -> name == javaClass }
-    }.map { it.name }
-}
-
 private fun fullMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
     return modules.filter { logicModule ->
         logicModule.members.any { moduleMember -> jClass.getFullName() == moduleMember.getFullName() }
     }
-}
-
-private fun startsWithMatchLegacy(name: String, modules: List<LogicModuleLegacy>): List<String> {
-    var maxMatchSize = 0
-    val matchModule: MutableList<String> = mutableListOf()
-    for (logicModule in modules) {
-        val maxMatchSizeInLogicModule = logicModule.members
-                .filter { member -> name.startsWith("$member.") }
-                .maxBy { it.length }
-                ?: continue
-        if (maxMatchSizeInLogicModule.length > maxMatchSize) {
-            maxMatchSize = maxMatchSizeInLogicModule.length
-            matchModule.clear()
-            matchModule.add(logicModule.name)
-        } else if (maxMatchSizeInLogicModule.length == maxMatchSize) {
-            matchModule.add(logicModule.name)
-        }
-    }
-    if (matchModule.isEmpty()) {
-        throw RuntimeException("$name No LogicModule matched!")
-    }
-    return matchModule.toList()
 }
 
 fun startsWithMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
