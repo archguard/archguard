@@ -103,8 +103,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
         val tableTemplate = defineTableTemplateNew(members)
 
-        val sql = "select a.module, a.clzname caller, " +
-                "b.module, b.clzname callee " +
+        val sql = "select a.module as moduleCaller, a.clzname as classCaller, " +
+                "b.module as moduleCallee, b.clzname as classCallee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
         return jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
