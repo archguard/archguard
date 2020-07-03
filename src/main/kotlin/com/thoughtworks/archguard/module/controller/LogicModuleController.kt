@@ -5,8 +5,8 @@ import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
-import com.thoughtworks.archguard.module.domain.ModuleGraph
 import com.thoughtworks.archguard.module.domain.ReportService
+import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.fromLogicModule

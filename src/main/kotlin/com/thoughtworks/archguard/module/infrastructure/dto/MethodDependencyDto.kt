@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure.dto
 
-import com.thoughtworks.archguard.module.domain.Dependency
-import com.thoughtworks.archguard.module.domain.JClass
-import com.thoughtworks.archguard.module.domain.JMethod
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JMethod
 
 class MethodDependencyDto(var caller: String, var callerClass: String, var callerMethod: String, var callee: String, var calleeClass: String, var calleeMethod: String) {
     fun toMethodDependency(): Dependency<JMethod> {

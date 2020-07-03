@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.module.domain.model
 
 class JMethod(val name: String, val jClass: JClass) {
     lateinit var id: String

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.module.domain.model
 
 class SubModule(val name: String) : ModuleMember {
     override fun getFullName(): String {

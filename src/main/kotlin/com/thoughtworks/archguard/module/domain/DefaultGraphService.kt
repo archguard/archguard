@@ -1,5 +1,10 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.ModuleGraph
+import com.thoughtworks.archguard.module.domain.model.ModuleStore
 import org.slf4j.LoggerFactory
 
 abstract class DefaultGraphService(var logicModuleRepository: LogicModuleRepository) : GraphService {

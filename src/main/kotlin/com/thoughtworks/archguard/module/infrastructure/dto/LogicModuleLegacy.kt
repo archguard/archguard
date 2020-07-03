@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure.dto
 
-import com.thoughtworks.archguard.module.domain.LogicModule
-import com.thoughtworks.archguard.module.domain.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.ModuleMember
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
+import com.thoughtworks.archguard.module.domain.model.ModuleMember
 
 @Deprecated(message = "we are going to replace with LogicModule")
 class LogicModuleLegacy(var id: String?, val name: String, val members: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {

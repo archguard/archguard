@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.module.domain.model
 
 interface ModuleMember {
     fun getFullName(): String

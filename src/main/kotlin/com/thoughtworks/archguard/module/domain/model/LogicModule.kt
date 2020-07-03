@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.module.domain.model
 
 class LogicModule(var id: String?, val name: String, val members: List<ModuleMember>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
     fun hide() {

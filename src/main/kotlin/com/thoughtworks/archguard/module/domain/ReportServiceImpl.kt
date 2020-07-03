@@ -1,6 +1,10 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.nield.kotlinstatistics.median
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

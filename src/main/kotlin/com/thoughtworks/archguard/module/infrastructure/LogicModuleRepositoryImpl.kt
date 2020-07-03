@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.Dependency
-import com.thoughtworks.archguard.module.domain.JClass
-import com.thoughtworks.archguard.module.domain.JMethod
-import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.ModuleMember
-import com.thoughtworks.archguard.module.domain.ModuleMemberType
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
+import com.thoughtworks.archguard.module.domain.model.ModuleMember
+import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi

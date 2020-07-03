@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JMethod
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

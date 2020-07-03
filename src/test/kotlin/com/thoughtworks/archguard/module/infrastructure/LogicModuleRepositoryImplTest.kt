@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.ModuleMember
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
+import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

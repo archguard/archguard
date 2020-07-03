@@ -2,11 +2,11 @@ package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.module.domain.DefaultGraphService
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
-import com.thoughtworks.archguard.module.domain.JClass
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.Dependency
-import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.getModule
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

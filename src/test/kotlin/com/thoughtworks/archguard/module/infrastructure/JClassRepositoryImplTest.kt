@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.JClass
 import com.thoughtworks.archguard.module.domain.JClassRepository
+import com.thoughtworks.archguard.module.domain.model.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

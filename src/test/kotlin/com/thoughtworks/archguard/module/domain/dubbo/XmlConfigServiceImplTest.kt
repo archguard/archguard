@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
-import com.thoughtworks.archguard.module.domain.JClass
+import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
