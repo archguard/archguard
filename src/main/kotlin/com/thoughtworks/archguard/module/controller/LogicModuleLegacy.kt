@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.createModuleMember
+import com.thoughtworks.archguard.module.domain.ModuleMember
 
 @Deprecated(message = "we are going to replace with LogicModule")
 class LogicModuleLegacy(var id: String?, val name: String, val members: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
@@ -30,7 +30,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
     }
 
     fun toLogicModule(): LogicModule {
-        return LogicModule(id, name, members.map { createModuleMember(it) }, status)
+        return LogicModule(id, name, members.map { ModuleMember.createModuleMember(it) }, status)
     }
 }
 

@@ -8,7 +8,6 @@ import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
-import com.thoughtworks.archguard.module.domain.createModuleMember
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,7 +35,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
         return modules.map {
             LogicModule(it.id, it.name, it.members.split(',').sorted()
-                    .map { m -> createModuleMember(m) }, it.status)
+                    .map { m -> ModuleMember.createModuleMember(m) }, it.status)
         }
     }
 

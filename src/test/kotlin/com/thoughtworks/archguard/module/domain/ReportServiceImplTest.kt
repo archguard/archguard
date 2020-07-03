@@ -39,11 +39,11 @@ internal class ReportServiceImplTest {
     @Test
     fun `should get module coupling`() {
         //given
-        val element = LogicModule(null, "module1", listOf(createModuleMember("com.test1"), createModuleMember("com.test2")))
-        val element2 = LogicModule(null, "module2", listOf(createModuleMember("com.test3"), createModuleMember("com.test4")))
-        val element3 = LogicModule(null, "module3", listOf(createModuleMember("com.test5"), createModuleMember("com.test6")))
-        val dependency1 = Dependency(createJClassFromFullName("com.test1.clazz"), createJClassFromFullName("com.test3.clazz"))
-        val dependency2 = Dependency(createJClassFromFullName("com.test4.clazz"), createJClassFromFullName("com.test2.clazz"))
+        val element = LogicModule(null, "module1", listOf(ModuleMember.createModuleMember("com.test1"), ModuleMember.createModuleMember("com.test2")))
+        val element2 = LogicModule(null, "module2", listOf(ModuleMember.createModuleMember("com.test3"), ModuleMember.createModuleMember("com.test4")))
+        val element3 = LogicModule(null, "module3", listOf(ModuleMember.createModuleMember("com.test5"), ModuleMember.createModuleMember("com.test6")))
+        val dependency1 = Dependency(JClass.createJClassFromFullName("com.test1.clazz"), JClass.createJClassFromFullName("com.test3.clazz"))
+        val dependency2 = Dependency(JClass.createJClassFromFullName("com.test4.clazz"), JClass.createJClassFromFullName("com.test2.clazz"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
         every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
         //when
@@ -58,8 +58,8 @@ internal class ReportServiceImplTest {
     @Test
     fun `should be zero when no dependence`() {
         //given
-        val element = LogicModule(null, "module1", listOf(createModuleMember("com.test1"), createModuleMember("com.test2")))
-        val element2 = LogicModule(null, "module2", listOf(createModuleMember("com.test3"), createModuleMember("com.test4")))
+        val element = LogicModule(null, "module1", listOf(ModuleMember.createModuleMember("com.test1"), ModuleMember.createModuleMember("com.test2")))
+        val element2 = LogicModule(null, "module2", listOf(ModuleMember.createModuleMember("com.test3"), ModuleMember.createModuleMember("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
         every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
         //when

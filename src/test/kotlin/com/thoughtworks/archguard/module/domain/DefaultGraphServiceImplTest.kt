@@ -27,9 +27,9 @@ internal class DefaultGraphServiceImplTest {
         val logicModule3 = LogicModule("3", "module3", listOf(SubModule("bm5")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(createJClassFromFullName("bm1.any"), createJClassFromFullName("bm3.any"))
-        val dependency2 = Dependency(createJClassFromFullName("bm3.any"), createJClassFromFullName("bm2.any"))
-        val dependency3 = Dependency(createJClassFromFullName("bm5.any"), createJClassFromFullName("bm4.any"))
+        val dependency1 = Dependency(JClass.createJClassFromFullName("bm1.any"), JClass.createJClassFromFullName("bm3.any"))
+        val dependency2 = Dependency(JClass.createJClassFromFullName("bm3.any"), JClass.createJClassFromFullName("bm2.any"))
+        val dependency3 = Dependency(JClass.createJClassFromFullName("bm5.any"), JClass.createJClassFromFullName("bm4.any"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
@@ -45,12 +45,12 @@ internal class DefaultGraphServiceImplTest {
 
     @Test
     fun `should map to module`() {
-        val results = listOf(Dependency(createJClassFromFullName("caller.method1"), createJClassFromFullName("callee.method1")),
-                Dependency(createJClassFromFullName("caller.method2"), createJClassFromFullName("callee.method2")))
-        val logicModule1 = LogicModule("id1", "module1", listOf(createJClassFromFullName("caller.method1")))
-        val logicModule2 = LogicModule("id2", "module2", listOf(createJClassFromFullName("callee.method1")))
-        val logicModule3 = LogicModule("id3", "module3", listOf(createJClassFromFullName("callee.method1")))
-        val logicModule4 = LogicModule("id4", "module4", listOf(createJClassFromFullName("caller.method2"), createJClassFromFullName("callee.method2")))
+        val results = listOf(Dependency(JClass.createJClassFromFullName("caller.method1"), JClass.createJClassFromFullName("callee.method1")),
+                Dependency(JClass.createJClassFromFullName("caller.method2"), JClass.createJClassFromFullName("callee.method2")))
+        val logicModule1 = LogicModule("id1", "module1", listOf(JClass.createJClassFromFullName("caller.method1")))
+        val logicModule2 = LogicModule("id2", "module2", listOf(JClass.createJClassFromFullName("callee.method1")))
+        val logicModule3 = LogicModule("id3", "module3", listOf(JClass.createJClassFromFullName("callee.method1")))
+        val logicModule4 = LogicModule("id4", "module4", listOf(JClass.createJClassFromFullName("caller.method2"), JClass.createJClassFromFullName("callee.method2")))
         val modules = listOf(logicModule1, logicModule2, logicModule3, logicModule4)
         val moduleDependency = service.mapClassDependenciesToModuleDependencies(results, modules)
         assertThat(moduleDependency.size).isEqualTo(2)

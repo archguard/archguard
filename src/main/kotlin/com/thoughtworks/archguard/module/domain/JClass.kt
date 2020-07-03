@@ -10,6 +10,13 @@ class JClass(val name: String, val module: String) : ModuleMember {
         this.id = id
     }
 
+    companion object {
+        fun createJClassFromFullName(fullName: String): JClass {
+            val split = fullName.split(".")
+            return JClass(split.subList(1, split.size).joinToString(".").trim(), split[0].trim())
+        }
+    }
+
     override fun getFullName(): String {
         return "$module.$name"
     }
@@ -39,9 +46,4 @@ class JClass(val name: String, val module: String) : ModuleMember {
     override fun toString(): String {
         return "JClass(name='$name', module='$module', id='$id')"
     }
-}
-
-fun createJClassFromFullName(fullName: String): JClass {
-    val split = fullName.split(".")
-    return JClass(split.subList(1, split.size).joinToString(".").trim(), split[0].trim())
 }
