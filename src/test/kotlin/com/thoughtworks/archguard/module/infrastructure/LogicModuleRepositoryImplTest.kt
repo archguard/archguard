@@ -24,6 +24,6 @@ internal class LogicModuleRepositoryImplTest {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).isEqualTo(
-                LogicModule("id1", "dubbo-provider", listOf(ModuleMember.createModuleMember("dubbo-provider")), LogicModuleStatus.NORMAL))
+                LogicModule("id1", "dubbo-provider", listOf(ModuleMember.create("dubbo-provider")), LogicModuleStatus.NORMAL))
     }
 }

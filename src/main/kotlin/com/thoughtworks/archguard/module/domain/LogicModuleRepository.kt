@@ -9,6 +9,7 @@ import com.thoughtworks.archguard.module.domain.model.ModuleMember
 interface LogicModuleRepository {
     fun getAllByShowStatus(isShow: Boolean): List<LogicModule>
     fun getAll(): List<LogicModule>
+    fun get(name: String): LogicModule
     fun update(id: String, logicModule: LogicModule)
     fun updateAll(logicModules: List<LogicModule>)
     fun create(logicModule: LogicModule)

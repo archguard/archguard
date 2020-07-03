@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
+import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
@@ -35,10 +36,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map {
-            LogicModule(it.id, it.name, it.members.split(',').sorted()
-                    .map { m -> ModuleMember.createModuleMember(m) }, it.status)
-        }
+        return modules.map { it.toLogicModule() }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
@@ -50,6 +48,15 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     "where id = '${logicModule.id}'")
                     .execute()
         }
+    }
+
+    override fun get(name: String): LogicModule {
+        return jdbi.withHandle<LogicModuleDTO, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
+            it.createQuery("select id, name, members, status from logic_module where name = '$name")
+                    .mapTo(LogicModuleDTO::class.java)
+                    .one()
+        }.toLogicModule()
     }
 
     override fun create(logicModule: LogicModule) {
@@ -87,8 +94,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 
     override fun getDependence(caller: String, callee: String): List<Dependency<JMethod>> {
-        val callerTemplate = defineTableTemplate(getMembers(caller))
-        val calleeTemplate = defineTableTemplate(getMembers(callee))
+        val callerTemplate = defineTableTemplate(this.get(caller).members)
+        val calleeTemplate = defineTableTemplate(this.get(callee).members)
 
         val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
 
@@ -101,7 +108,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 
     override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
-        val tableTemplate = defineTableTemplateNew(members)
+        val tableTemplate = defineTableTemplate(members)
 
         val sql = "select a.module as moduleCaller, a.clzname as classCaller, " +
                 "b.module as moduleCallee, b.clzname as classCallee " +
@@ -117,17 +124,6 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    fun getMembers(name: String): List<String> {
-        val sql = "select members from logic_module where name = '$name'"
-        val members = jdbi.withHandle<String, Nothing> {
-            it.createQuery(sql)
-                    .mapTo(String::class.java)
-                    .first()
-        }
-
-        return members.split(',')
-    }
-
     override fun getParentClassId(id: String): List<String> {
         val sql = "select b from _ClassParent where a = '$id'"
         return jdbi.withHandle<List<String>, Nothing> {
@@ -137,26 +133,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    fun defineTableTemplate(members: List<String>): String {
-        var tableTemplate = "select * from JMethod where ("
-        val filterConditions = ArrayList<String>()
-        members.forEach { s ->
-            val member = s.split('.')
-            if (member.size == 1) {
-                filterConditions.add("module = '${member[0]}'")
-            }
-            if (member.size > 1) {
-                filterConditions.add("(module = '${member[0]}' and clzname like '${member.subList(1, member.size).joinToString(".") + "."}%')")
-                filterConditions.add("(module = '${member[0]}' and clzname='${member.subList(1, member.size).joinToString(".")}')")
-            }
-        }
-        tableTemplate += filterConditions.joinToString(" or ")
-        tableTemplate += ")"
-        println(tableTemplate)
-        return tableTemplate
-    }
-
-    private fun defineTableTemplateNew(members: List<ModuleMember>): String {
+    private fun defineTableTemplate(members: List<ModuleMember>): String {
         var tableTemplate = "select * from JMethod where ("
         val filterConditions = ArrayList<String>()
         members.forEach { s ->
@@ -175,11 +152,5 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         return tableTemplate
     }
 
-}
-
-class JClassDependencyDto(val moduleCaller: String, val classCaller: String, val moduleCallee: String, val classCallee: String) {
-    fun toJClassDependency(): Dependency<JClass> {
-        return Dependency(JClass(classCaller, moduleCaller), JClass(classCallee, moduleCallee))
-    }
 }
 

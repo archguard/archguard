@@ -29,7 +29,7 @@ class LogicModuleControllerTest {
     }
 
     private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {
-        return LogicModule(id, name, members.map { ModuleMember.createModuleMember(it) })
+        return LogicModule(id, name, members.map { ModuleMember.create(it) })
     }
 
     @Test

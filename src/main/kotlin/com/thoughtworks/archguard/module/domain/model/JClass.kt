@@ -11,7 +11,7 @@ class JClass(val name: String, val module: String) : ModuleMember {
     }
 
     companion object {
-        fun createJClassFromFullName(fullName: String): JClass {
+        fun create(fullName: String): JClass {
             val split = fullName.split(".")
             return JClass(split.subList(1, split.size).joinToString(".").trim(), split[0].trim())
         }

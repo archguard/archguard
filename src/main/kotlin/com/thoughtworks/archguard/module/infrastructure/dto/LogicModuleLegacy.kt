@@ -7,7 +7,7 @@ import com.thoughtworks.archguard.module.domain.model.ModuleMember
 @Deprecated(message = "we are going to replace with LogicModule")
 class LogicModuleLegacy(var id: String?, val name: String, val members: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
     fun toLogicModule(): LogicModule {
-        return LogicModule(id, name, members.map { ModuleMember.createModuleMember(it) }, status)
+        return LogicModule(id, name, members.map { ModuleMember.create(it) }, status)
     }
 
     companion object {
@@ -18,4 +18,9 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
 }
 
 // For Database
-data class LogicModuleDTO(val id: String, val name: String, val members: String, val status: LogicModuleStatus)
+class LogicModuleDTO(val id: String, val name: String, val members: String, val status: LogicModuleStatus) {
+    fun toLogicModule(): LogicModule {
+        return LogicModule(id, name, members.split(',').sorted()
+                .map { m -> ModuleMember.create(m) }, status)
+    }
+}
