@@ -7,7 +7,7 @@ interface LogicModuleRepository {
     fun updateAll(logicModules: List<LogicModule>)
     fun create(logicModule: LogicModule)
     fun delete(id: String)
-    fun getDependence(caller: String, callee: String): List<ModuleDependency>
+    fun getDependence(caller: String, callee: String): List<Dependency<JMethod>>
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
 

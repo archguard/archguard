@@ -8,7 +8,7 @@ class DependencyServiceImpl : DependencyService {
     @Autowired
     lateinit var logicModuleRepository: LogicModuleRepository
 
-    override fun getLogicModulesDependencies(caller: String, callee: String): List<ModuleDependency> {
+    override fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethod>> {
         return logicModuleRepository.getDependence(caller, callee)
     }
 }

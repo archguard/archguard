@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.infrastructure.ModuleDependencyDto
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -25,9 +26,9 @@ internal class DependencyServiceImplTest {
         // given
         val caller = "module1"
         val callee = "module2"
-        val dependency1 = ModuleDependency("module1", "any", "any", "module2", "any", "any")
-        val dependency2 = ModuleDependency("module2", "any", "any", "module3", "any", "any")
-        val dependencies = listOf(dependency1, dependency2)
+        val dependency1 = ModuleDependencyDto("module1", "any", "any", "module2", "any", "any")
+        val dependency2 = ModuleDependencyDto("module2", "any", "any", "module3", "any", "any")
+        val dependencies = listOf(dependency1.toMethodDependency(), dependency2.toMethodDependency())
         every { logicModuleRepository.getDependence(caller, callee) } returns dependencies
 
         // when

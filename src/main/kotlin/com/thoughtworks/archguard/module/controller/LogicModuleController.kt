@@ -5,9 +5,9 @@ import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
-import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleGraph
 import com.thoughtworks.archguard.module.domain.ReportService
+import com.thoughtworks.archguard.module.infrastructure.ModuleDependencyDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -87,8 +87,8 @@ class LogicModuleController {
     }
 
     @GetMapping("/dependencies")
-    fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<ModuleDependency> {
-        return dependencyService.getLogicModulesDependencies(caller, callee)
+    fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<ModuleDependencyDto> {
+        return dependencyService.getLogicModulesDependencies(caller, callee).map { ModuleDependencyDto.fromJMethodDependency(it) }
     }
 
     @GetMapping("/graph")

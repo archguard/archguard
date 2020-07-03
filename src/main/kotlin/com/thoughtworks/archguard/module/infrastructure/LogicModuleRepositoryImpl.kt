@@ -2,10 +2,10 @@ package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.Dependency
 import com.thoughtworks.archguard.module.domain.JClass
+import com.thoughtworks.archguard.module.domain.JMethod
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
 import org.jdbi.v3.core.Jdbi
@@ -84,19 +84,18 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun getDependence(caller: String, callee: String): List<ModuleDependency> {
+    override fun getDependence(caller: String, callee: String): List<Dependency<JMethod>> {
         val callerTemplate = defineTableTemplate(getMembers(caller))
         val calleeTemplate = defineTableTemplate(getMembers(callee))
 
         val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
 
-        return jdbi.withHandle<List<ModuleDependency>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ModuleDependency::class.java))
+        return jdbi.withHandle<List<ModuleDependencyDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ModuleDependencyDto::class.java))
             it.createQuery(sql)
-                    .mapTo(ModuleDependency::class.java)
+                    .mapTo(ModuleDependencyDto::class.java)
                     .list()
-        }
-
+        }.map { it.toMethodDependency() }
     }
 
     override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
