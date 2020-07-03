@@ -48,10 +48,10 @@ internal class ReportServiceImplTest {
         val element = LogicModule(null, "module1", listOf(createModuleMember("com.test1"), createModuleMember("com.test2")))
         val element2 = LogicModule(null, "module2", listOf(createModuleMember("com.test3"), createModuleMember("com.test4")))
         val element3 = LogicModule(null, "module3", listOf(createModuleMember("com.test5"), createModuleMember("com.test6")))
-        val dependency1 = DependencyLegacy("com.test1.clazz", "com.test3.clazz")
-        val dependency2 = DependencyLegacy("com.test4.clazz", "com.test2.clazz")
+        val dependency1 = Dependency(createJClassFromFullName("com.test1.clazz"), createJClassFromFullName("com.test3.clazz"))
+        val dependency2 = Dependency(createJClassFromFullName("com.test4.clazz"), createJClassFromFullName("com.test2.clazz"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
-        every { logicModuleRepository.getAllClassDependencyLegacy(any()) } returns listOf(dependency1, dependency2)
+        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
@@ -67,7 +67,7 @@ internal class ReportServiceImplTest {
         val element = LogicModule(null, "module1", listOf(createModuleMember("com.test1"), createModuleMember("com.test2")))
         val element2 = LogicModule(null, "module2", listOf(createModuleMember("com.test3"), createModuleMember("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
-        every { logicModuleRepository.getAllClassDependencyLegacy(any()) } returns listOf()
+        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then

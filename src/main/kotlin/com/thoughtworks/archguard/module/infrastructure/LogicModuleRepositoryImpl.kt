@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.Dependency
-import com.thoughtworks.archguard.module.domain.DependencyLegacy
 import com.thoughtworks.archguard.module.domain.JClass
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
@@ -99,22 +98,6 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .list()
         }
 
-    }
-
-    override fun getAllClassDependencyLegacy(members: List<String>): List<DependencyLegacy> {
-        val tableTemplate = defineTableTemplate(members)
-
-        val sql = "select concat(concat(a.module, '.'), a.clzname) caller, " +
-                "concat(concat(b.module, '.'), b.clzname) callee " +
-                "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
-                "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<DependencyLegacy>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(DependencyLegacy::class.java))
-            it.createQuery(sql)
-                    .mapTo(DependencyLegacy::class.java)
-                    .list()
-                    .filter { it -> it.caller != it.callee }
-        }
     }
 
     override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {

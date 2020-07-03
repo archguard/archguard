@@ -11,8 +11,6 @@ interface LogicModuleRepository {
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
 
-    @Deprecated("Replace by getAllClassDependency")
-    fun getAllClassDependencyLegacy(members: List<String>): List<DependencyLegacy>
     fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>>
     fun getParentClassId(id: String): List<String>
 }

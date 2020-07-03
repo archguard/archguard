@@ -18,9 +18,9 @@ class ReportServiceImpl : ReportService {
     }
 
     override fun getLogicModuleCouplingReportDetail(): List<ModuleCouplingReport> {
-        val modules = logicModuleRepository.getAllByShowStatus(true).map { fromLogicModule(it) }
+        val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten()
-        val classDependency = logicModuleRepository.getAllClassDependencyLegacy(members)
+        val classDependency = logicModuleRepository.getAllClassDependency(members)
 
         val classCouplingReports = getClassCouplingReports(classDependency, modules)
         log.info("Get class Coupling reports done.")
@@ -47,15 +47,15 @@ class ReportServiceImpl : ReportService {
 
 
     fun groupPackageCouplingReportsByModuleName(packageCouplingReports: List<PackageCouplingReport>,
-                                                modules: List<LogicModuleLegacy>): List<ModuleCouplingReport> {
+                                                modules: List<LogicModule>): List<ModuleCouplingReport> {
         val packageCouplingReportMap: MutableMap<String, MutableList<PackageCouplingReport>> = mutableMapOf()
         for (packageCouplingReport in packageCouplingReports) {
-            val reportRelatedModules = getModuleLegacy(modules, packageCouplingReport.packageName)
+            val reportRelatedModules = getModule(modules, SubModule(packageCouplingReport.packageName))
             for (module in reportRelatedModules) {
-                if (packageCouplingReportMap.containsKey(module)) {
-                    packageCouplingReportMap[module]?.add(packageCouplingReport)
+                if (packageCouplingReportMap.containsKey(module.name)) {
+                    packageCouplingReportMap[module.name]?.add(packageCouplingReport)
                 } else {
-                    packageCouplingReportMap[module] = mutableListOf(packageCouplingReport)
+                    packageCouplingReportMap[module.name] = mutableListOf(packageCouplingReport)
                 }
             }
         }
@@ -63,24 +63,24 @@ class ReportServiceImpl : ReportService {
         return packageCouplingReportMap.map { ModuleCouplingReport(it.key, it.value) }
     }
 
-    private fun getClassCouplingReports(dependency: List<DependencyLegacy>,
-                                        modules: List<LogicModuleLegacy>): List<ClassCouplingReport> =
+    private fun getClassCouplingReports(dependency: List<Dependency<JClass>>,
+                                        modules: List<LogicModule>): List<ClassCouplingReport> =
             dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
                     .map { getClassCouplingReport(it, dependency, modules) }
 
-    fun getClassCouplingReport(clazz: String,
-                               dependency: List<DependencyLegacy>,
-                               modules: List<LogicModuleLegacy>): ClassCouplingReport {
+    fun getClassCouplingReport(clazz: JClass,
+                               dependency: List<Dependency<JClass>>,
+                               modules: List<LogicModule>): ClassCouplingReport {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
         val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
-        return ClassCouplingReport(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
+        return ClassCouplingReport(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
-    private fun isInSameModule(modules: List<LogicModuleLegacy>, it: DependencyLegacy): Boolean {
-        val callerModules = getModuleLegacy(modules, it.caller)
-        val calleeModules = getModuleLegacy(modules, it.callee)
+    private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClass>): Boolean {
+        val callerModules = getModule(modules, it.caller)
+        val calleeModules = getModule(modules, it.callee)
         return callerModules.intersect(calleeModules).isNotEmpty()
     }
 }
