@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.controller
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleMember
-import com.thoughtworks.archguard.module.infrastructure.dto.fromLogicModule
+import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -54,7 +54,7 @@ class LogicModuleControllerTest {
         every { service.updateLogicModule(any(), any()) } just runs
 
         // when
-        controller.updateLogicModule(id, fromLogicModule(logicModule))
+        controller.updateLogicModule(id, LogicModuleLegacy.fromLogicModule(logicModule))
 
         // then
         verify { service.updateLogicModule(any(), any()) }

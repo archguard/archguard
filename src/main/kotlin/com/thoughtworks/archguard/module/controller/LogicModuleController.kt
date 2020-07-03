@@ -9,7 +9,6 @@ import com.thoughtworks.archguard.module.domain.ReportService
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
-import com.thoughtworks.archguard.module.infrastructure.dto.fromLogicModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -45,7 +44,7 @@ class LogicModuleController {
 
     @GetMapping
     fun getLogicModules(): List<LogicModuleLegacy> {
-        return logicModuleService.getLogicModules().map { fromLogicModule(it) }
+        return logicModuleService.getLogicModules().map { LogicModuleLegacy.fromLogicModule(it) }
     }
 
     @PostMapping("/hide-all")

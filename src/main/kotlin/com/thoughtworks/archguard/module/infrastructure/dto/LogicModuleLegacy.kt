@@ -9,10 +9,12 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
     fun toLogicModule(): LogicModule {
         return LogicModule(id, name, members.map { ModuleMember.createModuleMember(it) }, status)
     }
-}
 
-fun fromLogicModule(logicModule: LogicModule): LogicModuleLegacy {
-    return LogicModuleLegacy(logicModule.id, logicModule.name, logicModule.members.map { it.getFullName() }, logicModule.status)
+    companion object {
+        fun fromLogicModule(logicModule: LogicModule): LogicModuleLegacy {
+            return LogicModuleLegacy(logicModule.id, logicModule.name, logicModule.members.map { it.getFullName() }, logicModule.status)
+        }
+    }
 }
 
 // For Database
