@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
 interface LogicModuleRepository {
-    @Deprecated("Replace by getAllByShowStatus")
-    fun getAllByShowStatusLegacy(isShow: Boolean): List<LogicModuleLegacy>
     fun getAllByShowStatus(isShow: Boolean): List<LogicModule>
     fun getAll(): List<LogicModule>
     fun update(id: String, logicModule: LogicModule)

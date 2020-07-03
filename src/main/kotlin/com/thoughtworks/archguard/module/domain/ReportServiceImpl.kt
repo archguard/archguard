@@ -18,7 +18,7 @@ class ReportServiceImpl : ReportService {
     }
 
     override fun getLogicModuleCouplingReportDetail(): List<ModuleCouplingReport> {
-        val modules = logicModuleRepository.getAllByShowStatusLegacy(true)
+        val modules = logicModuleRepository.getAllByShowStatus(true).map { fromLogicModule(it) }
         val members = modules.map { it.members }.flatten()
         val classDependency = logicModuleRepository.getAllClassDependencyLegacy(members)
 

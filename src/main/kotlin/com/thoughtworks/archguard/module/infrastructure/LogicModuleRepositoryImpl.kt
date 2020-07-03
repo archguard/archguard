@@ -11,7 +11,6 @@ import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
 import com.thoughtworks.archguard.module.domain.createModuleMember
-import com.thoughtworks.archguard.module.domain.fromLogicModule
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,13 +21,6 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi
-
-    override fun getAllByShowStatusLegacy(isShow: Boolean): List<LogicModuleLegacy> {
-        if (isShow) {
-            return this.getAllByShowStatus(isShow).map { fromLogicModule(it) }.filter { it.status == LogicModuleStatus.NORMAL }
-        }
-        return this.getAllByShowStatus(isShow).map { fromLogicModule(it) }.filter { it.status == LogicModuleStatus.HIDE }
-    }
 
     override fun getAllByShowStatus(isShow: Boolean): List<LogicModule> {
         if (isShow) {
