@@ -8,6 +8,8 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
+import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
+import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,10 +92,10 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
         val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
 
-        return jdbi.withHandle<List<ModuleDependencyDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ModuleDependencyDto::class.java))
+        return jdbi.withHandle<List<MethodDependencyDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(MethodDependencyDto::class.java))
             it.createQuery(sql)
-                    .mapTo(ModuleDependencyDto::class.java)
+                    .mapTo(MethodDependencyDto::class.java)
                     .list()
         }.map { it.toMethodDependency() }
     }

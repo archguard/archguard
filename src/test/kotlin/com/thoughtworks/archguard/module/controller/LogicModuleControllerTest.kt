@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.module.controller
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleMember
+import com.thoughtworks.archguard.module.infrastructure.dto.fromLogicModule
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

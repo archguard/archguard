@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.controller
+package com.thoughtworks.archguard.module.infrastructure.dto
 
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
@@ -14,3 +14,6 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
 fun fromLogicModule(logicModule: LogicModule): LogicModuleLegacy {
     return LogicModuleLegacy(logicModule.id, logicModule.name, logicModule.members.map { it.getFullName() }, logicModule.status)
 }
+
+// For Database
+data class LogicModuleDTO(val id: String, val name: String, val members: String, val status: LogicModuleStatus)
