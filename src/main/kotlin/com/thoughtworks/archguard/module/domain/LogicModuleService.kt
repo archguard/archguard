@@ -99,10 +99,24 @@ fun getModule(modules: List<LogicModule>, name: String): List<String> {
     return startsWithMatch(name, modules)
 }
 
+fun getNewModule(modules: List<NewLogicModule>, jClass: ModuleMember): List<NewLogicModule> {
+    val callerByFullMatch = fullMatchNew(jClass, modules)
+    if (callerByFullMatch.isNotEmpty()) {
+        return callerByFullMatch
+    }
+    return startsWithMatchNew(jClass, modules)
+}
+
 private fun fullMatch(name: String, modules: List<LogicModule>): List<String> {
     return modules.filter { logicModule ->
         logicModule.members.any { javaClass -> name == javaClass }
     }.map { it.name }
+}
+
+private fun fullMatchNew(jClass: ModuleMember, modules: List<NewLogicModule>): List<NewLogicModule> {
+    return modules.filter { logicModule ->
+        logicModule.members.any { moduleMember -> jClass.getFullName() == moduleMember.getFullName() }
+    }
 }
 
 private fun startsWithMatch(name: String, modules: List<LogicModule>): List<String> {
@@ -123,6 +137,28 @@ private fun startsWithMatch(name: String, modules: List<LogicModule>): List<Stri
     }
     if (matchModule.isEmpty()) {
         throw RuntimeException("$name No LogicModule matched!")
+    }
+    return matchModule.toList()
+}
+
+fun startsWithMatchNew(jClass: ModuleMember, modules: List<NewLogicModule>): List<NewLogicModule> {
+    var maxMatchSize = 0
+    val matchModule: MutableList<NewLogicModule> = mutableListOf()
+    for (logicModule in modules) {
+        val maxMatchSizeInLogicModule = logicModule.members
+                .filter { member -> jClass.getFullName().startsWith("${member.getFullName()}.") }
+                .maxBy { it.getFullName().length }
+                ?: continue
+        if (maxMatchSizeInLogicModule.getFullName().length > maxMatchSize) {
+            maxMatchSize = maxMatchSizeInLogicModule.getFullName().length
+            matchModule.clear()
+            matchModule.add(logicModule)
+        } else if (maxMatchSizeInLogicModule.getFullName().length == maxMatchSize) {
+            matchModule.add(logicModule)
+        }
+    }
+    if (matchModule.isEmpty()) {
+        throw RuntimeException("$jClass No LogicModule matched!")
     }
     return matchModule.toList()
 }

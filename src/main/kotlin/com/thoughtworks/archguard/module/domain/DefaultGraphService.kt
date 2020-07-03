@@ -8,29 +8,29 @@ abstract class DefaultGraphService(var logicModuleRepository: LogicModuleReposit
     override fun getLogicModuleGraph(): ModuleGraph {
         val moduleDependencies = getModuleDependency()
 
-        val moduleStore = ModuleStore()
+        val moduleStore: ModuleStore = ModuleStore()
         moduleDependencies
                 .groupBy { it.caller }
                 .forEach {
                     it.value.groupBy { i -> i.callee }
-                            .forEach { i -> moduleStore.addEdge(it.key, i.key, i.value.size) }
+                            .forEach { i -> moduleStore.addEdge(it.key.name, i.key.name, i.value.size) }
                 }
 
         return moduleStore.getModuleGraph()
     }
 
-    private fun getModuleDependency(): List<Dependency> {
-        val modules = logicModuleRepository.getAllByShowStatus(true)
+    private fun getModuleDependency(): List<NewDependency<NewLogicModule>> {
+        val modules = logicModuleRepository.getAllByShowStatusNew(true)
         val members = modules.map { it.members }.flatten()
-        val classDependencies = logicModuleRepository.getAllClassDependency(members)
+        val classDependencies = logicModuleRepository.getAllClassDependencyNew(members)
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }
 
-    fun mapClassDependenciesToModuleDependencies(classDependency: List<Dependency>, logicModules: List<LogicModule>): List<Dependency> {
+    fun mapClassDependenciesToModuleDependencies(classDependency: List<NewDependency<JClass>>, logicModules: List<NewLogicModule>): List<NewDependency<NewLogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         return classDependency.map { mapClassDependencyToModuleDependency(logicModules, it) }.flatten()
                 .filter { it.caller != it.callee }
     }
 
-    abstract fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, it: Dependency): List<Dependency>
+    abstract fun mapClassDependencyToModuleDependency(logicModules: List<NewLogicModule>, jClassDependency: NewDependency<JClass>): List<NewDependency<NewLogicModule>>
 }

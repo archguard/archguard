@@ -1,11 +1,16 @@
 package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.Dependency
+import com.thoughtworks.archguard.module.domain.JClass
 import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
+import com.thoughtworks.archguard.module.domain.ModuleMember
+import com.thoughtworks.archguard.module.domain.ModuleMemberType
+import com.thoughtworks.archguard.module.domain.NewDependency
 import com.thoughtworks.archguard.module.domain.NewLogicModule
+import com.thoughtworks.archguard.module.domain.createModuleMember
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +29,13 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         return this.getAll().filter { it.status == LogicModuleStatus.HIDE }
     }
 
+    override fun getAllByShowStatusNew(isShow: Boolean): List<NewLogicModule> {
+        if (isShow) {
+            return this.getAllNew().filter { it.status == LogicModuleStatus.NORMAL }
+        }
+        return this.getAllNew().filter { it.status == LogicModuleStatus.HIDE }
+    }
+
     override fun getAll(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
@@ -32,6 +44,19 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .list()
         }
         return modules.map { LogicModule(it.id, it.name, it.members.split(',').sorted(), it.status) }
+    }
+
+    override fun getAllNew(): List<NewLogicModule> {
+        val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
+            it.createQuery("select id, name, members, status from logic_module")
+                    .mapTo(LogicModuleDTO::class.java)
+                    .list()
+        }
+        return modules.map {
+            NewLogicModule(it.id, it.name, it.members.split(',').sorted()
+                    .map { m -> createModuleMember(m) }, it.status)
+        }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
@@ -110,6 +135,23 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
+    override fun getAllClassDependencyNew(members: List<ModuleMember>): List<NewDependency<JClass>> {
+        val tableTemplate = defineTableTemplateNew(members)
+
+        val sql = "select a.module, a.clzname caller, " +
+                "b.module, b.clzname callee " +
+                "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
+                "where a.id = mc.a and b.id = mc.b"
+        return jdbi.withHandle<List<NewDependency<JClass>>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClassDependencyDto::class.java)
+                    .list()
+                    .map { jClassDependencyDto -> jClassDependencyDto.toJClassDependency() }
+                    .filter { dependency -> dependency.caller != dependency.callee }
+        }
+    }
+
     fun getMembers(name: String): List<String> {
         val sql = "select members from logic_module where name = '$name'"
         val members = jdbi.withHandle<String, Nothing> {
@@ -149,5 +191,30 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         return tableTemplate
     }
 
+    private fun defineTableTemplateNew(members: List<ModuleMember>): String {
+        var tableTemplate = "select * from JMethod where ("
+        val filterConditions = ArrayList<String>()
+        members.forEach { s ->
+            if (s.getType() == ModuleMemberType.SUBMODULE) {
+                filterConditions.add("module = '${s.getFullName()}'")
+            }
+            if (s.getType() == ModuleMemberType.CLASS) {
+                val jclass = s as JClass
+                filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
+                filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
+            }
+        }
+        tableTemplate += filterConditions.joinToString(" or ")
+        tableTemplate += ")"
+        println(tableTemplate)
+        return tableTemplate
+    }
+
+}
+
+class JClassDependencyDto(val moduleCaller: String, val classCaller: String, val moduleCallee: String, val classCallee: String) {
+    fun toJClassDependency(): NewDependency<JClass> {
+        return NewDependency(JClass(classCaller, moduleCaller), JClass(classCallee, moduleCallee))
+    }
 }
 

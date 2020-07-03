@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service
 class DefaultGraphServiceImpl(logicModuleRepository: LogicModuleRepository) : DefaultGraphService(logicModuleRepository) {
 
     private val log = LoggerFactory.getLogger(DefaultGraphServiceImpl::class.java)
-
-    override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, classDependency: Dependency): List<Dependency> {
-        val callerModules = getModule(logicModules, classDependency.caller)
+    override fun mapClassDependencyToModuleDependency(logicModules: List<NewLogicModule>, jClassDependency: NewDependency<JClass>): List<NewDependency<NewLogicModule>> {
+        val callerModules = getNewModule(logicModules, jClassDependency.caller)
         if (callerModules.size > 1) {
             log.error("Caller Class belong to more than one Module!", callerModules)
         }
         val callerModule = callerModules[0]
-        val calleeModules = getModule(logicModules, classDependency.callee)
+        val calleeModules = getNewModule(logicModules, jClassDependency.callee)
 
-        return calleeModules.map { Dependency(callerModule, it) }
+        return calleeModules.map { NewDependency(callerModule, it) }
     }
 }

@@ -73,41 +73,45 @@ class LogicModuleServiceTest {
 
     @Test
     fun `should get class module by single full match`() {
-        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
-                LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")))
-        val classModule = getModule(logicModules, "a.b.c")
-        assertThat(classModule).isEqualTo(listOf("lg2"))
+        val lg1 = NewLogicModule("id1", "lg1", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c.d")))
+        val lg2 = NewLogicModule("id2", "lg2", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c")))
+        val logicModules: List<NewLogicModule> = listOf(lg1, lg2)
+        val classModule = getNewModule(logicModules, createModuleMember("a.b.c"))
+        assertThat(classModule).isEqualTo(listOf(lg2))
     }
 
     @Test
     fun `should get class module by multi full match`() {
-        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
-                LogicModule("id2", "lg2", listOf("a", "a.b", "a.b.c")),
-                LogicModule("id3", "lg3", listOf("a", "a.b", "a.b.c")),
-                LogicModule("id4", "lg4", listOf("a", "a.b.c", "a.b.c.d")))
-        val classModule = getModule(logicModules, "a.b.c")
-        assertThat(classModule).isEqualTo(listOf("lg2", "lg3", "lg4"))
+        val lg1 = NewLogicModule("id1", "lg1", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c.d")))
+        val lg2 = NewLogicModule("id2", "lg2", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c")))
+        val lg3 = NewLogicModule("id3", "lg3", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c")))
+        val lg4 = NewLogicModule("id4", "lg4", listOf(createModuleMember("a"), createModuleMember("a.b.c"), createModuleMember("a.b.c.d")))
+        val logicModules: List<NewLogicModule> = listOf(lg1, lg2, lg3, lg4)
+        val classModule = getNewModule(logicModules, createModuleMember("a.b.c"))
+        assertThat(classModule).isEqualTo(listOf(lg2, lg3, lg4))
     }
 
     @Test
     fun `should get class module by single start with match`() {
-        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
-                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
-                LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
-                LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")))
-        val classModule = getModule(logicModules, "abc.d.e.d.f.g")
-        assertThat(classModule).isEqualTo(listOf("lg3"))
+        val lg1 = NewLogicModule("id1", "lg1", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c.d")))
+        val lg2 = NewLogicModule("id2", "lg2", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc")))
+        val lg3 = NewLogicModule("id3", "lg3", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d.f"), createModuleMember("abc.d.e.d")))
+        val lg4 = NewLogicModule("id4", "lg4", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d"), createModuleMember("abc.d.e")))
+        val logicModules: List<NewLogicModule> = listOf(lg1, lg2, lg3, lg4)
+        val classModule = getNewModule(logicModules, createModuleMember("abc.d.e.d.f.g"))
+        assertThat(classModule).isEqualTo(listOf(lg3))
     }
 
     @Test
     fun `should get class module by multi start with match`() {
-        val logicModules: List<LogicModule> = listOf(LogicModule("id1", "lg1", listOf("a", "a.b", "a.b.c.d")),
-                LogicModule("id2", "lg2", listOf("a", "a.b", "abc")),
-                LogicModule("id3", "lg3", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e.d")),
-                LogicModule("id4", "lg4", listOf("a", "a.b", "abc.d.e.d", "abc.d.e")),
-                LogicModule("id5", "lg5", listOf("a", "a.b", "abc.d.e.d.f", "abc.d.e")),
-                LogicModule("id6", "lg6", listOf("a", "a.b", "abc.d.e.d.f.g.h", "abc.d.e")))
-        val classModule = getModule(logicModules, "abc.d.e.d.f.g")
-        assertThat(classModule).isEqualTo(listOf("lg3", "lg5"))
+        val lg1 = NewLogicModule("id1", "lg1", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("a.b.c.d")))
+        val lg2 = NewLogicModule("id2", "lg2", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc")))
+        val lg3 = NewLogicModule("id3", "lg3", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d.f"), createModuleMember("abc.d.e.d")))
+        val lg4 = NewLogicModule("id4", "lg4", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d"), createModuleMember("abc.d.e")))
+        val lg5 = NewLogicModule("id5", "lg5", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d.f"), createModuleMember("abc.d.e")))
+        val lg6 = NewLogicModule("id6", "lg6", listOf(createModuleMember("a"), createModuleMember("a.b"), createModuleMember("abc.d.e.d.f.g.h"), createModuleMember("abc.d.e")))
+        val logicModules: List<NewLogicModule> = listOf(lg1, lg2, lg3, lg4, lg5, lg6)
+        val classModule = getNewModule(logicModules, createModuleMember("abc.d.e.d.f.g"))
+        assertThat(classModule).isEqualTo(listOf(lg3, lg5))
     }
 }

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.infrastructure.dubbo
 import com.thoughtworks.archguard.module.domain.dubbo.DubboConfigRepository
 import com.thoughtworks.archguard.module.domain.dubbo.ReferenceConfig
 import com.thoughtworks.archguard.module.domain.dubbo.ServiceConfig
-import com.thoughtworks.archguard.module.domain.dubbo.SubModule
+import com.thoughtworks.archguard.module.domain.dubbo.SubModuleDubbo
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,17 +15,17 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
     lateinit var jdbi: Jdbi
 
     // FIXME: 可能会存在重复name的submodule
-    override fun getModuleByName(name: String): SubModule {
+    override fun getModuleByName(name: String): SubModuleDubbo {
         val sql = "select id, name, path from dubbo_module where name='$name'"
-        return jdbi.withHandle<SubModule, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(SubModule::class.java))
+        return jdbi.withHandle<SubModuleDubbo, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(SubModuleDubbo::class.java))
             it.createQuery(sql)
-                    .mapTo(SubModule::class.java)
+                    .mapTo(SubModuleDubbo::class.java)
                     .one()
         }
     }
 
-    override fun getReferenceConfigBy(interfaceName: String, subModule: SubModule): List<ReferenceConfig> {
+    override fun getReferenceConfigBy(interfaceName: String, subModule: SubModuleDubbo): List<ReferenceConfig> {
         val sql = "select id, referenceId, interface as interfaceName, version, `group`, module_id as moduleId " +
                 "from dubbo_reference_config where interface='$interfaceName' and module_id='${subModule.id}'"
         val referenceConfigDtos = jdbi.withHandle<List<ReferenceConfigDto>, Nothing> {
@@ -95,7 +95,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
 
 class ReferenceConfigDto(val id: String, private val referenceId: String, private val interfaceName: String,
                          private val version: String, private val group: String, private val moduleId: String) {
-    fun toReferenceConfigWithSubModule(subModule: SubModule): ReferenceConfig {
+    fun toReferenceConfigWithSubModule(subModule: SubModuleDubbo): ReferenceConfig {
         if (subModule.id == moduleId) {
             return ReferenceConfig(id, referenceId, interfaceName, convertToNullIfStringValueEqualsNull(version),
                     convertToNullIfStringValueEqualsNull(group), subModule)
@@ -108,7 +108,7 @@ class ServiceConfigDto(val id: String, private val interfaceName: String, privat
                        private val group: String, private val moduleId: String, val name: String, private val path: String) {
     fun toServiceConfig(): ServiceConfig {
         return ServiceConfig(id, interfaceName, ref, convertToNullIfStringValueEqualsNull(version),
-                convertToNullIfStringValueEqualsNull(group), SubModule(moduleId, name, path))
+                convertToNullIfStringValueEqualsNull(group), SubModuleDubbo(moduleId, name, path))
     }
 }
 

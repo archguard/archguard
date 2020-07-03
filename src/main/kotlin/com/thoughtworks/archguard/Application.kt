@@ -11,14 +11,14 @@ import javax.sql.DataSource
 @SpringBootApplication
 class Application {
     @Bean
-    open fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
+    fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
         val factoryBean = JdbiFactoryBean(ds)
         factoryBean.setAutoInstallPlugins(true)
         return factoryBean
     }
 
     @Bean
-    open fun jdbi(@Autowired factoryBean: JdbiFactoryBean): Jdbi {
+    fun jdbi(@Autowired factoryBean: JdbiFactoryBean): Jdbi {
         factoryBean.setAutoInstallPlugins(true)
         return factoryBean.`object`
     }

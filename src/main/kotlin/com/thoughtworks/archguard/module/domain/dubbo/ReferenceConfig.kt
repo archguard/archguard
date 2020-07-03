@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
 class ReferenceConfig(val id: String, val beanId: String, val interfaceName: String, val version: String?,
-                      var group: String?, val subModule: SubModule) {
+                      var group: String?, val subModule: SubModuleDubbo) {
     private val versionType: MatchType = matchType(version)
     private val groupType: MatchType = matchType(group)
 
