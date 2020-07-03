@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.module.domain.Dependency
 import com.thoughtworks.archguard.module.domain.DependencyLegacy
 import com.thoughtworks.archguard.module.domain.JClass
 import com.thoughtworks.archguard.module.domain.LogicModule
-import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
@@ -53,10 +52,10 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun create(logicModule: LogicModuleLegacy) {
+    override fun create(logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
-                    logicModule.id, logicModule.name, logicModule.members.joinToString(","), logicModule.status)
+                    logicModule.id, logicModule.name, logicModule.members.joinToString(",") { it.getFullName() }, logicModule.status)
         }
     }
 

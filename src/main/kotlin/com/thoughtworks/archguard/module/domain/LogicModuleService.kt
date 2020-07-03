@@ -52,7 +52,7 @@ class LogicModuleService {
     fun createLogicModule(logicModule: LogicModuleLegacy): String {
         val id = UUID.randomUUID().toString()
         logicModule.id = id
-        logicModuleRepository.create(logicModule)
+        logicModuleRepository.create(logicModule.toLogicModule())
         return id
     }
 
