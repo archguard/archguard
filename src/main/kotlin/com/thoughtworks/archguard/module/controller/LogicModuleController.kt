@@ -65,12 +65,12 @@ class LogicModuleController {
 
     @PutMapping("/{id}")
     fun updateLogicModule(@PathVariable id: String, @RequestBody logicModule: LogicModuleLegacy) {
-        logicModuleService.updateLogicModule(id, logicModule)
+        logicModuleService.updateLogicModule(id, logicModule.toLogicModule())
     }
 
     @PostMapping
     fun createLogicModule(@RequestBody logicModule: LogicModuleLegacy): String {
-        return logicModuleService.createLogicModule(logicModule)
+        return logicModuleService.createLogicModule(logicModule.toLogicModule())
     }
 
     @DeleteMapping("/{id}")

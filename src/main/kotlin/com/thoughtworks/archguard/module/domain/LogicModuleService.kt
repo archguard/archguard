@@ -18,7 +18,6 @@ class LogicModuleService {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    @Deprecated("replace by getLogicModules in the future")
     fun getLogicModulesLegacy(): List<LogicModuleLegacy> {
         return getLogicModules().map { fromLogicModule(it) }
     }
@@ -45,14 +44,14 @@ class LogicModuleService {
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun updateLogicModule(id: String, logicModule: LogicModuleLegacy) {
-        logicModuleRepository.update(id, logicModule.toLogicModule())
+    fun updateLogicModule(id: String, logicModule: LogicModule) {
+        logicModuleRepository.update(id, logicModule)
     }
 
-    fun createLogicModule(logicModule: LogicModuleLegacy): String {
+    fun createLogicModule(logicModule: LogicModule): String {
         val id = UUID.randomUUID().toString()
         logicModule.id = id
-        logicModuleRepository.create(logicModule.toLogicModule())
+        logicModuleRepository.create(logicModule)
         return id
     }
 
