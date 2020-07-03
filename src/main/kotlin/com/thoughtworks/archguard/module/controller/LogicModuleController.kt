@@ -42,7 +42,6 @@ class LogicModuleController {
     private lateinit var dependencyService: DependencyService
 
     @GetMapping
-    // FIXME
     fun getLogicModules(): List<LogicModuleLegacy> {
         return logicModuleService.getLogicModules().map { fromLogicModule(it) }
     }
