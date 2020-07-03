@@ -47,10 +47,10 @@ class ReportServiceImpl : ReportService {
 
 
     fun groupPackageCouplingReportsByModuleName(packageCouplingReports: List<PackageCouplingReport>,
-                                                modules: List<LogicModule>): List<ModuleCouplingReport> {
+                                                modules: List<LogicModuleLegacy>): List<ModuleCouplingReport> {
         val packageCouplingReportMap: MutableMap<String, MutableList<PackageCouplingReport>> = mutableMapOf()
         for (packageCouplingReport in packageCouplingReports) {
-            val reportRelatedModules = getModule(modules, packageCouplingReport.packageName)
+            val reportRelatedModules = getModuleLegacy(modules, packageCouplingReport.packageName)
             for (module in reportRelatedModules) {
                 if (packageCouplingReportMap.containsKey(module)) {
                     packageCouplingReportMap[module]?.add(packageCouplingReport)
@@ -63,14 +63,14 @@ class ReportServiceImpl : ReportService {
         return packageCouplingReportMap.map { ModuleCouplingReport(it.key, it.value) }
     }
 
-    private fun getClassCouplingReports(dependency: List<Dependency>,
-                                        modules: List<LogicModule>): List<ClassCouplingReport> =
+    private fun getClassCouplingReports(dependency: List<DependencyLegacy>,
+                                        modules: List<LogicModuleLegacy>): List<ClassCouplingReport> =
             dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
                     .map { getClassCouplingReport(it, dependency, modules) }
 
     fun getClassCouplingReport(clazz: String,
-                               dependency: List<Dependency>,
-                               modules: List<LogicModule>): ClassCouplingReport {
+                               dependency: List<DependencyLegacy>,
+                               modules: List<LogicModuleLegacy>): ClassCouplingReport {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
@@ -78,9 +78,9 @@ class ReportServiceImpl : ReportService {
         return ClassCouplingReport(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
-    private fun isInSameModule(modules: List<LogicModule>, it: Dependency): Boolean {
-        val callerModules = getModule(modules, it.caller)
-        val calleeModules = getModule(modules, it.callee)
+    private fun isInSameModule(modules: List<LogicModuleLegacy>, it: DependencyLegacy): Boolean {
+        val callerModules = getModuleLegacy(modules, it.caller)
+        val calleeModules = getModuleLegacy(modules, it.callee)
         return callerModules.intersect(calleeModules).isNotEmpty()
     }
 }

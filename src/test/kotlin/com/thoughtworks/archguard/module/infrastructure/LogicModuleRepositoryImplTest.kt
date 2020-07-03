@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.LogicModule
+import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import org.assertj.core.api.Assertions.assertThat
@@ -23,6 +23,6 @@ internal class LogicModuleRepositoryImplTest {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).isEqualTo(
-                LogicModule("id1", "dubbo-provider", listOf("dubbo-provider"), LogicModuleStatus.NORMAL))
+                LogicModuleLegacy("id1", "dubbo-provider", listOf("dubbo-provider"), LogicModuleStatus.NORMAL))
     }
 }

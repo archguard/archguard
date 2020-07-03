@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.module.domain.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
-import com.thoughtworks.archguard.module.domain.LogicModule
+import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
@@ -43,7 +43,7 @@ class LogicModuleController {
     private lateinit var dependencyService: DependencyService
 
     @GetMapping
-    fun getLogicModules(): List<LogicModule> {
+    fun getLogicModules(): List<LogicModuleLegacy> {
         return logicModuleService.getLogicModules()
     }
 
@@ -63,12 +63,12 @@ class LogicModuleController {
     }
 
     @PutMapping("/{id}")
-    fun updateLogicModule(@PathVariable id: String, @RequestBody logicModule: LogicModule) {
+    fun updateLogicModule(@PathVariable id: String, @RequestBody logicModule: LogicModuleLegacy) {
         logicModuleService.updateLogicModule(id, logicModule)
     }
 
     @PostMapping
-    fun createLogicModule(@RequestBody logicModule: LogicModule): String {
+    fun createLogicModule(@RequestBody logicModule: LogicModuleLegacy): String {
         return logicModuleService.createLogicModule(logicModule)
     }
 

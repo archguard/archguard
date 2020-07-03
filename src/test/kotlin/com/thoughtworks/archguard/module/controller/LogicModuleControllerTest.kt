@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.LogicModule
+import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -25,8 +25,8 @@ class LogicModuleControllerTest {
         init(this)
     }
 
-    private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {
-        return LogicModule(id, name, members)
+    private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModuleLegacy {
+        return LogicModuleLegacy(id, name, members)
     }
 
     @Test

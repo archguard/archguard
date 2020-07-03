@@ -18,7 +18,7 @@ class LogicModuleService {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    fun getLogicModules(): List<LogicModule> {
+    fun getLogicModules(): List<LogicModuleLegacy> {
         return logicModuleRepository.getAll()
     }
 
@@ -40,11 +40,11 @@ class LogicModuleService {
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun updateLogicModule(id: String, logicModule: LogicModule) {
+    fun updateLogicModule(id: String, logicModule: LogicModuleLegacy) {
         logicModuleRepository.update(id, logicModule)
     }
 
-    fun createLogicModule(logicModule: LogicModule): String {
+    fun createLogicModule(logicModule: LogicModuleLegacy): String {
         val id = UUID.randomUUID().toString()
         logicModule.id = id
         logicModuleRepository.create(logicModule)
@@ -58,7 +58,7 @@ class LogicModuleService {
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
         val defaultModules = baseModuleRepository.getBaseModules()
-                .map { NewLogicModule(UUID.randomUUID().toString(), it, mutableListOf(SubModule(it))) }
+                .map { LogicModule(UUID.randomUUID().toString(), it, mutableListOf(SubModule(it))) }
         logicModuleRepository.saveAll(defaultModules)
     }
 
@@ -69,16 +69,16 @@ class LogicModuleService {
         logicModuleRepository.saveAll(defineLogicModuleWithInterface)
     }
 
-    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<NewLogicModule> {
+    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
         return jClassesHasModules
                 .map { getIncompleteLogicModuleForJClass(it) }
                 .groupBy({ it.name }, { it.members })
                 .mapValues { entry -> entry.value.flatten().toSet().toList() }
-                .map { NewLogicModule(UUID.randomUUID().toString(), it.key, it.value) }
+                .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
     // TODO: use interface not parent class
-    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): NewLogicModule {
+    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
         val id = jClass.id
         val moduleName = jClass.module
         val parentClassIds = logicModuleRepository.getParentClassId(id)
@@ -87,39 +87,40 @@ class LogicModuleService {
                 .filter { j -> j.module != jClass.module }
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
-        return NewLogicModule(null, moduleName, membersGeneratedByParentClasses.toList())
+        return LogicModule(null, moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 
-fun getModule(modules: List<LogicModule>, name: String): List<String> {
-    val callerByFullMatch = fullMatch(name, modules)
+@Deprecated(message = "we are going to replace with getModule")
+fun getModuleLegacy(modules: List<LogicModuleLegacy>, name: String): List<String> {
+    val callerByFullMatch = fullMatchLegacy(name, modules)
     if (callerByFullMatch.isNotEmpty()) {
         return callerByFullMatch
     }
-    return startsWithMatch(name, modules)
+    return startsWithMatchLegacy(name, modules)
 }
 
-fun getNewModule(modules: List<NewLogicModule>, jClass: ModuleMember): List<NewLogicModule> {
-    val callerByFullMatch = fullMatchNew(jClass, modules)
+fun getModule(modules: List<LogicModule>, jClass: ModuleMember): List<LogicModule> {
+    val callerByFullMatch = fullMatch(jClass, modules)
     if (callerByFullMatch.isNotEmpty()) {
         return callerByFullMatch
     }
-    return startsWithMatchNew(jClass, modules)
+    return startsWithMatch(jClass, modules)
 }
 
-private fun fullMatch(name: String, modules: List<LogicModule>): List<String> {
+private fun fullMatchLegacy(name: String, modules: List<LogicModuleLegacy>): List<String> {
     return modules.filter { logicModule ->
         logicModule.members.any { javaClass -> name == javaClass }
     }.map { it.name }
 }
 
-private fun fullMatchNew(jClass: ModuleMember, modules: List<NewLogicModule>): List<NewLogicModule> {
+private fun fullMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
     return modules.filter { logicModule ->
         logicModule.members.any { moduleMember -> jClass.getFullName() == moduleMember.getFullName() }
     }
 }
 
-private fun startsWithMatch(name: String, modules: List<LogicModule>): List<String> {
+private fun startsWithMatchLegacy(name: String, modules: List<LogicModuleLegacy>): List<String> {
     var maxMatchSize = 0
     val matchModule: MutableList<String> = mutableListOf()
     for (logicModule in modules) {
@@ -141,9 +142,9 @@ private fun startsWithMatch(name: String, modules: List<LogicModule>): List<Stri
     return matchModule.toList()
 }
 
-fun startsWithMatchNew(jClass: ModuleMember, modules: List<NewLogicModule>): List<NewLogicModule> {
+fun startsWithMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
     var maxMatchSize = 0
-    val matchModule: MutableList<NewLogicModule> = mutableListOf()
+    val matchModule: MutableList<LogicModule> = mutableListOf()
     for (logicModule in modules) {
         val maxMatchSizeInLogicModule = logicModule.members
                 .filter { member -> jClass.getFullName().startsWith("${member.getFullName()}.") }

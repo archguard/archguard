@@ -1,5 +1,5 @@
 package com.thoughtworks.archguard.module.domain
 
 interface DependencyAnalysisHelper {
-    fun analysis(classDependency: NewDependency<JClass>, logicModules: List<NewLogicModule>, calleeModules: List<NewLogicModule>): List<NewLogicModule>
+    fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>, calleeModules: List<LogicModule>): List<LogicModule>
 }

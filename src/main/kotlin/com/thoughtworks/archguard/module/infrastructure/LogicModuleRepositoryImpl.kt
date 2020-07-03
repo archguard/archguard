@@ -1,15 +1,15 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.module.domain.Dependency
+import com.thoughtworks.archguard.module.domain.DependencyLegacy
 import com.thoughtworks.archguard.module.domain.JClass
-import com.thoughtworks.archguard.module.domain.LogicModule
+import com.thoughtworks.archguard.module.domain.LogicModuleLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.ModuleDependency
 import com.thoughtworks.archguard.module.domain.ModuleMember
 import com.thoughtworks.archguard.module.domain.ModuleMemberType
-import com.thoughtworks.archguard.module.domain.NewDependency
-import com.thoughtworks.archguard.module.domain.NewLogicModule
+import com.thoughtworks.archguard.module.domain.Dependency
+import com.thoughtworks.archguard.module.domain.LogicModule
 import com.thoughtworks.archguard.module.domain.createModuleMember
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
@@ -22,31 +22,31 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getAllByShowStatus(isShow: Boolean): List<LogicModule> {
+    override fun getAllByShowStatus(isShow: Boolean): List<LogicModuleLegacy> {
         if (isShow) {
             return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
         }
         return this.getAll().filter { it.status == LogicModuleStatus.HIDE }
     }
 
-    override fun getAllByShowStatusNew(isShow: Boolean): List<NewLogicModule> {
+    override fun getAllByShowStatusNew(isShow: Boolean): List<LogicModule> {
         if (isShow) {
             return this.getAllNew().filter { it.status == LogicModuleStatus.NORMAL }
         }
         return this.getAllNew().filter { it.status == LogicModuleStatus.HIDE }
     }
 
-    override fun getAll(): List<LogicModule> {
+    override fun getAll(): List<LogicModuleLegacy> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
             it.createQuery("select id, name, members, status from logic_module")
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map { LogicModule(it.id, it.name, it.members.split(',').sorted(), it.status) }
+        return modules.map { LogicModuleLegacy(it.id, it.name, it.members.split(',').sorted(), it.status) }
     }
 
-    override fun getAllNew(): List<NewLogicModule> {
+    override fun getAllNew(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
             it.createQuery("select id, name, members, status from logic_module")
@@ -54,12 +54,12 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .list()
         }
         return modules.map {
-            NewLogicModule(it.id, it.name, it.members.split(',').sorted()
+            LogicModule(it.id, it.name, it.members.split(',').sorted()
                     .map { m -> createModuleMember(m) }, it.status)
         }
     }
 
-    override fun update(id: String, logicModule: LogicModule) {
+    override fun update(id: String, logicModule: LogicModuleLegacy) {
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("update logic_module set " +
                     "name = '${logicModule.name}', " +
@@ -70,7 +70,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun create(logicModule: LogicModule) {
+    override fun create(logicModule: LogicModuleLegacy) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
                     logicModule.id, logicModule.name, logicModule.members.joinToString(","), logicModule.status)
@@ -89,7 +89,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun saveAll(logicModules: List<NewLogicModule>) {
+    override fun saveAll(logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
                 handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
@@ -98,7 +98,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun updateAll(logicModules: List<LogicModule>) {
+    override fun updateAll(logicModules: List<LogicModuleLegacy>) {
         logicModules.forEach {
             update(it.id.toString(), it)
         }
@@ -119,30 +119,30 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     }
 
-    override fun getAllClassDependency(members: List<String>): List<Dependency> {
+    override fun getAllClassDependency(members: List<String>): List<DependencyLegacy> {
         val tableTemplate = defineTableTemplate(members)
 
         val sql = "select concat(concat(a.module, '.'), a.clzname) caller, " +
                 "concat(concat(b.module, '.'), b.clzname) callee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<Dependency>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(Dependency::class.java))
+        return jdbi.withHandle<List<DependencyLegacy>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(DependencyLegacy::class.java))
             it.createQuery(sql)
-                    .mapTo(Dependency::class.java)
+                    .mapTo(DependencyLegacy::class.java)
                     .list()
                     .filter { it -> it.caller != it.callee }
         }
     }
 
-    override fun getAllClassDependencyNew(members: List<ModuleMember>): List<NewDependency<JClass>> {
+    override fun getAllClassDependencyNew(members: List<ModuleMember>): List<Dependency<JClass>> {
         val tableTemplate = defineTableTemplateNew(members)
 
         val sql = "select a.module, a.clzname caller, " +
                 "b.module, b.clzname callee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<NewDependency<JClass>>, Nothing> {
+        return jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
             it.createQuery(sql)
                     .mapTo(JClassDependencyDto::class.java)
@@ -213,8 +213,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 }
 
 class JClassDependencyDto(val moduleCaller: String, val classCaller: String, val moduleCallee: String, val classCallee: String) {
-    fun toJClassDependency(): NewDependency<JClass> {
-        return NewDependency(JClass(classCaller, moduleCaller), JClass(classCallee, moduleCallee))
+    fun toJClassDependency(): Dependency<JClass> {
+        return Dependency(JClass(classCaller, moduleCaller), JClass(classCallee, moduleCallee))
     }
 }
 

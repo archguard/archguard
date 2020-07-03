@@ -19,18 +19,18 @@ abstract class DefaultGraphService(var logicModuleRepository: LogicModuleReposit
         return moduleStore.getModuleGraph()
     }
 
-    private fun getModuleDependency(): List<NewDependency<NewLogicModule>> {
+    private fun getModuleDependency(): List<Dependency<LogicModule>> {
         val modules = logicModuleRepository.getAllByShowStatusNew(true)
         val members = modules.map { it.members }.flatten()
         val classDependencies = logicModuleRepository.getAllClassDependencyNew(members)
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }
 
-    fun mapClassDependenciesToModuleDependencies(classDependency: List<NewDependency<JClass>>, logicModules: List<NewLogicModule>): List<NewDependency<NewLogicModule>> {
+    fun mapClassDependenciesToModuleDependencies(classDependency: List<Dependency<JClass>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         return classDependency.map { mapClassDependencyToModuleDependency(logicModules, it) }.flatten()
                 .filter { it.caller != it.callee }
     }
 
-    abstract fun mapClassDependencyToModuleDependency(logicModules: List<NewLogicModule>, jClassDependency: NewDependency<JClass>): List<NewDependency<NewLogicModule>>
+    abstract fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>>
 }
