@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.git.scanner
 
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -11,6 +12,7 @@ internal class RunnerTest {
     val log = LoggerFactory.getLogger(RunnerTest::class.java)
 
     @Test
+    @Disabled
     fun run() {
         log.info("start")
         val file = File("output.sql")
