@@ -43,6 +43,12 @@ class LogicModule(var id: String?, val name: String, val members: List<ModuleMem
         result = 31 * result + status.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "LogicModule(id=$id, name='$name', members=$members, status=$status)"
+    }
+
+
 }
 
 enum class LogicModuleStatus {

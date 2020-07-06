@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.model
 import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
 class JClass(val name: String, val module: String) : ModuleMember {
-    lateinit var id: String
+    var id: String? = null
 
     @JdbiConstructor
     constructor(id: String, name: String, module: String) : this(name, module) {

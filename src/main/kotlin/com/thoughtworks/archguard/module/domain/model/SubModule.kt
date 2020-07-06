@@ -24,5 +24,9 @@ class SubModule(val name: String) : ModuleMember {
         return name.hashCode()
     }
 
+    override fun toString(): String {
+        return "SubModule(name='$name')"
+    }
+
 
 }

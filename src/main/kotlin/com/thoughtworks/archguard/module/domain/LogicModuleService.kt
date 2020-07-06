@@ -85,7 +85,7 @@ class LogicModuleService {
     internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
         val id = jClass.id
         val moduleName = jClass.module
-        val parentClassIds = logicModuleRepository.getParentClassId(id)
+        val parentClassIds = logicModuleRepository.getParentClassId(id!!)
         val membersGeneratedByParentClasses: MutableList<ModuleMember> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }

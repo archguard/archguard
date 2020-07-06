@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.module.domain.model
 interface ModuleMember {
     fun getFullName(): String
     fun getType(): ModuleMemberType
+    override fun toString(): String
 
     companion object {
         fun create(name: String): ModuleMember {
