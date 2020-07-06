@@ -31,4 +31,18 @@ class JClassRepositoryImpl : JClassRepository {
                     .one()
         }
     }
+
+    override fun getAll(): List<JClass> {
+        val sql = "select id, name, module from JClass"
+        return jdbi.withHandle<List<JClass>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClass::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClass::class.java)
+                    .list()
+        }
+    }
+
+    override fun getJClassesHasModules(): List<JClass> {
+        return this.getAll().filter { it.module != "null" }
+    }
 }

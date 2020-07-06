@@ -68,7 +68,7 @@ class LogicModuleService {
 
     fun autoDefineLogicModuleWithInterface() {
         logicModuleRepository.deleteAll()
-        val jClassesHasModules: List<JClass> = baseModuleRepository.getJClassesHasModules()
+        val jClassesHasModules: List<JClass> = jClassRepository.getJClassesHasModules()
         val defineLogicModuleWithInterface = getLogicModulesForAllJClass(jClassesHasModules)
         logicModuleRepository.saveAll(defineLogicModuleWithInterface)
     }
