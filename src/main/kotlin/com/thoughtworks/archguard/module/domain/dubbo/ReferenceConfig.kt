@@ -33,32 +33,6 @@ class ReferenceConfig(val id: String, val beanId: String, val interfaceName: Str
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ReferenceConfig
-
-        if (id != other.id) return false
-        if (beanId != other.beanId) return false
-        if (interfaceName != other.interfaceName) return false
-        if (version != other.version) return false
-        if (group != other.group) return false
-        if (subModule != other.subModule) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + beanId.hashCode()
-        result = 31 * result + interfaceName.hashCode()
-        result = 31 * result + (version?.hashCode() ?: 0)
-        result = 31 * result + (group?.hashCode() ?: 0)
-        result = 31 * result + subModule.hashCode()
-        return result
-    }
-
     override fun toString(): String {
         return "ReferenceConfig(id='$id', beanId='$beanId', interfaceName='$interfaceName', version=$version, group=$group, subModule=$subModule)"
     }
