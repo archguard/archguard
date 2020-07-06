@@ -53,7 +53,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun get(name: String): LogicModule {
         return jdbi.withHandle<LogicModuleDTO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, status from logic_module where name = '$name")
+            it.createQuery("select id, name, members, status from logic_module where name='$name'")
                     .mapTo(LogicModuleDTO::class.java)
                     .one()
         }.toLogicModule()
