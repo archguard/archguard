@@ -29,6 +29,10 @@ class JClass(val name: String, val module: String) : ModuleMember {
     override fun toString(): String {
         return "JClass(name='$name', module='$module', id='$id')"
     }
+
+    fun isInterface(): Boolean {
+        return classType == ClazzType.INTERFACE
+    }
 }
 
 // 暂时只有接口和类

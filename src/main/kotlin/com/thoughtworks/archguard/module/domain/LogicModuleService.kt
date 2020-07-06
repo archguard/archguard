@@ -81,7 +81,6 @@ class LogicModuleService {
                 .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
-    // TODO: use interface not parent class
     internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
         val id = jClass.id
         val moduleName = jClass.module
@@ -89,6 +88,7 @@ class LogicModuleService {
         val membersGeneratedByParentClasses: MutableList<ModuleMember> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
+                .filter { j -> j.isInterface() }
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
         return LogicModule(null, moduleName, membersGeneratedByParentClasses.toList())

@@ -34,7 +34,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun getAll(): List<JClass> {
-        val sql = "select id, name, module from JClass"
+        val sql = "select id, name, module, loc, access from JClass"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)

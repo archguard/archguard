@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleMember
@@ -50,11 +51,14 @@ class LogicModuleServiceTest {
     fun `should get logic module with interface members  for one JClass`() {
         val jClass = JClass("id1", "ServiceImpl", "module1")
         every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
-        every { jClassRepository.getJClassById("id2") } returns JClass("id2", "Service", "module2")
-        every { jClassRepository.getJClassById("id3") } returns JClass("id3", "ParentClass", "module3")
+        val jClassId2 = JClass("id2", "Service", "module2")
+        jClassId2.classType = ClazzType.INTERFACE
+        val jClassId3 = JClass("id3", "ParentClass", "module3")
+        every { jClassRepository.getJClassById("id2") } returns jClassId2
+        every { jClassRepository.getJClassById("id3") } returns jClassId3
         val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClass("id2", "Service", "module2"), JClass("id3", "ParentClass", "module3")))
+        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), jClassId2))
     }
 
     @Test
