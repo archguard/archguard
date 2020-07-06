@@ -4,6 +4,7 @@ import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
 class JClass(val name: String, val module: String) : ModuleMember {
     var id: String? = null
+    var classType: ClazzType = ClazzType.NOT_DEFINED
 
     @JdbiConstructor
     constructor(id: String, name: String, module: String) : this(name, module) {
@@ -25,25 +26,12 @@ class JClass(val name: String, val module: String) : ModuleMember {
         return ModuleMemberType.CLASS
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as JClass
-
-        if (name != other.name) return false
-        if (module != other.module) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + module.hashCode()
-        return result
-    }
-
     override fun toString(): String {
         return "JClass(name='$name', module='$module', id='$id')"
     }
+}
+
+// 暂时只有接口和类
+enum class ClazzType {
+    INTERFACE, CLASS, NOT_DEFINED
 }

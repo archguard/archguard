@@ -24,31 +24,10 @@ class LogicModule(var id: String?, val name: String, val members: List<ModuleMem
     private fun isHideStatus() = this.status == LogicModuleStatus.HIDE
 
     private fun isNormalStatus() = this.status == LogicModuleStatus.NORMAL
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as LogicModule
-
-        if (name != other.name) return false
-        if (members != other.members) return false
-        if (status != other.status) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + members.hashCode()
-        result = 31 * result + status.hashCode()
-        return result
-    }
 
     override fun toString(): String {
         return "LogicModule(id=$id, name='$name', members=$members, status=$status)"
     }
-
-
 }
 
 enum class LogicModuleStatus {

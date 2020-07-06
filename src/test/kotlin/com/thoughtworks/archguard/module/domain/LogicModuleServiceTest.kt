@@ -54,7 +54,7 @@ class LogicModuleServiceTest {
         every { jClassRepository.getJClassById("id3") } returns JClass("id3", "ParentClass", "module3")
         val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).isEqualTo(setOf(SubModule("module1"), JClass("id2", "Service", "module2"), JClass("id3", "ParentClass", "module3")))
+        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClass("id2", "Service", "module2"), JClass("id3", "ParentClass", "module3")))
     }
 
     @Test
@@ -70,8 +70,8 @@ class LogicModuleServiceTest {
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).isEqualTo(setOf(SubModule("module1"), JClass("Service1", "module-api"), JClass("Service2", "module-api")))
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).isEqualTo(setOf(SubModule("module2")))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClass("Service1", "module-api"), JClass("Service2", "module-api")))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module2")))
 
     }
 

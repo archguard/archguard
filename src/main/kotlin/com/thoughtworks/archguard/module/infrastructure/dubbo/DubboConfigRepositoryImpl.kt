@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.module.domain.dubbo.DubboConfigRepository
 import com.thoughtworks.archguard.module.domain.dubbo.ReferenceConfig
 import com.thoughtworks.archguard.module.domain.dubbo.ServiceConfig
 import com.thoughtworks.archguard.module.domain.dubbo.SubModuleDubbo
+import com.thoughtworks.archguard.module.infrastructure.Utils.convertToNullIfStringValueEqualsNull
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -110,8 +111,4 @@ class ServiceConfigDto(val id: String, private val interfaceName: String, privat
         return ServiceConfig(id, interfaceName, ref, convertToNullIfStringValueEqualsNull(version),
                 convertToNullIfStringValueEqualsNull(group), SubModuleDubbo(moduleId, name, path))
     }
-}
-
-fun convertToNullIfStringValueEqualsNull(value: String): String? {
-    return if (value == "null") null else value
 }

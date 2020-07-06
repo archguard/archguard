@@ -6,6 +6,7 @@ create table JClass
     createdAt datetime(3) not null,
     module    mediumtext  null,
     loc       int         null,
+    access    mediumtext  null,
     constraint id_UNIQUE
         unique (id)
 );
