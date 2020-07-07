@@ -26,12 +26,35 @@ class JClass(val name: String, val module: String) : ModuleMember {
         return ModuleMemberType.CLASS
     }
 
-    override fun toString(): String {
-        return "JClass(name='$name', module='$module', id='$id')"
-    }
 
     fun isInterface(): Boolean {
         return classType == ClazzType.INTERFACE
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as JClass
+
+        if (name != other.name) return false
+        if (module != other.module) return false
+        if (id != other.id) return false
+        if (classType != other.classType) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + module.hashCode()
+        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + classType.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "JClass(name='$name', module='$module', id=$id, classType=$classType)"
     }
 }
 

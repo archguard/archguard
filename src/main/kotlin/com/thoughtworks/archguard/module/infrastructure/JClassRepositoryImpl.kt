@@ -10,6 +10,7 @@ import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.stream.Collectors
 
 @Repository
 class JClassRepositoryImpl : JClassRepository {
@@ -18,12 +19,13 @@ class JClassRepositoryImpl : JClassRepository {
 
     override fun getJClassBy(name: String, module: String): JClass? {
         val sql = "select id, name, module, loc, access from JClass where name='$name' and module='$module'"
-        return jdbi.withHandle<JClassDto, Nothing> {
+        val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
                     .mapTo(JClassDto::class.java)
-                    .one()
-        }.toJClass()
+                    .findOne().orElse(null)
+        }
+        return jClassDto?.toJClass()
     }
 
     override fun getJClassById(id: String): JClass? {
@@ -57,7 +59,7 @@ class JClassRepositoryImpl : JClassRepository {
                 "b.module as moduleCallee, b.clzname as classCallee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
+        val jClassDependencies = jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
             it.createQuery(sql)
                     .mapTo(JClassDependencyDto::class.java)
@@ -65,7 +67,11 @@ class JClassRepositoryImpl : JClassRepository {
                     .map { jClassDependencyDto -> jClassDependencyDto.toJClassDependency() }
                     .filter { dependency -> dependency.caller != dependency.callee }
         }
+        return jClassDependencies.parallelStream()
+                .map {
+                    Dependency(getJClassBy(it.caller.name, it.caller.module) ?: it.caller,
+                            getJClassBy(it.callee.name, it.callee.module) ?: it.callee)
+                }
+                .collect(Collectors.toList())
     }
-
-
 }
