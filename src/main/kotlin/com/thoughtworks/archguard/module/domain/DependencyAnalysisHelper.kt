@@ -5,5 +5,5 @@ import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 
 interface DependencyAnalysisHelper {
-    fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>, calleeModules: List<LogicModule>): List<LogicModule>
+    fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>): List<LogicModule>
 }

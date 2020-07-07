@@ -8,7 +8,6 @@ import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
-import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
@@ -94,8 +93,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 
     override fun getDependence(caller: String, callee: String): List<Dependency<JMethod>> {
-        val callerTemplate = defineTableTemplate(this.get(caller).members)
-        val calleeTemplate = defineTableTemplate(this.get(callee).members)
+        val callerTemplate = generateTableSqlTemplateWithModuleModules(this.get(caller).members)
+        val calleeTemplate = generateTableSqlTemplateWithModuleModules(this.get(callee).members)
 
         val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
 
@@ -107,23 +106,6 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }.map { it.toMethodDependency() }
     }
 
-    override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
-        val tableTemplate = defineTableTemplate(members)
-
-        val sql = "select a.module as moduleCaller, a.clzname as classCaller, " +
-                "b.module as moduleCallee, b.clzname as classCallee " +
-                "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
-                "where a.id = mc.a and b.id = mc.b"
-        return jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
-            it.createQuery(sql)
-                    .mapTo(JClassDependencyDto::class.java)
-                    .list()
-                    .map { jClassDependencyDto -> jClassDependencyDto.toJClassDependency() }
-                    .filter { dependency -> dependency.caller != dependency.callee }
-        }
-    }
-
     override fun getParentClassId(id: String): List<String> {
         val sql = "select b from _ClassParent where a = '$id'"
         return jdbi.withHandle<List<String>, Nothing> {
@@ -133,24 +115,23 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    private fun defineTableTemplate(members: List<ModuleMember>): String {
-        var tableTemplate = "select * from JMethod where ("
-        val filterConditions = ArrayList<String>()
-        members.forEach { s ->
-            if (s.getType() == ModuleMemberType.SUBMODULE) {
-                filterConditions.add("module = '${s.getFullName()}'")
-            }
-            if (s.getType() == ModuleMemberType.CLASS) {
-                val jclass = s as JClass
-                filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
-                filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
-            }
-        }
-        tableTemplate += filterConditions.joinToString(" or ")
-        tableTemplate += ")"
-        println(tableTemplate)
-        return tableTemplate
-    }
-
 }
 
+fun generateTableSqlTemplateWithModuleModules(members: List<ModuleMember>): String {
+    var tableTemplate = "select * from JMethod where ("
+    val filterConditions = ArrayList<String>()
+    members.forEach { s ->
+        if (s.getType() == ModuleMemberType.SUBMODULE) {
+            filterConditions.add("module = '${s.getFullName()}'")
+        }
+        if (s.getType() == ModuleMemberType.CLASS) {
+            val jclass = s as JClass
+            filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
+            filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
+        }
+    }
+    tableTemplate += filterConditions.joinToString(" or ")
+    tableTemplate += ")"
+    println(tableTemplate)
+    return tableTemplate
+}

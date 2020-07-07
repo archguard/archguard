@@ -7,7 +7,7 @@ import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.domain.model.ModuleStore
 import org.slf4j.LoggerFactory
 
-abstract class DefaultGraphService(var logicModuleRepository: LogicModuleRepository) : GraphService {
+abstract class DefaultGraphService(var logicModuleRepository: LogicModuleRepository, var jClassRepository: JClassRepository) : GraphService {
     private val log = LoggerFactory.getLogger(DefaultGraphService::class.java)
 
     override fun getLogicModuleGraph(): ModuleGraph {
@@ -27,7 +27,7 @@ abstract class DefaultGraphService(var logicModuleRepository: LogicModuleReposit
     private fun getModuleDependency(): List<Dependency<LogicModule>> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten()
-        val classDependencies = logicModuleRepository.getAllClassDependency(members)
+        val classDependencies = jClassRepository.getAllClassDependency(members)
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }
 

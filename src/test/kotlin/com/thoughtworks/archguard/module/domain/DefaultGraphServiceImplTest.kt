@@ -15,12 +15,15 @@ internal class DefaultGraphServiceImplTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
+    @MockK
+    lateinit var jClassRepository: JClassRepository
+
     private lateinit var service: DefaultGraphServiceImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = DefaultGraphServiceImpl(logicModuleRepository)
+        service = DefaultGraphServiceImpl(logicModuleRepository, jClassRepository)
     }
 
     @Test
@@ -37,7 +40,7 @@ internal class DefaultGraphServiceImplTest {
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { logicModuleRepository.getAllClassDependency(any()) } returns dependencies
+        every { jClassRepository.getAllClassDependency(any()) } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraph()

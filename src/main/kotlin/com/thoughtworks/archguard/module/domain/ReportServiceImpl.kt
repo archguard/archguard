@@ -17,6 +17,9 @@ class ReportServiceImpl : ReportService {
     @Autowired
     lateinit var logicModuleRepository: LogicModuleRepository
 
+    @Autowired
+    lateinit var jClassRepository: JClassRepository
+
     override fun getLogicModuleCouplingReport(): List<ModuleCouplingReportDTO> {
         return getLogicModuleCouplingReportDetail().map { ModuleCouplingReportDTO(it) }
     }
@@ -24,7 +27,7 @@ class ReportServiceImpl : ReportService {
     override fun getLogicModuleCouplingReportDetail(): List<ModuleCouplingReport> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten()
-        val classDependency = logicModuleRepository.getAllClassDependency(members)
+        val classDependency = jClassRepository.getAllClassDependency(members)
 
         val classCouplingReports = getClassCouplingReports(classDependency, modules)
         log.info("Get class Coupling reports done.")

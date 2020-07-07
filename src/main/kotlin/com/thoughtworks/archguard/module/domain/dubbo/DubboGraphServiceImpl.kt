@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.module.domain.DefaultGraphService
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
+import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.Dependency
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("Dubbo")
-class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository) : DefaultGraphService(logicModuleRepository) {
+class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository) : DefaultGraphService(logicModuleRepository, jClassRepository) {
     @Autowired
     lateinit var dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper
     private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
@@ -27,8 +28,10 @@ class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository) : Defa
         val callerModule = callerModules[0]
         val calleeModules = getModule(logicModules, jClassDependency.callee)
         log.info("calleeModules before dubbo analysis: {}", calleeModules)
-        val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(jClassDependency, logicModules, calleeModules)
+
+        val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(jClassDependency, logicModules)
         log.info("dubboAnalysisCalleeModules after dubbo analysis: {}", dubboAnalysisCalleeModules)
-        return dubboAnalysisCalleeModules.map { Dependency(callerModule, it) }
+        val calleeModulesAfterAnalysis = calleeModules.intersect(dubboAnalysisCalleeModules)
+        return calleeModulesAfterAnalysis.map { Dependency(callerModule, it) }
     }
 }

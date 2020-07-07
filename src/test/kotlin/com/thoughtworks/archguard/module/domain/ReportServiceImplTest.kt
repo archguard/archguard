@@ -17,6 +17,9 @@ internal class ReportServiceImplTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
+    @MockK
+    lateinit var jClassRepository: JClassRepository
+
     @InjectMockKs
     var service: ReportServiceImpl = ReportServiceImpl()
 
@@ -49,7 +52,7 @@ internal class ReportServiceImplTest {
         val dependency1 = Dependency(JClass.create("com.test1.clazz"), JClass.create("com.test3.clazz"))
         val dependency2 = Dependency(JClass.create("com.test4.clazz"), JClass.create("com.test2.clazz"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
-        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
+        every { jClassRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
@@ -65,7 +68,7 @@ internal class ReportServiceImplTest {
         val element = LogicModule(null, "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
         val element2 = LogicModule(null, "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
-        every { logicModuleRepository.getAllClassDependency(any()) } returns listOf()
+        every { jClassRepository.getAllClassDependency(any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
