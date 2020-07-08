@@ -126,7 +126,7 @@ fun startsWithMatch(jClass: ModuleMember, modules: List<LogicModule>): List<Logi
         }
     }
     if (matchModule.isEmpty()) {
-        throw RuntimeException("$jClass No LogicModule matched!")
+        throw NoModuleFoundException("$jClass No LogicModule matched!")
     }
     return matchModule.toList()
 }
