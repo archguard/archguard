@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule

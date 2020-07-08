@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.DefaultGraphService
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
-import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.NoModuleFoundException
 import com.thoughtworks.archguard.module.domain.getModule
