@@ -2,19 +2,13 @@ package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
-import com.thoughtworks.archguard.module.domain.JClassRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.lang.annotation.ElementType
 
 @Service
-class FeignClientService {
-    @Autowired
-    lateinit var jAnnotationRepository: JAnnotationRepository
-
-    @Autowired
-    lateinit var JClassRepository: JClassRepository
+class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val JClassRepository: JClassRepository) {
 
     var objectMapper = ObjectMapper()
 

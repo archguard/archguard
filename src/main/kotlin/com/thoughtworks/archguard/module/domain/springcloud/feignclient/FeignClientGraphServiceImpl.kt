@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.DefaultGraphService
-import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dubbo.DubboGraphServiceImpl
 import com.thoughtworks.archguard.module.domain.getModule
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("FeignClient")
-class FeignClientGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository, feignClientService: FeignClientService) : DefaultGraphService(logicModuleRepository, jClassRepository) {
+class FeignClientGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository, val feignClientService: FeignClientService) : DefaultGraphService(logicModuleRepository, jClassRepository) {
     private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
-    private val feignClients = feignClientService.getFeignClients()
 
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
         val callerClass = jClassDependency.caller
         var calleeClass = jClassDependency.callee
+        val feignClients = feignClientService.getFeignClients()
 
         val foundFeignClient = feignClients.filter { it.jClass == calleeClass }
         if (foundFeignClient.isNotEmpty()) {

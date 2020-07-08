@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
-import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.JAnnotation
 import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations
@@ -21,12 +21,13 @@ class FeignClientServiceTest {
     @MockK
     lateinit var jClassRepository: JClassRepository
 
-    @InjectMockKs
-    var service: FeignClientService = FeignClientService()
+    private lateinit var service: FeignClientService
+
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
+        service = FeignClientService(jAnnotationRepository, jClassRepository)
     }
 
     @Test

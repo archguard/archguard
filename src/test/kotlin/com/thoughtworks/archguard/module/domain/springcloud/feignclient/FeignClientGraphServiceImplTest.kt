@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.module.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
