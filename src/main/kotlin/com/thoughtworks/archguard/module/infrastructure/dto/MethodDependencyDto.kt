@@ -12,7 +12,7 @@ class MethodDependencyDto(var caller: String, var callerClass: String, var calle
     companion object {
         fun fromJMethodDependency(jMethodDependency: Dependency<JMethod>): MethodDependencyDto {
             return MethodDependencyDto(jMethodDependency.caller.jClass.module, jMethodDependency.caller.jClass.name, jMethodDependency.caller.name,
-                    jMethodDependency.callee.jClass.module, jMethodDependency.callee.jClass.name, jMethodDependency.caller.name)
+                    jMethodDependency.callee.jClass.module, jMethodDependency.callee.jClass.name, jMethodDependency.callee.name)
         }
     }
 }
