@@ -13,7 +13,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     lateinit var jdbi: Jdbi
 
     override fun getConfigures(): List<NodeConfigure> {
-        val sql = "select id, type, `key`, value, `order` from Configure"
+        val sql = "select id, `type`, `key`, value, `order` from Configure"
         return jdbi.withHandle<List<NodeConfigure>, Nothing>{
             it.registerRowMapper(ConstructorMapper.factory(NodeConfigure::class.java))
             it.createQuery(sql)
