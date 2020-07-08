@@ -12,4 +12,16 @@ class ConfigureService {
         return repo.getConfigures()
     }
 
+    fun create(config: NodeConfigure) {
+        repo.create(config)
+    }
+
+    fun update(id:String, config: NodeConfigure) {
+        val nodeConfigure = NodeConfigure(id, config.type, config.key, config.value, config.order)
+        repo.update(nodeConfigure)
+    }
+
+    fun delete(id: String) {
+        repo.delete(id)
+    }
 }
