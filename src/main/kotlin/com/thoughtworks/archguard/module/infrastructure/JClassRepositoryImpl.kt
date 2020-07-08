@@ -12,6 +12,7 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.Objects.isNull
 
 @Repository
 class JClassRepositoryImpl : JClassRepository {
@@ -31,6 +32,36 @@ class JClassRepositoryImpl : JClassRepository {
         return jClassDto?.toJClass()
     }
 
+    override fun getJClassByName(name: String): List<JClass> {
+        val sql = "select id, name, module, loc, access from JClass where name='$name'"
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClassDto::class.java)
+                    .list()
+        }.map { it.toJClass() }
+    }
+
+    override fun findDependencers(id: String?): List<JClass> {
+        val sql = "select id, name, module, loc, access from JClass where id in (select a from _ClassDependences where b=${id})"
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClassDto::class.java)
+                    .list()
+        }.map { it.toJClass() }
+    }
+
+    override fun findDependencees(id: String?): List<JClass> {
+        val sql = "select id, name, module, loc, access from JClass where id in (select b from _ClassDependences where a=${id})"
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClassDto::class.java)
+                    .list()
+        }.map { it.toJClass() }
+    }
+
     override fun getJClassById(id: String): JClass? {
         val sql = "select id, name, module, loc, access from JClass where id='$id'"
         return jdbi.withHandle<JClassDto, Nothing> {
@@ -42,7 +73,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun getAll(): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass"
+        val sql = "SELECT id, name, module, loc, access FROM JClass"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
