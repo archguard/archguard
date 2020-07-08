@@ -3,9 +3,12 @@ package com.thoughtworks.archguard.module.infrastructure.dto
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.JClass
 
-class JClassDto(val id: String, val name: String, val module: String, val loc: Int?, val access: String) {
+class JClassDto(val id: String, val name: String, val module: String, val loc: Int?, val access: String?) {
     fun toJClass(): JClass {
         val jClass = JClass(id, name, module)
+        if (access == null) {
+            return jClass
+        }
         val accessInt = access.toIntOrNull()
         if (accessInt != null) {
             jClass.classType = ClassTypeMap.getClassType(accessInt)

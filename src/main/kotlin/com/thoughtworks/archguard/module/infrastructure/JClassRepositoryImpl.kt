@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.infrastructure
 
+import com.thoughtworks.archguard.module.domain.FullName
 import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
@@ -8,12 +9,14 @@ import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.stream.Collectors
 
 @Repository
 class JClassRepositoryImpl : JClassRepository {
+    private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
+
     @Autowired
     lateinit var jdbi: Jdbi
 
@@ -48,6 +51,17 @@ class JClassRepositoryImpl : JClassRepository {
         }.map { it.toJClass() }
     }
 
+    override fun getAll(fullNames: List<FullName>): List<JClass> {
+        val sql = "select id, name, module, loc, access from JClass where concat(module, '.', name) in (<fullNameList>)"
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+            it.createQuery(sql)
+                    .bindList("fullNameList", fullNames.map { fullName -> "${fullName.module}.${fullName.name}" })
+                    .mapTo(JClassDto::class.java)
+                    .list()
+        }.map { it.toJClass() }
+    }
+
     override fun getJClassesHasModules(): List<JClass> {
         return this.getAll().filter { it.module != "null" }
     }
@@ -67,11 +81,27 @@ class JClassRepositoryImpl : JClassRepository {
                     .map { jClassDependencyDto -> jClassDependencyDto.toJClassDependency() }
                     .filter { dependency -> dependency.caller != dependency.callee }
         }
-        return jClassDependencies.parallelStream()
+
+        val fullNames: List<FullName> = jClassDependencies
+                .map { listOf(FullName(it.caller.name, it.caller.module), FullName(it.callee.name, it.callee.module)) }
+                .flatten().toSet().toList()
+        val jClassesRelated = getAll(fullNames)
+
+        return jClassDependencies
                 .map {
-                    Dependency(getJClassBy(it.caller.name, it.caller.module) ?: it.caller,
-                            getJClassBy(it.callee.name, it.callee.module) ?: it.callee)
+                    Dependency(updateJClassFields(it.caller, jClassesRelated) ?: it.caller,
+                            updateJClassFields(it.callee, jClassesRelated) ?: it.callee)
                 }
-                .collect(Collectors.toList())
+    }
+
+    private fun updateJClassFields(jClass: JClass, jClasses: List<JClass>): JClass? {
+        val matchedJClass = jClasses.filter { it -> it.name == jClass.name && it.module == jClass.module }
+        if (matchedJClass.isEmpty()) {
+            return null
+        }
+        if (matchedJClass.size > 1) {
+            log.error("updateJClassFields matched more than one Class!")
+        }
+        return matchedJClass[0]
     }
 }
