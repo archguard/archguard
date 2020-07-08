@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.module.infrastructure
+package com.thoughtworks.archguard.clazz.infrastructure
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.FullName
-import com.thoughtworks.archguard.module.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.ModuleMember
@@ -12,7 +12,6 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.Objects.isNull
 
 @Repository
 class JClassRepositoryImpl : JClassRepository {

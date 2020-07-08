@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
-import com.thoughtworks.archguard.module.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
