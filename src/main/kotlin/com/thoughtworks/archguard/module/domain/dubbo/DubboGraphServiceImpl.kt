@@ -21,16 +21,28 @@ class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClass
     private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
 
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
-        val callerModules = getModule(logicModules, jClassDependency.caller)
+        val callerClass = jClassDependency.caller
+        val calleeClass = jClassDependency.callee
+
+        val callerModules = getModule(logicModules, callerClass)
         if (callerModules.size > 1) {
             log.error("Caller Class belong to more than one Module!", callerModules)
         }
         val callerModule = callerModules[0]
-        val calleeModules = getModule(logicModules, jClassDependency.callee)
+        val calleeModules = getModule(logicModules, calleeClass)
         log.info("calleeModules before dubbo analysis: {}", calleeModules)
+
+        // calleeClass不是接口类型，直接停止分析
+        if (!calleeClass.isInterface()) {
+            return calleeModules.map { Dependency(callerModule, it) }
+        }
 
         val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(jClassDependency, logicModules)
         log.info("dubboAnalysisCalleeModules after dubbo analysis: {}", dubboAnalysisCalleeModules)
+
+        if (dubboAnalysisCalleeModules.isEmpty()) {
+            return calleeModules.map { Dependency(callerModule, it) }
+        }
         val calleeModulesAfterAnalysis = calleeModules.intersect(dubboAnalysisCalleeModules)
         return calleeModulesAfterAnalysis.map { Dependency(callerModule, it) }
     }
