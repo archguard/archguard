@@ -37,6 +37,10 @@ class LogicModuleController {
     private lateinit var graphServiceDubbo: GraphService
 
     @Autowired
+    @Qualifier("FeignClient")
+    private lateinit var graphServiceFeignClient: GraphService
+
+    @Autowired
     private lateinit var reportService: ReportService
 
     @Autowired
@@ -100,6 +104,12 @@ class LogicModuleController {
     @GetMapping("/graph-dubbo")
     fun getLogicModuleGraphDubbo(): ModuleGraph {
         return graphServiceDubbo.getLogicModuleGraph()
+    }
+
+
+    @GetMapping("/graph-feign-client")
+    fun getLogicModuleGraphFeignClient(): ModuleGraph {
+        return graphServiceFeignClient.getLogicModuleGraph()
     }
 
     @GetMapping("/coupling-by-class")
