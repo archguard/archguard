@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.clazz.domain
+package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ApplicationService {
+class ClassService {
     @Autowired
     private lateinit var classDependenceesService: ClassDependenceesService
     @Autowired

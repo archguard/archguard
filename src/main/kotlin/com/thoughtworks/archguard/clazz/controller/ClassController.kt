@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.clazz.controller
 
-import com.thoughtworks.archguard.clazz.domain.ApplicationService
+import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 class ClassController {
 
     @Autowired
-    private lateinit var service: ApplicationService
+    private lateinit var service: ClassService
 
     @GetMapping("/{name}")
     fun getDependencies(@PathVariable("name") name: String,

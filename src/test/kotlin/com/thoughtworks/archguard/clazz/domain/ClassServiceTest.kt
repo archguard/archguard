@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain
 
+import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
 import com.thoughtworks.archguard.module.domain.model.JClass
@@ -11,9 +12,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ApplicationServiceTest {
+internal class ClassServiceTest {
     @InjectMockKs
-    var service = ApplicationService()
+    var service = ClassService()
 
     @MockK
     lateinit var classDependenceesService: ClassDependenceesService
