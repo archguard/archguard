@@ -13,6 +13,7 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.stream.Collectors
 
 @Repository
 class JClassRepositoryImpl : JClassRepository {
@@ -119,10 +120,12 @@ class JClassRepositoryImpl : JClassRepository {
         val jClassesRelated = getAll(fullNames)
 
         return jClassDependencies
+                .parallelStream()
                 .map {
                     Dependency(updateJClassFields(it.caller, jClassesRelated) ?: it.caller,
                             updateJClassFields(it.callee, jClassesRelated) ?: it.callee)
                 }
+                .collect(Collectors.toList())
     }
 
     private fun updateJClassFields(jClass: JClass, jClasses: List<JClass>): JClass? {
