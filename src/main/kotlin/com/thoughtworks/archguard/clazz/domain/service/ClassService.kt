@@ -12,9 +12,9 @@ class ClassService {
 
     @Autowired
     private lateinit var classDependencerService: ClassDependencerService
-    fun findDependencies(name: String, deep: Int): Dependency<List<JClass>> {
-        val callees = classDependenceesService.findDependencees(name, deep)
-        val callers = classDependencerService.findDependencers(name, deep)
+    fun findDependencies(module: String, name: String, deep: Int): Dependency<List<JClass>> {
+        val callees = classDependenceesService.findDependencees(module, name, deep)
+        val callers = classDependencerService.findDependencers(module, name, deep)
         return Dependency(callers, callees)
     }
 

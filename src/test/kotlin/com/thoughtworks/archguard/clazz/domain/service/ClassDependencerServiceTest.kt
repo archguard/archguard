@@ -33,7 +33,7 @@ internal class ClassDependencerServiceTest {
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { repo.findDependencers(target.id) } returns listOf(caller1)
         every { repo.findDependencers(caller1.id) } returns listOf(caller2)
-        val dependencees = service.findDependencers(targetName, 2)
+        val dependencees = service.findDependencers("", targetName, 2)
         //then
         Assertions.assertThat(dependencees.size).isEqualTo(1)
         Assertions.assertThat(dependencees[0].name).isEqualTo("caller1")
@@ -54,7 +54,7 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(target.id) } returns listOf(dependencer1)
         every { repo.findDependencers(dependencer1.id) } returns listOf(dependencer2)
         every { repo.findDependencers(dependencer2.id) } returns listOf()
-        val dependencers = service.findDependencers(targetName, 4)
+        val dependencers = service.findDependencers("", targetName, 4)
         //then
         Assertions.assertThat(dependencers.size).isEqualTo(1)
         Assertions.assertThat(dependencers[0].name).isEqualTo("dependencer1")

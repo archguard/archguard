@@ -32,10 +32,10 @@ internal class ClassServiceTest {
         val dependencee = JClass("com.thoughtworks.archguard.domain.dependencee", "archguard")
         val dependencer = JClass("com.thoughtworks.archguard.domain.dependencer", "archguard")
         //when
-        every { classDependenceesService.findDependencees(any(), any()) } returns listOf(dependencee)
-        every { classDependencerService.findDependencers(any(), any()) } returns listOf(dependencer)
+        every { classDependenceesService.findDependencees(any(), any(), any()) } returns listOf(dependencee)
+        every { classDependencerService.findDependencers(any(), any(), any()) } returns listOf(dependencer)
 
-        val classDependencies = service.findDependencies("className", 1)
+        val classDependencies = service.findDependencies("", "className", 1)
         //then
         assertThat(classDependencies.caller.size).isEqualTo(1)
         assertThat(classDependencies.callee.size).isEqualTo(1)

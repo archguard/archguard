@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNoIdException
+import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -10,15 +11,20 @@ import org.springframework.stereotype.Service
 class ClassDependenceesService {
     @Autowired
     private lateinit var repo: JClassRepository
-    fun findDependencees(name: String, deep: Int): List<JClass> {
-        val target = repo.getJClassByName(name)
+    fun findDependencees(module: String, name: String, deep: Int): List<JClass> {
+        val target = mutableListOf<JClass>()
+        if (module.isEmpty()) {
+            target.addAll(repo.getJClassByName(name))
+        } else {
+            target.add(repo.getJClassBy(name, module)
+                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
+        }
         return buildDependencees(target, deep)
     }
 
     private fun buildDependencees(target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
         doBuildDependencees(target, deep, container)
-        //TODO: clazz 存在重复可能有问题
         return container[0].dependencees
     }
 

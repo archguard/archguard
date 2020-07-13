@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.clazz.exception.ClassNoIdException
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,15 +12,20 @@ class ClassDependencerService {
     @Autowired
     private lateinit var repo: JClassRepository
 
-    fun findDependencers(name: String, deep: Int): List<JClass> {
-        val target = repo.getJClassByName(name)
+    fun findDependencers(module: String, name: String, deep: Int): List<JClass> {
+        val target = mutableListOf<JClass>()
+        if (module.isEmpty()) {
+            target.addAll(repo.getJClassByName(name))
+        } else {
+            target.add(repo.getJClassBy(name, module)
+                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
+        }
         return buildDependencers(target, deep)
     }
 
     private fun buildDependencers(target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
         doBuildDependencers(target, deep, container)
-        //TODO: clazz 存在重复可能有问题
         return container[0].dependencers
     }
 

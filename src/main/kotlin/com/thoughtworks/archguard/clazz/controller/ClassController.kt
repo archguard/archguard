@@ -19,7 +19,8 @@ class ClassController {
 
     @GetMapping("/{name}")
     fun getDependencies(@PathVariable("name") name: String,
+                        @RequestParam(value="module", required = false) module: String = "",
                         @RequestParam("deep") deep: Int = 4): Dependency<List<JClass>> {
-        return service.findDependencies(name, deep)
+        return service.findDependencies(module, name, deep)
     }
 }
