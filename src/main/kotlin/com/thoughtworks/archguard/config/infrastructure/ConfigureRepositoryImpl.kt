@@ -32,10 +32,10 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     override fun update(config: NodeConfigure) {
         val sql = "update Configure set " +
                 "type='${config.type}', "
-                "key='${config.key}', "
-                "value='${config.value}', "
-                "order='${config.order}', "
-                "where id='${config.id}'"
+        "key='${config.key}', "
+        "value='${config.value}', "
+        "order='${config.order}', "
+        "where id='${config.id}'"
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.createUpdate(sql).execute()
         }
@@ -43,7 +43,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
 
     override fun delete(id: String) {
         val sql = "delete from Configure where id = '$id'"
-        jdbi.withHandle<Int, Nothing> {handle ->
+        jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute(sql)
         }
     }

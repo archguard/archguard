@@ -13,7 +13,7 @@ class XmlConfigServiceImpl : XmlConfigService {
     lateinit var dubboConfigRepository: DubboConfigRepository
 
 
-    override fun getRealCalleeModuleByDependency(callerClass: JClass, calleeClass: JClass): List<SubModuleDubbo> {
+    override fun getRealCalleeModuleByXmlConfig(callerClass: JClass, calleeClass: JClass): List<SubModuleDubbo> {
         log.info("callerClass: {}, calleeClass: {}", callerClass, calleeClass)
         val callerModule = callerClass.module
         val callerSubModule = dubboConfigRepository.getModuleByName(callerModule) ?: return emptyList()

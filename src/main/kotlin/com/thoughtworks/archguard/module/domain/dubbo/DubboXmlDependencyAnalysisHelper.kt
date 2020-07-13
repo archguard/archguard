@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class DubboXmlDependencyAnalysisHelper(var xmlConfigService: XmlConfigService) : DependencyAnalysisHelper {
 
     override fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>): List<LogicModule> {
-        val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByDependency(classDependency.caller, classDependency.callee)
+        val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(classDependency.caller, classDependency.callee)
         return calleeSubModuleByXml.map { getModule(logicModules, SubModule(it.name)) }.flatten().toSet().toList()
     }
 }

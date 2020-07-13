@@ -21,7 +21,7 @@ class ConfigController {
     private lateinit var service: ConfigureService
 
     @GetMapping
-    fun getConfigures() :List<NodeConfigure> {
+    fun getConfigures(): List<NodeConfigure> {
         return service.getConfigures()
     }
 

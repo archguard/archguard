@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.module.infrastructure
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.module.domain.model.JAnnotation
 import com.thoughtworks.archguard.module.infrastructure.dto.JAnnotationValueDto
-import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class JAnnotationRepositoryImpl: JAnnotationRepository {
+class JAnnotationRepositoryImpl : JAnnotationRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi
@@ -41,11 +40,10 @@ class JAnnotationRepositoryImpl: JAnnotationRepository {
     }
 
     override fun getJAnnotationWithValueByName(name: String): List<JAnnotation> {
-        val jAnnotations =  getJAnnotationByName(name)
+        val jAnnotations = getJAnnotationByName(name)
         jAnnotations.forEach { it.values = getJAnnotationValues(it.id) }
         return jAnnotations
     }
-
 
 
 }

@@ -1,4 +1,3 @@
-package com.thoughtworks.archguard.clazz.exception;
+package com.thoughtworks.archguard.clazz.exception
 
-class ClassNoIdException(message: String?) : RuntimeException(message) {
-}
+class ClassNoIdException(message: String?) : RuntimeException(message)

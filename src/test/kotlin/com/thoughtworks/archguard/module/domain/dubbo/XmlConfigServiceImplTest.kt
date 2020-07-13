@@ -34,7 +34,7 @@ internal class XmlConfigServiceImplTest {
         every { dubboConfigRepository.getReferenceConfigBy("callee1", callerSubModule) } returns listOf(referenceConfig)
         every { dubboConfigRepository.getServiceConfigBy(referenceConfig) } returns listOf(serviceConfig)
 
-        val module = service.getRealCalleeModuleByDependency(callerClass, calleeClass)
+        val module = service.getRealCalleeModuleByXmlConfig(callerClass, calleeClass)
 
         assertThat(module).isEqualTo(listOf(calleeImplSubModule))
     }

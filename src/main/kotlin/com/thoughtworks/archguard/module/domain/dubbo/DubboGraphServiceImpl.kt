@@ -10,15 +10,12 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("Dubbo")
-class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository) : DefaultGraphService(logicModuleRepository, jClassRepository) {
-    @Autowired
-    lateinit var dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper
+class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository, val dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper) : DefaultGraphService(logicModuleRepository, jClassRepository) {
     private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
 
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
