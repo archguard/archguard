@@ -13,6 +13,7 @@ class DubboXmlDependencyAnalysisHelper(var xmlConfigService: XmlConfigService) :
 
     override fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>): List<LogicModule> {
         val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(classDependency.caller, classDependency.callee)
-        return calleeSubModuleByXml.map { getModule(logicModules, SubModule(it.name)) }.flatten().toSet().toList()
+        return calleeSubModuleByXml.map { getModule(logicModules, SubModule(it.name)) }
+                .flatten().toSet().toList()
     }
 }

@@ -30,7 +30,7 @@ internal class XmlConfigServiceImplTest {
         val referenceConfig = ReferenceConfig("reference_id1", "bean_id1", "callee1", null, "g1", callerSubModule)
         val serviceConfig = ServiceConfig("service_id1", "callee1", "callee1A", null, "g1", calleeImplSubModule)
 
-        every { dubboConfigRepository.getModuleByName("module1") } returns callerSubModule
+        every { dubboConfigRepository.getSubModuleByName("module1") } returns callerSubModule
         every { dubboConfigRepository.getReferenceConfigBy("callee1", callerSubModule) } returns listOf(referenceConfig)
         every { dubboConfigRepository.getServiceConfigBy(referenceConfig) } returns listOf(serviceConfig)
 

@@ -16,7 +16,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
     lateinit var jdbi: Jdbi
 
     // FIXME: 可能会存在重复name的submodule
-    override fun getModuleByName(name: String): SubModuleDubbo? {
+    override fun getSubModuleByName(name: String): SubModuleDubbo? {
         val sql = "select id, name, path from dubbo_module where name='$name'"
         return jdbi.withHandle<SubModuleDubbo?, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(SubModuleDubbo::class.java))

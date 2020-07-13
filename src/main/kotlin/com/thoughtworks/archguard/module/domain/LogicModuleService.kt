@@ -50,10 +50,8 @@ class LogicModuleService {
     }
 
     fun createLogicModule(logicModule: LogicModule): String {
-        val id = UUID.randomUUID().toString()
-        logicModule.id = id
         logicModuleRepository.create(logicModule)
-        return id
+        return logicModule.id
     }
 
     fun deleteLogicModule(id: String) {
@@ -92,7 +90,8 @@ class LogicModuleService {
                 .filter { j -> j.isInterface() }
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
-        return LogicModule(null, moduleName, membersGeneratedByParentClasses.toList())
+        // FIXME: No Entity should not has id
+        return LogicModule("tempid", moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 

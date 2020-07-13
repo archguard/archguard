@@ -69,9 +69,9 @@ class LogicModuleServiceTest {
         val jClass3 = JClass("id3", "Service2Impl", "module1")
         val jClasses = listOf(jClass1, jClass2, jClass3)
         service = spyk(service)
-        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule(null, "module1", listOf(SubModule("module1"), JClass("Service1", "module-api")))
-        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule(null, "module2", listOf(SubModule("module2")))
-        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule(null, "module1", listOf(SubModule("module1"), JClass("Service2", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClass("Service1", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule("tempid", "module2", listOf(SubModule("module2")))
+        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClass("Service2", "module-api")))
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)

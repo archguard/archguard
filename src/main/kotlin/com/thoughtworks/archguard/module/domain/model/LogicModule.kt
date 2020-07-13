@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.module.domain.model
 
-class LogicModule(var id: String?, val name: String, val members: List<ModuleMember>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
+/**
+ * LogicModule is an Entity, so it must have an id.
+ */
+class LogicModule(val id: String, val name: String, val members: List<ModuleMember>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {
     fun hide() {
         this.status = LogicModuleStatus.HIDE
     }
@@ -25,8 +28,24 @@ class LogicModule(var id: String?, val name: String, val members: List<ModuleMem
 
     private fun isNormalStatus() = this.status == LogicModuleStatus.NORMAL
 
+
     override fun toString(): String {
         return "LogicModule(id=$id, name='$name', members=$members, status=$status)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as LogicModule
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 }
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/logic-modules")
@@ -73,6 +74,7 @@ class LogicModuleController {
 
     @PostMapping
     fun createLogicModule(@RequestBody logicModule: LogicModuleLegacy): String {
+        logicModule.id = UUID.randomUUID().toString()
         return logicModuleService.createLogicModule(logicModule.toLogicModule())
     }
 

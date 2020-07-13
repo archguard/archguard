@@ -47,9 +47,9 @@ internal class ReportServiceImplTest {
     @Test
     fun `should get module coupling`() {
         //given
-        val element = LogicModule(null, "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
-        val element2 = LogicModule(null, "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
-        val element3 = LogicModule(null, "module3", listOf(ModuleMember.create("com.test5"), ModuleMember.create("com.test6")))
+        val element = LogicModule("id1", "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
+        val element2 = LogicModule("id2", "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
+        val element3 = LogicModule("id3", "module3", listOf(ModuleMember.create("com.test5"), ModuleMember.create("com.test6")))
         val dependency1 = Dependency(JClass.create("com.test1.clazz"), JClass.create("com.test3.clazz"))
         val dependency2 = Dependency(JClass.create("com.test4.clazz"), JClass.create("com.test2.clazz"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
@@ -66,8 +66,8 @@ internal class ReportServiceImplTest {
     @Test
     fun `should be zero when no dependence`() {
         //given
-        val element = LogicModule(null, "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
-        val element2 = LogicModule(null, "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
+        val element = LogicModule("id1", "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
+        val element2 = LogicModule("id2", "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
         every { jClassRepository.getAllClassDependency(any()) } returns listOf()
         //when
