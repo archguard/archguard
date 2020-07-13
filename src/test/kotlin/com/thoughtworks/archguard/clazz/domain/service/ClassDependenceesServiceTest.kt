@@ -33,7 +33,7 @@ internal class ClassDependenceesServiceTest {
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { repo.findDependencees(target.id) } returns listOf(callee1)
         every { repo.findDependencees(callee1.id) } returns listOf(callee2)
-        val dependencees = service.findDependencees("", targetName, 2)
+        val dependencees = service.findDependencees(mutableListOf(target), 2)
         //then
         assertThat(dependencees.size).isEqualTo(1)
         assertThat(dependencees[0].name).isEqualTo("callee1")
@@ -53,7 +53,7 @@ internal class ClassDependenceesServiceTest {
         every { repo.findDependencees(target.id) } returns listOf(dependencee1)
         every { repo.findDependencees(dependencee1.id) } returns listOf(dependencee2)
         every { repo.findDependencees(dependencee2.id) } returns listOf()
-        val dependencees = service.findDependencees("", targetName, 4)
+        val dependencees = service.findDependencees(mutableListOf(target), 4)
         //then
         assertThat(dependencees.size).isEqualTo(1)
         assertThat(dependencees[0].name).isEqualTo("dependencee1")

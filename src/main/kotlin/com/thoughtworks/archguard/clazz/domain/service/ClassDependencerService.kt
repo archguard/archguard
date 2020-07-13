@@ -12,17 +12,7 @@ class ClassDependencerService {
     @Autowired
     private lateinit var repo: JClassRepository
 
-    fun findDependencers(module: String, name: String, deep: Int): List<JClass> {
-        val target = mutableListOf<JClass>()
-        if (module.isEmpty()) {
-            target.addAll(repo.getJClassByName(name))
-        } else {
-            target.add(repo.getJClassBy(name, module)
-                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
-        }
-        if (target.isEmpty()) {
-            throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
-        }
+    fun findDependencers(target: List<JClass>, deep: Int): List<JClass> {
         return buildDependencers(target, deep)
     }
 

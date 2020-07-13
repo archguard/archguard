@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,10 +14,27 @@ class ClassService {
 
     @Autowired
     private lateinit var classDependencerService: ClassDependencerService
+    @Autowired
+    private lateinit var repo: JClassRepository
     fun findDependencies(module: String, name: String, deep: Int): Dependency<List<JClass>> {
-        val callees = classDependenceesService.findDependencees(module, name, deep)
-        val callers = classDependencerService.findDependencers(module, name, deep)
+        val target = getTargetClass(module, name)
+        val callees = classDependenceesService.findDependencees(target, deep)
+        val callers = classDependencerService.findDependencers(target, deep)
         return Dependency(callers, callees)
+    }
+
+    private fun getTargetClass(module: String, name: String): MutableList<JClass> {
+        val target = mutableListOf<JClass>()
+        if (module.isEmpty()) {
+            target.addAll(repo.getJClassByName(name))
+        } else {
+            target.add(repo.getJClassBy(name, module)
+                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
+        }
+        if (target.isEmpty()) {
+            throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
+        }
+        return target
     }
 
 }

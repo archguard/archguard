@@ -11,17 +11,7 @@ import org.springframework.stereotype.Service
 class ClassDependenceesService {
     @Autowired
     private lateinit var repo: JClassRepository
-    fun findDependencees(module: String, name: String, deep: Int): List<JClass> {
-        val target = mutableListOf<JClass>()
-        if (module.isEmpty()) {
-            target.addAll(repo.getJClassByName(name))
-        } else {
-            target.add(repo.getJClassBy(name, module)
-                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
-        }
-        if (target.isEmpty()) {
-            throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
-        }
+    fun findDependencees(target: List<JClass>, deep: Int): List<JClass> {
         return buildDependencees(target, deep)
     }
 
