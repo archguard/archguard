@@ -20,6 +20,9 @@ class ClassDependencerService {
             target.add(repo.getJClassBy(name, module)
                     ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
         }
+        if (target.isEmpty()) {
+            throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
+        }
         return buildDependencers(target, deep)
     }
 
