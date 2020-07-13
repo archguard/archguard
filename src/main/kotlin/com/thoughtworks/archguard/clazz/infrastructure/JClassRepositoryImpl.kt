@@ -43,7 +43,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun findDependencers(id: String?): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select a from _ClassDependences where b='${id}')"
+        val sql = "select id, name, module, loc, access from JClass where id in (select a from _ClassDependences where b='${id}') and module != 'null'"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -53,7 +53,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun findDependencees(id: String?): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select b from _ClassDependences where a='${id}')"
+        val sql = "select id, name, module, loc, access from JClass where id in (select b from _ClassDependences where a='${id}') and module != 'null'"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
