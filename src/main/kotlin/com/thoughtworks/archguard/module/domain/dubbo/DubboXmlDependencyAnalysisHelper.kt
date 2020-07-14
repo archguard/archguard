@@ -9,7 +9,7 @@ import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.springframework.stereotype.Service
 
 @Service
-class DubboXmlDependencyAnalysisHelper(var xmlConfigService: XmlConfigService) : DependencyAnalysisHelper {
+class DubboXmlDependencyAnalysisHelper(val xmlConfigService: XmlConfigService) : DependencyAnalysisHelper {
 
     override fun analysis(classDependency: Dependency<JClass>, logicModules: List<LogicModule>): List<LogicModule> {
         val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(classDependency.caller, classDependency.callee)

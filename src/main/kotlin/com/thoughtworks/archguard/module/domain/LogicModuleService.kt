@@ -95,12 +95,12 @@ class LogicModuleService {
     }
 }
 
-fun getModule(modules: List<LogicModule>, jClass: ModuleMember): List<LogicModule> {
-    val callerByFullMatch = fullMatch(jClass, modules)
+fun getModule(modules: List<LogicModule>, moduleMember: ModuleMember): List<LogicModule> {
+    val callerByFullMatch = fullMatch(moduleMember, modules)
     if (callerByFullMatch.isNotEmpty()) {
         return callerByFullMatch
     }
-    return startsWithMatch(jClass, modules)
+    return startsWithMatch(moduleMember, modules)
 }
 
 private fun fullMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
