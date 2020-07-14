@@ -1,0 +1,60 @@
+package com.thoughtworks.archguard.clazz.domain.service
+
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.domain.PropsDependency
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
+@Service
+class ClassInvokeService {
+    @Autowired
+    private lateinit var repo: JClassRepository
+    fun findInvokes(target: JClass, callerDeep: Int, calleeDeep: Int,
+                    needIncludeImpl: Boolean): Dependency<List<JClass>> {
+        findClassCallers(target, callerDeep, needIncludeImpl)
+        findClassCallees(target, calleeDeep, needIncludeImpl)
+        return Dependency(listOf(), listOf())
+    }
+
+    private fun findClassCallees(target: JClass, deep: Int, needIncludeImpl: Boolean) {
+        if (deep == 0) {
+            return
+        }
+        var implements = listOf<PropsDependency<String>>()
+        if (needIncludeImpl) {
+            implements = repo.findClassImplements(target.name, target.module)
+        }
+        target.implements = implements.map { repo.getJClassByName(it.callee)[0] }
+        val callees = repo.findCallees(target.name, target.module)
+        target.callees = callees.map { Pair(repo.getJClassByName(it.callee)[0], it.count) }
+        if (deep == 1) {
+            return
+        } else {
+            target.implements.map { findClassCallees(it, deep - 1, needIncludeImpl) }
+            target.callees.map { findClassCallees(it.first, deep - 1, needIncludeImpl) }
+        }
+    }
+
+    private fun findClassCallers(target: JClass, deep: Int, needIncludeImpl: Boolean) {
+        if (deep == 0) {
+            return
+        }
+        var parents = listOf<PropsDependency<String>>()
+        if (needIncludeImpl) {
+            parents = repo.findClassParents(target.name, target.module)
+        }
+        target.parents = parents.map { repo.getJClassByName(it.caller)[0] }
+        val callers = repo.findCallers(target.name, target.module)
+        target.callers = callers.map { Pair(repo.getJClassByName(it.caller)[0], it.count) }
+        if (deep == 1) {
+            return
+        } else {
+            target.parents.map { findClassCallers(it, deep - 1, needIncludeImpl) }
+            target.callers.map { findClassCallers(it.first, deep - 1, needIncludeImpl) }
+        }
+    }
+
+
+}

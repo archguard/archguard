@@ -17,10 +17,20 @@ class ClassController {
     @Autowired
     private lateinit var service: ClassService
 
-    @GetMapping("/{name}")
+    @GetMapping("/{name}/dependencies")
     fun getDependencies(@PathVariable("name") name: String,
-                        @RequestParam(value="module", required = false, defaultValue = "") module: String,
-                        @RequestParam("deep") deep: Int = 4): Dependency<List<JClass>> {
+                        @RequestParam(value = "module", required = false, defaultValue = "") module: String,
+                        @RequestParam("deep", required = false, defaultValue = "3") deep: Int): Dependency<List<JClass>> {
         return service.findDependencies(module, name, deep)
+    }
+
+    @GetMapping("/{name}/invokes")
+    fun getInvokes(@PathVariable("name") name: String,
+                   @RequestParam(value = "module", required = false, defaultValue = "") module: String,
+                   @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
+                   @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
+                   @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
+                   @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?) {
+        service.findInvokes(module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
     }
 }

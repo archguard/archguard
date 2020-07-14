@@ -14,8 +14,12 @@ class ClassService {
 
     @Autowired
     private lateinit var classDependencerService: ClassDependencerService
+
     @Autowired
     private lateinit var repo: JClassRepository
+
+    @Autowired
+    private lateinit var classInvokeService: ClassInvokeService
     fun findDependencies(module: String, name: String, deep: Int): Dependency<List<JClass>> {
         val target = getTargetClass(module, name)
         val callees = classDependenceesService.findDependencees(target, deep)
@@ -35,6 +39,11 @@ class ClassService {
             throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
         }
         return target
+    }
+
+    fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): Dependency<List<JClass>> {
+        val targetClass = getTargetClass(module, name)[0]
+        return classInvokeService.findInvokes(targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
 }

@@ -25,6 +25,13 @@ interface JClassRepository {
 
     fun getMethodsById(id: String): List<String>
 
+    fun findClassParents(name: String?, module: String?): List<PropsDependency<String>>
+
+    fun findClassImplements(name: String?, module: String?): List<PropsDependency<String>>
+
+    fun findCallees(name: String?, module: String?): List<PropsDependency<String>>
+
+    fun findCallers(name: String?, module: String?): List<PropsDependency<String>>
 }
 
 class FullName(val name: String, val module: String) {

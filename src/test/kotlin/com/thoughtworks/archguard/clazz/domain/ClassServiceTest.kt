@@ -3,6 +3,8 @@ package com.thoughtworks.archguard.clazz.domain
 import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
+import com.thoughtworks.archguard.clazz.domain.service.ClassInvokeService
+import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -13,13 +15,19 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ClassServiceTest {
+
     @InjectMockKs
     var service = ClassService()
 
     @MockK
+    private lateinit var classInvokeService: ClassInvokeService
+
+    @MockK
     lateinit var classDependenceesService: ClassDependenceesService
+
     @MockK
     lateinit var classDependencerService: ClassDependencerService
+
     @MockK
     lateinit var repo: JClassRepository
 
@@ -38,7 +46,7 @@ class ClassServiceTest {
         //when
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { classDependenceesService.findDependencees(any(), any()) } returns listOf(dependencee)
-        every { classDependencerService.findDependencers( any(), any()) } returns listOf(dependencer)
+        every { classDependencerService.findDependencers(any(), any()) } returns listOf(dependencer)
 
         val classDependencies = service.findDependencies("", targetName, 1)
         //then
@@ -46,5 +54,24 @@ class ClassServiceTest {
         assertThat(classDependencies.callee.size).isEqualTo(1)
         assertThat(classDependencies.caller[0]).isEqualToComparingFieldByField(dependencer)
         assertThat(classDependencies.callee[0]).isEqualToComparingFieldByField(dependencee)
+    }
+
+    @Test
+    fun `should get class invokes`() {
+        //given
+        val targetName = "clazz"
+        val module = ""
+        val target = JClass("1", targetName, module)
+        val deep = 3
+        val needIncludeImpl = true
+        val dependency = Dependency<List<JClass>>(listOf(), listOf())
+        //when
+        every { repo.getJClassByName(targetName) } returns listOf(target)
+        every {
+            classInvokeService.findInvokes(target, deep, deep, needIncludeImpl)
+        } returns dependency
+        val invokes = service.findInvokes(module, targetName, deep, deep, needIncludeImpl)
+        //then
+        assertThat(invokes).isEqualToComparingFieldByField(dependency)
     }
 }
