@@ -15,17 +15,21 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val j
 
 
     fun getHttpRequests(): List<HttpRequest> {
-        val httpRequestMethods = mutableListOf<HttpRequest>()
-        httpRequestMethods.addAll(analyzeRequestMethod("RequestMapping"))
-        httpRequestMethods.addAll(analyzeRequestMethod("GetMapping",  RequestMethod.GET.name))
-        httpRequestMethods.addAll(analyzeRequestMethod("PutMapping", RequestMethod.PUT.name))
-        httpRequestMethods.addAll(analyzeRequestMethod("PostMapping", RequestMethod.POST.name))
-        httpRequestMethods.addAll(analyzeRequestMethod("DeleteMapping", RequestMethod.DELETE.name))
 
-        val httpRequestClasses = analyzeRequestClass()
+        val httpRequestMethods = analyzeRequestMethods()
+        val httpRequestClasses = analyzeRequestClasses()
 
         margeHttpRequestClassToMethod(httpRequestMethods, httpRequestClasses)
 
+        return httpRequestMethods
+    }
+
+    private fun analyzeRequestMethods(): List<HttpRequest>{
+        val httpRequestMethods = mutableListOf<HttpRequest>()
+        val requestMethodMap = mapOf("RequestMapping" to null, "GetMapping" to RequestMethod.GET.name, "PutMapping" to RequestMethod.PUT.name, "PostMapping" to RequestMethod.POST.name, "DeleteMapping" to RequestMethod.DELETE.name)
+        for ((key, value) in requestMethodMap){
+            httpRequestMethods.addAll(analyzeRequestMethod(key, value))
+        }
         return httpRequestMethods
     }
 
@@ -36,19 +40,20 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val j
 
     private fun applyDefaultValues(values: Map<String, String>?, method: String?): Map<String, String> {
         val defaultValues = values.orEmpty()
-        method?: return defaultValues
-        return defaultValues.plus(mapOf("method" to  objectMapper.writeValueAsString(listOf(listOf("", method)))))
+        method ?: return defaultValues
+        return defaultValues.plus(mapOf("method" to objectMapper.writeValueAsString(listOf(listOf("", method)))))
     }
 
-    private fun analyzeRequestClass(): List<HttpRequest> {
+    private fun analyzeRequestClasses(): List<HttpRequest> {
         return jAnnotationRepository.getJAnnotationWithValueByName("RequestMapping").filter { it.targetType == ElementType.TYPE.name }.map { HttpRequest(it.targetId, HttpRequestArg(it.values.orEmpty())) }.toList()
     }
 
     private fun margeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
-        for (httpRequestClass in httpRequestClasses){
+        for (httpRequestClass in httpRequestClasses) {
             val methods = jClassRepository.getMethodsById(httpRequestClass.targetId)
-            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.path = margePath(httpRequestClass.arg.path, it.arg.path) } }
+            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.path = margePath(httpRequestClass.arg.path, it.arg.path) }
         }
+    }
 
     private fun margePath(basePaths: List<String>, paths: List<String>): List<String> {
         val finalPaths = mutableListOf<String>()
