@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.domain.PropsDependency
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,18 +20,17 @@ class ClassInvokeService {
         if (deep == 0) {
             return
         }
-        var implements = listOf<PropsDependency<String>>()
+        var implements = listOf<JClass>()
         if (needIncludeImpl) {
             implements = repo.findClassImplements(target.name, target.module)
         }
-        target.implements = implements.map { repo.getJClassByName(it.callee)[0] }
-        val callees = repo.findCallees(target.name, target.module)
-        target.callees = callees.map { Pair(repo.getJClassByName(it.callee)[0], it.count) }
+        target.implements = implements
+        target.callees = repo.findCallees(target.name, target.module)
         if (deep == 1) {
             return
         } else {
             target.implements.map { findClassCallees(it, deep - 1, needIncludeImpl) }
-            target.callees.map { findClassCallees(it.first, deep - 1, needIncludeImpl) }
+            target.callees.map { findClassCallees(it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 
@@ -42,14 +39,12 @@ class ClassInvokeService {
             return
         }
         target.parents = repo.findClassParents(target.name, target.module)
-                .map { repo.getJClassByName(it.caller)[0] }
-        val callers = repo.findCallers(target.name, target.module)
-        target.callers = callers.map { Pair(repo.getJClassByName(it.caller)[0], it.count) }
+        target.callers = repo.findCallers(target.name, target.module)
         if (deep == 1) {
             return
         } else {
             target.parents.map { findClassCallers(it, deep - 1, needIncludeImpl) }
-            target.callers.map { findClassCallers(it.first, deep - 1, needIncludeImpl) }
+            target.callers.map { findClassCallers(it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 

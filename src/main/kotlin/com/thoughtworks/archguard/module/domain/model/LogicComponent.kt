@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 abstract class LogicComponent {
     open fun add(logicComponent: LogicComponent) {
         throw RuntimeException("Not Impl in abstract class or leaf node.")
@@ -9,6 +11,7 @@ abstract class LogicComponent {
         throw RuntimeException("Not Impl in abstract class or leaf node.")
     }
 
+    @JsonIgnore
     open fun getSubLogicComponent(): List<LogicComponent> {
         throw RuntimeException("Not Impl in abstract class or leaf node.")
     }

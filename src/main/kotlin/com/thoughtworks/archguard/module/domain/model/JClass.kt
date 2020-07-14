@@ -1,8 +1,10 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.thoughtworks.archguard.clazz.domain.ClassRelation
+
 class JClass(val name: String, val module: String) : LogicComponent() {
-    var callees: List<Pair<JClass, Int>> = ArrayList()
-    var callers: List<Pair<JClass, Int>> = ArrayList()
+    var callees: List<ClassRelation> = ArrayList()
+    var callers: List<ClassRelation> = ArrayList()
     var parents: List<JClass> = ArrayList()
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()

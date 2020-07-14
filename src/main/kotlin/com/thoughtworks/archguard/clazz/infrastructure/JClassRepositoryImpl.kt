@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.clazz.infrastructure
 
+import com.thoughtworks.archguard.clazz.domain.ClassRelation
+import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.domain.PropsDependency
-import com.thoughtworks.archguard.clazz.domain.PropsDependencyDTO
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
@@ -44,70 +44,80 @@ class JClassRepositoryImpl : JClassRepository {
         }.map { it.toJClass() }
     }
 
-    override fun findClassParents(name: String?, module: String?): List<PropsDependency<String>> {
+    override fun findClassParents(name: String?, module: String?): List<JClass> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and c.module='$module'"
         }
-        val sql = "SELECT DISTINCT p.name from JClass c,`_ClassParent` cp,JClass p" +
+        val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
+                "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           AND c.name = '$name' $moduleFilter"
-        return jdbi.withHandle<List<String>, Nothing> {
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
-                    .mapTo(String::class.java)
+                    .mapTo(JClassDto::class.java)
                     .list()
-        }.map { PropsDependency(name ?: "", it, 1, mapOf(Pair("parent", true))) }
+        }.map { it.toJClass() }
     }
 
-    override fun findClassImplements(name: String?, module: String?): List<PropsDependency<String>> {
+    override fun findClassImplements(name: String?, module: String?): List<JClass> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and p.module='$module'"
         }
-        val sql = "SELECT DISTINCT c.name from JClass c,`_ClassParent` cp,JClass p" +
+        val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
+                "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           AND p.name = '$name' $moduleFilter"
-        return jdbi.withHandle<List<String>, Nothing> {
+        return jdbi.withHandle<List<JClassDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
-                    .mapTo(String::class.java)
+                    .mapTo(JClassDto::class.java)
                     .list()
-        }.map { PropsDependency(it, name ?: "", 1, mapOf(Pair("implements", true))) }
+        }.map { it.toJClass() }
     }
 
-    override fun findCallees(name: String?, module: String?): List<PropsDependency<String>> {
+    override fun findCallees(name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT a.clzname as caller, b.clzname as callee, COUNT(1) as count from JMethod a,`_MethodCallees` cl,JMethod b" +
+        val sql = "SELECT b.clzname as clzname, COUNT(1) as count" +
+                "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
                 "                     AND b.clzname <> '$name'" +
                 "                     GROUP BY b.clzname"
-        return jdbi.withHandle<List<PropsDependencyDTO>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(PropsDependencyDTO::class.java))
+        return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
-                    .mapTo(PropsDependencyDTO::class.java)
+                    .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { it.toPropsDependency(mapOf()) }
+        }.map { toClassRelation(it) }
     }
 
-    override fun findCallers(name: String?, module: String?): List<PropsDependency<String>> {
+    override fun findCallers(name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT a.clzname as caller, b.clzname as callee, COUNT(1) as count from JMethod a,`_MethodCallees` cl,JMethod b" +
+        val sql = "SELECT a.clzname as clzname, COUNT(1) as count " +
+                "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
                 "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname"
-        return jdbi.withHandle<List<PropsDependencyDTO>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(PropsDependencyDTO::class.java))
+        return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
-                    .mapTo(PropsDependencyDTO::class.java)
+                    .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { it.toPropsDependency(mapOf()) }
+        }.map { toClassRelation(it) }
+    }
+
+    private fun toClassRelation(it: ClassRelationDTO): ClassRelation {
+        return ClassRelation(getJClassByName(it.clzname)[0], it.count)
     }
 
     override fun findDependencers(id: String?): List<JClass> {
