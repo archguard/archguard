@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.module.common.JsonUtils
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -11,7 +11,6 @@ import java.lang.annotation.ElementType
 @Service
 class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val jClassRepository: JClassRepository) {
     private val log = LoggerFactory.getLogger(HttpRequestService::class.java)
-    private val objectMapper = ObjectMapper()
 
 
     fun getHttpRequests(): List<HttpRequest> {
@@ -41,7 +40,7 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val j
     private fun applyDefaultValues(values: Map<String, String>?, method: String?): Map<String, String> {
         val defaultValues = values.orEmpty()
         method ?: return defaultValues
-        return defaultValues.plus(mapOf("method" to objectMapper.writeValueAsString(listOf(listOf("", method)))))
+        return defaultValues.plus(mapOf("method" to JsonUtils.obj2json(listOf(listOf("", method)))))
     }
 
     private fun analyzeRequestClasses(): List<HttpRequest> {
