@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.module.domain
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -47,9 +47,9 @@ internal class ReportServiceImplTest {
     @Test
     fun `should get module coupling`() {
         //given
-        val element = LogicModule("id1", "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
-        val element2 = LogicModule("id2", "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
-        val element3 = LogicModule("id3", "module3", listOf(ModuleMember.create("com.test5"), ModuleMember.create("com.test6")))
+        val element = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
+        val element2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
+        val element3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
         val dependency1 = Dependency(JClass.create("com.test1.clazz"), JClass.create("com.test3.clazz"))
         val dependency2 = Dependency(JClass.create("com.test4.clazz"), JClass.create("com.test2.clazz"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
@@ -66,8 +66,8 @@ internal class ReportServiceImplTest {
     @Test
     fun `should be zero when no dependence`() {
         //given
-        val element = LogicModule("id1", "module1", listOf(ModuleMember.create("com.test1"), ModuleMember.create("com.test2")))
-        val element2 = LogicModule("id2", "module2", listOf(ModuleMember.create("com.test3"), ModuleMember.create("com.test4")))
+        val element = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
+        val element2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
         every { jClassRepository.getAllClassDependency(any()) } returns listOf()
         //when

@@ -4,9 +4,9 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
@@ -117,7 +117,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
 }
 
-fun generateTableSqlTemplateWithModuleModules(members: List<ModuleMember>): String {
+fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): String {
     var tableTemplate = "select * from JMethod where ("
     val filterConditions = ArrayList<String>()
     members.forEach { s ->

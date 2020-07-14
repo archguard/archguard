@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure.dto
 
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import java.util.*
 
 @Deprecated(message = "we are going to replace with LogicModule")
@@ -11,7 +11,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         if (id == null) {
             id = UUID.randomUUID().toString()
         }
-        val logicModule = LogicModule(id!!, name, members.map { ModuleMember.create(it) })
+        val logicModule = LogicModule(id!!, name, members.map { LogicComponent.createLeaf(it) })
         logicModule.status = status
         return logicModule
     }
@@ -27,7 +27,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
 class LogicModuleDTO(val id: String, val name: String, val members: String, private val status: LogicModuleStatus) {
     fun toLogicModule(): LogicModule {
         val logicModule = LogicModule(id, name, members.split(',').sorted()
-                .map { m -> ModuleMember.create(m) })
+                .map { m -> LogicComponent.createLeaf(m) })
         logicModule.status = status
         return logicModule
     }

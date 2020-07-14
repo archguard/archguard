@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
 import com.thoughtworks.archguard.module.infrastructure.generateTableSqlTemplateWithModuleModules
@@ -97,7 +97,7 @@ class JClassRepositoryImpl : JClassRepository {
         return this.getAll().filter { it.module != "null" }
     }
 
-    override fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>> {
+    override fun getAllClassDependency(members: List<LogicComponent>): List<Dependency<JClass>> {
         val tableTemplate = generateTableSqlTemplateWithModuleModules(members)
 
         val sql = "select a.module as moduleCaller, a.clzname as classCaller, " +

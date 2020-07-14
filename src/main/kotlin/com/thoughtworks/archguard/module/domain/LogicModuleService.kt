@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -84,7 +84,7 @@ class LogicModuleService {
         val id = jClass.id
         val moduleName = jClass.module
         val parentClassIds = logicModuleRepository.getParentClassId(id!!)
-        val membersGeneratedByParentClasses: MutableList<ModuleMember> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
+        val membersGeneratedByParentClasses: MutableList<LogicComponent> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
                 .filter { j -> j.isInterface() }
@@ -95,21 +95,21 @@ class LogicModuleService {
     }
 }
 
-fun getModule(modules: List<LogicModule>, moduleMember: ModuleMember): List<LogicModule> {
-    val callerByFullMatch = fullMatch(moduleMember, modules)
+fun getModule(modules: List<LogicModule>, logicComponent: LogicComponent): List<LogicModule> {
+    val callerByFullMatch = fullMatch(logicComponent, modules)
     if (callerByFullMatch.isNotEmpty()) {
         return callerByFullMatch
     }
-    return startsWithMatch(moduleMember, modules)
+    return startsWithMatch(logicComponent, modules)
 }
 
-private fun fullMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
+private fun fullMatch(jClass: LogicComponent, modules: List<LogicModule>): List<LogicModule> {
     return modules.filter { logicModule ->
         logicModule.members.any { moduleMember -> jClass.getFullName() == moduleMember.getFullName() }
     }
 }
 
-fun startsWithMatch(jClass: ModuleMember, modules: List<LogicModule>): List<LogicModule> {
+fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>): List<LogicModule> {
     var maxMatchSize = 0
     val matchModule: MutableList<LogicModule> = mutableListOf()
     for (logicModule in modules) {

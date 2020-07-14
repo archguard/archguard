@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.ModuleMember
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +23,6 @@ internal class LogicModuleRepositoryImplTest {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).usingRecursiveComparison().isEqualTo(
-                LogicModule("id1", "dubbo-provider", listOf(ModuleMember.create("dubbo-provider"))))
+                LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider"))))
     }
 }

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.model
 
-class JClass(val name: String, val module: String) : ModuleMember {
+class JClass(val name: String, val module: String) : LogicComponent() {
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
     var id: String? = null

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.model
 
-class SubModule(val name: String) : ModuleMember {
+class SubModule(val name: String) : LogicComponent() {
     override fun getFullName(): String {
         return name
     }
