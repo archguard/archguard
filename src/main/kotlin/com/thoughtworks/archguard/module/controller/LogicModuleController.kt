@@ -40,10 +40,6 @@ class LogicModuleController {
     private lateinit var graphServiceDubbo: GraphService
 
     @Autowired
-    @Qualifier("FeignClient")
-    private lateinit var graphServiceFeignClient: GraphService
-
-    @Autowired
     private lateinit var reportService: ReportService
 
     @Autowired
@@ -113,12 +109,6 @@ class LogicModuleController {
     }
 
 
-    @GetMapping("/graph-feign-client")
-    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
-    fun getLogicModuleGraphFeignClientLegacy(): ModuleGraph {
-        return graphServiceFeignClient.getLogicModuleGraphLegacy()
-    }
-
     @GetMapping("/graph-new")
     fun getLogicModuleGraph(): Graph<LogicModule> {
         return graphService.getLogicModuleGraph()
@@ -127,12 +117,6 @@ class LogicModuleController {
     @GetMapping("/graph-dubbo-new")
     fun getLogicModuleGraphDubbo(): Graph<LogicModule> {
         return graphServiceDubbo.getLogicModuleGraph()
-    }
-
-
-    @GetMapping("/graph-feign-client-new")
-    fun getLogicModuleGraphFeignClient(): Graph<LogicModule> {
-        return graphServiceFeignClient.getLogicModuleGraph()
     }
 
     @GetMapping("/coupling-by-class")
