@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.clazz.infrastructure
 
-import com.thoughtworks.archguard.clazz.domain.PropsDependency
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.domain.PropsDependency
 import com.thoughtworks.archguard.clazz.domain.PropsDependencyDTO
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
@@ -47,33 +47,31 @@ class JClassRepositoryImpl : JClassRepository {
     override fun findClassParents(name: String?, module: String?): List<PropsDependency<String>> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
-            moduleFilter = "and p.module='$module'"
+            moduleFilter = "and c.module='$module'"
         }
-        val sql = "SELECT DISTINCT c.name from JClass c,`_ClassParent` cp,JClass p" +
+        val sql = "SELECT DISTINCT p.name from JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND p.name = $name $moduleFilter"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+                "           AND c.name = '$name' $moduleFilter"
+        return jdbi.withHandle<List<String>, Nothing> {
             it.createQuery(sql)
-                    .mapTo(JClassDto::class.java)
+                    .mapTo(String::class.java)
                     .list()
-        }.map { PropsDependency(name ?: "", it.name, 1, mapOf(Pair("implements", true))) }
+        }.map { PropsDependency(name ?: "", it, 1, mapOf(Pair("parent", true))) }
     }
 
     override fun findClassImplements(name: String?, module: String?): List<PropsDependency<String>> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
-            moduleFilter = "and c.module='$module'"
+            moduleFilter = "and p.module='$module'"
         }
-        val sql = "SELECT DISTINCT p.name from JClass c,`_ClassParent` cp,JClass p" +
+        val sql = "SELECT DISTINCT c.name from JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND c.name = $name $moduleFilter"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+                "           AND p.name = '$name' $moduleFilter"
+        return jdbi.withHandle<List<String>, Nothing> {
             it.createQuery(sql)
-                    .mapTo(JClassDto::class.java)
+                    .mapTo(String::class.java)
                     .list()
-        }.map { PropsDependency(it.name, name ?: "", 1, mapOf(Pair("parent", true))) }
+        }.map { PropsDependency(it, name ?: "", 1, mapOf(Pair("implements", true))) }
     }
 
     override fun findCallees(name: String?, module: String?): List<PropsDependency<String>> {
@@ -81,10 +79,10 @@ class JClassRepositoryImpl : JClassRepository {
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT b.clzname, COUNT(1) from JMethod a,`_MethodCallees` cl,JMethod b" +
+        val sql = "SELECT a.clzname as caller, b.clzname as callee, COUNT(1) as count from JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
-                "                     AND a.clzname = $name $moduleFilter" +
-                "                     AND b.clzname <> $name" +
+                "                     AND a.clzname = '$name' $moduleFilter" +
+                "                     AND b.clzname <> '$name'" +
                 "                     GROUP BY b.clzname"
         return jdbi.withHandle<List<PropsDependencyDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(PropsDependencyDTO::class.java))
@@ -99,10 +97,10 @@ class JClassRepositoryImpl : JClassRepository {
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT a.clzname, COUNT(1) from JMethod a,`_MethodCallees` cl,JMethod b" +
+        val sql = "SELECT a.clzname as caller, b.clzname as callee, COUNT(1) as count from JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
-                "                     AND a.clzname = $name $moduleFilter" +
-                "                     AND b.clzname <> $name" +
+                "                     AND b.clzname = '$name' $moduleFilter" +
+                "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname"
         return jdbi.withHandle<List<PropsDependencyDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(PropsDependencyDTO::class.java))

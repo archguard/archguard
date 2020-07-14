@@ -12,10 +12,10 @@ class ClassInvokeService {
     @Autowired
     private lateinit var repo: JClassRepository
     fun findInvokes(target: JClass, callerDeep: Int, calleeDeep: Int,
-                    needIncludeImpl: Boolean): Dependency<List<JClass>> {
+                    needIncludeImpl: Boolean): JClass {
         findClassCallers(target, callerDeep, needIncludeImpl)
         findClassCallees(target, calleeDeep, needIncludeImpl)
-        return Dependency(listOf(), listOf())
+        return target
     }
 
     private fun findClassCallees(target: JClass, deep: Int, needIncludeImpl: Boolean) {
@@ -41,11 +41,8 @@ class ClassInvokeService {
         if (deep == 0) {
             return
         }
-        var parents = listOf<PropsDependency<String>>()
-        if (needIncludeImpl) {
-            parents = repo.findClassParents(target.name, target.module)
-        }
-        target.parents = parents.map { repo.getJClassByName(it.caller)[0] }
+        target.parents = repo.findClassParents(target.name, target.module)
+                .map { repo.getJClassByName(it.caller)[0] }
         val callers = repo.findCallers(target.name, target.module)
         target.callers = callers.map { Pair(repo.getJClassByName(it.caller)[0], it.count) }
         if (deep == 1) {

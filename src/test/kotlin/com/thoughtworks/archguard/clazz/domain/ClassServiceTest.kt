@@ -64,14 +64,13 @@ class ClassServiceTest {
         val target = JClass("1", targetName, module)
         val deep = 3
         val needIncludeImpl = true
-        val dependency = Dependency<List<JClass>>(listOf(), listOf())
         //when
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every {
             classInvokeService.findInvokes(target, deep, deep, needIncludeImpl)
-        } returns dependency
+        } returns target
         val invokes = service.findInvokes(module, targetName, deep, deep, needIncludeImpl)
         //then
-        assertThat(invokes).isEqualToComparingFieldByField(dependency)
+        assertThat(invokes).isEqualToComparingFieldByField(target)
     }
 }

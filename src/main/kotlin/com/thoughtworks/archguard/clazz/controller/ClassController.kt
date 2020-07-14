@@ -30,7 +30,7 @@ class ClassController {
                    @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                    @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
                    @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
-                   @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?) {
-        service.findInvokes(module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
+                   @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?): JClass {
+        return service.findInvokes(module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
     }
 }

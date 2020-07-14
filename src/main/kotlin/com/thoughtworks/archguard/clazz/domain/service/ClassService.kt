@@ -41,7 +41,7 @@ class ClassService {
         return target
     }
 
-    fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): Dependency<List<JClass>> {
+    fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
         val targetClass = getTargetClass(module, name)[0]
         return classInvokeService.findInvokes(targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
