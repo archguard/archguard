@@ -11,7 +11,9 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         if (id == null) {
             id = UUID.randomUUID().toString()
         }
-        return LogicModule(id!!, name, members.map { ModuleMember.create(it) }, status)
+        val logicModule = LogicModule(id!!, name, members.map { ModuleMember.create(it) })
+        logicModule.status = status
+        return logicModule
     }
 
     companion object {
@@ -22,9 +24,11 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
 }
 
 // For Database
-class LogicModuleDTO(val id: String, val name: String, val members: String, val status: LogicModuleStatus) {
+class LogicModuleDTO(val id: String, val name: String, val members: String, private val status: LogicModuleStatus) {
     fun toLogicModule(): LogicModule {
-        return LogicModule(id, name, members.split(',').sorted()
-                .map { m -> ModuleMember.create(m) }, status)
+        val logicModule = LogicModule(id, name, members.split(',').sorted()
+                .map { m -> ModuleMember.create(m) })
+        logicModule.status = status
+        return logicModule
     }
 }
