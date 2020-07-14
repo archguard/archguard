@@ -1,5 +1,8 @@
 package com.thoughtworks.archguard.module.domain.model
 
+/**
+ * 只有name信息的Module Graph
+ */
 class ModuleStore {
 
     private val moduleNodes: ArrayList<ModuleNode> = ArrayList()
