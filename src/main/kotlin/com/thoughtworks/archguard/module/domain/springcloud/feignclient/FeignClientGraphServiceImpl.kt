@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 @Qualifier("FeignClient")
 class FeignClientGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository, val feignClientService: FeignClientService) : DefaultGraphService(logicModuleRepository, jClassRepository) {
-    private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
+    private val log = LoggerFactory.getLogger(FeignClientGraphServiceImpl::class.java)
 
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
         val callerClass = jClassDependency.caller
