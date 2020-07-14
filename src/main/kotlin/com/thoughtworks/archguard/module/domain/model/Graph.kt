@@ -10,11 +10,16 @@ class GraphStore<T> {
     private var index: AtomicInteger = AtomicInteger(0)
 
     private fun addNode(node: T): NodeWrapper<T> {
+        if (containsNode(node)) {
+            return nodes.first { it.node.node == node }
+        }
         val i = index.incrementAndGet()
         val nodeWrapper = NodeWrapper(i, Node(node))
         nodes.add(nodeWrapper)
         return nodeWrapper
     }
+
+    private fun containsNode(node: T) = nodes.map { it.node.node }.contains(node)
 
     private fun addEdge(a: NodeWrapper<T>, b: NodeWrapper<T>, num: Int) {
         edges.add(Edge(a, b, num))
