@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -8,23 +9,27 @@ import org.springframework.web.bind.annotation.RequestMethod
 import java.lang.annotation.ElementType
 
 @Service
-class HttpRequestService(val jAnnotationRepository: JAnnotationRepository) {
+class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val jClassRepository: JClassRepository) {
     private val log = LoggerFactory.getLogger(HttpRequestService::class.java)
     private val objectMapper = ObjectMapper()
 
 
     fun getHttpRequests(): List<HttpRequest> {
-        val httpRequests = mutableListOf<HttpRequest>()
-        httpRequests.addAll(analyzeRequestMapping("RequestMapping"))
-        httpRequests.addAll(analyzeRequestMapping("GetMapping",  RequestMethod.GET.name))
-        httpRequests.addAll(analyzeRequestMapping("PutMapping", RequestMethod.PUT.name))
-        httpRequests.addAll(analyzeRequestMapping("PostMapping", RequestMethod.POST.name))
-        httpRequests.addAll(analyzeRequestMapping("DeleteMapping", RequestMethod.DELETE.name))
+        val httpRequestMethods = mutableListOf<HttpRequest>()
+        httpRequestMethods.addAll(analyzeRequestMethod("RequestMapping"))
+        httpRequestMethods.addAll(analyzeRequestMethod("GetMapping",  RequestMethod.GET.name))
+        httpRequestMethods.addAll(analyzeRequestMethod("PutMapping", RequestMethod.PUT.name))
+        httpRequestMethods.addAll(analyzeRequestMethod("PostMapping", RequestMethod.POST.name))
+        httpRequestMethods.addAll(analyzeRequestMethod("DeleteMapping", RequestMethod.DELETE.name))
 
-        return httpRequests
+        val httpRequestClasses = analyzeRequestClass()
+
+        margeHttpRequestClassToMethod(httpRequestMethods, httpRequestClasses)
+
+        return httpRequestMethods
     }
 
-    private fun analyzeRequestMapping(annotationName: String, defaultMethod: String? = null): List<HttpRequest> {
+    private fun analyzeRequestMethod(annotationName: String, defaultMethod: String? = null): List<HttpRequest> {
         val annotations = jAnnotationRepository.getJAnnotationWithValueByName(annotationName).filter { it.targetType == ElementType.METHOD.name }
         return annotations.map { HttpRequest(it.targetId, HttpRequestArg(applyDefaultValues(it.values, defaultMethod))) }.toList()
     }
@@ -34,4 +39,25 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository) {
         method?: return defaultValues
         return defaultValues.plus(mapOf("method" to  objectMapper.writeValueAsString(listOf(listOf("", method)))))
     }
+
+    private fun analyzeRequestClass(): List<HttpRequest> {
+        return jAnnotationRepository.getJAnnotationWithValueByName("RequestMapping").filter { it.targetType == ElementType.TYPE.name }.map { HttpRequest(it.targetId, HttpRequestArg(it.values.orEmpty())) }.toList()
+    }
+
+    private fun margeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
+        for (httpRequestClass in httpRequestClasses){
+            val methods = jClassRepository.getMethodsById(httpRequestClass.targetId)
+            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.path = margePath(httpRequestClass.arg.path, it.arg.path) } }
+        }
+
+    private fun margePath(basePaths: List<String>, paths: List<String>): List<String> {
+        val finalPaths = mutableListOf<String>()
+        for (basePath in basePaths) {
+            for (path in paths) {
+                finalPaths.add(basePath + path)
+            }
+        }
+        return finalPaths
+    }
+
 }

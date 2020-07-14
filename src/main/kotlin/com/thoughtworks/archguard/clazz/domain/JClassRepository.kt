@@ -23,6 +23,8 @@ interface JClassRepository {
 
     fun getAllClassDependency(members: List<ModuleMember>): List<Dependency<JClass>>
 
+    fun getMethodsById(id: String): List<String>
+
 }
 
 class FullName(val name: String, val module: String) {

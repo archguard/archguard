@@ -135,4 +135,13 @@ class JClassRepositoryImpl : JClassRepository {
         }
         return matchedJClass[0]
     }
+
+    override fun getMethodsById(id: String): List<String> {
+        val sql = "select b from _ClassMethods where a='$id'"
+        return jdbi.withHandle<List<String>, Nothing> {
+            it.createQuery(sql)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
 }
