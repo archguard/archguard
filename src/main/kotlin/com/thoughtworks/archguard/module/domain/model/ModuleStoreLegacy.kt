@@ -3,7 +3,8 @@ package com.thoughtworks.archguard.module.domain.model
 /**
  * 只有name信息的Module Graph
  */
-class ModuleStore {
+@Deprecated(message = "we are going to replace with Graph")
+class ModuleStoreLegacy {
 
     private val moduleNodes: ArrayList<ModuleNode> = ArrayList()
 

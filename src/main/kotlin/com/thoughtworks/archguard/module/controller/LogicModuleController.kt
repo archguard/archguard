@@ -6,6 +6,8 @@ import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
+import com.thoughtworks.archguard.module.domain.model.Graph
+import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
@@ -99,18 +101,37 @@ class LogicModuleController {
     }
 
     @GetMapping("/graph")
-    fun getLogicModuleGraph(): ModuleGraph {
-        return graphService.getLogicModuleGraph()
+    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
+    fun getLogicModuleGraphLegacy(): ModuleGraph {
+        return graphService.getLogicModuleGraphLegacy()
     }
 
     @GetMapping("/graph-dubbo")
-    fun getLogicModuleGraphDubbo(): ModuleGraph {
-        return graphServiceDubbo.getLogicModuleGraph()
+    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
+    fun getLogicModuleGraphDubboLegacy(): ModuleGraph {
+        return graphServiceDubbo.getLogicModuleGraphLegacy()
     }
 
 
     @GetMapping("/graph-feign-client")
-    fun getLogicModuleGraphFeignClient(): ModuleGraph {
+    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
+    fun getLogicModuleGraphFeignClientLegacy(): ModuleGraph {
+        return graphServiceFeignClient.getLogicModuleGraphLegacy()
+    }
+
+    @GetMapping("/graph-new")
+    fun getLogicModuleGraph(): Graph<LogicModule> {
+        return graphService.getLogicModuleGraph()
+    }
+
+    @GetMapping("/graph-dubbo-new")
+    fun getLogicModuleGraphDubbo(): Graph<LogicModule> {
+        return graphServiceDubbo.getLogicModuleGraph()
+    }
+
+
+    @GetMapping("/graph-feign-client-new")
+    fun getLogicModuleGraphFeignClient(): Graph<LogicModule> {
         return graphServiceFeignClient.getLogicModuleGraph()
     }
 

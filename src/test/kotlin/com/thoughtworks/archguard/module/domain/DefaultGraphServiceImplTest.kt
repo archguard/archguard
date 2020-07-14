@@ -44,7 +44,7 @@ internal class DefaultGraphServiceImplTest {
         every { jClassRepository.getAllClassDependency(any()) } returns dependencies
 
         // when
-        val moduleGraph = service.getLogicModuleGraph()
+        val moduleGraph = service.getLogicModuleGraphLegacy()
 
         // then
         assertThat(moduleGraph.nodes.size).isEqualTo(3)

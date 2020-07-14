@@ -2,19 +2,21 @@ package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.Graph
+import com.thoughtworks.archguard.module.domain.model.GraphStore
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
-import com.thoughtworks.archguard.module.domain.model.ModuleStore
+import com.thoughtworks.archguard.module.domain.model.ModuleStoreLegacy
 import org.slf4j.LoggerFactory
 
 abstract class DefaultGraphService(val logicModuleRepository: LogicModuleRepository, val jClassRepository: JClassRepository) : GraphService {
     private val log = LoggerFactory.getLogger(DefaultGraphService::class.java)
 
-    override fun getLogicModuleGraph(): ModuleGraph {
+    override fun getLogicModuleGraphLegacy(): ModuleGraph {
         val moduleDependencies = getModuleDependency()
 
-        val moduleStore: ModuleStore = ModuleStore()
+        val moduleStore: ModuleStoreLegacy = ModuleStoreLegacy()
         moduleDependencies
                 .groupBy { it.caller }
                 .forEach {
@@ -23,6 +25,20 @@ abstract class DefaultGraphService(val logicModuleRepository: LogicModuleReposit
                 }
 
         return moduleStore.getModuleGraph()
+    }
+
+    override fun getLogicModuleGraph(): Graph<LogicModule> {
+        val moduleDependencies = getModuleDependency()
+
+        val moduleStore = GraphStore<LogicModule>()
+        moduleDependencies
+                .groupBy { it.caller }
+                .forEach {
+                    it.value.groupBy { i -> i.callee }
+                            .forEach { i -> moduleStore.addEdge(it.key, i.key, i.value.size) }
+                }
+
+        return moduleStore.getGraph()
     }
 
     private fun getModuleDependency(): List<Dependency<LogicModule>> {
