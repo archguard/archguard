@@ -47,4 +47,14 @@ class ConfigureRepositoryImpl : ConfigureRepository {
             handle.execute(sql)
         }
     }
+
+    override fun getConfiguresByType(type: String): List<NodeConfigure> {
+        val sql = "SELECT id, type, `key`, value, `order` FROM Configure WHERE type='$type'"
+        return jdbi.withHandle<List<NodeConfigure>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(NodeConfigure::class.java))
+            it.createQuery(sql)
+                    .mapTo(NodeConfigure::class.java)
+                    .list()
+        }
+    }
 }

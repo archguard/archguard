@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.config.domain
 
+import com.sun.org.apache.xpath.internal.operations.Bool
+import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -23,5 +25,15 @@ class ConfigureService {
 
     fun delete(id: String) {
         repo.delete(id)
+    }
+
+    fun isDisplayClass(className: String): Boolean {
+        val displayConfig = repo.getConfiguresByType("nodeDisplay").map { it.value } as MutableList
+        val hiddenConfig = repo.getConfiguresByType("nodeHidden").map { it.value } as MutableList
+        if (displayConfig.isEmpty()) {
+            displayConfig.add(".")
+        }
+        hiddenConfig.add("Test")
+        return displayConfig.any { className.contains(it) } && hiddenConfig.all { !className.contains(it) }
     }
 }

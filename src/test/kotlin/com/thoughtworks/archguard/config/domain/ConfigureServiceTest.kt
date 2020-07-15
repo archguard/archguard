@@ -11,7 +11,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ConfigureServiceTest {
+class ConfigureServiceTest {
     @InjectMockKs
     var service = ConfigureService()
 
@@ -19,12 +19,12 @@ internal class ConfigureServiceTest {
     lateinit var repo: ConfigureRepository
 
     @BeforeEach
-    internal fun setUp() {
+    fun setUp() {
         init(this)
     }
 
     @Test
-    internal fun `should get all configures`() {
+    fun `should get all configures`() {
         //given
         val configure = NodeConfigure("id", "nodeHidden", "clz", "21", 1)
         //when
@@ -36,7 +36,7 @@ internal class ConfigureServiceTest {
     }
 
     @Test
-    internal fun `should create configure`() {
+    fun `should create configure`() {
         //given
         val configure = NodeConfigure("id", "nodeHidden", "clz", "21", 1)
         //when
@@ -47,7 +47,7 @@ internal class ConfigureServiceTest {
     }
 
     @Test
-    internal fun `should update configure`() {
+    fun `should update configure`() {
         //given
         val id = "id"
         val configure = NodeConfigure(id, "nodeHidden", "clz", "21", 1)
@@ -59,7 +59,7 @@ internal class ConfigureServiceTest {
     }
 
     @Test
-    internal fun `should delete configure`() {
+    fun `should delete configure`() {
         //given
         val id = "id"
         //when
@@ -67,5 +67,26 @@ internal class ConfigureServiceTest {
         service.delete(id)
         //then
         verify { repo.delete(id) }
+    }
+
+    @Test
+    fun `should display class`() {
+        //given
+        //when
+        every { repo.getConfiguresByType("nodeDisplay") } returns listOf(
+                NodeConfigure("", "nodeDisplay", "clz", "com", 1),
+                NodeConfigure("", "nodeDisplay", "clz", "org", 1),
+                NodeConfigure("", "nodeDisplay", "clz", "common", 1))
+
+        every { repo.getConfiguresByType("nodeHidden") } returns listOf(
+                NodeConfigure("", "nodeHidden", "clz", "org.scalatest", 1))
+        //then
+        assert(service.isDisplayClass("common.domain.ConfigureService"))
+        assert(service.isDisplayClass("org.scalamock.scalatest.MockFactory"))
+        assert(!service.isDisplayClass("common.domain.ConfigureServiceTest"))
+        assert(!service.isDisplayClass("V"))
+        assert(!service.isDisplayClass("org.scalatest.FlatSpec"))
+        assert(!service.isDisplayClass("scala.concurrent.Future"))
+        assert(!service.isDisplayClass("java.lang.Integer"))
     }
 }

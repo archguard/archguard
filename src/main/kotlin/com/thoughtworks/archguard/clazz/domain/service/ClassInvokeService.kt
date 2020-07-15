@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service
 class ClassInvokeService {
     @Autowired
     private lateinit var repo: JClassRepository
+    @Autowired
+    private lateinit var configureService: ConfigureService
     fun findInvokes(target: JClass, callerDeep: Int, calleeDeep: Int,
                     needIncludeImpl: Boolean): JClass {
         findClassCallers(target, callerDeep, needIncludeImpl)
@@ -23,9 +26,11 @@ class ClassInvokeService {
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
             implements = repo.findClassImplements(target.name, target.module)
+                    .filter { configureService.isDisplayClass(it.name) }
         }
         target.implements = implements
         target.callees = repo.findCallees(target.name, target.module)
+                .filter { configureService.isDisplayClass(it.clazz.name) }
         if (deep == 1) {
             return
         } else {
@@ -39,7 +44,9 @@ class ClassInvokeService {
             return
         }
         target.parents = repo.findClassParents(target.name, target.module)
+                .filter { configureService.isDisplayClass(it.name) }
         target.callers = repo.findCallers(target.name, target.module)
+                .filter { configureService.isDisplayClass(it.clazz.name) }
         if (deep == 1) {
             return
         } else {
