@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethod
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
@@ -125,7 +125,7 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
             filterConditions.add("module = '${s.getFullName()}'")
         }
         if (s.getType() == ModuleMemberType.CLASS) {
-            val jclass = s as JClass
+            val jclass = s as JClassVO
             filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
             filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
         }
