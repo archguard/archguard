@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
@@ -182,7 +183,7 @@ class JClassRepositoryImpl : JClassRepository {
                 "b.module as moduleCallee, b.clzname as classCallee " +
                 "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
                 "where a.id = mc.a and b.id = mc.b"
-        val jClassDependencies = jdbi.withHandle<List<Dependency<JClass>>, Nothing> {
+        val jClassDependencies = jdbi.withHandle<List<Dependency<JClassVO>>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
             it.createQuery(sql)
                     .mapTo(JClassDependencyDto::class.java)
@@ -198,12 +199,14 @@ class JClassRepositoryImpl : JClassRepository {
 
         return jClassDependencies
                 .map {
-                    Dependency(updateJClassFields(it.caller, jClassesRelated) ?: it.caller,
-                            updateJClassFields(it.callee, jClassesRelated) ?: it.callee)
+                    Dependency(updateJClassFields(it.caller, jClassesRelated)
+                            ?: JClass("NOT_EXIST_ID", it.caller.name, it.caller.module),
+                            updateJClassFields(it.callee, jClassesRelated)
+                                    ?: JClass("NOT_EXIST_ID", it.callee.name, it.callee.module))
                 }
     }
 
-    private fun updateJClassFields(jClass: JClass, jClasses: List<JClass>): JClass? {
+    private fun updateJClassFields(jClass: JClassVO, jClasses: List<JClass>): JClass? {
         val matchedJClass = jClasses.filter { it -> it.name == jClass.name && it.module == jClass.module }
         if (matchedJClass.isEmpty()) {
             return null

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.model
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import org.slf4j.LoggerFactory
 
-class JClass(val name: String, val module: String) {
+class JClass(val id: String, val name: String, val module: String) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
     var callees: List<ClassRelation> = ArrayList()
@@ -12,12 +12,7 @@ class JClass(val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
-    lateinit var id: String
     var classType: ClazzType = ClazzType.NOT_DEFINED
-
-    constructor(id: String, name: String, module: String) : this(name, module) {
-        this.id = id
-    }
 
     fun isInterface(): Boolean {
         return classType == ClazzType.INTERFACE
