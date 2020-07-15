@@ -51,7 +51,7 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val s
     private fun margeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
         for (httpRequestClass in httpRequestClasses) {
             val methods = springCloudServiceRepository.getMethodIdsByClassId(httpRequestClass.targetId)
-            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.path = margePath(httpRequestClass.arg.path, it.arg.path) }
+            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.paths = margePath(httpRequestClass.arg.paths, it.arg.paths) }
         }
     }
 

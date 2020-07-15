@@ -47,11 +47,11 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
     }
     
     private fun margeFeignClientArgToMethod(feignClientArg: FeignClientArg, method: HttpRequest): HttpRequest{
-        return method.apply { arg.path = arg.path.map { feignClientArg.path + it }}
+        return method.apply { arg.paths = arg.paths.map { feignClientArg.path + it }}
     }
 
     private fun mapToMethod(caller: HttpRequest, callees: List<HttpRequest>): List<HttpRequest>{
-        return callees.filter { it.arg.path.intersect(caller.arg.path).isNotEmpty() && it.arg.method.intersect(caller.arg.method).isNotEmpty() }
+        return callees.filter { it.arg.paths.intersect(caller.arg.paths).isNotEmpty() && it.arg.methods.intersect(caller.arg.methods).isNotEmpty() }
     }
 
 

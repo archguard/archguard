@@ -45,8 +45,8 @@ class HttpRequestServiceTest {
         // then
         assertEquals(1, httpRequests.size)
         assertEquals("id1", httpRequests[0].targetId)
-        assertEquals("/hello/{name}", httpRequests[0].arg.path[0])
-        assertEquals("POST", httpRequests[0].arg.method[0])
+        assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
+        assertEquals("POST", httpRequests[0].arg.methods[0])
 
     }
 
@@ -66,8 +66,8 @@ class HttpRequestServiceTest {
         // then
         assertEquals(1, httpRequests.size)
         assertEquals("id1", httpRequests[0].targetId)
-        assertEquals("/hello/{name}", httpRequests[0].arg.path[0])
-        assertEquals("POST", httpRequests[0].arg.method[0])
+        assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
+        assertEquals("POST", httpRequests[0].arg.methods[0])
 
     }
 
@@ -91,8 +91,8 @@ class HttpRequestServiceTest {
         // then
         assertEquals(1, httpRequests.size)
         assertEquals("id2", httpRequests[0].targetId)
-        assertEquals("/hello/{name}", httpRequests[0].arg.path[0])
-        assertEquals("GET", httpRequests[0].arg.method[0])
+        assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
+        assertEquals("GET", httpRequests[0].arg.methods[0])
 
     }}
 
