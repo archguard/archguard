@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.exception.ClassNoIdException
-import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.model.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,7 +31,6 @@ class ClassDependenceesService {
     }
 
     private fun findDependencees(clazz: JClass): List<JClass> {
-        clazz.id ?: throw ClassNoIdException("class $clazz no id found.")
         return repo.findDependencees(clazz.id)
     }
 

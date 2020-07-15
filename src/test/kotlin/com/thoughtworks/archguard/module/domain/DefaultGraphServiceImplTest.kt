@@ -36,9 +36,9 @@ internal class DefaultGraphServiceImplTest {
         val logicModule3 = LogicModule("3", "module3", listOf(SubModule("bm5")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JClass.create("bm1.any"), JClass.create("bm3.any"))
-        val dependency2 = Dependency(JClass.create("bm3.any"), JClass.create("bm2.any"))
-        val dependency3 = Dependency(JClass.create("bm5.any"), JClass.create("bm4.any"))
+        val dependency1 = Dependency(JClass("id1", "any", "bm1"), JClass("id2", "any", "bm3"))
+        val dependency2 = Dependency(JClass("id3", "any", "bm3"), JClass("id4", "any", "bm2"))
+        val dependency3 = Dependency(JClass("id5", "any", "bm5"), JClass("id6", "any", "bm4"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
@@ -54,8 +54,8 @@ internal class DefaultGraphServiceImplTest {
 
     @Test
     fun `should map to module`() {
-        val results = listOf(Dependency(JClass.create("caller.method1"), JClass.create("callee.method1")),
-                Dependency(JClass.create("caller.method2"), JClass.create("callee.method2")))
+        val results = listOf(Dependency(JClass("id1", "method1", "caller"), JClass("id2", "method1", "callee")),
+                Dependency(JClass("id3", "method2", "caller"), JClass("id4", "method2", "callee")))
         val logicModule1 = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
         val logicModule2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
         val logicModule3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))

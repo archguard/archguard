@@ -12,23 +12,28 @@ class JClass(val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
-    var id: String? = null
+    lateinit var id: String
     var classType: ClazzType = ClazzType.NOT_DEFINED
 
     constructor(id: String, name: String, module: String) : this(name, module) {
         this.id = id
     }
 
-    companion object {
-        @Deprecated(message = "should not use this to Create VO, use JClassVO.create replaced!")
-        fun create(fullName: String): JClass {
-            val split = fullName.split(".")
-            return JClass(split.subList(1, split.size).joinToString(".").trim(), split[0].trim())
-        }
-    }
-
     fun isInterface(): Boolean {
         return classType == ClazzType.INTERFACE
+    }
+
+
+    override fun toString(): String {
+        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencees, dependencers=$dependencers, id=$id, classType=$classType)"
+    }
+
+    fun getFullName(): String {
+        return "$module.$name"
+    }
+
+    fun toVO(): JClassVO {
+        return JClassVO(name, module)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -48,21 +53,9 @@ class JClass(val name: String, val module: String) {
     override fun hashCode(): Int {
         var result = name.hashCode()
         result = 31 * result + module.hashCode()
-        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + id.hashCode()
         result = 31 * result + classType.hashCode()
         return result
-    }
-
-    override fun toString(): String {
-        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencees, dependencers=$dependencers, id=$id, classType=$classType)"
-    }
-
-    fun getFullName(): String {
-        return "$module.$name"
-    }
-
-    fun toVO(): JClassVO {
-        return JClassVO(name, module)
     }
 }
 

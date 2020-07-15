@@ -41,8 +41,8 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass.create("s1.c1")
-        val callee = JClass.create("sa.c")
+        val caller = JClass("id1", "c1", "s1")
+        val callee = JClass("id2", "c", "sa")
         callee.classType = ClazzType.CLASS
         val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
         val moduleDependency = dubboGraphService.mapClassDependencyToModuleDependency(logicModules, jClassDependency)
@@ -57,8 +57,8 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass.create("s1.c1")
-        val callee = JClass.create("sa.c")
+        val caller = JClass("id1", "c1", "s1")
+        val callee = JClass("id2", "c", "sa")
         callee.classType = ClazzType.INTERFACE
         val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
 
@@ -76,8 +76,8 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass.create("s1.c1")
-        val callee = JClass.create("sa.c")
+        val caller = JClass("id1", "c1", "s1")
+        val callee = JClass("id2", "c", "sa")
         callee.classType = ClazzType.INTERFACE
         val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
 

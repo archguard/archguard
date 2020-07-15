@@ -17,9 +17,9 @@ interface JClassRepository {
 
     fun getJClassesHasModules(): List<JClass>
 
-    fun findDependencees(id: String?): List<JClass>
+    fun findDependencees(id: String): List<JClass>
 
-    fun findDependencers(id: String?): List<JClass>
+    fun findDependencers(id: String): List<JClass>
 
     fun getAllClassDependency(members: List<LogicComponent>): List<Dependency<JClass>>
 
