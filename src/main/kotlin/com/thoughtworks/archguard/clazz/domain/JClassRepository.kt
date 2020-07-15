@@ -23,8 +23,6 @@ interface JClassRepository {
 
     fun getAllClassDependency(members: List<LogicComponent>): List<Dependency<JClass>>
 
-    fun getMethodsById(id: String): List<String>
-
     fun findClassParents(name: String?, module: String?): List<JClass>
 
     fun findClassImplements(name: String?, module: String?): List<JClass>

@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.module.domain.model.JAnnotation
+import com.thoughtworks.archguard.module.domain.springcloud.SpringCloudServiceRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -17,7 +17,7 @@ class HttpRequestServiceTest {
 
 
     @MockK
-    lateinit var jClassRepository: JClassRepository
+    lateinit var springCloudServiceRepository: SpringCloudServiceRepository
 
 
     private lateinit var service: HttpRequestService
@@ -26,7 +26,7 @@ class HttpRequestServiceTest {
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = HttpRequestService(jAnnotationRepository, jClassRepository)
+        service = HttpRequestService(jAnnotationRepository, springCloudServiceRepository)
         every { jAnnotationRepository.getJAnnotationWithValueByName(any()) } returns listOf()
     }
 
@@ -83,7 +83,7 @@ class HttpRequestServiceTest {
 
 
         every { jAnnotationRepository.getJAnnotationWithValueByName("RequestMapping") } returns listOf(jAnnotation1, jAnnotation2)
-        every { jClassRepository.getMethodsById("id1") } returns listOf("id2")
+        every { springCloudServiceRepository.getMethodIdsByClassId("id1") } returns listOf("id2")
 
         // when
         val httpRequests = service.getHttpRequests()

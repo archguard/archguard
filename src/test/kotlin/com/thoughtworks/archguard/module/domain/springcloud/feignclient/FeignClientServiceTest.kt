@@ -1,9 +1,8 @@
 package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JAnnotation
+import com.thoughtworks.archguard.module.domain.springcloud.SpringCloudServiceRepository
 import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequest
 import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequestArg
 import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequestService
@@ -20,20 +19,18 @@ class FeignClientServiceTest {
     lateinit var jAnnotationRepository: JAnnotationRepository
 
     @MockK
+    lateinit var springCloudServiceRepository: SpringCloudServiceRepository
+
+    @MockK
     lateinit var httpRequestService: HttpRequestService
 
-    @MockK
-    lateinit var jClassRepository: JClassRepository
-
-    @MockK
-    lateinit var feignClientRepository: FeignClientRepository
 
     private lateinit var service: FeignClientService
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = FeignClientService(jAnnotationRepository, httpRequestService, jClassRepository, feignClientRepository)
+        service = FeignClientService(jAnnotationRepository,springCloudServiceRepository, httpRequestService)
     }
 
     @Test
@@ -66,9 +63,9 @@ class FeignClientServiceTest {
 
         every { jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient") } returns listOf(feignClientAnnotation)
         every { httpRequestService.getHttpRequests() } returns listOf(httpRequestMethod1, httpRequestMethod2)
-        every { jClassRepository.getMethodsById("idc1") } returns listOf("idm1")
-        every { feignClientRepository.getServiceNameByMethodId("idm1") } returns "consumer"
-        every { feignClientRepository.getServiceNameByMethodId("idm2") } returns "producer"
+        every { springCloudServiceRepository.getMethodIdsByClassId("idc1") } returns listOf("idm1")
+        every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
+        every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
 
 
         // when

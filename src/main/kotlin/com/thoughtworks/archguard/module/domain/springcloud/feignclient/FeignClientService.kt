@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.springcloud.SpringCloudServiceRepository
 import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequest
 import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequestService
 import org.slf4j.LoggerFactory
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.lang.annotation.ElementType
 
 @Service
-class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val httpRequestService: HttpRequestService, val jClassRepository: JClassRepository, val feignClientRepository: FeignClientRepository) {
+class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val springCloudServiceRepository: SpringCloudServiceRepository, val httpRequestService: HttpRequestService) {
 
     private val log = LoggerFactory.getLogger(FeignClientService::class.java)
 
@@ -28,13 +28,13 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val h
         
         val services = mutableMapOf<String, MutableList<HttpRequest>>()
         httpRequestMethods.forEach {
-            val serviceName = feignClientRepository.getServiceNameByMethodId(it.targetId)
+            val serviceName = springCloudServiceRepository.getServiceNameByMethodId(it.targetId)
             services[serviceName]?.add(it) ?: services.put(serviceName, mutableListOf(it))
         }
         
         feignClients.forEach {
             val serviceName = it.arg.name
-            val methods = jClassRepository.getMethodsById(it.targetId)
+            val methods = springCloudServiceRepository.getMethodIdsByClassId(it.targetId)
             val callers = httpRequestMethods.filter { method -> method.targetId in methods }
             val callees = services.getOrDefault(serviceName, mutableListOf())
 

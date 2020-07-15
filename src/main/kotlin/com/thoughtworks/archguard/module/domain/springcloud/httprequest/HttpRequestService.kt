@@ -3,13 +3,14 @@ package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.common.JsonUtils
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
+import com.thoughtworks.archguard.module.domain.springcloud.SpringCloudServiceRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestMethod
 import java.lang.annotation.ElementType
 
 @Service
-class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val jClassRepository: JClassRepository) {
+class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val springCloudServiceRepository: SpringCloudServiceRepository) {
     private val log = LoggerFactory.getLogger(HttpRequestService::class.java)
 
 
@@ -49,7 +50,7 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val j
 
     private fun margeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
         for (httpRequestClass in httpRequestClasses) {
-            val methods = jClassRepository.getMethodsById(httpRequestClass.targetId)
+            val methods = springCloudServiceRepository.getMethodIdsByClassId(httpRequestClass.targetId)
             httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.path = margePath(httpRequestClass.arg.path, it.arg.path) }
         }
     }
