@@ -35,7 +35,7 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
         feignClients.forEach {
             val serviceName = it.arg.name
             val methods = springCloudServiceRepository.getMethodIdsByClassId(it.targetId)
-            val callers = httpRequestMethods.filter { method -> method.targetId in methods }
+            val callers = httpRequestMethods.filter { method -> method.targetId in methods }.map { method -> margeFeignClientArgToMethod(it.arg, method) }
             val callees = services.getOrDefault(serviceName, mutableListOf())
 
             feignClientMethodDependencies.addAll(callers.flatMap { caller -> mapToMethod(caller, callees).map { callee -> Dependency(caller, callee) } })
@@ -44,6 +44,10 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
 
         return feignClientMethodDependencies
 
+    }
+    
+    private fun margeFeignClientArgToMethod(feignClientArg: FeignClientArg, method: HttpRequest): HttpRequest{
+        return method.apply { arg.path = arg.path.map { feignClientArg.path + it }}
     }
 
     private fun mapToMethod(caller: HttpRequest, callees: List<HttpRequest>): List<HttpRequest>{

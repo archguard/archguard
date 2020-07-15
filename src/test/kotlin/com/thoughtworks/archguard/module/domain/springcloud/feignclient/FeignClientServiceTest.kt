@@ -25,11 +25,9 @@ class FeignClientServiceTest {
     @MockK
     lateinit var httpRequestService: HttpRequestService
 
-
     private lateinit var service: FeignClientService
 
     private val log = LoggerFactory.getLogger(FeignClientServiceTest::class.java)
-
 
     @BeforeEach
     fun setUp() {
@@ -67,6 +65,33 @@ class FeignClientServiceTest {
 
         val httpRequestMethod1 = HttpRequest("idm1", HttpRequestArg(listOf("/hello"), listOf("GET")))
         val httpRequestMethod2 = HttpRequest("idm2", HttpRequestArg(listOf("/hello"), listOf("GET")))
+
+        every { jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient") } returns listOf(feignClientAnnotation)
+        every { httpRequestService.getHttpRequests() } returns listOf(httpRequestMethod1, httpRequestMethod2)
+        every { springCloudServiceRepository.getMethodIdsByClassId("idc1") } returns listOf("idm1")
+        every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
+        every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
+
+
+        // when
+        val dependencies = service.getFeignClientMethodDependencies()
+
+        // then
+        assertEquals(1, dependencies.size)
+        assertEquals("idm1", dependencies[0].caller.targetId)
+        assertEquals("idm2", dependencies[0].callee.targetId)
+
+    }
+
+    @Test
+    internal fun should_get_feignClient_method_dependencies_with_feignClient_path() {
+
+        // given
+        val feignClientAnnotation = JAnnotation("ida1", ElementType.TYPE.name, "idc1", "org.springframework.cloud.netflix.feign.FeignClient")
+        feignClientAnnotation.values = mapOf("name" to "\"producer\"", "path" to "\"/path\"")
+
+        val httpRequestMethod1 = HttpRequest("idm1", HttpRequestArg(listOf("/hello"), listOf("GET")))
+        val httpRequestMethod2 = HttpRequest("idm2", HttpRequestArg(listOf("/path/hello"), listOf("GET")))
 
         every { jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient") } returns listOf(feignClientAnnotation)
         every { httpRequestService.getHttpRequests() } returns listOf(httpRequestMethod1, httpRequestMethod2)
