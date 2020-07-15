@@ -24,13 +24,13 @@ class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClass
 
         val callerModules: List<LogicModule>
         try {
-            callerModules = getModule(logicModules, callerClass)
+            callerModules = getModule(logicModules, callerClass.toVO())
 
             if (callerModules.size > 1) {
                 log.error("Caller Class belong to more than one Module!", callerModules)
             }
             val callerModule = callerModules[0]
-            val calleeModules = getModule(logicModules, calleeClass)
+            val calleeModules = getModule(logicModules, calleeClass.toVO())
             log.info("calleeModules before dubbo analysis: {}", calleeModules)
 
             // calleeClass不是接口类型，直接停止分析

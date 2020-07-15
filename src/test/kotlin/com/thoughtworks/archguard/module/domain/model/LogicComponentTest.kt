@@ -7,8 +7,8 @@ internal class LogicComponentTest {
     @Test
     internal fun should_contain_logic_module_when_in_members() {
         val module1 = SubModule("Module1")
-        val jClass2 = JClass.create("Module2.Jclass2")
-        val jClass3 = JClass.create("Module2.Jclass3")
+        val jClass2 = JClassVO.create("Module2.Jclass2")
+        val jClass3 = JClassVO.create("Module2.Jclass3")
         val module3 = SubModule("Module3")
         val module4 = SubModule("Module4")
         val lg1 = LogicModule("id2", "lg2", listOf(module4, jClass3))

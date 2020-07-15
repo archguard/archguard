@@ -87,8 +87,8 @@ class ReportServiceImpl : ReportService {
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClass>): Boolean {
-        val callerModules = getModule(modules, it.caller)
-        val calleeModules = getModule(modules, it.callee)
+        val callerModules = getModule(modules, it.caller.toVO())
+        val calleeModules = getModule(modules, it.callee.toVO())
         return callerModules.intersect(calleeModules).isNotEmpty()
     }
 }

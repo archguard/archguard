@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.model
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import org.slf4j.LoggerFactory
 
-class JClass(val name: String, val module: String) : LogicComponent() {
+class JClass(val name: String, val module: String) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
     var callees: List<ClassRelation> = ArrayList()
@@ -19,25 +19,13 @@ class JClass(val name: String, val module: String) : LogicComponent() {
         this.id = id
     }
 
-    override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
-        return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
-    }
-
     companion object {
+        @Deprecated(message = "should not use this to Create VO, use JClassVO.create replaced!")
         fun create(fullName: String): JClass {
             val split = fullName.split(".")
             return JClass(split.subList(1, split.size).joinToString(".").trim(), split[0].trim())
         }
     }
-
-    override fun getFullName(): String {
-        return "$module.$name"
-    }
-
-    override fun getType(): ModuleMemberType {
-        return ModuleMemberType.CLASS
-    }
-
 
     fun isInterface(): Boolean {
         return classType == ClazzType.INTERFACE
@@ -66,7 +54,15 @@ class JClass(val name: String, val module: String) : LogicComponent() {
     }
 
     override fun toString(): String {
-        return "JClass(name='$name', module='$module', id=$id, classType=$classType)"
+        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencees, dependencers=$dependencers, id=$id, classType=$classType)"
+    }
+
+    fun getFullName(): String {
+        return "$module.$name"
+    }
+
+    fun toVO(): JClassVO {
+        return JClassVO(name, module)
     }
 }
 

@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import io.mockk.MockKAnnotations
@@ -36,9 +37,9 @@ internal class DubboGraphServiceImplTest {
 
     @Test
     internal fun should_stop_analysis_when_callee_is_not_interface() {
-        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClass.create("s1.c1")))
-        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClass.create("sa.c")))
-        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClass.create("sa.c")))
+        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClassVO.create("s1.c1")))
+        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
+        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
         val caller = JClass.create("s1.c1")
         val callee = JClass.create("sa.c")
@@ -52,9 +53,9 @@ internal class DubboGraphServiceImplTest {
 
     @Test
     internal fun should_return_the_same_result_with_no_analysis_when_analysis_return_empty() {
-        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClass.create("s1.c1")))
-        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClass.create("sa.c")))
-        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClass.create("sa.c")))
+        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClassVO.create("s1.c1")))
+        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
+        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
         val caller = JClass.create("s1.c1")
         val callee = JClass.create("sa.c")
@@ -71,9 +72,9 @@ internal class DubboGraphServiceImplTest {
 
     @Test
     internal fun should_return_intersect_result_with_analysis_when_analysis_return_not_empty() {
-        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClass.create("s1.c1")))
-        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClass.create("sa.c")))
-        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClass.create("sa.c")))
+        val lg1 = LogicModule("id1", "lg1", listOf(SubModule("s1"), JClassVO.create("s1.c1")))
+        val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
+        val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
         val caller = JClass.create("s1.c1")
         val callee = JClass.create("sa.c")

@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.module.domain
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
@@ -59,7 +60,7 @@ class LogicModuleServiceTest {
         every { jClassRepository.getJClassById("id3") } returns jClassId3
         val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
         assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), jClassId2))
+        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), jClassId2.toVO()))
     }
 
     @Test
@@ -69,13 +70,13 @@ class LogicModuleServiceTest {
         val jClass3 = JClass("id3", "Service2Impl", "module1")
         val jClasses = listOf(jClass1, jClass2, jClass3)
         service = spyk(service)
-        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClass("Service1", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClassVO("Service1", "module-api")))
         every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule("tempid", "module2", listOf(SubModule("module2")))
-        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClass("Service2", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClassVO("Service2", "module-api")))
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClass("Service1", "module-api"), JClass("Service2", "module-api")))
+        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClassVO("Service1", "module-api"), JClassVO("Service2", "module-api")))
         assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module2")))
 
     }

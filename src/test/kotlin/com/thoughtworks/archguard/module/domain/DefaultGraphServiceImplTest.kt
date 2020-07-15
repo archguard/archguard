@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.module.domain
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import io.mockk.MockKAnnotations
@@ -55,10 +56,10 @@ internal class DefaultGraphServiceImplTest {
     fun `should map to module`() {
         val results = listOf(Dependency(JClass.create("caller.method1"), JClass.create("callee.method1")),
                 Dependency(JClass.create("caller.method2"), JClass.create("callee.method2")))
-        val logicModule1 = LogicModule("id1", "module1", listOf(JClass.create("caller.method1")))
-        val logicModule2 = LogicModule("id2", "module2", listOf(JClass.create("callee.method1")))
-        val logicModule3 = LogicModule("id3", "module3", listOf(JClass.create("callee.method1")))
-        val logicModule4 = LogicModule("id4", "module4", listOf(JClass.create("caller.method2"), JClass.create("callee.method2")))
+        val logicModule1 = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
+        val logicModule2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule4 = LogicModule("id4", "module4", listOf(LogicComponent.createLeaf("caller.method2"), LogicComponent.createLeaf("callee.method2")))
         val modules = listOf(logicModule1, logicModule2, logicModule3, logicModule4)
         val moduleDependency = service.mapClassDependenciesToModuleDependencies(results, modules)
         assertThat(moduleDependency.size).isEqualTo(2)

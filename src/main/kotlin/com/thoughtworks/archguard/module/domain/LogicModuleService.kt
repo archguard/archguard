@@ -88,6 +88,7 @@ class LogicModuleService {
                 .filter { j -> j.module != "null" }
                 .filter { j -> j.module != jClass.module }
                 .filter { j -> j.isInterface() }
+                .map { it.toVO() }
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
         // FIXME: No Entity should not has id

@@ -14,12 +14,12 @@ class DefaultGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jCla
 
     private val log = LoggerFactory.getLogger(DefaultGraphServiceImpl::class.java)
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
-        val callerModules = getModule(logicModules, jClassDependency.caller)
+        val callerModules = getModule(logicModules, jClassDependency.caller.toVO())
         if (callerModules.size > 1) {
             log.error("Caller Class belong to more than one Module!", callerModules)
         }
         val callerModule = callerModules[0]
-        val calleeModules = getModule(logicModules, jClassDependency.callee)
+        val calleeModules = getModule(logicModules, jClassDependency.callee.toVO())
 
         return calleeModules.map { Dependency(callerModule, it) }
     }

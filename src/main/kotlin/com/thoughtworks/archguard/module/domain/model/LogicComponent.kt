@@ -25,7 +25,7 @@ abstract class LogicComponent {
     companion object {
         fun createLeaf(name: String): LogicComponent {
             if (name.split(".").size > 1) {
-                return JClass.create(name)
+                return JClassVO.create(name)
             }
             return SubModule(name)
         }
