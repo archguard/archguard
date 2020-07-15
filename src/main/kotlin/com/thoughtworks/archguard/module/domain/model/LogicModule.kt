@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.model
 /**
  * LogicModule is an Entity, so it must have an id.
  */
-class LogicModule(val id: String, val name: String, val members: List<LogicComponent>) : LogicComponent() {
+class LogicModule(val id: String, val name: String, var members: List<LogicComponent>) : LogicComponent() {
     var status = LogicModuleStatus.NORMAL
     fun hide() {
         this.status = LogicModuleStatus.HIDE
@@ -31,13 +31,17 @@ class LogicModule(val id: String, val name: String, val members: List<LogicCompo
 
     override fun add(logicComponent: LogicComponent) {
         if (!containsOrEquals(logicComponent)) {
-            members.toMutableList().add(logicComponent)
+            val mutableList = members.toMutableList()
+            mutableList.add(logicComponent)
+            members = mutableList.toList()
         }
     }
 
     override fun remove(logicComponent: LogicComponent) {
-        if (!containsOrEquals(logicComponent)) {
-            members.toMutableList().remove(logicComponent)
+        if (!members.contains(logicComponent)) {
+            val mutableList = members.toMutableList()
+            mutableList.remove(logicComponent)
+            members = mutableList.toList()
         }
     }
 
