@@ -11,6 +11,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
 import java.lang.annotation.ElementType
 import kotlin.test.assertEquals
 
@@ -27,6 +28,9 @@ class FeignClientServiceTest {
 
     private lateinit var service: FeignClientService
 
+    private val log = LoggerFactory.getLogger(FeignClientServiceTest::class.java)
+
+
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
@@ -38,16 +42,19 @@ class FeignClientServiceTest {
 
         // given
         val jAnnotation = JAnnotation("ida1", ElementType.TYPE.name, "id1", "org.springframework.cloud.netflix.feign.FeignClient")
-        jAnnotation.values = mapOf("name" to "\"serviceName\"")
+        jAnnotation.values = mapOf("name" to "\"serviceName\"", "path" to "\"/path\"")
 
         every { jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient") } returns listOf(jAnnotation)
 
         // when
         val feignClients = service.getFeignClients()
 
+        log.info(feignClients[0].arg.path)
+
         // then
         assertEquals(1, feignClients.size)
         assertEquals("serviceName", feignClients[0].arg.name)
+        assertEquals("/path", feignClients[0].arg.path)
         assertEquals("id1", feignClients[0].targetId)
     }
 

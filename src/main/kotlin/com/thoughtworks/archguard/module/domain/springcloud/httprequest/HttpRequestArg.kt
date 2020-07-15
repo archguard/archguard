@@ -8,7 +8,7 @@ class HttpRequestArg(var path: List<String> = mutableListOf(), var method: List<
     private val log = LoggerFactory.getLogger(HttpRequestArg::class.java)
 
     constructor(values: Map<String, String>) : this() {
-        path = JsonUtils.json2obj(values.getOrDefault("value", ""))
+        path = JsonUtils.json2obj(values.getOrDefault("value", JsonUtils.obj2json("")))
         val temp: List<List<String>> = JsonUtils.json2obj(values.getOrDefault("method", JsonUtils.obj2json(listOf(listOf("", RequestMethod.GET.name)))))
         method = temp.map { it[1] }
     }
