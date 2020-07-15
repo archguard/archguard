@@ -1,8 +1,11 @@
 package com.thoughtworks.archguard.module.domain.model
 
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
+import org.slf4j.LoggerFactory
 
 class JClass(val name: String, val module: String) : LogicComponent() {
+    private val log = LoggerFactory.getLogger(JClass::class.java)
+
     var callees: List<ClassRelation> = ArrayList()
     var callers: List<ClassRelation> = ArrayList()
     var parents: List<JClass> = ArrayList()
@@ -14,6 +17,10 @@ class JClass(val name: String, val module: String) : LogicComponent() {
 
     constructor(id: String, name: String, module: String) : this(name, module) {
         this.id = id
+    }
+
+    override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
+        return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
     }
 
     companion object {

@@ -30,15 +30,26 @@ class LogicModule(val id: String, val name: String, val members: List<LogicCompo
     private fun isNormalStatus() = this.status == LogicModuleStatus.NORMAL
 
     override fun add(logicComponent: LogicComponent) {
-        TODO("Not yet implemented")
+        if (!containsOrEquals(logicComponent)) {
+            members.toMutableList().add(logicComponent)
+        }
     }
 
     override fun remove(logicComponent: LogicComponent) {
-        TODO("Not yet implemented")
+        if (!containsOrEquals(logicComponent)) {
+            members.toMutableList().remove(logicComponent)
+        }
     }
 
     override fun getSubLogicComponent(): List<LogicComponent> {
-        TODO("Not yet implemented")
+        return members
+    }
+
+    override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
+        if (logicComponent in members) {
+            return true
+        }
+        return members.map { it.containsOrEquals(logicComponent) }.contains(true)
     }
 
     override fun getFullName(): String {

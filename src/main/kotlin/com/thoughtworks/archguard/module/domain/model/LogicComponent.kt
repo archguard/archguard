@@ -16,8 +16,10 @@ abstract class LogicComponent {
         throw RuntimeException("Not Impl in abstract class or leaf node.")
     }
 
+    abstract fun containsOrEquals(logicComponent: LogicComponent): Boolean
     abstract fun getFullName(): String
     abstract fun getType(): ModuleMemberType
+
     abstract override fun toString(): String
 
     companion object {
