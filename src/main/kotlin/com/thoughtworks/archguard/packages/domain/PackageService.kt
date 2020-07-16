@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.packages.domain
 
-import com.thoughtworks.archguard.module.domain.BaseModuleRepository
+import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.packages.infrastructure.PackageDependenceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,10 +11,10 @@ class PackageService {
     lateinit var packageRepository: PackageRepository
 
     @Autowired
-    lateinit var moduleRepository: BaseModuleRepository
+    lateinit var moduleRepository: LogicModuleRepository
 
     fun getPackageDependencies(): List<ModulePackage> {
-        return moduleRepository.getBaseModules().map {
+        return moduleRepository.getAllSubModule().map { it.name }.map {
             val dependencies = packageRepository.getPackageDependenceByModule(it)
             ModulePackage(it, getPackageGraph(dependencies))
         }

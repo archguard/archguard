@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.packages.domain
 
-import com.thoughtworks.archguard.module.domain.BaseModuleRepository
+import com.thoughtworks.archguard.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import com.thoughtworks.archguard.packages.infrastructure.PackageDependenceDTO
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -15,7 +16,7 @@ internal class PackageServiceTest {
     lateinit var packageRepository: PackageRepository
 
     @MockK
-    lateinit var moduleRepository: BaseModuleRepository
+    lateinit var moduleRepository: LogicModuleRepository
 
     @InjectMockKs
     var packageService = PackageService()
@@ -28,8 +29,8 @@ internal class PackageServiceTest {
     @Test
     internal fun `should get package dependencies by modules`() {
         //given
-        every { moduleRepository.getBaseModules() } returns listOf("com.module1", "com.module2")
-        val dependencies1 = listOf<PackageDependenceDTO>(PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
+        every { moduleRepository.getAllSubModule() } returns listOf(SubModule("com.module1"), SubModule("com.module2"))
+        val dependencies1 = listOf(PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
                 "org.test.ThrowablePB\$ThrowableProto"))
         val dependencies2 = listOf<PackageDependenceDTO>()
         every { packageRepository.getPackageDependenceByModule("com.module1") } returns dependencies1

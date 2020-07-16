@@ -15,6 +15,6 @@ class BaseModuleController {
 
     @GetMapping("/base-modules")
     fun getBaseModules(): List<String> {
-        return baseModuleService.getBaseModules()
+        return baseModuleService.getBaseModules().map { it.name }
     }
 }

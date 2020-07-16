@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
@@ -84,6 +85,24 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                         it.id, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
             }
         }
+    }
+
+    override fun getAllSubModule(): List<SubModule> {
+        val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> {
+            it.createQuery("select distinct module from JClass")
+                    .mapTo(String::class.java)
+                    .list()
+                    .filter { it -> it != "null" }
+                    .map { it -> SubModule(it) }
+        }
+        val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> {
+            it.createQuery("select distinct module from JMethod")
+                    .mapTo(String::class.java)
+                    .list()
+                    .filter { it -> it != "null" }
+                    .map { it -> SubModule(it) }
+        }
+        return subModulesFromJClasses.union(subModulesFromJMethods).toList()
     }
 
     override fun updateAll(logicModules: List<LogicModule>) {

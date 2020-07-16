@@ -22,9 +22,6 @@ class LogicModuleServiceTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
-    lateinit var baseModuleRepository: BaseModuleRepository
-
-    @MockK
     lateinit var jClassRepository: JClassRepository
 
     @InjectMockKs

@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Service
 @Service
 class BaseModuleService {
     @Autowired
-    lateinit var baseModuleRepository: BaseModuleRepository
+    lateinit var logicModuleRepository: LogicModuleRepository
 
-    fun getBaseModules(): List<String> {
-        return baseModuleRepository.getBaseModules()
+    fun getBaseModules(): List<SubModule> {
+        return logicModuleRepository.getAllSubModule()
     }
 }

@@ -19,9 +19,6 @@ class LogicModuleService {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @Autowired
-    lateinit var baseModuleRepository: BaseModuleRepository
-
-    @Autowired
     lateinit var jClassRepository: JClassRepository
 
     fun getLogicModules(): List<LogicModule> {
@@ -61,8 +58,8 @@ class LogicModuleService {
 
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
-        val defaultModules = baseModuleRepository.getBaseModules()
-                .map { LogicModule(UUID.randomUUID().toString(), it, mutableListOf(SubModule(it))) }
+        val defaultModules = logicModuleRepository.getAllSubModule()
+                .map { LogicModule(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
     }
 
