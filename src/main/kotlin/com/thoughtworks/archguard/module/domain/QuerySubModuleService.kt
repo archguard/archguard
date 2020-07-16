@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class BaseModuleService {
+class QuerySubModuleService {
     @Autowired
     lateinit var logicModuleRepository: LogicModuleRepository
 

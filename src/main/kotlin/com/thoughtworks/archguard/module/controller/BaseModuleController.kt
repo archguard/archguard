@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.BaseModuleService
+import com.thoughtworks.archguard.module.domain.QuerySubModuleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController
 class BaseModuleController {
 
     @Autowired
-    private lateinit var baseModuleService: BaseModuleService
+    private lateinit var querySubModuleService: QuerySubModuleService
 
     @GetMapping("/base-modules")
     fun getBaseModules(): List<String> {
-        return baseModuleService.getBaseModules().map { it.name }
+        return querySubModuleService.getBaseModules().map { it.name }
     }
 }
