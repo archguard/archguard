@@ -8,7 +8,13 @@ import org.slf4j.LoggerFactory
 class LogicModule(val id: String, val name: String, var members: List<LogicComponent>) : LogicComponent() {
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
 
+    constructor(id: String, name: String, members: List<LogicComponent>, lgMembers: List<LogicComponent>) : this(id, name, members) {
+        this.lgMembers = lgMembers
+    }
+
+    var lgMembers: List<LogicComponent> = emptyList()
     var status = LogicModuleStatus.NORMAL
+
     fun hide() {
         this.status = LogicModuleStatus.HIDE
     }
@@ -57,6 +63,18 @@ class LogicModule(val id: String, val name: String, var members: List<LogicCompo
         return members
     }
 
+    fun getSubJClassComponent(): List<LogicComponent> {
+        return members.filter { it.getType() == ModuleMemberType.CLASS }
+    }
+
+    fun getSubSubModuleComponent(): List<LogicComponent> {
+        return members.filter { it.getType() == ModuleMemberType.SUBMODULE }
+    }
+
+    fun getSubLogicModuleComponent(): List<LogicComponent> {
+        return members.filter { it.getType() == ModuleMemberType.LOGIC_MODULE }
+    }
+
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         if (logicComponent in members) {
             return true
@@ -72,10 +90,6 @@ class LogicModule(val id: String, val name: String, var members: List<LogicCompo
         return ModuleMemberType.LOGIC_MODULE
     }
 
-    override fun toString(): String {
-        return "LogicModule(id=$id, name='$name', members=$members, status=$status)"
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -89,6 +103,10 @@ class LogicModule(val id: String, val name: String, var members: List<LogicCompo
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    override fun toString(): String {
+        return "LogicModule(id='$id', name='$name', members=$members, lgMembers=$lgMembers, status=$status)"
     }
 }
 

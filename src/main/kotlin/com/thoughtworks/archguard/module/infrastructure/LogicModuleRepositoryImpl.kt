@@ -9,7 +9,6 @@ import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
 import com.thoughtworks.archguard.module.domain.model.SubModule
-import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleDTO
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
@@ -32,11 +31,11 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun getAll(): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, status from logic_module")
+            it.createQuery("select id, name, members, lg_members, status from logic_module")
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map { it.toLogicModule() }
+        return modules.map { it.toLogicModule(this) }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
@@ -53,10 +52,10 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun get(name: String): LogicModule {
         return jdbi.withHandle<LogicModuleDTO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, status from logic_module where name='$name'")
+            it.createQuery("select id, name, members, lg_members, status from logic_module where name='$name'")
                     .mapTo(LogicModuleDTO::class.java)
                     .one()
-        }.toLogicModule()
+        }.toLogicModule(this)
     }
 
     override fun create(logicModule: LogicModule) {
@@ -153,4 +152,14 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
     tableTemplate += ")"
     println(tableTemplate)
     return tableTemplate
+}
+
+class LogicModuleDTO(val id: String, val name: String, val members: String?, private val lgMembers: String?, private val status: LogicModuleStatus) {
+    fun toLogicModule(logicModuleRepository: LogicModuleRepository): LogicModule {
+        val leafMembers = members?.split(',')?.sorted()?.map { m -> LogicComponent.createLeaf(m) } ?: emptyList()
+        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(m) } ?: emptyList()
+        val logicModule = LogicModule(id, name, leafMembers, lgMembers)
+        logicModule.status = status
+        return logicModule
+    }
 }

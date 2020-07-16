@@ -11,6 +11,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         if (id == null) {
             id = UUID.randomUUID().toString()
         }
+        // TODO: 前端暂时还不支持logicModule作为member存储
         val logicModule = LogicModule(id!!, name, members.map { LogicComponent.createLeaf(it) })
         logicModule.status = status
         return logicModule
@@ -20,15 +21,5 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         fun fromLogicModule(logicModule: LogicModule): LogicModuleLegacy {
             return LogicModuleLegacy(logicModule.id, logicModule.name, logicModule.members.map { it.getFullName() }, logicModule.status)
         }
-    }
-}
-
-// For Database
-class LogicModuleDTO(val id: String, val name: String, val members: String, private val status: LogicModuleStatus) {
-    fun toLogicModule(): LogicModule {
-        val logicModule = LogicModule(id, name, members.split(',').sorted()
-                .map { m -> LogicComponent.createLeaf(m) })
-        logicModule.status = status
-        return logicModule
     }
 }
