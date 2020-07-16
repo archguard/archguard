@@ -9,6 +9,7 @@ import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequ
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
@@ -78,8 +79,10 @@ class FeignClientServiceTest {
 
         // then
         assertEquals(1, dependencies.size)
-        assertEquals("idm1", dependencies[0].caller.targetId)
-        assertEquals("idm2", dependencies[0].callee.targetId)
+        Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
+        Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
+
+
 
     }
 
@@ -105,8 +108,8 @@ class FeignClientServiceTest {
 
         // then
         assertEquals(1, dependencies.size)
-        assertEquals("idm1", dependencies[0].caller.targetId)
-        assertEquals("idm2", dependencies[0].callee.targetId)
+        Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
+        Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
 
     }
 
@@ -132,8 +135,8 @@ class FeignClientServiceTest {
 
         // then
         assertEquals(1, dependencies.size)
-        assertEquals("idm1", dependencies[0].caller.targetId)
-        assertEquals("idm2", dependencies[0].callee.targetId)
+        Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
+        Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
 
     }
 
