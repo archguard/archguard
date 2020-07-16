@@ -5,13 +5,18 @@ import org.slf4j.LoggerFactory
 /**
  * LogicModule is an Entity, so it must have an id.
  */
-class LogicModule(val id: String, val name: String, var members: List<LogicComponent>) : LogicComponent() {
+class LogicModule(val id: String, val name: String) : LogicComponent() {
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
+
+    constructor(id: String, name: String, members: List<LogicComponent>) : this(id, name) {
+        this.members = members
+    }
 
     constructor(id: String, name: String, members: List<LogicComponent>, lgMembers: List<LogicComponent>) : this(id, name, members) {
         this.lgMembers = lgMembers
     }
 
+    var members: List<LogicComponent> = emptyList()
     var lgMembers: List<LogicComponent> = emptyList()
     var status = LogicModuleStatus.NORMAL
 
