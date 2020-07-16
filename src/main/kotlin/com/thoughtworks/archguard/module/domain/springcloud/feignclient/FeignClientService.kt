@@ -56,10 +56,10 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
 
     private fun matchPath(callerPath: String, calleePath: String): Boolean {
         val regex = Regex("""\{[^/]*}""")
-        val path1Regex = callerPath.replace(regex, "{*}")
-        val path2Regex = calleePath.replace(regex, "{*}")
+        val callerPathStr = callerPath.replace(regex, "any")
+        val calleePathRegex = calleePath.replace(regex, """[^/]*""")
         
-        return path1Regex == path2Regex
+        return Regex(calleePathRegex).matches(callerPathStr)
     }
 
 
