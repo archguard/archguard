@@ -90,7 +90,7 @@ class LogicModuleService {
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
         // FIXME: No Entity should not has id
-        return LogicModule.createWithOnlyLogicModuleMembers(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
+        return LogicModule.createWithOnlyLeafMembers(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 
