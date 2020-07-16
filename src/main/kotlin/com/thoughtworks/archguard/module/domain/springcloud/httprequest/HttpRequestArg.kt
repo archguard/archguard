@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 
-import com.thoughtworks.archguard.module.common.JsonUtils
+import com.thoughtworks.archguard.common.JsonUtils
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.RequestMethod
 

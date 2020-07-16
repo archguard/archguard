@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.module.domain.springcloud.httprequest
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.common.JsonUtils
+import com.thoughtworks.archguard.common.JsonUtils
 import com.thoughtworks.archguard.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.module.domain.springcloud.SpringCloudServiceRepository
 import org.slf4j.LoggerFactory
@@ -24,10 +23,10 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val s
         return httpRequestMethods
     }
 
-    private fun analyzeRequestMethods(): List<HttpRequest>{
+    private fun analyzeRequestMethods(): List<HttpRequest> {
         val httpRequestMethods = mutableListOf<HttpRequest>()
         val requestMethodMap = mapOf("RequestMapping" to null, "GetMapping" to RequestMethod.GET.name, "PutMapping" to RequestMethod.PUT.name, "PostMapping" to RequestMethod.POST.name, "DeleteMapping" to RequestMethod.DELETE.name)
-        for ((key, value) in requestMethodMap){
+        for ((key, value) in requestMethodMap) {
             httpRequestMethods.addAll(analyzeRequestMethod(key, value))
         }
         return httpRequestMethods

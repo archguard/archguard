@@ -2,6 +2,9 @@ package com.thoughtworks.archguard.module.domain.model
 
 import org.slf4j.LoggerFactory
 
+/**
+ * SubModule is a Value Object, use for LogicModule aggregation
+ */
 class SubModule(val name: String) : LogicComponent() {
     private val log = LoggerFactory.getLogger(SubModule::class.java)
 

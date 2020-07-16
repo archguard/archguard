@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.JClassVO
@@ -200,14 +201,14 @@ class JClassRepositoryImpl : JClassRepository {
         return jClassDependencies
                 .map {
                     Dependency(updateJClassFields(it.caller, jClassesRelated)
-                            ?: JClass("NOT_EXIST_ID", it.caller.name, it.caller.module),
+                            ?: JClass(NOT_EXIST_ID, it.caller.name, it.caller.module),
                             updateJClassFields(it.callee, jClassesRelated)
-                                    ?: JClass("NOT_EXIST_ID", it.callee.name, it.callee.module))
+                                    ?: JClass(NOT_EXIST_ID, it.callee.name, it.callee.module))
                 }
     }
 
     private fun updateJClassFields(jClass: JClassVO, jClasses: List<JClass>): JClass? {
-        val matchedJClass = jClasses.filter { it -> it.name == jClass.name && it.module == jClass.module }
+        val matchedJClass = jClasses.filter { it.name == jClass.name && it.module == jClass.module }
         if (matchedJClass.isEmpty()) {
             return null
         }

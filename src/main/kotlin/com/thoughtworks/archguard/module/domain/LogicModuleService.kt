@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
@@ -92,7 +93,7 @@ class LogicModuleService {
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
         // FIXME: No Entity should not has id
-        return LogicModule("tempid", moduleName, membersGeneratedByParentClasses.toList())
+        return LogicModule(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 

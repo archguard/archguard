@@ -1,9 +1,13 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import org.slf4j.LoggerFactory
+
 /**
  * LogicModule is an Entity, so it must have an id.
  */
 class LogicModule(val id: String, val name: String, var members: List<LogicComponent>) : LogicComponent() {
+    private val log = LoggerFactory.getLogger(LogicModule::class.java)
+
     var status = LogicModuleStatus.NORMAL
     fun hide() {
         this.status = LogicModuleStatus.HIDE
@@ -34,7 +38,9 @@ class LogicModule(val id: String, val name: String, var members: List<LogicCompo
             val mutableList = members.toMutableList()
             mutableList.add(logicComponent)
             members = mutableList.toList()
+            return
         }
+        log.error("{} already exists in this container", logicComponent)
     }
 
     override fun remove(logicComponent: LogicComponent) {
@@ -42,7 +48,9 @@ class LogicModule(val id: String, val name: String, var members: List<LogicCompo
             val mutableList = members.toMutableList()
             mutableList.remove(logicComponent)
             members = mutableList.toList()
+            return
         }
+        log.error("{} not exists in this container's members", logicComponent)
     }
 
     override fun getSubLogicComponent(): List<LogicComponent> {

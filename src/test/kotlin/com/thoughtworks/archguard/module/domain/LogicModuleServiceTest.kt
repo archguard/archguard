@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.JClassVO
@@ -70,9 +71,9 @@ class LogicModuleServiceTest {
         val jClass3 = JClass("id3", "Service2Impl", "module1")
         val jClasses = listOf(jClass1, jClass2, jClass3)
         service = spyk(service)
-        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClassVO("Service1", "module-api")))
-        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule("tempid", "module2", listOf(SubModule("module2")))
-        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule("tempid", "module1", listOf(SubModule("module1"), JClassVO("Service2", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule(NOT_EXIST_ID, "module1", listOf(SubModule("module1"), JClassVO("Service1", "module-api")))
+        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule(NOT_EXIST_ID, "module2", listOf(SubModule("module2")))
+        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule(NOT_EXIST_ID, "module1", listOf(SubModule("module1"), JClassVO("Service2", "module-api")))
 
         val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
         assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)

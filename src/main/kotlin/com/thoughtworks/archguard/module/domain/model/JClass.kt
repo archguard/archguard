@@ -3,6 +3,9 @@ package com.thoughtworks.archguard.module.domain.model
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import org.slf4j.LoggerFactory
 
+/**
+ * JClass is an Entity, so it must have an id.
+ */
 class JClass(val id: String, val name: String, val module: String) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
