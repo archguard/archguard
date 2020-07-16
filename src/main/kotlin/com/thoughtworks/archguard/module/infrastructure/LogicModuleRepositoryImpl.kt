@@ -158,7 +158,7 @@ class LogicModuleDTO(val id: String, val name: String, val members: String?, pri
     fun toLogicModule(logicModuleRepository: LogicModuleRepository): LogicModule {
         val leafMembers = members?.split(',')?.sorted()?.map { m -> LogicComponent.createLeaf(m) } ?: emptyList()
         val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(m) } ?: emptyList()
-        val logicModule = LogicModule(id, name, leafMembers, lgMembers)
+        val logicModule = LogicModule.create(id, name, leafMembers, lgMembers)
         logicModule.status = status
         return logicModule
     }

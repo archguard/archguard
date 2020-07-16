@@ -59,7 +59,7 @@ class LogicModuleService {
     fun autoDefineLogicModule() {
         logicModuleRepository.deleteAll()
         val defaultModules = logicModuleRepository.getAllSubModule()
-                .map { LogicModule(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
+                .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
     }
 
@@ -75,7 +75,7 @@ class LogicModuleService {
                 .map { getIncompleteLogicModuleForJClass(it) }
                 .groupBy({ it.name }, { it.members })
                 .mapValues { entry -> entry.value.flatten().toSet().toList() }
-                .map { LogicModule(UUID.randomUUID().toString(), it.key, it.value) }
+                .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.key, it.value) }
     }
 
     internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
@@ -90,7 +90,7 @@ class LogicModuleService {
                 .toSet().toMutableList()
         membersGeneratedByParentClasses.add(SubModule(moduleName))
         // FIXME: No Entity should not has id
-        return LogicModule(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
+        return LogicModule.createWithOnlyLogicModuleMembers(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
     }
 }
 

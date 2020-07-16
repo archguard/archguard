@@ -16,6 +16,21 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
         this.lgMembers = lgMembers
     }
 
+    companion object {
+        fun createWithOnlyLeafMembers(id: String, name: String, leafMembers: List<LogicComponent>): LogicModule {
+            return LogicModule(id, name, leafMembers)
+        }
+
+        fun createWithOnlyLogicModuleMembers(id: String, name: String, lgMembers: List<LogicComponent>): LogicModule {
+            return LogicModule(id, name, emptyList(), lgMembers)
+        }
+
+        fun create(id: String, name: String, leafMembers: List<LogicComponent>, lgMembers: List<LogicComponent>): LogicModule {
+            return LogicModule(id, name, leafMembers, lgMembers)
+        }
+
+    }
+
     var members: List<LogicComponent> = emptyList()
     var lgMembers: List<LogicComponent> = emptyList()
     var status = LogicModuleStatus.NORMAL
