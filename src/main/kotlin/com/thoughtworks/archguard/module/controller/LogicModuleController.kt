@@ -6,9 +6,11 @@ import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
+import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.Graph
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
+import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.springframework.beans.factory.annotation.Autowired
@@ -128,6 +130,15 @@ class LogicModuleController {
     fun getLogicModuleCouplingDetail(): List<ModuleCouplingReport> {
         return reportService.getLogicModuleCouplingReportDetail()
     }
+
+
+    @GetMapping("/dependencies/caller-callee")
+    fun getDependenciesBetweenCallerCallee(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
+        val callerMembers = logicModuleService.getLogicModule(caller).members
+        val calleeMembers = logicModuleService.getLogicModule(callee).members
+        return dependencyService.getAllWithFilter(callerMembers.map { it.getFullName() }, calleeMembers.map { it.getFullName() })
+    }
+
 
 }
 

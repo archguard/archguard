@@ -25,6 +25,10 @@ class LogicModuleService {
         return logicModuleRepository.getAll()
     }
 
+    fun getLogicModule(name: String): LogicModule{
+        return logicModuleRepository.get(name)
+    }
+
     fun hideAllLogicModules() {
         val logicModules = getLogicModules()
         logicModules.forEach { it.hide() }
