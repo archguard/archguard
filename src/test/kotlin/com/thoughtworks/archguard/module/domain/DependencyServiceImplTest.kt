@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.dependency.DependencyServiceImpl
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import io.mockk.MockKAnnotations
 import io.mockk.every

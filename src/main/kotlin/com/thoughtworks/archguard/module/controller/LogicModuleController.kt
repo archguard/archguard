@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.DependencyService
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
