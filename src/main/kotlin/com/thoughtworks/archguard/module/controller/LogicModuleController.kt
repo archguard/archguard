@@ -136,7 +136,7 @@ class LogicModuleController {
     fun getDependenciesBetweenCallerCallee(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
         val callerMembers = logicModuleService.getLogicModule(caller).members
         val calleeMembers = logicModuleService.getLogicModule(callee).members
-        return dependencyService.getAllWithFullNameRegex(callerMembers.map { Regex("^${it.getFullName()}") }, calleeMembers.map {  Regex("^${it.getFullName()}") })
+        return dependencyService.getAllWithFullNameRegex(callerMembers.map { Regex("^${it.getFullName()}.*") }, calleeMembers.map {  Regex("^${it.getFullName()}.*") })
     }
 
 
