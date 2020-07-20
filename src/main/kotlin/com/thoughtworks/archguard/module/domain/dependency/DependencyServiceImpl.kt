@@ -24,8 +24,8 @@ class DependencyServiceImpl : DependencyService {
         return dependencyRepository.getAll()
     }
 
-    override fun getAllWithFilter(callerFilter: List<String>, calleeFilter: List<String>): List<Dependency<JMethodVO>> {
-        return getAll().filter { method ->  callerFilter.any { method.caller.fullName.startsWith(it) } && calleeFilter.any { method.callee.fullName.startsWith(it) } }
+    override fun getAllWithFullNameRegex(callerRegex: List<Regex>, calleeRegex: List<Regex>): List<Dependency<JMethodVO>> {
+        return getAll().filter { method ->  callerRegex.any { it.matches(method.caller.fullName) } && calleeRegex.any { it.matches(method.callee.fullName) }}
     }
 
 }
