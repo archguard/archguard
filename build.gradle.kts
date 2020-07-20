@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.30")
-    implementation("org.jdbi:jdbi3-core:3.8.2")
+    implementation("org.jdbi:jdbi3-core:3.10.1")
     implementation("org.jdbi:jdbi3-spring4:3.10.1") // provide JdbiFactoryBean
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -30,6 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.10.1")
     implementation("org.nield:kotlinstatistics:0.3.0")
 

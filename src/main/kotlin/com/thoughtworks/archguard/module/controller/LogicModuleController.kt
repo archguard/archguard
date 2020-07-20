@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.module.controller
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
+import com.thoughtworks.archguard.module.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
@@ -46,6 +47,9 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var dependencyService: DependencyService
+
+    @Autowired
+    private lateinit var metricsService: MetricsService
 
     @GetMapping
     fun getLogicModules(): List<LogicModuleLegacy> {
@@ -139,6 +143,11 @@ class LogicModuleController {
         return dependencyService.getAllWithFullNameStart(callerMembers.map { it.getFullName() }, calleeMembers.map { it.getFullName() })
     }
 
+
+    @PostMapping("/calculate-coupling")
+    fun calculateCoupling() {
+        metricsService.calculateCoupling()
+    }
 
 }
 
