@@ -25,7 +25,7 @@ class LogicModuleService {
         return logicModuleRepository.getAll()
     }
 
-    fun getLogicModule(name: String): LogicModule{
+    fun getLogicModule(name: String): LogicModule {
         return logicModuleRepository.get(name)
     }
 
@@ -54,6 +54,11 @@ class LogicModuleService {
     fun createLogicModule(logicModule: LogicModule): String {
         logicModuleRepository.create(logicModule)
         return logicModule.id
+    }
+
+    fun createLogicModuleWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes): String {
+        logicModuleRepository.createWithCompositeNodes(logicModule)
+        return logicModule.id!!
     }
 
     fun deleteLogicModule(id: String) {

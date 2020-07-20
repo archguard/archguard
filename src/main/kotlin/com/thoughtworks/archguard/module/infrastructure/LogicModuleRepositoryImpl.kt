@@ -1,7 +1,15 @@
 package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
+import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
@@ -55,6 +63,13 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
                     logicModule.id, logicModule.name, logicModule.members.joinToString(",") { it.getFullName() }, logicModule.status)
+        }
+    }
+
+    override fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes) {
+        jdbi.withHandle<Int, Nothing> { handle ->
+            handle.execute("insert into logic_module (id, name, lg_members, status) values (?, ?, ?, ?)",
+                    logicModule.id, logicModule.name, logicModule.lgMembers.joinToString(","), logicModule.status)
         }
     }
 

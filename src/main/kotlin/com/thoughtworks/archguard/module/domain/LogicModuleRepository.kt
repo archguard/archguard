@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.SubModule
 
 interface LogicModuleRepository {
     fun getAllByShowStatus(isShow: Boolean): List<LogicModule>
@@ -9,6 +12,7 @@ interface LogicModuleRepository {
     fun update(id: String, logicModule: LogicModule)
     fun updateAll(logicModules: List<LogicModule>)
     fun create(logicModule: LogicModule)
+    fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes)
     fun delete(id: String)
     fun getDependence(caller: String, callee: String): List<Dependency<JMethod>>
     fun deleteAll()

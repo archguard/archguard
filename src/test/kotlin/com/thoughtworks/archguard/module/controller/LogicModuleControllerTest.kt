@@ -35,7 +35,7 @@ class LogicModuleControllerTest {
     @Test
     fun `should get all logic modules`() {
         // given
-        val logicModules = listOf(createLogicModule())
+        val logicModules = listOf(LogicModule.createWithOnlyLeafMembers("id", "name", listOf(LogicComponent.createLeaf("module"))))
         every { service.getLogicModules() } returns logicModules
 
         // when

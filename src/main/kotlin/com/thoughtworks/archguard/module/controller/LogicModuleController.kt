@@ -1,17 +1,18 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.GraphService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.MetricsService
+import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.Graph
+import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,7 +54,7 @@ class LogicModuleController {
 
     @GetMapping
     fun getLogicModules(): List<LogicModuleLegacy> {
-        return logicModuleService.getLogicModules().map { LogicModuleLegacy.fromLogicModule(it) }
+        return logicModuleService.getLogicModules().filter { it.isLogicModule() }.map { LogicModuleLegacy.fromLogicModule(it) }
     }
 
     @PostMapping("/hide-all")
@@ -80,6 +81,12 @@ class LogicModuleController {
     fun createLogicModule(@RequestBody logicModule: LogicModuleLegacy): String {
         logicModule.id = UUID.randomUUID().toString()
         return logicModuleService.createLogicModule(logicModule.toLogicModule())
+    }
+
+    @PostMapping("/service")
+    fun createLogicModuleWithCompositeNodes(@RequestBody logicModule: LogicModuleWithCompositeNodes): String {
+        logicModule.id = UUID.randomUUID().toString()
+        return logicModuleService.createLogicModuleWithCompositeNodes(logicModule.toLogicModule())
     }
 
     @DeleteMapping("/{id}")
