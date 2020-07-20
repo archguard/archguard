@@ -11,22 +11,26 @@ class ProjectInfoService {
     @Autowired
     lateinit var projectInfoRepository: ProjectInfoRepository
 
-    fun getProjectInfo(): ProjectInfo = projectInfoRepository.getProjectInfo() ?: ProjectInfo("", "", ArrayList(), "", "GIT")
+    fun getProjectInfo(): ProjectInfoDTO {
+        val projectInfo = projectInfoRepository.getProjectInfo() ?: ProjectInfo()
+        return ProjectInfoMapper.toDTO(projectInfo)
+    }
 
-    fun updateProjectInfo(projectInfo: ProjectInfo) =
-            if (projectInfoRepository.updateProjectInfo(projectInfo) == 1) {
-                ProjectInfoUpdateMessage(true, "update project info success")
-            } else {
-                ProjectInfoUpdateMessage(false, "update error")
-            }
+    fun updateProjectInfo(projectInfoDTO: ProjectInfoDTO): ProjectInfoUpdateMessage {
+        val projectInfo: ProjectInfo = ProjectInfoMapper.fromDTO(projectInfoDTO)
+        return if (projectInfoRepository.updateProjectInfo(projectInfo) == 1) {
+            ProjectInfoUpdateMessage(true, "update project info success")
+        } else {
+            ProjectInfoUpdateMessage(false, "update error")
+        }
+    }
 
-    fun addProjectInfo(projectInfo: ProjectInfo) =
+    fun addProjectInfo(projectInfoDTO: ProjectInfoDTO) =
             if (projectInfoRepository.querySizeOfProjectInfo() == 0) {
+                val projectInfo: ProjectInfo = ProjectInfoMapper.fromDTO(projectInfoDTO)
                 val id = projectInfoRepository.addProjectInfo(projectInfo)
                 ProjectInfoAddMessage(true, "add new project info success", id)
             } else {
                 ProjectInfoAddMessage(false, "There is already project info", "null")
             }
-
-
 }

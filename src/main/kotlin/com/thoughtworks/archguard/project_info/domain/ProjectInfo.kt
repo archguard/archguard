@@ -1,3 +1,9 @@
 package com.thoughtworks.archguard.project_info.domain
 
-data class ProjectInfo(val id: String?, val projectName: String, val repo: List<String>, val sql: String?, val repoType: String)
+data class ProjectInfo(var id: String = "",
+                       val projectName: String = "",
+                       val repo: String = "",
+                       val sql: String = "",
+                       val username: String = "",
+                       val password: String = "",
+                       val repoType: String = "GIT")

@@ -38,7 +38,7 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.status
 
-        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":null,\"repoType\":\"GIT\"}"
+        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":\"\",\"username\":\"Tom\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)

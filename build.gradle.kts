@@ -25,13 +25,14 @@ repositories {
 
 
 dependencies {
+    val jdbiVersion = "3.14.1"
     antlr("org.antlr:antlr4:4.7.2")
     implementation("org.antlr:antlr4-runtime:4.7.2")
 
     implementation("io.pebbletemplates:pebble:3.0.8")
 
-    implementation("org.jdbi:jdbi3-core:3.8.2")
-    implementation("org.jdbi:jdbi3-spring4:3.10.1") // provide JdbiFactoryBean
+    implementation("org.jdbi:jdbi3-core:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-spring4:$jdbiVersion") // provide JdbiFactoryBean
 
     implementation("io.ktor:ktor-server-core:1.1.4")
     implementation("io.ktor:ktor-server-netty:1.1.4")
@@ -48,8 +49,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jdbi:jdbi3-kotlin:3.10.1")
-    implementation("org.jdbi:jdbi3-testing:3.10.1")
+    implementation("org.jdbi:jdbi3-kotlin:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-testing:$jdbiVersion")
     implementation("org.nield:kotlinstatistics:0.3.0")
 
     runtimeOnly("mysql:mysql-connector-java")
