@@ -9,6 +9,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
     private var type: LogicModuleType? = null
 
+    @Deprecated("Please use Factory Method")
     constructor(id: String, name: String, members: List<LogicComponent>) : this(id, name) {
         this.members = members
         this.type = LogicModuleType.LOGIC_MODULE
@@ -143,7 +144,10 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
         if (logicComponent in members) {
             return true
         }
-        return members.map { it.containsOrEquals(logicComponent) }.contains(true)
+        if (logicComponent in lgMembers) {
+            return true
+        }
+        return members.map { it.containsOrEquals(logicComponent) }.contains(true) || lgMembers.map { it.containsOrEquals(logicComponent) }.contains(true)
     }
 
     override fun getFullName(): String {

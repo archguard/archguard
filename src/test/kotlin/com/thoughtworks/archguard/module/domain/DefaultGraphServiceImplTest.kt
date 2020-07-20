@@ -1,7 +1,12 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JMethodVO
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -39,6 +44,7 @@ internal class DefaultGraphServiceImplTest {
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
         every { dependencyService.getAllWithFullNameStart(any(), any()) } returns dependencies
+        every { logicModuleRepository.getAll() } returns logicModules
 
         // when
         val moduleGraph = service.getLogicModuleGraphLegacy()
@@ -60,5 +66,25 @@ internal class DefaultGraphServiceImplTest {
         val moduleDependency = service.mapClassDependenciesToModuleDependencies(results, modules)
         assertThat(moduleDependency.size).isEqualTo(2)
         assertThat(moduleDependency).containsAll(listOf(Dependency(logicModule1, logicModule2), Dependency(logicModule1, logicModule3)))
+    }
+
+    @Test
+    fun `map bottom logic module to top level logic module`() {
+        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
+        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule4 = LogicModule.createWithOnlyLeafMembers("id4", "module4", listOf(LogicComponent.createLeaf("caller.method2"), LogicComponent.createLeaf("callee.method2")))
+        val logicModule5 = LogicModule.createWithOnlyLeafMembers("id5", "module5", listOf(LogicComponent.createLeaf("module5")))
+
+        val service1 = LogicModule.createWithOnlyLogicModuleMembers("id11", "lg11", listOf(logicModule1, logicModule3))
+        val service2 = LogicModule.createWithOnlyLogicModuleMembers("id12", "lg12", listOf(logicModule2, logicModule4))
+        val bottomLogicModules = listOf(Dependency(logicModule1, logicModule2),
+                Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5))
+        every { logicModuleRepository.getAll() } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
+        val serviceDependencies = service.mapModuleDependencyToServiceDependency(bottomLogicModules)
+        assertThat(serviceDependencies.size).isEqualTo(3)
+        val results = listOf(Dependency(service1, service2), Dependency(service1, service2), Dependency(service2, logicModule5))
+        assertThat(serviceDependencies).usingRecursiveFieldByFieldElementComparator().containsAll(results)
+
     }
 }
