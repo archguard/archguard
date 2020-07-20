@@ -40,7 +40,7 @@ class MetricsServiceImpl(
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
         val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
-        return ClassMetrics(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
+        return ClassMetrics.of(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
@@ -51,16 +51,17 @@ class MetricsServiceImpl(
 
     fun groupToPackage(classMetrics: List<ClassMetrics>): List<PackageMetrics> {
         return classMetrics.groupBy { it.className.substringBeforeLast('.') }
-                .map { PackageMetrics(it.key, it.value) }
+                .map { PackageMetrics.of(it.key, it.value) }
     }
 
     fun groupPackageMetrics(packageMetrics: List<PackageMetrics>,
                             modules: List<LogicModule>): List<ModuleMetrics> {
         return packageMetrics.map { packages ->
             getModule(modules, SubModule(packages.packageName)).groupBy { it.name }.mapValues { packages }
-        }.toList().asSequence().flatMap { it.asSequence() }
+        }.toList().asSequence()
+                  .flatMap { it.asSequence() }
                   .groupBy({it.key}, {it.value})
-                  .map { ModuleMetrics(it.key, it.value) }
+                  .map { ModuleMetrics.of(it.key, it.value) }
     }
 
 }
