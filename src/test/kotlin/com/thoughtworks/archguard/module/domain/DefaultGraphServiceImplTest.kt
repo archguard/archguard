@@ -1,11 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.model.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -18,14 +14,14 @@ internal class DefaultGraphServiceImplTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
-    lateinit var jClassRepository: JClassRepository
+    lateinit var dependencyService: DependencyService
 
     private lateinit var service: DefaultGraphServiceImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = DefaultGraphServiceImpl(logicModuleRepository, jClassRepository)
+        service = DefaultGraphServiceImpl(logicModuleRepository, dependencyService)
     }
 
     @Test
@@ -36,13 +32,13 @@ internal class DefaultGraphServiceImplTest {
         val logicModule3 = LogicModule("3", "module3", listOf(SubModule("bm5")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JClass("id1", "any", "bm1"), JClass("id2", "any", "bm3"))
-        val dependency2 = Dependency(JClass("id3", "any", "bm3"), JClass("id4", "any", "bm2"))
-        val dependency3 = Dependency(JClass("id5", "any", "bm5"), JClass("id6", "any", "bm4"))
+        val dependency1 = Dependency(JMethodVO("bm1", "any", "any"), JMethodVO("bm3", "any", "any"))
+        val dependency2 = Dependency(JMethodVO("bm3", "any", "any"), JMethodVO("bm2", "any", "any"))
+        val dependency3 = Dependency(JMethodVO("bm5", "any", "any"), JMethodVO("bm4", "any", "any"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { jClassRepository.getAllClassDependency(any()) } returns dependencies
+        every { dependencyService.getAllWithFullNameStart(any(), any()) } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraphLegacy()

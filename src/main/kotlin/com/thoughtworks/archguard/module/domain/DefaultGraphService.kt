@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.Graph
 import com.thoughtworks.archguard.module.domain.model.GraphStore
@@ -10,7 +10,7 @@ import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.domain.model.ModuleStoreLegacy
 import org.slf4j.LoggerFactory
 
-abstract class DefaultGraphService(val logicModuleRepository: LogicModuleRepository, val jClassRepository: JClassRepository) : GraphService {
+abstract class DefaultGraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : GraphService {
     private val log = LoggerFactory.getLogger(DefaultGraphService::class.java)
 
     override fun getLogicModuleGraphLegacy(): ModuleGraph {
@@ -43,8 +43,9 @@ abstract class DefaultGraphService(val logicModuleRepository: LogicModuleReposit
 
     private fun getModuleDependency(): List<Dependency<LogicModule>> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
-        val members = modules.map { it.members }.flatten()
-        val classDependencies = jClassRepository.getAllClassDependency(members)
+        val members = modules.map { it.members }.flatten().map { it.getFullName() }
+        val dependencies = dependencyService.getAllWithFullNameStart(members, members)
+        val classDependencies = dependencies.map { Dependency(JClass("any", it.caller.className, it.caller.moduleName), JClass("any", it.callee.className, it.callee.moduleName)) }
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }
 

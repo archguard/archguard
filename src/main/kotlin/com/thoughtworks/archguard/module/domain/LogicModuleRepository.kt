@@ -1,9 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JMethod
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.model.*
 
 interface LogicModuleRepository {
     fun getAllByShowStatus(isShow: Boolean): List<LogicModule>

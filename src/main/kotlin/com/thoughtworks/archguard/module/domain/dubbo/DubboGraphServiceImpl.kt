@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.DefaultGraphService
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.NoModuleFoundException
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("Dubbo")
-class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository, val dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper) : DefaultGraphService(logicModuleRepository, jClassRepository) {
+class DubboGraphServiceImpl(logicModuleRepository: LogicModuleRepository, dependencyService: DependencyService, val dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper) : DefaultGraphService(logicModuleRepository, dependencyService) {
     private val log = LoggerFactory.getLogger(DubboGraphServiceImpl::class.java)
 
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {

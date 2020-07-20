@@ -28,4 +28,9 @@ class DependencyServiceImpl : DependencyService {
         return getAll().filter { method ->  callerRegex.any { it.matches(method.caller.fullName) } && calleeRegex.any { it.matches(method.callee.fullName) }}
     }
 
+    override fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>{
+        return getAll().filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
+    }
+
+
 }

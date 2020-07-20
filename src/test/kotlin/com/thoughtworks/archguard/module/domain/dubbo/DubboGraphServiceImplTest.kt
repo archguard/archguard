@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
@@ -22,7 +22,7 @@ internal class DubboGraphServiceImplTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
-    lateinit var jClassRepository: JClassRepository
+    lateinit var dependencyService: DependencyService
 
     @MockK
     lateinit var dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper
@@ -32,7 +32,7 @@ internal class DubboGraphServiceImplTest {
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        dubboGraphService = DubboGraphServiceImpl(logicModuleRepository, jClassRepository, dubboXmlDependencyAnalysisHelper)
+        dubboGraphService = DubboGraphServiceImpl(logicModuleRepository, dependencyService, dubboXmlDependencyAnalysisHelper)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicModule
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("Default")
-class DefaultGraphServiceImpl(logicModuleRepository: LogicModuleRepository, jClassRepository: JClassRepository) : DefaultGraphService(logicModuleRepository, jClassRepository) {
+class DefaultGraphServiceImpl(logicModuleRepository: LogicModuleRepository, dependencyService: DependencyService) : DefaultGraphService(logicModuleRepository, dependencyService) {
 
     private val log = LoggerFactory.getLogger(DefaultGraphServiceImpl::class.java)
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>> {
