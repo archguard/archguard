@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.nield.kotlinstatistics.median
@@ -19,7 +19,7 @@ class ReportServiceImpl : ReportService {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @Autowired
-    lateinit var jClassRepository: JClassRepository
+    lateinit var dependencyService: DependencyService
 
     override fun getLogicModuleCouplingReport(): List<ModuleCouplingReportDTO> {
         return getLogicModuleCouplingReportDetail().map { ModuleCouplingReportDTO(it) }
@@ -27,8 +27,9 @@ class ReportServiceImpl : ReportService {
 
     override fun getLogicModuleCouplingReportDetail(): List<ModuleCouplingReport> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
-        val members = modules.map { it.members }.flatten()
-        val classDependency = jClassRepository.getAllClassDependency(members)
+        val members = modules.map { it.members }.flatten().map { it.getFullName() }
+        val dependencies = dependencyService.getAllWithFullNameStart(members, members)
+        val classDependency = dependencies.map { Dependency(JClassVO(it.caller.className, it.caller.moduleName), JClassVO(it.callee.className, it.callee.moduleName)) }
 
         val classCouplingReports = getClassCouplingReports(classDependency, modules)
         log.info("Get class Coupling reports done.")
@@ -71,13 +72,13 @@ class ReportServiceImpl : ReportService {
         return packageCouplingReportMap.map { ModuleCouplingReport(it.key, it.value) }
     }
 
-    private fun getClassCouplingReports(dependency: List<Dependency<JClass>>,
+    private fun getClassCouplingReports(dependency: List<Dependency<JClassVO>>,
                                         modules: List<LogicModule>): List<ClassCouplingReport> =
             dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
                     .map { getClassCouplingReport(it, dependency, modules) }
 
-    fun getClassCouplingReport(clazz: JClass,
-                               dependency: List<Dependency<JClass>>,
+    fun getClassCouplingReport(clazz: JClassVO,
+                               dependency: List<Dependency<JClassVO>>,
                                modules: List<LogicModule>): ClassCouplingReport {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
@@ -86,9 +87,9 @@ class ReportServiceImpl : ReportService {
         return ClassCouplingReport(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
-    private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClass>): Boolean {
-        val callerModules = getModule(modules, it.caller.toVO())
-        val calleeModules = getModule(modules, it.callee.toVO())
+    private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
+        val callerModules = getModule(modules, it.caller)
+        val calleeModules = getModule(modules, it.callee)
         return callerModules.intersect(calleeModules).isNotEmpty()
     }
 }

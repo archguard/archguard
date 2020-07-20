@@ -1,10 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.model.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -19,7 +16,7 @@ internal class ReportServiceImplTest {
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
-    lateinit var jClassRepository: JClassRepository
+    lateinit var dependencyService: DependencyService
 
     @InjectMockKs
     var service: ReportServiceImpl = ReportServiceImpl()
@@ -50,10 +47,10 @@ internal class ReportServiceImplTest {
         val element = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         val element3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
-        val dependency1 = Dependency(JClass("id1", "test1.clazz", "com"), JClass("id2", "test3.clazz", "com"))
-        val dependency2 = Dependency(JClass("id3", "test4.clazz", "com"), JClass("id4", "test2.clazz", "com"))
+        val dependency1 = Dependency(JMethodVO("com", "test1.clazz", "any"), JMethodVO("com", "test3.clazz", "any"))
+        val dependency2 = Dependency(JMethodVO("com", "test4.clazz", "any"), JMethodVO("com", "test2.clazz", "any"))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
-        every { jClassRepository.getAllClassDependency(any()) } returns listOf(dependency1, dependency2)
+        every { dependencyService.getAllWithFullNameStart(any(), any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
@@ -69,7 +66,7 @@ internal class ReportServiceImplTest {
         val element = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2)
-        every { jClassRepository.getAllClassDependency(any()) } returns listOf()
+        every { dependencyService.getAllWithFullNameStart(any(), any()) } returns listOf()
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
         //then
