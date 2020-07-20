@@ -5,14 +5,16 @@ import org.slf4j.LoggerFactory
 /**
  * LogicModule is an Entity, so it must have an id.
  */
-class LogicModule(val id: String, val name: String) : LogicComponent() {
+class LogicModule private constructor(val id: String, val name: String) : LogicComponent() {
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
+    private var type: LogicModuleType? = null
 
     constructor(id: String, name: String, members: List<LogicComponent>) : this(id, name) {
         this.members = members
+        this.type = LogicModuleType.LOGIC_MODULE
     }
 
-    constructor(id: String, name: String, members: List<LogicComponent>, lgMembers: List<LogicComponent>) : this(id, name, members) {
+    private constructor(id: String, name: String, members: List<LogicComponent>, lgMembers: List<LogicComponent>) : this(id, name, members) {
         this.lgMembers = lgMembers
     }
 
@@ -22,11 +24,25 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
         }
 
         fun createWithOnlyLogicModuleMembers(id: String, name: String, lgMembers: List<LogicComponent>): LogicModule {
-            return LogicModule(id, name, emptyList(), lgMembers)
+            val logicModule = LogicModule(id, name, emptyList(), lgMembers)
+            logicModule.type = LogicModuleType.SERVICE
+            return logicModule
         }
 
         fun create(id: String, name: String, leafMembers: List<LogicComponent>, lgMembers: List<LogicComponent>): LogicModule {
-            return LogicModule(id, name, leafMembers, lgMembers)
+            val logicModule = LogicModule(id, name, leafMembers, lgMembers)
+            when {
+                logicModule.isService() -> {
+                    logicModule.type = LogicModuleType.SERVICE
+                }
+                logicModule.isLogicModule() -> {
+                    logicModule.type = LogicModuleType.LOGIC_MODULE
+                }
+                else -> {
+                    logicModule.type = LogicModuleType.MIXTURE
+                }
+            }
+            return logicModule
         }
 
     }
@@ -64,6 +80,7 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
             val mutableList = members.toMutableList()
             mutableList.add(logicComponent)
             members = mutableList.toList()
+            fixType()
             return
         }
         log.error("{} already exists in this container", logicComponent)
@@ -74,6 +91,7 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
             val mutableList = members.toMutableList()
             mutableList.remove(logicComponent)
             members = mutableList.toList()
+            fixType()
             return
         }
         log.error("{} not exists in this container's members", logicComponent)
@@ -93,6 +111,32 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
 
     fun getSubLogicModuleComponent(): List<LogicComponent> {
         return members.filter { it.getType() == ModuleMemberType.LOGIC_MODULE }
+    }
+
+    fun isService(): Boolean {
+        return getSubJClassComponent().isEmpty() && getSubSubModuleComponent().isEmpty() && getSubLogicModuleComponent().isNotEmpty()
+    }
+
+    fun isLogicModule(): Boolean {
+        return (getSubJClassComponent().isNotEmpty() || getSubSubModuleComponent().isNotEmpty()) && getSubLogicModuleComponent().isEmpty()
+    }
+
+    fun isMixture(): Boolean {
+        return (getSubJClassComponent().isNotEmpty() || getSubSubModuleComponent().isNotEmpty()) && getSubLogicModuleComponent().isNotEmpty()
+    }
+
+    private fun fixType() {
+        when {
+            isService() -> {
+                this.type = LogicModuleType.SERVICE
+            }
+            isLogicModule() -> {
+                this.type = LogicModuleType.LOGIC_MODULE
+            }
+            isMixture() -> {
+                this.type = LogicModuleType.MIXTURE
+            }
+        }
     }
 
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
@@ -132,4 +176,8 @@ class LogicModule(val id: String, val name: String) : LogicComponent() {
 
 enum class LogicModuleStatus {
     NORMAL, HIDE
+}
+
+enum class LogicModuleType {
+    SERVICE, LOGIC_MODULE, MIXTURE
 }

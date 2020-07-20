@@ -11,8 +11,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         if (id == null) {
             id = UUID.randomUUID().toString()
         }
-        // TODO: 前端暂时还不支持logicModule作为member存储
-        val logicModule = LogicModule.create(id!!, name, members.map { LogicComponent.createLeaf(it) }, emptyList())
+        val logicModule = LogicModule.createWithOnlyLeafMembers(id!!, name, members.map { LogicComponent.createLeaf(it) })
         logicModule.status = status
         return logicModule
     }
