@@ -15,7 +15,7 @@ class ProjectInfoMapper {
 
     fun toDTO(info: ProjectInfo): ProjectInfoDTO {
         return ProjectInfoDTO(id = info.id, projectName = info.projectName, sql = info.sql, username = info.username,
-                password = AESCrypt.decrypt(info.password), repoType = info.repoType,
+                password = info.password, repoType = info.repoType,
                 repo = info.repo.split(','))
     }
 }
