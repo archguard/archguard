@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -16,6 +17,8 @@ class ClassInvokeServiceTest {
     var service = ClassInvokeService()
     @MockK
     private lateinit var repo: JClassRepository
+    @MockK
+    private lateinit var configService: ConfigureService
 
     @BeforeEach
     internal fun setUp() {
@@ -33,6 +36,7 @@ class ClassInvokeServiceTest {
         val caller = JClass("3","caller", "module")
         //when
         every { repo.findClassParents(target.name, target.module) } returns listOf(parent)
+        every { configService.isDisplayClass(any()) } returns true
         every { repo.findClassImplements(target.name, target.module) } returns listOf(impl)
         every { repo.findCallees(target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(target.name, target.module) } returns listOf(ClassRelation(caller, 1))
