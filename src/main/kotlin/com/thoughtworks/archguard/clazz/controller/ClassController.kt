@@ -33,4 +33,13 @@ class ClassController {
                    @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?): JClass {
         return service.findInvokes(module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
     }
+
+    @GetMapping("/{name}/methods_callees")
+    fun getMethodsCallees(@PathVariable("name") name: String,
+                          @RequestParam(value = "module", required = false, defaultValue = "") module: String,
+                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
+                          @RequestParam(value = "needParents", required = false, defaultValue = "true") needParents: Boolean,
+                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean): JClass {
+        return service.findMethodsCallees(module, name, deep, needIncludeImpl, needParents)
+    }
 }

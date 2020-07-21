@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.module.domain.model
 
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
+import com.thoughtworks.archguard.method.domain.JMethod
 import org.slf4j.LoggerFactory
 
 /**
@@ -9,12 +10,14 @@ import org.slf4j.LoggerFactory
 class JClass(val id: String, val name: String, val module: String) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
+    var methods: List<JMethod> = ArrayList()
     var callees: List<ClassRelation> = ArrayList()
     var callers: List<ClassRelation> = ArrayList()
     var parents: List<JClass> = ArrayList()
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
+    var methodCallees: List<JClass> = ArrayList()
     var classType: ClazzType = ClazzType.NOT_DEFINED
 
     fun isInterface(): Boolean {

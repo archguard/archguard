@@ -43,7 +43,7 @@ class ClassInvokeService {
         if (deep == 0) {
             return
         }
-        target.parents = repo.findClassParents(target.name, target.module)
+        target.parents = repo.findClassParents(target.module, target.name)
                 .filter { configureService.isDisplayClass(it.name) }
         target.callers = repo.findCallers(target.name, target.module)
                 .filter { configureService.isDisplayClass(it.clazz.name) }

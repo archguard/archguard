@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.domain.dependency
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,7 +16,7 @@ class DependencyServiceImpl : DependencyService {
     @Autowired
     lateinit var dependencyRepository: DependencyRepository
 
-    override fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethod>> {
+    override fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethodLegacy>> {
         return logicModuleRepository.getDependence(caller, callee)
     }
 

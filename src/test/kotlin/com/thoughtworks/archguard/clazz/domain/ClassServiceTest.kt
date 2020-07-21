@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
 import com.thoughtworks.archguard.clazz.domain.service.ClassInvokeService
 import com.thoughtworks.archguard.clazz.domain.service.ClassService
+import com.thoughtworks.archguard.clazz.domain.service.ClassMethodCalleesService
 import com.thoughtworks.archguard.module.domain.model.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -26,6 +27,9 @@ class ClassServiceTest {
 
     @MockK
     lateinit var classDependencerService: ClassDependencerService
+
+    @MockK
+    lateinit var classMethodCalleesService: ClassMethodCalleesService
 
     @MockK
     lateinit var repo: JClassRepository
@@ -71,5 +75,24 @@ class ClassServiceTest {
         val invokes = service.findInvokes(module, targetName, deep, deep, needIncludeImpl)
         //then
         assertThat(invokes).isEqualToComparingFieldByField(target)
+    }
+
+    @Test
+    fun `should get class method callees`() {
+        //given
+        val needIncludeImpl = true
+        val needParents = true
+        val module = "module"
+        val name = "clazz"
+        val deep = 2
+        val targetClass = JClass("id", name, module)
+        //when
+        every {
+            classMethodCalleesService.findClassMethodsCallees(targetClass, deep, needIncludeImpl, needParents)
+        } returns JClass("id", "clazz", "module")
+        every { repo.getJClassBy(name, module) } returns targetClass
+        val target = service.findMethodsCallees(module, name, deep, needIncludeImpl, needParents)
+        //then
+        assertThat(target.methodCallees).isEmpty()
     }
 }

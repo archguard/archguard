@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
@@ -118,7 +118,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun getDependence(caller: String, callee: String): List<Dependency<JMethod>> {
+    override fun getDependence(caller: String, callee: String): List<Dependency<JMethodLegacy>> {
         val callerTemplate = generateTableSqlTemplateWithModuleModules(this.get(caller).members)
         val calleeTemplate = generateTableSqlTemplateWithModuleModules(this.get(callee).members)
 

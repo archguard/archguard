@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 
@@ -14,7 +14,7 @@ interface LogicModuleRepository {
     fun create(logicModule: LogicModule)
     fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes)
     fun delete(id: String)
-    fun getDependence(caller: String, callee: String): List<Dependency<JMethod>>
+    fun getDependence(caller: String, callee: String): List<Dependency<JMethodLegacy>>
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
     fun getAllSubModule(): List<SubModule>

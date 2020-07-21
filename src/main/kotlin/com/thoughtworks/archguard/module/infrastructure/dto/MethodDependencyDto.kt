@@ -1,19 +1,18 @@
 package com.thoughtworks.archguard.module.infrastructure.dto
 
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.JMethod
+import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 
 class MethodDependencyDto(var caller: String, var callerClass: String, var callerMethod: String, var callee: String, var calleeClass: String, var calleeMethod: String) {
-    fun toMethodDependency(): Dependency<JMethod> {
-        return Dependency(JMethod(callerMethod, JClassVO(callerClass, caller)), JMethod(calleeMethod, JClassVO(calleeClass, callee)))
+    fun toMethodDependency(): Dependency<JMethodLegacy> {
+        return Dependency(JMethodLegacy(callerMethod, JClassVO(callerClass, caller)), JMethodLegacy(calleeMethod, JClassVO(calleeClass, callee)))
     }
 
     companion object {
-        fun fromJMethodDependency(jMethodDependency: Dependency<JMethod>): MethodDependencyDto {
-            return MethodDependencyDto(jMethodDependency.caller.jClass.module, jMethodDependency.caller.jClass.name, jMethodDependency.caller.name,
-                    jMethodDependency.callee.jClass.module, jMethodDependency.callee.jClass.name, jMethodDependency.callee.name)
+        fun fromJMethodDependency(jMethodLegacyDependency: Dependency<JMethodLegacy>): MethodDependencyDto {
+            return MethodDependencyDto(jMethodLegacyDependency.caller.jClass.module, jMethodLegacyDependency.caller.jClass.name, jMethodLegacyDependency.caller.name,
+                    jMethodLegacyDependency.callee.jClass.module, jMethodLegacyDependency.callee.jClass.name, jMethodLegacyDependency.callee.name)
         }
     }
 }

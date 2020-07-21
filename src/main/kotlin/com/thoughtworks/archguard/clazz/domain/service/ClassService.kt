@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ClassService {
+    private lateinit var classMethodCalleesService: ClassMethodCalleesService
+
     @Autowired
     private lateinit var classDependenceesService: ClassDependenceesService
 
@@ -44,6 +46,13 @@ class ClassService {
     fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
         val targetClass = getTargetClass(module, name)[0]
         return classInvokeService.findInvokes(targetClass, callerDeep, calleeDeep, needIncludeImpl)
+    }
+
+    fun findMethodsCallees(module: String, name: String, calleeDeep: Int,
+                           needIncludeImpl: Boolean, needParents: Boolean): JClass {
+        val targetClass = getTargetClass(module, name)[0]
+        return classMethodCalleesService.findClassMethodsCallees(targetClass, calleeDeep,
+                needIncludeImpl, needParents)
     }
 
 }
