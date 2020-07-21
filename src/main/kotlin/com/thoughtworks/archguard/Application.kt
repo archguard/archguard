@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard
 
+import com.thoughtworks.archguard.project_info.infrastracture.AESCrypt
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.spring4.JdbiFactoryBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +23,11 @@ class Application {
         factoryBean.setAutoInstallPlugins(true)
         return factoryBean.`object`
     }
+
+//    @Bean
+//    fun aesCrypt(): AESCrypt {
+//        return AESCrypt("thoughtworks.com")
+//    }
 }
 
 fun main(args: Array<String>) {

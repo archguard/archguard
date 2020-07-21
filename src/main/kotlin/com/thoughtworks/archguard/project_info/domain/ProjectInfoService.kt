@@ -11,13 +11,16 @@ class ProjectInfoService {
     @Autowired
     lateinit var projectInfoRepository: ProjectInfoRepository
 
+    @Autowired
+    lateinit var projectInfoMapper: ProjectInfoMapper
+
     fun getProjectInfo(): ProjectInfoDTO {
         val projectInfo = projectInfoRepository.getProjectInfo() ?: ProjectInfo()
-        return ProjectInfoMapper.toDTO(projectInfo)
+        return projectInfoMapper.toDTO(projectInfo)
     }
 
     fun updateProjectInfo(projectInfoDTO: ProjectInfoDTO): ProjectInfoUpdateMessage {
-        val projectInfo: ProjectInfo = ProjectInfoMapper.fromDTO(projectInfoDTO)
+        val projectInfo: ProjectInfo = projectInfoMapper.fromDTO(projectInfoDTO)
         return if (projectInfoRepository.updateProjectInfo(projectInfo) == 1) {
             ProjectInfoUpdateMessage(true, "update project info success")
         } else {
@@ -27,7 +30,7 @@ class ProjectInfoService {
 
     fun addProjectInfo(projectInfoDTO: ProjectInfoDTO) =
             if (projectInfoRepository.querySizeOfProjectInfo() == 0) {
-                val projectInfo: ProjectInfo = ProjectInfoMapper.fromDTO(projectInfoDTO)
+                val projectInfo: ProjectInfo = projectInfoMapper.fromDTO(projectInfoDTO)
                 val id = projectInfoRepository.addProjectInfo(projectInfo)
                 ProjectInfoAddMessage(true, "add new project info success", id)
             } else {
