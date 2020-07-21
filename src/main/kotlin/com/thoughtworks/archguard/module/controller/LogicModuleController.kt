@@ -14,7 +14,6 @@ import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
-import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -105,8 +104,10 @@ class LogicModuleController {
     }
 
     @GetMapping("/dependencies")
-    fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<MethodDependencyDto> {
-        return dependencyService.getLogicModulesDependencies(caller, callee).map { MethodDependencyDto.fromJMethodDependency(it) }
+    fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
+        val callerMembers = logicModuleService.getLogicModule(caller).members.map { it.getFullName() }
+        val calleeMembers = logicModuleService.getLogicModule(callee).members.map { it.getFullName() }
+        return dependencyService.getAllWithFullNameStart(callerMembers, calleeMembers)
     }
 
     @GetMapping("/graph")
@@ -141,15 +142,6 @@ class LogicModuleController {
     fun getLogicModuleCouplingDetail(): List<ModuleCouplingReport> {
         return reportService.getLogicModuleCouplingReportDetail()
     }
-
-
-    @GetMapping("/dependencies/caller-callee")
-    fun getDependenciesBetweenCallerCallee(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
-        val callerMembers = logicModuleService.getLogicModule(caller).members
-        val calleeMembers = logicModuleService.getLogicModule(callee).members
-        return dependencyService.getAllWithFullNameStart(callerMembers.map { it.getFullName() }, calleeMembers.map { it.getFullName() })
-    }
-
 
     @PostMapping("/calculate-coupling")
     fun calculateCoupling() {
