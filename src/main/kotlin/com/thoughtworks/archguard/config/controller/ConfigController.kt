@@ -43,4 +43,11 @@ class ConfigController {
         service.delete(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
+
+    @PostMapping("/types/{type}")
+    fun updateConfigsByType(@PathVariable("type") type: String,
+                            @RequestBody configs: List<NodeConfigure>): ResponseEntity<Nothing> {
+        service.updateConfigsByType(type, configs)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
 }

@@ -22,6 +22,22 @@ class ConfigureRepositoryImpl : ConfigureRepository {
         }
     }
 
+    override fun batchCreateConfigures(configs: List<NodeConfigure>) {
+        jdbi.withHandle<IntArray, Nothing> {
+            val sql = "INSERT INTO Configure (id, type, `key`, value, `order`) VALUES (:id, :type, :key, :value, :order)"
+            val batch = it.prepareBatch(sql)
+            configs.forEach {
+                batch.bind("id", it.id)
+                        .bind("type", it.type)
+                        .bind("key", it.key)
+                        .bind("value", it.value)
+                        .bind("order", it.order)
+                        .add()
+            }
+            batch.execute()
+        }
+    }
+
     override fun create(config: NodeConfigure) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("INSERT INTO Configure (id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?)",
@@ -55,6 +71,13 @@ class ConfigureRepositoryImpl : ConfigureRepository {
             it.createQuery(sql)
                     .mapTo(NodeConfigure::class.java)
                     .list()
+        }
+    }
+
+    override fun deleteConfiguresByType(type: String) {
+        val sql = "delete from Configure where type = '$type'"
+        jdbi.withHandle<Int, Nothing> { handle ->
+            handle.execute(sql)
         }
     }
 }

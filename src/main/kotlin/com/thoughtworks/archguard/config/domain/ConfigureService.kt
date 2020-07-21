@@ -36,4 +36,9 @@ class ConfigureService {
         hiddenConfig.add("Test")
         return displayConfig.any { className.contains(it) } && hiddenConfig.all { !className.contains(it) }
     }
+
+    fun updateConfigsByType(type: String, configs: List<NodeConfigure>) {
+        repo.deleteConfiguresByType(type)
+        repo.batchCreateConfigures(configs)
+    }
 }

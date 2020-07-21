@@ -6,4 +6,6 @@ interface ConfigureRepository {
     fun update(config: NodeConfigure)
     fun delete(id: String)
     fun getConfiguresByType(type: String): List<NodeConfigure>
+    fun deleteConfiguresByType(type: String)
+    fun batchCreateConfigures(configs: List<NodeConfigure>)
 }
