@@ -2,8 +2,10 @@ package com.thoughtworks.archguard.config.domain
 
 import com.sun.org.apache.xpath.internal.operations.Bool
 import com.thoughtworks.archguard.module.domain.model.JClass
+import org.apache.logging.log4j.util.Strings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ConfigureService {

@@ -2,10 +2,12 @@ package com.thoughtworks.archguard.config.infrastructure
 
 import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import com.thoughtworks.archguard.config.domain.NodeConfigure
+import org.apache.logging.log4j.util.Strings
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class ConfigureRepositoryImpl : ConfigureRepository {
@@ -23,11 +25,12 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     }
 
     override fun batchCreateConfigures(configs: List<NodeConfigure>) {
-        jdbi.withHandle<IntArray, Nothing> {
+        jdbi.withHandle<IntArray, Nothing> { handle ->
             val sql = "INSERT INTO Configure (id, type, `key`, value, `order`) VALUES (:id, :type, :key, :value, :order)"
-            val batch = it.prepareBatch(sql)
+            val batch = handle.prepareBatch(sql)
             configs.forEach {
-                batch.bind("id", it.id)
+                val id = it.id ?: UUID.randomUUID().toString()
+                batch.bind("id", id)
                         .bind("type", it.type)
                         .bind("key", it.key)
                         .bind("value", it.value)
