@@ -3,7 +3,9 @@ package com.thoughtworks.archgard.scanner.domain.project
 import com.thoughtworks.archgard.scanner.domain.project.BuildTool.GRADLE
 import com.thoughtworks.archgard.scanner.domain.project.BuildTool.MAVEN
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
+import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Paths
@@ -29,10 +31,12 @@ class Project(val id: String, val projectName: String, val repo: String, val sql
 
     private fun getSource(workspace: File, repo: String, repoType: String) {
         if ("GIT" == repoType) {
-            Git.cloneRepository()
+            val clone :CloneCommand =   Git.cloneRepository()
                     .setDirectory(workspace)
                     .setURI(repo)
-                    .call()
+
+//                    .setCredentialsProvider(UsernamePasswordCredentialsProvider())
+//                    .call()
         } else if ("SVN" == repoType) {
             val pb = ProcessBuilder(listOf("svn", "checkout", repo, Paths.get("./").normalize().toString()))
             Processor.executeWithLogs(pb, workspace)
