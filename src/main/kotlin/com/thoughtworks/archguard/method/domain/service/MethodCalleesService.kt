@@ -1,12 +1,36 @@
 package com.thoughtworks.archguard.method.domain.service
 
 import com.thoughtworks.archguard.method.domain.JMethod
+import com.thoughtworks.archguard.method.domain.JMethodRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class MethodCalleesService {
-    fun buildMethodCallees(jMethod: JMethod, calleeDeep: Int, needIncludeImpl: Boolean, needParents: Boolean): JMethod {
-        TODO()
+    @Autowired
+    private lateinit var repo: JMethodRepository
+
+    fun buildMethodCallees(methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean, mergeGetSet: Boolean): List<JMethod> {
+        val container = ArrayList<JMethod>()
+        doBuildCallees(methods, calleeDeep, container, needIncludeImpl)
+        return methods
     }
 
+    private fun doBuildCallees(methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
+        var pendindMethods = methods.filterNot { container.contains(it) }
+        if (pendindMethods.isEmpty() || calleeDeep == 0) {
+            container.addAll(pendindMethods)
+        } else {
+            pendindMethods.forEach {
+                it.callees = repo.findMethodCallees(it.id)
+                if (needIncludeImpl) {
+                    it.implements = repo.findMethodImplements(it.id, it.name)
+                }
+            }
+            doBuildCallees(pendindMethods.flatMap { it.callees },
+                    calleeDeep - 1, container, needIncludeImpl)
+            doBuildCallees(pendindMethods.flatMap { it.implements },
+                    calleeDeep, container, needIncludeImpl)
+        }
+    }
 }

@@ -17,7 +17,6 @@ class JClass(val id: String, val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
-    var methodCallees: List<JClass> = ArrayList()
     var classType: ClazzType = ClazzType.NOT_DEFINED
 
     fun isInterface(): Boolean {

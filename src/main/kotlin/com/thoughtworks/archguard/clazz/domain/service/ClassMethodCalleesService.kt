@@ -21,7 +21,7 @@ class ClassMethodCalleesService {
     fun findClassMethodsCallees(target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {
         target.methods = methodRepo.findMethodsByModuleAndClass(target.module, target.name)
-        target.methods.forEach { methodCalleesService.buildMethodCallees(it, calleeDeep, needIncludeImpl, needParents) }
+        methodCalleesService.buildMethodCallees(target.methods, calleeDeep, needIncludeImpl, needParents)
         if (needParents) {
             (target.parents as MutableList).addAll(classRepo.findClassParents(target.module, target.name))
             target.parents.forEach { findClassMethodsCallees(it, calleeDeep, needIncludeImpl, needParents) }

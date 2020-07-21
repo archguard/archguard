@@ -92,6 +92,6 @@ class ClassServiceTest {
         every { repo.getJClassBy(name, module) } returns targetClass
         val target = service.findMethodsCallees(module, name, deep, needIncludeImpl, needParents)
         //then
-        assertThat(target.methodCallees).isEmpty()
+        assertThat(target.methods).isEmpty()
     }
 }

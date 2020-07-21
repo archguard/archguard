@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ClassService {
+    @Autowired
     private lateinit var classMethodCalleesService: ClassMethodCalleesService
 
     @Autowired
