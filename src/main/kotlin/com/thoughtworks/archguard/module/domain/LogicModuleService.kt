@@ -133,8 +133,6 @@ fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>): List<Lo
             matchModule.add(logicModule)
         }
     }
-    if (matchModule.isEmpty()) {
-        throw NoModuleFoundException("$jClass No LogicModule matched!")
-    }
+
     return matchModule.toList()
 }
