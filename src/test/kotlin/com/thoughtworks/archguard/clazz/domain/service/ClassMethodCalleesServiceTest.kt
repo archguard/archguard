@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.method.domain.service.MethodCalleesService
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.clazz.domain.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

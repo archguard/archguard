@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.module.domain.model
+package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.method.domain.JMethod
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.slf4j.LoggerFactory
 
 /**

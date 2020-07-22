@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.clazz.domain.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -32,8 +32,8 @@ class ClassInvokeServiceTest {
         val target = JClass("1", targetName, "module")
         val parent = JClass("parent", "parent", "module")
         val impl = JClass("impl", "impl", "module")
-        val callee = JClass("2","callee", "module")
-        val caller = JClass("3","caller", "module")
+        val callee = JClass("2", "callee", "module")
+        val caller = JClass("3", "caller", "module")
         //when
         every { repo.findClassParents(target.module, target.name) } returns listOf(parent)
         every { configService.isDisplayClass(any()) } returns true

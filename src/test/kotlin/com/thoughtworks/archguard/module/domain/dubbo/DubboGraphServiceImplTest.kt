@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.dubbo
 import com.thoughtworks.archguard.module.domain.DependencyAnalysisHelper
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.model.ClazzType
+import com.thoughtworks.archguard.clazz.domain.ClazzType
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule

@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.thoughtworks.archguard.clazz.domain.ClazzType
+
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */

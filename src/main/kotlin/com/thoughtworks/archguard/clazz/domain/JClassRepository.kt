@@ -1,9 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 
 interface JClassRepository {

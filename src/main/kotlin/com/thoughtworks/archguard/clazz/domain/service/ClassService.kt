@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.clazz.domain.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

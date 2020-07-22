@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.clazz.domain.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -27,8 +27,8 @@ internal class ClassDependenceesServiceTest {
         //given
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
-        val callee1 = JClass("2","callee1", "module")
-        val callee2 = JClass("3","callee2", "module")
+        val callee1 = JClass("2", "callee1", "module")
+        val callee2 = JClass("3", "callee2", "module")
         //when
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { repo.findDependencees(target.id) } returns listOf(callee1)
@@ -46,8 +46,8 @@ internal class ClassDependenceesServiceTest {
         //given
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
-        val dependencee1 = JClass("2","dependencee1", "module")
-        val dependencee2 = JClass("3","dependencee2", "module")
+        val dependencee1 = JClass("2", "dependencee1", "module")
+        val dependencee2 = JClass("3", "dependencee2", "module")
         //when
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { repo.findDependencees(target.id) } returns listOf(dependencee1)

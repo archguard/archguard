@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.model.ClazzType
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.clazz.domain.ClazzType
+import com.thoughtworks.archguard.clazz.domain.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
