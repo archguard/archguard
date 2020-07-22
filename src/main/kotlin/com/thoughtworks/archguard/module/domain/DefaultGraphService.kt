@@ -43,7 +43,8 @@ abstract class DefaultGraphService(val logicModuleRepository: LogicModuleReposit
 
     private fun getModuleDependency(): List<Dependency<LogicModule>> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
-        val dependencies = dependencyService.getAll()
+        val members = modules.map { it.members }.flatten().map { it.getFullName() }
+        val dependencies = dependencyService.getAllWithFullNameStart(members, members)
         val classDependencies = dependencies.map { Dependency(JClass("any", it.caller.className, it.caller.moduleName), JClass("any", it.callee.className, it.callee.moduleName)) }
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }

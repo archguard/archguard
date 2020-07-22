@@ -43,7 +43,7 @@ internal class DefaultGraphServiceImplTest {
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { dependencyService.getAll() } returns dependencies
+        every { dependencyService.getAllWithFullNameStart(any(), any()) } returns dependencies
         every { logicModuleRepository.getAll() } returns logicModules
 
         // when
