@@ -28,6 +28,12 @@ class MetricsServiceImpl(
         metricsRepository.insert(moduleMetrics)
     }
 
+    override fun getAllMetrics(): List<ModuleMetrics> {
+        val modules = logicModuleRepository.getAllByShowStatus(true)
+        val moduleNames = modules.map { it.name }.toList()
+        return metricsRepository.findAllMetrics(moduleNames)
+    }
+
     override fun getModuleMetrics(): List<ModuleMetrics> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val moduleNames = modules.map { it.name }.toList()

@@ -151,8 +151,12 @@ class LogicModuleController {
 
     @GetMapping("/metrics")
     fun getAllMetrics(): List<ModuleMetrics> {
-        return metricsService.getModuleMetrics()
+        return metricsService.getAllMetrics()
     }
 
+    @GetMapping("/metrics/modules")
+    fun getModuleMetrics(): List<ModuleMetrics> {
+        return metricsService.getModuleMetrics()
+    }
 }
 
