@@ -20,4 +20,7 @@ interface ModuleMetricsDao {
 
     @SqlQuery("select m.* from metrics_module m where m.module_name = :moduleName")
     fun findModuleMetricsByModuleName(@Bind("moduleName") moduleName: String) : ModuleMetrics
+
+    @SqlUpdate("TRUNCATE TABLE metrics_module")
+    fun truncate()
 }

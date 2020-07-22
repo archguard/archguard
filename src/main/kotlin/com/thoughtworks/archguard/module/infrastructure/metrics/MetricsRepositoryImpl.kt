@@ -14,6 +14,10 @@ class MetricsRepositoryImpl(
 ) : MetricsRepository {
 
     override fun insert(moduleMetrics: List<ModuleMetrics>) {
+        classMetricsDao.truncate()
+        packageMetricsDao.truncate()
+        moduleMetricsDao.truncate()
+
         moduleMetrics.map { modules ->
             val moduleId = moduleMetricsDao.insert(modules)
             modules.packageMetrics.map { packages ->

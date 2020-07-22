@@ -28,17 +28,17 @@ class MetricsServiceImpl(
         metricsRepository.insert(moduleMetrics)
     }
 
-    private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,
-                                        modules: List<LogicModule>): List<ClassMetrics> {
-     return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
-             .map { getClassCoupling(it, dependency, modules) }
-
     override fun getModuleMetrics(): List<ModuleMetrics> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findModuleMetrics(moduleNames)
     }
 
+    private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,
+                                modules: List<LogicModule>): List<ClassMetrics> {
+        return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
+                .map { getClassCoupling(it, dependency, modules) }
+    }
 
     fun getClassCoupling(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
                          modules: List<LogicModule>): ClassMetrics {
@@ -64,10 +64,9 @@ class MetricsServiceImpl(
                             modules: List<LogicModule>): List<ModuleMetrics> {
         return packageMetrics.map { packages ->
             getModule(modules, SubModule(packages.packageName)).groupBy { it.name }.mapValues { packages }
-        }.toList().asSequence()
-                  .flatMap { it.asSequence() }
-                  .groupBy({it.key}, {it.value})
-                  .map { ModuleMetrics.of(it.key, it.value) }
+        }.toList().asSequence().flatMap { it.asSequence() }
+                .groupBy({it.key}, {it.value})
+                .map { ModuleMetrics.of(it.key, it.value) }
     }
 
 }

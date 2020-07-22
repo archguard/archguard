@@ -20,4 +20,7 @@ interface ClassMetricsDao {
 
     @SqlQuery("select c.* from metrics_class c where c.package_id = :packageId")
     fun findClassMetricsByPackageId(@Bind("packageId") packageId: Long) : List<ClassMetrics>
+
+    @SqlUpdate("TRUNCATE TABLE metrics_class")
+    fun truncate()
 }

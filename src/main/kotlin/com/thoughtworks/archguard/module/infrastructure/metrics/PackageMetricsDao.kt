@@ -20,4 +20,7 @@ interface PackageMetricsDao {
 
     @SqlQuery("select p.* from metrics_package p where p.module_id = :moduleId")
     fun findPackageMetricsByModuleId(@Bind("moduleId") moduleId: Long) : List<PackageMetrics>
+
+    @SqlUpdate("TRUNCATE TABLE metrics_package")
+    fun truncate()
 }
