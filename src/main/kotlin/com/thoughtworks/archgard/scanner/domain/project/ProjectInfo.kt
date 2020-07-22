@@ -10,4 +10,8 @@ class ProjectInfo(var id: String = "",
                   val password: String = "",
                   val repoType: String = "GIT") {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
+
+    fun hasAuthInfo(): Boolean {
+        return username.isNotBlank() && password.isNotBlank()
+    }
 }

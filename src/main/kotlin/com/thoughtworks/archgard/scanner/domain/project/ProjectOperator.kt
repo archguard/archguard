@@ -28,18 +28,8 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
 
     private fun getSource(workspace: File) {
         when (this.projectInfo.repoType) {
-            "GIT" -> {
-                Git.cloneRepository()
-                        .setDirectory(workspace)
-                        .setURI(this.projectInfo.repo)
-                        .setCredentialsProvider(UsernamePasswordCredentialsProvider(projectInfo.username,
-                                projectInfo.getDeCryptPassword()))
-                        .call()
-            }
-            "SVN" -> {
-                val pb = ProcessBuilder(listOf("svn", "checkout", this.projectInfo.repo, Paths.get("./").normalize().toString()))
-                Processor.executeWithLogs(pb, workspace)
-            }
+            "GIT" -> cloneByGit(workspace, projectInfo)
+            "SVN" -> cloneBySvn(workspace, projectInfo)
         }
     }
 
@@ -56,5 +46,33 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
             return BuildTool.MAVEN
         }
         return BuildTool.GRADLE
+    }
+
+    private fun cloneByGit(workspace: File, projectInfo: ProjectInfo) {
+        val cloneCmd = Git.cloneRepository()
+                .setDirectory(workspace)
+                .setURI(this.projectInfo.repo)
+
+        if (projectInfo.hasAuthInfo()) {
+            cloneCmd.setCredentialsProvider(UsernamePasswordCredentialsProvider(projectInfo.username,
+                    projectInfo.getDeCryptPassword()))
+        }
+
+        cloneCmd.call()
+    }
+
+    private fun cloneBySvn(workspace: File, projectInfo: ProjectInfo) {
+        val cmdList = if (projectInfo.hasAuthInfo()) {
+            listOf("svn", "checkout",
+                    this.projectInfo.repo, Paths.get("./").normalize().toString(),
+                    "--username", projectInfo.username,
+                    "--password", projectInfo.password)
+        } else {
+            listOf("svn", "checkout",
+                    this.projectInfo.repo, Paths.get("./").normalize().toString())
+        }
+
+        val pb = ProcessBuilder(cmdList)
+        Processor.executeWithLogs(pb, workspace)
     }
 }
