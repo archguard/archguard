@@ -29,7 +29,7 @@ class ReportServiceImpl : ReportService {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten().map { it.getFullName() }
         val dependencies = dependencyService.getAllWithFullNameStart(members, members)
-        val classDependency = dependencies.map { Dependency(JClassVO(it.caller.className, it.caller.moduleName), JClassVO(it.callee.className, it.callee.moduleName)) }
+        val classDependency = dependencies.map { Dependency(it.caller.jClassVO, it.callee.jClassVO) }
 
         val classCouplingReports = getClassCouplingReports(classDependency, modules)
         log.info("Get class Coupling reports done.")

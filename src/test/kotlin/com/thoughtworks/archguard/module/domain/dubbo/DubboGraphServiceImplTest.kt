@@ -5,7 +5,6 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.ClazzType
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
@@ -41,10 +40,10 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass("id1", "c1", "s1")
-        val callee = JClass("id2", "c", "sa")
+        val caller = JClassVO( "c1", "s1")
+        val callee = JClassVO("c", "sa")
         callee.classType = ClazzType.CLASS
-        val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
+        val jClassDependency: Dependency<JClassVO> = Dependency(caller, callee)
         val moduleDependency = dubboGraphService.mapClassDependencyToModuleDependency(logicModules, jClassDependency)
         assertThat(moduleDependency).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(lg1, lg2), Dependency(lg1, lg3)))
         verify(exactly = 0) { dubboXmlDependencyAnalysisHelper.analysis(any(), any()) }
@@ -57,10 +56,10 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass("id1", "c1", "s1")
-        val callee = JClass("id2", "c", "sa")
+        val caller = JClassVO( "c1", "s1")
+        val callee = JClassVO( "c", "sa")
         callee.classType = ClazzType.INTERFACE
-        val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
+        val jClassDependency: Dependency<JClassVO> = Dependency(caller, callee)
 
         every { dubboXmlDependencyAnalysisHelper.analysis(any(), any()) } returns emptyList()
 
@@ -76,10 +75,10 @@ internal class DubboGraphServiceImplTest {
         val lg2 = LogicModule("id2", "lg2", listOf(SubModule("s2"), JClassVO.create("sa.c")))
         val lg3 = LogicModule("id3", "lg3", listOf(SubModule("s3"), JClassVO.create("sa.c")))
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3)
-        val caller = JClass("id1", "c1", "s1")
-        val callee = JClass("id2", "c", "sa")
+        val caller = JClassVO("c1", "s1")
+        val callee = JClassVO("c", "sa")
         callee.classType = ClazzType.INTERFACE
-        val jClassDependency: Dependency<JClass> = Dependency(caller, callee)
+        val jClassDependency: Dependency<JClassVO> = Dependency(caller, callee)
 
         every { dubboXmlDependencyAnalysisHelper.analysis(any(), any()) } returns listOf(lg3)
 

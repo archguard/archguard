@@ -117,7 +117,7 @@ private fun fullMatch(jClass: LogicComponent, modules: List<LogicModule>): List<
     }
 }
 
-fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>): List<LogicModule> {
+private fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>): List<LogicModule> {
     var maxMatchSize = 0
     val matchModule: MutableList<LogicModule> = mutableListOf()
     for (logicModule in modules) {

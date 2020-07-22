@@ -1,13 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.Graph
-import com.thoughtworks.archguard.module.domain.model.GraphStore
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.ModuleGraph
-import com.thoughtworks.archguard.module.domain.model.ModuleStoreLegacy
+import com.thoughtworks.archguard.module.domain.model.*
 import org.slf4j.LoggerFactory
 
 abstract class DefaultGraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : GraphService {
@@ -45,17 +39,17 @@ abstract class DefaultGraphService(val logicModuleRepository: LogicModuleReposit
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val members = modules.map { it.members }.flatten().map { it.getFullName() }
         val dependencies = dependencyService.getAllWithFullNameStart(members, members)
-        val classDependencies = dependencies.map { Dependency(JClass("any", it.caller.className, it.caller.moduleName), JClass("any", it.callee.className, it.callee.moduleName)) }
+        val classDependencies = dependencies.map { Dependency(it.caller.jClassVO, it.callee.jClassVO) }
         return mapClassDependenciesToModuleDependencies(classDependencies, modules)
     }
 
-    fun mapClassDependenciesToModuleDependencies(classDependency: List<Dependency<JClass>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+    fun mapClassDependenciesToModuleDependencies(classDependency: List<Dependency<JClassVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         return classDependency.map { mapClassDependencyToModuleDependency(logicModules, it) }.flatten()
                 .filter { it.caller != it.callee }
     }
 
-    abstract fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClass>): List<Dependency<LogicModule>>
+    abstract fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClassVO>): List<Dependency<LogicModule>>
 
     fun mapModuleDependencyToServiceDependency(moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         val logicModules = logicModuleRepository.getAll()

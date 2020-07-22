@@ -1,10 +1,7 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.module.domain.getModule
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.model.*
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -37,7 +34,7 @@ internal class DubboXmlDependencyAnalysisHelperTest {
         val lg3 = LogicModule("id1", "lg1", listOf(SubModule("m1")))
         every { getModule(any(), any()) } returnsMany listOf(listOf(lg1, lg2), listOf(lg3))
 
-        val analysis = dubboXmlDependencyAnalysisHelper.analysis(Dependency(JClass("id1", "b", "a"), JClass("id2", "c", "a")), listOf(lg1, lg2))
+        val analysis = dubboXmlDependencyAnalysisHelper.analysis(Dependency(JClassVO( "b", "a"), JClassVO( "c", "a")), listOf(lg1, lg2))
         assertThat(analysis.size).isEqualTo(2)
         assertThat(analysis).usingDefaultElementComparator().containsExactlyElementsOf(listOf(lg1, lg2))
         assertThat(analysis).usingDefaultElementComparator().containsExactlyElementsOf(listOf(lg3, lg2))

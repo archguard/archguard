@@ -1,12 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClass
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.model.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -56,8 +51,8 @@ internal class DefaultGraphServiceImplTest {
 
     @Test
     fun `should map to module`() {
-        val results = listOf(Dependency(JClass("id1", "method1", "caller"), JClass("id2", "method1", "callee")),
-                Dependency(JClass("id3", "method2", "caller"), JClass("id4", "method2", "callee")))
+        val results = listOf(Dependency(JClassVO( "method1", "caller"), JClassVO( "method1", "callee")),
+                Dependency(JClassVO("method2", "caller"), JClassVO( "method2", "callee")))
         val logicModule1 = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
         val logicModule2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
         val logicModule3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))

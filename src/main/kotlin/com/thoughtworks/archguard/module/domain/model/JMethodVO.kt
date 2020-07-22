@@ -1,5 +1,8 @@
 package com.thoughtworks.archguard.module.domain.model
 
-data class JMethodVO(val moduleName: String, val className: String,val name: String) {
-    val fullName = "$moduleName.$className.$name"
+data class JMethodVO(val jClassVO: JClassVO, val name: String) {
+    val fullName = "${jClassVO.getFullName()}.$name"
+
+    constructor(moduleName: String, className: String, name: String) : this(JClassVO(className, moduleName), name)
+
 }

@@ -53,6 +53,7 @@ internal class ReportServiceImplTest {
         every { dependencyService.getAllWithFullNameStart(any(), any()) } returns listOf(dependency1, dependency2)
         //when
         val logicModuleCoupling = service.getLogicModuleCouplingReportDetail()
+        println(logicModuleCoupling)
         //then
         assertThat(logicModuleCoupling.filter { it.moduleName == "module1" }[0].outerModuleCouplingAverage).isEqualTo(0.0)
         assertThat(logicModuleCoupling.filter { it.moduleName == "module1" }[0].outerModuleInstabilityAverage).isEqualTo(0.5)

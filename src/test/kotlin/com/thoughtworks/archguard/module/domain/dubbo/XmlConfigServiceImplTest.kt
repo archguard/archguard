@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
-import com.thoughtworks.archguard.module.domain.model.JClass
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -23,8 +23,8 @@ internal class XmlConfigServiceImplTest {
 
     @Test
     internal fun should_find_real_sub_module() {
-        val callerClass = JClass("id1", "caller1", "module1")
-        val calleeClass = JClass("id2", "callee1", "module2")
+        val callerClass = JClassVO( "caller1", "module1")
+        val calleeClass = JClassVO( "callee1", "module2")
         val callerSubModule = SubModuleDubbo("id_module1", "module1", "module_path1")
         val calleeImplSubModule = SubModuleDubbo("id_module2", "module2", "module_path2")
         val referenceConfig = ReferenceConfig("reference_id1", "bean_id1", "callee1", null, "g1", callerSubModule)
