@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
 import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.Graph
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
@@ -146,6 +147,11 @@ class LogicModuleController {
     @PostMapping("/calculate-coupling")
     fun calculateCoupling() {
         metricsService.calculateCoupling()
+    }
+
+    @GetMapping("/metrics")
+    fun getAllMetrics(): List<ModuleMetrics> {
+        return metricsService.getModuleMetrics()
     }
 
 }

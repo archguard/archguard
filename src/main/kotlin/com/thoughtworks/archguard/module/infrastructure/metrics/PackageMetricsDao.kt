@@ -2,8 +2,10 @@ package com.thoughtworks.archguard.module.infrastructure.metrics
 
 import com.thoughtworks.archguard.module.domain.metrics.PackageMetrics
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
+import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
+import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 @RegisterBeanMapper(PackageMetrics::class)
@@ -15,4 +17,7 @@ interface PackageMetricsDao {
             "values(:moduleId, :packageName, :outerInstabilityAvg, :outerInstabilityMed, :outerCouplingAvg, " +
             ":outerCouplingMed, :innerInstabilityAvg, :innerInstabilityMed, :innerCouplingAvg, :innerCouplingMed)")
     fun insert(@BindBean packageMetrics: PackageMetrics): Long
+
+    @SqlQuery("select p.* from metrics_package p where p.module_id = :moduleId")
+    fun findPackageMetricsByModuleId(@Bind("moduleId") moduleId: Long) : List<PackageMetrics>
 }

@@ -32,7 +32,13 @@ class MetricsServiceImpl(
                                         modules: List<LogicModule>): List<ClassMetrics> {
      return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
              .map { getClassCoupling(it, dependency, modules) }
+
+    override fun getModuleMetrics(): List<ModuleMetrics> {
+        val modules = logicModuleRepository.getAllByShowStatus(true)
+        val moduleNames = modules.map { it.name }.toList()
+        return metricsRepository.findModuleMetrics(moduleNames)
     }
+
 
     fun getClassCoupling(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
                          modules: List<LogicModule>): ClassMetrics {

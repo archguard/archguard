@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.module.domain.MetricsRepository
 import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.stream.Collectors
 
 @Repository
 class MetricsRepositoryImpl(
@@ -24,5 +25,18 @@ class MetricsRepositoryImpl(
                 }
             }
         }
+    }
+
+    override fun findModuleMetrics(moduleNames: List<String>): List<ModuleMetrics> {
+        return moduleNames.stream()
+                .map { moduleMetricsDao.findModuleMetricsByModuleName(it)}
+                        //.orElseThrow { RuntimeException("module not found with $it") } }
+                .filter{ it != null }
+                .peek{ moduleMetrics ->
+                    moduleMetrics.packageMetrics = packageMetricsDao.findPackageMetricsByModuleId(moduleMetrics.id!!)
+                    moduleMetrics.packageMetrics.map {
+                        it.classMetrics = classMetricsDao.findClassMetricsByPackageId(it.id!!)
+                    } }
+                .collect(Collectors.toList())
     }
 }

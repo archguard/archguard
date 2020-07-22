@@ -1,16 +1,35 @@
 package com.thoughtworks.archguard.module.domain.metrics
 
-data class ClassMetrics (
-        val className: String,
-        val innerFanIn: Int,
-        val innerFanOut: Int,
-        val outerFanIn: Int,
-        val outerFanOut: Int
+data class ClassMetrics(
+    var id: Long?,
+    var packageId: Long,
+    var className: String,
+    var innerFanIn: Int,
+    var innerFanOut: Int,
+    var outerFanIn: Int,
+    var outerFanOut: Int,
+    var innerInstability: Double,
+    var innerCoupling: Double,
+    var outerInstability: Double,
+    var outerCoupling: Double
 ) {
-    var id: Long? = null
-    var packageId: Long = 0
-    val innerInstability: Double = if (innerFanIn + innerFanOut == 0) 0.0 else innerFanOut.toDouble() / (innerFanOut + innerFanIn)
-    val innerCoupling: Double = if (innerFanIn + innerFanOut == 0) 0.0 else 1 - 1.0 / (innerFanOut + innerFanIn)
-    val outerInstability: Double = if (outerFanIn + outerFanOut == 0) 0.0 else outerFanOut.toDouble() / (outerFanOut + outerFanIn)
-    val outerCoupling: Double = if (outerFanIn + outerFanOut == 0) 0.0 else 1 - 1.0 / (outerFanOut + outerFanIn)
+    constructor() : this(null, 0, "", 0, 0, 0,
+            0, 0.0, 0.0, 0.0, 0.0)
+
+    companion object {
+        fun of(className: String, innerFanIn: Int, innerFanOut: Int, outerFanIn: Int, outerFanOut: Int) = ClassMetrics(
+                id = null,
+                packageId = 0,
+                className = className,
+                innerFanIn = innerFanIn,
+                innerFanOut = innerFanOut,
+                outerFanIn = outerFanIn,
+                outerFanOut = outerFanOut,
+                innerInstability = if (innerFanIn + innerFanOut == 0) 0.0 else innerFanOut.toDouble() / (innerFanOut + innerFanIn),
+                innerCoupling = if (innerFanIn + innerFanOut == 0) 0.0 else 1 - 1.0 / (innerFanOut + innerFanIn),
+                outerInstability = if (outerFanIn + outerFanOut == 0) 0.0 else outerFanOut.toDouble() / (outerFanOut + outerFanIn),
+                outerCoupling = if (outerFanIn + outerFanOut == 0) 0.0 else 1 - 1.0 / (outerFanOut + outerFanIn)
+        )
+    }
+
 }

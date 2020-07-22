@@ -2,17 +2,36 @@ package com.thoughtworks.archguard.module.domain.metrics
 
 import org.nield.kotlinstatistics.median
 
-data class ModuleMetrics(
-        val moduleName: String,
-        val packageMetrics: List<PackageMetrics>
+data class ModuleMetrics (
+    var id: Long?,
+    var moduleName: String,
+    var packageMetrics: List<PackageMetrics>,
+    var outerInstabilityAvg: Double,
+    var outerInstabilityMed: Double,
+    var outerCouplingAvg: Double,
+    var outerCouplingMed: Double,
+    var innerInstabilityAvg: Double,
+    var innerInstabilityMed: Double,
+    var innerCouplingAvg: Double,
+    var innerCouplingMed: Double
 ) {
-    var id: Long? = null
-    val outerInstabilityAvg: Double = packageMetrics.flatMap { it.classMetrics }.map { it.outerInstability }.average()
-    val outerInstabilityMed: Double = packageMetrics.flatMap { it.classMetrics }.map { it.outerInstability }.median()
-    val outerCouplingAvg: Double = packageMetrics.flatMap { it.classMetrics }.map { it.outerCoupling }.average()
-    val outerCouplingMed: Double = packageMetrics.flatMap { it.classMetrics }.map { it.outerCoupling }.median()
-    val innerInstabilityAvg: Double = packageMetrics.flatMap { it.classMetrics }.map { it.innerInstability }.average()
-    val innerInstabilityMed: Double = packageMetrics.flatMap { it.classMetrics }.map { it.innerInstability }.median()
-    val innerCouplingAvg: Double = packageMetrics.flatMap { it.classMetrics }.map { it.innerCoupling }.average()
-    val innerCouplingMed: Double = packageMetrics.flatMap { it.classMetrics }.map { it.innerCoupling }.median()
+    constructor() : this(null, "", emptyList(), 0.0,
+            0.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0)
+
+    companion object {
+        fun of(moduleName: String, packageMetrics: List<PackageMetrics>) = ModuleMetrics(
+                id = null,
+                moduleName = moduleName,
+                packageMetrics = packageMetrics,
+                outerInstabilityAvg = packageMetrics.flatMap { it.classMetrics }.map { it.outerInstability }.average(),
+                outerInstabilityMed = packageMetrics.flatMap { it.classMetrics }.map { it.outerInstability }.median(),
+                outerCouplingAvg = packageMetrics.flatMap { it.classMetrics }.map { it.outerCoupling }.average(),
+                outerCouplingMed = packageMetrics.flatMap { it.classMetrics }.map { it.outerCoupling }.median(),
+                innerInstabilityAvg = packageMetrics.flatMap { it.classMetrics }.map { it.innerInstability }.average(),
+                innerInstabilityMed = packageMetrics.flatMap { it.classMetrics }.map { it.innerInstability }.median(),
+                innerCouplingAvg = packageMetrics.flatMap { it.classMetrics }.map { it.innerCoupling }.average(),
+                innerCouplingMed = packageMetrics.flatMap { it.classMetrics }.map { it.innerCoupling }.median()
+        )
+    }
 }
