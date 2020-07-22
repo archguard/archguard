@@ -45,8 +45,8 @@ class ClassMethodCalleesServiceTest {
         every { methodRepo.findMethodsByModuleAndClass(module, parent.name) } returns listOf(method1)
         every { repo.findClassParents(module, name) } returns listOf(parent)
         every { repo.findClassParents(parent.module, parent.name) } returns listOf()
-        every { methodCalleesService.buildMethodCallees(listOf(method1, method2), 1, true, true) } returns listOf(method1)
-        every { methodCalleesService.buildMethodCallees(listOf(method1), 1, true, true) } returns listOf(method2)
+        every { methodCalleesService.buildMethodCallees(listOf(method1, method2), 1, true) } returns listOf(method1)
+        every { methodCalleesService.buildMethodCallees(listOf(method1), 1, true) } returns listOf(method2)
         val result = service.findClassMethodsCallees(target, 1, true, true)
         //then
         assertThat(result.methods.size).isEqualTo(2)

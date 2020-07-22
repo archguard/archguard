@@ -10,14 +10,14 @@ class MethodCalleesService {
     @Autowired
     private lateinit var repo: JMethodRepository
 
-    fun buildMethodCallees(methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean, mergeGetSet: Boolean): List<JMethod> {
+    fun buildMethodCallees(methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val container = ArrayList<JMethod>()
         doBuildCallees(methods, calleeDeep, container, needIncludeImpl)
         return methods
     }
 
     private fun doBuildCallees(methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
-        var pendindMethods = methods.filterNot { container.contains(it) }
+        val pendindMethods = methods.filterNot { container.contains(it) }
         if (pendindMethods.isEmpty() || calleeDeep == 0) {
             container.addAll(pendindMethods)
         } else {
