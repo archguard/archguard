@@ -4,10 +4,11 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import org.springframework.stereotype.Service
 
 @Service
-class GraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) {
+class GraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService, val pluginManager: PluginManager) {
 
     fun getLogicModuleGraph(): Graph<LogicModule> {
         val moduleDependencies = getModuleDependency()
@@ -29,9 +30,9 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return mapMethodDependenciesToModuleDependencies(dependencies, modules)
     }
 
-    private fun mapMethodDependenciesToModuleDependencies(classDependency: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+    private fun mapMethodDependenciesToModuleDependencies(classDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
-        return classDependency.map { mapMethodDependencyToModuleDependency(it, logicModules) }.flatten()
+        return classDependencies.map { mapMethodDependencyToModuleDependency(it, logicModules) }.flatten()
                 .filter { it.caller != it.callee }
     }
 
@@ -39,8 +40,11 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         val callerModules = getModule(logicModules, methodDependency.caller.jClassVO)
         val calleeModules = getModule(logicModules, methodDependency.callee.jClassVO)
 
-        return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
+        var logicModuleDependencies =  callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
 
+        pluginManager.getPlugins().forEach { logicModuleDependencies = it.mapToModuleDependency(methodDependency, logicModules, logicModuleDependencies) }
+
+        return logicModuleDependencies
     }
 
 }
