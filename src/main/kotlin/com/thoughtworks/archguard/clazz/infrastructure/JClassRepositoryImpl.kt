@@ -4,14 +4,8 @@ import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.module.infrastructure.dto.JClassDependencyDto
 import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
-import com.thoughtworks.archguard.module.infrastructure.generateTableSqlTemplateWithModuleModules
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
@@ -177,47 +171,6 @@ class JClassRepositoryImpl : JClassRepository {
 
     override fun getJClassesHasModules(): List<JClass> {
         return this.getAll().filter { it.module != "null" }
-    }
-
-    override fun getAllClassDependency(members: List<LogicComponent>): List<Dependency<JClass>> {
-        val tableTemplate = generateTableSqlTemplateWithModuleModules(members)
-
-        val sql = "select a.module as moduleCaller, a.clzname as classCaller, " +
-                "b.module as moduleCallee, b.clzname as classCallee " +
-                "from ($tableTemplate) a, ($tableTemplate) b,  _MethodCallees mc " +
-                "where a.id = mc.a and b.id = mc.b"
-        val jClassDependencies = jdbi.withHandle<List<Dependency<JClassVO>>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDependencyDto::class.java))
-            it.createQuery(sql)
-                    .mapTo(JClassDependencyDto::class.java)
-                    .list()
-                    .map { jClassDependencyDto -> jClassDependencyDto.toJClassDependency() }
-                    .filter { dependency -> dependency.caller != dependency.callee }
-        }
-
-        val fullNames: List<FullName> = jClassDependencies
-                .map { listOf(FullName(it.caller.name, it.caller.module), FullName(it.callee.name, it.callee.module)) }
-                .flatten().toSet().toList()
-        val jClassesRelated = getAll(fullNames)
-
-        return jClassDependencies
-                .map {
-                    Dependency(updateJClassFields(it.caller, jClassesRelated)
-                            ?: JClass(NOT_EXIST_ID, it.caller.name, it.caller.module),
-                            updateJClassFields(it.callee, jClassesRelated)
-                                    ?: JClass(NOT_EXIST_ID, it.callee.name, it.callee.module))
-                }
-    }
-
-    private fun updateJClassFields(jClass: JClassVO, jClasses: List<JClass>): JClass? {
-        val matchedJClass = jClasses.filter { it.name == jClass.name && it.module == jClass.module }
-        if (matchedJClass.isEmpty()) {
-            return null
-        }
-        if (matchedJClass.size > 1) {
-            log.error("updateJClassFields matched more than one Class!")
-        }
-        return matchedJClass[0]
     }
 
 }

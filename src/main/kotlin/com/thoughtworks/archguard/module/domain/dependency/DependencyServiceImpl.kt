@@ -2,8 +2,10 @@ package com.thoughtworks.archguard.module.domain.dependency
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
+import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -30,6 +32,11 @@ class DependencyServiceImpl : DependencyService {
 
     override fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>{
         return getAll().filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
+    }
+
+
+    override fun getAllClassDependencyLegacy(members: List<LogicComponent>): List<Dependency<JClassVO>>{
+        return dependencyRepository.getAllClassDependencyLegacy(members)
     }
 
 

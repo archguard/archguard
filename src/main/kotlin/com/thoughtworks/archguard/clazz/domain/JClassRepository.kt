@@ -1,8 +1,5 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-
 interface JClassRepository {
     fun getJClassBy(name: String, module: String): JClass?
 
@@ -19,8 +16,6 @@ interface JClassRepository {
     fun findDependencees(id: String): List<JClass>
 
     fun findDependencers(id: String): List<JClass>
-
-    fun getAllClassDependency(members: List<LogicComponent>): List<Dependency<JClass>>
 
     fun findClassParents(module: String?, name: String?): List<JClass>
 

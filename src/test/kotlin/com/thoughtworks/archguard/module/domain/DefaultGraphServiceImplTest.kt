@@ -32,13 +32,13 @@ internal class DefaultGraphServiceImplTest {
         val logicModule3 = LogicModule("3", "module3", listOf(SubModule("bm5")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JMethodVO("bm1", "any", "any"), JMethodVO("bm3", "any", "any"))
-        val dependency2 = Dependency(JMethodVO("bm3", "any", "any"), JMethodVO("bm2", "any", "any"))
-        val dependency3 = Dependency(JMethodVO("bm5", "any", "any"), JMethodVO("bm4", "any", "any"))
+        val dependency1 = Dependency(JClassVO("any","bm1"), JClassVO("any","bm3"))
+        val dependency2 = Dependency(JClassVO("any","bm3"), JClassVO("any","bm2"))
+        val dependency3 = Dependency(JClassVO("any","bm5"), JClassVO("any","bm4"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { dependencyService.getAllWithFullNameStart(any(), any()) } returns dependencies
+        every { dependencyService.getAllClassDependencyLegacy(any()) } returns dependencies
         every { logicModuleRepository.getAll() } returns logicModules
 
         // when
