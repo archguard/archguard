@@ -66,7 +66,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
             listOf("svn", "checkout",
                     this.projectInfo.repo, Paths.get("./").normalize().toString(),
                     "--username", projectInfo.username,
-                    "--password", projectInfo.password)
+                    "--password", projectInfo.getDeCryptPassword())
         } else {
             listOf("svn", "checkout",
                     this.projectInfo.repo, Paths.get("./").normalize().toString())
