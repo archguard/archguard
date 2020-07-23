@@ -8,4 +8,8 @@ abstract class Plugin {
     open fun mapToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         return logicModuleDependencies
     }
+
+    open fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
+        return methodDependencies
+    }
 }

@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -18,12 +19,19 @@ class DependencyServiceImpl : DependencyService {
     @Autowired
     lateinit var dependencyRepository: DependencyRepository
 
+    @Autowired
+    lateinit var pluginManager: PluginManager
+
     override fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethodLegacy>> {
         return logicModuleRepository.getDependence(caller, callee)
     }
 
     override fun getAll(): List<Dependency<JMethodVO>> {
-        return dependencyRepository.getAll()
+        var methodDependencies =  dependencyRepository.getAll()
+
+        pluginManager.getPlugins().forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
+
+        return methodDependencies
     }
 
     override fun getAllWithFullNameRegex(callerRegex: List<Regex>, calleeRegex: List<Regex>): List<Dependency<JMethodVO>> {
