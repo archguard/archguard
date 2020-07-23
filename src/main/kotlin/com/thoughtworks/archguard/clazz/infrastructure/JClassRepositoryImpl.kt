@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.module.infrastructure.dto.JClassDto
+import com.thoughtworks.archguard.clazz.infrastructure.dto.JClassDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory

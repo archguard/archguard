@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.infrastructure.dto
+package com.thoughtworks.archguard.clazz.infrastructure.dto
 
 import com.thoughtworks.archguard.clazz.domain.ClazzType
 import com.thoughtworks.archguard.clazz.domain.JClass
