@@ -26,6 +26,15 @@ internal class MetricsRepositoryImplTest {
 
     @Test
     @Sql("classpath:sqls/insert_metrics.sql")
+    internal fun `should get metrics from metrics table when name is null`() {
+        val moduleNames = listOf("dubbo-null-test")
+        val result = metricsRepositoryImpl.findAllMetrics(moduleNames)
+
+        assertEquals(0, result.size)
+    }
+
+    @Test
+    @Sql("classpath:sqls/insert_metrics.sql")
     internal fun `should get module metrics from metrics table`() {
         val moduleNames = listOf("dubbo-serialization-protobuf", "dubbo-null-test")
         val result = metricsRepositoryImpl.findModuleMetrics(moduleNames)
