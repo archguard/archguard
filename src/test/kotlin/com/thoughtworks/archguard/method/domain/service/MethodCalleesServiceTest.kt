@@ -38,13 +38,13 @@ class MethodCalleesServiceTest {
         every { repo.findMethodImplements(callee1.id, callee1.name) } returns listOf()
         every { repo.findMethodImplements(callee2.id, callee2.name) } returns listOf()
         every { repo.findMethodImplements(implement.id, implement.name) } returns listOf()
-        val result = service.buildMethodCallees(listOf(target), 2, true)
+        val result = service.findCallees(target, 2, true)
         //then
-        assertThat(result[0].callees.size).isEqualTo(1)
-        assertThat(result[0].callees[0]).isEqualToComparingFieldByField(callee1)
-        assertThat(result[0].implements.size).isEqualTo(1)
-        assertThat(result[0].implements[0]).isEqualToComparingFieldByField(implement)
-        assertThat(result[0].callees[0].callees.size).isEqualTo(1)
-        assertThat(result[0].callees[0].callees[0]).isEqualToComparingFieldByField(callee2)
+        assertThat(result.callees.size).isEqualTo(1)
+        assertThat(result.callees[0]).isEqualToComparingFieldByField(callee1)
+        assertThat(result.implements.size).isEqualTo(1)
+        assertThat(result.implements[0]).isEqualToComparingFieldByField(implement)
+        assertThat(result.callees[0].callees.size).isEqualTo(1)
+        assertThat(result.callees[0].callees[0]).isEqualToComparingFieldByField(callee2)
     }
 }

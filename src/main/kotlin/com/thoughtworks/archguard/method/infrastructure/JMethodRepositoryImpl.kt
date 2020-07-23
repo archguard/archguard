@@ -25,8 +25,18 @@ class JMethodRepositoryImpl : JMethodRepository {
         }
     }
 
+    override fun findMethodCallers(id: String): List<JMethod> {
+        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE id IN (SELECT a FROM _MethodCallees WHERE b='$id') "
+        return jdbi.withHandle<List<JMethod>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
+            it.createQuery(sql)
+                    .mapTo(JMethod::class.java)
+                    .list()
+        }
+    }
+
     override fun findMethodCallees(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='id') "
+        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -55,6 +65,28 @@ class JMethodRepositoryImpl : JMethodRepository {
             it.createQuery(sql)
                     .mapTo(JMethod::class.java)
                     .list()
+        }
+    }
+
+    override fun findMethodByModuleAndClazzAndName(moduleName: String, clazzName: String, methodName: String): JMethod? {
+        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE " +
+                "name='$methodName' AND clzname='$clazzName' AND module='$moduleName'"
+        return jdbi.withHandle<JMethod?, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
+            it.createQuery(sql)
+                    .mapTo(JMethod::class.java)
+                    .one()
+        }
+    }
+
+    override fun findMethodByClazzAndName(clazzName: String, methodName: String): JMethod? {
+        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE " +
+                "name='$methodName' AND clzname='$clazzName'"
+        return jdbi.withHandle<JMethod?, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
+            it.createQuery(sql)
+                    .mapTo(JMethod::class.java)
+                    .first()
         }
     }
 }
