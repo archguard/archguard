@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.module.domain.plugin
 
+import com.thoughtworks.archguard.config.domain.Configure
+import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import com.thoughtworks.archguard.module.domain.dubbo.DubboPlugin
 import com.thoughtworks.archguard.module.domain.springcloud.feignclient.FeignClientPlugin
 import io.mockk.MockKAnnotations
@@ -13,7 +15,7 @@ import kotlin.test.assertEquals
 
 class PluginManagerTest {
     @MockK
-    lateinit var pluginConfigRepository: PluginConfigRepository
+    lateinit var configRepository: ConfigureRepository
 
     @MockK
     lateinit var applicationContext: ApplicationContext
@@ -30,7 +32,7 @@ class PluginManagerTest {
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this, relaxed = true)
-        pluginManager = PluginManager(pluginConfigRepository, applicationContext)
+        pluginManager = PluginManager(configRepository, applicationContext)
     }
 
 
@@ -38,9 +40,11 @@ class PluginManagerTest {
     fun should_get_FeignClients() {
 
         // given
-        val pluginConfig = listOf(PluginConfig("DubboPlugin"), PluginConfig(("FeiginPlugin")))
+        val config1 = Configure("id1", "plugin", "name", "DubboPlugin", 1)
+        val config2 = Configure("id1", "plugin", "name", "FeiginPlugin", 2)
 
-        every { pluginConfigRepository.getAll() } returns pluginConfig
+
+        every { configRepository.getConfigures() } returns listOf(config1, config2)
         every { applicationContext.getBeansOfType(Plugin::class.javaObjectType) } returns mapOf("DubboPlugin" to dubboPlugin, "FeiginPlugin" to feignClientPlugin)
 
         // when
