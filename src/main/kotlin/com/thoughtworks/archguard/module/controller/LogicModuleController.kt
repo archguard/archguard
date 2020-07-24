@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.GraphService
+import com.thoughtworks.archguard.module.domain.GraphServiceLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
@@ -37,11 +37,11 @@ class LogicModuleController {
 
     @Autowired
     @Qualifier("Default")
-    private lateinit var graphService: GraphService
+    private lateinit var graphServiceLegacy: GraphServiceLegacy
 
     @Autowired
     @Qualifier("Dubbo")
-    private lateinit var graphServiceDubbo: GraphService
+    private lateinit var graphServiceLegacyDubbo: GraphServiceLegacy
 
     @Autowired
     private lateinit var reportService: ReportService
@@ -51,6 +51,7 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var metricsService: MetricsService
+
 
     @GetMapping
     fun getLogicModules(): List<LogicModuleLegacy> {
@@ -114,24 +115,24 @@ class LogicModuleController {
     @GetMapping("/graph")
     @Deprecated(message = "we are going to replace with getLogicModuleGraph")
     fun getLogicModuleGraphLegacy(): ModuleGraph {
-        return graphService.getLogicModuleGraphLegacy()
+        return graphServiceLegacy.getLogicModuleGraphLegacy()
     }
 
     @GetMapping("/graph-dubbo")
     @Deprecated(message = "we are going to replace with getLogicModuleGraph")
     fun getLogicModuleGraphDubboLegacy(): ModuleGraph {
-        return graphServiceDubbo.getLogicModuleGraphLegacy()
+        return graphServiceLegacyDubbo.getLogicModuleGraphLegacy()
     }
 
 
     @GetMapping("/graph-new")
     fun getLogicModuleGraph(): Graph<LogicModule> {
-        return graphService.getLogicModuleGraph()
+        return graphServiceLegacy.getLogicModuleGraph()
     }
 
     @GetMapping("/graph-dubbo-new")
     fun getLogicModuleGraphDubbo(): Graph<LogicModule> {
-        return graphServiceDubbo.getLogicModuleGraph()
+        return graphServiceLegacyDubbo.getLogicModuleGraph()
     }
 
     @GetMapping("/coupling-by-class")

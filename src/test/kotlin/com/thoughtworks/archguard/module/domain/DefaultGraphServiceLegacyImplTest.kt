@@ -9,19 +9,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class DefaultGraphServiceImplTest {
+internal class DefaultGraphServiceLegacyImplTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
     lateinit var dependencyService: DependencyService
 
-    private lateinit var service: DefaultGraphServiceImpl
+    private lateinit var service: DefaultGraphServiceLegacyImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = DefaultGraphServiceImpl(logicModuleRepository, dependencyService)
+        service = DefaultGraphServiceLegacyImpl(logicModuleRepository, dependencyService)
     }
 
     @Test

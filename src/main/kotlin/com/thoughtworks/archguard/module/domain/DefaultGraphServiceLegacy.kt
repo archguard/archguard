@@ -4,8 +4,8 @@ import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.*
 import org.slf4j.LoggerFactory
 
-abstract class DefaultGraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : GraphService {
-    private val log = LoggerFactory.getLogger(DefaultGraphService::class.java)
+abstract class DefaultGraphServiceLegacy(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : GraphServiceLegacy {
+    private val log = LoggerFactory.getLogger(DefaultGraphServiceLegacy::class.java)
 
     override fun getLogicModuleGraphLegacy(): ModuleGraph {
         val moduleDependencies = getModuleDependency()

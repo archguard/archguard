@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service
 
 @Service
 @Qualifier("Default")
-class DefaultGraphServiceImpl(logicModuleRepository: LogicModuleRepository, dependencyService: DependencyService) : DefaultGraphService(logicModuleRepository, dependencyService) {
+class DefaultGraphServiceLegacyImpl(logicModuleRepository: LogicModuleRepository, dependencyService: DependencyService) : DefaultGraphServiceLegacy(logicModuleRepository, dependencyService) {
 
-    private val log = LoggerFactory.getLogger(DefaultGraphServiceImpl::class.java)
+    private val log = LoggerFactory.getLogger(DefaultGraphServiceLegacyImpl::class.java)
     override fun mapClassDependencyToModuleDependency(logicModules: List<LogicModule>, jClassDependency: Dependency<JClassVO>): List<Dependency<LogicModule>> {
         val callerModules = getModule(logicModules, jClassDependency.caller)
         if (callerModules.size > 1) {

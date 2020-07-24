@@ -16,7 +16,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class DubboGraphServiceImplTest {
+internal class DubboGraphServiceLegacyImplTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
@@ -26,12 +26,12 @@ internal class DubboGraphServiceImplTest {
     @MockK
     lateinit var dubboXmlDependencyAnalysisHelper: DependencyAnalysisHelper
 
-    private lateinit var dubboGraphService: DubboGraphServiceImpl
+    private lateinit var dubboGraphService: DubboGraphServiceLegacyImpl
 
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        dubboGraphService = DubboGraphServiceImpl(logicModuleRepository, dependencyService, dubboXmlDependencyAnalysisHelper)
+        dubboGraphService = DubboGraphServiceLegacyImpl(logicModuleRepository, dependencyService, dubboXmlDependencyAnalysisHelper)
     }
 
     @Test
