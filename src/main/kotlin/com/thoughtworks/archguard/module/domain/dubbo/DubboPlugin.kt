@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-@Component
+@Component("DubboPlugin")
 class DubboPlugin : Plugin() {
     private val log = LoggerFactory.getLogger(DubboPlugin::class.java)
 

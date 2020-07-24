@@ -8,7 +8,7 @@ import com.thoughtworks.archguard.module.domain.springcloud.httprequest.HttpRequ
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-@Component
+@Component("FeignClientPlugin")
 class FeignClientPlugin: Plugin() {
     @Autowired
     lateinit var feignClientService: FeignClientService

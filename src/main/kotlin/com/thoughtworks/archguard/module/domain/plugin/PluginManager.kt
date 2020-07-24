@@ -1,11 +1,15 @@
 package com.thoughtworks.archguard.module.domain.plugin
 
+import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class PluginManager(val dubboPlugin: Plugin, val feignClientPlugin: Plugin) {
+class PluginManager(val pluginConfigRepository: PluginConfigRepository, val applicationContext: ApplicationContext){
 
     fun getPlugins(): List<Plugin> {
-        return listOf(dubboPlugin, feignClientPlugin)
+        val pluginConfig = pluginConfigRepository.getAll()
+        val plugins: MutableMap<String, Plugin> = applicationContext.getBeansOfType(Plugin::class.java)
+        return pluginConfig.mapNotNull { plugins[it.name] }
     }
+
 }
