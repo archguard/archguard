@@ -1,11 +1,11 @@
 package com.thoughtworks.archguard.config.domain
 
 interface ConfigureRepository {
-    fun getConfigures(): List<NodeConfigure>
-    fun create(config: NodeConfigure)
-    fun update(config: NodeConfigure)
+    fun getConfigures(): List<Configure>
+    fun create(config: Configure)
+    fun update(config: Configure)
     fun delete(id: String)
-    fun getConfiguresByType(type: String): List<NodeConfigure>
+    fun getConfiguresByType(type: String): List<Configure>
     fun deleteConfiguresByType(type: String)
-    fun batchCreateConfigures(configs: List<NodeConfigure>)
+    fun batchCreateConfigures(configs: List<Configure>)
 }

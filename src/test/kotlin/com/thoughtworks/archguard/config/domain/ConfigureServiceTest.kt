@@ -26,7 +26,7 @@ class ConfigureServiceTest {
     @Test
     fun `should get all configures`() {
         //given
-        val configure = NodeConfigure("id", "nodeHidden", "clz", "21", 1)
+        val configure = Configure("id", "nodeHidden", "clz", "21", 1)
         //when
         every { repo.getConfigures() } returns listOf(configure)
         val configures = service.getConfigures()
@@ -38,7 +38,7 @@ class ConfigureServiceTest {
     @Test
     fun `should create configure`() {
         //given
-        val configure = NodeConfigure("id", "nodeHidden", "clz", "21", 1)
+        val configure = Configure("id", "nodeHidden", "clz", "21", 1)
         //when
         every { repo.create(configure) } just Runs
         service.create(configure)
@@ -50,7 +50,7 @@ class ConfigureServiceTest {
     fun `should update configure`() {
         //given
         val id = "id"
-        val configure = NodeConfigure(id, "nodeHidden", "clz", "21", 1)
+        val configure = Configure(id, "nodeHidden", "clz", "21", 1)
         //when
         every { repo.update(any()) } just Runs
         service.update(id, configure)
@@ -74,12 +74,12 @@ class ConfigureServiceTest {
         //given
         //when
         every { repo.getConfiguresByType("nodeDisplay") } returns listOf(
-                NodeConfigure("", "nodeDisplay", "clz", "com", 1),
-                NodeConfigure("", "nodeDisplay", "clz", "org", 1),
-                NodeConfigure("", "nodeDisplay", "clz", "common", 1))
+                Configure("", "nodeDisplay", "clz", "com", 1),
+                Configure("", "nodeDisplay", "clz", "org", 1),
+                Configure("", "nodeDisplay", "clz", "common", 1))
 
         every { repo.getConfiguresByType("nodeHidden") } returns listOf(
-                NodeConfigure("", "nodeHidden", "clz", "org.scalatest", 1))
+                Configure("", "nodeHidden", "clz", "org.scalatest", 1))
         //then
         assert(service.isDisplayClass("common.domain.ConfigureService"))
         assert(service.isDisplayClass("org.scalamock.scalatest.MockFactory"))

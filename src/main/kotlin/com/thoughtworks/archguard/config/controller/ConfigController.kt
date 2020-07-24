@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.config.controller
 
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.config.domain.NodeConfigure
+import com.thoughtworks.archguard.config.domain.Configure
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,19 +21,19 @@ class ConfigController {
     private lateinit var service: ConfigureService
 
     @GetMapping
-    fun getConfigures(): List<NodeConfigure> {
+    fun getConfigures(): List<Configure> {
         return service.getConfigures()
     }
 
     @PostMapping
-    fun create(@RequestBody config: NodeConfigure): ResponseEntity<Nothing> {
+    fun create(@RequestBody config: Configure): ResponseEntity<Nothing> {
         service.create(config)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable("id") id: String,
-               @RequestBody config: NodeConfigure): ResponseEntity<Nothing> {
+               @RequestBody config: Configure): ResponseEntity<Nothing> {
         service.update(id, config)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
@@ -46,7 +46,7 @@ class ConfigController {
 
     @PostMapping("/types/{type}")
     fun updateConfigsByType(@PathVariable("type") type: String,
-                            @RequestBody configs: List<NodeConfigure>): ResponseEntity<Nothing> {
+                            @RequestBody configs: List<Configure>): ResponseEntity<Nothing> {
         service.updateConfigsByType(type, configs)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }

@@ -8,16 +8,16 @@ class ConfigureService {
     @Autowired
     private lateinit var repo: ConfigureRepository
 
-    fun getConfigures(): List<NodeConfigure> {
+    fun getConfigures(): List<Configure> {
         return repo.getConfigures()
     }
 
-    fun create(config: NodeConfigure) {
+    fun create(config: Configure) {
         repo.create(config)
     }
 
-    fun update(id: String, config: NodeConfigure) {
-        val nodeConfigure = NodeConfigure(id, config.type, config.key, config.value, config.order)
+    fun update(id: String, config: Configure) {
+        val nodeConfigure = Configure(id, config.type, config.key, config.value, config.order)
         repo.update(nodeConfigure)
     }
 
@@ -35,7 +35,7 @@ class ConfigureService {
         return displayConfig.any { className.contains(it) } && hiddenConfig.all { !className.contains(it) }
     }
 
-    fun updateConfigsByType(type: String, configs: List<NodeConfigure>) {
+    fun updateConfigsByType(type: String, configs: List<Configure>) {
         repo.deleteConfiguresByType(type)
         repo.batchCreateConfigures(configs)
     }
