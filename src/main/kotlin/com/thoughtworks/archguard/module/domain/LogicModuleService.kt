@@ -21,6 +21,9 @@ class LogicModuleService {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
+    @Autowired
+    lateinit var metricsService: MetricsService
+
     fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
     }
@@ -49,6 +52,7 @@ class LogicModuleService {
 
     fun updateLogicModule(id: String, logicModule: LogicModule) {
         logicModuleRepository.update(id, logicModule)
+        metricsService.calculateCoupling()
     }
 
     fun createLogicModule(logicModule: LogicModule): String {
@@ -63,6 +67,7 @@ class LogicModuleService {
 
     fun deleteLogicModule(id: String) {
         logicModuleRepository.delete(id)
+        metricsService.calculateCoupling()
     }
 
     fun autoDefineLogicModule() {

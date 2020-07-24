@@ -9,13 +9,19 @@ import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import io.mockk.MockKAnnotations.init
+import io.mockk.Runs
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.slot
 import io.mockk.spyk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyString
+import kotlin.test.assertEquals
 
 class LogicModuleServiceTest {
     @MockK
@@ -24,12 +30,15 @@ class LogicModuleServiceTest {
     @MockK
     lateinit var jClassRepository: JClassRepository
 
+    @MockK
+    lateinit var metricsService: MetricsService
+
     @InjectMockKs
     var service: LogicModuleService = LogicModuleService()
 
     @BeforeEach
     fun setUp() {
-        init(this)
+        init(this, relaxUnitFun = true)
     }
 
     @Test
@@ -121,5 +130,26 @@ class LogicModuleServiceTest {
         val logicModules: List<LogicModule> = listOf(lg1, lg2, lg3, lg4, lg5, lg6)
         val classModule = getModule(logicModules, LogicComponent.createLeaf("abc.d.e.d.f.g"))
         assertThat(classModule).isEqualTo(listOf(lg3, lg5))
+    }
+
+    @Test
+    fun `should update and calculate when update module`() {
+        val logicModule = LogicModule.createWithOnlyLeafMembers("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
+
+        val slot = slot<LogicModule>()
+        every { logicModuleRepository.update(capture(slot()), capture(slot)) } just Runs
+
+        service.updateLogicModule("id", logicModule)
+
+        verify(exactly = 1) { metricsService.calculateCoupling() }
+        assertEquals(logicModule.name, slot.captured.name)
+    }
+
+    @Test
+    fun `should delete and calculate when delete module`() {
+        service.deleteLogicModule("id")
+
+        verify(exactly = 1) { logicModuleRepository.delete("id") }
+        verify(exactly = 1) { metricsService.calculateCoupling() }
     }
 }
