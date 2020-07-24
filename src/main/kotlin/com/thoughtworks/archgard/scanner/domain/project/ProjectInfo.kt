@@ -14,4 +14,6 @@ class ProjectInfo(var id: String = "",
     fun hasAuthInfo(): Boolean {
         return username.isNotBlank() && password.isNotBlank()
     }
+
+    fun getRepoList(): List<String> = repo.split(",")
 }

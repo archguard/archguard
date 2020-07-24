@@ -9,27 +9,43 @@ import java.nio.file.Paths
 
 class ProjectOperator(val projectInfo: ProjectInfo) {
     private val log = LoggerFactory.getLogger(ProjectOperator::class.java)
+    val compiledProjectMap = mutableMapOf<String, CompiledProject>()
+    val workspace: File = createTempDir()
+    val sql: String by lazy { projectInfo.sql }
 
-    fun build(): CompiledProject {
-        val workspace = createTempDir()
-        log.info("workspace is: {}, repo is: {}", workspace.toPath().toString(), this.projectInfo.repo)
-        getSource(workspace)
-        val buildTool = getBuildTool(workspace)
-        buildSource(workspace, buildTool)
-        return CompiledProject(this.projectInfo.repo, workspace, buildTool, this.projectInfo.sql)
+    fun cloneAndBuildAllRepo() {
+        log.info("workSpace is: ${workspace.toPath()}")
+        this.projectInfo.getRepoList()
+                .forEach(this::cloneAndBuildSingleRepo)
     }
 
-    fun getSource(): CompiledProject {
-        val workspace = createTempDir()
-        log.info("workspace is: {}, repo is: {}", workspace.toPath().toString(), this.projectInfo.repo)
-        getSource(workspace)
-        return CompiledProject(this.projectInfo.repo, workspace, getBuildTool(workspace), this.projectInfo.sql)
+
+    fun cloneAllRepo() {
+        log.info("workSpace is: ${workspace.toPath()}")
+        this.projectInfo.getRepoList()
+                .forEach(this::cloneSingleRepo)
     }
 
-    private fun getSource(workspace: File) {
+    private fun cloneSingleRepo(repo: String) {
+        val repoWorkSpace = createTempDir(directory = workspace)
+        log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
+        getSource(repoWorkSpace, repo)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, getBuildTool(repoWorkSpace), this.projectInfo.sql)
+    }
+
+    private fun cloneAndBuildSingleRepo(repo: String) {
+        val repoWorkSpace = createTempDir(directory = workspace)
+        log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
+        getSource(repoWorkSpace, repo)
+        val buildTool = getBuildTool(repoWorkSpace)
+        buildSource(repoWorkSpace, buildTool)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.projectInfo.sql)
+    }
+
+    private fun getSource(workspace: File, repo: String) {
         when (this.projectInfo.repoType) {
-            "GIT" -> cloneByGit(workspace, projectInfo)
-            "SVN" -> cloneBySvn(workspace, projectInfo)
+            "GIT" -> cloneByGit(workspace, repo)
+            "SVN" -> cloneBySvn(workspace, repo)
         }
     }
 
@@ -48,10 +64,10 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         return BuildTool.GRADLE
     }
 
-    private fun cloneByGit(workspace: File, projectInfo: ProjectInfo) {
+    private fun cloneByGit(workspace: File, repo: String) {
         val cloneCmd = Git.cloneRepository()
                 .setDirectory(workspace)
-                .setURI(this.projectInfo.repo)
+                .setURI(repo)
 
         if (projectInfo.hasAuthInfo()) {
             cloneCmd.setCredentialsProvider(UsernamePasswordCredentialsProvider(projectInfo.username,
@@ -61,15 +77,15 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         cloneCmd.call()
     }
 
-    private fun cloneBySvn(workspace: File, projectInfo: ProjectInfo) {
+    private fun cloneBySvn(workspace: File, repo: String) {
         val cmdList = if (projectInfo.hasAuthInfo()) {
             listOf("svn", "checkout",
-                    this.projectInfo.repo, Paths.get("./").normalize().toString(),
+                    repo, Paths.get("./").normalize().toString(),
                     "--username", projectInfo.username,
                     "--password", projectInfo.getDeCryptPassword())
         } else {
             listOf("svn", "checkout",
-                    this.projectInfo.repo, Paths.get("./").normalize().toString())
+                    repo, Paths.get("./").normalize().toString())
         }
 
         val pb = ProcessBuilder(cmdList)

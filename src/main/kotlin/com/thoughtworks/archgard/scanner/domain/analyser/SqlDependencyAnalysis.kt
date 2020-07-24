@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.analyser
 
+import com.thoughtworks.archgard.scanner.domain.project.CompiledProject
 import com.thoughtworks.archgard.scanner.domain.tools.InvokeSqlTool
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator.deleteDirectory
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
@@ -19,10 +20,19 @@ class SqlDependencyAnalysis(@Autowired val analysisService: AnalysisService,
     private val DELETE_ACTION = "delete from _PLProcedureSqlAction where 1=1"
     fun analyse() {
         log.info("start scan sql analysis")
-        val project = analysisService.getProjectOperator().getSource()
-        val git = File(project.workspace.path + "/.git")
+        val projectOperator = analysisService.getProjectOperator()
+        projectOperator.cloneAllRepo()
+        projectOperator.compiledProjectMap.forEach { (_, compiledProject) ->
+            analysisSingleCompliedProject(compiledProject)
+        }
+
+        log.info("finished scan sql analysis")
+    }
+
+    private fun analysisSingleCompliedProject(compiledProject: CompiledProject) {
+        val git = File(compiledProject.workspace.path + "/.git")
         deleteDirectory(git)
-        val invokeSqlTool = InvokeSqlTool(project.workspace)
+        val invokeSqlTool = InvokeSqlTool(compiledProject.workspace)
         val analyseFile = invokeSqlTool.analyse()
         if (analyseFile.find { !it.exists() } == null) {
             sqlScriptRunner.run(DELETE_ACTION)
@@ -30,7 +40,6 @@ class SqlDependencyAnalysis(@Autowired val analysisService: AnalysisService,
             sqlScriptRunner.run(DELETE_PROCEDURE)
             sqlScriptRunner.run(analyseFile)
         }
-        log.info("finished scan sql analysis")
     }
 
 }

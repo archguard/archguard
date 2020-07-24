@@ -18,11 +18,13 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
 
     fun analyse() {
         log.info("start scan java analysis")
-        val build = analysisService.getProjectOperator().build()
+        val projectOperator = analysisService.getProjectOperator()
         val url = dbUrl.replace("://", "://" + username + ":" + password + "@")
-        val javaByteCodeTool = JavaByteCodeTool(build.workspace, url)
+
+        projectOperator.cloneAndBuildAllRepo()
+        val javaByteCodeTool = JavaByteCodeTool(projectOperator.workspace, url)
         javaByteCodeTool.analyse()
-        val tableUsedTool = TableUsedTool(build.workspace, build.sql)
+        val tableUsedTool = TableUsedTool(projectOperator.workspace, projectOperator.sql)
         tableUsedTool.analyse()
         analysisModuleClient.calculateCoupling()
         log.info("finished scan java analysis")

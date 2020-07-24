@@ -47,12 +47,14 @@ class HubService {
     }
 
     private fun doScan() {
-        val project = analysisService.getProjectOperator().build()
         val config = configureRepository.getToolConfigures()
-
-        val context = ScanContext(project.repo, project.buildTool, project.workspace, config)
-        val hubExecutor = HubExecutor(context, manager)
-        hubExecutor.execute()
+        val projectOperator = analysisService.getProjectOperator()
+        projectOperator.cloneAndBuildAllRepo()
+        projectOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
+            val context = ScanContext(repo, compiledProject.buildTool, compiledProject.workspace, config)
+            val hubExecutor = HubExecutor(context, manager)
+            hubExecutor.execute()
+        }
     }
 
     fun getEvaluationStatus(type: String): Boolean {
