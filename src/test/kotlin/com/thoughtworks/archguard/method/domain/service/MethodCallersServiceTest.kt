@@ -25,9 +25,9 @@ class MethodCallersServiceTest {
     @Test
     fun `should get method callers`() {
         //given
-        val target = JMethod("id", "method", "clazz", "module")
-        val caller1 = JMethod("1", "caller1", "clazz2", "module")
-        val caller2 = JMethod("2", "caller2", "clazz3", "module")
+        val target = JMethod("id", "method", "clazz", "module", null, emptyList())
+        val caller1 = JMethod("1", "caller1", "clazz2", "module", null, emptyList())
+        val caller2 = JMethod("2", "caller2", "clazz3", "module", null, emptyList())
         //when
         every { repo.findMethodCallers(target.id) } returns listOf(caller1)
         every { repo.findMethodCallers(caller1.id) } returns listOf(caller2)

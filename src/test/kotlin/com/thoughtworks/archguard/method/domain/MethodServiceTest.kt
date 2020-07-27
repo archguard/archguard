@@ -35,7 +35,7 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = JMethod("id", methodName, clazzName, moduleName)
+        val target = JMethod("id", methodName, clazzName, moduleName, null, emptyList())
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
@@ -51,7 +51,7 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = JMethod("id", methodName, clazzName, moduleName)
+        val target = JMethod("id", methodName, clazzName, moduleName, null, emptyList())
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
@@ -60,13 +60,14 @@ class MethodServiceTest {
         //then
         assertThat(result).isEqualToComparingFieldByField(target)
     }
+
     @Test
     fun `should get method invokes`() {
         //given
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = JMethod("id", methodName, clazzName, moduleName)
+        val target = JMethod("id", methodName, clazzName, moduleName, null, emptyList())
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target

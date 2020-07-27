@@ -25,10 +25,10 @@ class MethodCalleesServiceTest {
     @Test
     fun `should get method callees`() {
         //given
-        val target = JMethod("id", "method", "clazz", "module")
-        val callee1 = JMethod("1", "callee1", "clazz2", "module")
-        val callee2 = JMethod("2", "callee2", "clazz3", "module")
-        val implement = JMethod("3", "callee2", "clazz3", "module")
+        val target = JMethod("id", "method", "clazz", "module", null, emptyList())
+        val callee1 = JMethod("1", "callee1", "clazz2", "module", null, emptyList())
+        val callee2 = JMethod("2", "callee2", "clazz3", "module", null, emptyList())
+        val implement = JMethod("3", "callee2", "clazz3", "module", null, emptyList())
         //when
         every { repo.findMethodCallees(target.id) } returns listOf(callee1)
         every { repo.findMethodCallees(callee1.id) } returns listOf(callee2)

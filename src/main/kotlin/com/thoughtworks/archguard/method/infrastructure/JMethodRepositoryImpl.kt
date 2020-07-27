@@ -16,37 +16,40 @@ class JMethodRepositoryImpl : JMethodRepository {
     @Autowired
     lateinit var jdbi: Jdbi
     override fun findMethodsByModuleAndClass(module: String, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE clzname='$name' AND module='$module'"
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes FROM JMethod WHERE clzname='$name' AND module='$module'"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .list()
         }
     }
 
     override fun findMethodCallers(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE id IN (SELECT a FROM _MethodCallees WHERE b='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes FROM JMethod WHERE id IN (SELECT a FROM _MethodCallees WHERE b='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .list()
         }
     }
 
     override fun findMethodCallees(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .list()
         }
     }
 
     override fun findMethodImplements(id: String, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module " +
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes " +
                 "FROM JMethod " +
                 "WHERE id IN (SELECT DISTINCT cm.b " +
                 "             FROM JClass c, " +
@@ -63,30 +66,40 @@ class JMethodRepositoryImpl : JMethodRepository {
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .list()
         }
     }
 
     override fun findMethodByModuleAndClazzAndName(moduleName: String, clazzName: String, methodName: String): JMethod? {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE " +
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes FROM JMethod WHERE " +
                 "name='$methodName' AND clzname='$clazzName' AND module='$moduleName'"
         return jdbi.withHandle<JMethod?, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .one()
         }
     }
 
     override fun findMethodByClazzAndName(clazzName: String, methodName: String): JMethod? {
-        val sql = "SELECT id, name, clzname as clazz, module FROM JMethod WHERE " +
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes FROM JMethod WHERE " +
                 "name='$methodName' AND clzname='$clazzName'"
         return jdbi.withHandle<JMethod?, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethod::class.java)
+                    .mapTo(JMethodDto::class.java)
+                    .map { it.toJMethod() }
                     .first()
         }
     }
+}
+
+class JMethodDto(val id: String, val name: String, val clazz: String, val module: String, val returnType: String?, val argumentTypes: String) {
+    fun toJMethod(): JMethod {
+        return JMethod(id, name, clazz, module, returnType, argumentTypes.split(","))
+    }
+
 }
