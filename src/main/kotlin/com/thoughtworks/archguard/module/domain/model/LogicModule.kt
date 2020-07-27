@@ -1,11 +1,12 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.thoughtworks.archguard.module.domain.graph.Node
 import org.slf4j.LoggerFactory
 
 /**
  * LogicModule is an Entity, so it must have an id.
  */
-class LogicModule private constructor(val id: String, val name: String) : LogicComponent() {
+class LogicModule private constructor(val id: String, val name: String) : LogicComponent(), Node {
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
     private var type: LogicModuleType? = null
 
@@ -156,6 +157,10 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
 
     override fun getType(): ModuleMemberType {
         return ModuleMemberType.LOGIC_MODULE
+    }
+
+    override fun getNodeId(): String {
+        return id
     }
 
     override fun equals(other: Any?): Boolean {

@@ -9,6 +9,7 @@ import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.graph.GraphService
+import com.thoughtworks.archguard.module.domain.graph.Graph as LogicModuleGraph
 import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.Graph
@@ -167,7 +168,7 @@ class LogicModuleController {
     }
 
     @GetMapping("/dependencies/graph")
-    fun getDependenciesGraph(): Graph<LogicModule> {
+    fun getDependenciesGraph(): LogicModuleGraph {
         return graphService.getLogicModuleGraph()
     }
 

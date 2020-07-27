@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class GraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService, val pluginManager: PluginManager) {
 
-    fun getLogicModuleGraph(): Graph<LogicModule> {
+    fun getLogicModuleGraph(): Graph {
         val moduleDependencies = getModuleDependency()
 
-        val moduleStore = GraphStore<LogicModule>()
+        val moduleStore = GraphStore()
+
         moduleDependencies
                 .groupBy { it.caller }
                 .forEach {
