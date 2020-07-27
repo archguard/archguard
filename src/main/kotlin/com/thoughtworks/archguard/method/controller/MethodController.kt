@@ -21,18 +21,18 @@ class MethodController {
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean,
-                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<JMethod> {
+                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<List<JMethod>> {
         val jMethod = methodService.findMethodCallees(moduleName, clazzName, methodName, deep, needIncludeImpl)
-        return ResponseEntity.ok(jMethod)
+        return ResponseEntity.ok(listOf(jMethod))
     }
 
     @GetMapping("/{name}/callers")
     fun getMethodCallees(@PathVariable("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
-                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<JMethod> {
+                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<List<JMethod>> {
         val jMethod = methodService.findMethodCallers(moduleName, clazzName, methodName, deep)
-        return ResponseEntity.ok(jMethod)
+        return ResponseEntity.ok(listOf(jMethod))
     }
 
     @GetMapping("/{name}/invokes")
@@ -42,9 +42,9 @@ class MethodController {
                          @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
                          @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean,
-                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<JMethod> {
+                         @RequestParam(value = "module", required = false, defaultValue = "") moduleName: String): ResponseEntity<List<JMethod>> {
         val jMethod = methodService.findMethodInvokes(moduleName, clazzName, methodName, callerDeep ?: deep, calleeDeep
                 ?: deep, needIncludeImpl)
-        return ResponseEntity.ok(jMethod)
+        return ResponseEntity.ok(listOf(jMethod))
     }
 }
