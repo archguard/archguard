@@ -14,35 +14,35 @@ class DubboPlugin : Plugin() {
     private val log = LoggerFactory.getLogger(DubboPlugin::class.java)
 
     @Autowired
-    lateinit var xmlConfigService: XmlConfigService
+    lateinit var dubboXmlDependencyAnalysisHelper: DubboXmlDependencyAnalysisHelper
 
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
     override fun mapToModuleDependencies(methodDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         val interfaces = jClassRepository.getJClassesHasModules().filter { it.classType == ClazzType.INTERFACE }.map { "${it.module}.${it.name}" }
-        // calleeClass不是接口类型，直接停止分析
-        val interfaceDependencies =  methodDependencies.filter { "${it.callee.jClassVO.module}.${it.callee.jClassVO.name}" in interfaces }
-        return logicModuleDependencies + interfaceDependencies.flatMap { mapToModuleDependency(it, logicModules) }
+        return methodDependencies.flatMap { mapToModuleDependency(it, logicModules, interfaces) }
 
     }
 
-    private fun mapToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+    private fun mapToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>, interfaces: List<String>): List<Dependency<LogicModule>> {
         val callerClass = methodDependency.caller.jClassVO
         val calleeClass = methodDependency.callee.jClassVO
-
-        val dubboAnalysisCalleeModules = analysis(Dependency(callerClass, calleeClass), logicModules)
 
         val callerModules = getModule(logicModules, callerClass)
         val calleeModules = getModule(logicModules, calleeClass)
 
+        // calleeClass不是接口类型，直接停止分析
+        if (!isInterface(calleeClass, interfaces)) {
+            return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
+        }
+
+        val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(Dependency(callerClass, calleeClass), logicModules)
         val calleeModulesAfterAnalysis = calleeModules.intersect(dubboAnalysisCalleeModules)
         return callerModules.flatMap { caller -> calleeModulesAfterAnalysis.map { callee -> Dependency(caller, callee) } }
     }
 
-    private fun analysis(classDependency: Dependency<JClassVO>, logicModules: List<LogicModule>): List<LogicModule> {
-        val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(classDependency.caller, classDependency.callee)
-        return calleeSubModuleByXml.map { getModule(logicModules, SubModule(it.name)) }
-                .flatten().toSet().toList()
+    private fun isInterface(jClassVO: JClassVO, interfaces: List<String>): Boolean{
+        return interfaces.contains("${jClassVO.module}.${jClassVO.name}")
     }
 }
