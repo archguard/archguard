@@ -99,7 +99,8 @@ class JMethodRepositoryImpl : JMethodRepository {
 
 class JMethodDto(val id: String, val name: String, val clazz: String, val module: String, val returnType: String?, val argumentTypes: String) {
     fun toJMethod(): JMethod {
-        return JMethod(id, name, clazz, module, returnType, argumentTypes.split(","))
+        val argumentTypeList = if (argumentTypes == "") emptyList() else argumentTypes.split(",")
+        return JMethod(id, name, clazz, module, returnType, argumentTypeList)
     }
 
 }
