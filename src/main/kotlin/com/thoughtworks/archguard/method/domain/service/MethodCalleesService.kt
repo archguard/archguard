@@ -34,7 +34,7 @@ class MethodCalleesService {
         }
     }
 
-    fun findCallees(target: JMethod, deep: Int, needIncludeImpl: Boolean): JMethod {
-        return buildMethodCallees(listOf(target), deep, needIncludeImpl)[0]
+    fun findCallees(target: List<JMethod>, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
+        return buildMethodCallees(target, deep, needIncludeImpl)
     }
 }

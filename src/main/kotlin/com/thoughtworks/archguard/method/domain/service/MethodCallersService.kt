@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 class MethodCallersService {
     @Autowired
     private lateinit var repo: JMethodRepository
-    fun findCallers(target: JMethod, deep: Int): JMethod {
-        buildMethodCallers(listOf(target), deep)
+    fun findCallers(target: List<JMethod>, deep: Int): List<JMethod> {
+        buildMethodCallers(target, deep)
         return target
     }
 

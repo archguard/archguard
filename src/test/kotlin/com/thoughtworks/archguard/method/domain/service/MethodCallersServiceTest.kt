@@ -32,7 +32,7 @@ class MethodCallersServiceTest {
         every { repo.findMethodCallers(target.id) } returns listOf(caller1)
         every { repo.findMethodCallers(caller1.id) } returns listOf(caller2)
         every { repo.findMethodCallers(caller2.id) } returns listOf()
-        val result = service.findCallers(target, 2)
+        val result = service.findCallers(listOf(target), 2)[0]
         //then
         Assertions.assertThat(result.callers.size).isEqualTo(1)
         Assertions.assertThat(result.callers[0]).isEqualToComparingFieldByField(caller1)
