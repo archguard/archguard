@@ -33,7 +33,7 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.10.1")
     implementation("org.nield:kotlinstatistics:0.3.0")
-
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
     runtimeOnly("mysql:mysql-connector-java")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
