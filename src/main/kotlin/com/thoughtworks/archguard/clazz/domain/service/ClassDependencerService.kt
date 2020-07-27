@@ -10,14 +10,15 @@ class ClassDependencerService {
     @Autowired
     private lateinit var repo: JClassRepository
 
-    fun findDependencers(target: List<JClass>, deep: Int): List<JClass> {
-        return buildDependencers(target, deep)
+    fun findDependencers(target: JClass, deep: Int): JClass {
+        buildDependencers(listOf(target), deep)
+        return target
     }
 
     private fun buildDependencers(target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
         doBuildDependencers(target, deep, container)
-        return container[0].dependencers
+        return target
     }
 
     private fun doBuildDependencers(target: List<JClass>, deep: Int, container: MutableList<JClass>) {
@@ -25,14 +26,10 @@ class ClassDependencerService {
         if (pendingClasses.isEmpty() || deep == 0) {
             container.addAll(pendingClasses)
         } else {
-            pendingClasses.forEach { it.dependencers = findDependencers(it) }
+            pendingClasses.forEach { it.dependencers = repo.findDependencers(it.id) }
             container.addAll(pendingClasses)
             doBuildDependencers(pendingClasses.flatMap { it.dependencers }, deep - 1, container)
         }
-    }
-
-    private fun findDependencers(clazz: JClass): List<JClass> {
-        return repo.findDependencers(clazz.id)
     }
 
 }

@@ -45,17 +45,20 @@ class ClassServiceTest {
         val target = JClass("1", targetName, "module")
         val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
         val dependencer = JClass("id2", "com.thoughtworks.archguard.domain.dependencer", "archguard")
+        val expected = JClass("1", targetName, "module")
+        (expected.dependencees as MutableList).add(dependencee)
+        (expected.dependencers as MutableList).add(dependencer)
         //when
-        every { repo.getJClassByName(targetName) } returns listOf(target)
-        every { classDependenceesService.findDependencees(any(), any()) } returns listOf(dependencee)
-        every { classDependencerService.findDependencers(any(), any()) } returns listOf(dependencer)
+        every { repo.getJClassByName(targetName) } returns listOf(expected)
+        every { classDependenceesService.findDependencees(any(), any()) } returns expected
+        every { classDependencerService.findDependencers(any(), any()) } returns expected
 
-        val classDependencies = service.findDependencies("", targetName, 1)
+        val result = service.getDependencies("", targetName, 1)
         //then
-        assertThat(classDependencies.caller.size).isEqualTo(1)
-        assertThat(classDependencies.callee.size).isEqualTo(1)
-        assertThat(classDependencies.caller[0]).isEqualToComparingFieldByField(dependencer)
-        assertThat(classDependencies.callee[0]).isEqualToComparingFieldByField(dependencee)
+        assertThat(result.dependencers.size).isEqualTo(1)
+        assertThat(result.dependencees.size).isEqualTo(1)
+        assertThat(result.dependencers[0]).isEqualToComparingFieldByField(dependencer)
+        assertThat(result.dependencees[0]).isEqualToComparingFieldByField(dependencee)
     }
 
     @Test

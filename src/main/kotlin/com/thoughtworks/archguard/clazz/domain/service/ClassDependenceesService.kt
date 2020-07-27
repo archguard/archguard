@@ -9,14 +9,15 @@ import org.springframework.stereotype.Service
 class ClassDependenceesService {
     @Autowired
     private lateinit var repo: JClassRepository
-    fun findDependencees(target: List<JClass>, deep: Int): List<JClass> {
-        return buildDependencees(target, deep)
+    fun findDependencees(target: JClass, deep: Int): JClass {
+        buildDependencees(listOf(target), deep)
+        return target
     }
 
     private fun buildDependencees(target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
         doBuildDependencees(target, deep, container)
-        return container[0].dependencees
+        return target
     }
 
     private fun doBuildDependencees(target: List<JClass>, deep: Int, container: MutableList<JClass>) {
@@ -24,14 +25,10 @@ class ClassDependenceesService {
         if (pendingClasses.isEmpty() || deep == 0) {
             container.addAll(pendingClasses)
         } else {
-            pendingClasses.forEach { it.dependencees = findDependencees(it) }
+            pendingClasses.forEach { it.dependencees = repo.findDependencees(it.id) }
             container.addAll(pendingClasses)
             doBuildDependencees(pendingClasses.flatMap { it.dependencees }, deep - 1, container)
         }
-    }
-
-    private fun findDependencees(clazz: JClass): List<JClass> {
-        return repo.findDependencees(clazz.id)
     }
 
 }

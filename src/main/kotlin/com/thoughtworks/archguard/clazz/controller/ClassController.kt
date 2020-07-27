@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.clazz.controller
 
 import com.thoughtworks.archguard.clazz.domain.service.ClassService
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.clazz.domain.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,8 +19,8 @@ class ClassController {
     @GetMapping("/{name}/dependencies")
     fun getDependencies(@PathVariable("name") name: String,
                         @RequestParam(value = "module", required = false, defaultValue = "") module: String,
-                        @RequestParam("deep", required = false, defaultValue = "3") deep: Int): Dependency<List<JClass>> {
-        return service.findDependencies(module, name, deep)
+                        @RequestParam("deep", required = false, defaultValue = "3") deep: Int): JClass {
+        return service.getDependencies(module, name, deep)
     }
 
     @GetMapping("/{name}/invokes")

@@ -33,12 +33,12 @@ internal class ClassDependencerServiceTest {
         every { repo.getJClassByName(targetName) } returns listOf(target)
         every { repo.findDependencers(target.id) } returns listOf(caller1)
         every { repo.findDependencers(caller1.id) } returns listOf(caller2)
-        val dependencees = service.findDependencers(mutableListOf(target), 2)
+        val result = service.findDependencers(target, 2)
         //then
-        Assertions.assertThat(dependencees.size).isEqualTo(1)
-        Assertions.assertThat(dependencees[0].name).isEqualTo("caller1")
-        Assertions.assertThat(dependencees[0].dependencers.size).isEqualTo(1)
-        Assertions.assertThat(dependencees[0].dependencers[0].name).isEqualTo("caller2")
+        Assertions.assertThat(result.dependencers.size).isEqualTo(1)
+        Assertions.assertThat(result.dependencers[0].name).isEqualTo("caller1")
+        Assertions.assertThat(result.dependencers[0].dependencers.size).isEqualTo(1)
+        Assertions.assertThat(result.dependencers[0].dependencers[0].name).isEqualTo("caller2")
     }
 
 
@@ -53,12 +53,12 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(target.id) } returns listOf(dependencer1)
         every { repo.findDependencers(dependencer1.id) } returns listOf(dependencer2)
         every { repo.findDependencers(dependencer2.id) } returns listOf()
-        val dependencers = service.findDependencers(mutableListOf(target), 4)
+        val result = service.findDependencers(target, 4)
         //then
-        Assertions.assertThat(dependencers.size).isEqualTo(1)
-        Assertions.assertThat(dependencers[0].name).isEqualTo("dependencer1")
-        Assertions.assertThat(dependencers[0].dependencers.size).isEqualTo(1)
-        Assertions.assertThat(dependencers[0].dependencers[0].name).isEqualTo("dependencer2")
-        Assertions.assertThat(dependencers[0].dependencers[0].dependencers).isEmpty()
+        Assertions.assertThat(result.dependencers.size).isEqualTo(1)
+        Assertions.assertThat(result.dependencers[0].name).isEqualTo("dependencer1")
+        Assertions.assertThat(result.dependencers[0].dependencers.size).isEqualTo(1)
+        Assertions.assertThat(result.dependencers[0].dependencers[0].name).isEqualTo("dependencer2")
+        Assertions.assertThat(result.dependencers[0].dependencers[0].dependencers).isEmpty()
     }
 }

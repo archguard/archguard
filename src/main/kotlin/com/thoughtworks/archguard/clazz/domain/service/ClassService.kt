@@ -23,14 +23,14 @@ class ClassService {
 
     @Autowired
     private lateinit var classInvokeService: ClassInvokeService
-    fun findDependencies(module: String, name: String, deep: Int): Dependency<List<JClass>> {
+    fun getDependencies(module: String, name: String, deep: Int): JClass {
         val target = getTargetClass(module, name)
-        val callees = classDependenceesService.findDependencees(target, deep)
-        val callers = classDependencerService.findDependencers(target, deep)
-        return Dependency(callers, callees)
+        classDependenceesService.findDependencees(target, deep)
+        classDependencerService.findDependencers(target, deep)
+        return target
     }
 
-    private fun getTargetClass(module: String, name: String): MutableList<JClass> {
+    private fun getTargetClass(module: String, name: String): JClass {
         val target = mutableListOf<JClass>()
         if (module.isEmpty()) {
             target.addAll(repo.getJClassByName(name))
@@ -41,17 +41,17 @@ class ClassService {
         if (target.isEmpty()) {
             throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
         }
-        return target
+        return target[0]
     }
 
     fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
-        val targetClass = getTargetClass(module, name)[0]
+        val targetClass = getTargetClass(module, name)
         return classInvokeService.findInvokes(targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
     fun findMethodsCallees(module: String, name: String, calleeDeep: Int,
                            needIncludeImpl: Boolean, needParents: Boolean): JClass {
-        val targetClass = getTargetClass(module, name)[0]
+        val targetClass = getTargetClass(module, name)
         return classMethodCalleesService.findClassMethodsCallees(targetClass, calleeDeep,
                 needIncludeImpl, needParents)
     }
