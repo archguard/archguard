@@ -158,7 +158,6 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
     }
     tableTemplate += filterConditions.joinToString(" or ")
     tableTemplate += ")"
-    println(tableTemplate)
     return tableTemplate
 }
 

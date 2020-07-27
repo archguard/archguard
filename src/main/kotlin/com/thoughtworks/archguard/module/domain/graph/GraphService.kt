@@ -30,21 +30,20 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return mapMethodDependenciesToModuleDependencies(dependencies, modules)
     }
 
-    private fun mapMethodDependenciesToModuleDependencies(classDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+    private fun mapMethodDependenciesToModuleDependencies(methodDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
-        return classDependencies.map { mapMethodDependencyToModuleDependency(it, logicModules) }.flatten()
-                .filter { it.caller != it.callee }
+        var logicModuleDependencies =  methodDependencies.flatMap { mapMethodDependencyToModuleDependency(it, logicModules) }
+
+        pluginManager.getPlugins().forEach { logicModuleDependencies = it.mapToModuleDependencies(methodDependencies, logicModules, logicModuleDependencies) }
+
+        return logicModuleDependencies.filter { it.caller != it.callee }
     }
 
     private fun mapMethodDependencyToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         val callerModules = getModule(logicModules, methodDependency.caller.jClassVO)
         val calleeModules = getModule(logicModules, methodDependency.callee.jClassVO)
 
-        var logicModuleDependencies =  callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
-
-        pluginManager.getPlugins().forEach { logicModuleDependencies = it.mapToModuleDependency(methodDependency, logicModules, logicModuleDependencies) }
-
-        return logicModuleDependencies
+        return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 
 }
