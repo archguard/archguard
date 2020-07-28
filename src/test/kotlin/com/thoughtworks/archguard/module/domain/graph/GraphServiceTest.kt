@@ -10,6 +10,7 @@ import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -54,6 +55,26 @@ class GraphServiceTest {
         // then
         assertEquals(3, moduleGraph.nodes.size)
         assertEquals(3, moduleGraph.edges.size)
+    }
+
+    @Test
+    fun `map bottom logic module to top level logic module`() {
+        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
+        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
+        val logicModule4 = LogicModule.createWithOnlyLeafMembers("id4", "module4", listOf(LogicComponent.createLeaf("caller.method2"), LogicComponent.createLeaf("callee.method2")))
+        val logicModule5 = LogicModule.createWithOnlyLeafMembers("id5", "module5", listOf(LogicComponent.createLeaf("module5")))
+
+        val service1 = LogicModule.createWithOnlyLogicModuleMembers("id11", "lg11", listOf(logicModule1, logicModule3))
+        val service2 = LogicModule.createWithOnlyLogicModuleMembers("id12", "lg12", listOf(logicModule2, logicModule4))
+        val bottomLogicModules = listOf(Dependency(logicModule1, logicModule2),
+                Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5))
+        every { logicModuleRepository.getAll() } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
+        val serviceDependencies = service.mapModuleDependencyToServiceDependency(bottomLogicModules)
+        Assertions.assertThat(serviceDependencies.size).isEqualTo(3)
+        val results = listOf(Dependency(service1, service2), Dependency(service1, service2), Dependency(service2, logicModule5))
+        Assertions.assertThat(serviceDependencies).usingRecursiveFieldByFieldElementComparator().containsAll(results)
+
     }
 
 }

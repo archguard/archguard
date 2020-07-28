@@ -47,4 +47,24 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 
+    fun mapModuleDependencyToServiceDependency(moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+        val logicModules = logicModuleRepository.getAll()
+        val servicesDependencies = mutableListOf<Dependency<LogicModule>>()
+        for (it in moduleDependencies) {
+            val callerModule = it.caller
+            val calleeModule = it.callee
+            val callerServices = logicModules.filter { it.containsOrEquals(callerModule) }.toMutableList()
+            if (callerServices.isEmpty()) {
+                callerServices.add(callerModule)
+            }
+            val calleeServices = logicModules.filter { it.containsOrEquals(calleeModule) }.toMutableList()
+            if (calleeServices.isEmpty()) {
+                calleeServices.add(calleeModule)
+            }
+            val flatMap = callerServices.flatMap { lhsElem -> calleeServices.map { rhsElem -> Dependency(lhsElem, rhsElem) } }
+            servicesDependencies.addAll(flatMap)
+        }
+        return servicesDependencies
+    }
+
 }
