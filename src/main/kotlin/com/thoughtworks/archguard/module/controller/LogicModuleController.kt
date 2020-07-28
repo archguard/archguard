@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.module.domain.GraphServiceLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
@@ -9,16 +8,12 @@ import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
 import com.thoughtworks.archguard.module.domain.ReportService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.graph.GraphService
-import com.thoughtworks.archguard.module.domain.graph.Graph as LogicModuleGraph
+import com.thoughtworks.archguard.module.domain.graph.Graph
 import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.Graph
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.ModuleGraph
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/logic-modules")
@@ -38,14 +33,6 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var logicModuleService: LogicModuleService
-
-    @Autowired
-    @Qualifier("Default")
-    private lateinit var graphServiceLegacy: GraphServiceLegacy
-
-    @Autowired
-    @Qualifier("Dubbo")
-    private lateinit var graphServiceLegacyDubbo: GraphServiceLegacy
 
     @Autowired
     private lateinit var reportService: ReportService
@@ -118,29 +105,6 @@ class LogicModuleController {
         return dependencyService.getAllWithFullNameStart(callerMembers, calleeMembers)
     }
 
-    @GetMapping("/graph")
-    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
-    fun getLogicModuleGraphLegacy(): ModuleGraph {
-        return graphServiceLegacy.getLogicModuleGraphLegacy()
-    }
-
-    @GetMapping("/graph-dubbo")
-    @Deprecated(message = "we are going to replace with getLogicModuleGraph")
-    fun getLogicModuleGraphDubboLegacy(): ModuleGraph {
-        return graphServiceLegacyDubbo.getLogicModuleGraphLegacy()
-    }
-
-
-    @GetMapping("/graph-new")
-    fun getLogicModuleGraph(): Graph<LogicModule> {
-        return graphServiceLegacy.getLogicModuleGraph()
-    }
-
-    @GetMapping("/graph-dubbo-new")
-    fun getLogicModuleGraphDubbo(): Graph<LogicModule> {
-        return graphServiceLegacyDubbo.getLogicModuleGraph()
-    }
-
     @GetMapping("/coupling-by-class")
     fun getLogicModuleCouplingByClass(): List<ModuleCouplingReportDTO> {
         return reportService.getLogicModuleCouplingReport()
@@ -168,7 +132,7 @@ class LogicModuleController {
     }
 
     @GetMapping("/dependencies/graph")
-    fun getDependenciesGraph(): LogicModuleGraph {
+    fun getDependenciesGraph(): Graph {
         return graphService.getLogicModuleGraph()
     }
 
