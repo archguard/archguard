@@ -47,8 +47,8 @@ internal class ReportServiceImplTest {
         val element = LogicModule("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         val element3 = LogicModule("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
-        val dependency1 = Dependency(JMethodVO("any",  "test1.clazz", "com"), JMethodVO("any", "test3.clazz", "com"))
-        val dependency2 = Dependency(JMethodVO("any", "test4.clazz", "com"), JMethodVO("any",  "test2.clazz", "com"))
+        val dependency1 = Dependency(JMethodVO("any",  "test1.clazz", "com", "any", listOf()), JMethodVO("any", "test3.clazz", "com", "any", listOf()))
+        val dependency2 = Dependency(JMethodVO("any", "test4.clazz", "com", "any", listOf()), JMethodVO("any",  "test2.clazz", "com", "any", listOf()))
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element, element2, element3)
         every { dependencyService.getAllWithFullNameStart(any(), any()) } returns listOf(dependency1, dependency2)
         //when

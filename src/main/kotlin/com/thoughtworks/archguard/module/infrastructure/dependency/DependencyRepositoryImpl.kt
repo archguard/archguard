@@ -38,7 +38,7 @@ class DependencyRepositoryImpl : DependencyRepository {
     }
 
     private fun generateSelectMethodTemplate(tableName: String, prefix: String): String{
-        return "$tableName.module ${prefix}Module, $tableName.clzName ${prefix}Class, $tableName.name ${prefix}Method"
+        return "$tableName.module ${prefix}Module, $tableName.clzName ${prefix}Class, $tableName.name ${prefix}Method, $tableName.returntype ${prefix}ReturnType, $tableName.argumenttypes ${prefix}ArgumentTypes"
     }
 
     override fun getAllClassDependencyLegacy(members: List<LogicComponent>): List<Dependency<JClassVO>> {

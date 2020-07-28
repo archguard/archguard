@@ -40,7 +40,7 @@ class DependencyServiceImpl : DependencyService {
 
 
     override fun getAllClassDependencies(): List<Dependency<JClassVO>> {
-        return getAllMethodDependencies().map { Dependency(it.caller.jClassVO, it.callee.jClassVO) }
+        return getAllMethodDependencies().map { Dependency(it.caller.clazz, it.callee.clazz) }
     }
 
 
