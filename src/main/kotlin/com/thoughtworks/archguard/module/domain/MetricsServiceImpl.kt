@@ -20,8 +20,7 @@ class MetricsServiceImpl(
 
     override fun calculateCoupling() {
         val modules = logicModuleRepository.getAll()
-        val dependencies = dependencyService.getAll()
-        val classDependency = dependencies.map { Dependency(it.caller.jClassVO, it.callee.jClassVO) }
+        val classDependency = dependencyService.getAllClassDependencies()
 
         val classMetrics = getClassMetrics(classDependency, modules)
         val moduleMetrics = groupPackageMetrics(groupToPackage(classMetrics), modules)

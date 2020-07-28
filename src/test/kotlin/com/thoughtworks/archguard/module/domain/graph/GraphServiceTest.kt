@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain.graph
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.plugin.PluginManager
@@ -39,14 +39,14 @@ class GraphServiceTest {
         val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("submodule3.class")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JMethodVO("submodule1", "class", "method"), JMethodVO("submodule2", "class", "method"))
-        val dependency2 = Dependency(JMethodVO("submodule1", "class", "method"), JMethodVO("submodule3", "class", "method"))
-        val dependency3 = Dependency(JMethodVO("submodule2", "class", "method"), JMethodVO("submodule3", "class", "method"))
+        val dependency1 = Dependency(JClassVO("class","submodule1"), JClassVO("class", "submodule2"))
+        val dependency2 = Dependency(JClassVO("class","submodule1"), JClassVO("class", "submodule3"))
+        val dependency3 = Dependency(JClassVO("class","submodule2"), JClassVO("class", "submodule3"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { pluginManager.getPlugins() } returns emptyList()
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { dependencyService.getAll() } returns dependencies
+        every { dependencyService.getAllClassDependencies() } returns dependencies
 
         // when
         val moduleGraph = service.getLogicModuleGraph()

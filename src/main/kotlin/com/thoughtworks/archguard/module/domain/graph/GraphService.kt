@@ -27,11 +27,11 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
 
     private fun getModuleDependency(): List<Dependency<LogicModule>> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
-        val dependencies = dependencyService.getAll()
+        val dependencies = dependencyService.getAllClassDependencies()
         return mapMethodDependenciesToModuleDependencies(dependencies, modules)
     }
 
-    private fun mapMethodDependenciesToModuleDependencies(methodDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+    private fun mapMethodDependenciesToModuleDependencies(methodDependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         var logicModuleDependencies =  methodDependencies.flatMap { mapMethodDependencyToModuleDependency(it, logicModules) }
 
@@ -40,9 +40,9 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return logicModuleDependencies.filter { it.caller != it.callee }
     }
 
-    private fun mapMethodDependencyToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
-        val callerModules = getModule(logicModules, methodDependency.caller.jClassVO)
-        val calleeModules = getModule(logicModules, methodDependency.callee.jClassVO)
+    private fun mapMethodDependencyToModuleDependency(methodDependency: Dependency<JClassVO>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
+        val callerModules = getModule(logicModules, methodDependency.caller)
+        val calleeModules = getModule(logicModules, methodDependency.callee)
 
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }

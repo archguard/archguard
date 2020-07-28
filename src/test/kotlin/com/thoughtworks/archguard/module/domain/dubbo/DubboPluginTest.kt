@@ -39,7 +39,7 @@ internal class DubboPluginTest {
         val class1 = JClassVO("class", "submodule1")
         val class2 = JClassVO("class", "sa")
 
-        val dependency1 = Dependency(JMethodVO(class1, "any"), JMethodVO(class2,"any"))
+        val dependency1 = Dependency(class1, class2)
         val dependencies = listOf(dependency1)
 
         val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("submodule1")))

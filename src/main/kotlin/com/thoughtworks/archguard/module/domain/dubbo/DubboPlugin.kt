@@ -19,15 +19,15 @@ class DubboPlugin : Plugin() {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    override fun mapToModuleDependencies(methodDependencies: List<Dependency<JMethodVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+    override fun mapToModuleDependencies(methodDependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         val interfaces = jClassRepository.getJClassesHasModules().filter { it.classType == ClazzType.INTERFACE }.map { "${it.module}.${it.name}" }
         return methodDependencies.flatMap { mapToModuleDependency(it, logicModules, interfaces) }
 
     }
 
-    private fun mapToModuleDependency(methodDependency: Dependency<JMethodVO>, logicModules: List<LogicModule>, interfaces: List<String>): List<Dependency<LogicModule>> {
-        val callerClass = methodDependency.caller.jClassVO
-        val calleeClass = methodDependency.callee.jClassVO
+    private fun mapToModuleDependency(methodDependency: Dependency<JClassVO>, logicModules: List<LogicModule>, interfaces: List<String>): List<Dependency<LogicModule>> {
+        val callerClass = methodDependency.caller
+        val calleeClass = methodDependency.callee
 
         val callerModules = getModule(logicModules, callerClass)
         val calleeModules = getModule(logicModules, calleeClass)

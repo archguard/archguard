@@ -26,20 +26,21 @@ class DependencyServiceImpl : DependencyService {
         return logicModuleRepository.getDependence(caller, callee)
     }
 
-    override fun getAll(): List<Dependency<JMethodVO>> {
-        var methodDependencies =  dependencyRepository.getAll()
+    override fun getAllMethodDependencies(): List<Dependency<JMethodVO>> {
+        var methodDependencies =  dependencyRepository.getAllMethodDependencies()
 
         pluginManager.getPlugins().forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
 
         return methodDependencies
     }
 
-    override fun getAllWithFullNameRegex(callerRegex: List<Regex>, calleeRegex: List<Regex>): List<Dependency<JMethodVO>> {
-        return getAll().filter { method ->  callerRegex.any { it.matches(method.caller.fullName) } && calleeRegex.any { it.matches(method.callee.fullName) }}
+    override fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>{
+        return getAllMethodDependencies().filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
     }
 
-    override fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>{
-        return getAll().filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
+
+    override fun getAllClassDependencies(): List<Dependency<JClassVO>> {
+        return getAllMethodDependencies().map { Dependency(it.caller.jClassVO, it.callee.jClassVO) }
     }
 
 

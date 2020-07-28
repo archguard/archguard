@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.module.domain.metrics.ClassMetrics
 import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.metrics.PackageMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import io.mockk.MockKAnnotations
@@ -111,11 +111,11 @@ class MetricsServiceImplTest {
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         val element3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
-        val dependency1 = Dependency(JMethodVO("com", "test1.clazz", "any"), JMethodVO("com", "test3.clazz", "any"))
-        val dependency2 = Dependency(JMethodVO("com", "test4.clazz", "any"), JMethodVO("com", "test2.clazz", "any"))
+        val dependency1 = Dependency(JClassVO("test1.clazz", "com"), JClassVO("test3.clazz", "com"))
+        val dependency2 = Dependency(JClassVO("test4.clazz", "com"), JClassVO("test2.clazz", "com"))
 
         every { logicModuleRepository.getAll() } returns listOf(element, element2, element3)
-        every { dependencyService.getAll() } returns listOf(dependency1, dependency2)
+        every { dependencyService.getAllClassDependencies() } returns listOf(dependency1, dependency2)
         val slot = slot<List<ModuleMetrics>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 
@@ -133,7 +133,7 @@ class MetricsServiceImplTest {
         val element2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
 
         every { logicModuleRepository.getAll() } returns listOf(element, element2)
-        every { dependencyService.getAll() } returns listOf()
+        every { dependencyService.getAllClassDependencies() } returns listOf()
         val slot = slot<List<ModuleMetrics>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 

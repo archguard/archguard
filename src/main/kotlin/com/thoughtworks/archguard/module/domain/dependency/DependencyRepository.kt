@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 
 interface DependencyRepository {
-    fun getAll(): List<Dependency<JMethodVO>>
+    fun getAllMethodDependencies(): List<Dependency<JMethodVO>>
     fun getAllClassDependencyLegacy(members: List<LogicComponent>): List<Dependency<JClassVO>>
 
 }
