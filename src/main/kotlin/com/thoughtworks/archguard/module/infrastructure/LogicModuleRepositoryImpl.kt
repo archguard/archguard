@@ -2,15 +2,12 @@ package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.JMethodLegacy
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
 import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
 import com.thoughtworks.archguard.module.domain.model.SubModule
-import com.thoughtworks.archguard.module.infrastructure.dto.MethodDependencyDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -95,26 +92,26 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 
     override fun getAllSubModule(): List<SubModule> {
-        val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> {
-            it.createQuery("select distinct module from JClass")
+        val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> {handle ->
+            handle.createQuery("select distinct module from JClass")
                     .mapTo(String::class.java)
                     .list()
-                    .filter { it -> it != "null" }
-                    .map { it -> SubModule(it) }
+                    .filter {  it != "null" }
+                    .map {  SubModule(it) }
         }
-        val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> {
-            it.createQuery("select distinct module from JMethod")
+        val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
+            handle.createQuery("select distinct module from JMethod")
                     .mapTo(String::class.java)
                     .list()
-                    .filter { it -> it != "null" }
-                    .map { it -> SubModule(it) }
+                    .filter { it != "null" }
+                    .map { SubModule(it) }
         }
         return subModulesFromJClasses.union(subModulesFromJMethods).toList()
     }
 
     override fun updateAll(logicModules: List<LogicModule>) {
         logicModules.forEach {
-            update(it.id.toString(), it)
+            update(it.id, it)
         }
     }
 
