@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -17,6 +18,7 @@ class MetricsServiceImpl(
         @Autowired val logicModuleRepository: LogicModuleRepository,
         @Autowired val dependencyService: DependencyService
 ) : MetricsService {
+    private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
     override fun calculateCoupling() {
         val modules = logicModuleRepository.getAll()
@@ -24,6 +26,7 @@ class MetricsServiceImpl(
 
         val classMetrics = getClassMetrics(classDependency, modules)
         val moduleMetrics = groupPackageMetrics(groupToPackage(classMetrics), modules)
+        log.info("calculate coupling Done! Metrics: $moduleMetrics")
         metricsRepository.insert(moduleMetrics)
     }
 
