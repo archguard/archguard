@@ -15,11 +15,13 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import org.springframework.stereotype.Component
+import springfox.documentation.oas.annotations.EnableOpenApi
 import java.util.function.Consumer
 import javax.sql.DataSource
 
 
 @SpringBootApplication
+@EnableOpenApi
 class ScannerApplication {
 
     @Bean
