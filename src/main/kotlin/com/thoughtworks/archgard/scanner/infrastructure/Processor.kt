@@ -20,5 +20,6 @@ object Processor {
             log.info(line)
         }
         inputStream.close()
+        p.waitFor()
     }
 }
