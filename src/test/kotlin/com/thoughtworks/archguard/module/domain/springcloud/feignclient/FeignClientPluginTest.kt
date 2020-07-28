@@ -31,9 +31,9 @@ class FeignClientPluginTest {
     @Test
     fun should_fix_method_dependencies() {
         // given
-        val method1 = JMethodVO("module1", "class1", "method1")
-        val method2 = JMethodVO("module2", "class2", "method2")
-        val method3 = JMethodVO("module3", "class3", "method3")
+        val method1 = JMethodVO( "method1", "class1", "module1")
+        val method2 = JMethodVO("method2", "class2", "module2")
+        val method3 = JMethodVO("method3", "class3", "module3")
 
         val methodDependencies = listOf(Dependency(method1, method2))
 
