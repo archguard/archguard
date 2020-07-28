@@ -14,7 +14,6 @@ interface LogicModuleRepository {
     fun create(logicModule: LogicModule)
     fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes)
     fun delete(id: String)
-    fun getDependence(caller: String, callee: String): List<Dependency<JMethodLegacy>>
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
     fun getAllSubModule(): List<SubModule>

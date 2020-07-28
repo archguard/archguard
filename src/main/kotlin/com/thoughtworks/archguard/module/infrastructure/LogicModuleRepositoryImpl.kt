@@ -118,19 +118,6 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun getDependence(caller: String, callee: String): List<Dependency<JMethodLegacy>> {
-        val callerTemplate = generateTableSqlTemplateWithModuleModules(this.get(caller).members)
-        val calleeTemplate = generateTableSqlTemplateWithModuleModules(this.get(callee).members)
-
-        val sql = "select a.module caller, a.clzname callerClass, a.name callerMethod, b.module callee, b.clzname calleeClass, b.name calleeMethod from ($callerTemplate) a, ($calleeTemplate) b, _MethodCallees mc where a.id = mc.a and b.id = mc.b"
-
-        return jdbi.withHandle<List<MethodDependencyDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(MethodDependencyDto::class.java))
-            it.createQuery(sql)
-                    .mapTo(MethodDependencyDto::class.java)
-                    .list()
-        }.map { it.toMethodDependency() }
-    }
 
     override fun getParentClassId(id: String): List<String> {
         val sql = "select b from _ClassParent where a = '$id'"

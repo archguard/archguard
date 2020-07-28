@@ -22,10 +22,6 @@ class DependencyServiceImpl : DependencyService {
     @Autowired
     lateinit var pluginManager: PluginManager
 
-    override fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethodLegacy>> {
-        return logicModuleRepository.getDependence(caller, callee)
-    }
-
     override fun getAllMethodDependencies(): List<Dependency<JMethodVO>> {
         var methodDependencies =  dependencyRepository.getAllMethodDependencies()
 

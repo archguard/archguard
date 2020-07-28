@@ -7,7 +7,6 @@ import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 
 interface DependencyService {
-    fun getLogicModulesDependencies(caller: String, callee: String): List<Dependency<JMethodLegacy>>
     fun getAllMethodDependencies(): List<Dependency<JMethodVO>>
     fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>
     fun getAllClassDependencies(): List<Dependency<JClassVO>>
