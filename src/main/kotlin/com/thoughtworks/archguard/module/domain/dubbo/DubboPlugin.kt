@@ -19,30 +19,36 @@ class DubboPlugin : Plugin() {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
-    override fun mapToModuleDependencies(methodDependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+    override fun mapToModuleDependencies(dependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         val interfaces = jClassRepository.getJClassesHasModules().filter { it.classType == ClazzType.INTERFACE }.map { "${it.module}.${it.name}" }
-        return methodDependencies.flatMap { mapToModuleDependency(it, logicModules, interfaces) }
-
+        return dependencies.flatMap { mapToModuleDependency(it, logicModules, interfaces) }
     }
 
-    private fun mapToModuleDependency(methodDependency: Dependency<JClassVO>, logicModules: List<LogicModule>, interfaces: List<String>): List<Dependency<LogicModule>> {
-        val callerClass = methodDependency.caller
-        val calleeClass = methodDependency.callee
+    private fun mapToModuleDependency(dependency: Dependency<JClassVO>, logicModules: List<LogicModule>, interfaces: List<String>): List<Dependency<LogicModule>> {
+        val callerClass = dependency.caller
+        val calleeClass = dependency.callee
 
         val callerModules = getModule(logicModules, callerClass)
         val calleeModules = getModule(logicModules, calleeClass)
 
         // calleeClass不是接口类型，直接停止分析
         if (!isInterface(calleeClass, interfaces)) {
-            return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
+            return getModuleDependenciesByModules(callerModules, calleeModules)
         }
 
-        val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(Dependency(callerClass, calleeClass), logicModules)
+        val dubboAnalysisCalleeModules = dubboXmlDependencyAnalysisHelper.analysis(dependency, logicModules)
+        if (dubboAnalysisCalleeModules.isEmpty()) {
+            return getModuleDependenciesByModules(callerModules, calleeModules)
+        }
         val calleeModulesAfterAnalysis = calleeModules.intersect(dubboAnalysisCalleeModules)
-        return callerModules.flatMap { caller -> calleeModulesAfterAnalysis.map { callee -> Dependency(caller, callee) } }
+        return getModuleDependenciesByModules(callerModules, calleeModulesAfterAnalysis.toList())
     }
 
     private fun isInterface(jClassVO: JClassVO, interfaces: List<String>): Boolean{
         return interfaces.contains("${jClassVO.module}.${jClassVO.name}")
+    }
+
+    private fun getModuleDependenciesByModules(callerModules: List<LogicModule>, calleeModules: List<LogicModule>): List<Dependency<LogicModule>> {
+        return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 }

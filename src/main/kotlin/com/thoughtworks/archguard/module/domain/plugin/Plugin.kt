@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 
 abstract class Plugin {
-    open fun mapToModuleDependencies(methodDependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+    open fun mapToModuleDependencies(dependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>, logicModuleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
         return logicModuleDependencies
     }
 
