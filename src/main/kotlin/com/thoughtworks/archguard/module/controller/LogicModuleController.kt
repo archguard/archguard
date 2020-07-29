@@ -100,10 +100,9 @@ class LogicModuleController {
 
     @GetMapping("/dependencies")
     fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
-        val callerMembers = logicModuleService.getLogicModule(caller).members.map { it.getFullName() }
-        val calleeMembers = logicModuleService.getLogicModule(callee).members.map { it.getFullName() }
-        return dependencyService.getAllWithFullNameStart(callerMembers, calleeMembers)
+        return dependencyService.getAllMethodDependencies(caller, callee)
     }
+
 
     @GetMapping("/coupling-by-class")
     fun getLogicModuleCouplingByClass(): List<ModuleCouplingReportDTO> {

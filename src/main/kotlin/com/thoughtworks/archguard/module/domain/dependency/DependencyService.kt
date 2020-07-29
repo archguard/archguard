@@ -8,4 +8,5 @@ interface DependencyService {
     fun getAllMethodDependencies(): List<Dependency<JMethodVO>>
     fun getAllWithFullNameStart(callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>
     fun getAllClassDependencies(): List<Dependency<JClassVO>>
+    fun getAllMethodDependencies(caller: String, callee: String): List<Dependency<JMethodVO>>
 }
