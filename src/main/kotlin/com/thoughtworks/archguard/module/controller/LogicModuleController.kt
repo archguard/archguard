@@ -3,9 +3,6 @@ package com.thoughtworks.archguard.module.controller
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.module.domain.ModuleCouplingReport
-import com.thoughtworks.archguard.module.domain.ModuleCouplingReportDTO
-import com.thoughtworks.archguard.module.domain.ReportService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.graph.Graph
@@ -33,9 +30,6 @@ class LogicModuleController {
 
     @Autowired
     private lateinit var logicModuleService: LogicModuleService
-
-    @Autowired
-    private lateinit var reportService: ReportService
 
     @Autowired
     private lateinit var dependencyService: DependencyService
@@ -97,16 +91,6 @@ class LogicModuleController {
     @GetMapping("/dependencies")
     fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
         return dependencyService.getAllMethodDependencies(caller, callee)
-    }
-
-    @GetMapping("/coupling-by-class")
-    fun getLogicModuleCouplingByClass(): List<ModuleCouplingReportDTO> {
-        return reportService.getLogicModuleCouplingReport()
-    }
-
-    @GetMapping("/coupling-detail")
-    fun getLogicModuleCouplingDetail(): List<ModuleCouplingReport> {
-        return reportService.getLogicModuleCouplingReportDetail()
     }
 
     @PostMapping("/calculate-coupling")
