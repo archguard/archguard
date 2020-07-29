@@ -34,6 +34,8 @@ dependencies {
     implementation("org.jdbi:jdbi3-testing:3.10.1")
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.3.RELEASE")
+
     runtimeOnly("mysql:mysql-connector-java")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -43,6 +45,12 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
     testImplementation("io.mockk:mockk:1.10.0")
+}
+
+configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6")
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
