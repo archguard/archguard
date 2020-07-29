@@ -52,6 +52,7 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin:$jdbiVersion")
     implementation("org.jdbi:jdbi3-testing:$jdbiVersion")
     implementation("org.nield:kotlinstatistics:0.3.0")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.3.RELEASE")
 
     runtimeOnly("mysql:mysql-connector-java")
 
@@ -63,6 +64,11 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:3.0.0")
 }
 
+configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6")
+    }
+}
 
 tasks.getByName<BootJar>("bootJar") {
     requiresUnpack("**/kotlin-compiler-embeddable-*.jar")

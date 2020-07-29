@@ -5,12 +5,14 @@ import org.jdbi.v3.spring4.JdbiFactoryBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import springfox.documentation.oas.annotations.EnableOpenApi
 import javax.sql.DataSource
 
 @EnableOpenApi
 @SpringBootApplication
+@EnableEurekaClient
 class Application {
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
