@@ -12,6 +12,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import org.springframework.stereotype.Component
@@ -22,6 +23,7 @@ import javax.sql.DataSource
 
 @SpringBootApplication
 @EnableOpenApi
+@EnableEurekaClient
 class ScannerApplication {
 
     @Bean
