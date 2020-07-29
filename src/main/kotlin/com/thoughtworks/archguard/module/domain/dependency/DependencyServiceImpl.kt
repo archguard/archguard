@@ -6,6 +6,8 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.plugin.DependPlugin
+import com.thoughtworks.archguard.module.domain.plugin.Plugin
 import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,7 +27,7 @@ class DependencyServiceImpl : DependencyService {
     override fun getAllMethodDependencies(): List<Dependency<JMethodVO>> {
         var methodDependencies =  dependencyRepository.getAllMethodDependencies()
 
-        pluginManager.getPlugins().forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
+        pluginManager.getDependPlugin<DependPlugin>().forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
 
         return methodDependencies
     }

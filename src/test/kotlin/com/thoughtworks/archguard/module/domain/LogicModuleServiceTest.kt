@@ -1,13 +1,9 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import com.thoughtworks.archguard.clazz.domain.ClazzType
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
 import io.mockk.MockKAnnotations.init
 import io.mockk.Runs
 import io.mockk.every
@@ -15,20 +11,15 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
 import kotlin.test.assertEquals
 
 class LogicModuleServiceTest {
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
-
-    @MockK
-    lateinit var jClassRepository: JClassRepository
 
     @MockK
     lateinit var metricsService: MetricsService
@@ -54,38 +45,6 @@ class LogicModuleServiceTest {
 
         // then
         assertThat(actual.size).isEqualTo(logicModules.size)
-    }
-
-    @Test
-    fun `should get logic module with interface members  for one JClass`() {
-        val jClass = JClass("id1", "ServiceImpl", "module1")
-        every { logicModuleRepository.getParentClassId(any()) } returns listOf("id2", "id3")
-        val jClassId2 = JClass("id2", "Service", "module2")
-        jClassId2.classType = ClazzType.INTERFACE
-        val jClassId3 = JClass("id3", "ParentClass", "module3")
-        every { jClassRepository.getJClassById("id2") } returns jClassId2
-        every { jClassRepository.getJClassById("id3") } returns jClassId3
-        val logicModule = service.getIncompleteLogicModuleForJClass(jClass)
-        assertThat(logicModule.name).isEqualTo("module1")
-        assertThat(logicModule.members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), jClassId2.toVO()))
-    }
-
-    @Test
-    fun `should get logic module with interface members for all JClasses`() {
-        val jClass1 = JClass("id1", "Service1Impl", "module1")
-        val jClass2 = JClass("id2", "Controller", "module2")
-        val jClass3 = JClass("id3", "Service2Impl", "module1")
-        val jClasses = listOf(jClass1, jClass2, jClass3)
-        service = spyk(service)
-        every { service.getIncompleteLogicModuleForJClass(jClass1) } returns LogicModule(NOT_EXIST_ID, "module1", listOf(SubModule("module1"), JClassVO("Service1", "module-api")))
-        every { service.getIncompleteLogicModuleForJClass(jClass2) } returns LogicModule(NOT_EXIST_ID, "module2", listOf(SubModule("module2")))
-        every { service.getIncompleteLogicModuleForJClass(jClass3) } returns LogicModule(NOT_EXIST_ID, "module1", listOf(SubModule("module1"), JClassVO("Service2", "module-api")))
-
-        val defineLogicModuleWithInterface = service.getLogicModulesForAllJClass(jClasses)
-        assertThat(defineLogicModuleWithInterface.size).isEqualTo(2)
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module1" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module1"), JClassVO("Service1", "module-api"), JClassVO("Service2", "module-api")))
-        assertThat(defineLogicModuleWithInterface.filter { it.name == "module2" }[0].members.toSet()).usingFieldByFieldElementComparator().containsAll(setOf(SubModule("module2")))
-
     }
 
     @Test

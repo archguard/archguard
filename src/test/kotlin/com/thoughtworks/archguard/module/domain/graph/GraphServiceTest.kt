@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -45,7 +46,7 @@ class GraphServiceTest {
         val dependency3 = Dependency(JClassVO("class","submodule2"), JClassVO("class", "submodule3"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { pluginManager.getPlugins() } returns emptyList()
+        every { pluginManager.getDependPlugin<DependPlugin>() } returns emptyList()
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
         every { dependencyService.getAllClassDependencies() } returns dependencies
 

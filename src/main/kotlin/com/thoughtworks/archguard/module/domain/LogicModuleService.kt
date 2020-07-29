@@ -1,11 +1,7 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,9 +13,6 @@ class LogicModuleService {
 
     @Autowired
     lateinit var logicModuleRepository: LogicModuleRepository
-
-    @Autowired
-    lateinit var jClassRepository: JClassRepository
 
     @Autowired
     lateinit var metricsService: MetricsService
@@ -77,35 +70,6 @@ class LogicModuleService {
         logicModuleRepository.saveAll(defaultModules)
     }
 
-    fun autoDefineLogicModuleWithInterface() {
-        logicModuleRepository.deleteAll()
-        val jClassesHasModules: List<JClass> = jClassRepository.getJClassesHasModules()
-        val defineLogicModuleWithInterface = getLogicModulesForAllJClass(jClassesHasModules)
-        logicModuleRepository.saveAll(defineLogicModuleWithInterface)
-    }
-
-    internal fun getLogicModulesForAllJClass(jClassesHasModules: List<JClass>): List<LogicModule> {
-        return jClassesHasModules
-                .map { getIncompleteLogicModuleForJClass(it) }
-                .groupBy({ it.name }, { it.members })
-                .mapValues { entry -> entry.value.flatten().toSet().toList() }
-                .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.key, it.value) }
-    }
-
-    internal fun getIncompleteLogicModuleForJClass(jClass: JClass): LogicModule {
-        val id = jClass.id
-        val moduleName = jClass.module
-        val parentClassIds = logicModuleRepository.getParentClassId(id)
-        val membersGeneratedByParentClasses: MutableList<LogicComponent> = parentClassIds.asSequence().map { id -> jClassRepository.getJClassById(id)!! }
-                .filter { j -> j.module != "null" }
-                .filter { j -> j.module != jClass.module }
-                .filter { j -> j.isInterface() }
-                .map { it.toVO() }
-                .toSet().toMutableList()
-        membersGeneratedByParentClasses.add(SubModule(moduleName))
-        // FIXME: No Entity should not has id
-        return LogicModule.createWithOnlyLeafMembers(NOT_EXIST_ID, moduleName, membersGeneratedByParentClasses.toList())
-    }
 }
 
 fun getModule(modules: List<LogicModule>, logicComponent: LogicComponent): List<LogicModule> {

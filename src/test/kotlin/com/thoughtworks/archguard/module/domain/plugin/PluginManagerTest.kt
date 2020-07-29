@@ -22,33 +22,31 @@ class PluginManagerTest {
 
     @MockK
     lateinit var dubboPlugin: DubboPlugin
+
     @MockK
     lateinit var feignClientPlugin: FeignClientPlugin
 
     private lateinit var pluginManager: PluginManager
 
-    private val log = LoggerFactory.getLogger(PluginManagerTest::class.java)
-
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this, relaxed = true)
-        pluginManager = PluginManager(configRepository, applicationContext)
+        pluginManager = PluginManager(configRepository)
     }
-
 
     @Test
     fun should_get_FeignClients() {
 
         // given
-        val config1 = Configure("id1", "plugin", "name", "DubboPlugin", 1)
-        val config2 = Configure("id1", "plugin", "name", "FeiginPlugin", 2)
+        val config1 = Configure("id1", "plugin", "name", "DUBBO", 1)
+        val config2 = Configure("id1", "plugin", "name", "FEIGN", 2)
 
 
         every { configRepository.getConfigures() } returns listOf(config1, config2)
-        every { applicationContext.getBeansOfType(Plugin::class.javaObjectType) } returns mapOf("DubboPlugin" to dubboPlugin, "FeiginPlugin" to feignClientPlugin)
+        every { applicationContext.getBeansOfType(DependPlugin::class.java) } returns mapOf("DUBBO" to dubboPlugin, "FEIGN" to feignClientPlugin)
 
         // when
-        val plugins = pluginManager.getPlugins()
+        val plugins = pluginManager.getDependPlugin<DependPlugin>()
 
         // then
         assertEquals(2, plugins.size)

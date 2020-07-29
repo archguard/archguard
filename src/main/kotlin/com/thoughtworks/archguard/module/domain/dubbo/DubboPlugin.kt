@@ -2,14 +2,18 @@ package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.*
-import com.thoughtworks.archguard.module.domain.plugin.Plugin
+import com.thoughtworks.archguard.module.domain.plugin.AbstractDependPlugin
+import com.thoughtworks.archguard.module.domain.plugin.PluginType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-@Component("DubboPlugin")
-class DubboPlugin : Plugin() {
+@Component
+class DubboPlugin : AbstractDependPlugin() {
+
     private val log = LoggerFactory.getLogger(DubboPlugin::class.java)
 
     @Autowired
@@ -17,6 +21,10 @@ class DubboPlugin : Plugin() {
 
     @Autowired
     lateinit var jClassRepository: JClassRepository
+
+    override fun getPluginType(): PluginType {
+        return PluginType.DUBBO
+    }
 
     override fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
         // A -> I, B : I

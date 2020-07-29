@@ -93,16 +93,10 @@ class LogicModuleController {
         logicModuleService.autoDefineLogicModule()
     }
 
-    @PostMapping("/auto-define-with-interface")
-    fun autoDefineLogicModuleWithInterface() {
-        logicModuleService.autoDefineLogicModuleWithInterface()
-    }
-
     @GetMapping("/dependencies")
     fun getLogicModulesDependencies(@RequestParam caller: String, @RequestParam callee: String): List<Dependency<JMethodVO>> {
         return dependencyService.getAllMethodDependencies(caller, callee)
     }
-
 
     @GetMapping("/coupling-by-class")
     fun getLogicModuleCouplingByClass(): List<ModuleCouplingReportDTO> {
