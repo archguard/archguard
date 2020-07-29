@@ -56,22 +56,22 @@ class DubboPlugin : Plugin() {
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 
-
-    override fun fixClassDependencies(classDependencies: List<Dependency<JClassVO>>): List<Dependency<JClassVO>>{
-        // A -> I , B : I
-        // A -> B
-        val interfaces = jClassRepository.getJClassesHasModules().filter { it.classType == ClazzType.INTERFACE }
-        return classDependencies.flatMap { fixClassDependency(it, interfaces) }
+    override fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
+        // A -> I, B : I
+        // A -> B override
+        val interfaces = jClassRepository.getJClassesHasModules().filter { it.isInterface() }
+        return methodDependencies.flatMap { fixMethodDependency(it, interfaces) }
     }
 
-    private fun fixClassDependency(classDependency: Dependency<JClassVO>, interfaces: List<JClass>): List<Dependency<JClassVO>> {
-        val caller = classDependency.caller
-        val callee = classDependency.callee
+    private fun fixMethodDependency(methodDependency: Dependency<JMethodVO>, interfaces: List<JClass>): List<Dependency<JMethodVO>> {
+        val caller = methodDependency.caller
+        val callee = methodDependency.callee
 
-        if (!isInterface(callee, interfaces) || caller.module == callee.module) {
-            return listOf(classDependency)
+        if (!isInterface(callee.clazz, interfaces) || caller.clazz.module == callee.clazz.module) {
+            return listOf(methodDependency)
         }
         return mapCalleeToReal(caller, callee).map { Dependency(caller, it) }
+
     }
 
     private fun mapCalleeToReal(caller: JClassVO, callee: JClassVO): List<JClassVO>{
@@ -84,6 +84,9 @@ class DubboPlugin : Plugin() {
         return realCallee
     }
 
-
+    private fun mapCalleeToReal(caller: JMethodVO, callee: JMethodVO): List<JMethodVO> {
+        val realCalleeClasses = mapCalleeToReal(caller.clazz, callee.clazz)
+        return realCalleeClasses.map { JMethodVO(callee.name, it, callee.returnType, callee.argumentTypes) }
+    }
 
 }

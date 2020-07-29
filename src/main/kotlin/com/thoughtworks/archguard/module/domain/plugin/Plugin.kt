@@ -13,8 +13,4 @@ abstract class Plugin {
     open fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
         return methodDependencies
     }
-
-    open fun fixClassDependencies(classDependencies: List<Dependency<JClassVO>>): List<Dependency<JClassVO>>{
-        return classDependencies
-    }
 }
