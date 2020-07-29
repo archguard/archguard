@@ -5,6 +5,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.net.URLEncoder
 import java.nio.file.Paths
 
 class ProjectOperator(val projectInfo: ProjectInfo) {
@@ -44,7 +45,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
 
     private fun getSource(workspace: File, repo: String) {
         when (this.projectInfo.repoType) {
-            "GIT" -> cloneByGit(workspace, repo)
+            "GIT" -> cloneByGitCli(workspace, repo)
             "SVN" -> cloneBySvn(workspace, repo)
         }
     }
@@ -62,6 +63,28 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
             return BuildTool.MAVEN
         }
         return BuildTool.GRADLE
+    }
+
+    private fun cloneByGitCli(workspace: File, repo: String) {
+        val repoCombineWithAuthInfo = processGitUrl(repo)
+
+        val cmdList = listOf("git", "clone", repoCombineWithAuthInfo, "--depth", "1")
+
+
+        val pb = ProcessBuilder(cmdList)
+        Processor.executeWithLogs(pb, workspace)
+    }
+
+    private fun processGitUrl(repo: String): String {
+        return if (projectInfo.hasAuthInfo()) {
+            repo.replace("//", "//${urlEncode(projectInfo.username)}:${urlEncode(projectInfo.getDeCryptPassword())}@")
+        } else {
+            repo
+        }
+    }
+
+    private fun urlEncode(msg: String): String {
+        return URLEncoder.encode(msg, "UTF-8")
     }
 
     private fun cloneByGit(workspace: File, repo: String) {
