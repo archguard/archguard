@@ -2,8 +2,6 @@ package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.*
 import com.thoughtworks.archguard.module.domain.plugin.AbstractDependPlugin
 import com.thoughtworks.archguard.module.domain.plugin.PluginType
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class DubboPlugin : AbstractDependPlugin() {
-
-    private val log = LoggerFactory.getLogger(DubboPlugin::class.java)
 
     @Autowired
     lateinit var xmlConfigService: XmlConfigService

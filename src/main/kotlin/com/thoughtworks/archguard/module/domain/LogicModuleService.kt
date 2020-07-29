@@ -68,6 +68,7 @@ class LogicModuleService {
         val defaultModules = logicModuleRepository.getAllSubModule()
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
+        metricsService.calculateCoupling()
     }
 
 }

@@ -89,6 +89,7 @@ class LogicModuleController {
     }
 
     @PostMapping("/auto-define")
+    @ResponseStatus(HttpStatus.OK)
     fun autoDefineLogicModule() {
         logicModuleService.autoDefineLogicModule()
     }
