@@ -34,9 +34,6 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
     private fun mapMethodDependenciesToModuleDependencies(dependencies: List<Dependency<JClassVO>>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
         // 一个接口有多个实现/父类有多个子类: 就多条依赖关系
         val logicModuleDependencies = dependencies.flatMap { mapMethodDependencyToModuleDependency(it, logicModules) }
-
-//        pluginManager.getPlugins().forEach { logicModuleDependencies = it.mapToModuleDependencies(dependencies, logicModules, logicModuleDependencies) }
-
         return logicModuleDependencies.filter { it.caller != it.callee }
     }
 
