@@ -26,7 +26,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         javaByteCodeTool.analyse()
         val tableUsedTool = TableUsedTool(projectOperator.workspace, projectOperator.sql)
         tableUsedTool.analyse()
-        analysisModuleClient.calculateCoupling()
+        analysisModuleClient.autoDefine()
         log.info("finished scan java analysis")
     }
 }

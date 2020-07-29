@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate
 class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
     private val log = LoggerFactory.getLogger(AnalysisModuleClient::class.java)
 
-    fun calculateCoupling() {
-        RestTemplate().postForLocation("$url/logic-modules/calculate-coupling", null)
-        log.info("send calculate coupling request to module service")
+    fun autoDefine() {
+        RestTemplate().postForLocation("$url/logic-modules/auto-define", null)
+        log.info("send auto define request to module service")
     }
 
 }
