@@ -40,14 +40,14 @@ class PluginManagerTest {
     fun should_get_FeignClients() {
 
         // given
-        val config1 = Configure("id1", "plugin", "name", "DUBBO", 1)
-        val config2 = Configure("id1", "plugin", "name", "FEIGN", 2)
+        val config1 = Configure("id1", "plugin", "name", PluginType.DUBBO.name, 1)
+        val config2 = Configure("id1", "plugin", "name", PluginType.FEIGN_CLIENT.name, 2)
 
 
         every { configRepository.getConfigures() } returns listOf(config1, config2)
-        every { applicationContext.getBeansOfType(DependPlugin::class.java) } returns mapOf("DUBBO" to dubboPlugin, "FEIGN" to feignClientPlugin)
+        every { applicationContext.getBeansOfType(DependPlugin::class.java) } returns mapOf(PluginType.DUBBO.name to dubboPlugin, PluginType.FEIGN_CLIENT.name to feignClientPlugin)
         every { dubboPlugin.getPluginType() } returns PluginType.DUBBO
-        every { feignClientPlugin.getPluginType() } returns PluginType.FEIGN
+        every { feignClientPlugin.getPluginType() } returns PluginType.FEIGN_CLIENT
 
         pluginManager.setApplicationContext(applicationContext)
         // when

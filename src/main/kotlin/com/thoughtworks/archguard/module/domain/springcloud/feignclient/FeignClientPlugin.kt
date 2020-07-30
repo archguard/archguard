@@ -18,7 +18,7 @@ class FeignClientPlugin: AbstractDependPlugin() {
     lateinit var springCloudServiceRepository: SpringCloudServiceRepository
 
     override fun getPluginType(): PluginType {
-        return PluginType.FEIGN
+        return PluginType.FEIGN_CLIENT
     }
 
     override fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
