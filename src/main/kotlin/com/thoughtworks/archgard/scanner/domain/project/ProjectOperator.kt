@@ -1,8 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.project
 
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
@@ -85,19 +83,6 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
 
     private fun urlEncode(msg: String): String {
         return URLEncoder.encode(msg, "UTF-8")
-    }
-
-    private fun cloneByGit(workspace: File, repo: String) {
-        val cloneCmd = Git.cloneRepository()
-                .setDirectory(workspace)
-                .setURI(repo)
-
-        if (projectInfo.hasAuthInfo()) {
-            cloneCmd.setCredentialsProvider(UsernamePasswordCredentialsProvider(projectInfo.username,
-                    projectInfo.getDeCryptPassword()))
-        }
-
-        cloneCmd.call()
     }
 
     private fun cloneBySvn(workspace: File, repo: String) {
