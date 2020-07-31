@@ -23,6 +23,10 @@ class JClass(val id: String, val name: String, val module: String) {
         return classType == ClazzType.INTERFACE
     }
 
+    fun isAbstractClass(): Boolean {
+        return classType == ClazzType.ABSTRACT_CLASS
+    }
+
 
     override fun toString(): String {
         return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencees, dependencers=$dependencers, id=$id, classType=$classType)"
@@ -61,5 +65,5 @@ class JClass(val id: String, val name: String, val module: String) {
 
 // 暂时只有接口和类
 enum class ClazzType {
-    INTERFACE, CLASS, NOT_DEFINED
+    INTERFACE, CLASS, NOT_DEFINED, ABSTRACT_CLASS
 }

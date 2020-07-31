@@ -19,10 +19,14 @@ class JClassDto(val id: String, val name: String, val module: String, val loc: I
 
 object ClassTypeMap {
     private const val ACC_INTERFACE = 512
+    private const val ACC_ABSTRACT = 1024
 
     fun getClassType(access: Int): ClazzType {
         if ((access.and(ACC_INTERFACE)) != 0) {
             return ClazzType.INTERFACE
+        }
+        if ((access.and(ACC_ABSTRACT)) != 0) {
+            return ClazzType.ABSTRACT_CLASS
         }
         // TODO: support more type https://asm.ow2.io/javadoc/constant-values.html#org.objectweb.asm.Opcodes
         return ClazzType.NOT_DEFINED
