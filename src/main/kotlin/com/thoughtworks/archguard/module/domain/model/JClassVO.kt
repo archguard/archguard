@@ -1,18 +1,11 @@
 package com.thoughtworks.archguard.module.domain.model
 
-import com.thoughtworks.archguard.clazz.domain.ClazzType
-
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
-class JClassVO(val name: String, val module: String, var classType: ClazzType = ClazzType.NOT_DEFINED) : LogicComponent() {
+class JClassVO(val name: String, val module: String) : LogicComponent() {
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
-    }
-
-
-    fun isInterface(): Boolean {
-        return classType == ClazzType.INTERFACE
     }
 
     companion object {
