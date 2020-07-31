@@ -17,14 +17,14 @@ class JClass(val id: String, val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
-    var classType: ClazzType = ClazzType.NOT_DEFINED
+    var classType: List<ClazzType> = ArrayList()
 
     fun isInterface(): Boolean {
-        return classType == ClazzType.INTERFACE
+        return classType.contains(ClazzType.INTERFACE)
     }
 
     fun isAbstractClass(): Boolean {
-        return classType == ClazzType.ABSTRACT_CLASS
+        return classType.contains(ClazzType.ABSTRACT_CLASS)
     }
 
 
@@ -46,21 +46,22 @@ class JClass(val id: String, val name: String, val module: String) {
 
         other as JClass
 
+        if (id != other.id) return false
         if (name != other.name) return false
         if (module != other.module) return false
-        if (id != other.id) return false
         if (classType != other.classType) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
         result = 31 * result + module.hashCode()
-        result = 31 * result + id.hashCode()
         result = 31 * result + classType.hashCode()
         return result
     }
+
 }
 
 // 暂时只有接口和类

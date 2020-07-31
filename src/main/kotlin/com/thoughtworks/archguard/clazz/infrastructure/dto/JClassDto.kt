@@ -21,15 +21,16 @@ object ClassTypeMap {
     private const val ACC_INTERFACE = 512
     private const val ACC_ABSTRACT = 1024
 
-    fun getClassType(access: Int): ClazzType {
+    fun getClassType(access: Int): List<ClazzType> {
+        val classTypes: MutableList<ClazzType> = mutableListOf()
         if ((access.and(ACC_INTERFACE)) != 0) {
-            return ClazzType.INTERFACE
+            classTypes.add(ClazzType.INTERFACE)
         }
         if ((access.and(ACC_ABSTRACT)) != 0) {
-            return ClazzType.ABSTRACT_CLASS
+            classTypes.add(ClazzType.ABSTRACT_CLASS)
         }
         // TODO: support more type https://asm.ow2.io/javadoc/constant-values.html#org.objectweb.asm.Opcodes
-        return ClazzType.NOT_DEFINED
+        return classTypes
     }
 
 }
