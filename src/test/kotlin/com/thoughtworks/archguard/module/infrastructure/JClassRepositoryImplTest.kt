@@ -21,7 +21,7 @@ internal class JClassRepositoryImplTest {
     internal fun should_get_jclass_by_name() {
         val jClass = jClassRepository.getJClassBy("org.apache.dubbo.demo.GreetingService", "dubbo-demo-interface")
         val expectedClass = JClass("c1983476-7bd8-4e52-a523-71c4f3f5098e", "org.apache.dubbo.demo.GreetingService", "dubbo-demo-interface")
-        expectedClass.classType = listOf(ClazzType.INTERFACE)
+        expectedClass.addClassType(ClazzType.INTERFACE)
         assertThat(jClass).isEqualToComparingFieldByField(expectedClass)
 
         val jClass2 = jClassRepository.getJClassBy("org.apache.dubbo.demo.DemoService", "dubbo-demo-interface")

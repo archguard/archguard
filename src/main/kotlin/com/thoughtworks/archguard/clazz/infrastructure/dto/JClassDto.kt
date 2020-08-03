@@ -11,7 +11,7 @@ class JClassDto(val id: String, val name: String, val module: String, val loc: I
         }
         val accessInt = access.toIntOrNull()
         if (accessInt != null) {
-            jClass.classType = ClassTypeMap.getClassType(accessInt)
+            ClassTypeMap.getClassType(accessInt).forEach { jClass.addClassType(it) }
         }
         return jClass
     }

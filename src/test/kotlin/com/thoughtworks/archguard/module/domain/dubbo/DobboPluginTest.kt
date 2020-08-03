@@ -34,7 +34,7 @@ class DobboPluginTest {
         // given
         val class1 = JClass("any", "caller", "module1")
         val class2 = JClass("any", "callee", "module2")
-        class2.classType = listOf(ClazzType.INTERFACE)
+        class2.addClassType(ClazzType.INTERFACE)
         val class3 = JClass("any", "impl", "module3")
         val class4 = JClass("any", "impl", "module4")
 
@@ -63,7 +63,7 @@ class DobboPluginTest {
         // given
         val class1 = JClass("any", "caller", "module1")
         val class2 = JClass("any", "callee", "module2")
-        class2.classType = listOf(ClazzType.INTERFACE)
+        class2.addClassType(ClazzType.INTERFACE)
         val class3 = JClass("any", "impl", "module3")
         val class4 = JClass("any", "impl", "module4")
 

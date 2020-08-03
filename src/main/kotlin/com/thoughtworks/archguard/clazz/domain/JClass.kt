@@ -17,7 +17,11 @@ class JClass(val id: String, val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
-    var classType: List<ClazzType> = ArrayList()
+    private val classType: MutableList<ClazzType> = mutableListOf()
+
+    fun addClassType(clazzType: ClazzType) {
+        classType.add(clazzType)
+    }
 
     fun isInterface(): Boolean {
         return classType.contains(ClazzType.INTERFACE)
