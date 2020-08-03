@@ -14,13 +14,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class DobboPluginTest {
+class DobboWithXmlPluginTest {
+    @MockK
+    lateinit var xmlConfigService: XmlConfigService
 
     @MockK
     lateinit var jClassRepository: JClassRepository
 
     @InjectMockKs
-    private var dubboPlugin = DubboPlugin()
+    private var dubboPlugin = DubboWithXmlPlugin()
 
     @BeforeEach
     internal fun setUp() {
@@ -28,7 +30,7 @@ class DobboPluginTest {
     }
 
     @Test
-    internal fun should_fix_methodDependencies_not_with_xmlConfig() {
+    internal fun should_fix_methodDependencies_with_xmlConfig() {
         // given
         val class1 = JClass("any", "caller", "module1")
         val class2 = JClass("any", "callee", "module2")
@@ -39,20 +41,21 @@ class DobboPluginTest {
         val method1 = JMethodVO("method", class1.toVO(), "any", listOf())
         val method2 = JMethodVO("method", class2.toVO(), "any", listOf())
         val method3 = JMethodVO("method", class3.toVO(), "any", listOf())
-        val method4 = JMethodVO("method", class4.toVO(), "any", listOf())
 
         val methodDependencies = listOf(Dependency(method1, method2))
 
         every { jClassRepository.getJClassesHasModules() } returns listOf(class2)
         every { jClassRepository.findClassImplements(class2.name, class2.module) } returns listOf(class3, class4)
+        every { xmlConfigService.getRealCalleeModuleByXmlConfig(method1.clazz, method2.clazz) } returns listOf(SubModuleDubbo("any", "module3", "any"))
 
 
         // when
         val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(methodDependencies)
 
         // then
-        assertEquals(2, fixedMethodDependencies.size)
-        assertThat(fixedMethodDependencies).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(method1, method3), Dependency(method1, method4)))
-    }
+        assertEquals(1, fixedMethodDependencies.size)
+        assertThat(fixedMethodDependencies).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(method1, method3)))
 
+
+    }
 }
