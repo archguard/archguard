@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.metrics.ClassMetrics
-import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
-import com.thoughtworks.archguard.module.domain.metrics.PackageMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.ClassMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.PackageMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent

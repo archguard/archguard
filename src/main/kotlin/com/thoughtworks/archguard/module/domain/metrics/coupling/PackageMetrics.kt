@@ -1,20 +1,20 @@
-package com.thoughtworks.archguard.module.domain.metrics
+package com.thoughtworks.archguard.module.domain.metrics.coupling
 
 import org.nield.kotlinstatistics.median
 
 data class PackageMetrics (
-    var id: Long?,
-    var moduleId: Long,
-    var packageName: String,
-    var classMetrics: List<ClassMetrics>,
-    var outerInstabilityAvg: Double,
-    var outerInstabilityMed: Double,
-    var outerCouplingAvg: Double,
-    var outerCouplingMed: Double,
-    var innerInstabilityAvg: Double,
-    var innerInstabilityMed: Double,
-    var innerCouplingAvg: Double,
-    var innerCouplingMed: Double
+        var id: Long?,
+        var moduleId: Long,
+        var packageName: String,
+        var classMetrics: List<ClassMetrics>,
+        var outerInstabilityAvg: Double,
+        var outerInstabilityMed: Double,
+        var outerCouplingAvg: Double,
+        var outerCouplingMed: Double,
+        var innerInstabilityAvg: Double,
+        var innerInstabilityMed: Double,
+        var innerCouplingAvg: Double,
+        var innerCouplingMed: Double
 ) {
     constructor() : this(null, 0, "", emptyList(), 0.0,
             0.0, 0.0, 0.0, 0.0,

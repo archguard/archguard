@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.module.domain.metrics
+package com.thoughtworks.archguard.module.domain.metrics.coupling
 
 data class ClassMetrics(
     var id: Long?,

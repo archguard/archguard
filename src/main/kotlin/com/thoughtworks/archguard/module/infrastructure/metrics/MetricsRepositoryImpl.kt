@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.infrastructure.metrics
 
 import com.thoughtworks.archguard.module.domain.MetricsRepository
-import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
 import org.jdbi.v3.core.transaction.TransactionIsolationLevel
 import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.beans.factory.annotation.Autowired

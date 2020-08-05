@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.graph.Graph
-import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy

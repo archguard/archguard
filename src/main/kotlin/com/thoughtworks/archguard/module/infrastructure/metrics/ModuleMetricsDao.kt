@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.infrastructure.metrics
 
-import com.thoughtworks.archguard.module.domain.metrics.ModuleMetrics
+import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBean
