@@ -66,7 +66,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
     private fun cloneByGitCli(workspace: File, repo: String) {
         val repoCombineWithAuthInfo = processGitUrl(repo)
 
-        val cmdList = listOf("git", "clone", repoCombineWithAuthInfo, "--depth", "1")
+        val cmdList = listOf("git", "clone", repoCombineWithAuthInfo, workspace.absolutePath, "--depth", "1")
 
 
         val pb = ProcessBuilder(cmdList)
