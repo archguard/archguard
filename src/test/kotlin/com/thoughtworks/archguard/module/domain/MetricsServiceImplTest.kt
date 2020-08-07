@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.metrics.coupling.ClassMetrics
 import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
@@ -33,10 +34,16 @@ class MetricsServiceImplTest {
     @MockK
     lateinit var metricsRepository: MetricsRepository
 
+    @MockK
+    lateinit var jClassRepository: JClassRepository
+    
+    @MockK
+    lateinit var abstractAnalysisService: AbstractAnalysisService
+
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = MetricsServiceImpl(metricsRepository, logicModuleRepository, dependencyService)
+        service = MetricsServiceImpl(metricsRepository, logicModuleRepository, dependencyService, jClassRepository, abstractAnalysisService)
     }
 
     private val allMetrics = ModuleMetrics(
@@ -148,7 +155,7 @@ class MetricsServiceImplTest {
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element)
         val slot = slot<List<String>>()
-        every { metricsRepository.findAllMetrics(capture(slot)) } answers { listOf(allMetrics)}
+        every { metricsRepository.findAllMetrics(capture(slot)) } answers { listOf(allMetrics) }
 
         val result = service.getAllMetrics()
 
@@ -165,7 +172,7 @@ class MetricsServiceImplTest {
 
         every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element)
         val slot = slot<List<String>>()
-        every { metricsRepository.findModuleMetrics(capture(slot)) } answers { listOf(moduleMetrics)}
+        every { metricsRepository.findModuleMetrics(capture(slot)) } answers { listOf(moduleMetrics) }
 
         val result = service.getModuleMetrics()
 

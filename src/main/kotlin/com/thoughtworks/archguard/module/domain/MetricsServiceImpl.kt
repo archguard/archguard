@@ -1,22 +1,29 @@
 package com.thoughtworks.archguard.module.domain
 
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.metrics.abstracts.ClassAbstractRatio
+import com.thoughtworks.archguard.module.domain.metrics.abstracts.ModuleAbstractRatio
+import com.thoughtworks.archguard.module.domain.metrics.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.module.domain.metrics.coupling.ClassMetrics
 import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.metrics.coupling.PackageMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.PackageVO
 import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class MetricsServiceImpl(
-        @Autowired val metricsRepository: MetricsRepository,
-        @Autowired val logicModuleRepository: LogicModuleRepository,
-        @Autowired val dependencyService: DependencyService
+        val metricsRepository: MetricsRepository,
+        val logicModuleRepository: LogicModuleRepository,
+        val dependencyService: DependencyService,
+        val jClassRepository: JClassRepository,
+        val abstractAnalysisService: AbstractAnalysisService
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
@@ -40,6 +47,21 @@ class MetricsServiceImpl(
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findModuleMetrics(moduleNames)
+    }
+
+    override fun getClassAbstractMetric(jClassVO: JClassVO): ClassAbstractRatio {
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
+        return ClassAbstractRatio.fromJClass(jClass)
+    }
+
+    override fun getPackageAbstractMetric(packageVO: PackageVO): PackageAbstractRatio {
+        return abstractAnalysisService.calculatePackageAbstractRatio(packageVO)
+    }
+
+    override fun getModuleAbstractMetric(moduleName: String): ModuleAbstractRatio {
+        val logicModule = logicModuleRepository.get(moduleName)
+        return abstractAnalysisService.calculateModuleAbstractRatio(logicModule)
     }
 
     private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,
@@ -73,7 +95,7 @@ class MetricsServiceImpl(
         return packageMetrics.map { packages ->
             getModule(modules, SubModule(packages.packageName)).groupBy { it.name }.mapValues { packages }
         }.toList().asSequence().flatMap { it.asSequence() }
-                .groupBy({it.key}, {it.value})
+                .groupBy({ it.key }, { it.value })
                 .map { ModuleMetrics.of(it.key, it.value) }
     }
 
