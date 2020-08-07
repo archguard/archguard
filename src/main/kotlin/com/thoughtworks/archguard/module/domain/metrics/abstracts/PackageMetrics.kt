@@ -1,3 +1,5 @@
 package com.thoughtworks.archguard.module.domain.metrics.abstracts
 
-data class PackageMetrics(val ratio: Double, var packageName: String, val module: String)
+import com.thoughtworks.archguard.module.domain.model.PackageVO
+
+data class PackageMetrics(val ratio: Double, val packageVO: PackageVO)
