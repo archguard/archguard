@@ -11,6 +11,9 @@ data class QualityGateProfile(var id: String?,
                               val config: List<QualityGateConfig>,
                               val createdAt: LocalDateTime?,
                               var updatedAt: LocalDateTime?) {
+    constructor(name: String, config: List<QualityGateConfig>) : this("", name, config
+            , LocalDateTime.now(), LocalDateTime.now())
+
     fun toDto(): QualityGateProfileDTO {
         val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         return QualityGateProfileDTO(id ?: UUID.randomUUID().toString(),
