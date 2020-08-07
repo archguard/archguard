@@ -36,7 +36,7 @@ class ClassInvokeServiceTest {
         val caller = JClass("3", "caller", "module")
         //when
         every { repo.findClassParents(target.module, target.name) } returns listOf(parent)
-        every { configService.isDisplayClass(any()) } returns true
+        every { configService.isDisplayNode(any()) } returns true
         every { repo.findClassImplements(target.name, target.module) } returns listOf(impl)
         every { repo.findCallees(target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(target.name, target.module) } returns listOf(ClassRelation(caller, 1))

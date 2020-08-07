@@ -74,19 +74,18 @@ class ConfigureServiceTest {
         //given
         //when
         every { repo.getConfiguresByType("nodeDisplay") } returns listOf(
-                Configure("", "nodeDisplay", "clz", "com", 1),
-                Configure("", "nodeDisplay", "clz", "org", 1),
-                Configure("", "nodeDisplay", "clz", "common", 1))
+                Configure("", "nodeDisplay", "com", "contain", 1),
+                Configure("", "nodeDisplay", "org", "contain", 1),
+                Configure("", "nodeDisplay", "common", "contain", 1),
+                Configure("", "nodeDisplay", "org.scalatest", "hidden", 1)
+        )
 
-        every { repo.getConfiguresByType("nodeHidden") } returns listOf(
-                Configure("", "nodeHidden", "clz", "org.scalatest", 1))
-        //then
-        assert(service.isDisplayClass("common.domain.ConfigureService"))
-        assert(service.isDisplayClass("org.scalamock.scalatest.MockFactory"))
-        assert(!service.isDisplayClass("common.domain.ConfigureServiceTest"))
-        assert(!service.isDisplayClass("V"))
-        assert(!service.isDisplayClass("org.scalatest.FlatSpec"))
-        assert(!service.isDisplayClass("scala.concurrent.Future"))
-        assert(!service.isDisplayClass("java.lang.Integer"))
+        assert(service.isDisplayNode("common.domain.ConfigureService"))
+        assert(service.isDisplayNode("org.scalamock.scalatest.MockFactory"))
+        assert(!service.isDisplayNode("common.domain.ConfigureServiceTest"))
+        assert(!service.isDisplayNode("V"))
+        assert(!service.isDisplayNode("org.scalatest.FlatSpec"))
+        assert(!service.isDisplayNode("scala.concurrent.Future"))
+        assert(!service.isDisplayNode("java.lang.Integer"))
     }
 }

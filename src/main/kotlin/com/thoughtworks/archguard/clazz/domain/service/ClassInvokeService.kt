@@ -26,11 +26,11 @@ class ClassInvokeService {
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
             implements = repo.findClassImplements(target.name, target.module)
-                    .filter { configureService.isDisplayClass(it.name) }
+                    .filter { configureService.isDisplayNode(it.name) }
         }
         target.implements = implements
         target.callees = repo.findCallees(target.name, target.module)
-                .filter { configureService.isDisplayClass(it.clazz.name) }
+                .filter { configureService.isDisplayNode(it.clazz.name) }
         if (deep == 1) {
             return
         } else {
@@ -44,9 +44,9 @@ class ClassInvokeService {
             return
         }
         target.parents = repo.findClassParents(target.module, target.name)
-                .filter { configureService.isDisplayClass(it.name) }
+                .filter { configureService.isDisplayNode(it.name) }
         target.callers = repo.findCallers(target.name, target.module)
-                .filter { configureService.isDisplayClass(it.clazz.name) }
+                .filter { configureService.isDisplayNode(it.clazz.name) }
         if (deep == 1) {
             return
         } else {

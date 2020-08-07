@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
-import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.clazz.domain.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,6 +22,7 @@ class ClassService {
 
     @Autowired
     private lateinit var classInvokeService: ClassInvokeService
+
     fun getDependencies(module: String, name: String, deep: Int): JClass {
         val target = getTargetClass(module, name)
         classDependenceesService.findDependencees(target, deep)
@@ -55,5 +55,4 @@ class ClassService {
         return classMethodCalleesService.findClassMethodsCallees(targetClass, calleeDeep,
                 needIncludeImpl, needParents)
     }
-
 }

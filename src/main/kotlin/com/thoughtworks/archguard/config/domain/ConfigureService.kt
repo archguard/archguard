@@ -25,15 +25,16 @@ class ConfigureService {
         repo.delete(id)
     }
 
-    fun isDisplayClass(className: String): Boolean {
-        val displayConfig = repo.getConfiguresByType("nodeDisplay").map { it.value } as MutableList
-        val hiddenConfig = repo.getConfiguresByType("nodeHidden").map { it.value } as MutableList
-        if (displayConfig.isEmpty()) {
-            displayConfig.add(".")
-        }
-        hiddenConfig.add("Test")
-        return displayConfig.any { className.contains(it) } && hiddenConfig.all { !className.contains(it) }
+    fun isDisplayNode(nodeName: String): Boolean {
+        if (nodeName.endsWith("Test")) return false
+
+        val displayConfig = repo.getConfiguresByType("nodeDisplay")
+        val continueNodes = displayConfig.filter { it.value == "contain" }.map { it.key }
+        val hiddenNodes = displayConfig.filter { it.value == "hidden" }.map { it.key }
+
+        return (continueNodes.isEmpty() || continueNodes.any{ nodeName.contains(it) }) && hiddenNodes.all { !nodeName.contains(it) }
     }
+
 
     fun updateConfigsByType(type: String, configs: List<Configure>) {
         repo.deleteConfiguresByType(type)
