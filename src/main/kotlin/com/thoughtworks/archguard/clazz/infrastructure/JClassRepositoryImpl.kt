@@ -48,7 +48,6 @@ class JClassRepositoryImpl : JClassRepository {
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND p.module != 'null'" +
                 "           AND c.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -66,7 +65,6 @@ class JClassRepositoryImpl : JClassRepository {
         val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND c.module != 'null'" +
                 "           AND p.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -85,7 +83,7 @@ class JClassRepositoryImpl : JClassRepository {
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
-                "                     AND b.module != 'null' AND b.clzname <> '$name'" +
+                "                     AND b.clzname <> '$name'" +
                 "                     GROUP BY b.clzname"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
@@ -104,7 +102,7 @@ class JClassRepositoryImpl : JClassRepository {
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
-                "                     AND a.module != 'null' AND a.clzname <> '$name'" +
+                "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
@@ -119,7 +117,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun findDependencers(id: String): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select a from _ClassDependences where b='${id}' and b <> a) and module != 'null'"
+        val sql = "select id, name, module, loc, access from JClass where id in (select a from _ClassDependences where b='${id}' and b <> a)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -129,7 +127,7 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     override fun findDependencees(id: String): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select b from _ClassDependences where a='${id}' and b <> a) and module != 'null'"
+        val sql = "select id, name, module, loc, access from JClass where id in (select b from _ClassDependences where a='${id}' and b <> a)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)

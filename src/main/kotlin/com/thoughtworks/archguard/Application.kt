@@ -12,6 +12,7 @@ import org.springframework.boot.runApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import springfox.documentation.oas.annotations.EnableOpenApi
+import java.util.*
 import javax.sql.DataSource
 
 @SpringBootApplication
@@ -38,5 +39,6 @@ class Application {
 }
 
 fun main(args: Array<String>) {
+    TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"))
     runApplication<Application>(*args)
 }
