@@ -1,7 +1,5 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.metrics.domain.abstracts
 
-import com.thoughtworks.archguard.module.domain.metrics.abstracts.ModuleAbstractRatio
-import com.thoughtworks.archguard.module.domain.metrics.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 

@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.module.domain.metrics.coupling
+package com.thoughtworks.archguard.metrics.domain.coupling
 
 import org.nield.kotlinstatistics.median
 
-data class PackageMetrics (
+data class PackageMetrics(
         var id: Long?,
         var moduleId: Long,
         var packageName: String,

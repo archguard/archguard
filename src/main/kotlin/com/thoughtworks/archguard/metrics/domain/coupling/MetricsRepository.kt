@@ -1,6 +1,4 @@
-package com.thoughtworks.archguard.module.domain
-
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
+package com.thoughtworks.archguard.metrics.domain.coupling
 
 interface MetricsRepository {
     fun insert(moduleMetrics: List<ModuleMetrics>)

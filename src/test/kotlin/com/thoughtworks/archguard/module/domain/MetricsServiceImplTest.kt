@@ -1,10 +1,13 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsServiceImpl
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ClassMetrics
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
-import com.thoughtworks.archguard.module.domain.metrics.coupling.PackageMetrics
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
@@ -36,7 +39,7 @@ class MetricsServiceImplTest {
 
     @MockK
     lateinit var jClassRepository: JClassRepository
-    
+
     @MockK
     lateinit var abstractAnalysisService: AbstractAnalysisService
 

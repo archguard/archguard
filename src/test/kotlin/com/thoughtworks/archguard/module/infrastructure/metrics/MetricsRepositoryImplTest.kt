@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.infrastructure.metrics
 
+import com.thoughtworks.archguard.metrics.infrastructure.MetricsRepositoryImpl
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

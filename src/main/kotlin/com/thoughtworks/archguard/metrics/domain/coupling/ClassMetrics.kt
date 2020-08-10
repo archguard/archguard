@@ -1,17 +1,17 @@
-package com.thoughtworks.archguard.module.domain.metrics.coupling
+package com.thoughtworks.archguard.metrics.domain.coupling
 
 data class ClassMetrics(
-    var id: Long?,
-    var packageId: Long,
-    var className: String,
-    var innerFanIn: Int,
-    var innerFanOut: Int,
-    var outerFanIn: Int,
-    var outerFanOut: Int,
-    var innerInstability: Double,
-    var innerCoupling: Double,
-    var outerInstability: Double,
-    var outerCoupling: Double
+        var id: Long?,
+        var packageId: Long,
+        var className: String,
+        var innerFanIn: Int,
+        var innerFanOut: Int,
+        var outerFanIn: Int,
+        var outerFanOut: Int,
+        var innerInstability: Double,
+        var innerCoupling: Double,
+        var outerInstability: Double,
+        var outerCoupling: Double
 ) {
     constructor() : this(null, 0, "", 0, 0, 0,
             0, 0.0, 0.0, 0.0, 0.0)

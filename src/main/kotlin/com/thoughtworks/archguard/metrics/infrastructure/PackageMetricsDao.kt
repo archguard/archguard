@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.module.infrastructure.metrics
+package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.module.domain.metrics.coupling.PackageMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBean
@@ -19,7 +19,7 @@ interface PackageMetricsDao {
     fun insert(@BindBean packageMetrics: PackageMetrics): Long
 
     @SqlQuery("select p.* from metrics_package p where p.module_id = :moduleId")
-    fun findPackageMetricsByModuleId(@Bind("moduleId") moduleId: Long) : List<PackageMetrics>
+    fun findPackageMetricsByModuleId(@Bind("moduleId") moduleId: Long): List<PackageMetrics>
 
     @SqlUpdate("TRUNCATE TABLE metrics_package")
     fun truncate()

@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.common.infrastructure.config
 
-import com.thoughtworks.archguard.module.infrastructure.metrics.ClassMetricsDao
-import com.thoughtworks.archguard.module.infrastructure.metrics.ModuleMetricsDao
-import com.thoughtworks.archguard.module.infrastructure.metrics.PackageMetricsDao
+import com.thoughtworks.archguard.metrics.infrastructure.ClassMetricsDao
+import com.thoughtworks.archguard.metrics.infrastructure.ModuleMetricsDao
+import com.thoughtworks.archguard.metrics.infrastructure.PackageMetricsDao
 import com.thoughtworks.archguard.qualitygate.infrastructure.ProfileDao
 import org.jdbi.v3.core.Jdbi
 import org.springframework.context.annotation.Bean

@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.module.controller
 
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsService
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
 import com.thoughtworks.archguard.module.domain.LogicModuleService
-import com.thoughtworks.archguard.module.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.graph.Graph
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
+import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/logic-modules")

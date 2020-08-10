@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.module.infrastructure.metrics
+package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.module.domain.MetricsRepository
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
 import org.jdbi.v3.core.transaction.TransactionIsolationLevel
 import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,20 +37,21 @@ class MetricsRepositoryImpl(
     @Transaction(TransactionIsolationLevel.REPEATABLE_READ)
     override fun findAllMetrics(moduleNames: List<String>): List<ModuleMetrics> {
         return moduleNames.stream()
-                .map { moduleMetricsDao.findModuleMetricsByModuleName(it)}
-                .filter{ it != null }
-                .peek{ moduleMetrics ->
+                .map { moduleMetricsDao.findModuleMetricsByModuleName(it) }
+                .filter { it != null }
+                .peek { moduleMetrics ->
                     moduleMetrics.packageMetrics = packageMetricsDao.findPackageMetricsByModuleId(moduleMetrics.id!!)
                     moduleMetrics.packageMetrics.map {
                         it.classMetrics = classMetricsDao.findClassMetricsByPackageId(it.id!!)
-                    } }
+                    }
+                }
                 .collect(Collectors.toList())
     }
 
     override fun findModuleMetrics(moduleNames: List<String>): List<ModuleMetrics> {
         return moduleNames.stream()
-                .map { moduleMetricsDao.findModuleMetricsByModuleName(it)}
-                .filter{ it != null }
+                .map { moduleMetricsDao.findModuleMetricsByModuleName(it) }
+                .filter { it != null }
                 .collect(Collectors.toList())
     }
 

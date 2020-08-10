@@ -1,9 +1,8 @@
-package com.thoughtworks.archguard.module.domain
+package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.module.domain.metrics.abstracts.ClassAbstractRatio
-import com.thoughtworks.archguard.module.domain.metrics.abstracts.ModuleAbstractRatio
-import com.thoughtworks.archguard.module.domain.metrics.abstracts.PackageAbstractRatio
-import com.thoughtworks.archguard.module.domain.metrics.coupling.ModuleMetrics
+import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
+import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
+import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 
