@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/metric")
-class MetricController(val metricsService: MetricsService) {
+@RequestMapping("/metric/abstract")
+class AbstractMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
     fun getClassAbstractMetric(@RequestParam className: String, @RequestParam moduleName: String): ClassAbstractRatio {
         return metricsService.getClassAbstractMetric(JClassVO(className, moduleName))

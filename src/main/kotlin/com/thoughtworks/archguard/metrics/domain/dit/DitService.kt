@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.clazz.domain.service
+package com.thoughtworks.archguard.metrics.domain.dit
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ClassMetricsService {
+class DitService {
     @Autowired
     private lateinit var repo: JClassRepository
 

@@ -1,18 +1,18 @@
-package com.thoughtworks.archguard.clazz.domain.service
+package com.thoughtworks.archguard.metrics.domain.dit
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class ClassMetricsServiceTest {
+class DitServiceTest {
     @InjectMockKs
-    var service = ClassMetricsService()
+    var service = DitService()
 
     @MockK
     private lateinit var repo: JClassRepository
