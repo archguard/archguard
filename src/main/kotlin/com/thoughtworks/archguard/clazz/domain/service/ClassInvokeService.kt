@@ -1,15 +1,19 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
+import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.clazz.domain.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class ClassInvokeService {
+    private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
+
     @Autowired
     private lateinit var repo: JClassRepository
+
     @Autowired
     private lateinit var configureService: ConfigureService
     fun findInvokes(target: JClass, callerDeep: Int, calleeDeep: Int,
@@ -21,6 +25,9 @@ class ClassInvokeService {
 
     private fun findClassCallees(target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
+            return
+        }
+        if (target.module == "null") {
             return
         }
         var implements = listOf<JClass>()
@@ -41,6 +48,9 @@ class ClassInvokeService {
 
     private fun findClassCallers(target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
+            return
+        }
+        if (target.module == "null") {
             return
         }
         target.parents = repo.findClassParents(target.module, target.name)

@@ -3,9 +3,10 @@ package com.thoughtworks.archguard.clazz.infrastructure
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.domain.JClass
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.infrastructure.dto.JClassDto
+import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
@@ -113,7 +114,12 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     private fun toClassRelation(it: ClassRelationDTO): ClassRelation {
-        return ClassRelation(getJClassByName(it.clzname)[0], it.count)
+        val jClassByName = getJClassByName(it.clzname)
+        return if (jClassByName.isEmpty()) {
+            ClassRelation(JClass(NOT_EXIST_ID, it.clzname, "null"), it.count)
+        } else {
+            ClassRelation(jClassByName[0], it.count)
+        }
     }
 
     override fun findDependencers(id: String): List<JClass> {
