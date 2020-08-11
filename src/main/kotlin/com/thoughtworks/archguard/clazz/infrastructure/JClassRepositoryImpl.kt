@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.clazz.infrastructure
 
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.clazz.domain.ClassRelationDTO
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
@@ -31,6 +30,7 @@ class JClassRepositoryImpl : JClassRepository {
         return jClassDto?.toJClass()
     }
 
+    // FIXME: 我对这个方法的存在感到怀疑？什么样的场景才会调用这个方法？
     override fun getJClassByName(name: String): List<JClass> {
         val sql = "select id, name, module, loc, access from JClass where name='$name'"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
@@ -80,12 +80,12 @@ class JClassRepositoryImpl : JClassRepository {
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT b.clzname as clzname, COUNT(1) as count" +
+        val sql = "SELECT b.clzname as clzname, b.module as module, COUNT(1) as count" +
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
                 "                     AND b.clzname <> '$name'" +
-                "                     GROUP BY b.clzname"
+                "                     GROUP BY b.clzname, b.module"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
@@ -99,12 +99,12 @@ class JClassRepositoryImpl : JClassRepository {
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
         }
-        val sql = "SELECT a.clzname as clzname, COUNT(1) as count " +
+        val sql = "SELECT a.clzname as clzname, a.module as module, COUNT(1) as count " +
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
                 "                     AND a.clzname <> '$name'" +
-                "                     GROUP BY a.clzname"
+                "                     GROUP BY a.clzname, a.module"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
@@ -114,11 +114,11 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
     private fun toClassRelation(it: ClassRelationDTO): ClassRelation {
-        val jClassByName = getJClassByName(it.clzname)
-        return if (jClassByName.isEmpty()) {
-            ClassRelation(JClass(NOT_EXIST_ID, it.clzname, "null"), it.count)
+        val jClassByName = getJClassBy(it.clzname, it.module)
+        return if (jClassByName == null) {
+            ClassRelation(JClass(NOT_EXIST_ID, it.clzname, it.module), it.count)
         } else {
-            ClassRelation(jClassByName[0], it.count)
+            ClassRelation(jClassByName, it.count)
         }
     }
 
@@ -178,3 +178,5 @@ class JClassRepositoryImpl : JClassRepository {
     }
 
 }
+
+data class ClassRelationDTO(val clzname: String, val module: String, val count: Int)
