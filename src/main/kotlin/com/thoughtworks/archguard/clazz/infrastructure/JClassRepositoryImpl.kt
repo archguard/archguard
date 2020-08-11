@@ -4,8 +4,8 @@ import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.infrastructure.dto.JClassDto
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
+import com.thoughtworks.archguard.common.TypeMap
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
@@ -169,3 +169,17 @@ class JClassRepositoryImpl : JClassRepository {
 }
 
 data class ClassRelationDTO(val clzname: String, val module: String, val count: Int)
+
+class JClassDto(val id: String, val name: String, val module: String, val loc: Int?, val access: String?) {
+    fun toJClass(): JClass {
+        val jClass = JClass(id, name, module)
+        if (access == null) {
+            return jClass
+        }
+        val accessInt = access.toIntOrNull()
+        if (accessInt != null) {
+            TypeMap.getClassType(accessInt).forEach { jClass.addClassType(it) }
+        }
+        return jClass
+    }
+}
