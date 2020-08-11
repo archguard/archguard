@@ -30,6 +30,7 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
         }
     }
 
+    // FIXME: 由于JMethodVO修改，这块已经不可用
     override fun getMethodById(methodId: String): JMethodVO {
         val sql = "select module as moduleName, clzname as className, name from JMethod where id = '$methodId'"
 

@@ -37,8 +37,8 @@ class ClassMethodCalleesServiceTest {
         val name = "clazz"
         val module = "module"
         val target = JClass("id", name, module)
-        val method1 = JMethod("1", "method1", "class", "module", null, emptyList())
-        val method2 = JMethod("2", "method2", "class", "module", null, emptyList())
+        val method1 = JMethod("1", "method1", "class", "module", "void", emptyList())
+        val method2 = JMethod("2", "method2", "class", "module", "void", emptyList())
         val parent = JClass("1", "parent", "module")
         //when
         every { methodRepo.findMethodsByModuleAndClass(module, name) } returns listOf(method1, method2)

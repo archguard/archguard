@@ -35,7 +35,7 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, null, emptyList()))
+        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
@@ -51,7 +51,7 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, null, emptyList()))
+        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
@@ -67,7 +67,7 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, null, emptyList()))
+        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
