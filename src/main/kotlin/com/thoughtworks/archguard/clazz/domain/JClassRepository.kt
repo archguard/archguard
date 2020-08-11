@@ -3,8 +3,6 @@ package com.thoughtworks.archguard.clazz.domain
 interface JClassRepository {
     fun getJClassBy(name: String, module: String): JClass?
 
-    fun getJClassByName(name: String): List<JClass>
-
     fun getJClassById(id: String): JClass?
 
     fun getAll(): List<JClass>

@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
+import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
-import com.thoughtworks.archguard.clazz.domain.JClass
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -31,17 +31,8 @@ class ClassService {
     }
 
     private fun getTargetClass(module: String, name: String): JClass {
-        val target = mutableListOf<JClass>()
-        if (module.isEmpty()) {
-            target.addAll(repo.getJClassByName(name))
-        } else {
-            target.add(repo.getJClassBy(name, module)
-                    ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}"))
-        }
-        if (target.isEmpty()) {
-            throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
-        }
-        return target[0]
+        return repo.getJClassBy(name, module)
+                ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
     }
 
     fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {

@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.clazz.domain
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
 import com.thoughtworks.archguard.clazz.domain.service.ClassInvokeService
-import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import com.thoughtworks.archguard.clazz.domain.service.ClassMethodCalleesService
+import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -49,11 +49,11 @@ class ClassServiceTest {
         (expected.dependencees as MutableList).add(dependencee)
         (expected.dependencers as MutableList).add(dependencer)
         //when
-        every { repo.getJClassByName(targetName) } returns listOf(expected)
+        every { repo.getJClassBy(any(), any()) } returns expected
         every { classDependenceesService.findDependencees(any(), any()) } returns expected
         every { classDependencerService.findDependencers(any(), any()) } returns expected
 
-        val result = service.getDependencies("", targetName, 1)
+        val result = service.getDependencies("module", targetName, 1)
         //then
         assertThat(result.dependencers.size).isEqualTo(1)
         assertThat(result.dependencees.size).isEqualTo(1)
@@ -65,12 +65,12 @@ class ClassServiceTest {
     fun `should get class invokes`() {
         //given
         val targetName = "clazz"
-        val module = ""
+        val module = "module"
         val target = JClass("1", targetName, module)
         val deep = 3
         val needIncludeImpl = true
         //when
-        every { repo.getJClassByName(targetName) } returns listOf(target)
+        every { repo.getJClassBy(targetName, module) } returns target
         every {
             classInvokeService.findInvokes(target, deep, deep, needIncludeImpl)
         } returns target

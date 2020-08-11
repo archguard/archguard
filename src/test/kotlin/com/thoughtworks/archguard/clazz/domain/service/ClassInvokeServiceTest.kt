@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.ClassRelation
+import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.clazz.domain.JClass
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -15,8 +15,10 @@ import org.junit.jupiter.api.Test
 class ClassInvokeServiceTest {
     @InjectMockKs
     var service = ClassInvokeService()
+
     @MockK
     private lateinit var repo: JClassRepository
+
     @MockK
     private lateinit var configService: ConfigureService
 
@@ -40,7 +42,6 @@ class ClassInvokeServiceTest {
         every { repo.findClassImplements(target.name, target.module) } returns listOf(impl)
         every { repo.findCallees(target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(target.name, target.module) } returns listOf(ClassRelation(caller, 1))
-        every { repo.getJClassByName(target.name) } returns listOf(target)
         service.findInvokes(target, 1, 1, true)
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)

@@ -30,17 +30,6 @@ class JClassRepositoryImpl : JClassRepository {
         return jClassDto?.toJClass()
     }
 
-    // FIXME: 我对这个方法的存在感到怀疑？什么样的场景才会调用这个方法？
-    override fun getJClassByName(name: String): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where name='$name'"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
-            it.createQuery(sql)
-                    .mapTo(JClassDto::class.java)
-                    .list()
-        }.map { it.toJClass() }
-    }
-
     override fun findClassParents(module: String?, name: String?): List<JClass> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
