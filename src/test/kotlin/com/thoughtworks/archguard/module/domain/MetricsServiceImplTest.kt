@@ -1,12 +1,15 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.metrics.domain.MetricsServiceImpl
+import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
 import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
+import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
@@ -42,11 +45,17 @@ class MetricsServiceImplTest {
 
     @MockK
     lateinit var abstractAnalysisService: AbstractAnalysisService
-
+    @MockK
+    lateinit var jMethodRepository: JMethodRepository
+    @MockK
+    lateinit var nocService: NocService
+    @MockK
+    lateinit var abcService: AbcService
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = MetricsServiceImpl(metricsRepository, logicModuleRepository, dependencyService, jClassRepository, abstractAnalysisService)
+        service = MetricsServiceImpl(metricsRepository, logicModuleRepository, dependencyService, jClassRepository,
+                abstractAnalysisService, jMethodRepository, nocService, abcService)
     }
 
     private val allMetrics = ModuleMetrics(
