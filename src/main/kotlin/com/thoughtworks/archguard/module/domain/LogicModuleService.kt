@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.metrics.domain.coupling.MetricsService
+import com.thoughtworks.archguard.metrics.domain.MetricsService
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.slf4j.LoggerFactory

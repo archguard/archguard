@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.metrics.controller
 
+import com.thoughtworks.archguard.metrics.domain.MetricsService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
-import com.thoughtworks.archguard.metrics.domain.coupling.MetricsService
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.web.bind.annotation.GetMapping

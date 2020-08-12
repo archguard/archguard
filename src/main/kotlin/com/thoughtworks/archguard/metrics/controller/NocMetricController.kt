@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/metric/abc")
-class AbcMetricController(val metricsService: MetricsService) {
+@RequestMapping("/metric/noc")
+class NocMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassAbcMetric(@RequestParam className: String, @RequestParam moduleName: String): Int {
-        return metricsService.getClassAbc(JClassVO(className, moduleName))
+    fun getClassNocMetric(@RequestParam className: String, @RequestParam moduleName: String): Int {
+        return metricsService.getClassNoc(JClassVO(className, moduleName))
     }
 }

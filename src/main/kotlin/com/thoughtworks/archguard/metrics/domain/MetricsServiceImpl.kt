@@ -1,11 +1,18 @@
-package com.thoughtworks.archguard.metrics.domain.coupling
+package com.thoughtworks.archguard.metrics.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.method.domain.JMethodRepository
+import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
+import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
@@ -23,7 +30,10 @@ class MetricsServiceImpl(
         val logicModuleRepository: LogicModuleRepository,
         val dependencyService: DependencyService,
         val jClassRepository: JClassRepository,
-        val abstractAnalysisService: AbstractAnalysisService
+        val abstractAnalysisService: AbstractAnalysisService,
+        val jMethodRepository: JMethodRepository,
+        val nocService: NocService,
+        val abcService: AbcService
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
@@ -52,11 +62,26 @@ class MetricsServiceImpl(
     override fun getClassAbstractMetric(jClassVO: JClassVO): ClassAbstractRatio {
         val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
+        val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        jClass.methods = methods
         return ClassAbstractRatio.fromJClass(jClass)
     }
 
     override fun getPackageAbstractMetric(packageVO: PackageVO): PackageAbstractRatio {
         return abstractAnalysisService.calculatePackageAbstractRatio(packageVO)
+    }
+
+    override fun getClassNoc(jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
+        return nocService.getNoc(jClass)
+    }
+
+    override fun getClassAbc(jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
+        jClass.methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        return abcService.calculateAbc(jClass)
     }
 
     override fun getModuleAbstractMetric(moduleName: String): ModuleAbstractRatio {

@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.metrics.domain.MetricsServiceImpl
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
-import com.thoughtworks.archguard.metrics.domain.coupling.MetricsServiceImpl
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
 import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService

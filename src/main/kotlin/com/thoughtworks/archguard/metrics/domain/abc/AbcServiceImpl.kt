@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service
 class AbcServiceImpl(val jMethodRepository: JMethodRepository) : AbcService {
     override fun calculateAbc(jClass: JClass): Int {
         val allMethod = jClass.methods.map { jMethodRepository.findMethodCallees(it.id) }.flatten().map { JMethodVO.fromJMethod(it) }
-        return allMethod.map { it.clazz }.toSet().count()
+        return allMethod.asSequence().map { it.clazz }.filter { it.module != "null" }.filter { it.module != jClass.module }.toSet().count()
     }
 }
