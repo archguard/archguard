@@ -6,7 +6,6 @@ import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.mapTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 class ProjectInfoRepositoryImpl : ProjectInfoRepository {
@@ -15,30 +14,30 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     lateinit var jdbi: Jdbi
     override fun getProjectInfo(): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
-                it.createQuery("select id, name projectName, repo repo, sql_table `sql`, username username, password password, repo_type repoType from ProjectInfo")
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, repo_type repoType from project_info")
                         .mapTo<ProjectInfo>()
                         .firstOrNull()
             }
 
     override fun updateProjectInfo(projectInfo: ProjectInfo): Int {
         return jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("update ProjectInfo set " +
-                    "`name` = :projectName, " +
+            it.createUpdate("update project_info set " +
+                    "project_name = :projectName, " +
                     "repo = :repo, " +
                     "sql_table = :sql, " +
                     "username = :username, " +
                     "password = :password, " +
-                    "repo_type = :repoType " +
+                    "repo_type = :repoType, " +
+                    "updated_time = NOW() " +
                     "where id = :id")
                     .bindBean(projectInfo)
                     .execute()
         }
     }
 
-    override fun addProjectInfo(projectInfo: ProjectInfo): String {
-        projectInfo.id = UUID.randomUUID().toString()
-        jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("insert into ProjectInfo(id, name, repo, sql_table, username, password, repo_type, updatedAt, createdAt) " +
+    override fun addProjectInfo(projectInfo: ProjectInfo): Long {
+        return jdbi.withHandle<Long, Nothing> {
+            it.createUpdate("insert into project_info(id, project_name, repo, sql_table, username, password, repo_type, updated_time, created_time) " +
                     "values (:id, :projectName, " +
                     ":repo, " +
                     ":sql, " +
@@ -47,14 +46,16 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
                     ":repoType, " +
                     "NOW(), NOW())")
                     .bindBean(projectInfo)
-                    .execute()
+                    .executeAndReturnGeneratedKeys("id")
+                    .mapTo(Long::class.java)
+                    .one()
         }
-        return projectInfo.id
     }
 
-    override fun querySizeOfProjectInfo(): Int =
+    override fun queryByProjectName(projectName: String): Int =
             jdbi.withHandle<Int, Nothing> {
-                it.createQuery("select count(id) from ProjectInfo")
+                it.createQuery("select count(*) from project_info where project_name = :projectName")
+                        .bind("projectName", projectName)
                         .mapTo(Int::class.java)
                         .first()
             }

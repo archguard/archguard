@@ -38,7 +38,8 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.status
 
-        val except = "{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":\"\",\"username\":\"Tom\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
+        val except = "{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
+                ",\"username\":\"username1\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -47,9 +48,12 @@ class ProjectInoApiATest {
     @Test
     @Order(2)
     fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
+        val updateDTO = "{\"id\":1,\"projectName\":\"projectName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
+                ",\"username\":\"username2\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
+
         val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project/info")
                 .contentType("application/json")
-                .content("{\"id\":\"c06da91f-6742-11ea-8188-0242ac110002\",\"projectName\":\"spring1\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"sql\":\"\",\"repoType\":\"GIT\"}")
+                .content(updateDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -62,27 +66,30 @@ class ProjectInoApiATest {
         assertEquals(except, content)
 
         val re = jdbi.withHandle<String, Nothing> {
-            it.createQuery("select `name` from ProjectInfo where id = 'c06da91f-6742-11ea-8188-0242ac110002'")
+            it.createQuery("select `project_name` from project_info where id = 1")
                     .mapTo(String::class.java)
                     .one()
         }
 
-        assertEquals("spring1", re)
+        assertEquals("projectName2", re)
     }
 
     @Test
     @Order(3)
     fun should_get_exists_massage_when_sent_add_project_info_api_given_there_is_already_project_info_in_database() {
+        val insertDTO = "{\"projectName\":\"projectName1\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
+                ",\"username\":\"username3\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
+
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
                 .contentType("application/json")
-                .content("{\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"repoType\": \"GIT\"}")
+                .content(insertDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
 
         val content = result.response.contentAsString
         val status = result.response.status
-        val except = "{\"success\":false,\"message\":\"There is already project info\",\"id\":\"null\"}"
+        val except = "{\"success\":false,\"message\":\"There is already project info\",\"id\":0}"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -92,12 +99,16 @@ class ProjectInoApiATest {
     @Order(4)
     fun should_get_success_massage_when_sent_add_project_info_api_given_there_is_no_project_info_in_database() {
         jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("delete from ProjectInfo")
+            it.createUpdate("delete from project_info")
                     .execute()
         }
+
+        val insertDTO = "{\"projectName\":\"projectName3\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
+                ",\"username\":\"username3\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
+
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
                 .contentType("application/json")
-                .content("{\"projectName\":\"spring\",\"repo\":[\"https://github.com/spring-projects/spring-framework.git\"],\"repoType\": \"GIT\"}")
+                .content(insertDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -107,14 +118,14 @@ class ProjectInoApiATest {
 
         assertEquals(200, status)
 
-        val re = jdbi.withHandle<List<String>, Nothing> {
-            it.createQuery("select id from ProjectInfo where `name` = 'spring'")
-                    .mapTo(String::class.java)
+        val re = jdbi.withHandle<List<Long>, Nothing> {
+            it.createQuery("select id from project_info where `project_name` = 'projectName3'")
+                    .mapTo(Long::class.java)
                     .list()
         }
         assertEquals(1, re.size)
 
-        val except = "{\"success\":true,\"message\":\"add new project info success\",\"id\":\"${re[0]}\"}"
+        val except = "{\"success\":true,\"message\":\"add new project info success\",\"id\":${re[0]}}"
         assertEquals(except, content)
 
     }

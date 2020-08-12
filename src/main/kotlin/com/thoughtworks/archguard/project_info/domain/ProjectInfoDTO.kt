@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.project_info.domain
 
-data class ProjectInfoDTO(var id: String = "",
+data class ProjectInfoDTO(var id: Long? = null,
                           val projectName: String = "",
                           val repo: List<String> = ArrayList(),
                           val sql: String = "",

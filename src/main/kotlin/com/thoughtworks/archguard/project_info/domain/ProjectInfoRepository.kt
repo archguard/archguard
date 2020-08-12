@@ -6,8 +6,8 @@ interface ProjectInfoRepository {
 
     fun updateProjectInfo(projectInfo: ProjectInfo): Int
 
-    fun addProjectInfo(projectInfo: ProjectInfo): String
+    fun addProjectInfo(projectInfo: ProjectInfo): Long
 
-    fun querySizeOfProjectInfo(): Int
+    fun queryByProjectName(projectName: String): Int
 
 }

@@ -28,12 +28,13 @@ class ProjectInfoService {
         }
     }
 
-    fun addProjectInfo(projectInfoDTO: ProjectInfoDTO) =
-            if (projectInfoRepository.querySizeOfProjectInfo() == 0) {
-                val projectInfo: ProjectInfo = projectInfoMapper.fromDTO(projectInfoDTO)
-                val id = projectInfoRepository.addProjectInfo(projectInfo)
-                ProjectInfoAddMessage(true, "add new project info success", id)
-            } else {
-                ProjectInfoAddMessage(false, "There is already project info", "null")
-            }
+    fun addProjectInfo(projectInfoDTO: ProjectInfoDTO): ProjectInfoAddMessage {
+        val projectInfo: ProjectInfo = projectInfoMapper.fromDTO(projectInfoDTO)
+        return if (projectInfoRepository.queryByProjectName(projectInfo.projectName) == 0) {
+            val id = projectInfoRepository.addProjectInfo(projectInfo)
+            ProjectInfoAddMessage(true, "add new project info success", id)
+        } else {
+            ProjectInfoAddMessage(false, "There is already project info", 0)
+        }
+    }
 }
