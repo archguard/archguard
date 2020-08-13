@@ -30,5 +30,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-application-debug.properties
