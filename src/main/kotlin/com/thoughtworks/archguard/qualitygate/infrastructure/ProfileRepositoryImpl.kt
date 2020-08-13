@@ -27,7 +27,7 @@ class ProfileRepositoryImpl(@Autowired val profileDao: ProfileDao) : ProfileRepo
         profileDao.insert(profile)
     }
 
-    override fun delete(id: String) {
+    override fun delete(id: Long) {
         profileDao.delete(id)
     }
 

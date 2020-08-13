@@ -29,5 +29,5 @@ interface ProfileDao {
     fun update(@BindBean profile: QualityGateProfile)
 
     @SqlUpdate("DELETE FROM quality_gate_profile WHERE id=:id")
-    fun delete(@Bind("id") id: String)
+    fun delete(@Bind("id") id: Long)
 }

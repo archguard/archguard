@@ -27,7 +27,7 @@ class ProfileService {
         repo.update(profile)
     }
 
-    fun delete(id: String) {
+    fun delete(id: Long) {
         repo.delete(id)
     }
 

@@ -1,13 +1,8 @@
 package com.thoughtworks.archguard.qualitygate.domain
 
-import com.thoughtworks.archguard.config.domain.Configure
-import io.mockk.MockKAnnotations
-import io.mockk.Runs
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,7 +22,7 @@ class ProfileServiceTest {
     @Test
     fun `should get all configures`() {
         //given
-        val profile = QualityGateProfile("name", listOf(QualityGateConfig()))
+        val profile = QualityGateProfile("name", "[]")
         //when
         every { repo.getAll() } returns listOf(profile)
         val configures = service.getAll()
@@ -39,7 +34,7 @@ class ProfileServiceTest {
     @Test
     fun `should create configure`() {
         //given
-        val profile = QualityGateProfile("name", listOf(QualityGateConfig()))
+        val profile = QualityGateProfile("name", "[]")
         //when
         every { repo.create(profile) } just Runs
         service.create(profile)
@@ -50,8 +45,8 @@ class ProfileServiceTest {
     @Test
     fun `should update configure`() {
         //given
-        val id = "id"
-        val profile = QualityGateProfile("name", listOf(QualityGateConfig()))
+        val id = 1L
+        val profile = QualityGateProfile("name", "[]")
         //when
         every { repo.update(any()) } just Runs
         service.update(id, profile)
@@ -62,7 +57,7 @@ class ProfileServiceTest {
     @Test
     fun `should delete configure`() {
         //given
-        val id = "id"
+        val id = 1L
         //when
         every { repo.delete(id) } just Runs
         service.delete(id)

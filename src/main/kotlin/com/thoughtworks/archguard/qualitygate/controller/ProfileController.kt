@@ -37,7 +37,7 @@ class ProfileController {
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable("id") id: String): ResponseEntity<Nothing> {
+    fun delete(@PathVariable("id") id: Long): ResponseEntity<Nothing> {
         service.delete(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
