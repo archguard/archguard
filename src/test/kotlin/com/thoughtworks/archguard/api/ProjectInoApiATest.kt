@@ -30,7 +30,25 @@ class ProjectInoApiATest {
     @Test
     @Order(1)
     fun should_get_project_info_when_sent_get_project_info_api_given_there_is_already_project_info_in_database() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/project/info")
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/project-info")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val content = result.response.contentAsString
+        val status = result.response.status
+
+        val except = "[{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
+                ",\"username\":\"username1\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}]"
+
+        assertEquals(200, status)
+        assertEquals(except, content)
+    }
+
+    @Test
+    @Order(2)
+    fun should_get_project_info_success_when_get_by_id() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/project-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -46,12 +64,12 @@ class ProjectInoApiATest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
         val updateDTO = "{\"id\":1,\"projectName\":\"projectName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
                 ",\"username\":\"username2\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
 
-        val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project/info")
+        val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project-info")
                 .contentType("application/json")
                 .content(updateDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -75,27 +93,6 @@ class ProjectInoApiATest {
     }
 
     @Test
-    @Order(3)
-    fun should_get_exists_massage_when_sent_add_project_info_api_given_there_is_already_project_info_in_database() {
-        val insertDTO = "{\"projectName\":\"projectName1\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
-                ",\"username\":\"username3\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
-
-        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
-                .contentType("application/json")
-                .content(insertDTO)
-        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
-
-        val content = result.response.contentAsString
-        val status = result.response.status
-        val except = "{\"success\":false,\"message\":\"There is already project info\",\"id\":0}"
-
-        assertEquals(200, status)
-        assertEquals(except, content)
-    }
-
-    @Test
     @Order(4)
     fun should_get_success_massage_when_sent_add_project_info_api_given_there_is_no_project_info_in_database() {
         jdbi.withHandle<Int, Nothing> {
@@ -106,7 +103,7 @@ class ProjectInoApiATest {
         val insertDTO = "{\"projectName\":\"projectName3\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
                 ",\"username\":\"username3\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
 
-        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project/info")
+        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project-info")
                 .contentType("application/json")
                 .content(insertDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -128,5 +125,25 @@ class ProjectInoApiATest {
         val except = "{\"success\":true,\"message\":\"add new project info success\",\"id\":${re[0]}}"
         assertEquals(except, content)
 
+    }
+
+    @Test
+    @Order(5)
+    fun should_delete_project_info_success_when_get_by_id() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/project-info/1")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val status = result.response.status
+
+        val re = jdbi.withHandle<List<Long>, Nothing> {
+            it.createQuery("select id from project_info where `project_name` = 'projectName1'")
+                    .mapTo(Long::class.java)
+                    .list()
+        }
+
+        assertEquals(200, status)
+        assertEquals(0, re.size)
     }
 }

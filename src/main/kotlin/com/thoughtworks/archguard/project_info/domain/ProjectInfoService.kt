@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.project_info.domain
 
+import com.thoughtworks.archguard.common.exception.EntityNotFoundException
 import com.thoughtworks.archguard.project_info.controller.ProjectInfoAddMessage
 import com.thoughtworks.archguard.project_info.controller.ProjectInfoUpdateMessage
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,9 +15,13 @@ class ProjectInfoService {
     @Autowired
     lateinit var projectInfoMapper: ProjectInfoMapper
 
-    fun getProjectInfo(): ProjectInfoDTO {
-        val projectInfo = projectInfoRepository.getProjectInfo() ?: ProjectInfo()
+    fun getProjectInfo(id: Long): ProjectInfoDTO {
+        val projectInfo = projectInfoRepository.getProjectInfo(id) ?: throw EntityNotFoundException(ProjectInfo::class.java, id)
         return projectInfoMapper.toDTO(projectInfo)
+    }
+
+    fun getAllProjectInfo(): List<ProjectInfoDTO> {
+        return projectInfoRepository.getProjectInfoList().map ( projectInfoMapper::toDTO )
     }
 
     fun updateProjectInfo(projectInfoDTO: ProjectInfoDTO): ProjectInfoUpdateMessage {
@@ -36,5 +41,9 @@ class ProjectInfoService {
         } else {
             ProjectInfoAddMessage(false, "There is already project info", 0)
         }
+    }
+
+    fun deleteProjectInfo(id: Long) {
+        projectInfoRepository.deleteProjectInfo(id)
     }
 }

@@ -12,11 +12,20 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi
-    override fun getProjectInfo(): ProjectInfo? =
+    override fun getProjectInfo(id: Long): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
-                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, repo_type repoType from project_info")
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`," +
+                        " username username, password password, repo_type repoType from project_info where id = :id")
+                        .bind("id", id)
                         .mapTo<ProjectInfo>()
                         .firstOrNull()
+            }
+
+    override fun getProjectInfoList(): List<ProjectInfo> =
+            jdbi.withHandle<List<ProjectInfo>, Nothing> {
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, repo_type repoType from project_info")
+                        .mapTo<ProjectInfo>()
+                        .list()
             }
 
     override fun updateProjectInfo(projectInfo: ProjectInfo): Int {
@@ -59,5 +68,13 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
                         .mapTo(Int::class.java)
                         .first()
             }
+
+    override fun deleteProjectInfo(id: Long): Int {
+        return jdbi.withHandle<Int, Nothing> {
+            it.createUpdate("delete from project_info where id = :id")
+                    .bind("id", id)
+                    .execute()
+        }
+    }
 
 }
