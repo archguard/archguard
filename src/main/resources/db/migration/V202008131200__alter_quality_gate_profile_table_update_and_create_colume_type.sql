@@ -1,4 +1,4 @@
-DROP TABLE quality_gate_profile;
+DROP TABLE IF EXISTS quality_gate_profile;
 CREATE TABLE quality_gate_profile
 (
     id         INT(11) AUTO_INCREMENT COMMENT '唯一索引',
