@@ -1,26 +1,26 @@
 package com.thoughtworks.archguard.qualitygate.domain
 
 import com.thoughtworks.archguard.common.JsonUtils
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-data class QualityGateProfile(var id: String?,
+data class QualityGateProfile(var id: Long?,
                               val name: String,
-                              val config: List<QualityGateConfig>,
-                              val createdAt: LocalDateTime?,
-                              var updatedAt: LocalDateTime?) {
-    constructor(name: String, config: List<QualityGateConfig>) : this("", name, config
-            , LocalDateTime.now(), LocalDateTime.now())
+                              val config: String,
+                              val createdAt: Date,
+                              var updatedAt: Date) {
+    constructor(name: String, config: String) : this(null, name, config
+            , Date(), Date())
+
+    companion object {
+        fun default(): QualityGateProfile {
+            return QualityGateProfile("", "[]")
+        }
+    }
 
     fun toDto(): QualityGateProfileDTO {
-        val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        return QualityGateProfileDTO(id ?: UUID.randomUUID().toString(),
-                name,
-                JsonUtils.obj2json(config),
-                (createdAt ?: LocalDateTime.now()).format(pattern),
-                (updatedAt ?: LocalDateTime.now()).format(pattern))
+        val qualityGateConfig = JsonUtils.json2obj<List<QualityGateConfig>>(config)
+        return QualityGateProfileDTO(id, name, qualityGateConfig, createdAt, updatedAt)
     }
 }
 

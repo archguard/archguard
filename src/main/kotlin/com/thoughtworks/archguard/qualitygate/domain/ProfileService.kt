@@ -8,6 +8,12 @@ class ProfileService {
     @Autowired
     private lateinit var repo: ProfileRepository
 
+    fun getByNameOrDefault(name: String): QualityGateProfile {
+        val profile = repo.getByName(name)
+
+        return profile ?: QualityGateProfile.default()
+    }
+
     fun getAll(): List<QualityGateProfile> {
         return repo.getAll()
     }
@@ -16,7 +22,7 @@ class ProfileService {
         repo.create(profile)
     }
 
-    fun update(id: String, profile: QualityGateProfile) {
+    fun update(id: Long, profile: QualityGateProfile) {
         profile.id = id
         repo.update(profile)
     }

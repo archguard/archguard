@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.qualitygate.domain
 
-data class QualityGateConfig(var layer: String,
+data class QualityGateConfig(var layer: LayerType,
                              var quota: String,
                              var operator: ComparationOperator,
                              var value: Number) {
-    constructor(): this("", "", ComparationOperator.EQUAL, 0)
+    constructor() : this(LayerType.MODULE, "", ComparationOperator.EQUAL, 0)
 }
