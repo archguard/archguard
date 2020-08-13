@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeTool(val projectRoot: File, val dbUrl: String) {
+class JavaByteCodeTool(val projectRoot: File, val dbUrl: String, val projectId: Long) {
     private val log = LoggerFactory.getLogger(JavaByteCodeTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 

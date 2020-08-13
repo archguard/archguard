@@ -18,9 +18,9 @@ class SqlDependencyAnalysis(@Autowired val analysisService: AnalysisService,
     private val DELETE_PROCEDURE = "delete from PLProcedure where 1=1"
     private val DELETE_PROCEDURE_CALLEE = "delete from _PLProcedureCallees where 1=1"
     private val DELETE_ACTION = "delete from _PLProcedureSqlAction where 1=1"
-    fun analyse() {
+    fun analyse(id: Long) {
         log.info("start scan sql analysis")
-        val projectOperator = analysisService.getProjectOperator()
+        val projectOperator = analysisService.getProjectOperator(id)
         projectOperator.cloneAllRepo()
         projectOperator.compiledProjectMap.forEach { (_, compiledProject) ->
             analysisSingleCompliedProject(compiledProject)

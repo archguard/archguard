@@ -2,7 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.project
 
 import com.thoughtworks.archgard.scanner.infrastructure.AESCrypt
 
-class ProjectInfo(var id: String = "",
+class ProjectInfo(var id: Long? = null,
                   val projectName: String = "",
                   val repo: String = "",
                   val sql: String = "",

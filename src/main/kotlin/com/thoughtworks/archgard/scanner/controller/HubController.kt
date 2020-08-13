@@ -11,19 +11,19 @@ class HubController {
     @Autowired
     private lateinit var hubService: HubService
 
-    @PostMapping("/reports")
-    fun scanModule(): ModuleScanResponse {
-        return ModuleScanResponse(hubService.doScanIfNotRunning())
+    @PostMapping("/{id}/reports")
+    fun scanModule(@PathVariable("id") id: Long): ModuleScanResponse {
+        return ModuleScanResponse(hubService.doScanIfNotRunning(id))
     }
 
-    @PostMapping("/evaluations")
-    fun evaluate(@RequestBody evaluation: EvaluationRequest): ModuleScanResponse {
-        return ModuleScanResponse(hubService.evaluate(evaluation.type))
+    @PostMapping("/{id}/evaluations")
+    fun evaluate(@PathVariable("id") id: Long, @RequestBody evaluation: EvaluationRequest): ModuleScanResponse {
+        return ModuleScanResponse(hubService.evaluate(evaluation.type, id))
     }
 
-    @GetMapping("/evaluations/status")
-    fun evaluate(@RequestParam type: String): ModuleScanResponse {
-        return ModuleScanResponse(hubService.getEvaluationStatus(type))
+    @GetMapping("/{id}/evaluations/status")
+    fun evaluate(@PathVariable("id") id: Long, @RequestParam type: String): ModuleScanResponse {
+        return ModuleScanResponse(hubService.getEvaluationStatus(type, id))
     }
 
     data class ModuleScanResponse(val isRunning: Boolean)

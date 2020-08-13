@@ -13,12 +13,12 @@ class ProjectRepositoryImpl : ProjectRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getProjectInfo(): ProjectInfo =
+    override fun getProjectInfo(id: Long): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
-                it.createQuery("""
-                    select id, name projectName, repo repo, sql_table `sql`, 
-                    username username, password password, 
-                    repo_type repoType from ProjectInfo
-                """).mapTo<ProjectInfo>().first()
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`," +
+                        " username username, password password, repo_type repoType from project_info where id = :id")
+                        .bind("id", id)
+                        .mapTo<ProjectInfo>()
+                        .firstOrNull()
             }
 }

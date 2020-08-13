@@ -6,6 +6,7 @@ import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepos
 import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.concurrent.thread
 
 @Service
@@ -16,6 +17,8 @@ class HubService {
     @Volatile
     private var isRunning: Boolean = false
 
+    private val concurrentSet: CopyOnWriteArraySet<Long> = CopyOnWriteArraySet()
+
     @Autowired
     private lateinit var analysisService: AnalysisService
 
@@ -25,30 +28,30 @@ class HubService {
     @Autowired
     private lateinit var configureRepository: ConfigureRepository
 
-    fun doScanIfNotRunning(): Boolean {
-        if (!isRunning) {
-            isRunning = true
-            doScan()
-            isRunning = false
+    fun doScanIfNotRunning(id: Long): Boolean {
+        if (!concurrentSet.contains(id)) {
+            concurrentSet.add(id)
+            doScan(id)
+            concurrentSet.remove(id)
         }
-        return isRunning
+        return concurrentSet.contains(id)
     }
 
-    fun evaluate(type: String): Boolean {
-        if (!isRunning) {
-            isRunning = true
+    fun evaluate(type: String, id: Long): Boolean {
+        if (!concurrentSet.contains(id)) {
+            concurrentSet.add(id)
             thread {
-                doScan()
-                isRunning = false
+                doScan(id)
+                concurrentSet.remove(id)
                 evaluationReportClient.generate(type)
             }
         }
-        return isRunning
+        return concurrentSet.contains(id)
     }
 
-    private fun doScan() {
+    private fun doScan(id: Long) {
         val config = configureRepository.getToolConfigures()
-        val projectOperator = analysisService.getProjectOperator()
+        val projectOperator = analysisService.getProjectOperator(id)
         projectOperator.cloneAndBuildAllRepo()
         projectOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
             val context = ScanContext(repo, compiledProject.buildTool, compiledProject.workspace, config)
@@ -57,8 +60,8 @@ class HubService {
         }
     }
 
-    fun getEvaluationStatus(type: String): Boolean {
-        return isRunning;
+    fun getEvaluationStatus(type: String, id: Long): Boolean {
+        return concurrentSet.contains(id)
     }
 
 }

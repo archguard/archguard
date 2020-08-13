@@ -16,9 +16,9 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                              @Autowired val analysisModuleClient: AnalysisModuleClient) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
 
-    fun analyse() {
+    fun analyse(id: Long) {
         log.info("start scan java analysis")
-        val projectOperator = analysisService.getProjectOperator()
+        val projectOperator = analysisService.getProjectOperator(id)
         val url = dbUrl.replace("://", "://" + username + ":" + password + "@")
 
         projectOperator.cloneAndBuildAllRepo()
