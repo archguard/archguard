@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.controller
 
 import com.thoughtworks.archguard.metrics.domain.MetricsService
-import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
@@ -96,17 +96,17 @@ class LogicModuleController {
     @PostMapping("/calculate-coupling")
     @ResponseStatus(HttpStatus.OK)
     fun calculateCoupling() {
-        metricsService.calculateCoupling()
+        metricsService.calculateCouplingLegacy()
     }
 
     @GetMapping("/metrics")
-    fun getAllMetrics(): List<ModuleMetrics> {
-        return metricsService.getAllMetrics()
+    fun getAllMetrics(): List<ModuleMetricsLegacy> {
+        return metricsService.getAllMetricsLegacy()
     }
 
     @GetMapping("/metrics/modules")
-    fun getModuleMetrics(): List<ModuleMetrics> {
-        return metricsService.getModuleMetrics()
+    fun getModuleMetrics(): List<ModuleMetricsLegacy> {
+        return metricsService.getModuleMetricsLegacy()
     }
 
     @GetMapping("/dependencies/graph")

@@ -100,7 +100,7 @@ class LogicModuleServiceTest {
 
         service.updateLogicModule("id", logicModule)
 
-        verify(exactly = 1) { metricsService.calculateCoupling() }
+        verify(exactly = 1) { metricsService.calculateCouplingLegacy() }
         assertEquals(logicModule.name, slot.captured.name)
     }
 
@@ -109,6 +109,6 @@ class LogicModuleServiceTest {
         service.deleteLogicModule("id")
 
         verify(exactly = 1) { logicModuleRepository.delete("id") }
-        verify(exactly = 1) { metricsService.calculateCoupling() }
+        verify(exactly = 1) { metricsService.calculateCouplingLegacy() }
     }
 }

@@ -8,10 +8,10 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisServi
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
-import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
-import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
@@ -37,7 +37,7 @@ class MetricsServiceImpl(
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
-    override fun calculateCoupling() {
+    override fun calculateCouplingLegacy() {
         val modules = logicModuleRepository.getAll()
         val classDependency = dependencyService.getAllClassDependencies()
 
@@ -47,13 +47,13 @@ class MetricsServiceImpl(
         metricsRepository.insert(moduleMetrics)
     }
 
-    override fun getAllMetrics(): List<ModuleMetrics> {
+    override fun getAllMetricsLegacy(): List<ModuleMetricsLegacy> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findAllMetrics(moduleNames)
     }
 
-    override fun getModuleMetrics(): List<ModuleMetrics> {
+    override fun getModuleMetricsLegacy(): List<ModuleMetricsLegacy> {
         val modules = logicModuleRepository.getAllByShowStatus(true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findModuleMetrics(moduleNames)
@@ -90,18 +90,18 @@ class MetricsServiceImpl(
     }
 
     private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,
-                                modules: List<LogicModule>): List<ClassMetrics> {
+                                modules: List<LogicModule>): List<ClassMetricsLegacy> {
         return dependency.flatMap { listOf(it.callee, it.caller) }.distinct()
-                .map { getClassCoupling(it, dependency, modules) }
+                .map { getClassCouplingLegacy(it, dependency, modules) }
     }
 
-    fun getClassCoupling(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
-                         modules: List<LogicModule>): ClassMetrics {
+    fun getClassCouplingLegacy(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
+                               modules: List<LogicModule>): ClassMetricsLegacy {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
         val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
-        return ClassMetrics.of(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
+        return ClassMetricsLegacy.of(clazz.getFullName(), innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
@@ -110,18 +110,18 @@ class MetricsServiceImpl(
         return callerModules.intersect(calleeModules).isNotEmpty()
     }
 
-    fun groupToPackage(classMetrics: List<ClassMetrics>): List<PackageMetrics> {
+    fun groupToPackage(classMetrics: List<ClassMetricsLegacy>): List<PackageMetricsLegacy> {
         return classMetrics.groupBy { it.className.substringBeforeLast('.') }
-                .map { PackageMetrics.of(it.key, it.value) }
+                .map { PackageMetricsLegacy.of(it.key, it.value) }
     }
 
-    fun groupPackageMetrics(packageMetrics: List<PackageMetrics>,
-                            modules: List<LogicModule>): List<ModuleMetrics> {
+    fun groupPackageMetrics(packageMetrics: List<PackageMetricsLegacy>,
+                            modules: List<LogicModule>): List<ModuleMetricsLegacy> {
         return packageMetrics.map { packages ->
             getModule(modules, SubModule(packages.packageName)).groupBy { it.name }.mapValues { packages }
         }.toList().asSequence().flatMap { it.asSequence() }
                 .groupBy({ it.key }, { it.value })
-                .map { ModuleMetrics.of(it.key, it.value) }
+                .map { ModuleMetricsLegacy.of(it.key, it.value) }
     }
 
 }

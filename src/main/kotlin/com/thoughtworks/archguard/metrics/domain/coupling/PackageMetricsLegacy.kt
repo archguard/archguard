@@ -2,11 +2,11 @@ package com.thoughtworks.archguard.metrics.domain.coupling
 
 import org.nield.kotlinstatistics.median
 
-data class PackageMetrics(
+data class PackageMetricsLegacy(
         var id: Long?,
         var moduleId: Long,
         var packageName: String,
-        var classMetrics: List<ClassMetrics>,
+        var classMetrics: List<ClassMetricsLegacy>,
         var outerInstabilityAvg: Double,
         var outerInstabilityMed: Double,
         var outerCouplingAvg: Double,
@@ -21,7 +21,7 @@ data class PackageMetrics(
             0.0, 0.0, 0.0)
 
     companion object {
-        fun of(packageName: String, classMetrics: List<ClassMetrics>) = PackageMetrics(
+        fun of(packageName: String, classMetrics: List<ClassMetricsLegacy>) = PackageMetricsLegacy(
                 id = null,
                 moduleId = 0,
                 packageName = packageName,

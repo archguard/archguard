@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-data class ClassMetrics(
+data class ClassMetricsLegacy(
         var id: Long?,
         var packageId: Long,
         var className: String,
@@ -17,7 +17,7 @@ data class ClassMetrics(
             0, 0.0, 0.0, 0.0, 0.0)
 
     companion object {
-        fun of(className: String, innerFanIn: Int, innerFanOut: Int, outerFanIn: Int, outerFanOut: Int) = ClassMetrics(
+        fun of(className: String, innerFanIn: Int, innerFanOut: Int, outerFanIn: Int, outerFanOut: Int) = ClassMetricsLegacy(
                 id = null,
                 packageId = 0,
                 className = className,

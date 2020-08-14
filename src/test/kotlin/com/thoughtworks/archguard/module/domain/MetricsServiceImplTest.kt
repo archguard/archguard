@@ -5,10 +5,10 @@ import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.metrics.domain.MetricsServiceImpl
 import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
-import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetrics
-import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetrics
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.model.Dependency
@@ -45,12 +45,16 @@ class MetricsServiceImplTest {
 
     @MockK
     lateinit var abstractAnalysisService: AbstractAnalysisService
+
     @MockK
     lateinit var jMethodRepository: JMethodRepository
+
     @MockK
     lateinit var nocService: NocService
+
     @MockK
     lateinit var abcService: AbcService
+
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
@@ -58,14 +62,14 @@ class MetricsServiceImplTest {
                 abstractAnalysisService, jMethodRepository, nocService, abcService)
     }
 
-    private val allMetrics = ModuleMetrics(
+    private val allMetrics = ModuleMetricsLegacy(
             id = 1L,
             moduleName = "module1",
-            packageMetrics = listOf(PackageMetrics(
+            packageMetrics = listOf(PackageMetricsLegacy(
                     id = 1L,
                     moduleId = 1L,
                     packageName = "package1",
-                    classMetrics = listOf(ClassMetrics(
+                    classMetrics = listOf(ClassMetricsLegacy(
                             id = 1L,
                             packageId = 1L,
                             className = "class1",
@@ -97,7 +101,7 @@ class MetricsServiceImplTest {
             outerCouplingAvg = 3.0000
     )
 
-    private val moduleMetrics = ModuleMetrics(
+    private val moduleMetrics = ModuleMetricsLegacy(
             id = 1L,
             moduleName = "module1",
             packageMetrics = listOf(),
@@ -113,9 +117,9 @@ class MetricsServiceImplTest {
 
     @Test
     fun `group class coupling metrics by module name`() {
-        val classMetrics1 = ClassMetrics.of("com.tw.arch.package1.class1", 0, 0, 0, 0)
-        val classMetrics2 = ClassMetrics.of("com.tw.arch.package1.class2", 1, 1, 0, 0)
-        val classMetrics3 = ClassMetrics.of("com.tw.arch.package2.class3", 1, 1, 0, 0)
+        val classMetrics1 = ClassMetricsLegacy.of("com.tw.arch.package1.class1", 0, 0, 0, 0)
+        val classMetrics2 = ClassMetricsLegacy.of("com.tw.arch.package1.class2", 1, 1, 0, 0)
+        val classMetrics3 = ClassMetricsLegacy.of("com.tw.arch.package2.class3", 1, 1, 0, 0)
         service = spyk(service)
         val packageMetrics = service.groupToPackage(listOf(classMetrics1, classMetrics2, classMetrics3))
         assertThat(packageMetrics.size).isEqualTo(2)
@@ -135,10 +139,10 @@ class MetricsServiceImplTest {
 
         every { logicModuleRepository.getAll() } returns listOf(element, element2, element3)
         every { dependencyService.getAllClassDependencies() } returns listOf(dependency1, dependency2)
-        val slot = slot<List<ModuleMetrics>>()
+        val slot = slot<List<ModuleMetricsLegacy>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 
-        service.calculateCoupling()
+        service.calculateCouplingLegacy()
 
         assertEquals(0.0, slot.captured.filter { it.moduleName == "module1" }[0].outerCouplingAvg)
         assertEquals(0.5, slot.captured.filter { it.moduleName == "module1" }[0].outerInstabilityAvg)
@@ -153,10 +157,10 @@ class MetricsServiceImplTest {
 
         every { logicModuleRepository.getAll() } returns listOf(element, element2)
         every { dependencyService.getAllClassDependencies() } returns listOf()
-        val slot = slot<List<ModuleMetrics>>()
+        val slot = slot<List<ModuleMetricsLegacy>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 
-        service.calculateCoupling()
+        service.calculateCouplingLegacy()
 
         assertEquals(0, slot.captured.size)
     }
@@ -169,7 +173,7 @@ class MetricsServiceImplTest {
         val slot = slot<List<String>>()
         every { metricsRepository.findAllMetrics(capture(slot)) } answers { listOf(allMetrics) }
 
-        val result = service.getAllMetrics()
+        val result = service.getAllMetricsLegacy()
 
         assertEquals(1, slot.captured.size)
         assertEquals(element.name, slot.captured[0])
@@ -186,7 +190,7 @@ class MetricsServiceImplTest {
         val slot = slot<List<String>>()
         every { metricsRepository.findModuleMetrics(capture(slot)) } answers { listOf(moduleMetrics) }
 
-        val result = service.getModuleMetrics()
+        val result = service.getModuleMetricsLegacy()
 
         assertEquals(1, slot.captured.size)
         assertEquals(element.name, slot.captured[0])
