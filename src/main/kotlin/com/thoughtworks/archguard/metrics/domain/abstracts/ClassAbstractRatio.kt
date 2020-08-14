@@ -10,7 +10,7 @@ class ClassAbstractRatio(val ratio: Double, val jClass: JClassVO) {
                 return ClassAbstractRatio(0.0, jClass.toVO())
             }
             val jClassVO = jClass.toVO()
-            val abstractRatio = jClass.methods.map { it.isAbstract() }.size.toDouble() / jClass.methods.size
+            val abstractRatio = jClass.methods.filter { it.isAbstract() }.size.toDouble() / jClass.methods.size
             return ClassAbstractRatio(abstractRatio, jClassVO)
         }
     }
