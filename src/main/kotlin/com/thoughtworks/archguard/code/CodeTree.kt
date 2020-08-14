@@ -20,6 +20,14 @@ class CodeTree {
         addOrUpdateNodes(topNode, split)
     }
 
+    fun getHeadNodes(): List<Node> {
+        return trees.toList()
+    }
+
+    fun getNextPackagesOrClasses(node: Node): List<Node> {
+        return node.children.toList()
+    }
+
     private fun addOrUpdateNodes(topNode: Node, split: List<String>) {
         var currentNode: Node = topNode
         for (node in split.subList(1, split.size - 1)) {
