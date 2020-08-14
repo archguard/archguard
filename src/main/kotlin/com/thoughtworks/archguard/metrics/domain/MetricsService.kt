@@ -4,6 +4,9 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
+import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
+import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 
@@ -19,4 +22,8 @@ interface MetricsService {
     fun getClassNoc(jClassVO: JClassVO): Int
 
     fun getClassAbc(jClassVO: JClassVO): Int
+
+    fun getClassDfms(jClassVO: JClassVO): ClassDfms
+    fun getPackageDfms(packageVO: PackageVO): PackageDfms
+    fun getModuleDfms(moduleName: String): ModuleDfms
 }

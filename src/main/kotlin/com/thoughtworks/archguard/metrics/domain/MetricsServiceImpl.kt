@@ -9,9 +9,13 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
+import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
+import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
 import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
@@ -33,7 +37,8 @@ class MetricsServiceImpl(
         val abstractAnalysisService: AbstractAnalysisService,
         val jMethodRepository: JMethodRepository,
         val nocService: NocService,
-        val abcService: AbcService
+        val abcService: AbcService,
+        val couplingService: CouplingService
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
@@ -82,6 +87,19 @@ class MetricsServiceImpl(
                 ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
         jClass.methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
         return abcService.calculateAbc(jClass)
+    }
+
+    override fun getClassDfms(jClassVO: JClassVO): ClassDfms {
+        return ClassDfms.of(jClassVO, couplingService.calculateClassCoupling(jClassVO), getClassAbstractMetric(jClassVO))
+    }
+
+    override fun getPackageDfms(packageVO: PackageVO): PackageDfms {
+        return PackageDfms.of(packageVO, couplingService.calculatePackageCoupling(packageVO), getPackageAbstractMetric(packageVO))
+    }
+
+    override fun getModuleDfms(moduleName: String): ModuleDfms {
+        val logicModule = logicModuleRepository.get(moduleName)
+        return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(logicModule), getModuleAbstractMetric(moduleName))
     }
 
     override fun getModuleAbstractMetric(moduleName: String): ModuleAbstractRatio {

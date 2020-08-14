@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.metrics.domain.MetricsServiceImpl
 import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
@@ -55,11 +56,14 @@ class MetricsServiceImplTest {
     @MockK
     lateinit var abcService: AbcService
 
+    @MockK
+    lateinit var couplingService: CouplingService
+
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
         service = MetricsServiceImpl(metricsRepository, logicModuleRepository, dependencyService, jClassRepository,
-                abstractAnalysisService, jMethodRepository, nocService, abcService)
+                abstractAnalysisService, jMethodRepository, nocService, abcService, couplingService)
     }
 
     private val allMetrics = ModuleMetricsLegacy(
