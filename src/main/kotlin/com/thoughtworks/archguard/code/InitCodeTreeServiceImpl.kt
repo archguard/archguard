@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service
 @Service
 class InitCodeTreeServiceImpl(val jClassRepository: JClassRepository) : InitCodeTreeService {
     override fun initCodeTree(): CodeTree {
-        TODO("Not yet implemented")
+        val codeTree: CodeTree = CodeTree()
+        jClassRepository.getAll().filter { it.module != "null" }.map { codeTree.addClass(it.getFullName()) }
+        return codeTree
     }
 
 }
