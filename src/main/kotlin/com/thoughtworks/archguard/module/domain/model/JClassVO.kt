@@ -4,6 +4,7 @@ package com.thoughtworks.archguard.module.domain.model
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
 class JClassVO(val name: String, val module: String) : LogicComponent() {
+    var id: String? = null
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
     }

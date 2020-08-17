@@ -41,7 +41,9 @@ class JClass(val id: String, val name: String, val module: String) {
     }
 
     fun toVO(): JClassVO {
-        return JClassVO(name, module)
+        val jClassVO = JClassVO(name, module)
+        jClassVO.id = this.id
+        return jClassVO
     }
 
     override fun equals(other: Any?): Boolean {

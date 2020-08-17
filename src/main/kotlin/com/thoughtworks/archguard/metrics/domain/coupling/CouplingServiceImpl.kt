@@ -12,9 +12,11 @@ import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.stereotype.Service
 
 @Service
-class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : CouplingService {
+class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModuleRepository: LogicModuleRepository,
+                          val dependencyService: DependencyService, val metricsRepository: MetricsRepository) : CouplingService {
     override fun persistAllClassCouplingResults() {
-        TODO("Not yet implemented")
+        val classCouplingResults = getAllClassCouplingResults()
+        metricsRepository.insertAllClassCouplings(classCouplingResults)
     }
 
     override fun getAllClassCouplingResults(): List<ClassCoupling> {

@@ -1,18 +1,19 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import org.jdbi.v3.core.transaction.TransactionIsolationLevel
 import org.jdbi.v3.sqlobject.transaction.Transaction
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.util.stream.Collectors
 
 @Repository
 class MetricsRepositoryImpl(
-        @Autowired val moduleMetricsDao: ModuleMetricsDao,
-        @Autowired val packageMetricsDao: PackageMetricsDao,
-        @Autowired val classMetricsDao: ClassMetricsDao
+        val moduleMetricsDao: ModuleMetricsDao,
+        val packageMetricsDao: PackageMetricsDao,
+        val classMetricsDao: ClassMetricsDao,
+        val classCouplingDtoDao: ClassCouplingDtoDao
 ) : MetricsRepository {
 
     @Transaction(TransactionIsolationLevel.READ_COMMITTED)
@@ -32,6 +33,11 @@ class MetricsRepositoryImpl(
                 }
             }
         }
+    }
+
+    @Transaction
+    override fun insertAllClassCouplings(classCouplings: List<ClassCoupling>) {
+        classCouplings.forEach { classCouplingDtoDao.insert(ClassCouplingDto.fromClassCoupling(it)) }
     }
 
     @Transaction(TransactionIsolationLevel.REPEATABLE_READ)
