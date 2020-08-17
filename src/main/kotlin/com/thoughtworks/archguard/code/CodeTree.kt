@@ -20,12 +20,16 @@ class CodeTree {
         addOrUpdateNodes(topNode, split)
     }
 
-    fun getHeadNodes(): List<Node> {
-        return trees.toList()
+    fun fixTopNodeSubModuleType() {
+        trees.forEach { it.type = TypeEnum.SUB_MODULE }
     }
 
-    fun getNextPackagesOrClasses(node: Node): List<Node> {
-        return node.children.toList()
+    fun getHeadNodes(): Set<Node> {
+        return trees
+    }
+
+    fun getNextPackagesOrClasses(node: Node): Set<Node> {
+        return node.children
     }
 
     private fun addOrUpdateNodes(topNode: Node, split: List<String>) {

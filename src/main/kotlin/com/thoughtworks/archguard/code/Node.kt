@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code
 
-class Node(var node: String, val type: TypeEnum) {
+class Node(var node: String, var type: TypeEnum) {
     var children: HashSet<Node> = HashSet()
 
     override fun equals(other: Any?): Boolean {
@@ -25,5 +25,5 @@ class Node(var node: String, val type: TypeEnum) {
 }
 
 enum class TypeEnum {
-    PACKAGE, FILE
+    SUB_MODULE, PACKAGE, FILE
 }
