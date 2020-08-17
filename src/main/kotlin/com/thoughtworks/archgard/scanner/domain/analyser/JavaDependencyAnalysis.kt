@@ -22,7 +22,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         val url = dbUrl.replace("://", "://" + username + ":" + password + "@")
 
         projectOperator.cloneAndBuildAllRepo()
-        val javaByteCodeTool = JavaByteCodeTool(projectOperator.workspace, url)
+        val javaByteCodeTool = JavaByteCodeTool(projectOperator.workspace, url, id)
         javaByteCodeTool.analyse()
         val tableUsedTool = TableUsedTool(projectOperator.workspace, projectOperator.sql)
         tableUsedTool.analyse()
