@@ -13,6 +13,17 @@ import org.springframework.stereotype.Service
 
 @Service
 class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService) : CouplingService {
+    override fun persistAllClassCouplingResults() {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllClassCouplingResults(): List<ClassCoupling> {
+        val classes = jClassRepository.getJClassesHasModules()
+        val logicModules = logicModuleRepository.getAll()
+        val classDependency = dependencyService.getAllClassDependencies()
+        return classes.map { getClassCouplingWithData(it.toVO(), classDependency, logicModules) }
+    }
+
     override fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling {
         val logicModules = logicModuleRepository.getAll()
         val classDependency = dependencyService.getAllClassDependencies()
