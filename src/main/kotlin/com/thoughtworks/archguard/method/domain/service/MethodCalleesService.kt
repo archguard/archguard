@@ -25,7 +25,7 @@ class MethodCalleesService {
         if (pendindMethods.isEmpty() || calleeDeep == 0) {
             container.addAll(pendindMethods)
         } else {
-            pendindMethods.forEach {
+            pendindMethods.parallelStream().forEach {
                 it.callees = repo.findMethodCallees(it.id)
                 if (needIncludeImpl) {
                     it.implements = repo.findMethodImplements(it.id, it.name)
