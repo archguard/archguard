@@ -33,6 +33,11 @@ class CouplingMetricController(val couplingService: CouplingService, val logicMo
         return couplingService.calculateModuleCoupling(logicModuleRepository.get(moduleName))
     }
 
+    @GetMapping("/all-module")
+    fun getAllModuleCouplingMetric(): List<ModuleCoupling> {
+        return couplingService.calculateAllModuleCoupling()
+    }
+
     @PostMapping("/persist")
     @ResponseStatus(HttpStatus.OK)
     fun persistCouplingMetric() {

@@ -64,6 +64,24 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         return ModuleCoupling.of(logicModule, classCouplings)
     }
 
+    override fun calculateAllModuleCoupling(): List<ModuleCoupling> {
+        val classes = jClassRepository.getAll()
+        val logicModules = logicModuleRepository.getAll()
+        val moduleCouplings = mutableListOf<ModuleCoupling>()
+        logicModules.parallelStream().forEach { logicModule ->
+            val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
+            val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
+            if (classCouplingsCached.isNotEmpty()) {
+                moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplingsCached))
+                return@forEach
+            }
+            val classDependency = dependencyService.getAllClassDependencies()
+            val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+            moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplings))
+        }
+        return moduleCouplings
+    }
+
     fun getClassCouplingWithData(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
                                  modules: List<LogicModule>): ClassCoupling {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()

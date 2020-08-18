@@ -10,4 +10,5 @@ interface CouplingService {
     fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling
     fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling
     fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling
+    fun calculateAllModuleCoupling(): List<ModuleCoupling>
 }
