@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.common.infrastructure.config
 
-import com.thoughtworks.archguard.metrics.infrastructure.ClassCouplingDtoDao
+import com.thoughtworks.archguard.metrics.infrastructure.ClassCouplingDtoDaoForInsert
+import com.thoughtworks.archguard.metrics.infrastructure.ClassCouplingDtoDaoForRead
 import com.thoughtworks.archguard.metrics.infrastructure.ClassMetricsDao
 import com.thoughtworks.archguard.metrics.infrastructure.ModuleMetricsDao
 import com.thoughtworks.archguard.metrics.infrastructure.PackageMetricsDao
@@ -33,8 +34,13 @@ class JdbiDaoConfig {
     }
 
     @Bean
-    fun classCouplingDtoDao(jdbi: Jdbi): ClassCouplingDtoDao {
-        return jdbi.onDemand(ClassCouplingDtoDao::class.java)
+    fun classCouplingDtoDaoForInsert(jdbi: Jdbi): ClassCouplingDtoDaoForInsert {
+        return jdbi.onDemand(ClassCouplingDtoDaoForInsert::class.java)
+    }
+
+    @Bean
+    fun classCouplingDtoDaoForRead(jdbi: Jdbi): ClassCouplingDtoDaoForRead {
+        return jdbi.onDemand(ClassCouplingDtoDaoForRead::class.java)
     }
 
 }

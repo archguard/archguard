@@ -40,7 +40,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val classes = jClassRepository.getAll()
         val classesBelongToPackage = classes.filter { packageVO.containClass(it.toVO()) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToPackage.map { it.toVO() })
-        if (classCouplingsCached != null) {
+        if (classCouplingsCached.isNotEmpty()) {
             return PackageCoupling.of(packageVO, classCouplingsCached)
         }
 
@@ -55,7 +55,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val logicModules = logicModuleRepository.getAll()
         val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
-        if (classCouplingsCached != null) {
+        if (classCouplingsCached.isNotEmpty()) {
             return ModuleCoupling.of(logicModule, classCouplingsCached)
         }
 

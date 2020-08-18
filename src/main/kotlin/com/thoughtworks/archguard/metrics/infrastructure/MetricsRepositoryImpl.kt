@@ -14,7 +14,8 @@ class MetricsRepositoryImpl(
         val moduleMetricsDao: ModuleMetricsDao,
         val packageMetricsDao: PackageMetricsDao,
         val classMetricsDao: ClassMetricsDao,
-        val classCouplingDtoDao: ClassCouplingDtoDao
+        val classCouplingDtoDaoForInsert: ClassCouplingDtoDaoForInsert,
+        val classCouplingDtoDaoForRead: ClassCouplingDtoDaoForRead
 ) : MetricsRepository {
 
     @Transaction(TransactionIsolationLevel.READ_COMMITTED)
@@ -38,15 +39,25 @@ class MetricsRepositoryImpl(
 
     @Transaction
     override fun insertAllClassCouplings(classCouplings: List<ClassCoupling>) {
-        classCouplings.forEach { classCouplingDtoDao.insert(ClassCouplingDto.fromClassCoupling(it)) }
+        classCouplings.forEach { classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(it)) }
     }
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {
-        TODO("Not yet implemented")
+        val classCoupling = classCouplingDtoDaoForRead.findClassCoupling(jClassVO.id!!)
+        if (classCoupling != null) {
+            return classCoupling.toClassCoupling()
+        }
+        return null
     }
 
-    override fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling>? {
-        TODO("Not yet implemented")
+    override fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling> {
+        val classCouplings = mutableListOf<ClassCoupling>()
+        for (jClassVO in jClassVOs) {
+            // 出现不存在缓存数据直接停止返回空集合，防止返回不完整的数据
+            val classCoupling = getClassCoupling(jClassVO) ?: return emptyList()
+            classCouplings.add(classCoupling)
+        }
+        return classCouplings
     }
 
     @Transaction(TransactionIsolationLevel.REPEATABLE_READ)

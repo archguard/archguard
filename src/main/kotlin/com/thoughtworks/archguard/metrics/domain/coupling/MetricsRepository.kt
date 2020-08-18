@@ -9,5 +9,5 @@ interface MetricsRepository {
 
     fun insertAllClassCouplings(classCouplings: List<ClassCoupling>)
     fun getClassCoupling(jClassVO: JClassVO): ClassCoupling?
-    fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling>?
+    fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling>
 }
