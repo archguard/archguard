@@ -2,16 +2,20 @@ package com.thoughtworks.archguard.method.domain.service
 
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class MethodCalleesService {
+    private val log = LoggerFactory.getLogger(MethodCalleesService::class.java)
+
     @Autowired
     private lateinit var repo: JMethodRepository
 
     fun buildMethodCallees(methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val container = ArrayList<JMethod>()
+        // FIXME Cost too much time
         doBuildCallees(methods, calleeDeep, container, needIncludeImpl)
         return methods
     }
