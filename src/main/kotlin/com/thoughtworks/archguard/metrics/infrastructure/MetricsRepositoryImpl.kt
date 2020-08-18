@@ -51,13 +51,7 @@ class MetricsRepositoryImpl(
     }
 
     override fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling> {
-        val classCouplings = mutableListOf<ClassCoupling>()
-        for (jClassVO in jClassVOs) {
-            // 出现不存在缓存数据直接停止返回空集合，防止返回不完整的数据
-            val classCoupling = getClassCoupling(jClassVO) ?: return emptyList()
-            classCouplings.add(classCoupling)
-        }
-        return classCouplings
+        return classCouplingDtoDaoForRead.findClassCouplings(jClassVOs.map { it.id!! }).map { it.toClassCoupling() }
     }
 
     @Transaction(TransactionIsolationLevel.REPEATABLE_READ)

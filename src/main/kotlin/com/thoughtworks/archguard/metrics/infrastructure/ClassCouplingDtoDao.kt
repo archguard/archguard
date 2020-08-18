@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBean
+import org.jdbi.v3.sqlobject.customizer.BindList
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
@@ -26,6 +27,11 @@ interface ClassCouplingDtoDaoForRead {
             "c.inner_fan_in, c.inner_fan_out, c.outer_fan_in, c.outer_fan_out " +
             "from class_coupling c join JClass j where c.class_id = j.id and j.id = :classId")
     fun findClassCoupling(@Bind("classId") classId: String): ClassCouplingDtoForReadFromDb?
+
+    @SqlQuery("select c.class_id, c.project_id, j.name, j.module, " +
+            "c.inner_fan_in, c.inner_fan_out, c.outer_fan_in, c.outer_fan_out " +
+            "from class_coupling c join JClass j where c.class_id = j.id and j.id in (<classIds>)")
+    fun findClassCouplings(@BindList("classIds") classIds: List<String>): List<ClassCouplingDtoForReadFromDb>
 }
 
 class ClassCouplingDtoForReadFromDb(var classId: String,
