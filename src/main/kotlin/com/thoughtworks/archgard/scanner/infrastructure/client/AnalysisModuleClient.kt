@@ -9,8 +9,8 @@ import org.springframework.web.client.RestTemplate
 class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
     private val log = LoggerFactory.getLogger(AnalysisModuleClient::class.java)
 
-    fun autoDefine() {
-        RestTemplate().postForLocation("$url/logic-modules/auto-define", null)
+    fun autoDefine(projectId: Long) {
+        RestTemplate().postForLocation("$url/logic-modules/{projectId}/auto-define", Long::class.java, projectId)
         log.info("send auto define request to module service")
     }
 
