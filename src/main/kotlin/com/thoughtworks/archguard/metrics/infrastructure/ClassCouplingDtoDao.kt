@@ -10,14 +10,15 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 interface ClassCouplingDtoDao {
     @GetGeneratedKeys
     @SqlUpdate("insert into class_coupling (" +
-            "class_id, inner_fan_in, inner_fan_out, outer_fan_in, " +
+            "class_id, project_id, inner_fan_in, inner_fan_out, outer_fan_in, " +
             "outer_fan_out, inner_instability, inner_coupling, outer_instability, outer_coupling) " +
-            "values(:classId, :innerFanIn, :innerFanOut, :outerFanIn, " +
+            "values(:classId, :projectId, :innerFanIn, :innerFanOut, :outerFanIn, " +
             ":outerFanOut, :innerInstability, :innerCoupling, :outerInstability, :outerCoupling)")
     fun insert(@BindBean classCouplingDto: ClassCouplingDto): Long
 }
 
 data class ClassCouplingDto(val classId: String,
+                            val projectId: Int,
                             val innerFanIn: Int,
                             val innerFanOut: Int,
                             val outerFanIn: Int,
@@ -28,7 +29,7 @@ data class ClassCouplingDto(val classId: String,
                             val outerCoupling: Double) {
     companion object {
         fun fromClassCoupling(classCoupling: ClassCoupling): ClassCouplingDto {
-            return ClassCouplingDto(classCoupling.jClassVO.id!!, classCoupling.innerFanIn, classCoupling.innerFanOut,
+            return ClassCouplingDto(classCoupling.jClassVO.id!!, 0, classCoupling.innerFanIn, classCoupling.innerFanOut,
                     classCoupling.outerFanIn, classCoupling.outerFanOut, classCoupling.innerInstability, classCoupling.innerCoupling,
                     classCoupling.outerInstability, classCoupling.outerCoupling)
         }

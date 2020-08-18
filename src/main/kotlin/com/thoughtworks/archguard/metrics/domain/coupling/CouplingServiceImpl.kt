@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
@@ -27,6 +26,11 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling {
+        val classCoupling = metricsRepository.getClassCoupling(jClassVO)
+        if (classCoupling != null) {
+            return classCoupling
+        }
+
         val logicModules = logicModuleRepository.getAll()
         val classDependency = dependencyService.getAllClassDependencies()
         return getClassCouplingWithData(jClassVO, classDependency, logicModules)
@@ -34,17 +38,30 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
 
     override fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling {
         val classes = jClassRepository.getAll()
+        val classesBelongToPackage = classes.filter { packageVO.containClass(it.toVO()) }
+        val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToPackage.map { it.toVO() })
+        if (classCouplingsCached != null) {
+            return PackageCoupling.of(packageVO, classCouplingsCached)
+        }
+
         val logicModules = logicModuleRepository.getAll()
         val classDependency = dependencyService.getAllClassDependencies()
-        return calculatePackageCouplingWithData(classes, packageVO, classDependency, logicModules)
+        val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+        return PackageCoupling.of(packageVO, classCouplings)
     }
 
     override fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling {
         val classes = jClassRepository.getAll()
         val logicModules = logicModuleRepository.getAll()
-        val classDependency = dependencyService.getAllClassDependencies()
+        val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
+        val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
+        if (classCouplingsCached != null) {
+            return ModuleCoupling.of(logicModule, classCouplingsCached)
+        }
 
-        return calculateModuleCouplingWithData(classes, logicModules, logicModule, classDependency)
+        val classDependency = dependencyService.getAllClassDependencies()
+        val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+        return ModuleCoupling.of(logicModule, classCouplings)
     }
 
     fun getClassCouplingWithData(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
@@ -54,18 +71,6 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
         val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
         return ClassCoupling(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
-    }
-
-    private fun calculatePackageCouplingWithData(classes: List<JClass>, packageVO: PackageVO, classDependency: List<Dependency<JClassVO>>, logicModules: List<LogicModule>): PackageCoupling {
-        val classesBelongToPackage = classes.filter { packageVO.containClass(it.toVO()) }
-        val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
-        return PackageCoupling.of(packageVO, classCouplings)
-    }
-
-    private fun calculateModuleCouplingWithData(classes: List<JClass>, logicModules: List<LogicModule>, logicModule: LogicModule, classDependency: List<Dependency<JClassVO>>): ModuleCoupling {
-        val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
-        val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
-        return ModuleCoupling.of(logicModule, classCouplings)
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
