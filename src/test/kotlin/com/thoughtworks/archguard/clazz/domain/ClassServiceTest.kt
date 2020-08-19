@@ -64,6 +64,7 @@ class ClassServiceTest {
     @Test
     fun `should get class invokes`() {
         //given
+        val projectId = 1L
         val targetName = "clazz"
         val module = "module"
         val target = JClass("1", targetName, module)
@@ -72,9 +73,9 @@ class ClassServiceTest {
         //when
         every { repo.getJClassBy(targetName, module) } returns target
         every {
-            classInvokeService.findInvokes(target, deep, deep, needIncludeImpl)
+            classInvokeService.findInvokes(projectId, target, deep, deep, needIncludeImpl)
         } returns target
-        val invokes = service.findInvokes(module, targetName, deep, deep, needIncludeImpl)
+        val invokes = service.findInvokes(projectId, module, targetName, deep, deep, needIncludeImpl)
         //then
         assertThat(invokes).isEqualToComparingFieldByField(target)
     }

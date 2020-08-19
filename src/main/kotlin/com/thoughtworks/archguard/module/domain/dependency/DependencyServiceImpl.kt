@@ -27,7 +27,7 @@ class DependencyServiceImpl : DependencyService {
     override fun getAllMethodDependencies(): List<Dependency<JMethodVO>> {
         var methodDependencies =  dependencyRepository.getAllMethodDependencies()
 
-        pluginManager.getDependPlugin<DependPlugin>().forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
+        pluginManager.getDependPlugin<DependPlugin>(1L).forEach { methodDependencies = it.fixMethodDependencies(methodDependencies) }
 
         return methodDependencies
     }

@@ -35,9 +35,9 @@ class ClassService {
                 ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
     }
 
-    fun findInvokes(module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
+    fun findInvokes(projectId: Long, module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
         val targetClass = getTargetClass(module, name)
-        return classInvokeService.findInvokes(targetClass, callerDeep, calleeDeep, needIncludeImpl)
+        return classInvokeService.findInvokes(projectId, targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
     fun findMethodsCallees(module: String, name: String, calleeDeep: Int,

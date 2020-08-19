@@ -46,7 +46,7 @@ class GraphServiceTest {
         val dependency3 = Dependency(JClassVO("class","submodule2"), JClassVO("class", "submodule3"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { pluginManager.getDependPlugin<DependPlugin>() } returns emptyList()
+        every { pluginManager.getDependPlugin<DependPlugin>(1L) } returns emptyList()
         every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
         every { dependencyService.getAllClassDependencies() } returns dependencies
 

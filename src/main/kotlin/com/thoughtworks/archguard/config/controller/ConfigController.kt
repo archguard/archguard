@@ -15,39 +15,43 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/configures")
+@RequestMapping("/{projectId}/configures")
 class ConfigController {
     @Autowired
     private lateinit var service: ConfigureService
 
     @GetMapping
-    fun getConfigures(): List<Configure> {
-        return service.getConfigures()
+    fun getConfigures(@PathVariable("projectId") projectId: Long): List<Configure> {
+        return service.getConfigures(projectId)
     }
 
     @PostMapping
-    fun create(@RequestBody config: Configure): ResponseEntity<Nothing> {
+    fun create(@PathVariable("projectId") projectId: Long,
+               @RequestBody config: Configure): ResponseEntity<Nothing> {
         service.create(config)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("id") id: String,
+    fun update(@PathVariable("projectId") projectId: Long,
+               @PathVariable("id") id: String,
                @RequestBody config: Configure): ResponseEntity<Nothing> {
         service.update(id, config)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable("id") id: String): ResponseEntity<Nothing> {
+    fun delete(@PathVariable("projectId") projectId: Long,
+               @PathVariable("id") id: String): ResponseEntity<Nothing> {
         service.delete(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @PostMapping("/types/{type}")
-    fun updateConfigsByType(@PathVariable("type") type: String,
+    fun updateConfigsByType(@PathVariable("projectId") projectId: Long,
+                            @PathVariable("type") type: String,
                             @RequestBody configs: List<Configure>): ResponseEntity<Nothing> {
-        service.updateConfigsByType(type, configs)
+        service.updateConfigsByType(projectId, type, configs)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

@@ -8,8 +8,8 @@ class ConfigureService {
     @Autowired
     private lateinit var repo: ConfigureRepository
 
-    fun getConfigures(): List<Configure> {
-        return repo.getConfigures()
+    fun getConfigures(projectId: Long): List<Configure> {
+        return repo.getConfigures(projectId)
     }
 
     fun create(config: Configure) {
@@ -17,7 +17,7 @@ class ConfigureService {
     }
 
     fun update(id: String, config: Configure) {
-        val nodeConfigure = Configure(id, config.type, config.key, config.value, config.order)
+        val nodeConfigure = Configure(id, config.projectId, config.type, config.key, config.value, config.order)
         repo.update(nodeConfigure)
     }
 
@@ -25,10 +25,10 @@ class ConfigureService {
         repo.delete(id)
     }
 
-    fun isDisplayNode(nodeName: String): Boolean {
+    fun isDisplayNode(projectId: Long, nodeName: String): Boolean {
         if (nodeName.endsWith("Test")) return false
 
-        val displayConfig = repo.getConfiguresByType("nodeDisplay")
+        val displayConfig = repo.getConfiguresByType(projectId,"nodeDisplay")
         val continueNodes = displayConfig.filter { it.value == "contain" }.map { it.key }
         val hiddenNodes = displayConfig.filter { it.value == "hidden" }.map { it.key }
 
@@ -36,8 +36,8 @@ class ConfigureService {
     }
 
 
-    fun updateConfigsByType(type: String, configs: List<Configure>) {
-        repo.deleteConfiguresByType(type)
+    fun updateConfigsByType(projectId: Long, type: String, configs: List<Configure>) {
+        repo.deleteConfiguresByType(projectId, type)
         repo.batchCreateConfigures(configs)
     }
 }

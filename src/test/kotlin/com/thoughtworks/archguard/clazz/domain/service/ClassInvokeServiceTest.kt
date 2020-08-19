@@ -30,6 +30,7 @@ class ClassInvokeServiceTest {
     @Test
     fun `should get invoke methods`() {
         //given
+        val projectId = 1L
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val parent = JClass("parent", "parent", "module")
@@ -38,11 +39,11 @@ class ClassInvokeServiceTest {
         val caller = JClass("3", "caller", "module")
         //when
         every { repo.findClassParents(target.module, target.name) } returns listOf(parent)
-        every { configService.isDisplayNode(any()) } returns true
+        every { configService.isDisplayNode(any(), any()) } returns true
         every { repo.findClassImplements(target.name, target.module) } returns listOf(impl)
         every { repo.findCallees(target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(target.name, target.module) } returns listOf(ClassRelation(caller, 1))
-        service.findInvokes(target, 1, 1, true)
+        service.findInvokes(projectId, target, 1, 1, true)
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)
         Assertions.assertThat(target.implements.size).isEqualTo(1)

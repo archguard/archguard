@@ -10,31 +10,34 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/classes")
+@RequestMapping("/{projectId}/classes")
 class ClassController {
 
     @Autowired
     private lateinit var service: ClassService
 
     @GetMapping("/{name}/dependencies")
-    fun getDependencies(@PathVariable("name") name: String,
+    fun getDependencies(@PathVariable("projectId") projectId: Long,
+                        @PathVariable("name") name: String,
                         @RequestParam(value = "module", required = false, defaultValue = "") module: String,
                         @RequestParam("deep", required = false, defaultValue = "3") deep: Int): JClass {
         return service.getDependencies(module, name, deep)
     }
 
     @GetMapping("/{name}/invokes")
-    fun getInvokes(@PathVariable("name") name: String,
+    fun getInvokes(@PathVariable("projectId") projectId: Long,
+                   @PathVariable("name") name: String,
                    @RequestParam(value = "module", required = false, defaultValue = "") module: String,
                    @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                    @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
                    @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
                    @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?): JClass {
-        return service.findInvokes(module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
+        return service.findInvokes(projectId, module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
     }
 
     @GetMapping("/{name}/methods_callees")
-    fun getMethodsCallees(@PathVariable("name") name: String,
+    fun getMethodsCallees(@PathVariable("projectId") projectId: Long,
+                          @PathVariable("name") name: String,
                           @RequestParam(value = "module", required = false, defaultValue = "") module: String,
                           @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                           @RequestParam(value = "needParents", required = false, defaultValue = "true") needParents: Boolean,

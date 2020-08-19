@@ -19,8 +19,8 @@ class PluginManager(val configureRepository: ConfigureRepository) : ApplicationC
         return dependPluginMap[pluginType]!!
     }
 
-    fun <T : Plugin> getDependPlugin(): List<DependPlugin> {
-        val pluginConfig = configureRepository.getConfigures().filter { it.type == "plugin" && it.key == "name" }.sortedBy { it.order }
+    fun <T : Plugin> getDependPlugin(projectId: Long): List<DependPlugin> {
+        val pluginConfig = configureRepository.getConfigures(projectId).filter { it.type == "plugin" && it.key == "name" }.sortedBy { it.order }
         return pluginConfig.mapNotNull { dependPluginMap[PluginType.valueOf(it.value)] }
     }
 }

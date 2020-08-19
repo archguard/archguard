@@ -26,10 +26,10 @@ class ConfigureServiceTest {
     @Test
     fun `should get all configures`() {
         //given
-        val configure = Configure("id", "nodeHidden", "clz", "21", 1)
+        val configure = Configure("id", 1L, "nodeHidden", "clz", "21", 1)
         //when
-        every { repo.getConfigures() } returns listOf(configure)
-        val configures = service.getConfigures()
+        every { repo.getConfigures(configure.projectId) } returns listOf(configure)
+        val configures = service.getConfigures(configure.projectId)
         //then
         assertThat(configures.size).isEqualTo(1)
         assertThat(configures[0]).isEqualToComparingFieldByField(configure)
@@ -38,7 +38,7 @@ class ConfigureServiceTest {
     @Test
     fun `should create configure`() {
         //given
-        val configure = Configure("id", "nodeHidden", "clz", "21", 1)
+        val configure = Configure("id", 1L, "nodeHidden", "clz", "21", 1)
         //when
         every { repo.create(configure) } just Runs
         service.create(configure)
@@ -50,7 +50,7 @@ class ConfigureServiceTest {
     fun `should update configure`() {
         //given
         val id = "id"
-        val configure = Configure(id, "nodeHidden", "clz", "21", 1)
+        val configure = Configure(id, 1L, "nodeHidden", "clz", "21", 1)
         //when
         every { repo.update(any()) } just Runs
         service.update(id, configure)
@@ -73,19 +73,19 @@ class ConfigureServiceTest {
     fun `should display class`() {
         //given
         //when
-        every { repo.getConfiguresByType("nodeDisplay") } returns listOf(
-                Configure("", "nodeDisplay", "com", "contain", 1),
-                Configure("", "nodeDisplay", "org", "contain", 1),
-                Configure("", "nodeDisplay", "common", "contain", 1),
-                Configure("", "nodeDisplay", "org.scalatest", "hidden", 1)
+        every { repo.getConfiguresByType(1L, "nodeDisplay") } returns listOf(
+                Configure("", 1L, "nodeDisplay", "com", "contain", 1),
+                Configure("", 1L, "nodeDisplay", "org", "contain", 1),
+                Configure("", 1L, "nodeDisplay", "common", "contain", 1),
+                Configure("", 1L, "nodeDisplay", "org.scalatest", "hidden", 1)
         )
 
-        assert(service.isDisplayNode("common.domain.ConfigureService"))
-        assert(service.isDisplayNode("org.scalamock.scalatest.MockFactory"))
-        assert(!service.isDisplayNode("common.domain.ConfigureServiceTest"))
-        assert(!service.isDisplayNode("V"))
-        assert(!service.isDisplayNode("org.scalatest.FlatSpec"))
-        assert(!service.isDisplayNode("scala.concurrent.Future"))
-        assert(!service.isDisplayNode("java.lang.Integer"))
+        assert(service.isDisplayNode(1L, "common.domain.ConfigureService"))
+        assert(service.isDisplayNode(1L, "org.scalamock.scalatest.MockFactory"))
+        assert(!service.isDisplayNode(1L, "common.domain.ConfigureServiceTest"))
+        assert(!service.isDisplayNode(1L, "V"))
+        assert(!service.isDisplayNode(1L, "org.scalatest.FlatSpec"))
+        assert(!service.isDisplayNode(1L, "scala.concurrent.Future"))
+        assert(!service.isDisplayNode(1L, "java.lang.Integer"))
     }
 }

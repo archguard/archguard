@@ -16,14 +16,14 @@ class ClassInvokeService {
 
     @Autowired
     private lateinit var configureService: ConfigureService
-    fun findInvokes(target: JClass, callerDeep: Int, calleeDeep: Int,
+    fun findInvokes(projectId: Long, target: JClass, callerDeep: Int, calleeDeep: Int,
                     needIncludeImpl: Boolean): JClass {
-        findClassCallers(target, callerDeep, needIncludeImpl)
-        findClassCallees(target, calleeDeep, needIncludeImpl)
+        findClassCallers(projectId, target, callerDeep, needIncludeImpl)
+        findClassCallees(projectId, target, calleeDeep, needIncludeImpl)
         return target
     }
 
-    private fun findClassCallees(target: JClass, deep: Int, needIncludeImpl: Boolean) {
+    private fun findClassCallees(projectId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
             return
         }
@@ -33,20 +33,20 @@ class ClassInvokeService {
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
             implements = repo.findClassImplements(target.name, target.module)
-                    .filter { configureService.isDisplayNode(it.name) }
+                    .filter { configureService.isDisplayNode(projectId, it.name) }
         }
         target.implements = implements
         target.callees = repo.findCallees(target.name, target.module)
-                .filter { configureService.isDisplayNode(it.clazz.name) }
+                .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
         if (deep == 1) {
             return
         } else {
-            target.implements.map { findClassCallees(it, deep - 1, needIncludeImpl) }
-            target.callees.map { findClassCallees(it.clazz, deep - 1, needIncludeImpl) }
+            target.implements.map { findClassCallees(projectId, it, deep - 1, needIncludeImpl) }
+            target.callees.map { findClassCallees(projectId, it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 
-    private fun findClassCallers(target: JClass, deep: Int, needIncludeImpl: Boolean) {
+    private fun findClassCallers(projectId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
             return
         }
@@ -54,14 +54,14 @@ class ClassInvokeService {
             return
         }
         target.parents = repo.findClassParents(target.module, target.name)
-                .filter { configureService.isDisplayNode(it.name) }
+                .filter { configureService.isDisplayNode(projectId, it.name) }
         target.callers = repo.findCallers(target.name, target.module)
-                .filter { configureService.isDisplayNode(it.clazz.name) }
+                .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
         if (deep == 1) {
             return
         } else {
-            target.parents.map { findClassCallers(it, deep - 1, needIncludeImpl) }
-            target.callers.map { findClassCallers(it.clazz, deep - 1, needIncludeImpl) }
+            target.parents.map { findClassCallers(projectId, it, deep - 1, needIncludeImpl) }
+            target.callers.map { findClassCallers(projectId, it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 
