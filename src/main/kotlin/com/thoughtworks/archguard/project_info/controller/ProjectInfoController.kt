@@ -13,8 +13,6 @@ import java.nio.file.Paths
 @RestController
 @RequestMapping("/project-info")
 class ProjectInfoController {
-    @Value("\${upload.path}")
-    lateinit var UPLOAD_PATH: String;
 
     @Autowired
     lateinit var projectInfoService: ProjectInfoService
@@ -34,23 +32,17 @@ class ProjectInfoController {
     @DeleteMapping("/{id}")
     fun deleteProjectInfo(@PathVariable("id") id: Long) = projectInfoService.deleteProjectInfo(id)
 
-    @PostMapping("/{id}/upload")
-    fun uploadZip(@PathVariable("id") id: Long, @RequestParam("file") file: MultipartFile): String {
+    @PostMapping("/upload")
+    fun uploadZip(@RequestParam("file") file: MultipartFile): String {
         if (file.isEmpty) {
             return "上传失败，请选择文件"
         }
 
-        val fileName = file.originalFilename ?: "Project-Info-$id"
-        val dir = this.prepareDirectory(id.toString())
-        val filePath = this.prepareZipFile(dir.toString(), fileName)
-        file.transferTo(filePath.toFile());
-        return "上传成功"
-    }
-
-    private fun prepareDirectory(dir: String): Path {
-        val path = Paths.get(UPLOAD_PATH, dir)
-        path.toFile().mkdirs()
-        return path
+        val dir = createTempDir()
+        val fileName = file.originalFilename ?: "Project-Info"
+        val filePath = this.prepareZipFile(dir.absolutePath, fileName)
+        file.transferTo(filePath.toFile())
+        return filePath.toString()
     }
 
     private fun prepareZipFile(dir: String, fileName: String): Path {
