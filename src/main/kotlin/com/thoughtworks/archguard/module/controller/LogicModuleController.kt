@@ -82,9 +82,9 @@ class LogicModuleController {
         logicModuleService.deleteLogicModule(id)
     }
 
-    @PostMapping("/auto-define")
+    @PostMapping("{projectId}/auto-define")
     @ResponseStatus(HttpStatus.OK)
-    fun autoDefineLogicModule() {
+    fun autoDefineLogicModule(@PathVariable projectId: Long) {
         logicModuleService.autoDefineLogicModule()
     }
 
