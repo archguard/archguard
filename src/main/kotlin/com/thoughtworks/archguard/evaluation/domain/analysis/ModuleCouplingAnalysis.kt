@@ -69,11 +69,6 @@ class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
     }
 
     private fun getKeyLike(keys: Set<String>, key: String): String? {
-        keys.forEach {
-            if (key.startsWith(it)) {
-                return it
-            }
-        }
-        return null
+        return keys.find { key.startsWith(it) }
     }
 }
