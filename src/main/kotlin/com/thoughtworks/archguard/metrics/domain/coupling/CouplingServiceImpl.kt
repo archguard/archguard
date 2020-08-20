@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
@@ -26,7 +27,9 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling {
-        val classCoupling = metricsRepository.getClassCoupling(jClassVO)
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
+        val classCoupling = metricsRepository.getClassCoupling(jClass.toVO())
         if (classCoupling != null) {
             return classCoupling
         }
