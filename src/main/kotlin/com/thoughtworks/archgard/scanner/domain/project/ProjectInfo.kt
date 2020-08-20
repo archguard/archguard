@@ -16,4 +16,8 @@ class ProjectInfo(var id: Long? = null,
     }
 
     fun getRepoList(): List<String> = repo.split(",")
+
+    fun isNecessaryBuild(): Boolean {
+        return repoType != "ZIP"
+    }
 }

@@ -15,7 +15,13 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
         this.projectInfo.getRepoList()
-                .forEach(this::cloneAndBuildSingleRepo)
+                .forEach { repo ->
+                    if (projectInfo.isNecessaryBuild()) {
+                        cloneAndBuildSingleRepo(repo)
+                    } else {
+                        cloneSingleRepo(repo)
+                    }
+                }
     }
 
 
@@ -29,7 +35,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         val repoWorkSpace = createTempDir(directory = workspace)
         log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
         getSource(repoWorkSpace, repo)
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, getBuildTool(repoWorkSpace), this.projectInfo.sql)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.projectInfo.sql)
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -45,6 +51,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         when (this.projectInfo.repoType) {
             "GIT" -> cloneByGitCli(workspace, repo)
             "SVN" -> cloneBySvn(workspace, repo)
+            "ZIP" -> cloneByZip(workspace, repo)
         }
     }
 
@@ -52,6 +59,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         val pb: ProcessBuilder = when (buildTool) {
             BuildTool.MAVEN -> ProcessBuilder("./mvnw", "clean", "compile")
             BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "classes")
+            BuildTool.NONE -> return
         }
         Processor.executeWithLogs(pb, workspace)
     }
@@ -96,6 +104,14 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
                     repo, Paths.get("./").normalize().toString())
         }
 
+        val pb = ProcessBuilder(cmdList)
+        Processor.executeWithLogs(pb, workspace)
+    }
+
+    private fun cloneByZip(workspace: File, repo: String) {
+        // unzip .zip file to workspace
+        // unzip -d /temp test.zip
+        val cmdList = listOf("unzip", repo)
         val pb = ProcessBuilder(cmdList)
         Processor.executeWithLogs(pb, workspace)
     }
