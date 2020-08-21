@@ -26,4 +26,7 @@ interface MetricsService {
     fun getClassDfms(jClassVO: JClassVO): ClassDfms
     fun getPackageDfms(packageVO: PackageVO): PackageDfms
     fun getModuleDfms(moduleName: String): ModuleDfms
+
+    fun getClassLCOM4(jClassVO: JClassVO): Int
+
 }

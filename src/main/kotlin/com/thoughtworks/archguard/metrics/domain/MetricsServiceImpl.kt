@@ -16,6 +16,7 @@ import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
+import com.thoughtworks.archguard.metrics.domain.lcom4.LCOM4Service
 import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
@@ -38,7 +39,8 @@ class MetricsServiceImpl(
         val jMethodRepository: JMethodRepository,
         val nocService: NocService,
         val abcService: AbcService,
-        val couplingService: CouplingService
+        val couplingService: CouplingService,
+        val locm4Service: LCOM4Service
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
@@ -142,4 +144,13 @@ class MetricsServiceImpl(
                 .map { ModuleMetricsLegacy.of(it.key, it.value) }
     }
 
+    override fun getClassLCOM4(jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
+        jClass.fields = jClassRepository.findFields(jClass.id)
+        val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
+        jClass.methods = methods
+        return locm4Service.calculateLCOM4(jClass)
+    }
 }
