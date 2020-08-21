@@ -22,6 +22,8 @@ interface JClassRepository {
     fun findCallees(name: String?, module: String?): List<ClassRelation>
 
     fun findCallers(name: String?, module: String?): List<ClassRelation>
+
+    fun findFields(id: String): List<JField>
 }
 
 class FullName(val name: String, val module: String) {

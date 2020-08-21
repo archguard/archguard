@@ -4,20 +4,17 @@ import com.thoughtworks.archguard.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.clazz.domain.FullName
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.clazz.domain.JField
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.common.TypeMap
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class JClassRepositoryImpl : JClassRepository {
+class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
-
-    @Autowired
-    lateinit var jdbi: Jdbi
 
     override fun getJClassBy(name: String, module: String): JClass? {
         val sql = "select id, name, module, loc, access from JClass where name='$name' and module='$module'"
@@ -100,6 +97,16 @@ class JClassRepositoryImpl : JClassRepository {
                     .mapTo(ClassRelationDTO::class.java)
                     .list()
         }.map { toClassRelation(it) }
+    }
+
+    override fun findFields(id: String): List<JField> {
+        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from _ClassFields where a='$id')"
+        return jdbi.withHandle<List<JField>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
+            it.createQuery(sql)
+                    .mapTo(JField::class.java)
+                    .list()
+        }
     }
 
     private fun toClassRelation(it: ClassRelationDTO): ClassRelation {

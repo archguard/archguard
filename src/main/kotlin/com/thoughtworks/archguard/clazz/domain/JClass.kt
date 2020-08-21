@@ -17,6 +17,7 @@ class JClass(val id: String, val name: String, val module: String) {
     var implements: List<JClass> = ArrayList()
     var dependencees: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
+    var fields: List<JField> = ArrayList()
     private val classType: MutableList<ClazzType> = mutableListOf()
 
     fun addClassType(clazzType: ClazzType) {
