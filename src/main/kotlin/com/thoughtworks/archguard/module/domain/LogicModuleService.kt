@@ -54,6 +54,7 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
 
     fun deleteLogicModule(id: String) {
         logicModuleRepository.delete(id)
+        couplingService.persistAllClassCouplingResults()
     }
 
     fun autoDefineLogicModule() {

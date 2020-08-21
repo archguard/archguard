@@ -107,5 +107,6 @@ class LogicModuleServiceTest {
         service.deleteLogicModule("id")
 
         verify(exactly = 1) { logicModuleRepository.delete("id") }
+        verify(exactly = 1) { couplingService.persistAllClassCouplingResults() }
     }
 }
