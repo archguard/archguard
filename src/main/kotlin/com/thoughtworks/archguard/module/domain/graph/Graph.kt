@@ -5,9 +5,17 @@ class GraphStore {
     private val edges = mutableListOf<Edge>()
 
     fun addEdge(caller: Node, callee: Node, num: Int) {
-        nodes.add(callee)
-        nodes.add(caller)
+        if (!contains(caller)) {
+            nodes.add(caller)
+        }
+        if (!contains(callee)) {
+            nodes.add(callee)
+        }
         edges.add(Edge(caller.getNodeId(), callee.getNodeId(), num))
+    }
+
+    private fun contains(caller: Node): Boolean {
+        return nodes.map { it.getNodeId() }.contains(caller.getNodeId())
     }
 
     fun getGraph(): Graph {
