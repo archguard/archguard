@@ -95,11 +95,13 @@ class LogicModuleController {
 
     @PostMapping("/calculate-coupling")
     @ResponseStatus(HttpStatus.OK)
+    @Deprecated("Remove in the future")
     fun calculateCoupling() {
         metricsService.calculateCouplingLegacy()
     }
 
     @GetMapping("/metrics")
+    @Deprecated("Remove in the future")
     fun getAllMetrics(): List<ModuleMetricsLegacy> {
         return metricsService.getAllMetricsLegacy()
     }

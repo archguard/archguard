@@ -1,22 +1,15 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.metrics.domain.MetricsService
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class LogicModuleService {
+class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val couplingService: CouplingService) {
     private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
-
-    @Autowired
-    lateinit var logicModuleRepository: LogicModuleRepository
-
-    @Autowired
-    lateinit var metricsService: MetricsService
 
     fun getLogicModules(): List<LogicModule> {
         return logicModuleRepository.getAll()
@@ -46,7 +39,7 @@ class LogicModuleService {
 
     fun updateLogicModule(id: String, logicModule: LogicModule) {
         logicModuleRepository.update(id, logicModule)
-        metricsService.calculateCouplingLegacy()
+        couplingService.persistAllClassCouplingResults()
     }
 
     fun createLogicModule(logicModule: LogicModule): String {
@@ -61,7 +54,6 @@ class LogicModuleService {
 
     fun deleteLogicModule(id: String) {
         logicModuleRepository.delete(id)
-        metricsService.calculateCouplingLegacy()
     }
 
     fun autoDefineLogicModule() {
@@ -69,7 +61,7 @@ class LogicModuleService {
         val defaultModules = logicModuleRepository.getAllSubModule()
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
-        metricsService.calculateCouplingLegacy()
+        couplingService.persistAllClassCouplingResults()
     }
 
 }

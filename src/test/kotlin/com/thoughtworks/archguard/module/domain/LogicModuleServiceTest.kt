@@ -1,13 +1,11 @@
 package com.thoughtworks.archguard.module.domain
 
-import com.thoughtworks.archguard.metrics.domain.MetricsService
-
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
-import io.mockk.MockKAnnotations.init
+import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.slot
@@ -19,17 +17,17 @@ import kotlin.test.assertEquals
 
 class LogicModuleServiceTest {
     @MockK
-    lateinit var logicModuleRepository: LogicModuleRepository
+    private lateinit var logicModuleRepository: LogicModuleRepository
 
     @MockK
-    lateinit var metricsService: MetricsService
+    private lateinit var couplingService: CouplingService
 
-    @InjectMockKs
-    var service: LogicModuleService = LogicModuleService()
+    private lateinit var service: LogicModuleService
 
     @BeforeEach
     fun setUp() {
-        init(this, relaxUnitFun = true)
+        MockKAnnotations.init(this, relaxUnitFun = true)
+        service = LogicModuleService(logicModuleRepository, couplingService)
     }
 
     @Test
@@ -100,7 +98,7 @@ class LogicModuleServiceTest {
 
         service.updateLogicModule("id", logicModule)
 
-        verify(exactly = 1) { metricsService.calculateCouplingLegacy() }
+        verify(exactly = 1) { couplingService.persistAllClassCouplingResults() }
         assertEquals(logicModule.name, slot.captured.name)
     }
 
@@ -109,6 +107,5 @@ class LogicModuleServiceTest {
         service.deleteLogicModule("id")
 
         verify(exactly = 1) { logicModuleRepository.delete("id") }
-        verify(exactly = 1) { metricsService.calculateCouplingLegacy() }
     }
 }
