@@ -15,7 +15,7 @@ class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
     fun autoDefine(projectId: Long) {
         val params = HashMap<String, Any>()
         params["projectId"] = projectId
-        RestTemplate().postForLocation("$url/logic-modules/{projectId}/auto-define", null, params)
+        RestTemplate().postForLocation("$url/{projectId}/logic-modules/auto-define", null, params)
         log.info("send auto define request to module service")
     }
 
