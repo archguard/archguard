@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archgard.scanner.infrastructure.client.ClassCouplingInfluxDBClient
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy

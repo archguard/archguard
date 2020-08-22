@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.infrastructure.client
+package com.thoughtworks.archguard.metrics.infrastructure
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
