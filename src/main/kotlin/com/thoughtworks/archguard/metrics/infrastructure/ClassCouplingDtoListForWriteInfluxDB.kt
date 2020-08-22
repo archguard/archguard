@@ -19,10 +19,10 @@ data class ClassCouplingDtoForWriteInfluxDB(val classCouplingNew: ClassCoupling,
                                             val outerInstability: Double,
                                             val outerCoupling: Double) {
     fun toInfluxDBRequestBody() : String {
-        return "class_coupling,class_name=$className,package_name=$packageName,module_name=$moduleName " +
-                "inner_fan_in=$innerFanIn,inner_fan_out=$innerFanOut,outer_fan_in=$outerFanIn,outer_fan_out=$outerFanOut," +
-                "inner_instability=${innerInstability.toBigDecimal().toPlainString()},inner_coupling=$innerCoupling,outer_instability=$outerInstability," +
-                "outer_coupling=$outerCoupling"
+        return "class_coupling,class_name=${classCouplingNew.jClassVO.name},package_name=${classCouplingNew.jClassVO.getPackageName()},module_name=${classCouplingNew.jClassVO.module} " +
+                "inner_fan_in=${classCouplingNew.innerFanIn},inner_fan_out=${classCouplingNew.innerFanOut},outer_fan_in=${classCouplingNew.outerFanIn},outer_fan_out=${classCouplingNew.outerFanOut}," +
+                "inner_instability=${classCouplingNew.innerInstability},inner_coupling=${classCouplingNew.innerCoupling},outer_instability=${classCouplingNew.outerInstability}," +
+                "outer_coupling=${classCouplingNew.outerCoupling}"
     }
 
     companion object {
