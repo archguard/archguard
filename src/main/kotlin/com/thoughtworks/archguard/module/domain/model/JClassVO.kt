@@ -46,5 +46,11 @@ class JClassVO(val name: String, val module: String) : LogicComponent() {
         return result
     }
 
+    fun getPackageName(): String {
+        if (!name.contains('.')) return ""
+        
+        val endIndex = name.indexOfLast { it == '.' }
+        return name.substring(0, endIndex)
+    }
 
 }
