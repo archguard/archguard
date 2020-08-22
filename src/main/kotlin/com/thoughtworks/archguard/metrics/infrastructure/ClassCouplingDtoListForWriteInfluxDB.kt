@@ -6,12 +6,12 @@ data class ClassCouplingDtoListForWriteInfluxDB(val classCouplings: List<ClassCo
     fun toRequestBody() = classCouplings.joinToString("\n") { ClassCouplingDtoForWriteInfluxDB.fromClassCoupling(it).toInfluxDBRequestBody() }
 }
 
-data class ClassCouplingDtoForWriteInfluxDB(val classCouplingNew: ClassCoupling) {
+data class ClassCouplingDtoForWriteInfluxDB(val classCoupling: ClassCoupling) {
     fun toInfluxDBRequestBody() : String {
-        return "class_coupling,class_name=${classCouplingNew.jClassVO.name},package_name=${classCouplingNew.jClassVO.getPackageName()},module_name=${classCouplingNew.jClassVO.module} " +
-                "inner_fan_in=${classCouplingNew.innerFanIn},inner_fan_out=${classCouplingNew.innerFanOut},outer_fan_in=${classCouplingNew.outerFanIn},outer_fan_out=${classCouplingNew.outerFanOut}," +
-                "inner_instability=${classCouplingNew.innerInstability},inner_coupling=${classCouplingNew.innerCoupling},outer_instability=${classCouplingNew.outerInstability}," +
-                "outer_coupling=${classCouplingNew.outerCoupling}"
+        return "class_coupling,class_name=${classCoupling.jClassVO.name},package_name=${classCoupling.jClassVO.getPackageName()},module_name=${classCoupling.jClassVO.module} " +
+                "inner_fan_in=${classCoupling.innerFanIn},inner_fan_out=${classCoupling.innerFanOut},outer_fan_in=${classCoupling.outerFanIn},outer_fan_out=${classCoupling.outerFanOut}," +
+                "inner_instability=${classCoupling.innerInstability},inner_coupling=${classCoupling.innerCoupling},outer_instability=${classCoupling.outerInstability}," +
+                "outer_coupling=${classCoupling.outerCoupling}"
     }
 
     companion object {
