@@ -40,7 +40,11 @@ class MetricsRepositoryImpl(
     @Transaction
     override fun insertAllClassCouplings(classCouplings: List<ClassCoupling>) {
         classCouplings.forEach { classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(it)) }
+        val request = fromClassCouplings(classCouplings)
     }
+
+    fun fromClassCouplings(classCouplings: List<ClassCoupling>) =
+            classCouplings.map { ClassCouplingDtoForWriteInfluxDB.fromClassCoupling(it) }.joinToString("\n")
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {
         val classCoupling = classCouplingDtoDaoForRead.findClassCoupling(jClassVO.id!!)
