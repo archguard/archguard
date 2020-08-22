@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
+import com.thoughtworks.archgard.scanner.infrastructure.client.ClassCouplingInfluxDBClient
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
@@ -14,6 +15,7 @@ class MetricsRepositoryImpl(
         val moduleMetricsDao: ModuleMetricsDao,
         val packageMetricsDao: PackageMetricsDao,
         val classMetricsDao: ClassMetricsDao,
+        val classCouplingInfluxDBClient: ClassCouplingInfluxDBClient,
         val classCouplingDtoDaoForInsert: ClassCouplingDtoDaoForInsert,
         val classCouplingDtoDaoForRead: ClassCouplingDtoDaoForRead
 ) : MetricsRepository {
@@ -40,11 +42,8 @@ class MetricsRepositoryImpl(
     @Transaction
     override fun insertAllClassCouplings(classCouplings: List<ClassCoupling>) {
         classCouplings.forEach { classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(it)) }
-        val request = fromClassCouplings(classCouplings)
+        classCouplingInfluxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(classCouplings).toRequestBody())
     }
-
-    fun fromClassCouplings(classCouplings: List<ClassCoupling>) =
-            classCouplings.map { ClassCouplingDtoForWriteInfluxDB.fromClassCoupling(it) }.joinToString("\n")
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {
         val classCoupling = classCouplingDtoDaoForRead.findClassCoupling(jClassVO.id!!)
