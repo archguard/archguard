@@ -12,7 +12,7 @@ class ClassCouplingInfluxDBClient {
 
     fun save(requestBody: String) {
         val url = "http://influxdb:8086"
-        RestTemplate().postForLocation("$url/api/v2/write?bucket=db0&precision=s", String::class.java, requestBody)
+        RestTemplate().postForObject("$url/api/v2/write?bucket=db0&precision=s", requestBody, Void::class.java)
         log.info("save class coupling to InfluxDB")
     }
 }
