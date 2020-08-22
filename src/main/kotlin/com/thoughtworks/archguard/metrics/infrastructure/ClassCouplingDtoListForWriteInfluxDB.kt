@@ -6,7 +6,8 @@ data class ClassCouplingDtoListForWriteInfluxDB(val classCouplings: List<ClassCo
     fun toRequestBody() = classCouplings.joinToString("\n") { ClassCouplingDtoForWriteInfluxDB.fromClassCoupling(it).toInfluxDBRequestBody() }
 }
 
-data class ClassCouplingDtoForWriteInfluxDB(val className: String,
+data class ClassCouplingDtoForWriteInfluxDB(val classCouplingNew: ClassCoupling,
+                                            val className: String,
                                             val packageName: String,
                                             val moduleName: String,
                                             val innerFanIn: Int,
@@ -26,7 +27,7 @@ data class ClassCouplingDtoForWriteInfluxDB(val className: String,
 
     companion object {
         fun fromClassCoupling(classCoupling: ClassCoupling): ClassCouplingDtoForWriteInfluxDB {
-            return ClassCouplingDtoForWriteInfluxDB(classCoupling.jClassVO.name, classCoupling.jClassVO.getPackageName(),
+            return ClassCouplingDtoForWriteInfluxDB(classCoupling, classCoupling.jClassVO.name, classCoupling.jClassVO.getPackageName(),
                     classCoupling.jClassVO.module, classCoupling.innerFanIn, classCoupling.innerFanOut,
                     classCoupling.outerFanIn, classCoupling.outerFanOut, classCoupling.innerInstability, classCoupling.innerCoupling,
                     classCoupling.outerInstability, classCoupling.outerCoupling)
