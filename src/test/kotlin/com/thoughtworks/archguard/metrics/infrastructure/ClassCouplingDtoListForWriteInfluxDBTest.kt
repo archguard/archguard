@@ -23,11 +23,7 @@ internal class ClassCouplingDtoListForWriteInfluxDBTest {
     @Test
     internal fun shouldConvertObjectToInfluxDBRequestBody() {
         val classCouplingDtoForWriteInfluxDB = ClassCouplingDtoForWriteInfluxDB(
-                ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 4, 0),
-                "net.aimeizi.dubbo.service.service.UserService",
-                "net.aimeizi.dubbo.service.service", "dubbo-service",
-                0, 0, 4, 0,
-                0.0, 0.0, 0.0, 0.75);
+                ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 4, 0))
 
         val toInfluxDBRequestBody = classCouplingDtoForWriteInfluxDB.toInfluxDBRequestBody();
 
