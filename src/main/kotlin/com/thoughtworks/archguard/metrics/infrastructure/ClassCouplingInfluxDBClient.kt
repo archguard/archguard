@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class ClassCouplingInfluxDBClient {
+class ClassCouplingInfluxDBClient(@Value("\${influxdb.url}") val url: String) {
     
     private val log = LoggerFactory.getLogger(ClassCouplingInfluxDBClient::class.java)
 
