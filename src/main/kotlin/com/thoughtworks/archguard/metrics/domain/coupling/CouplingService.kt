@@ -8,7 +8,10 @@ interface CouplingService {
     fun persistAllClassCouplingResults()
     fun getAllClassCouplingResults(): List<ClassCoupling>
     fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling
+    fun calculateClassCouplings(jClassVOs: List<JClassVO>): List<ClassCoupling>
+    fun calculatePackageDirectClassCouplings(packageVO: PackageVO): List<ClassCoupling>
     fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling
+    fun calculatePackageCouplings(packageVOs: List<PackageVO>): List<PackageCoupling>
     fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling
     fun calculateAllModuleCoupling(): List<ModuleCoupling>
 }

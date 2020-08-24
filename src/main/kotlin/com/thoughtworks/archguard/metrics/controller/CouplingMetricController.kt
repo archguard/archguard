@@ -23,6 +23,17 @@ class CouplingMetricController(val couplingService: CouplingService, val logicMo
         return couplingService.calculateClassCoupling(JClassVO(className, moduleName))
     }
 
+    @GetMapping("/package-class-list")
+    fun getPackageClassCouplingMetric(@RequestParam packageName: String, @RequestParam moduleName: String): List<ClassCoupling> {
+        return couplingService.calculatePackageDirectClassCouplings(PackageVO(packageName, moduleName))
+    }
+
+    @GetMapping("/package-list")
+    fun getPackagesCouplingMetric(@RequestParam packageNameList: String): List<PackageCoupling> {
+        val packageNames = packageNameList.split(",").map { it.trim() }
+        return packageNames.map { couplingService.calculatePackageCoupling(PackageVO.fromFullName(it)) }
+    }
+
     @GetMapping("/package")
     fun getPackageCouplingMetric(@RequestParam packageName: String, @RequestParam moduleName: String): PackageCoupling {
         return couplingService.calculatePackageCoupling(PackageVO(packageName, moduleName))

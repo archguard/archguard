@@ -27,9 +27,14 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling {
-        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
-                ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
-        val classCoupling = metricsRepository.getClassCoupling(jClass.toVO())
+        val jClassVOHasId = if (jClassVO.id != null) {
+            jClassVO
+        } else {
+            val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                    ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
+            jClass.toVO()
+        }
+        val classCoupling = metricsRepository.getClassCoupling(jClassVOHasId)
         if (classCoupling != null) {
             return classCoupling
         }
@@ -37,6 +42,14 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val logicModules = logicModuleRepository.getAll()
         val classDependency = dependencyService.getAllClassDependencies()
         return getClassCouplingWithData(jClassVO, classDependency, logicModules)
+    }
+
+    override fun calculateClassCouplings(jClassVOs: List<JClassVO>): List<ClassCoupling> {
+        return jClassVOs.map { calculateClassCoupling(it) }
+    }
+
+    override fun calculatePackageCouplings(packageVOs: List<PackageVO>): List<PackageCoupling> {
+        return packageVOs.map { calculatePackageCoupling(it) }
     }
 
     override fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling {
@@ -51,6 +64,12 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val classDependency = dependencyService.getAllClassDependencies()
         val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return PackageCoupling.of(packageVO, classCouplings)
+    }
+
+    override fun calculatePackageDirectClassCouplings(packageVO: PackageVO): List<ClassCoupling> {
+        val classes = jClassRepository.getAll()
+        val classesDirectBelongToPackage = classes.filter { packageVO.directContainClass(it.toVO()) }
+        return calculateClassCouplings(classesDirectBelongToPackage.map { it.toVO() })
     }
 
     override fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling {

@@ -19,4 +19,15 @@ internal class PackageVOTest {
         assertThat(packageVO.containClass(jClassVO4)).isFalse()
         assertThat(packageVO.containClass(jClassVO5)).isFalse()
     }
+
+    @Test
+    internal fun `should support init from from fullname`() {
+        val packageVO = PackageVO.fromFullName("p1.abc.def.ghi")
+        assertThat(packageVO.packageName).isEqualTo("abc.def.ghi")
+        assertThat(packageVO.module).isEqualTo("p1")
+
+        val packageVOWithEmptyPackage = PackageVO.fromFullName("p1")
+        assertThat(packageVOWithEmptyPackage.packageName).isEqualTo("")
+        assertThat(packageVOWithEmptyPackage.module).isEqualTo("p1")
+    }
 }
