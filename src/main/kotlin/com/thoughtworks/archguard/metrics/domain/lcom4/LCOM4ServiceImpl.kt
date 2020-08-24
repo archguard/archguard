@@ -6,13 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class LCOM4ServiceImpl : LCOM4Service {
-    override fun calculateLCOM4(jClass: JClass): Int {
-        val lcom4Graph = getLCOM4Graph(jClass)
-        // TODO
-        return 0
-    }
-
-    fun getLCOM4Graph(jClass: JClass): GraphStore {
+    override fun getLCOM4Graph(jClass: JClass): GraphStore {
         val graphStore: GraphStore = GraphStore()
         val methods = jClass.methods
         methods.forEach { method ->

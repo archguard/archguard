@@ -42,6 +42,11 @@ class GraphStore {
     fun getGraph(): Graph {
         return Graph(nodes, edges)
     }
+
+    // TODO
+    fun getConnectivityCount(): Int {
+        return 1
+    }
 }
 
 data class Graph(val nodes: List<Node>, val edges: List<Edge>)
