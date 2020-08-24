@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.metrics.domain.abc
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.method.domain.JMethodRepository
-import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import org.springframework.stereotype.Service
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class AbcServiceImpl(val jMethodRepository: JMethodRepository) : AbcService {
     override fun calculateAbc(jClass: JClass): Int {
-        val allMethod = jClass.methods.map { jMethodRepository.findMethodCallees(it.id) }.flatten().map { JMethodVO.fromJMethod(it) }
+        val allMethod = jClass.methods.map { jMethodRepository.findMethodCallees(it.id) }.flatten().map { it.toVO() }
         return allMethod.asSequence().map { it.clazz }.filter { it.module != "null" }.filter { it.module != jClass.module }.toSet().count()
     }
 }

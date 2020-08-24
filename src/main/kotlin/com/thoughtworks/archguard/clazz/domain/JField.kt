@@ -1,3 +1,9 @@
 package com.thoughtworks.archguard.clazz.domain
 
-data class JField(val id: String, val name: String, val type: String)
+import com.thoughtworks.archguard.module.domain.graph.Node
+
+data class JField(val id: String, val name: String, val type: String) : Node {
+    override fun getNodeId(): String {
+        return id
+    }
+}

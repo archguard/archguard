@@ -40,7 +40,7 @@ class GraphStore {
     }
 
     fun getGraph(): Graph {
-        return Graph(nodes.distinctBy { it.getNodeId() }, edges)
+        return Graph(nodes, edges)
     }
 }
 

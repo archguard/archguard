@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.method.domain
 
 import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.module.domain.model.JMethodVO
 
 class JMethod(val id: String, val name: String, val clazz: String, val module: String, val returnType: String, val argumentTypes: List<String>) {
     var callees: List<JMethod> = ArrayList()
@@ -16,6 +17,12 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
 
     fun isAbstract(): Boolean {
         return methodTypes.contains(MethodType.ABSTRACT_METHOD)
+    }
+
+    fun toVO(): JMethodVO {
+        val jMethodVO = JMethodVO(name, clazz, module, returnType, argumentTypes)
+        jMethodVO.id = id
+        return jMethodVO
     }
 }
 

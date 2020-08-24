@@ -150,6 +150,7 @@ class MetricsServiceImpl(
         jClass.fields = jClassRepository.findFields(jClass.id)
         val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
+        methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
         return locm4Service.calculateLCOM4(jClass)
     }
