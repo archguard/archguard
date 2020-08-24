@@ -1,9 +1,11 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.thoughtworks.archguard.module.domain.graph.Node
+
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
-class JClassVO(val name: String, val module: String) : LogicComponent() {
+class JClassVO(val name: String, val module: String) : LogicComponent(), Node {
     var id: String? = null
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
@@ -28,6 +30,10 @@ class JClassVO(val name: String, val module: String) : LogicComponent() {
         return "JClassVO(name='$name', module='$module')"
     }
 
+    override fun getNodeId(): String {
+        return id!!
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -48,7 +54,7 @@ class JClassVO(val name: String, val module: String) : LogicComponent() {
 
     fun getPackageName(): String {
         if (!name.contains('.')) return ""
-        
+
         val endIndex = name.indexOfLast { it == '.' }
         return name.substring(0, endIndex)
     }
