@@ -152,6 +152,6 @@ class MetricsServiceImpl(
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
-        return locm4Service.calculateLCOM4(jClass)
+        return locm4Service.getLCOM4Graph(jClass).getConnectivityCount()
     }
 }
