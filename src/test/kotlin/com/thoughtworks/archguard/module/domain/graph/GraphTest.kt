@@ -23,9 +23,11 @@ class GraphTest {
         graphStore.addEdge(logicModule1, logicModule2, 3)
         graphStore.addEdge(logicModule1, logicModule3, 2)
         graphStore.addEdge(logicModule2, logicModule3, 2)
+        graphStore.addEdge(logicModule1, logicModule2, 2)
 
         val graph = graphStore.getGraph()
         assertThat(graph.nodes.size).isEqualTo(3)
         assertThat(graph.edges.size).isEqualTo(3)
+        assertThat(graph.edges).contains(Edge("id1", "id2", 5), Edge("id1", "id3", 2), Edge("id2", "id3", 2))
     }
 }

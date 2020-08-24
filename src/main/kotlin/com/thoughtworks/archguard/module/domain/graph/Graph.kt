@@ -4,6 +4,12 @@ class GraphStore {
     private val nodes = mutableListOf<Node>()
     private val edges = mutableListOf<Edge>()
 
+    @Synchronized
+    fun addEdge(caller: Node, callee: Node) {
+        addEdge(caller, callee, 1)
+    }
+
+    @Synchronized
     fun addEdge(caller: Node, callee: Node, num: Int) {
         if (!contains(caller)) {
             nodes.add(caller)
@@ -11,7 +17,22 @@ class GraphStore {
         if (!contains(callee)) {
             nodes.add(callee)
         }
-        edges.add(Edge(caller.getNodeId(), callee.getNodeId(), num))
+        if (!existEdge(caller, callee)) {
+            edges.add(Edge(caller.getNodeId(), callee.getNodeId(), num))
+            return
+        }
+        updateEdgeByAddNum(caller, callee, num)
+    }
+
+    private fun updateEdgeByAddNum(caller: Node, callee: Node, num: Int) {
+        val oldEdge = edges.first { it.a == caller.getNodeId() && it.b == callee.getNodeId() }
+        val newEdge = Edge(caller.getNodeId(), callee.getNodeId(), num + oldEdge.num)
+        edges.remove(oldEdge)
+        edges.add(newEdge)
+    }
+
+    private fun existEdge(caller: Node, callee: Node): Boolean {
+        return edges.any { it.a == caller.getNodeId() && it.b == callee.getNodeId() }
     }
 
     private fun contains(caller: Node): Boolean {
