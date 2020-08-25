@@ -24,10 +24,6 @@ class CodeTree {
         trees.forEach { it.type = TypeEnum.SUB_MODULE }
     }
 
-    fun getHeadNodes(): Set<Node> {
-        return trees
-    }
-
     fun getNextPackagesOrClasses(node: Node): Set<Node> {
         return node.children
     }
