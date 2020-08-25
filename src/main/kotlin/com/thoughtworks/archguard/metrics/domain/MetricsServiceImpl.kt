@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain
 
+import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.method.domain.JMethodRepository
@@ -42,7 +43,7 @@ class MetricsServiceImpl(
         val nocService: NocService,
         val abcService: AbcService,
         val couplingService: CouplingService,
-        val locm4Service: LCOM4Service,
+        val lcom4Service: LCOM4Service,
         val ditService: DitService
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
@@ -92,6 +93,48 @@ class MetricsServiceImpl(
                 ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
         jClass.methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
         return abcService.calculateAbc(jClass)
+    }
+
+    override fun calculateAllNoc(): List<ClassNoc> {
+        val jClasses = jClassRepository.getJClassesHasModules()
+        val classNocList = mutableListOf<ClassNoc>()
+        jClasses.forEach { classNocList.add(ClassNoc(it.toVO(), nocService.getNoc(it))) }
+        return classNocList
+    }
+
+    override fun calculateAllDit(): List<ClassDit> {
+        val jClasses = jClassRepository.getJClassesHasModules()
+        val classDitList = mutableListOf<ClassDit>()
+        jClasses.forEach { classDitList.add(ClassDit(it.toVO(), ditService.getDepthOfInheritance(it))) }
+        return classDitList
+    }
+
+    override fun calculateAllAbc(): List<ClassAbc> {
+        val jClasses = jClassRepository.getJClassesHasModules()
+        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(it.module, it.name) }
+
+        val classAbcList = mutableListOf<ClassAbc>()
+        jClasses.forEach { classAbcList.add(ClassAbc(it.toVO(), abcService.calculateAbc(it))) }
+        return classAbcList
+    }
+
+    override fun calculateAllLCOM4(): List<ClassLCOM4> {
+        val jClasses = jClassRepository.getJClassesHasModules()
+        jClasses.forEach { prepareJClassBasicDataForLCOM4(it) }
+
+        val classLCOM4List = mutableListOf<ClassLCOM4>()
+        jClasses.forEach { classLCOM4List.add(ClassLCOM4(it.toVO(), lcom4Service.getLCOM4Graph(it).getConnectivityCount())) }
+        return classLCOM4List
+    }
+
+    override fun calculateAllModuleDfms(): List<ModuleDfms> {
+        val logicModules = logicModuleRepository.getAll()
+        return logicModules.map { ModuleDfms.of(it, couplingService.calculateModuleCoupling(it), getModuleAbstractMetric(it.name)) }
+    }
+
+    override fun calculateAllClassDfms(): List<ClassDfms> {
+        val jClasses = jClassRepository.getJClassesHasModules()
+        return jClasses.map { getClassDfms(it.toVO()) }
     }
 
     override fun getClassDfms(jClassVO: JClassVO): ClassDfms {
@@ -150,12 +193,16 @@ class MetricsServiceImpl(
     override fun getClassLCOM4(jClassVO: JClassVO): GraphStore {
         val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
+        prepareJClassBasicDataForLCOM4(jClass)
+        return lcom4Service.getLCOM4Graph(jClass)
+    }
+
+    private fun prepareJClassBasicDataForLCOM4(jClass: JClass) {
         jClass.fields = jClassRepository.findFields(jClass.id)
         val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
-        return locm4Service.getLCOM4Graph(jClass)
     }
 
     override fun getClassDit(jClassVO: JClassVO): Int {

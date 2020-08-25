@@ -37,4 +37,11 @@ interface MetricsService {
 
     fun getClassLCOM4(jClassVO: JClassVO): GraphStore
 
+    fun calculateAllNoc(): List<ClassNoc>
+    fun calculateAllDit(): List<ClassDit>
+    fun calculateAllAbc(): List<ClassAbc>
+    fun calculateAllLCOM4(): List<ClassLCOM4>
+    fun calculateAllClassDfms(): List<ClassDfms>
+    fun calculateAllModuleDfms(): List<ModuleDfms>
+
 }
