@@ -12,8 +12,13 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 
 interface MetricsService {
+    @Deprecated("")
     fun calculateCouplingLegacy()
+
+    @Deprecated("")
     fun getAllMetricsLegacy(): List<ModuleMetricsLegacy>
+
+    @Deprecated("")
     fun getModuleMetricsLegacy(): List<ModuleMetricsLegacy>
 
     fun getClassAbstractMetric(jClassVO: JClassVO): ClassAbstractRatio

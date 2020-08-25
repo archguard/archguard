@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.metrics.domain.coupling
 
 import org.nield.kotlinstatistics.median
 
+@Deprecated("")
 data class ModuleMetricsLegacy(
         var id: Long?,
         var moduleName: String,

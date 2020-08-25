@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
+@Deprecated("")
 data class ClassMetricsLegacy(
         var id: Long?,
         var packageId: Long,
