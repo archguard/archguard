@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/{projectId}/metric/coupling")
+@RequestMapping("/projects/{projectId}/metric/coupling")
 class CouplingMetricController(val couplingService: CouplingService, val logicModuleRepository: LogicModuleRepository) {
     @GetMapping("/class")
     fun getClassCouplingMetric(@PathVariable("projectId") projectId: Long,

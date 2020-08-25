@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/{projectId}/configures")
+@RequestMapping("/projects/{projectId}/configures")
 class ConfigController {
     @Autowired
     private lateinit var service: ConfigureService

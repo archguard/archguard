@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/{projectId}/code-tree")
+@RequestMapping("/projects/{projectId}/code-tree")
 class CodeTreeController(val codeTreeService: InitCodeTreeService) {
     @GetMapping("/")
     fun getCodeTree(@PathVariable("projectId") projectId: Long): ResponseEntity<CodeTree> {
