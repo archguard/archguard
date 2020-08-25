@@ -21,6 +21,7 @@ import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
+import com.thoughtworks.archguard.module.domain.graph.GraphStore
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
@@ -144,7 +145,7 @@ class MetricsServiceImpl(
                 .map { ModuleMetricsLegacy.of(it.key, it.value) }
     }
 
-    override fun getClassLCOM4(jClassVO: JClassVO): Int {
+    override fun getClassLCOM4(jClassVO: JClassVO): GraphStore {
         val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
         jClass.fields = jClassRepository.findFields(jClass.id)
@@ -152,6 +153,6 @@ class MetricsServiceImpl(
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
-        return locm4Service.getLCOM4Graph(jClass).getConnectivityCount()
+        return locm4Service.getLCOM4Graph(jClass)
     }
 }

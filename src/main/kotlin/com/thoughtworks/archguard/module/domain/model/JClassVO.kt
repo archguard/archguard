@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.thoughtworks.archguard.module.domain.graph.Node
 
 /**
@@ -30,6 +31,7 @@ class JClassVO(val name: String, val module: String) : LogicComponent(), Node {
         return "JClassVO(name='$name', module='$module')"
     }
 
+    @JsonIgnore
     override fun getNodeId(): String {
         return id!!
     }

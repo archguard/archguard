@@ -7,6 +7,7 @@ import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
+import com.thoughtworks.archguard.module.domain.graph.GraphStore
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 
@@ -27,6 +28,6 @@ interface MetricsService {
     fun getPackageDfms(packageVO: PackageVO): PackageDfms
     fun getModuleDfms(moduleName: String): ModuleDfms
 
-    fun getClassLCOM4(jClassVO: JClassVO): Int
+    fun getClassLCOM4(jClassVO: JClassVO): GraphStore
 
 }
