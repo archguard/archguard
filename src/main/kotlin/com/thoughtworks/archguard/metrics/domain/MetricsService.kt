@@ -22,6 +22,8 @@ interface MetricsService {
 
     fun getClassNoc(jClassVO: JClassVO): Int
 
+    fun getClassDit(jClassVO: JClassVO): Int
+
     fun getClassAbc(jClassVO: JClassVO): Int
 
     fun getClassDfms(jClassVO: JClassVO): ClassDfms

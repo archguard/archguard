@@ -4,15 +4,13 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class DitServiceTest {
-    @InjectMockKs
-    var service = DitService()
+    private lateinit var service: DitServiceImpl
 
     @MockK
     private lateinit var repo: JClassRepository
@@ -20,6 +18,7 @@ class DitServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
+        service = DitServiceImpl(repo)
     }
 
     @Test

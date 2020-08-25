@@ -16,6 +16,7 @@ import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
+import com.thoughtworks.archguard.metrics.domain.dit.DitService
 import com.thoughtworks.archguard.metrics.domain.lcom4.LCOM4Service
 import com.thoughtworks.archguard.metrics.domain.noc.NocService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
@@ -41,7 +42,8 @@ class MetricsServiceImpl(
         val nocService: NocService,
         val abcService: AbcService,
         val couplingService: CouplingService,
-        val locm4Service: LCOM4Service
+        val locm4Service: LCOM4Service,
+        val ditService: DitService
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
@@ -154,5 +156,11 @@ class MetricsServiceImpl(
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
         return locm4Service.getLCOM4Graph(jClass)
+    }
+
+    override fun getClassDit(jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+                ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
+        return ditService.getDepthOfInheritance(jClass)
     }
 }
