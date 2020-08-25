@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.domain.graph
 
 class GraphStore {
     private val nodes = mutableListOf<Node>()
-    private val edges = mutableListOf<Edge>()
+    private var edges = mutableListOf<Edge>()
 
     @Synchronized
     fun addEdge(caller: Node, callee: Node) {
@@ -43,14 +43,22 @@ class GraphStore {
         return Graph(nodes, edges)
     }
 
-    // TODO
     fun getConnectivityCount(): Int {
-        return 1
+        return DfsService(this.toUndirectedGraph()).getConnectivityCount()
+    }
+
+    fun toUndirectedGraph(): Graph {
+        val undirectedEdges: MutableList<Edge> = mutableListOf()
+        edges.forEach { undirectedEdges.add(it) }
+        edges.forEach { undirectedEdges.add(Edge(it.b, it.a, it.num)) }
+        // 无向图没有权重
+        undirectedEdges.forEach { it.num = 1 }
+        return Graph(nodes, undirectedEdges.toSet().toList())
     }
 }
 
 data class Graph(val nodes: List<Node>, val edges: List<Edge>)
-data class Edge(val a: String, val b: String, val num: Int)
+data class Edge(val a: String, val b: String, var num: Int)
 interface Node {
     fun getNodeId(): String
 }

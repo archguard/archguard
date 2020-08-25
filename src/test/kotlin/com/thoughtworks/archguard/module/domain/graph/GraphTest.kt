@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.module.domain.graph
 
+import com.thoughtworks.archguard.clazz.domain.JField
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.assertj.core.api.Assertions.assertThat
@@ -29,5 +30,21 @@ class GraphTest {
         assertThat(graph.nodes.size).isEqualTo(3)
         assertThat(graph.edges.size).isEqualTo(3)
         assertThat(graph.edges).contains(Edge("id1", "id2", 5), Edge("id1", "id3", 2), Edge("id2", "id3", 2))
+    }
+
+    @Test
+    internal fun `should to undirected graph`() {
+        val jField1 = JField("f1", "f1", "String")
+        val jField2 = JField("f2", "f2", "Int")
+        val jField3 = JField("f3", "f3", "Double")
+        val jField4 = JField("f4", "f4", "Double")
+
+        val graph = GraphStore()
+        graph.addEdge(jField1, jField2)
+        graph.addEdge(jField2, jField1)
+        graph.addEdge(jField3, jField4)
+        assertThat(graph.getGraph().edges.size).isEqualTo(3)
+        assertThat(graph.toUndirectedGraph().edges.size).isEqualTo(4)
+
     }
 }
