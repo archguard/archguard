@@ -2,12 +2,7 @@ package com.thoughtworks.archguard.module.infrastructure
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.LogicModuleStatus
-import com.thoughtworks.archguard.module.domain.model.ModuleMemberType
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.model.*
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -91,13 +86,14 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun getAllSubModule(): List<SubModule> {
-        val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> {handle ->
-            handle.createQuery("select distinct module from JClass")
+    override fun getAllSubModule(projectId: Long): List<SubModule> {
+        val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
+            handle.createQuery("select distinct module from JClass where project_id = :projectId")
+                    .bind("projectId", projectId)
                     .mapTo(String::class.java)
                     .list()
-                    .filter {  it != "null" }
-                    .map {  SubModule(it) }
+                    .filter { it != "null" }
+                    .map { SubModule(it) }
         }
         val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
             handle.createQuery("select distinct module from JMethod")

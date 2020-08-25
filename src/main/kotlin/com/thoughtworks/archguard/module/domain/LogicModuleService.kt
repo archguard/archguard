@@ -57,9 +57,9 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
         couplingService.persistAllClassCouplingResults()
     }
 
-    fun autoDefineLogicModule() {
+    fun autoDefineLogicModule(projectId: Long) {
         logicModuleRepository.deleteAll()
-        val defaultModules = logicModuleRepository.getAllSubModule()
+        val defaultModules = logicModuleRepository.getAllSubModule(projectId)
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
         couplingService.persistAllClassCouplingResults()

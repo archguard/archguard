@@ -85,7 +85,7 @@ class LogicModuleController {
     @PostMapping("{projectId}/auto-define")
     @ResponseStatus(HttpStatus.OK)
     fun autoDefineLogicModule(@PathVariable projectId: Long) {
-        logicModuleService.autoDefineLogicModule()
+        logicModuleService.autoDefineLogicModule(projectId)
     }
 
     @GetMapping("/dependencies")

@@ -14,6 +14,6 @@ interface LogicModuleRepository {
     fun delete(id: String)
     fun deleteAll()
     fun saveAll(logicModules: List<LogicModule>)
-    fun getAllSubModule(): List<SubModule>
+    fun getAllSubModule(projectId: Long): List<SubModule>
     fun getParentClassId(id: String): List<String>
 }

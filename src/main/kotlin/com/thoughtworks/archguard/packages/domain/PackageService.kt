@@ -13,8 +13,8 @@ class PackageService {
     @Autowired
     lateinit var moduleRepository: LogicModuleRepository
 
-    fun getPackageDependencies(): List<ModulePackage> {
-        return moduleRepository.getAllSubModule().map { it.name }.map {
+    fun getPackageDependencies(projectId: Long): List<ModulePackage> {
+        return moduleRepository.getAllSubModule(projectId).map { it.name }.map {
             val dependencies = packageRepository.getPackageDependenceByModule(it)
             ModulePackage(it, getPackageGraph(dependencies))
         }
