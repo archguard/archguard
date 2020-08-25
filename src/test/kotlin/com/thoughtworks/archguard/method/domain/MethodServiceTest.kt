@@ -32,15 +32,16 @@ class MethodServiceTest {
     @Test
     internal fun `should get method callers`() {
         //given
+        val projectId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
         every { callerService.findCallers(target, deep) } returns target
-        val result = service.findMethodCallers(moduleName, clazzName, methodName, deep)
+        val result = service.findMethodCallers(projectId, moduleName, clazzName, methodName, deep)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
@@ -48,15 +49,16 @@ class MethodServiceTest {
     @Test
     fun `should get method callees`() {
         //given
+        val projectId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
         every { calleeService.findCallees(target, deep, true) } returns target
-        val result = service.findMethodCallees(moduleName, clazzName, methodName, deep, true)
+        val result = service.findMethodCallees(projectId, moduleName, clazzName, methodName, deep, true)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
@@ -64,16 +66,17 @@ class MethodServiceTest {
     @Test
     fun `should get method invokes`() {
         //given
+        val projectId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(moduleName, clazzName, methodName) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
         every { calleeService.findCallees(target, deep, true) } returns target
         every { callerService.findCallers(target, deep) } returns target
-        val result = service.findMethodInvokes(moduleName, clazzName, methodName, deep, deep, true)
+        val result = service.findMethodInvokes(projectId, moduleName, clazzName, methodName, deep, deep, true)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }

@@ -81,24 +81,31 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun findMethodByModuleAndClazzAndName(moduleName: String, clazzName: String, methodName: String): List<JMethod> {
+    override fun findMethodByModuleAndClazzAndName(projectId: Long, moduleName: String, clazzName: String, methodName: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "name='$methodName' AND clzname='$clazzName' AND module='$moduleName'"
+                "project_id=:projectId AND name=:methodName AND clzname=:clazzName AND module=:moduleName"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
+                    .bind("projectId", projectId)
+                    .bind("methodName", methodName)
+                    .bind("clazzName", clazzName)
+                    .bind("moduleName", moduleName)
                     .mapTo(JMethodDto::class.java)
                     .map { it.toJMethod() }
                     .list()
         }
     }
 
-    override fun findMethodByClazzAndName(clazzName: String, methodName: String): List<JMethod> {
+    override fun findMethodByClazzAndName(projectId: Long, clazzName: String, methodName: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "name='$methodName' AND clzname='$clazzName'"
+                "project_id=:projectId AND name=:methodName AND clzname=:clazzName"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
+                    .bind("projectId", projectId)
+                    .bind("methodName", methodName)
+                    .bind("clazzName", clazzName)
                     .mapTo(JMethodDto::class.java)
                     .map { it.toJMethod() }
                     .list()

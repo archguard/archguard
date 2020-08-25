@@ -8,8 +8,8 @@ interface JMethodRepository {
     fun findMethodCallers(id: String): List<JMethod>
     fun findMethodFields(id: String): List<JField>
     fun findMethodImplements(id: String, name: String): List<JMethod>
-    fun findMethodByModuleAndClazzAndName(moduleName: String, clazzName: String, methodName: String): List<JMethod>
+    fun findMethodByModuleAndClazzAndName(projectId:Long, moduleName: String, clazzName: String, methodName: String): List<JMethod>
 
     // FIXME: 为什么允许前端传入这样的数据？
-    fun findMethodByClazzAndName(clazzName: String, methodName: String): List<JMethod>
+    fun findMethodByClazzAndName(projectId:Long, clazzName: String, methodName: String): List<JMethod>
 }
