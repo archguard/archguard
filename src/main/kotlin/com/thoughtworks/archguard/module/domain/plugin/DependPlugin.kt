@@ -5,6 +5,6 @@ import com.thoughtworks.archguard.module.domain.model.JMethodVO
 
 interface DependPlugin : Plugin {
 
-    fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>)
+    fun fixMethodDependencies(projectId:Long, methodDependencies: List<Dependency<JMethodVO>>)
             : List<Dependency<JMethodVO>>
 }

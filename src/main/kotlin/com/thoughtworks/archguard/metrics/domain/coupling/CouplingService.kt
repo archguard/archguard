@@ -5,13 +5,13 @@ import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 
 interface CouplingService {
-    fun persistAllClassCouplingResults()
-    fun getAllClassCouplingResults(): List<ClassCoupling>
-    fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling
-    fun calculateClassCouplings(jClassVOs: List<JClassVO>): List<ClassCoupling>
-    fun calculatePackageDirectClassCouplings(packageVO: PackageVO): List<ClassCoupling>
-    fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling
-    fun calculatePackageCouplings(packageVOs: List<PackageVO>): List<PackageCoupling>
-    fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling
-    fun calculateAllModuleCoupling(): List<ModuleCoupling>
+    fun persistAllClassCouplingResults(projectId:Long)
+    fun getAllClassCouplingResults(projectId:Long): List<ClassCoupling>
+    fun calculateClassCoupling(projectId:Long, jClassVO: JClassVO): ClassCoupling
+    fun calculateClassCouplings(projectId:Long,jClassVOs: List<JClassVO>): List<ClassCoupling>
+    fun calculatePackageDirectClassCouplings(projectId:Long, packageVO: PackageVO): List<ClassCoupling>
+    fun calculatePackageCoupling(projectId:Long, packageVO: PackageVO): PackageCoupling
+    fun calculatePackageCouplings(projectId:Long, packageVOs: List<PackageVO>): List<PackageCoupling>
+    fun calculateModuleCoupling(projectId:Long, logicModule: LogicModule): ModuleCoupling
+    fun calculateAllModuleCoupling(projectId:Long): List<ModuleCoupling>
 }

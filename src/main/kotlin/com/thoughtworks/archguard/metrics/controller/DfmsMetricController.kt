@@ -6,26 +6,28 @@ import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/metric/dfms")
+@RequestMapping("/{projectId}/metric/dfms")
 class DfmsMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassAbstractMetric(@RequestParam className: String, @RequestParam moduleName: String): ClassDfms {
-        return metricsService.getClassDfms(JClassVO(className, moduleName))
+    fun getClassAbstractMetric(@PathVariable("projectId") projectId: Long,
+                               @RequestParam className: String,
+                               @RequestParam moduleName: String): ClassDfms {
+        return metricsService.getClassDfms(projectId, JClassVO(className, moduleName))
     }
 
     @GetMapping("/package")
-    fun getPackageAbstractMetric(@RequestParam packageName: String, @RequestParam moduleName: String): PackageDfms {
-        return metricsService.getPackageDfms(PackageVO(packageName, moduleName))
+    fun getPackageAbstractMetric(@PathVariable("projectId") projectId: Long,
+                                 @RequestParam packageName: String,
+                                 @RequestParam moduleName: String): PackageDfms {
+        return metricsService.getPackageDfms(projectId, PackageVO(packageName, moduleName))
     }
 
     @GetMapping("/module")
-    fun getModuleAbstractMetric(@RequestParam moduleName: String): ModuleDfms {
-        return metricsService.getModuleDfms(moduleName)
+    fun getModuleAbstractMetric(@PathVariable("projectId") projectId: Long,
+                                @RequestParam moduleName: String): ModuleDfms {
+        return metricsService.getModuleDfms(projectId, moduleName)
     }
 }

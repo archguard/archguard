@@ -30,6 +30,7 @@ class DobboPluginTest {
     @Test
     internal fun should_fix_methodDependencies_not_with_xmlConfig() {
         // given
+        val projectId:Long = 1
         val class1 = JClass("any", "caller", "module1")
         val class2 = JClass("any", "callee", "module2")
         class2.addClassType(ClazzType.INTERFACE)
@@ -43,12 +44,12 @@ class DobboPluginTest {
 
         val methodDependencies = listOf(Dependency(method1, method2))
 
-        every { jClassRepository.getJClassesHasModules() } returns listOf(class2)
+        every { jClassRepository.getJClassesHasModules(projectId) } returns listOf(class2)
         every { jClassRepository.findClassImplements(class2.name, class2.module) } returns listOf(class3, class4)
 
 
         // when
-        val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(methodDependencies)
+        val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(projectId, methodDependencies)
 
         // then
         assertEquals(2, fixedMethodDependencies.size)

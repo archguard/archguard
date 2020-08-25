@@ -9,11 +9,7 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisServi
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
-import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
-import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
-import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
-import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.*
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
@@ -24,11 +20,7 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.graph.GraphStore
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.PackageVO
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.module.domain.model.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -48,9 +40,9 @@ class MetricsServiceImpl(
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
-    override fun calculateCouplingLegacy() {
-        val modules = logicModuleRepository.getAll()
-        val classDependency = dependencyService.getAllClassDependencies()
+    override fun calculateCouplingLegacy(projectId: Long) {
+        val modules = logicModuleRepository.getAllByProjectId(projectId)
+        val classDependency = dependencyService.getAllClassDependencies(projectId)
 
         val classMetrics = getClassMetrics(classDependency, modules)
         val moduleMetrics = groupPackageMetrics(groupToPackage(classMetrics), modules)
@@ -58,14 +50,14 @@ class MetricsServiceImpl(
         metricsRepository.insert(moduleMetrics)
     }
 
-    override fun getAllMetricsLegacy(): List<ModuleMetricsLegacy> {
-        val modules = logicModuleRepository.getAllByShowStatus(true)
+    override fun getAllMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
+        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findAllMetrics(moduleNames)
     }
 
-    override fun getModuleMetricsLegacy(): List<ModuleMetricsLegacy> {
-        val modules = logicModuleRepository.getAllByShowStatus(true)
+    override fun getModuleMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
+        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findModuleMetrics(moduleNames)
     }
@@ -78,8 +70,8 @@ class MetricsServiceImpl(
         return ClassAbstractRatio.fromJClass(jClass)
     }
 
-    override fun getPackageAbstractMetric(packageVO: PackageVO): PackageAbstractRatio {
-        return abstractAnalysisService.calculatePackageAbstractRatio(packageVO)
+    override fun getPackageAbstractMetric(projectId: Long, packageVO: PackageVO): PackageAbstractRatio {
+        return abstractAnalysisService.calculatePackageAbstractRatio(projectId, packageVO)
     }
 
     override fun getClassNoc(jClassVO: JClassVO): Int {
@@ -137,22 +129,22 @@ class MetricsServiceImpl(
         return jClasses.map { getClassDfms(it.toVO()) }
     }
 
-    override fun getClassDfms(jClassVO: JClassVO): ClassDfms {
-        return ClassDfms.of(jClassVO, couplingService.calculateClassCoupling(jClassVO), getClassAbstractMetric(jClassVO))
+    override fun getClassDfms(projectId: Long, jClassVO: JClassVO): ClassDfms {
+        return ClassDfms.of(jClassVO, couplingService.calculateClassCoupling(projectId, jClassVO), getClassAbstractMetric(jClassVO))
     }
 
-    override fun getPackageDfms(packageVO: PackageVO): PackageDfms {
-        return PackageDfms.of(packageVO, couplingService.calculatePackageCoupling(packageVO), getPackageAbstractMetric(packageVO))
+    override fun getPackageDfms(projectId: Long, packageVO: PackageVO): PackageDfms {
+        return PackageDfms.of(packageVO, couplingService.calculatePackageCoupling(projectId, packageVO), getPackageAbstractMetric(projectId, packageVO))
     }
 
-    override fun getModuleDfms(moduleName: String): ModuleDfms {
+    override fun getModuleDfms(projectId: Long, moduleName: String): ModuleDfms {
         val logicModule = logicModuleRepository.get(moduleName)
-        return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(logicModule), getModuleAbstractMetric(moduleName))
+        return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(projectId, logicModule), getModuleAbstractMetric(projectId, moduleName))
     }
 
-    override fun getModuleAbstractMetric(moduleName: String): ModuleAbstractRatio {
+    override fun getModuleAbstractMetric(projectId: Long, moduleName: String): ModuleAbstractRatio {
         val logicModule = logicModuleRepository.get(moduleName)
-        return abstractAnalysisService.calculateModuleAbstractRatio(logicModule)
+        return abstractAnalysisService.calculateModuleAbstractRatio(projectId, logicModule)
     }
 
     private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,

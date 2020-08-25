@@ -1,10 +1,6 @@
 package com.thoughtworks.archguard.clazz.infrastructure
 
-import com.thoughtworks.archguard.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.clazz.domain.FullName
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.clazz.domain.*
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.common.TypeMap
 import org.jdbi.v3.core.Jdbi
@@ -148,11 +144,12 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.toJClass()
     }
 
-    override fun getAll(): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass"
+    override fun getAllByProjectId(projectId: Long): List<JClass> {
+        val sql = "SELECT id, name, module, loc, access FROM JClass where project_id = :projectId"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
+                    .bind("projectId", projectId)
                     .mapTo(JClassDto::class.java)
                     .list()
         }.map { it.toJClass() }
@@ -169,8 +166,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toJClass() }
     }
 
-    override fun getJClassesHasModules(): List<JClass> {
-        return this.getAll().filter { it.module != "null" }
+    override fun getJClassesHasModules(projectId: Long): List<JClass> {
+        return this.getAllByProjectId(projectId).filter { it.module != "null" }
     }
 
 }

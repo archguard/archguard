@@ -143,18 +143,19 @@ class MetricsServiceImplTest {
 
     @Test
     fun `should get module coupling`() {
+        val projectId:Long = 1
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         val element3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
         val dependency1 = Dependency(JClassVO("test1.clazz", "com"), JClassVO("test3.clazz", "com"))
         val dependency2 = Dependency(JClassVO("test4.clazz", "com"), JClassVO("test2.clazz", "com"))
 
-        every { logicModuleRepository.getAll() } returns listOf(element, element2, element3)
-        every { dependencyService.getAllClassDependencies() } returns listOf(dependency1, dependency2)
+        every { logicModuleRepository.getAllByProjectId(projectId) } returns listOf(element, element2, element3)
+        every { dependencyService.getAllClassDependencies(projectId) } returns listOf(dependency1, dependency2)
         val slot = slot<List<ModuleMetricsLegacy>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 
-        service.calculateCouplingLegacy()
+        service.calculateCouplingLegacy(projectId)
 
         assertEquals(0.0, slot.captured.filter { it.moduleName == "module1" }[0].outerCouplingAvg)
         assertEquals(0.5, slot.captured.filter { it.moduleName == "module1" }[0].outerInstabilityAvg)
@@ -164,28 +165,31 @@ class MetricsServiceImplTest {
 
     @Test
     fun `should be zero when no dependence`() {
+        val projectId: Long = 1
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
 
-        every { logicModuleRepository.getAll() } returns listOf(element, element2)
-        every { dependencyService.getAllClassDependencies() } returns listOf()
+        every { logicModuleRepository.getAllByProjectId(projectId) } returns listOf(element, element2)
+        every { dependencyService.getAllClassDependencies(projectId) } returns listOf()
         val slot = slot<List<ModuleMetricsLegacy>>()
         every { metricsRepository.insert(capture(slot)) } just Runs
 
-        service.calculateCouplingLegacy()
+        service.calculateCouplingLegacy(projectId)
 
         assertEquals(0, slot.captured.size)
     }
 
     @Test
     fun `should get all metrics by module name`() {
+        val projectId: Long = 1
+
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.package1"), LogicComponent.createLeaf("com.package2")))
 
-        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element)
+        every { logicModuleRepository.getAllByShowStatus(projectId, true) } returns listOf(element)
         val slot = slot<List<String>>()
         every { metricsRepository.findAllMetrics(capture(slot)) } answers { listOf(allMetrics) }
 
-        val result = service.getAllMetricsLegacy()
+        val result = service.getAllMetricsLegacy(projectId)
 
         assertEquals(1, slot.captured.size)
         assertEquals(element.name, slot.captured[0])
@@ -196,13 +200,14 @@ class MetricsServiceImplTest {
 
     @Test
     fun `should get module metrics by module name`() {
+        val projectId: Long = 1
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.package1"), LogicComponent.createLeaf("com.package2")))
 
-        every { logicModuleRepository.getAllByShowStatus(true) } returns listOf(element)
+        every { logicModuleRepository.getAllByShowStatus(projectId, true) } returns listOf(element)
         val slot = slot<List<String>>()
         every { metricsRepository.findModuleMetrics(capture(slot)) } answers { listOf(moduleMetrics) }
 
-        val result = service.getModuleMetricsLegacy()
+        val result = service.getModuleMetricsLegacy(projectId)
 
         assertEquals(1, slot.captured.size)
         assertEquals(element.name, slot.captured[0])

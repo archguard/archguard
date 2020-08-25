@@ -12,7 +12,7 @@ interface MetricsRepository {
     @Deprecated("")
     fun findModuleMetrics(moduleNames: List<String>): List<ModuleMetricsLegacy>
 
-    fun insertAllClassCouplings(classCouplings: List<ClassCoupling>)
+    fun insertAllClassCouplings(projectId:Long, classCouplings: List<ClassCoupling>)
     fun getClassCoupling(jClassVO: JClassVO): ClassCoupling?
     fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling>
 }

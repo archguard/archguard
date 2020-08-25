@@ -39,8 +39,10 @@ class MetricsRepositoryImpl(
     }
 
     @Transaction
-    override fun insertAllClassCouplings(classCouplings: List<ClassCoupling>) {
-        classCouplings.forEach { classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(it)) }
+    override fun insertAllClassCouplings(projectId: Long, classCouplings: List<ClassCoupling>) {
+        classCouplings.forEach {
+            classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(projectId, it))
+        }
         classCouplingInfluxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(classCouplings).toRequestBody())
     }
 

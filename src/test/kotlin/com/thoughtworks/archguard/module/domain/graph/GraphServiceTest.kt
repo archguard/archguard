@@ -36,22 +36,23 @@ class GraphServiceTest {
 
     @Test
     fun `should get graph of all logic modules dependency`() {
+        val projectId: Long = 1;
         val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("submodule1.class")))
         val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("submodule2.class")))
         val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("submodule3.class")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JClassVO("class","submodule1"), JClassVO("class", "submodule2"))
-        val dependency2 = Dependency(JClassVO("class","submodule1"), JClassVO("class", "submodule3"))
-        val dependency3 = Dependency(JClassVO("class","submodule2"), JClassVO("class", "submodule3"))
+        val dependency1 = Dependency(JClassVO("class", "submodule1"), JClassVO("class", "submodule2"))
+        val dependency2 = Dependency(JClassVO("class", "submodule1"), JClassVO("class", "submodule3"))
+        val dependency3 = Dependency(JClassVO("class", "submodule2"), JClassVO("class", "submodule3"))
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
-        every { pluginManager.getDependPlugin<DependPlugin>(1L) } returns emptyList()
-        every { logicModuleRepository.getAllByShowStatus(true) } returns logicModules
-        every { dependencyService.getAllClassDependencies() } returns dependencies
+        every { pluginManager.getDependPlugin<DependPlugin>(projectId) } returns emptyList()
+        every { logicModuleRepository.getAllByShowStatus(projectId, true) } returns logicModules
+        every { dependencyService.getAllClassDependencies(projectId) } returns dependencies
 
         // when
-        val moduleGraph = service.getLogicModuleGraph()
+        val moduleGraph = service.getLogicModuleGraph(projectId)
 
         // then
         assertEquals(3, moduleGraph.nodes.size)
@@ -60,6 +61,7 @@ class GraphServiceTest {
 
     @Test
     fun `map bottom logic module to top level logic module`() {
+        val projectId: Long = 1;
         val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
         val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
         val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
@@ -70,8 +72,8 @@ class GraphServiceTest {
         val service2 = LogicModule.createWithOnlyLogicModuleMembers("id12", "lg12", listOf(logicModule2, logicModule4))
         val bottomLogicModules = listOf(Dependency(logicModule1, logicModule2),
                 Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5))
-        every { logicModuleRepository.getAll() } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
-        val serviceDependencies = service.mapModuleDependencyToServiceDependency(bottomLogicModules)
+        every { logicModuleRepository.getAllByProjectId(projectId) } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
+        val serviceDependencies = service.mapModuleDependencyToServiceDependency(projectId, bottomLogicModules)
         Assertions.assertThat(serviceDependencies.size).isEqualTo(3)
         val results = listOf(Dependency(service1, service2), Dependency(service1, service2), Dependency(service2, logicModule5))
         Assertions.assertThat(serviceDependencies).usingRecursiveFieldByFieldElementComparator().containsAll(results)

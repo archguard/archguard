@@ -1,5 +1,5 @@
 package com.thoughtworks.archguard.code
 
 interface InitCodeTreeService {
-    fun initCodeTree(): CodeTree
+    fun initCodeTree(projectId: Long): CodeTree
 }

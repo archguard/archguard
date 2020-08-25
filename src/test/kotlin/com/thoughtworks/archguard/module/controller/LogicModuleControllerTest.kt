@@ -34,12 +34,13 @@ class LogicModuleControllerTest {
 
     @Test
     fun `should get all logic modules`() {
+        val projectId: Long = 1
         // given
         val logicModules = listOf(LogicModule.createWithOnlyLeafMembers("id", "name", listOf(LogicComponent.createLeaf("module"))))
-        every { service.getLogicModules() } returns logicModules
+        every { service.getLogicModules(projectId) } returns logicModules
 
         // when
-        val actual = controller.getLogicModules()
+        val actual = controller.getLogicModules(projectId)
 
         // then
         assertThat(actual).isNotEmpty
@@ -49,15 +50,16 @@ class LogicModuleControllerTest {
     @Test
     fun `should update LogicModule`() {
         // given
+        val projectId: Long = 1
         val id = "any"
         val logicModule = createLogicModule(id)
-        every { service.updateLogicModule(any(), any()) } just runs
+        every { service.updateLogicModule(projectId, any(), any()) } just runs
 
         // when
-        controller.updateLogicModule(id, LogicModuleLegacy.fromLogicModule(logicModule))
+        controller.updateLogicModule(projectId, id, LogicModuleLegacy.fromLogicModule(logicModule))
 
         // then
-        verify { service.updateLogicModule(any(), any()) }
+        verify { service.updateLogicModule(projectId, any(), any()) }
     }
 
 }

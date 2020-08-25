@@ -5,11 +5,11 @@ interface JClassRepository {
 
     fun getJClassById(id: String): JClass?
 
-    fun getAll(): List<JClass>
+    fun getAllByProjectId(projectId: Long): List<JClass>
 
     fun getAll(fullNames: List<FullName>): List<JClass>
 
-    fun getJClassesHasModules(): List<JClass>
+    fun getJClassesHasModules(projectId: Long): List<JClass>
 
     fun findDependencees(id: String): List<JClass>
 

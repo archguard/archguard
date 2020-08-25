@@ -14,19 +14,19 @@ import org.springframework.stereotype.Service
 @Service
 class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModuleRepository: LogicModuleRepository,
                           val dependencyService: DependencyService, val metricsRepository: MetricsRepository) : CouplingService {
-    override fun persistAllClassCouplingResults() {
-        val classCouplingResults = getAllClassCouplingResults()
-        metricsRepository.insertAllClassCouplings(classCouplingResults)
+    override fun persistAllClassCouplingResults(projectId: Long) {
+        val classCouplingResults = getAllClassCouplingResults(projectId)
+        metricsRepository.insertAllClassCouplings(projectId, classCouplingResults)
     }
 
-    override fun getAllClassCouplingResults(): List<ClassCoupling> {
-        val classes = jClassRepository.getJClassesHasModules()
-        val logicModules = logicModuleRepository.getAll()
-        val classDependency = dependencyService.getAllClassDependencies()
+    override fun getAllClassCouplingResults(projectId: Long): List<ClassCoupling> {
+        val classes = jClassRepository.getJClassesHasModules(projectId)
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
+        val classDependency = dependencyService.getAllClassDependencies(projectId)
         return classes.map { getClassCouplingWithData(it.toVO(), classDependency, logicModules) }
     }
 
-    override fun calculateClassCoupling(jClassVO: JClassVO): ClassCoupling {
+    override fun calculateClassCoupling(projectId: Long, jClassVO: JClassVO): ClassCoupling {
         val jClassVOHasId = if (jClassVO.id != null) {
             jClassVO
         } else {
@@ -39,56 +39,56 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
             return classCoupling
         }
 
-        val logicModules = logicModuleRepository.getAll()
-        val classDependency = dependencyService.getAllClassDependencies()
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
+        val classDependency = dependencyService.getAllClassDependencies(projectId)
         return getClassCouplingWithData(jClassVO, classDependency, logicModules)
     }
 
-    override fun calculateClassCouplings(jClassVOs: List<JClassVO>): List<ClassCoupling> {
-        return jClassVOs.map { calculateClassCoupling(it) }
+    override fun calculateClassCouplings(projectId: Long, jClassVOs: List<JClassVO>): List<ClassCoupling> {
+        return jClassVOs.map { calculateClassCoupling(projectId, it) }
     }
 
-    override fun calculatePackageCouplings(packageVOs: List<PackageVO>): List<PackageCoupling> {
-        return packageVOs.map { calculatePackageCoupling(it) }
+    override fun calculatePackageCouplings(projectId: Long, packageVOs: List<PackageVO>): List<PackageCoupling> {
+        return packageVOs.map { calculatePackageCoupling(projectId, it) }
     }
 
-    override fun calculatePackageCoupling(packageVO: PackageVO): PackageCoupling {
-        val classes = jClassRepository.getAll()
+    override fun calculatePackageCoupling(projectId: Long, packageVO: PackageVO): PackageCoupling {
+        val classes = jClassRepository.getAllByProjectId(projectId)
         val classesBelongToPackage = classes.filter { packageVO.containClass(it.toVO()) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToPackage.map { it.toVO() })
         if (classCouplingsCached.isNotEmpty()) {
             return PackageCoupling.of(packageVO, classCouplingsCached)
         }
 
-        val logicModules = logicModuleRepository.getAll()
-        val classDependency = dependencyService.getAllClassDependencies()
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
+        val classDependency = dependencyService.getAllClassDependencies(projectId)
         val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return PackageCoupling.of(packageVO, classCouplings)
     }
 
-    override fun calculatePackageDirectClassCouplings(packageVO: PackageVO): List<ClassCoupling> {
-        val classes = jClassRepository.getAll()
+    override fun calculatePackageDirectClassCouplings(projectId: Long, packageVO: PackageVO): List<ClassCoupling> {
+        val classes = jClassRepository.getAllByProjectId(projectId)
         val classesDirectBelongToPackage = classes.filter { packageVO.directContainClass(it.toVO()) }
-        return calculateClassCouplings(classesDirectBelongToPackage.map { it.toVO() })
+        return calculateClassCouplings(projectId, classesDirectBelongToPackage.map { it.toVO() })
     }
 
-    override fun calculateModuleCoupling(logicModule: LogicModule): ModuleCoupling {
-        val classes = jClassRepository.getAll()
-        val logicModules = logicModuleRepository.getAll()
+    override fun calculateModuleCoupling(projectId: Long, logicModule: LogicModule): ModuleCoupling {
+        val classes = jClassRepository.getAllByProjectId(projectId)
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
         val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
         if (classCouplingsCached.isNotEmpty()) {
             return ModuleCoupling.of(logicModule, classCouplingsCached)
         }
 
-        val classDependency = dependencyService.getAllClassDependencies()
+        val classDependency = dependencyService.getAllClassDependencies(projectId)
         val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return ModuleCoupling.of(logicModule, classCouplings)
     }
 
-    override fun calculateAllModuleCoupling(): List<ModuleCoupling> {
-        val classes = jClassRepository.getAll()
-        val logicModules = logicModuleRepository.getAll()
+    override fun calculateAllModuleCoupling(projectId: Long): List<ModuleCoupling> {
+        val classes = jClassRepository.getAllByProjectId(projectId)
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
         val moduleCouplings = mutableListOf<ModuleCoupling>()
         logicModules.parallelStream().forEach { logicModule ->
             val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
@@ -97,7 +97,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
                 moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplingsCached))
                 return@forEach
             }
-            val classDependency = dependencyService.getAllClassDependencies()
+            val classDependency = dependencyService.getAllClassDependencies(projectId)
             val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
             moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplings))
         }

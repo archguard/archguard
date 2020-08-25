@@ -11,35 +11,35 @@ import java.util.*
 class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val couplingService: CouplingService) {
     private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
 
-    fun getLogicModules(): List<LogicModule> {
-        return logicModuleRepository.getAll()
+    fun getLogicModules(projectId: Long): List<LogicModule> {
+        return logicModuleRepository.getAllByProjectId(projectId)
     }
 
     fun getLogicModule(name: String): LogicModule {
         return logicModuleRepository.get(name)
     }
 
-    fun hideAllLogicModules() {
-        val logicModules = getLogicModules()
+    fun hideAllLogicModules(projectId: Long) {
+        val logicModules = getLogicModules(projectId)
         logicModules.forEach { it.hide() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun showAllLogicModules() {
-        val logicModules = getLogicModules()
+    fun showAllLogicModules(projectId: Long) {
+        val logicModules = getLogicModules(projectId)
         logicModules.forEach { it.show() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun reverseAllLogicModulesStatus() {
-        val logicModules = getLogicModules()
+    fun reverseAllLogicModulesStatus(projectId: Long) {
+        val logicModules = getLogicModules(projectId)
         logicModules.forEach { it.reverse() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun updateLogicModule(id: String, logicModule: LogicModule) {
+    fun updateLogicModule(projectId: Long, id: String, logicModule: LogicModule) {
         logicModuleRepository.update(id, logicModule)
-        couplingService.persistAllClassCouplingResults()
+        couplingService.persistAllClassCouplingResults(projectId)
     }
 
     fun createLogicModule(logicModule: LogicModule): String {
@@ -52,9 +52,9 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
         return logicModule.id!!
     }
 
-    fun deleteLogicModule(id: String) {
+    fun deleteLogicModule(projectId: Long, id: String) {
         logicModuleRepository.delete(id)
-        couplingService.persistAllClassCouplingResults()
+        couplingService.persistAllClassCouplingResults(projectId)
     }
 
     fun autoDefineLogicModule(projectId: Long) {
@@ -62,7 +62,7 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
         val defaultModules = logicModuleRepository.getAllSubModule(projectId)
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(defaultModules)
-        couplingService.persistAllClassCouplingResults()
+        couplingService.persistAllClassCouplingResults(projectId)
     }
 
 }

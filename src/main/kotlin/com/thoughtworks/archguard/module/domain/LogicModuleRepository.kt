@@ -4,8 +4,8 @@ import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.SubModule
 
 interface LogicModuleRepository {
-    fun getAllByShowStatus(isShow: Boolean): List<LogicModule>
-    fun getAll(): List<LogicModule>
+    fun getAllByShowStatus(projectId: Long, isShow: Boolean): List<LogicModule>
+    fun getAllByProjectId(projectId:Long): List<LogicModule>
     fun get(name: String): LogicModule
     fun update(id: String, logicModule: LogicModule)
     fun updateAll(logicModules: List<LogicModule>)

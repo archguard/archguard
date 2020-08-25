@@ -18,10 +18,10 @@ class DubboPlugin : AbstractDependPlugin() {
         return PluginType.DUBBO
     }
 
-    override fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
+    override fun fixMethodDependencies(projectId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
         // A -> I, B : I
         // A -> B override
-        val interfaces = jClassRepository.getJClassesHasModules().filter { it.isInterface() }
+        val interfaces = jClassRepository.getJClassesHasModules(projectId).filter { it.isInterface() }
         return methodDependencies.flatMap { fixMethodDependency(it, interfaces) }
     }
 

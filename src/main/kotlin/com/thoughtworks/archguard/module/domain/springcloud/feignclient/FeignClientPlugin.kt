@@ -21,7 +21,7 @@ class FeignClientPlugin: AbstractDependPlugin() {
         return PluginType.FEIGN_CLIENT
     }
 
-    override fun fixMethodDependencies(methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
+    override fun fixMethodDependencies(projectId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
         return methodDependencies + feignClientService.getFeignClientMethodDependencies().map { Dependency(mapHttpRequestToMethod(it.caller), mapHttpRequestToMethod(it.callee)) }
     }
 

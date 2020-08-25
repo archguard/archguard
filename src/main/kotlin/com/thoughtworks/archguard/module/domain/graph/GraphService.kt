@@ -3,15 +3,17 @@ package com.thoughtworks.archguard.module.domain.graph
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import org.springframework.stereotype.Service
 
 @Service
 class GraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService, val pluginManager: PluginManager) {
 
-    fun getLogicModuleGraph(): Graph {
-        val moduleDependencies = getModuleDependency()
+    fun getLogicModuleGraph(projectId: Long): Graph {
+        val moduleDependencies = getModuleDependency(projectId)
 
         val moduleStore = GraphStore()
 
@@ -25,9 +27,9 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return moduleStore.getGraph()
     }
 
-    private fun getModuleDependency(): List<Dependency<LogicModule>> {
-        val modules = logicModuleRepository.getAllByShowStatus(true)
-        val dependencies = dependencyService.getAllClassDependencies()
+    private fun getModuleDependency(projectId: Long): List<Dependency<LogicModule>> {
+        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
+        val dependencies = dependencyService.getAllClassDependencies(projectId)
         return mapMethodDependenciesToModuleDependencies(dependencies, modules)
     }
 
@@ -44,8 +46,8 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 
-    fun mapModuleDependencyToServiceDependency(moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
-        val logicModules = logicModuleRepository.getAll()
+    fun mapModuleDependencyToServiceDependency(projectId: Long, moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
         val servicesDependencies = mutableListOf<Dependency<LogicModule>>()
         for (it in moduleDependencies) {
             val callerModule = it.caller

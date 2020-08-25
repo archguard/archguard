@@ -53,7 +53,7 @@ class ClassCouplingDtoForReadFromDb(var classId: String,
 
 
 data class ClassCouplingDtoForWriteDb(val classId: String,
-                                      val projectId: Int,
+                                      val projectId: Long,
                                       val innerFanIn: Int,
                                       val innerFanOut: Int,
                                       val outerFanIn: Int,
@@ -63,8 +63,8 @@ data class ClassCouplingDtoForWriteDb(val classId: String,
                                       val outerInstability: Double,
                                       val outerCoupling: Double) {
     companion object {
-        fun fromClassCoupling(classCoupling: ClassCoupling): ClassCouplingDtoForWriteDb {
-            return ClassCouplingDtoForWriteDb(classCoupling.jClassVO.id!!, 0, classCoupling.innerFanIn, classCoupling.innerFanOut,
+        fun fromClassCoupling(projectId:Long, classCoupling: ClassCoupling): ClassCouplingDtoForWriteDb {
+            return ClassCouplingDtoForWriteDb(classCoupling.jClassVO.id!!, projectId, classCoupling.innerFanIn, classCoupling.innerFanOut,
                     classCoupling.outerFanIn, classCoupling.outerFanOut, classCoupling.innerInstability, classCoupling.innerCoupling,
                     classCoupling.outerInstability, classCoupling.outerCoupling)
         }

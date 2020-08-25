@@ -14,17 +14,18 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getAllByShowStatus(isShow: Boolean): List<LogicModule> {
+    override fun getAllByShowStatus(projectId: Long, isShow: Boolean): List<LogicModule> {
         if (isShow) {
-            return this.getAll().filter { it.status == LogicModuleStatus.NORMAL }
+            return this.getAllByProjectId(projectId).filter { it.status == LogicModuleStatus.NORMAL }
         }
-        return this.getAll().filter { it.status == LogicModuleStatus.HIDE }
+        return this.getAllByProjectId(projectId).filter { it.status == LogicModuleStatus.HIDE }
     }
 
-    override fun getAll(): List<LogicModule> {
+    override fun getAllByProjectId(projectId: Long): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, lg_members, status from logic_module")
+            it.createQuery("select id, name, members, lg_members, status from logic_module where project_id = :projectId")
+                    .bind("projectId", projectId)
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }

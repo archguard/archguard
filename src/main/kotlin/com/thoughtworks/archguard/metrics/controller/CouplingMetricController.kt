@@ -8,50 +8,52 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/metric/coupling")
+@RequestMapping("/{projectId}/metric/coupling")
 class CouplingMetricController(val couplingService: CouplingService, val logicModuleRepository: LogicModuleRepository) {
     @GetMapping("/class")
-    fun getClassCouplingMetric(@RequestParam className: String, @RequestParam moduleName: String): ClassCoupling {
-        return couplingService.calculateClassCoupling(JClassVO(className, moduleName))
+    fun getClassCouplingMetric(@PathVariable("projectId") projectId: Long,
+                               @RequestParam className: String,
+                               @RequestParam moduleName: String): ClassCoupling {
+        return couplingService.calculateClassCoupling(projectId, JClassVO(className, moduleName))
     }
 
     @GetMapping("/package-class-list")
-    fun getPackageClassCouplingMetric(@RequestParam packageName: String, @RequestParam moduleName: String): List<ClassCoupling> {
-        return couplingService.calculatePackageDirectClassCouplings(PackageVO(packageName, moduleName))
+    fun getPackageClassCouplingMetric(@PathVariable("projectId") projectId: Long,
+                                      @RequestParam packageName: String,
+                                      @RequestParam moduleName: String): List<ClassCoupling> {
+        return couplingService.calculatePackageDirectClassCouplings(projectId, PackageVO(packageName, moduleName))
     }
 
     @PostMapping("/package-list")
-    fun getPackagesCouplingMetric(@RequestBody packageNameList: List<String>): List<PackageCoupling> {
-        return packageNameList.map { couplingService.calculatePackageCoupling(PackageVO.fromFullName(it)) }
+    fun getPackagesCouplingMetric(@PathVariable("projectId") projectId: Long,
+                                  @RequestBody packageNameList: List<String>): List<PackageCoupling> {
+        return packageNameList.map { couplingService.calculatePackageCoupling(projectId, PackageVO.fromFullName(it)) }
     }
 
     @GetMapping("/package")
-    fun getPackageCouplingMetric(@RequestParam packageName: String, @RequestParam moduleName: String): PackageCoupling {
-        return couplingService.calculatePackageCoupling(PackageVO(packageName, moduleName))
+    fun getPackageCouplingMetric(@PathVariable("projectId") projectId: Long,
+                                 @RequestParam packageName: String,
+                                 @RequestParam moduleName: String): PackageCoupling {
+        return couplingService.calculatePackageCoupling(projectId, PackageVO(packageName, moduleName))
     }
 
     @GetMapping("/module")
-    fun getModuleCouplingMetric(@RequestParam moduleName: String): ModuleCoupling {
-        return couplingService.calculateModuleCoupling(logicModuleRepository.get(moduleName))
+    fun getModuleCouplingMetric(@PathVariable("projectId") projectId: Long,
+                                @RequestParam moduleName: String): ModuleCoupling {
+        return couplingService.calculateModuleCoupling(projectId, logicModuleRepository.get(moduleName))
     }
 
     @GetMapping("/all-module")
-    fun getAllModuleCouplingMetric(): List<ModuleCoupling> {
-        return couplingService.calculateAllModuleCoupling()
+    fun getAllModuleCouplingMetric(@PathVariable("projectId") projectId: Long): List<ModuleCoupling> {
+        return couplingService.calculateAllModuleCoupling(projectId)
     }
 
     @PostMapping("/persist")
     @ResponseStatus(HttpStatus.OK)
-    fun persistCouplingMetric() {
-        couplingService.persistAllClassCouplingResults()
+    fun persistCouplingMetric(@PathVariable("projectId") projectId: Long) {
+        couplingService.persistAllClassCouplingResults(projectId)
     }
 }
