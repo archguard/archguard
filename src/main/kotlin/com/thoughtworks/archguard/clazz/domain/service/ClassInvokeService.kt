@@ -32,7 +32,7 @@ class ClassInvokeService {
         }
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
-            implements = repo.findClassImplements(target.name, target.module)
+            implements = repo.findClassImplements(projectId, target.name, target.module)
                     .filter { configureService.isDisplayNode(projectId, it.name) }
         }
         target.implements = implements
@@ -53,7 +53,7 @@ class ClassInvokeService {
         if (target.module == "null") {
             return
         }
-        target.parents = repo.findClassParents(target.module, target.name)
+        target.parents = repo.findClassParents(projectId, target.module, target.name)
                 .filter { configureService.isDisplayNode(projectId, it.name) }
         target.callers = repo.findCallers(projectId, target.name, target.module)
                 .filter { configureService.isDisplayNode(projectId, it.clazz.name) }

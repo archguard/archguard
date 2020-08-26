@@ -45,7 +45,7 @@ class DobboPluginTest {
         val methodDependencies = listOf(Dependency(method1, method2))
 
         every { jClassRepository.getJClassesHasModules(projectId) } returns listOf(class2)
-        every { jClassRepository.findClassImplements(class2.name, class2.module) } returns listOf(class3, class4)
+        every { jClassRepository.findClassImplements(projectId, class2.name, class2.module) } returns listOf(class3, class4)
 
 
         // when

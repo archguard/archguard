@@ -7,7 +7,7 @@ interface JClassRepository {
 
     fun getAllByProjectId(projectId: Long): List<JClass>
 
-    fun getAll(fullNames: List<FullName>): List<JClass>
+    fun getAllByProjectIdAndFullName(projectId: Long, fullNames: List<FullName>): List<JClass>
 
     fun getJClassesHasModules(projectId: Long): List<JClass>
 
@@ -15,9 +15,9 @@ interface JClassRepository {
 
     fun findDependencers(id: String): List<JClass>
 
-    fun findClassParents(module: String?, name: String?): List<JClass>
+    fun findClassParents(projectId: Long, module: String?, name: String?): List<JClass>
 
-    fun findClassImplements(name: String?, module: String?): List<JClass>
+    fun findClassImplements(projectId: Long, name: String?, module: String?): List<JClass>
 
     fun findCallees(projectId:Long, name: String?, module: String?): List<ClassRelation>
 

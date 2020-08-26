@@ -24,18 +24,19 @@ class DitServiceTest {
     @Test
     fun `should get DepthOfInheritance`() {
         //given
+        val projectId: Long = 1
         val child = JClass("any", "Child", "module")
         val parent = JClass("any", "Parent", "module")
         val grandparent = JClass("any", "Grandparent", "module")
 
-        every { repo.findClassParents("module", "Child") } returns listOf(parent)
-        every { repo.findClassParents("module", "Parent") } returns listOf(grandparent)
-        every { repo.findClassParents("module", "Grandparent") } returns listOf()
+        every { repo.findClassParents(projectId, "module", "Child") } returns listOf(parent)
+        every { repo.findClassParents(projectId, "module", "Parent") } returns listOf(grandparent)
+        every { repo.findClassParents(projectId, "module", "Grandparent") } returns listOf()
 
         //when
-        val childDIT = service.getDepthOfInheritance(child)
-        val parentDIT = service.getDepthOfInheritance(parent)
-        val grandparentDIT = service.getDepthOfInheritance(grandparent)
+        val childDIT = service.getDepthOfInheritance(projectId, child)
+        val parentDIT = service.getDepthOfInheritance(projectId, parent)
+        val grandparentDIT = service.getDepthOfInheritance(projectId, grandparent)
 
         //then
         assertEquals(2, childDIT)

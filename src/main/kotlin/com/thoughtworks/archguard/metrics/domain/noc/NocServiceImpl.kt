@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class NocServiceImpl(val jClassRepository: JClassRepository) : NocService {
-    fun getNodeCount(jClass: JClass): Int {
-        val implements = jClassRepository.findClassImplements(jClass.name, jClass.module)
+    fun getNodeCount(projectId:Long, jClass: JClass): Int {
+        val implements = jClassRepository.findClassImplements(projectId, jClass.name, jClass.module)
         if (implements.isEmpty()) {
             return 1
         }
-        return implements.map { getNodeCount(it) }.sum() + 1
+        return implements.map { getNodeCount(projectId, it) }.sum() + 1
     }
 
-    override fun getNoc(jClass: JClass): Int {
-        return getNodeCount(jClass) - 1
+    override fun getNoc(projectId: Long, jClass: JClass): Int {
+        return getNodeCount(projectId, jClass) - 1
     }
 
 }

@@ -18,13 +18,13 @@ class ClassMethodCalleesService {
     @Autowired
     private lateinit var methodCalleesService: MethodCalleesService
 
-    fun findClassMethodsCallees(target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
+    fun findClassMethodsCallees(projectId:Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {
         target.methods = methodRepo.findMethodsByModuleAndClass(target.module, target.name)
         methodCalleesService.buildMethodCallees(target.methods, calleeDeep, needIncludeImpl)
         if (needParents) {
-            (target.parents as MutableList).addAll(classRepo.findClassParents(target.module, target.name))
-            target.parents.forEach { findClassMethodsCallees(it, calleeDeep, needIncludeImpl, needParents) }
+            (target.parents as MutableList).addAll(classRepo.findClassParents(projectId, target.module, target.name))
+            target.parents.forEach { findClassMethodsCallees(projectId, it, calleeDeep, needIncludeImpl, needParents) }
         }
         return target
     }

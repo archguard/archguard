@@ -89,7 +89,7 @@ class ClassServiceTest {
         val targetClass = JClass("id", name, module)
         //when
         every {
-            classMethodCalleesService.findClassMethodsCallees(targetClass, deep, needIncludeImpl, needParents)
+            classMethodCalleesService.findClassMethodsCallees(projectId, targetClass, deep, needIncludeImpl, needParents)
         } returns JClass("id", "clazz", "module")
         every { repo.getJClassBy(projectId, name, module) } returns targetClass
         val target = service.findMethodsCallees(projectId, module, name, deep, needIncludeImpl, needParents)

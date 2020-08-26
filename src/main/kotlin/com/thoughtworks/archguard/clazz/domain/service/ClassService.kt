@@ -43,7 +43,7 @@ class ClassService {
     fun findMethodsCallees(projectId:Long, module: String, name: String, calleeDeep: Int,
                            needIncludeImpl: Boolean, needParents: Boolean): JClass {
         val targetClass = getTargetClass(projectId, module, name)
-        return classMethodCalleesService.findClassMethodsCallees(targetClass, calleeDeep,
-                needIncludeImpl, needParents)
+        return classMethodCalleesService.findClassMethodsCallees(projectId, targetClass,
+                calleeDeep, needIncludeImpl, needParents)
     }
 }
