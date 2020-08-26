@@ -43,7 +43,7 @@ class CouplingMetricController(val couplingService: CouplingService, val logicMo
     @GetMapping("/module")
     fun getModuleCouplingMetric(@PathVariable("projectId") projectId: Long,
                                 @RequestParam moduleName: String): ModuleCoupling {
-        return couplingService.calculateModuleCoupling(projectId, logicModuleRepository.get(moduleName))
+        return couplingService.calculateModuleCoupling(projectId, logicModuleRepository.get(projectId, moduleName))
     }
 
     @GetMapping("/all-module")

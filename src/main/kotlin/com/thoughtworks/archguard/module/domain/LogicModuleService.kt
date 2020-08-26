@@ -15,8 +15,8 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
         return logicModuleRepository.getAllByProjectId(projectId)
     }
 
-    fun getLogicModule(name: String): LogicModule {
-        return logicModuleRepository.get(name)
+    fun getLogicModule(projectId: Long, name: String): LogicModule {
+        return logicModuleRepository.get(projectId, name)
     }
 
     fun hideAllLogicModules(projectId: Long) {

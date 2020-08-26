@@ -138,12 +138,12 @@ class MetricsServiceImpl(
     }
 
     override fun getModuleDfms(projectId: Long, moduleName: String): ModuleDfms {
-        val logicModule = logicModuleRepository.get(moduleName)
+        val logicModule = logicModuleRepository.get(projectId, moduleName)
         return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(projectId, logicModule), getModuleAbstractMetric(projectId, moduleName))
     }
 
     override fun getModuleAbstractMetric(projectId: Long, moduleName: String): ModuleAbstractRatio {
-        val logicModule = logicModuleRepository.get(moduleName)
+        val logicModule = logicModuleRepository.get(projectId, moduleName)
         return abstractAnalysisService.calculateModuleAbstractRatio(projectId, logicModule)
     }
 

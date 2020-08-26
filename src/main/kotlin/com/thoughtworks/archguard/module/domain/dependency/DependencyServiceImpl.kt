@@ -32,8 +32,8 @@ class DependencyServiceImpl : DependencyService {
     }
 
     override fun getAllMethodDependencies(projectId: Long, caller: String, callee: String): List<Dependency<JMethodVO>> {
-        val callerLogicModule = logicModuleRepository.get(caller)
-        val calleeLogicModule = logicModuleRepository.get(callee)
+        val callerLogicModule = logicModuleRepository.get(projectId, caller)
+        val calleeLogicModule = logicModuleRepository.get(projectId, callee)
         val logicModules = logicModuleRepository.getAllByProjectId(projectId)
 
         return getAllMethodDependencies(projectId).filter { inModule(it.caller, callerLogicModule, logicModules) && inModule(it.callee, calleeLogicModule, logicModules) }

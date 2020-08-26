@@ -29,7 +29,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
         }
-        return modules.map { it.toLogicModule(this) }
+        return modules.map { it.toLogicModule(projectId, this) }
     }
 
     override fun update(id: String, logicModule: LogicModule) {
@@ -43,13 +43,15 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun get(name: String): LogicModule {
+    override fun get(projectId: Long, name: String): LogicModule {
         return jdbi.withHandle<LogicModuleDTO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, lg_members, status from logic_module where name='$name'")
+            it.createQuery("select id, name, members, lg_members, status from logic_module where name=:name and project_id=:projectId")
+                    .bind("projectId", projectId)
+                    .bind("name", name)
                     .mapTo(LogicModuleDTO::class.java)
                     .one()
-        }.toLogicModule(this)
+        }.toLogicModule(projectId, this)
     }
 
     override fun create(logicModule: LogicModule) {
@@ -143,9 +145,9 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
 }
 
 class LogicModuleDTO(val id: String, val name: String, val members: String?, private val lgMembers: String?, private val status: LogicModuleStatus) {
-    fun toLogicModule(logicModuleRepository: LogicModuleRepository): LogicModule {
+    fun toLogicModule(projectId:Long, logicModuleRepository: LogicModuleRepository): LogicModule {
         val leafMembers = members?.split(',')?.sorted()?.map { m -> LogicComponent.createLeaf(m) } ?: emptyList()
-        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(m) } ?: emptyList()
+        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(projectId, m) } ?: emptyList()
         val logicModule = LogicModule.create(id, name, leafMembers, lgMembers)
         logicModule.status = status
         return logicModule
