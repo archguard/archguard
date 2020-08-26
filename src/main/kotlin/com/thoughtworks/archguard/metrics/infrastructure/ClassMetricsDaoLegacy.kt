@@ -10,7 +10,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 @Deprecated("")
 @RegisterBeanMapper(ClassMetricsLegacy::class)
-interface ClassMetricsDao {
+interface ClassMetricsDaoLegacy {
     @GetGeneratedKeys
     @SqlUpdate("insert into metrics_class (" +
             "package_id, class_name, inner_fan_in, inner_fan_out, outer_fan_in, " +

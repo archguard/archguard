@@ -11,7 +11,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 @RegisterBeanMapper(ClassCouplingDtoForWriteDb::class)
-interface ClassCouplingDtoDaoForInsert {
+interface ClassCouplingDtoDaoForUpdate {
     @GetGeneratedKeys
     @SqlUpdate("insert into class_coupling (" +
             "class_id, project_id, inner_fan_in, inner_fan_out, outer_fan_in, " +
@@ -19,6 +19,9 @@ interface ClassCouplingDtoDaoForInsert {
             "values(:classId, :projectId, :innerFanIn, :innerFanOut, :outerFanIn, " +
             ":outerFanOut, :innerInstability, :innerCoupling, :outerInstability, :outerCoupling)")
     fun insert(@BindBean classCouplingDtoForWriteDb: ClassCouplingDtoForWriteDb): Long
+
+    @SqlUpdate("DELETE FROM class_coupling where project_id = :projectId")
+    fun deleteBy(@Bind("projectId") projectId: Long)
 }
 
 @RegisterBeanMapper(ClassCouplingDtoForReadFromDb::class)

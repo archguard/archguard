@@ -13,15 +13,15 @@ import java.util.stream.Collectors
 class MetricsRepositoryImpl(
         val moduleMetricsDao: ModuleMetricsDao,
         val packageMetricsDao: PackageMetricsDao,
-        val classMetricsDao: ClassMetricsDao,
+        val classMetricsDaoLegacy: ClassMetricsDaoLegacy,
         val classCouplingInfluxDBClient: ClassCouplingInfluxDBClient,
-        val classCouplingDtoDaoForInsert: ClassCouplingDtoDaoForInsert,
+        val classCouplingDtoDaoForUpdate: ClassCouplingDtoDaoForUpdate,
         val classCouplingDtoDaoForRead: ClassCouplingDtoDaoForRead
 ) : MetricsRepository {
 
     @Transaction(TransactionIsolationLevel.READ_COMMITTED)
     override fun insert(moduleMetrics: List<ModuleMetricsLegacy>) {
-        classMetricsDao.truncate()
+        classMetricsDaoLegacy.truncate()
         packageMetricsDao.truncate()
         moduleMetricsDao.truncate()
 
@@ -32,7 +32,7 @@ class MetricsRepositoryImpl(
                 val packageId = packageMetricsDao.insert(packages)
                 packages.classMetrics.map {
                     it.packageId = packageId
-                    classMetricsDao.insert(it)
+                    classMetricsDaoLegacy.insert(it)
                 }
             }
         }
@@ -40,8 +40,9 @@ class MetricsRepositoryImpl(
 
     @Transaction
     override fun insertAllClassCouplings(projectId: Long, classCouplings: List<ClassCoupling>) {
+        classCouplingDtoDaoForUpdate.deleteBy(projectId)
         classCouplings.forEach {
-            classCouplingDtoDaoForInsert.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(projectId, it))
+            classCouplingDtoDaoForUpdate.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(projectId, it))
         }
         classCouplingInfluxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(classCouplings).toRequestBody())
     }
@@ -66,7 +67,7 @@ class MetricsRepositoryImpl(
                 .peek { moduleMetrics ->
                     moduleMetrics.packageMetrics = packageMetricsDao.findPackageMetricsByModuleId(moduleMetrics.id!!)
                     moduleMetrics.packageMetrics.map {
-                        it.classMetrics = classMetricsDao.findClassMetricsByPackageId(it.id!!)
+                        it.classMetrics = classMetricsDaoLegacy.findClassMetricsByPackageId(it.id!!)
                     }
                 }
                 .collect(Collectors.toList())
