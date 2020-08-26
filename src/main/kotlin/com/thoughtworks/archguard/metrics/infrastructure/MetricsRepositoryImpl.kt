@@ -14,7 +14,7 @@ class MetricsRepositoryImpl(
         val moduleMetricsDao: ModuleMetricsDao,
         val packageMetricsDao: PackageMetricsDao,
         val classMetricsDaoLegacy: ClassMetricsDaoLegacy,
-        val classCouplingInfluxDBClient: ClassCouplingInfluxDBClient,
+        val influxDBClient: InfluxDBClient,
         val classCouplingDtoDaoForUpdate: ClassCouplingDtoDaoForUpdate,
         val classCouplingDtoDaoForRead: ClassCouplingDtoDaoForRead
 ) : MetricsRepository {
@@ -44,7 +44,7 @@ class MetricsRepositoryImpl(
         classCouplings.forEach {
             classCouplingDtoDaoForUpdate.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(projectId, it))
         }
-        classCouplingInfluxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(classCouplings).toRequestBody())
+        influxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(projectId, classCouplings).toRequestBody())
     }
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {

@@ -1,10 +1,14 @@
 package com.thoughtworks.archguard.metrics.domain
 
+import com.thoughtworks.archguard.metrics.infrastructure.ClassMetricsDtoListForWriteInfluxDB
+import com.thoughtworks.archguard.metrics.infrastructure.InfluxDBClient
+import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetricRepository: ClassMetricRepository) : MetricPersistService {
+class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetricRepository: ClassMetricRepository,
+                               val influxDBClient: InfluxDBClient) : MetricPersistService {
     private val log = LoggerFactory.getLogger(MetricPersistServiceImpl::class.java)
 
     override fun persistClassMetrics(projectId: Long) {
@@ -30,9 +34,15 @@ class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetr
 
         val allJClassVO = allAbc.map { it.jClassVO }
         val classMetricPOs = mutableListOf<ClassMetricPO>()
+        val classMetrics = mutableListOf<ClassMetric>()
+
         allJClassVO.forEach { classMetricPOs.add(ClassMetricPO(projectId, it.id!!, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
+        allJClassVO.forEach { classMetrics.add(ClassMetric(projectId, it, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
+
         classMetricRepository.insertOrUpdateClassMetricPOs(projectId, classMetricPOs)
+        influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
     }
 }
 
 data class ClassMetricPO(val projectId: Long, val classId: String, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
+data class ClassMetric(val projectId: Long, val jClassVO: JClassVO, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
