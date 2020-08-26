@@ -38,9 +38,6 @@ class MethodService {
     }
 
     private fun getMethodBy(projectId: Long, moduleName: String, clazzName: String, methodName: String): List<JMethod> {
-        if (moduleName.isEmpty()) {
-            return repo.findMethodByClazzAndName(projectId, clazzName, methodName)
-        }
         return repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName)
     }
 

@@ -96,21 +96,6 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
                     .list()
         }
     }
-
-    override fun findMethodByClazzAndName(projectId: Long, clazzName: String, methodName: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "project_id=:projectId AND name=:methodName AND clzname=:clazzName"
-        return jdbi.withHandle<List<JMethod>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
-            it.createQuery(sql)
-                    .bind("projectId", projectId)
-                    .bind("methodName", methodName)
-                    .bind("clazzName", clazzName)
-                    .mapTo(JMethodDto::class.java)
-                    .map { it.toJMethod() }
-                    .list()
-        }
-    }
 }
 
 class JMethodDto(val id: String, val name: String, val clazz: String, val module: String, val returnType: String, val argumentTypes: String?, val access: String) {
