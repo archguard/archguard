@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain
 
 interface JClassRepository {
-    fun getJClassBy(name: String, module: String): JClass?
+    fun getJClassBy(projectId:Long, name: String, module: String): JClass?
 
     fun getJClassById(id: String): JClass?
 
@@ -19,9 +19,9 @@ interface JClassRepository {
 
     fun findClassImplements(name: String?, module: String?): List<JClass>
 
-    fun findCallees(name: String?, module: String?): List<ClassRelation>
+    fun findCallees(projectId:Long, name: String?, module: String?): List<ClassRelation>
 
-    fun findCallers(name: String?, module: String?): List<ClassRelation>
+    fun findCallers(projectId:Long, name: String?, module: String?): List<ClassRelation>
 
     fun findFields(id: String): List<JField>
 }

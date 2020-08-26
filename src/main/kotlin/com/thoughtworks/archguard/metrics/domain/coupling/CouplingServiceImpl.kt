@@ -30,7 +30,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val jClassVOHasId = if (jClassVO.id != null) {
             jClassVO
         } else {
-            val jClass = jClassRepository.getJClassBy(jClassVO.name, jClassVO.module)
+            val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
                     ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
             jClass.toVO()
         }

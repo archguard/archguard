@@ -36,7 +36,7 @@ class ClassInvokeService {
                     .filter { configureService.isDisplayNode(projectId, it.name) }
         }
         target.implements = implements
-        target.callees = repo.findCallees(target.name, target.module)
+        target.callees = repo.findCallees(projectId, target.name, target.module)
                 .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
         if (deep == 1) {
             return
@@ -55,7 +55,7 @@ class ClassInvokeService {
         }
         target.parents = repo.findClassParents(target.module, target.name)
                 .filter { configureService.isDisplayNode(projectId, it.name) }
-        target.callers = repo.findCallers(target.name, target.module)
+        target.callers = repo.findCallers(projectId, target.name, target.module)
                 .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
         if (deep == 1) {
             return

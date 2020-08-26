@@ -4,20 +4,20 @@ import org.springframework.stereotype.Service
 
 @Service
 class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetricRepository: ClassMetricRepository) : MetricPersistService {
-    override fun persistClassMetrics(projectId: Int) {
-        val allAbc = metricsService.calculateAllAbc()
+    override fun persistClassMetrics(projectId: Long) {
+        val allAbc = metricsService.calculateAllAbc(projectId)
         val abcMap: MutableMap<String, Int> = mutableMapOf()
         allAbc.forEach { abcMap[it.jClassVO.id!!] = it.abcValue }
 
-        val allDit = metricsService.calculateAllDit()
+        val allDit = metricsService.calculateAllDit(projectId)
         val ditMap: MutableMap<String, Int> = mutableMapOf()
         allDit.forEach { ditMap[it.jClassVO.id!!] = it.ditValue }
 
-        val allNoc = metricsService.calculateAllNoc()
+        val allNoc = metricsService.calculateAllNoc(projectId)
         val nocMap: MutableMap<String, Int> = mutableMapOf()
         allNoc.forEach { nocMap[it.jClassVO.id!!] = it.nocValue }
 
-        val allLCOM4 = metricsService.calculateAllLCOM4()
+        val allLCOM4 = metricsService.calculateAllLCOM4(projectId)
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
         allLCOM4.forEach { lcom4Map[it.jClassVO.id!!] = it.lcom4Value }
 
@@ -28,4 +28,4 @@ class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetr
     }
 }
 
-data class ClassMetricPO(val projectId: Int, val clazzId: String, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
+data class ClassMetricPO(val projectId: Long, val clazzId: String, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)

@@ -41,8 +41,8 @@ class ClassInvokeServiceTest {
         every { repo.findClassParents(target.module, target.name) } returns listOf(parent)
         every { configService.isDisplayNode(any(), any()) } returns true
         every { repo.findClassImplements(target.name, target.module) } returns listOf(impl)
-        every { repo.findCallees(target.name, target.module) } returns listOf(ClassRelation(callee, 1))
-        every { repo.findCallers(target.name, target.module) } returns listOf(ClassRelation(caller, 1))
+        every { repo.findCallees(projectId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
+        every { repo.findCallers(projectId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
         service.findInvokes(projectId, target, 1, 1, true)
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)

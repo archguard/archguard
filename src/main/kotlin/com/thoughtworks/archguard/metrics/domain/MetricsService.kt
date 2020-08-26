@@ -21,27 +21,27 @@ interface MetricsService {
     @Deprecated("")
     fun getModuleMetricsLegacy(projectId:Long): List<ModuleMetricsLegacy>
 
-    fun getClassAbstractMetric(jClassVO: JClassVO): ClassAbstractRatio
+    fun getClassAbstractMetric(projectId:Long, jClassVO: JClassVO): ClassAbstractRatio
     fun getPackageAbstractMetric(projectId:Long, packageVO: PackageVO): PackageAbstractRatio
     fun getModuleAbstractMetric(projectId:Long, moduleName: String): ModuleAbstractRatio
 
-    fun getClassNoc(jClassVO: JClassVO): Int
+    fun getClassNoc(projectId:Long, jClassVO: JClassVO): Int
 
-    fun getClassDit(jClassVO: JClassVO): Int
+    fun getClassDit(projectId:Long, jClassVO: JClassVO): Int
 
-    fun getClassAbc(jClassVO: JClassVO): Int
+    fun getClassAbc(projectId:Long, jClassVO: JClassVO): Int
 
     fun getClassDfms(projectId:Long, jClassVO: JClassVO): ClassDfms
     fun getPackageDfms(projectId:Long, packageVO: PackageVO): PackageDfms
     fun getModuleDfms(projectId:Long, moduleName: String): ModuleDfms
 
-    fun getClassLCOM4(jClassVO: JClassVO): GraphStore
+    fun getClassLCOM4(projectId:Long, jClassVO: JClassVO): GraphStore
 
-    fun calculateAllNoc(): List<ClassNoc>
-    fun calculateAllDit(): List<ClassDit>
-    fun calculateAllAbc(): List<ClassAbc>
-    fun calculateAllLCOM4(): List<ClassLCOM4>
-    fun calculateAllClassDfms(): List<ClassDfms>
-    fun calculateAllModuleDfms(): List<ModuleDfms>
+    fun calculateAllNoc(projectId:Long): List<ClassNoc>
+    fun calculateAllDit(projectId:Long): List<ClassDit>
+    fun calculateAllAbc(projectId:Long): List<ClassAbc>
+    fun calculateAllLCOM4(projectId:Long): List<ClassLCOM4>
+    fun calculateAllClassDfms(projectId:Long): List<ClassDfms>
+    fun calculateAllModuleDfms(projectId:Long): List<ModuleDfms>
 
 }

@@ -23,26 +23,26 @@ class ClassService {
     @Autowired
     private lateinit var classInvokeService: ClassInvokeService
 
-    fun getDependencies(module: String, name: String, deep: Int): JClass {
-        val target = getTargetClass(module, name)
+    fun getDependencies(projectId:Long, module: String, name: String, deep: Int): JClass {
+        val target = getTargetClass(projectId, module, name)
         classDependenceesService.findDependencees(target, deep)
         classDependencerService.findDependencers(target, deep)
         return target
     }
 
-    private fun getTargetClass(module: String, name: String): JClass {
-        return repo.getJClassBy(name, module)
+    private fun getTargetClass(projectId: Long, module: String, name: String): JClass {
+        return repo.getJClassBy(projectId, name, module)
                 ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
     }
 
     fun findInvokes(projectId: Long, module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
-        val targetClass = getTargetClass(module, name)
+        val targetClass = getTargetClass(projectId, module, name)
         return classInvokeService.findInvokes(projectId, targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
-    fun findMethodsCallees(module: String, name: String, calleeDeep: Int,
+    fun findMethodsCallees(projectId:Long, module: String, name: String, calleeDeep: Int,
                            needIncludeImpl: Boolean, needParents: Boolean): JClass {
-        val targetClass = getTargetClass(module, name)
+        val targetClass = getTargetClass(projectId, module, name)
         return classMethodCalleesService.findClassMethodsCallees(targetClass, calleeDeep,
                 needIncludeImpl, needParents)
     }

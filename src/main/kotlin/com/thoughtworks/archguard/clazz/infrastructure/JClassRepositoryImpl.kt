@@ -12,11 +12,14 @@ import org.springframework.stereotype.Repository
 class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
 
-    override fun getJClassBy(name: String, module: String): JClass? {
-        val sql = "select id, name, module, loc, access from JClass where name='$name' and module='$module'"
+    override fun getJClassBy(projectId: Long, name: String, module: String): JClass? {
+        val sql = "select id, name, module, loc, access from JClass where project_id=:projectId and name=:name and module=:module"
         val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
+                    .bind("projectId", projectId)
+                    .bind("name", name)
+                    .bind("module", module)
                     .mapTo(JClassDto::class.java)
                     .findOne().orElse(null)
         }
@@ -57,7 +60,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toJClass() }
     }
 
-    override fun findCallees(name: String?, module: String?): List<ClassRelation> {
+    override fun findCallees(projectId: Long, name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
@@ -67,16 +70,18 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
                 "                     AND b.clzname <> '$name'" +
+                "                     AND a.project_id = b.project_id" +
+                "                     AND a.project_id = $projectId" +
                 "                     GROUP BY b.clzname, b.module"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
                     .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { toClassRelation(it) }
+        }.map { toClassRelation(projectId, it) }
     }
 
-    override fun findCallers(name: String?, module: String?): List<ClassRelation> {
+    override fun findCallers(projectId: Long, name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
@@ -84,6 +89,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT a.clzname as clzname, a.module as module, COUNT(1) as count " +
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
+                "                     AND a.project_id = b.project_id" +
+                "                     AND a.project_id = $projectId" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
                 "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname, a.module"
@@ -92,7 +99,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
             it.createQuery(sql)
                     .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { toClassRelation(it) }
+        }.map { toClassRelation(projectId, it) }
     }
 
     override fun findFields(id: String): List<JField> {
@@ -105,8 +112,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }
     }
 
-    private fun toClassRelation(it: ClassRelationDTO): ClassRelation {
-        val jClassByName = getJClassBy(it.clzname, it.module)
+    private fun toClassRelation(projectId: Long, it: ClassRelationDTO): ClassRelation {
+        val jClassByName = getJClassBy(projectId, it.clzname, it.module)
         return if (jClassByName == null) {
             ClassRelation(JClass(NOT_EXIST_ID, it.clzname, it.module), it.count)
         } else {

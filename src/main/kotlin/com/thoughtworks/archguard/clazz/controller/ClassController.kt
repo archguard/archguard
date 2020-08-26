@@ -21,7 +21,7 @@ class ClassController {
                         @PathVariable("name") name: String,
                         @RequestParam(value = "module", required = false, defaultValue = "") module: String,
                         @RequestParam("deep", required = false, defaultValue = "3") deep: Int): JClass {
-        return service.getDependencies(module, name, deep)
+        return service.getDependencies(projectId, module, name, deep)
     }
 
     @GetMapping("/{name}/invokes")
@@ -42,6 +42,6 @@ class ClassController {
                           @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                           @RequestParam(value = "needParents", required = false, defaultValue = "true") needParents: Boolean,
                           @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean): JClass {
-        return service.findMethodsCallees(module, name, deep, needIncludeImpl, needParents)
+        return service.findMethodsCallees(projectId, module, name, deep, needIncludeImpl, needParents)
     }
 }

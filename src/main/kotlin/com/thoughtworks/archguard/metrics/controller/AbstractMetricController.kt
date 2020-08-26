@@ -15,7 +15,7 @@ class AbstractMetricController(val metricsService: MetricsService) {
     fun getClassAbstractMetric(@PathVariable("projectId") projectId: Long,
                                @RequestParam className: String,
                                @RequestParam moduleName: String): ClassAbstractRatio {
-        return metricsService.getClassAbstractMetric(JClassVO(className, moduleName))
+        return metricsService.getClassAbstractMetric(projectId, JClassVO(className, moduleName))
     }
 
     @GetMapping("/package")
