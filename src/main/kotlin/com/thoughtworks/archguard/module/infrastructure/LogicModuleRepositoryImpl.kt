@@ -81,7 +81,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun saveAll(projectId: Long, logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?)",
+                handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?, ?)",
                         it.id, projectId, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
             }
         }
