@@ -72,17 +72,17 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun deleteAll() {
+    override fun deleteByProjectId(projectId: Long) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("delete from logic_module")
+            handle.execute("delete from logic_module where project_id = ?", projectId)
         }
     }
 
-    override fun saveAll(logicModules: List<LogicModule>) {
+    override fun saveAll(projectId: Long, logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
-                        it.id, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
+                handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?)",
+                        it.id, projectId, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
             }
         }
     }
