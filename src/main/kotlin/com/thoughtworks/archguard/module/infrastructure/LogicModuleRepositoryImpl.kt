@@ -55,18 +55,18 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 
     // FIXME: add projectId
-    override fun create(logicModule: LogicModule) {
+    override fun create(projectId: Long, logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
-                    logicModule.id, logicModule.name, logicModule.members.joinToString(",") { it.getFullName() }, logicModule.status)
+            handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?, ?)",
+                    logicModule.id, projectId, logicModule.name, logicModule.members.joinToString(",") { it.getFullName() }, logicModule.status)
         }
     }
 
     // FIXME: add projectId
-    override fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes) {
+    override fun createWithCompositeNodes(projectId: Long, logicModule: LogicModuleWithCompositeNodes) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, name, lg_members, status) values (?, ?, ?, ?)",
-                    logicModule.id, logicModule.name, logicModule.lgMembers.joinToString(","), logicModule.status)
+            handle.execute("insert into logic_module (id, project_id, name, lg_members, status) values (?, ?, ?, ?, ?)",
+                    logicModule.id, projectId, logicModule.name, logicModule.lgMembers.joinToString(","), logicModule.status)
         }
     }
 
@@ -148,9 +148,10 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
 }
 
 class LogicModuleDTO(val id: String, val name: String, val members: String?, private val lgMembers: String?, private val status: LogicModuleStatus) {
-    fun toLogicModule(projectId:Long, logicModuleRepository: LogicModuleRepository): LogicModule {
+    fun toLogicModule(projectId: Long, logicModuleRepository: LogicModuleRepository): LogicModule {
         val leafMembers = members?.split(',')?.sorted()?.map { m -> LogicComponent.createLeaf(m) } ?: emptyList()
-        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(projectId, m) } ?: emptyList()
+        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(projectId, m) }
+                ?: emptyList()
         val logicModule = LogicModule.create(id, name, leafMembers, lgMembers)
         logicModule.status = status
         return logicModule

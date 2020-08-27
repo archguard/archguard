@@ -63,14 +63,14 @@ class LogicModuleController {
     fun createLogicModule(@PathVariable("projectId") projectId: Long,
                           @RequestBody logicModule: LogicModuleLegacy): String {
         logicModule.id = UUID.randomUUID().toString()
-        return logicModuleService.createLogicModule(logicModule.toLogicModule())
+        return logicModuleService.createLogicModule(projectId, logicModule.toLogicModule())
     }
 
     @PostMapping("/service")
     fun createLogicModuleWithCompositeNodes(@PathVariable("projectId") projectId: Long,
                                             @RequestBody logicModule: LogicModuleWithCompositeNodes): String {
         logicModule.id = UUID.randomUUID().toString()
-        return logicModuleService.createLogicModuleWithCompositeNodes(logicModule.toLogicModule())
+        return logicModuleService.createLogicModuleWithCompositeNodes(projectId, logicModule.toLogicModule())
     }
 
     @DeleteMapping("/{id}")

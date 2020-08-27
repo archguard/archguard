@@ -42,13 +42,13 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
         couplingService.persistAllClassCouplingResults(projectId)
     }
 
-    fun createLogicModule(logicModule: LogicModule): String {
-        logicModuleRepository.create(logicModule)
+    fun createLogicModule(projectId: Long, logicModule: LogicModule): String {
+        logicModuleRepository.create(projectId, logicModule)
         return logicModule.id
     }
 
-    fun createLogicModuleWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes): String {
-        logicModuleRepository.createWithCompositeNodes(logicModule)
+    fun createLogicModuleWithCompositeNodes(projectId: Long, logicModule: LogicModuleWithCompositeNodes): String {
+        logicModuleRepository.createWithCompositeNodes(projectId, logicModule)
         return logicModule.id!!
     }
 

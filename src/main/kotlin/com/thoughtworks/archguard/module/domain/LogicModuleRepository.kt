@@ -9,8 +9,8 @@ interface LogicModuleRepository {
     fun get(projectId: Long, name: String): LogicModule
     fun update(id: String, logicModule: LogicModule)
     fun updateAll(logicModules: List<LogicModule>)
-    fun create(logicModule: LogicModule)
-    fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes)
+    fun create(projectId: Long, logicModule: LogicModule)
+    fun createWithCompositeNodes(projectId: Long, logicModule: LogicModuleWithCompositeNodes)
     fun delete(id: String)
     fun deleteByProjectId(projectId: Long)
     fun saveAll(projectId: Long, logicModules: List<LogicModule>)
