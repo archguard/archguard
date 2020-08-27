@@ -15,7 +15,7 @@ class PackageService {
 
     fun getPackageDependencies(projectId: Long): List<ModulePackage> {
         return moduleRepository.getAllSubModule(projectId).map { it.name }.map {
-            val dependencies = packageRepository.getPackageDependenceByModule(it)
+            val dependencies = packageRepository.getPackageDependenceByModule(projectId, it)
             ModulePackage(it, getPackageGraph(dependencies))
         }
     }

@@ -24,7 +24,7 @@ class DependencyServiceImpl : DependencyService {
     lateinit var pluginManager: PluginManager
 
     override fun getAllMethodDependencies(projectId: Long): List<Dependency<JMethodVO>> {
-        var methodDependencies =  dependencyRepository.getAllMethodDependencies()
+        var methodDependencies = dependencyRepository.getAllMethodDependencies(projectId)
 
         pluginManager.getDependPlugin<DependPlugin>(projectId).forEach { methodDependencies = it.fixMethodDependencies(projectId, methodDependencies) }
 
@@ -39,7 +39,7 @@ class DependencyServiceImpl : DependencyService {
         return getAllMethodDependencies(projectId).filter { inModule(it.caller, callerLogicModule, logicModules) && inModule(it.callee, calleeLogicModule, logicModules) }
     }
 
-    override fun getAllWithFullNameStart(projectId: Long, callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>{
+    override fun getAllWithFullNameStart(projectId: Long, callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>> {
         return getAllMethodDependencies(projectId).filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
     }
 

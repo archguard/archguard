@@ -4,5 +4,5 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 
 interface DependencyRepository {
-    fun getAllMethodDependencies(): List<Dependency<JMethodVO>>
+    fun getAllMethodDependencies(projectId: Long): List<Dependency<JMethodVO>>
 }

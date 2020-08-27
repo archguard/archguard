@@ -4,5 +4,5 @@ import com.thoughtworks.archguard.packages.infrastructure.PackageDependenceDTO
 
 
 interface PackageRepository {
-    fun getPackageDependenceByModule(module: String): List<PackageDependenceDTO>
+    fun getPackageDependenceByModule(projectId: Long, module: String): List<PackageDependenceDTO>
 }
