@@ -59,13 +59,14 @@ class MetricsServiceImpl(
     }
 
     override fun getAllMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
-        var modules = logicModuleRepository.getAllByShowStatus(projectId, true)
-        if (modules.isEmpty()) {
-            calculateCouplingLegacy(projectId)
-            modules = logicModuleRepository.getAllByShowStatus(projectId, true)
-        }
+        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
         val moduleNames = modules.map { it.name }.toList()
-        return metricsRepository.findAllMetrics(moduleNames)
+        var metrics = metricsRepository.findAllMetrics(moduleNames)
+        if (metrics.isEmpty()) {
+            calculateCouplingLegacy(projectId)
+            metrics = metricsRepository.findAllMetrics(moduleNames)
+        }
+        return metrics
     }
 
     override fun getClassAbstractMetric(projectId: Long, jClassVO: JClassVO): ClassAbstractRatio {
