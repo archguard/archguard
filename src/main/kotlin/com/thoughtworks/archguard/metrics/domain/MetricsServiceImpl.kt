@@ -9,7 +9,11 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisServi
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
-import com.thoughtworks.archguard.metrics.domain.coupling.*
+import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
+import com.thoughtworks.archguard.metrics.domain.coupling.MetricsRepository
+import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
+import com.thoughtworks.archguard.metrics.domain.coupling.PackageMetricsLegacy
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms
@@ -20,7 +24,11 @@ import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.graph.GraphStore
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.module.domain.model.PackageVO
+import com.thoughtworks.archguard.module.domain.model.SubModule
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -51,15 +59,13 @@ class MetricsServiceImpl(
     }
 
     override fun getAllMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
-        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
+        var modules = logicModuleRepository.getAllByShowStatus(projectId, true)
+        if (modules.isEmpty()) {
+            calculateCouplingLegacy(projectId)
+            modules = logicModuleRepository.getAllByShowStatus(projectId, true)
+        }
         val moduleNames = modules.map { it.name }.toList()
         return metricsRepository.findAllMetrics(moduleNames)
-    }
-
-    override fun getModuleMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
-        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
-        val moduleNames = modules.map { it.name }.toList()
-        return metricsRepository.findModuleMetrics(moduleNames)
     }
 
     override fun getClassAbstractMetric(projectId: Long, jClassVO: JClassVO): ClassAbstractRatio {

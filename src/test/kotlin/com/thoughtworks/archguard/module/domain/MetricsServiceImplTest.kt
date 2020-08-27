@@ -143,7 +143,7 @@ class MetricsServiceImplTest {
 
     @Test
     fun `should get module coupling`() {
-        val projectId:Long = 1
+        val projectId: Long = 1
         val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.test1"), LogicComponent.createLeaf("com.test2")))
         val element2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("com.test3"), LogicComponent.createLeaf("com.test4")))
         val element3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("com.test5"), LogicComponent.createLeaf("com.test6")))
@@ -198,20 +198,4 @@ class MetricsServiceImplTest {
                 result[0].packageMetrics[0].classMetrics[0].innerCoupling)
     }
 
-    @Test
-    fun `should get module metrics by module name`() {
-        val projectId: Long = 1
-        val element = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("com.package1"), LogicComponent.createLeaf("com.package2")))
-
-        every { logicModuleRepository.getAllByShowStatus(projectId, true) } returns listOf(element)
-        val slot = slot<List<String>>()
-        every { metricsRepository.findModuleMetrics(capture(slot)) } answers { listOf(moduleMetrics) }
-
-        val result = service.getModuleMetricsLegacy(projectId)
-
-        assertEquals(1, slot.captured.size)
-        assertEquals(element.name, slot.captured[0])
-        assertEquals(moduleMetrics.moduleName, result[0].moduleName)
-        assertEquals(moduleMetrics.innerCouplingAvg, result[0].innerCouplingAvg)
-    }
 }
