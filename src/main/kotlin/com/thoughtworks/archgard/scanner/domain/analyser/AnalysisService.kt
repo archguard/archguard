@@ -21,11 +21,9 @@ class AnalysisService(@Autowired val projectRepository: ProjectRepository) {
 
     fun checkAnalysable(projectInfo: ProjectInfo) {
         if (projectInfo.repoType == "ZIP") {
-            projectInfo.getRepoList().forEach { repo ->
-                run {
-                    if (!Files.exists(Paths.get(repo))) {
-                        throw FileNotFoundException("zip file has been deleted: $repo")
-                    }
+            projectInfo.getRepoList().forEach {
+                if (!Files.exists(Paths.get(it))) {
+                    throw FileNotFoundException("zip file has been deleted: $it")
                 }
             }
         }
