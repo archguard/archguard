@@ -73,7 +73,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     }
 
     override fun getConfiguresByType(projectId: Long, type: String): List<Configure> {
-        val sql = "SELECT id, type, `key`, value, `order` FROM Configure WHERE type=:type and project_id = :projectId"
+        val sql = "SELECT id, project_id, type, `key`, value, `order` FROM Configure WHERE type=:type and project_id = :projectId"
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
