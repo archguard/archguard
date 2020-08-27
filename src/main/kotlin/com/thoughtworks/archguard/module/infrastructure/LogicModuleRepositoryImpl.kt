@@ -54,6 +54,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }.toLogicModule(projectId, this)
     }
 
+    // FIXME: add projectId
     override fun create(logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("insert into logic_module (id, name, members, status) values (?, ?, ?, ?)",
@@ -61,6 +62,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
+    // FIXME: add projectId
     override fun createWithCompositeNodes(logicModule: LogicModuleWithCompositeNodes) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("insert into logic_module (id, name, lg_members, status) values (?, ?, ?, ?)",
@@ -99,7 +101,8 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .map { SubModule(it) }
         }
         val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
-            handle.createQuery("select distinct module from JMethod")
+            handle.createQuery("select distinct module from JMethod where project_id = :projectId")
+                    .bind("projectId", projectId)
                     .mapTo(String::class.java)
                     .list()
                     .filter { it != "null" }
