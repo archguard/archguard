@@ -29,6 +29,7 @@ class ConfigController {
     fun create(@PathVariable("projectId") projectId: Long,
                @RequestBody config: Configure): ResponseEntity<Nothing> {
         service.create(config)
+        config.projectId = projectId
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
