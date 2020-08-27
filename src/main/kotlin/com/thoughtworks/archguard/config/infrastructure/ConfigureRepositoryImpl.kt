@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.config.infrastructure
 
-import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import com.thoughtworks.archguard.config.domain.Configure
+import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +33,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
             configureDTOList.forEach {
                 val id = it.id ?: UUID.randomUUID().toString()
                 batch.bind("id", id)
-                        .bind("project_id", it.projectId)
+                        .bind("projectId", it.projectId)
                         .bind("type", it.type)
                         .bind("key", it.key)
                         .bind("value", it.value)

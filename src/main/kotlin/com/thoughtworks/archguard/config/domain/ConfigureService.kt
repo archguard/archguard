@@ -28,16 +28,17 @@ class ConfigureService {
     fun isDisplayNode(projectId: Long, nodeName: String): Boolean {
         if (nodeName.endsWith("Test")) return false
 
-        val displayConfig = repo.getConfiguresByType(projectId,"nodeDisplay")
+        val displayConfig = repo.getConfiguresByType(projectId, "nodeDisplay")
         val continueNodes = displayConfig.filter { it.value == "contain" }.map { it.key }
         val hiddenNodes = displayConfig.filter { it.value == "hidden" }.map { it.key }
 
-        return (continueNodes.isEmpty() || continueNodes.any{ nodeName.contains(it) }) && hiddenNodes.all { !nodeName.contains(it) }
+        return (continueNodes.isEmpty() || continueNodes.any { nodeName.contains(it) }) && hiddenNodes.all { !nodeName.contains(it) }
     }
 
 
     fun updateConfigsByType(projectId: Long, type: String, configs: List<Configure>) {
         repo.deleteConfiguresByType(projectId, type)
+        configs.forEach { it.projectId = projectId }
         repo.batchCreateConfigures(configs)
     }
 }
