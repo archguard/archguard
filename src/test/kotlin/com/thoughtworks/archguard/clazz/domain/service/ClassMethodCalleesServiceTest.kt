@@ -42,8 +42,8 @@ class ClassMethodCalleesServiceTest {
         val method2 = JMethod("2", "method2", "class", "module", "void", emptyList())
         val parent = JClass("1", "parent", "module")
         //when
-        every { methodRepo.findMethodsByModuleAndClass(module, name) } returns listOf(method1, method2)
-        every { methodRepo.findMethodsByModuleAndClass(module, parent.name) } returns listOf(method1)
+        every { methodRepo.findMethodsByModuleAndClass(projectId, module, name) } returns listOf(method1, method2)
+        every { methodRepo.findMethodsByModuleAndClass(projectId, module, parent.name) } returns listOf(method1)
         every { repo.findClassParents(projectId, module, name) } returns listOf(parent)
         every { repo.findClassParents(projectId, parent.module, parent.name) } returns listOf()
         every { methodCalleesService.buildMethodCallees(listOf(method1, method2), 1, true) } returns listOf(method1)

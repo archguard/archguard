@@ -72,7 +72,7 @@ class MetricsServiceImpl(
     override fun getClassAbstractMetric(projectId: Long, jClassVO: JClassVO): ClassAbstractRatio {
         val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
-        val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        val methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
         jClass.methods = methods
         return ClassAbstractRatio.fromJClass(jClass)
     }
@@ -90,7 +90,7 @@ class MetricsServiceImpl(
     override fun getClassAbc(projectId: Long, jClassVO: JClassVO): Int {
         val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
-        jClass.methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        jClass.methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
         return abcService.calculateAbc(jClass)
     }
 
@@ -110,7 +110,7 @@ class MetricsServiceImpl(
 
     override fun calculateAllAbc(projectId: Long): List<ClassAbc> {
         val jClasses = jClassRepository.getJClassesHasModules(projectId)
-        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(it.module, it.name) }
+        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(projectId, it.module, it.name) }
 
         val classAbcList = mutableListOf<ClassAbc>()
         jClasses.forEach { classAbcList.add(ClassAbc(it.toVO(), abcService.calculateAbc(it))) }
@@ -119,7 +119,7 @@ class MetricsServiceImpl(
 
     override fun calculateAllLCOM4(projectId: Long): List<ClassLCOM4> {
         val jClasses = jClassRepository.getJClassesHasModules(projectId)
-        jClasses.forEach { prepareJClassBasicDataForLCOM4(it) }
+        jClasses.forEach { prepareJClassBasicDataForLCOM4(projectId, it) }
 
         val classLCOM4List = mutableListOf<ClassLCOM4>()
         jClasses.forEach { classLCOM4List.add(ClassLCOM4(it.toVO(), lcom4Service.getLCOM4Graph(it).getConnectivityCount())) }
@@ -192,13 +192,13 @@ class MetricsServiceImpl(
     override fun getClassLCOM4(projectId: Long, jClassVO: JClassVO): GraphStore {
         val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
-        prepareJClassBasicDataForLCOM4(jClass)
+        prepareJClassBasicDataForLCOM4(projectId, jClass)
         return lcom4Service.getLCOM4Graph(jClass)
     }
 
-    private fun prepareJClassBasicDataForLCOM4(jClass: JClass) {
+    private fun prepareJClassBasicDataForLCOM4(projectId: Long, jClass: JClass) {
         jClass.fields = jClassRepository.findFields(jClass.id)
-        val methods = jMethodRepository.findMethodsByModuleAndClass(jClass.module, jClass.name)
+        val methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods

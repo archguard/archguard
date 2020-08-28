@@ -24,8 +24,8 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun findMethodsByModuleAndClass(module: String, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM JMethod WHERE clzname='$name' AND module='$module'"
+    override fun findMethodsByModuleAndClass(projectId: Long, module: String, name: String): List<JMethod> {
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND module='$module' AND project_id='$projectId'"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)

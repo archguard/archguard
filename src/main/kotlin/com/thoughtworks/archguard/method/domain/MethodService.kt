@@ -41,4 +41,8 @@ class MethodService {
         return repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName)
     }
 
+    fun findMethodByModuleAndClazz(projectId: Long, clazzName: String, submoduleName: String): List<JMethod> {
+        return repo.findMethodsByModuleAndClass(projectId, submoduleName, clazzName)
+    }
+
 }
