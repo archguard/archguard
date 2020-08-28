@@ -53,7 +53,7 @@ class MethodController {
     }
 
     @GetMapping("")
-    fun getMethodCallees(@PathVariable("projectId") projectId: Long,
+    fun getMethodsBelongToClass(@PathVariable("projectId") projectId: Long,
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "submodule") submoduleName: String): ResponseEntity<List<JMethod>> {
         val jMethod = methodService.findMethodByModuleAndClazz(projectId, clazzName, submoduleName)
