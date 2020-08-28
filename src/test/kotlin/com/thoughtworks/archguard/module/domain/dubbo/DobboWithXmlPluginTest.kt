@@ -47,7 +47,7 @@ class DobboWithXmlPluginTest {
 
         every { jClassRepository.getJClassesHasModules(projectId) } returns listOf(class2)
         every { jClassRepository.findClassImplements(projectId, class2.name, class2.module) } returns listOf(class3, class4)
-        every { xmlConfigService.getRealCalleeModuleByXmlConfig(method1.clazz, method2.clazz) } returns listOf(SubModuleDubbo("any", "module3", "any"))
+        every { xmlConfigService.getRealCalleeModuleByXmlConfig(projectId, method1.clazz, method2.clazz) } returns listOf(SubModuleDubbo("any", "module3", "any"))
 
 
         // when

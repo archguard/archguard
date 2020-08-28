@@ -16,30 +16,35 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
     lateinit var jdbi: Jdbi
 
     // FIXME: 可能会存在重复name的submodule
-    override fun getSubModuleByName(name: String): SubModuleDubbo? {
-        val sql = "select id, name, path from dubbo_module where name='$name'"
+    override fun getSubModuleByName(projectId: Long, name: String): SubModuleDubbo? {
+        val sql = "select id, name, path from dubbo_module where name=:name and project_id = :projectId"
         return jdbi.withHandle<SubModuleDubbo?, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(SubModuleDubbo::class.java))
             it.createQuery(sql)
+                    .bind("name", name)
+                    .bind("projectId", projectId)
                     .mapTo(SubModuleDubbo::class.java)
                     .findOne().orElse(null)
         }
     }
 
-    override fun getReferenceConfigBy(interfaceName: String, subModule: SubModuleDubbo): List<ReferenceConfig> {
+    override fun getReferenceConfigBy(projectId: Long, interfaceName: String, subModule: SubModuleDubbo): List<ReferenceConfig> {
         val sql = "select id, referenceId, interface as interfaceName, version, `group`, module_id as moduleId " +
-                "from dubbo_reference_config where interface='$interfaceName' and module_id='${subModule.id}'"
+                "from dubbo_reference_config where interface=:interfaceName and module_id=:subModuleId and project_id = :projectId"
         val referenceConfigDtos = jdbi.withHandle<List<ReferenceConfigDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ReferenceConfigDto::class.java))
             it.createQuery(sql)
+                    .bind("interfaceName", interfaceName)
+                    .bind("subModuleId", subModule.id)
+                    .bind("projectId", projectId)
                     .mapTo(ReferenceConfigDto::class.java)
                     .list()
         }
         return referenceConfigDtos.map { it.toReferenceConfigWithSubModule(subModule) }
     }
 
-    override fun getServiceConfigBy(referenceConfig: ReferenceConfig): List<ServiceConfig> {
-        val sql = generateSqlWithReferenceConfig(referenceConfig)
+    override fun getServiceConfigBy(projectId: Long, referenceConfig: ReferenceConfig): List<ServiceConfig> {
+        val sql = generateSqlWithReferenceConfig(projectId, referenceConfig)
         val serviceConfigDto = jdbi.withHandle<List<ServiceConfigDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ServiceConfigDto::class.java))
             it.createQuery(sql)
@@ -49,11 +54,12 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         return serviceConfigDto.map { it.toServiceConfig() }
     }
 
-    private fun generateSqlWithReferenceConfig(referenceConfig: ReferenceConfig): String {
+    private fun generateSqlWithReferenceConfig(projectId: Long, referenceConfig: ReferenceConfig): String {
         val sqlPrefix = "select sc.id, sc.interface as interfaceName, sc.ref, sc.version, sc.`group`, " +
                 "sc.module_id as moduleId, m.name, m.path " +
                 "from dubbo_service_config as sc, dubbo_module as m where "
-        val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id"
+        val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id "+
+                " and sc.project_id = m.project_id and sc.project_id = $projectId "
 
         return sqlPrefix +
                 generateSqlGroupRelated(referenceConfig) +

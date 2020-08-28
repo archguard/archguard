@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service
 
 @Service
 interface XmlConfigService {
-    fun getRealCalleeModuleByXmlConfig(callerClass: JClassVO, calleeClass: JClassVO): List<SubModuleDubbo>
+    fun getRealCalleeModuleByXmlConfig(projectId: Long, callerClass: JClassVO, calleeClass: JClassVO): List<SubModuleDubbo>
 }

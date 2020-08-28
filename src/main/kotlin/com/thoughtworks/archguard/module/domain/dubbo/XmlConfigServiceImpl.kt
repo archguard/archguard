@@ -13,11 +13,11 @@ class XmlConfigServiceImpl : XmlConfigService {
     lateinit var dubboConfigRepository: DubboConfigRepository
 
 
-    override fun getRealCalleeModuleByXmlConfig(callerClass: JClassVO, calleeClass: JClassVO): List<SubModuleDubbo> {
+    override fun getRealCalleeModuleByXmlConfig(projectId: Long, callerClass: JClassVO, calleeClass: JClassVO): List<SubModuleDubbo> {
         val callerModule = callerClass.module
-        val callerSubModule = dubboConfigRepository.getSubModuleByName(callerModule) ?: return emptyList()
-        val referenceConfigs = dubboConfigRepository.getReferenceConfigBy(calleeClass.name, callerSubModule)
-        val serviceConfigs = referenceConfigs.map { referenceConfig -> dubboConfigRepository.getServiceConfigBy(referenceConfig) }.flatten()
+        val callerSubModule = dubboConfigRepository.getSubModuleByName(projectId, callerModule) ?: return emptyList()
+        val referenceConfigs = dubboConfigRepository.getReferenceConfigBy(projectId, calleeClass.name, callerSubModule)
+        val serviceConfigs = referenceConfigs.map { referenceConfig -> dubboConfigRepository.getServiceConfigBy(projectId, referenceConfig) }.flatten()
         return serviceConfigs.map { it.subModule }
     }
 }
