@@ -1,9 +1,12 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.clazz.domain.service.*
+import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
+import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
+import com.thoughtworks.archguard.clazz.domain.service.ClassInvokeService
+import com.thoughtworks.archguard.clazz.domain.service.ClassMethodCalleesService
+import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -11,8 +14,7 @@ import org.junit.jupiter.api.Test
 
 class ClassServiceTest {
 
-    @InjectMockKs
-    var service = ClassService()
+    private lateinit var service: ClassService
 
     @MockK
     private lateinit var classInvokeService: ClassInvokeService
@@ -27,11 +29,12 @@ class ClassServiceTest {
     lateinit var classMethodCalleesService: ClassMethodCalleesService
 
     @MockK
-    lateinit var repo: JClassRepository
+    lateinit var jClassRepository: JClassRepository
 
     @BeforeEach
     internal fun setUp() {
         init(this)
+        service = ClassService(classMethodCalleesService, classDependenceesService, classDependencerService, jClassRepository, classInvokeService)
     }
 
     @Test
@@ -46,7 +49,7 @@ class ClassServiceTest {
         (expected.dependencees as MutableList).add(dependencee)
         (expected.dependencers as MutableList).add(dependencer)
         //when
-        every { repo.getJClassBy(any(), any(), any()) } returns expected
+        every { jClassRepository.getJClassBy(any(), any(), any()) } returns expected
         every { classDependenceesService.findDependencees(any(), any()) } returns expected
         every { classDependencerService.findDependencers(any(), any()) } returns expected
 
@@ -68,7 +71,7 @@ class ClassServiceTest {
         val deep = 3
         val needIncludeImpl = true
         //when
-        every { repo.getJClassBy(projectId, targetName, module) } returns target
+        every { jClassRepository.getJClassBy(projectId, targetName, module) } returns target
         every {
             classInvokeService.findInvokes(projectId, target, deep, deep, needIncludeImpl)
         } returns target
@@ -91,7 +94,7 @@ class ClassServiceTest {
         every {
             classMethodCalleesService.findClassMethodsCallees(projectId, targetClass, deep, needIncludeImpl, needParents)
         } returns JClass("id", "clazz", "module")
-        every { repo.getJClassBy(projectId, name, module) } returns targetClass
+        every { jClassRepository.getJClassBy(projectId, name, module) } returns targetClass
         val target = service.findMethodsCallees(projectId, module, name, deep, needIncludeImpl, needParents)
         //then
         assertThat(target.methods).isEmpty()

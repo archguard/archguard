@@ -3,27 +3,13 @@ package com.thoughtworks.archguard.clazz.domain.service
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ClassService {
-    @Autowired
-    private lateinit var classMethodCalleesService: ClassMethodCalleesService
+class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val classDependenceesService: ClassDependenceesService,
+                   val classDependencerService: ClassDependencerService, val jClassRepository: JClassRepository, val classInvokeService: ClassInvokeService) {
 
-    @Autowired
-    private lateinit var classDependenceesService: ClassDependenceesService
-
-    @Autowired
-    private lateinit var classDependencerService: ClassDependencerService
-
-    @Autowired
-    private lateinit var repo: JClassRepository
-
-    @Autowired
-    private lateinit var classInvokeService: ClassInvokeService
-
-    fun getDependencies(projectId:Long, module: String, name: String, deep: Int): JClass {
+    fun getDependencies(projectId: Long, module: String, name: String, deep: Int): JClass {
         val target = getTargetClass(projectId, module, name)
         classDependenceesService.findDependencees(target, deep)
         classDependencerService.findDependencers(target, deep)
@@ -31,7 +17,7 @@ class ClassService {
     }
 
     private fun getTargetClass(projectId: Long, module: String, name: String): JClass {
-        return repo.getJClassBy(projectId, name, module)
+        return jClassRepository.getJClassBy(projectId, name, module)
                 ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
     }
 
@@ -40,7 +26,7 @@ class ClassService {
         return classInvokeService.findInvokes(projectId, targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
-    fun findMethodsCallees(projectId:Long, module: String, name: String, calleeDeep: Int,
+    fun findMethodsCallees(projectId: Long, module: String, name: String, calleeDeep: Int,
                            needIncludeImpl: Boolean, needParents: Boolean): JClass {
         val targetClass = getTargetClass(projectId, module, name)
         return classMethodCalleesService.findClassMethodsCallees(projectId, targetClass,

@@ -4,19 +4,10 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.method.domain.service.MethodCalleesService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ClassMethodCalleesService {
-    @Autowired
-    private lateinit var methodRepo: JMethodRepository
-
-    @Autowired
-    private lateinit var classRepo: JClassRepository
-
-    @Autowired
-    private lateinit var methodCalleesService: MethodCalleesService
+class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo: JClassRepository, val methodCalleesService: MethodCalleesService) {
 
     fun findClassMethodsCallees(projectId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {

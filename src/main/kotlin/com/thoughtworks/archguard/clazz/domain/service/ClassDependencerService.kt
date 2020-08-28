@@ -1,14 +1,11 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.domain.JClass
-import org.springframework.beans.factory.annotation.Autowired
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ClassDependencerService {
-    @Autowired
-    private lateinit var repo: JClassRepository
+class ClassDependencerService(val repo: JClassRepository) {
 
     fun findDependencers(target: JClass, deep: Int): JClass {
         buildDependencers(listOf(target), deep)

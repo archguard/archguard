@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.config.domain
 import io.mockk.MockKAnnotations.init
 import io.mockk.Runs
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.verify
@@ -12,15 +11,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ConfigureServiceTest {
-    @InjectMockKs
-    var service = ConfigureService()
+    private lateinit var service: ConfigureService
 
     @MockK
-    lateinit var repo: ConfigureRepository
+    lateinit var configureRepository: ConfigureRepository
 
     @BeforeEach
     fun setUp() {
         init(this)
+        service = ConfigureService(configureRepository)
     }
 
     @Test
@@ -28,7 +27,7 @@ class ConfigureServiceTest {
         //given
         val configure = Configure("id", 1L, "nodeHidden", "clz", "21", 1)
         //when
-        every { repo.getConfigures(configure.projectId) } returns listOf(configure)
+        every { configureRepository.getConfigures(configure.projectId) } returns listOf(configure)
         val configures = service.getConfigures(configure.projectId)
         //then
         assertThat(configures.size).isEqualTo(1)
@@ -40,10 +39,10 @@ class ConfigureServiceTest {
         //given
         val configure = Configure("id", 1L, "nodeHidden", "clz", "21", 1)
         //when
-        every { repo.create(configure) } just Runs
+        every { configureRepository.create(configure) } just Runs
         service.create(configure)
         //then
-        verify { repo.create(configure) }
+        verify { configureRepository.create(configure) }
     }
 
     @Test
@@ -52,10 +51,10 @@ class ConfigureServiceTest {
         val id = "id"
         val configure = Configure(id, 1L, "nodeHidden", "clz", "21", 1)
         //when
-        every { repo.update(any()) } just Runs
+        every { configureRepository.update(any()) } just Runs
         service.update(id, configure)
         //then
-        verify { repo.update(any()) }
+        verify { configureRepository.update(any()) }
     }
 
     @Test
@@ -63,17 +62,17 @@ class ConfigureServiceTest {
         //given
         val id = "id"
         //when
-        every { repo.delete(id) } just Runs
+        every { configureRepository.delete(id) } just Runs
         service.delete(id)
         //then
-        verify { repo.delete(id) }
+        verify { configureRepository.delete(id) }
     }
 
     @Test
     fun `should display class`() {
         //given
         //when
-        every { repo.getConfiguresByType(1L, "nodeDisplay") } returns listOf(
+        every { configureRepository.getConfiguresByType(1L, "nodeDisplay") } returns listOf(
                 Configure("", 1L, "nodeDisplay", "com", "contain", 1),
                 Configure("", 1L, "nodeDisplay", "org", "contain", 1),
                 Configure("", 1L, "nodeDisplay", "common", "contain", 1),

@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -12,8 +11,7 @@ import org.junit.jupiter.api.Test
 
 internal class ClassDependenceesServiceTest {
 
-    @InjectMockKs
-    var service = ClassDependenceesService()
+    private lateinit var service: ClassDependenceesService
 
     @MockK
     private lateinit var repo: JClassRepository
@@ -21,6 +19,7 @@ internal class ClassDependenceesServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
+        service = ClassDependenceesService(repo)
     }
 
     @Test

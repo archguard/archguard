@@ -4,18 +4,12 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ClassInvokeService {
+class ClassInvokeService(val repo: JClassRepository, val configureService: ConfigureService) {
     private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
 
-    @Autowired
-    private lateinit var repo: JClassRepository
-
-    @Autowired
-    private lateinit var configureService: ConfigureService
     fun findInvokes(projectId: Long, target: JClass, callerDeep: Int, calleeDeep: Int,
                     needIncludeImpl: Boolean): JClass {
         findClassCallers(projectId, target, callerDeep, needIncludeImpl)

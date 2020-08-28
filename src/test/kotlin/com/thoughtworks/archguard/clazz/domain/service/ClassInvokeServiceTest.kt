@@ -6,15 +6,13 @@ import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ClassInvokeServiceTest {
-    @InjectMockKs
-    var service = ClassInvokeService()
+    private lateinit var service: ClassInvokeService
 
     @MockK
     private lateinit var repo: JClassRepository
@@ -25,6 +23,7 @@ class ClassInvokeServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
+        service = ClassInvokeService(repo, configService)
     }
 
     @Test
