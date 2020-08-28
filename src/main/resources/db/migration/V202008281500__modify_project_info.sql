@@ -1,4 +1,4 @@
-drop table if exists ProjectInfo;
+drop table if exists `project_info`;
 CREATE TABLE `project_info`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `project_name` varchar(256) not null,
