@@ -39,7 +39,7 @@ class ProjectInoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"repoType\":\"GIT\"}]"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -57,7 +57,7 @@ class ProjectInoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"repoType\":\"GIT\"}"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -67,7 +67,7 @@ class ProjectInoApiATest {
     @Order(3)
     fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
         val updateDTO = "{\"id\":1,\"projectName\":\"projectName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
-                ",\"username\":\"username2\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
+                ",\"username\":\"username2\",\"password\":\"admin123456\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}"
 
         val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project-info")
                 .contentType("application/json")
