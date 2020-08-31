@@ -24,7 +24,7 @@ class MethodCallersService(val repo: JMethodRepository, val configureService: Co
             container.addAll(pendindMethods)
         } else {
             pendindMethods.forEach {
-                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(projectId, it.name) }
+                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
             }
             doBuildCallers(projectId, pendindMethods.flatMap { it.callers }, deep - 1, container)
         }

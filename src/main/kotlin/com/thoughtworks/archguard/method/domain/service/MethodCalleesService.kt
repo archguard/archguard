@@ -24,9 +24,9 @@ class MethodCalleesService(val repo: JMethodRepository, val configureService: Co
             container.addAll(pendindMethods)
         } else {
             pendindMethods.parallelStream().forEach {
-                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(projectId, it.name) }
+                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
                 if (needIncludeImpl) {
-                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(projectId, it.name) }
+                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
                 }
             }
             doBuildCallees(projectId,

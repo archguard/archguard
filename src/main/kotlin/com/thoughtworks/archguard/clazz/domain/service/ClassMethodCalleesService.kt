@@ -13,7 +13,7 @@ class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo
 
     fun findClassMethodsCallees(projectId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {
-        target.methods = methodRepo.findMethodsByModuleAndClass(projectId, target.module, target.name).filter { configureService.isDisplayNode(projectId, it.name) }
+        target.methods = methodRepo.findMethodsByModuleAndClass(projectId, target.module, target.name).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
         methodCalleesService.buildMethodCallees(projectId, target.methods, calleeDeep, needIncludeImpl)
         if (needParents) {
             (target.parents as MutableList).addAll(classRepo.findClassParents(projectId, target.module, target.name).filter { configureService.isDisplayNode(projectId, it.name) })
