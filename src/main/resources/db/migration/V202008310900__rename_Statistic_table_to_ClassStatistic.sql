@@ -1,0 +1,1 @@
+RENAME TABLE Statistic TO ClassStatistic;
