@@ -57,7 +57,7 @@ class MethodServiceTest {
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
-        every { calleeService.findCallees(target, deep, true) } returns target
+        every { calleeService.findCallees(projectId, target, deep, true) } returns target
         val result = service.findMethodCallees(projectId, moduleName, clazzName, methodName, deep, true)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
@@ -74,7 +74,7 @@ class MethodServiceTest {
         val deep = 1
         //when
         every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
-        every { calleeService.findCallees(target, deep, true) } returns target
+        every { calleeService.findCallees(projectId, target, deep, true) } returns target
         every { callerService.findCallers(target, deep) } returns target
         val result = service.findMethodInvokes(projectId, moduleName, clazzName, methodName, deep, deep, true)
         //then

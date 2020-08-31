@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.method.domain.service.MethodCalleesService
@@ -24,10 +25,13 @@ class ClassMethodCalleesServiceTest {
     @MockK
     private lateinit var methodCalleesService: MethodCalleesService
 
+    @MockK
+    private lateinit var configureService: ConfigureService
+
     @BeforeEach
     fun setUp() {
         init(this)
-        service = ClassMethodCalleesService(jMethodRepository, jClassRepository, methodCalleesService)
+        service = ClassMethodCalleesService(jMethodRepository, jClassRepository, methodCalleesService, configureService)
     }
 
     @Test
@@ -45,8 +49,11 @@ class ClassMethodCalleesServiceTest {
         every { jMethodRepository.findMethodsByModuleAndClass(projectId, module, parent.name) } returns listOf(method1)
         every { jClassRepository.findClassParents(projectId, module, name) } returns listOf(parent)
         every { jClassRepository.findClassParents(projectId, parent.module, parent.name) } returns listOf()
-        every { methodCalleesService.buildMethodCallees(listOf(method1, method2), 1, true) } returns listOf(method1)
-        every { methodCalleesService.buildMethodCallees(listOf(method1), 1, true) } returns listOf(method2)
+        every { methodCalleesService.buildMethodCallees(projectId, listOf(method1, method2), 1, true) } returns listOf(method1)
+        every { methodCalleesService.buildMethodCallees(projectId, listOf(method1), 1, true) } returns listOf(method2)
+        every { configureService.isDisplayNode(any(), any()) } returns true
+
+
         val result = service.findClassMethodsCallees(projectId, target, 1, true, true)
         //then
         assertThat(result.methods.size).isEqualTo(2)

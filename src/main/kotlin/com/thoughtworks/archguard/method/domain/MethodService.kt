@@ -18,7 +18,7 @@ class MethodService {
     private lateinit var callerService: MethodCallersService
     fun findMethodCallees(projectId: Long, moduleName: String, clazzName: String, methodName: String, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val target = getMethodBy(projectId, moduleName, clazzName, methodName)
-        calleeService.findCallees(target, deep, needIncludeImpl)
+        calleeService.findCallees(projectId, target, deep, needIncludeImpl)
         return target
     }
 
@@ -33,7 +33,7 @@ class MethodService {
                           callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val target = getMethodBy(projectId, moduleName, clazzName, methodName)
         callerService.findCallers(target, callerDeep)
-        calleeService.findCallees(target, calleeDeep, needIncludeImpl)
+        calleeService.findCallees(projectId, target, calleeDeep, needIncludeImpl)
         return target
     }
 

@@ -1,30 +1,34 @@
 package com.thoughtworks.archguard.method.domain.service
 
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class MethodCalleesServiceTest {
-    @InjectMockKs
-    private var service = MethodCalleesService()
+    private lateinit var service: MethodCalleesService
 
     @MockK
     private lateinit var repo: JMethodRepository
 
+    @MockK
+    private lateinit var configureService: ConfigureService
+
     @BeforeEach
     internal fun setUp() {
         init(this)
+        service = MethodCalleesService(repo, configureService)
     }
 
     @Test
     fun `should get method callees`() {
         //given
+        val projectId = 1L
         val target = JMethod("id", "method", "clazz", "module", "void", emptyList())
         val callee1 = JMethod("1", "callee1", "clazz2", "module", "void", emptyList())
         val callee2 = JMethod("2", "callee2", "clazz3", "module", "void", emptyList())
@@ -38,7 +42,9 @@ class MethodCalleesServiceTest {
         every { repo.findMethodImplements(callee1.id, callee1.name) } returns listOf()
         every { repo.findMethodImplements(callee2.id, callee2.name) } returns listOf()
         every { repo.findMethodImplements(implement.id, implement.name) } returns listOf()
-        val result = service.findCallees(listOf(target), 2, true)[0]
+        every { configureService.isDisplayNode(any(), any()) } returns true
+
+        val result = service.findCallees(projectId, listOf(target), 2, true)[0]
         //then
         assertThat(result.callees.size).isEqualTo(1)
         assertThat(result.callees[0]).isEqualToComparingFieldByField(callee1)

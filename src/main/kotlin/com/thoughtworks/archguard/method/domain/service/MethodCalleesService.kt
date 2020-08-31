@@ -1,44 +1,42 @@
 package com.thoughtworks.archguard.method.domain.service
 
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class MethodCalleesService {
+class MethodCalleesService(val repo: JMethodRepository, val configureService: ConfigureService) {
     private val log = LoggerFactory.getLogger(MethodCalleesService::class.java)
 
-    @Autowired
-    private lateinit var repo: JMethodRepository
 
-    fun buildMethodCallees(methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
+    fun buildMethodCallees(projectId: Long, methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val container = ArrayList<JMethod>()
         // FIXME Cost too much time
-        doBuildCallees(methods, calleeDeep, container, needIncludeImpl)
+        doBuildCallees(projectId, methods, calleeDeep, container, needIncludeImpl)
         return methods
     }
 
-    private fun doBuildCallees(methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
+    private fun doBuildCallees(projectId: Long, methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
         val pendindMethods = methods.filterNot { container.contains(it) }
         if (pendindMethods.isEmpty() || calleeDeep == 0) {
             container.addAll(pendindMethods)
         } else {
             pendindMethods.parallelStream().forEach {
-                it.callees = repo.findMethodCallees(it.id)
+                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(projectId, it.name) }
                 if (needIncludeImpl) {
-                    it.implements = repo.findMethodImplements(it.id, it.name)
+                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(projectId, it.name) }
                 }
             }
-            doBuildCallees(pendindMethods.flatMap { it.callees },
-                    calleeDeep - 1, container, needIncludeImpl)
-            doBuildCallees(pendindMethods.flatMap { it.implements },
-                    calleeDeep, container, needIncludeImpl)
+            doBuildCallees(projectId,
+                    pendindMethods.flatMap { it.callees }, calleeDeep - 1, container, needIncludeImpl)
+            doBuildCallees(projectId,
+                    pendindMethods.flatMap { it.implements }, calleeDeep, container, needIncludeImpl)
         }
     }
 
-    fun findCallees(target: List<JMethod>, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
-        return buildMethodCallees(target, deep, needIncludeImpl)
+    fun findCallees(projectId: Long, target: List<JMethod>, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
+        return buildMethodCallees(projectId, target, deep, needIncludeImpl)
     }
 }
