@@ -27,7 +27,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     }
 
     override fun scan(context: ScanContext) {
-        log.info("start scan statistic report")
+        log.info("start scan statistic report, workspcase: {}", context.workspace)
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
         val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it) }
         val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it) }

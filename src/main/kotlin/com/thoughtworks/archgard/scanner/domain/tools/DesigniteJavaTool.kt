@@ -36,7 +36,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getBadSmellReport(target: File): File? {
-        val report = File(systemRoot.toString() + "/designCodeSmells.csv")
+        val report = File(target.toString() + "/DesigniteReport/designCodeSmells.csv")
         process(target)
         return if (report.exists()) {
             report
@@ -46,7 +46,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getTypeMetricsReport(target: File): File? {
-        val report = File(systemRoot.toString() + "/typeMetrics.csv")
+        val report = File(target.toString() + "/DesigniteReport/typeMetrics.csv")
         process(target)
         return if (report.exists()) {
             report
@@ -56,7 +56,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getMethodMetricsReport(target: File): File? {
-        val report = File(systemRoot.toString() + "/methodMetrics.csv")
+        val report = File(target.toString() + "/DesigniteReport/methodMetrics.csv")
         process(target)
         return if (report.exists()) {
             report
@@ -66,30 +66,30 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun process(target: File) {
-        prepareTool(target)
-        scan(listOf("java", "-jar", "-Xmx1G", "${target.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "."))
+        prepareTool()
+        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "${target.absolutePath}/DesigniteReport"))
     }
 
-    private fun prepareTool(target: File) {
+    private fun prepareTool() {
         val file = File(systemRoot.toString() + "/DesigniteJava.jar")
         if (file.exists()) {
             log.info("DesigniteJava.jar already exists in systemRoot")
             Files.copy(file.toPath(),
-                    File(target.toString() + "/DesigniteJava.jar").toPath(),
+                    File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
                     StandardCopyOption.REPLACE_EXISTING)
         } else if (checkIfExistInLocal()) {
             log.info("DesigniteJava.jar exists in local")
             Files.copy(File("DesigniteJava.jar").toPath(),
-                    File(target.toString() + "/DesigniteJava.jar").toPath(),
+                    File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
                     StandardCopyOption.REPLACE_EXISTING)
         } else {
             log.info("Download DesigniteJava.jar from remote")
             val downloadUrl = "http://$host/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
-            FileOperator.download(URL(downloadUrl), File(target.toString() + "/DesigniteJava.jar"))
+            FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/DesigniteJava.jar"))
         }
 
         val chmod = ProcessBuilder("chmod", "+x", "DesigniteJava.jar")
-        chmod.directory(target)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
@@ -104,7 +104,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     private fun getTargetFile(workspace: File): List<File> {
         val target = workspace.walkTopDown()
                 .filter { f -> f.absolutePath.endsWith("pom.xml") || f.absolutePath.endsWith("build.gradle") }
-                .map { f -> f.parentFile.parentFile }
+                .map { f -> f.parentFile }
                 .distinct()
                 .toList()
         if (target.size > 1) {
