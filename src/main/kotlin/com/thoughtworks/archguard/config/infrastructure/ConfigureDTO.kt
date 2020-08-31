@@ -5,7 +5,7 @@ import org.jdbi.v3.core.mapper.reflect.ColumnName
 
 data class ConfigureDTO(
         val id: String?,
-        @ColumnName("project_id") val systemId: Long,
+        @ColumnName("system_id") val systemId: Long,
         val type: String,
         val key: String,
         val value: String,

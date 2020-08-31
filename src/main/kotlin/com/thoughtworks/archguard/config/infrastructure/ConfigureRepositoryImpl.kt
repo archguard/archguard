@@ -14,7 +14,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     lateinit var jdbi: Jdbi
 
     override fun getConfigures(systemId: Long): List<Configure> {
-        val sql = "SELECT id, `project_id`, type, `key`, value, `order` FROM Configure where `project_id` = :systemId"
+        val sql = "SELECT id, `system_id`, type, `key`, value, `order` FROM Configure where `system_id` = :systemId"
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
@@ -28,7 +28,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     override fun batchCreateConfigures(configs: List<Configure>) {
         val configureDTOList = configs.map { ConfigureDTO.of(it) }.toList()
         jdbi.withHandle<IntArray, Nothing> { handle ->
-            val sql = "INSERT INTO Configure (id, project_id, type, `key`, value, `order`) VALUES (:id, :systemId, :type, :key, :value, :order)"
+            val sql = "INSERT INTO Configure (id, system_id, type, `key`, value, `order`) VALUES (:id, :systemId, :type, :key, :value, :order)"
             val batch = handle.prepareBatch(sql)
             configureDTOList.forEach {
                 val id = it.id ?: UUID.randomUUID().toString()
@@ -47,7 +47,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     override fun create(config: Configure) {
         val configureDTO = ConfigureDTO.of(config)
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("INSERT INTO Configure (id, project_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
+            handle.execute("INSERT INTO Configure (id, system_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
                     configureDTO.id, configureDTO.systemId, configureDTO.type, configureDTO.key, configureDTO.value, configureDTO.order)
         }
     }
@@ -73,7 +73,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     }
 
     override fun getConfiguresByType(systemId: Long, type: String): List<Configure> {
-        val sql = "SELECT id, project_id, type, `key`, value, `order` FROM Configure WHERE type=:type and project_id = :systemId"
+        val sql = "SELECT id, system_id, type, `key`, value, `order` FROM Configure WHERE type=:type and system_id = :systemId"
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
@@ -86,7 +86,7 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     }
 
     override fun deleteConfiguresByType(systemId: Long, type: String) {
-        val sql = "delete from Configure where type = '$type' and project_id = $systemId"
+        val sql = "delete from Configure where type = '$type' and system_id = $systemId"
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute(sql)
         }

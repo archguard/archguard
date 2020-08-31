@@ -13,7 +13,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
 
     override fun getJClassBy(systemId: Long, name: String, module: String): JClass? {
-        val sql = "select id, name, module, loc, access from JClass where project_id=:systemId and name=:name and module=:module"
+        val sql = "select id, name, module, loc, access from JClass where system_id=:systemId and name=:name and module=:module"
         val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -34,7 +34,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           And c.project_id = $systemId" +
+                "           And c.system_id = $systemId" +
                 "           AND c.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -52,7 +52,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND c.project_id = $systemId" +
+                "           AND c.system_id = $systemId" +
                 "           AND p.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -72,8 +72,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
                 "                     AND b.clzname <> '$name'" +
-                "                     AND a.project_id = b.project_id" +
-                "                     AND a.project_id = $systemId" +
+                "                     AND a.system_id = b.system_id" +
+                "                     AND a.system_id = $systemId" +
                 "                     GROUP BY b.clzname, b.module"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
@@ -91,8 +91,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT a.clzname as clzname, a.module as module, COUNT(1) as count " +
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
-                "                     AND a.project_id = b.project_id" +
-                "                     AND a.project_id = $systemId" +
+                "                     AND a.system_id = b.system_id" +
+                "                     AND a.system_id = $systemId" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
                 "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname, a.module"
@@ -154,7 +154,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getAllBysystemId(systemId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where project_id = :systemId"
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -165,7 +165,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getAllBysystemIdAndFullName(systemId: Long, fullNames: List<FullName>): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass WHERE project_id = :systemId and concat(module, '.', name) IN (<fullNameList>)"
+        val sql = "SELECT id, name, module, loc, access FROM JClass WHERE system_id = :systemId and concat(module, '.', name) IN (<fullNameList>)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)

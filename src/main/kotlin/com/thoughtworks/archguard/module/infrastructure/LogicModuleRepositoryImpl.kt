@@ -24,7 +24,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun getAllBysystemId(systemId: Long): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, lg_members, status from logic_module where project_id = :systemId")
+            it.createQuery("select id, name, members, lg_members, status from logic_module where system_id = :systemId")
                     .bind("systemId", systemId)
                     .mapTo(LogicModuleDTO::class.java)
                     .list()
@@ -46,7 +46,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     override fun get(systemId: Long, name: String): LogicModule {
         return jdbi.withHandle<LogicModuleDTO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
-            it.createQuery("select id, name, members, lg_members, status from logic_module where name=:name and project_id=:systemId")
+            it.createQuery("select id, name, members, lg_members, status from logic_module where name=:name and system_id=:systemId")
                     .bind("systemId", systemId)
                     .bind("name", name)
                     .mapTo(LogicModuleDTO::class.java)
@@ -57,7 +57,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     // FIXME: add systemId
     override fun create(systemId: Long, logicModule: LogicModule) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?, ?)",
+            handle.execute("insert into logic_module (id, system_id, name, members, status) values (?, ?, ?, ?, ?)",
                     logicModule.id, systemId, logicModule.name, logicModule.members.joinToString(",") { it.getFullName() }, logicModule.status)
         }
     }
@@ -65,7 +65,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     // FIXME: add systemId
     override fun createWithCompositeNodes(systemId: Long, logicModule: LogicModuleWithCompositeNodes) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("insert into logic_module (id, project_id, name, lg_members, status) values (?, ?, ?, ?, ?)",
+            handle.execute("insert into logic_module (id, system_id, name, lg_members, status) values (?, ?, ?, ?, ?)",
                     logicModule.id, systemId, logicModule.name, logicModule.lgMembers.joinToString(","), logicModule.status)
         }
     }
@@ -78,14 +78,14 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun deleteBysystemId(systemId: Long) {
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("delete from logic_module where project_id = ?", systemId)
+            handle.execute("delete from logic_module where system_id = ?", systemId)
         }
     }
 
     override fun saveAll(systemId: Long, logicModules: List<LogicModule>) {
         logicModules.forEach {
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("insert into logic_module (id, project_id, name, members, status) values (?, ?, ?, ?, ?)",
+                handle.execute("insert into logic_module (id, system_id, name, members, status) values (?, ?, ?, ?, ?)",
                         it.id, systemId, it.name, it.members.joinToString(",") { moduleMember -> moduleMember.getFullName() }, it.status)
             }
         }
@@ -93,7 +93,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun getAllSubModule(systemId: Long): List<SubModule> {
         val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
-            handle.createQuery("select distinct module from JClass where project_id = :systemId")
+            handle.createQuery("select distinct module from JClass where system_id = :systemId")
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()
@@ -101,7 +101,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .map { SubModule(it) }
         }
         val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
-            handle.createQuery("select distinct module from JMethod where project_id = :systemId")
+            handle.createQuery("select distinct module from JMethod where system_id = :systemId")
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()

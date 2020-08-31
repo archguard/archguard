@@ -18,7 +18,7 @@ class PackageRepositoryImpl : PackageRepository {
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
             handle
                     .createQuery("select a.clzname aClz, b.clzname bClz from JMethod a, JMethod b, _MethodCallees mc " +
-                            "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.project_id='$systemId' and b.project_id='$systemId' and mc.project_id='$systemId'")
+                            "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.system_id='$systemId' and b.system_id='$systemId' and mc.system_id='$systemId'")
                     .mapTo(PackageDependenceDTO::class.java)
                     .list()
         }
