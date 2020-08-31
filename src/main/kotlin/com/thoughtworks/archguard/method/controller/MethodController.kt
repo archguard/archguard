@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{systemId}/methods")
+@RequestMapping("/systems/{systemId}/methods")
 class MethodController {
     @Autowired
     private lateinit var methodService: MethodService

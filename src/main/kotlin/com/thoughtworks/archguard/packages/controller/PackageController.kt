@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{systemId}/package")
+@RequestMapping("/systems/{systemId}/package")
 class PackageController {
 
     @Autowired

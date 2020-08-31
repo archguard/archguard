@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/projects/{systemId}/logic-modules")
+@RequestMapping("/systems/{systemId}/logic-modules")
 class LogicModuleController {
 
     @Autowired

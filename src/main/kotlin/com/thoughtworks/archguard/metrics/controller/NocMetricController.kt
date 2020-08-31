@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{systemId}/metric/noc")
+@RequestMapping("/systems/{systemId}/metric/noc")
 class NocMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
     fun getClassNocMetric(@PathVariable("systemId") systemId: Long,

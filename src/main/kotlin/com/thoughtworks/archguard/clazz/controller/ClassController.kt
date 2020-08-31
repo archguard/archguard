@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{systemId}/classes")
+@RequestMapping("/systems/{systemId}/classes")
 class ClassController {
 
     @Autowired

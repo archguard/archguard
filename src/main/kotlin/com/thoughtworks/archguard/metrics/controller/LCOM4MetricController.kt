@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{systemId}/metric/lcom4")
+@RequestMapping("/systems/{systemId}/metric/lcom4")
 class LCOM4MetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
     fun getClassLCOM4Metric(@PathVariable("systemId") systemId: Long,

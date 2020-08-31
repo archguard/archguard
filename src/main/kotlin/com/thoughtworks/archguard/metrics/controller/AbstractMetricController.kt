@@ -9,7 +9,7 @@ import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{systemId}/metric/abstract")
+@RequestMapping("/systems/{systemId}/metric/abstract")
 class AbstractMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
     fun getClassAbstractMetric(@PathVariable("systemId") systemId: Long,

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{systemId}/metric")
+@RequestMapping("/systems/{systemId}/metric")
 class MetricController(val metricPersistService: MetricPersistService) {
     @PostMapping("/class/persist")
     fun persistClassMetrics(@PathVariable("systemId") systemId: Long) {
