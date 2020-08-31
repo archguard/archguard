@@ -16,7 +16,7 @@ import java.io.File
 internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_generate_statistic() {
-        statisticScanner.scan(ScanContext("", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/dubbo-example").toURI()), ArrayList()))
+        statisticScanner.scan(ScanContext("", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/multiple-modules-example").toURI()), ArrayList()))
 
         val classStatistic = jdbi.withHandle<List<ClassStatistic>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from ClassStatistic")
