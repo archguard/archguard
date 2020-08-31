@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/projects/{projectId}")
+@RequestMapping("/projects/{systemId}")
 class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalysis,
                          @Autowired val sqlAnalysis: SqlDependencyAnalysis) {
 
     @PostMapping("/dependency-analyses")
-    fun analyseDependency(@PathVariable("projectId") id: Long) {
+    fun analyseDependency(@PathVariable("systemId") id: Long) {
         dependencyAnalysis.analyse(id)
     }
 
     @PostMapping("/sql-analyses")
-    fun analyseSql(@PathVariable("projectId") id: Long) {
+    fun analyseSql(@PathVariable("systemId") id: Long) {
         sqlAnalysis.analyse(id)
     }
 }

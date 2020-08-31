@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeTool(val projectRoot: File, val dbUrl: String, val projectId: Long) {
+class JavaByteCodeTool(val projectRoot: File, val dbUrl: String, val systemId: Long) {
     private val log = LoggerFactory.getLogger(JavaByteCodeTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-id", "$projectId"))
+        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-id", "$systemId"))
     }
 
     private fun prepareTool() {
