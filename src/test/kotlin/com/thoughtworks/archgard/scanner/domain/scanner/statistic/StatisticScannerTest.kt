@@ -15,7 +15,7 @@ import java.io.File
 @ActiveProfiles("test")
 internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticScanner, @Autowired val jdbi: Jdbi) {
     @Test
-    fun should_generate_class_statistic() {
+    fun should_generate_statistic() {
         statisticScanner.scan(ScanContext("", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/dubbo-example").toURI()), ArrayList()))
 
         val classStatistic = jdbi.withHandle<List<ClassStatistic>, RuntimeException> { handle: Handle ->
@@ -26,5 +26,16 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
         assertEquals("net.aimeizi.dubbo.service.entity", classStatistic[0].packageName)
         assertEquals("User", classStatistic[0].typeName)
         assertEquals(45, classStatistic[0].lines)
+
+        val methodStatistic = jdbi.withHandle<List<MethodStatistic>, RuntimeException> { handle: Handle ->
+            handle.createQuery("select * from MethodStatistic")
+                    .mapTo(MethodStatistic::class.java).list()
+        }
+        assertEquals(21, methodStatistic.size)
+        assertEquals("net.aimeizi.dubbo.service.entity", methodStatistic[0].packageName)
+        assertEquals("User", methodStatistic[0].typeName)
+        assertEquals("User", methodStatistic[0].typeName)
+        assertEquals("getUserId", methodStatistic[0].methodName)
+        assertEquals(3, methodStatistic[0].lines)
     }
 }

@@ -27,6 +27,14 @@ class DesigniteJavaTool(val projectRoot: File) {
                 .filter { !it.contains("Project Name") }
     }
 
+    fun getMethodMetricsReport(): List<String> {
+        return getTargetFile(projectRoot)
+                .map { getMethodMetricsReport(it)?.readLines() }
+                .filterNotNull()
+                .flatten()
+                .filter { !it.contains("Project Name") }
+    }
+
     private fun getBadSmellReport(target: File): File? {
         val report = File(projectRoot.toString() + "/designCodeSmells.csv")
         process(target)
@@ -39,6 +47,16 @@ class DesigniteJavaTool(val projectRoot: File) {
 
     private fun getTypeMetricsReport(target: File): File? {
         val report = File(projectRoot.toString() + "/typeMetrics.csv")
+        process(target)
+        return if (report.exists()) {
+            report
+        } else {
+            null
+        }
+    }
+
+    private fun getMethodMetricsReport(target: File): File? {
+        val report = File(projectRoot.toString() + "/methodMetrics.csv")
         process(target)
         return if (report.exists()) {
             report

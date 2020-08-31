@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRepo) : Scanner {
+class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRepo,
+                       @Autowired val methodClassStatisticRepo: MethodStatisticRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(StatisticScanner::class.java)
     override fun getScannerName(): String {
@@ -30,6 +31,8 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
         val statistics = getStatistic(context)
         classClassStatisticRepo.delete()
         classClassStatisticRepo.save(statistics)
+        methodClassStatisticRepo.delete()
+        methodClassStatisticRepo.save(getMethodStatistic(context))
         log.info("finished scan statistic report")
     }
 
@@ -39,9 +42,21 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
 
     }
 
+    private fun getMethodStatistic(context: ScanContext): List<MethodStatistic> {
+        val designiteJavaTool = DesigniteJavaTool(context.workspace)
+        return designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it) }
+
+    }
+
     private fun toStatistic(line: String): ClassStatistic {
         val elements = line.split(",")
         return ClassStatistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
                 elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
+    }
+
+    private fun toMethodStatistic(line: String): MethodStatistic {
+        val elements = line.split(",")
+        return MethodStatistic(UUID.randomUUID().toString(), elements[1], elements[2],
+                elements[3], elements[4].toInt())
     }
 }
