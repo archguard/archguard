@@ -15,7 +15,8 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun getProjectInfo(id: Long): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
                 it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`," +
-                        " username username, password password, repo_type repoType, scanned scanned from project_info where id = :id")
+                        " username username, password password, repo_type repoType, scanned scanned, " +
+                        "quality_gate_profile_id qualityGateProfileId from project_info where id = :id")
                         .bind("id", id)
                         .mapTo<ProjectInfo>()
                         .firstOrNull()
@@ -23,7 +24,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
 
     override fun getProjectInfoList(): List<ProjectInfo> =
             jdbi.withHandle<List<ProjectInfo>, Nothing> {
-                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, scanned scanned, repo_type repoType from project_info")
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, scanned scanned, quality_gate_profile_id qualityGateProfileId,repo_type repoType from project_info")
                         .mapTo<ProjectInfo>()
                         .list()
             }
@@ -37,6 +38,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
                     "username = :username, " +
                     "password = :password, " +
                     "repo_type = :repoType, " +
+                    "quality_gate_profile_id = :qualityGateProfileId, " +
                     "updated_time = NOW() " +
                     "where id = :id")
                     .bindBean(projectInfo)
@@ -46,13 +48,16 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
 
     override fun addProjectInfo(projectInfo: ProjectInfo): Long {
         return jdbi.withHandle<Long, Nothing> {
-            it.createUpdate("insert into project_info(id, project_name, repo, sql_table, username, password, repo_type, updated_time, created_time) " +
+            it.createUpdate("insert into project_info" +
+                    "(id, project_name, repo, sql_table, username, password, repo_type, quality_gate_profile_id, " +
+                    " updated_time, created_time) " +
                     "values (:id, :projectName, " +
                     ":repo, " +
                     ":sql, " +
                     ":username, " +
                     ":password, " +
                     ":repoType, " +
+                    ":qualityGateProfileId, " +
                     "NOW(), NOW())")
                     .bindBean(projectInfo)
                     .executeAndReturnGeneratedKeys("id")

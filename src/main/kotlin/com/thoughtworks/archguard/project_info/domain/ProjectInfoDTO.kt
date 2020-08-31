@@ -7,4 +7,5 @@ data class ProjectInfoDTO(var id: Long? = null,
                           val username: String = "",
                           val password: String = "",
                           val scanned: ScannedType = ScannedType.NONE,
+                          val qualityGateProfileId: Long? = null,
                           val repoType: String = "GIT")
