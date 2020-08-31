@@ -1,9 +1,8 @@
-package com.thoughtworks.archguard.project_info.controller
+package com.thoughtworks.archguard.system_info.controller
 
-import com.thoughtworks.archguard.project_info.domain.ProjectInfoDTO
-import com.thoughtworks.archguard.project_info.domain.ProjectInfoService
+import com.thoughtworks.archguard.system_info.domain.SystemInfoDTO
+import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
@@ -11,26 +10,26 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 @RestController
-@RequestMapping("/project-info")
-class ProjectInfoController {
+@RequestMapping("/system-info")
+class SystemInfoController {
 
     @Autowired
-    lateinit var projectInfoService: ProjectInfoService
+    lateinit var systemInfoService: SystemInfoService
 
     @GetMapping("/{id}")
-    fun getProjectInfo(@PathVariable("id") id: Long) = projectInfoService.getProjectInfo(id)
+    fun getSystemInfo(@PathVariable("id") id: Long) = systemInfoService.getSystemInfo(id)
 
     @GetMapping
-    fun getAllProjectInfo() = projectInfoService.getAllProjectInfo()
+    fun getAllSystemInfo() = systemInfoService.getAllSystemInfo()
 
     @PutMapping
-    fun updateProjectInfo(@RequestBody projectInfoDTO: ProjectInfoDTO) = projectInfoService.updateProjectInfo(projectInfoDTO)
+    fun updateSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO) = systemInfoService.updateSystemInfo(systemInfoDTO)
 
     @PostMapping
-    fun addProjectInfo(@RequestBody projectInfoDTO: ProjectInfoDTO) = projectInfoService.addProjectInfo(projectInfoDTO)
+    fun addSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO) = systemInfoService.addSystemInfo(systemInfoDTO)
 
     @DeleteMapping("/{id}")
-    fun deleteProjectInfo(@PathVariable("id") id: Long) = projectInfoService.deleteProjectInfo(id)
+    fun deleteSystemInfo(@PathVariable("id") id: Long) = systemInfoService.deleteSystemInfo(id)
 
     @PostMapping("/upload")
     fun uploadZip(@RequestParam("file") file: MultipartFile): String {
@@ -39,7 +38,7 @@ class ProjectInfoController {
         }
 
         val dir = createTempDir()
-        val fileName = file.originalFilename ?: "Project-Info"
+        val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
         return filePath.toString()

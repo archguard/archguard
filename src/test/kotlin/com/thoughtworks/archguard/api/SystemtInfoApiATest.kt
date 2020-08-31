@@ -19,7 +19,7 @@ import javax.annotation.Resource
 @SpringBootTest
 @WebAppConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class ProjectInoApiATest {
+class SystemtInfoApiATest {
 
     @Autowired
     lateinit var jdbi: Jdbi
@@ -29,8 +29,8 @@ class ProjectInoApiATest {
 
     @Test
     @Order(1)
-    fun should_get_project_info_when_sent_get_project_info_api_given_there_is_already_project_info_in_database() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/project-info")
+    fun should_get_system_info_when_sent_get_system_info_api_given_there_is_already_system_info_in_database() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -38,7 +38,7 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.status
 
-        val except = "[{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
+        val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
                 ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}]"
 
         assertEquals(200, status)
@@ -47,8 +47,8 @@ class ProjectInoApiATest {
 
     @Test
     @Order(2)
-    fun should_get_project_info_success_when_get_by_id() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/project-info/1")
+    fun should_get_system_info_success_when_get_by_id() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -56,7 +56,7 @@ class ProjectInoApiATest {
         val content = result.response.contentAsString
         val status = result.response.status
 
-        val except = "{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
+        val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
                 ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
@@ -65,11 +65,11 @@ class ProjectInoApiATest {
 
     @Test
     @Order(3)
-    fun should_get_success_message_when_sent_update_project_info_api_given_there_is_already_project_info_in_database() {
-        val updateDTO = "{\"id\":1,\"projectName\":\"projectName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
+    fun should_get_success_message_when_sent_update_system_info_api_given_there_is_already_system_info_in_database() {
+        val updateDTO = "{\"id\":1,\"systemName\":\"systemName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
                 ",\"username\":\"username2\",\"password\":\"admin123456\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\"}"
 
-        val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/project-info")
+        val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/system-info")
                 .contentType("application/json")
                 .content(updateDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -78,32 +78,32 @@ class ProjectInoApiATest {
 
         val content = result.response.contentAsString
         val status = result.response.status
-        val except = "{\"success\":true,\"message\":\"update project info success\"}"
+        val except = "{\"success\":true,\"message\":\"update system info success\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)
 
         val re = jdbi.withHandle<String, Nothing> {
-            it.createQuery("select `project_name` from project_info where id = 1")
+            it.createQuery("select `system_name` from system_info where id = 1")
                     .mapTo(String::class.java)
                     .one()
         }
 
-        assertEquals("projectName2", re)
+        assertEquals("systemName2", re)
     }
 
     @Test
     @Order(4)
-    fun should_get_success_massage_when_sent_add_project_info_api_given_there_is_no_project_info_in_database() {
+    fun should_get_success_massage_when_sent_add_system_info_api_given_there_is_no_system_info_in_database() {
         jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("delete from project_info")
+            it.createUpdate("delete from system_info")
                     .execute()
         }
 
-        val insertDTO = "{\"projectName\":\"projectName3\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
+        val insertDTO = "{\"systemName\":\"systemName3\",\"repo\":[\"repo3\"],\"sql\":\"sql3\"" +
                 ",\"username\":\"username3\",\"password\":\"admin123456\",\"repoType\":\"GIT\"}"
 
-        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/project-info")
+        val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/system-info")
                 .contentType("application/json")
                 .content(insertDTO)
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -116,21 +116,21 @@ class ProjectInoApiATest {
         assertEquals(200, status)
 
         val re = jdbi.withHandle<List<Long>, Nothing> {
-            it.createQuery("select id from project_info where `project_name` = 'projectName3'")
+            it.createQuery("select id from system_info where `system_name` = 'systemName3'")
                     .mapTo(Long::class.java)
                     .list()
         }
         assertEquals(1, re.size)
 
-        val except = "{\"success\":true,\"message\":\"add new project info success\",\"id\":${re[0]}}"
+        val except = "{\"success\":true,\"message\":\"add new system info success\",\"id\":${re[0]}}"
         assertEquals(except, content)
 
     }
 
     @Test
     @Order(5)
-    fun should_delete_project_info_success_when_get_by_id() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/project-info/1")
+    fun should_delete_system_info_success_when_get_by_id() {
+        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()
@@ -138,7 +138,7 @@ class ProjectInoApiATest {
         val status = result.response.status
 
         val re = jdbi.withHandle<List<Long>, Nothing> {
-            it.createQuery("select id from project_info where `project_name` = 'projectName1'")
+            it.createQuery("select id from system_info where `system_name` = 'systemName1'")
                     .mapTo(Long::class.java)
                     .list()
         }
