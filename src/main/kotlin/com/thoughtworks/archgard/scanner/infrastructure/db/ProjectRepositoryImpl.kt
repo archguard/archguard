@@ -15,7 +15,7 @@ class ProjectRepositoryImpl : ProjectRepository {
 
     override fun getProjectInfo(id: Long): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
-                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`," +
+                it.createQuery("select id, project_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType from project_info where id = :id")
                         .bind("id", id)
                         .mapTo<ProjectInfo>()
