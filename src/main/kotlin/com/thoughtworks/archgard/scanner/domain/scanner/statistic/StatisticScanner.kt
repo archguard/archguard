@@ -38,7 +38,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
 
     private fun getStatistic(context: ScanContext): List<ClassStatistic> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        return designiteJavaTool.getTypeMetricsReport().map { toStatistic(it) }
+        return designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it) }
 
     }
 
@@ -48,7 +48,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
 
     }
 
-    private fun toStatistic(line: String): ClassStatistic {
+    private fun toClassStatistic(line: String): ClassStatistic {
         val elements = line.split(",")
         return ClassStatistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
                 elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
