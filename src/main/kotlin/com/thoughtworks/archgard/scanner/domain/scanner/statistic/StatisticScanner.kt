@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
+class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(StatisticScanner::class.java)
     override fun getScannerName(): String {
@@ -28,8 +28,8 @@ class StatisticScanner(@Autowired val statisticRepo: StatisticRepo) : Scanner {
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report")
         val statistics = getStatistic(context)
-        statisticRepo.delete()
-        statisticRepo.save(statistics)
+        classClassStatisticRepo.delete()
+        classClassStatisticRepo.save(statistics)
         log.info("finished scan statistic report")
     }
 
