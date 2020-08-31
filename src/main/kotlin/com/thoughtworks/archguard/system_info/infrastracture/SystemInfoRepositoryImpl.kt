@@ -49,7 +49,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun addSystemInfo(systemInfo: SystemInfo): Long {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate("insert into system_info" +
-                    "(id, system_name, repo, sql_table, username, password, repo_type, quality_gate_profile_id, " +
+                    "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
                     " updated_time, created_time) " +
                     "values (:id, :systemName, " +
                     ":repo, " +
@@ -57,6 +57,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     ":username, " +
                     ":password, " +
                     ":repoType, " +
+                    ":scanned, " +
                     ":qualityGateProfileId, " +
                     "NOW(), NOW())")
                     .bindBean(systemInfo)
