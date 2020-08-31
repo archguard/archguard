@@ -9,26 +9,26 @@ import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{projectId}/metric/abstract")
+@RequestMapping("/projects/{systemId}/metric/abstract")
 class AbstractMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getClassAbstractMetric(@PathVariable("systemId") systemId: Long,
                                @RequestParam className: String,
                                @RequestParam moduleName: String): ClassAbstractRatio {
-        return metricsService.getClassAbstractMetric(projectId, JClassVO(className, moduleName))
+        return metricsService.getClassAbstractMetric(systemId, JClassVO(className, moduleName))
     }
 
     @GetMapping("/package")
-    fun getPackageAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getPackageAbstractMetric(@PathVariable("systemId") systemId: Long,
                                  @RequestParam packageName: String,
                                  @RequestParam moduleName: String): PackageAbstractRatio {
-        return metricsService.getPackageAbstractMetric(projectId, PackageVO(packageName, moduleName))
+        return metricsService.getPackageAbstractMetric(systemId, PackageVO(packageName, moduleName))
     }
 
     @GetMapping("/module")
-    fun getModuleAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getModuleAbstractMetric(@PathVariable("systemId") systemId: Long,
                                 @RequestParam moduleName: String): ModuleAbstractRatio {
-        return metricsService.getModuleAbstractMetric(projectId, moduleName)
+        return metricsService.getModuleAbstractMetric(systemId, moduleName)
     }
 
 }

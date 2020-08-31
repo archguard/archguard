@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class InitCodeTreeServiceImpl(val jClassRepository: JClassRepository) : InitCodeTreeService {
     override fun initCodeTree(projctId: Long): CodeTree {
         val codeTree = CodeTree()
-        jClassRepository.getAllByProjectId(projctId).filter { it.module != "null" }.map { codeTree.addClass(it.getFullName()) }
+        jClassRepository.getAllBysystemId(projctId).filter { it.module != "null" }.map { codeTree.addClass(it.getFullName()) }
         codeTree.fixTopNodeSubModuleType()
         return codeTree
     }

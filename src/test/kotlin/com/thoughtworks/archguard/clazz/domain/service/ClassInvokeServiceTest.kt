@@ -29,7 +29,7 @@ class ClassInvokeServiceTest {
     @Test
     fun `should get invoke methods`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val parent = JClass("parent", "parent", "module")
@@ -37,12 +37,12 @@ class ClassInvokeServiceTest {
         val callee = JClass("2", "callee", "module")
         val caller = JClass("3", "caller", "module")
         //when
-        every { repo.findClassParents(projectId, target.module, target.name) } returns listOf(parent)
+        every { repo.findClassParents(systemId, target.module, target.name) } returns listOf(parent)
         every { configService.isDisplayNode(any(), any()) } returns true
-        every { repo.findClassImplements(projectId, target.name, target.module) } returns listOf(impl)
-        every { repo.findCallees(projectId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
-        every { repo.findCallers(projectId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
-        service.findInvokes(projectId, target, 1, 1, true)
+        every { repo.findClassImplements(systemId, target.name, target.module) } returns listOf(impl)
+        every { repo.findCallees(systemId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
+        every { repo.findCallers(systemId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
+        service.findInvokes(systemId, target, 1, 1, true)
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)
         Assertions.assertThat(target.implements.size).isEqualTo(1)

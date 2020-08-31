@@ -11,10 +11,10 @@ class ClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : ClassMet
     private val log = LoggerFactory.getLogger(ClassMetricRepositoryImpl::class.java)
 
     @Transactional
-    override fun insertOrUpdateClassMetricPOs(projectId: Long, classMetricPOs: List<ClassMetricPO>) {
-        classMetricsDao.deleteBy(projectId)
-        log.info("Delete project old data with id: {}", projectId)
+    override fun insertOrUpdateClassMetricPOs(systemId: Long, classMetricPOs: List<ClassMetricPO>) {
+        classMetricsDao.deleteBy(systemId)
+        log.info("Delete project old data with id: {}", systemId)
         classMetricsDao.insert(classMetricPOs)
-        log.info("Insert project new data with id: {}", projectId)
+        log.info("Insert project new data with id: {}", systemId)
     }
 }

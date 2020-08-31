@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{projectId}")
+@RequestMapping("/projects/{systemId}")
 class BaseModuleController {
 
     @Autowired
     private lateinit var logicModuleRepository: LogicModuleRepository
 
     @GetMapping("/base-modules")
-    fun getBaseModules(@PathVariable("projectId") projectId: Long): List<String> {
-        return logicModuleRepository.getAllSubModule(projectId).map { it.name }
+    fun getBaseModules(@PathVariable("systemId") systemId: Long): List<String> {
+        return logicModuleRepository.getAllSubModule(systemId).map { it.name }
     }
 }

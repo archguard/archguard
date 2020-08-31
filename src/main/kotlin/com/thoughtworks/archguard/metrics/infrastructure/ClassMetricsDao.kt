@@ -13,8 +13,8 @@ interface ClassMetricsDao {
     @SqlUpdate("insert into class_metrics (" +
             "class_id, project_id, abc, noc, dit, lcom4) " +
             "values <values>")
-    fun insert(@BindBeanList(value = "values", propertyNames = ["classId", "projectId", "abc", "noc", "dit", "lcom4"]) classMetricPOs: List<ClassMetricPO>): Long
+    fun insert(@BindBeanList(value = "values", propertyNames = ["classId", "systemId", "abc", "noc", "dit", "lcom4"]) classMetricPOs: List<ClassMetricPO>): Long
 
-    @SqlUpdate("DELETE FROM class_metrics where project_id = :projectId")
-    fun deleteBy(@Bind("projectId") projectId: Long)
+    @SqlUpdate("DELETE FROM class_metrics where project_id = :systemId")
+    fun deleteBy(@Bind("systemId") systemId: Long)
 }

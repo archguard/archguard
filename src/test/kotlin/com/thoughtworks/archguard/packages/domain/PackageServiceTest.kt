@@ -29,15 +29,15 @@ internal class PackageServiceTest {
     @Test
     internal fun `should get package dependencies by modules`() {
         //given
-        val projectId: Long = 1
-        every { moduleRepository.getAllSubModule(projectId) } returns listOf(SubModule("com.module1"), SubModule("com.module2"))
+        val systemId: Long = 1
+        every { moduleRepository.getAllSubModule(systemId) } returns listOf(SubModule("com.module1"), SubModule("com.module2"))
         val dependencies1 = listOf(PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
                 "org.test.ThrowablePB\$ThrowableProto"))
         val dependencies2 = listOf<PackageDependenceDTO>()
-        every { packageRepository.getPackageDependenceByModule(projectId, "com.module1") } returns dependencies1
-        every { packageRepository.getPackageDependenceByModule(projectId, "com.module2") } returns dependencies2
+        every { packageRepository.getPackageDependenceByModule(systemId, "com.module1") } returns dependencies1
+        every { packageRepository.getPackageDependenceByModule(systemId, "com.module2") } returns dependencies2
         //when
-        val packageDependencies = packageService.getPackageDependencies(projectId)
+        val packageDependencies = packageService.getPackageDependencies(systemId)
         //then
         assertThat(packageDependencies.size).isEqualTo(2)
         assertThat(packageDependencies[0].packageGraph.nodes.size).isEqualTo(3)

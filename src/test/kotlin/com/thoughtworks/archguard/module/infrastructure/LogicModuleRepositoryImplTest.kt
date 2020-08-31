@@ -23,8 +23,8 @@ internal class LogicModuleRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should only select normal data from logic module`() {
-        val projectId:Long = 1
-        val normalLogicModules = logicModuleRepository.getAllByShowStatus(projectId, true)
+        val systemId:Long = 1
+        val normalLogicModules = logicModuleRepository.getAllByShowStatus(systemId, true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).usingRecursiveComparison().isEqualTo(
                 LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider"))))
@@ -33,8 +33,8 @@ internal class LogicModuleRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should select all data from logic module`() {
-        val projectId:Long = 1
-        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
+        val systemId:Long = 1
+        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
         assertThat(logicModules.size).isEqualTo(4)
         val lg1 = LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
         val lg2 = LogicModule("id2", "dubbo-consumer", listOf(LogicComponent.createLeaf("dubbo-consumer")))

@@ -33,7 +33,7 @@ class ClassMethodCalleesServiceTest {
     @Test
     fun `should get class method callees`() {
         //given
-        val projectId: Long = 1
+        val systemId: Long = 1
         val name = "clazz"
         val module = "module"
         val target = JClass("id", name, module)
@@ -41,13 +41,13 @@ class ClassMethodCalleesServiceTest {
         val method2 = JMethod("2", "method2", "class", "module", "void", emptyList())
         val parent = JClass("1", "parent", "module")
         //when
-        every { jMethodRepository.findMethodsByModuleAndClass(projectId, module, name) } returns listOf(method1, method2)
-        every { jMethodRepository.findMethodsByModuleAndClass(projectId, module, parent.name) } returns listOf(method1)
-        every { jClassRepository.findClassParents(projectId, module, name) } returns listOf(parent)
-        every { jClassRepository.findClassParents(projectId, parent.module, parent.name) } returns listOf()
+        every { jMethodRepository.findMethodsByModuleAndClass(systemId, module, name) } returns listOf(method1, method2)
+        every { jMethodRepository.findMethodsByModuleAndClass(systemId, module, parent.name) } returns listOf(method1)
+        every { jClassRepository.findClassParents(systemId, module, name) } returns listOf(parent)
+        every { jClassRepository.findClassParents(systemId, parent.module, parent.name) } returns listOf()
         every { methodCalleesService.buildMethodCallees(listOf(method1, method2), 1, true) } returns listOf(method1)
         every { methodCalleesService.buildMethodCallees(listOf(method1), 1, true) } returns listOf(method2)
-        val result = service.findClassMethodsCallees(projectId, target, 1, true, true)
+        val result = service.findClassMethodsCallees(systemId, target, 1, true, true)
         //then
         assertThat(result.methods.size).isEqualTo(2)
         assertThat(result.parents.size).isEqualTo(1)

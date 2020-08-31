@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service
 @Service
 class GraphService(val logicModuleRepository: LogicModuleRepository, val dependencyService: DependencyService, val pluginManager: PluginManager) {
 
-    fun getLogicModuleGraph(projectId: Long): Graph {
-        val moduleDependencies = getModuleDependency(projectId)
+    fun getLogicModuleGraph(systemId: Long): Graph {
+        val moduleDependencies = getModuleDependency(systemId)
 
         val moduleStore = GraphStore()
 
@@ -27,9 +27,9 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return moduleStore.getGraph()
     }
 
-    private fun getModuleDependency(projectId: Long): List<Dependency<LogicModule>> {
-        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
-        val dependencies = dependencyService.getAllClassDependencies(projectId)
+    private fun getModuleDependency(systemId: Long): List<Dependency<LogicModule>> {
+        val modules = logicModuleRepository.getAllByShowStatus(systemId, true)
+        val dependencies = dependencyService.getAllClassDependencies(systemId)
         return mapMethodDependenciesToModuleDependencies(dependencies, modules)
     }
 
@@ -46,8 +46,8 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
 
-    fun mapModuleDependencyToServiceDependency(projectId: Long, moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
-        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
+    fun mapModuleDependencyToServiceDependency(systemId: Long, moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
+        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
         val servicesDependencies = mutableListOf<Dependency<LogicModule>>()
         for (it in moduleDependencies) {
             val callerModule = it.caller

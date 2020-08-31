@@ -15,9 +15,9 @@ class DubboWithXmlPlugin : DubboPlugin() {
         return PluginType.DUBBO_WITH_XML
     }
 
-    override fun mapCalleeToReal(projectId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO>{
-        val implements = jClassRepository.findClassImplements(projectId, callee.name, callee.module).map { it.toVO() }
-        val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(projectId, caller, callee)
+    override fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO>{
+        val implements = jClassRepository.findClassImplements(systemId, callee.name, callee.module).map { it.toVO() }
+        val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, caller, callee)
         val realCallee = implements.filter { calleeSubModuleByXml.any{subModuleDubbo ->  subModuleDubbo.name == it.module} }
         if (realCallee.isEmpty()) {
             return implements

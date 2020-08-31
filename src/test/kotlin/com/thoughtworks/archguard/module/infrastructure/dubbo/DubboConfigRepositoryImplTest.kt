@@ -22,8 +22,8 @@ internal class DubboConfigRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/dubbo_reference_config.sql")
     internal fun should_get_reference_config_by_interface_name_and_submodule() {
-        val projectId: Long = 1
-        val referenceConfig = dubboConfigRepository.getReferenceConfigBy(projectId,
+        val systemId: Long = 1
+        val referenceConfig = dubboConfigRepository.getReferenceConfigBy(systemId,
                 "org.apache.dubbo.samples.group.api.GroupService",
                 SubModuleDubbo("ce818d60-f54e-41b7-9851-9b0eb212548d", "group-example", "/path/group-example"))
         assertThat(referenceConfig.size).isEqualTo(2)
@@ -39,8 +39,8 @@ internal class DubboConfigRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_single_group() {
-        val projectId: Long = 1
-        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(projectId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
+        val systemId: Long = 1
+        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
                 null, "groupA", SubModuleDubbo("ce818d60-f54e-41b7-9851-9b0eb212548d", "dubbo-samples-groupA", "../dubbo-samples/java/dubbo-samples-groupA")))
         assertThat(serviceConfigs.size).isEqualTo(1)
         assertThat(serviceConfigs[0]).isEqualToComparingFieldByField(ServiceConfig(id = "45aca590-994c-4c96-aa0a-5f3df76b8a1e",
@@ -51,8 +51,8 @@ internal class DubboConfigRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_all_group() {
-        val projectId: Long = 1
-        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(projectId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
+        val systemId: Long = 1
+        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
                 null, "*", SubModuleDubbo("ce818d60-f54e-41b7-9851-9b0eb212548d", "dubbo-samples-group", "../dubbo-samples/java/dubbo-samples-group")))
         assertThat(serviceConfigs.size).isEqualTo(3)
         assertThat(serviceConfigs).containsAll(listOf(
@@ -73,8 +73,8 @@ internal class DubboConfigRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_multi_group() {
-        val projectId: Long = 1
-        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(projectId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
+        val systemId: Long = 1
+        val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
                 null, "groupA, groupB", SubModuleDubbo("ce818d60-f54e-41b7-9851-9b0eb212548d", "dubbo-samples-group", "../dubbo-samples/java/dubbo-samples-group")))
         assertThat(serviceConfigs.size).isEqualTo(2)
         assertThat(serviceConfigs).containsAll(listOf(

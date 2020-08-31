@@ -39,12 +39,12 @@ class MetricsRepositoryImpl(
     }
 
     @Transaction
-    override fun insertAllClassCouplings(projectId: Long, classCouplings: List<ClassCoupling>) {
-        classCouplingDtoDaoForUpdate.deleteBy(projectId)
+    override fun insertAllClassCouplings(systemId: Long, classCouplings: List<ClassCoupling>) {
+        classCouplingDtoDaoForUpdate.deleteBy(systemId)
         classCouplings.forEach {
-            classCouplingDtoDaoForUpdate.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(projectId, it))
+            classCouplingDtoDaoForUpdate.insert(ClassCouplingDtoForWriteDb.fromClassCoupling(systemId, it))
         }
-        influxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(projectId, classCouplings).toRequestBody())
+        influxDBClient.save(ClassCouplingDtoListForWriteInfluxDB(systemId, classCouplings).toRequestBody())
     }
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {

@@ -9,25 +9,25 @@ import com.thoughtworks.archguard.module.domain.model.PackageVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{projectId}/metric/dfms")
+@RequestMapping("/projects/{systemId}/metric/dfms")
 class DfmsMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getClassAbstractMetric(@PathVariable("systemId") systemId: Long,
                                @RequestParam className: String,
                                @RequestParam moduleName: String): ClassDfms {
-        return metricsService.getClassDfms(projectId, JClassVO(className, moduleName))
+        return metricsService.getClassDfms(systemId, JClassVO(className, moduleName))
     }
 
     @GetMapping("/package")
-    fun getPackageAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getPackageAbstractMetric(@PathVariable("systemId") systemId: Long,
                                  @RequestParam packageName: String,
                                  @RequestParam moduleName: String): PackageDfms {
-        return metricsService.getPackageDfms(projectId, PackageVO(packageName, moduleName))
+        return metricsService.getPackageDfms(systemId, PackageVO(packageName, moduleName))
     }
 
     @GetMapping("/module")
-    fun getModuleAbstractMetric(@PathVariable("projectId") projectId: Long,
+    fun getModuleAbstractMetric(@PathVariable("systemId") systemId: Long,
                                 @RequestParam moduleName: String): ModuleDfms {
-        return metricsService.getModuleDfms(projectId, moduleName)
+        return metricsService.getModuleDfms(systemId, moduleName)
     }
 }

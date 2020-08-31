@@ -5,12 +5,12 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{projectId}/metric/dit")
+@RequestMapping("/projects/{systemId}/metric/dit")
 class DitMetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassDitMetric(@PathVariable("projectId") projectId: Long,
+    fun getClassDitMetric(@PathVariable("systemId") systemId: Long,
                           @RequestParam className: String,
                           @RequestParam moduleName: String): Int {
-        return metricsService.getClassDit(projectId, JClassVO(className, moduleName))
+        return metricsService.getClassDit(systemId, JClassVO(className, moduleName))
     }
 }

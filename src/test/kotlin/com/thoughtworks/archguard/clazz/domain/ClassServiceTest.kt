@@ -40,7 +40,7 @@ class ClassServiceTest {
     @Test
     fun `should get class dependencies`() {
         //given
-        val projectId: Long = 1
+        val systemId: Long = 1
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
@@ -53,7 +53,7 @@ class ClassServiceTest {
         every { classDependenceesService.findDependencees(any(), any()) } returns expected
         every { classDependencerService.findDependencers(any(), any()) } returns expected
 
-        val result = service.getDependencies(projectId, "module", targetName, 1)
+        val result = service.getDependencies(systemId, "module", targetName, 1)
         //then
         assertThat(result.dependencers.size).isEqualTo(1)
         assertThat(result.dependencees.size).isEqualTo(1)
@@ -64,18 +64,18 @@ class ClassServiceTest {
     @Test
     fun `should get class invokes`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val targetName = "clazz"
         val module = "module"
         val target = JClass("1", targetName, module)
         val deep = 3
         val needIncludeImpl = true
         //when
-        every { jClassRepository.getJClassBy(projectId, targetName, module) } returns target
+        every { jClassRepository.getJClassBy(systemId, targetName, module) } returns target
         every {
-            classInvokeService.findInvokes(projectId, target, deep, deep, needIncludeImpl)
+            classInvokeService.findInvokes(systemId, target, deep, deep, needIncludeImpl)
         } returns target
-        val invokes = service.findInvokes(projectId, module, targetName, deep, deep, needIncludeImpl)
+        val invokes = service.findInvokes(systemId, module, targetName, deep, deep, needIncludeImpl)
         //then
         assertThat(invokes).isEqualToComparingFieldByField(target)
     }
@@ -83,7 +83,7 @@ class ClassServiceTest {
     @Test
     fun `should get class method callees`() {
         //given
-        val projectId: Long = 1
+        val systemId: Long = 1
         val needIncludeImpl = true
         val needParents = true
         val module = "module"
@@ -92,10 +92,10 @@ class ClassServiceTest {
         val targetClass = JClass("id", name, module)
         //when
         every {
-            classMethodCalleesService.findClassMethodsCallees(projectId, targetClass, deep, needIncludeImpl, needParents)
+            classMethodCalleesService.findClassMethodsCallees(systemId, targetClass, deep, needIncludeImpl, needParents)
         } returns JClass("id", "clazz", "module")
-        every { jClassRepository.getJClassBy(projectId, name, module) } returns targetClass
-        val target = service.findMethodsCallees(projectId, module, name, deep, needIncludeImpl, needParents)
+        every { jClassRepository.getJClassBy(systemId, name, module) } returns targetClass
+        val target = service.findMethodsCallees(systemId, module, name, deep, needIncludeImpl, needParents)
         //then
         assertThat(target.methods).isEmpty()
     }
