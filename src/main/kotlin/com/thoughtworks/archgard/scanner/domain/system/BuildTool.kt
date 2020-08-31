@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.project
+package com.thoughtworks.archgard.scanner.domain.system
 
 enum class BuildTool(val target: String) {
 

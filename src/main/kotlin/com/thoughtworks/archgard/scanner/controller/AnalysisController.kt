@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/projects/{systemId}")
+@RequestMapping("/systems/{systemId}")
 class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalysis,
                          @Autowired val sqlAnalysis: SqlDependencyAnalysis) {
 

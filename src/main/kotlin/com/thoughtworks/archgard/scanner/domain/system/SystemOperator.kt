@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.project
+package com.thoughtworks.archgard.scanner.domain.system
 
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
@@ -6,17 +6,17 @@ import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class ProjectOperator(val projectInfo: ProjectInfo) {
-    private val log = LoggerFactory.getLogger(ProjectOperator::class.java)
+class SystemOperator(val systemInfo: SystemInfo) {
+    private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val compiledProjectMap = mutableMapOf<String, CompiledProject>()
     val workspace: File = createTempDir()
-    val sql: String by lazy { projectInfo.sql }
+    val sql: String by lazy { systemInfo.sql }
 
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
-        this.projectInfo.getRepoList()
+        this.systemInfo.getRepoList()
                 .forEach { repo ->
-                    if (projectInfo.isNecessaryBuild()) {
+                    if (systemInfo.isNecessaryBuild()) {
                         cloneAndBuildSingleRepo(repo)
                     } else {
                         cloneSingleRepo(repo)
@@ -27,7 +27,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
 
     fun cloneAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
-        this.projectInfo.getRepoList()
+        this.systemInfo.getRepoList()
                 .forEach(this::cloneSingleRepo)
     }
 
@@ -35,7 +35,7 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         val repoWorkSpace = createTempDir(directory = workspace)
         log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
         getSource(repoWorkSpace, repo)
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.projectInfo.sql)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql)
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -44,11 +44,11 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
         getSource(repoWorkSpace, repo)
         val buildTool = getBuildTool(repoWorkSpace)
         buildSource(repoWorkSpace, buildTool)
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.projectInfo.sql)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.systemInfo.sql)
     }
 
     private fun getSource(workspace: File, repo: String) {
-        when (this.projectInfo.repoType) {
+        when (this.systemInfo.repoType) {
             "GIT" -> cloneByGitCli(workspace, repo)
             "SVN" -> cloneBySvn(workspace, repo)
             "ZIP" -> cloneByZip(workspace, repo)
@@ -82,8 +82,8 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
     }
 
     private fun processGitUrl(repo: String): String {
-        return if (projectInfo.hasAuthInfo()) {
-            repo.replace("//", "//${urlEncode(projectInfo.username)}:${urlEncode(projectInfo.getDeCryptPassword())}@")
+        return if (systemInfo.hasAuthInfo()) {
+            repo.replace("//", "//${urlEncode(systemInfo.username)}:${urlEncode(systemInfo.getDeCryptPassword())}@")
         } else {
             repo
         }
@@ -94,11 +94,11 @@ class ProjectOperator(val projectInfo: ProjectInfo) {
     }
 
     private fun cloneBySvn(workspace: File, repo: String) {
-        val cmdList = if (projectInfo.hasAuthInfo()) {
+        val cmdList = if (systemInfo.hasAuthInfo()) {
             listOf("svn", "checkout",
                     repo, Paths.get("./").normalize().toString(),
-                    "--username", projectInfo.username,
-                    "--password", projectInfo.getDeCryptPassword())
+                    "--username", systemInfo.username,
+                    "--password", systemInfo.getDeCryptPassword())
         } else {
             listOf("svn", "checkout",
                     repo, Paths.get("./").normalize().toString())
