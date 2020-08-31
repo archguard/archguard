@@ -1,34 +1,32 @@
 package com.thoughtworks.archguard.method.domain.service
 
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class MethodCallersService {
-    @Autowired
-    private lateinit var repo: JMethodRepository
-    fun findCallers(target: List<JMethod>, deep: Int): List<JMethod> {
-        buildMethodCallers(target, deep)
+class MethodCallersService(val repo: JMethodRepository, val configureService: ConfigureService) {
+    fun findCallers(projectId: Long, target: List<JMethod>, deep: Int): List<JMethod> {
+        buildMethodCallers(projectId, target, deep)
         return target
     }
 
-    fun buildMethodCallers(methods: List<JMethod>, deep: Int): List<JMethod> {
+    fun buildMethodCallers(projectId: Long, methods: List<JMethod>, deep: Int): List<JMethod> {
         val container = ArrayList<JMethod>()
-        doBuildCallers(methods, deep, container)
+        doBuildCallers(projectId, methods, deep, container)
         return methods
     }
 
-    private fun doBuildCallers(methods: List<JMethod>, deep: Int, container: MutableList<JMethod>) {
+    private fun doBuildCallers(projectId: Long, methods: List<JMethod>, deep: Int, container: MutableList<JMethod>) {
         val pendindMethods = methods.filterNot { container.contains(it) }
         if (pendindMethods.isEmpty() || deep == 0) {
             container.addAll(pendindMethods)
         } else {
             pendindMethods.forEach {
-                it.callers = repo.findMethodCallers(it.id)
+                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(projectId, it.name) }
             }
-            doBuildCallers(pendindMethods.flatMap { it.callers }, deep - 1, container)
+            doBuildCallers(projectId, pendindMethods.flatMap { it.callers }, deep - 1, container)
         }
     }
 }
