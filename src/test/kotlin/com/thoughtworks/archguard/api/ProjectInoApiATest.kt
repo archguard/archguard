@@ -39,7 +39,7 @@ class ProjectInoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"repoType\":\"GIT\"}]"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"repoType\":\"GIT\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -57,7 +57,7 @@ class ProjectInoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"projectName\":\"projectName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"repoType\":\"GIT\"}"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"repoType\":\"GIT\"}"
 
         assertEquals(200, status)
         assertEquals(except, content)
