@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.statistic
 
 interface StatisticRepo {
-    fun save(statistic: List<Statistic>)
+    fun save(classStatistic: List<ClassStatistic>)
     fun delete()
 }

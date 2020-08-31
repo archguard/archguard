@@ -55,8 +55,8 @@ class ScannerApplication {
     }
 
     @Bean
-    fun statisticDao(jdbi: Jdbi): StatisticDao {
-        return jdbi.onDemand(StatisticDao::class.java)
+    fun statisticDao(jdbi: Jdbi): ClassStatisticDao {
+        return jdbi.onDemand(ClassStatisticDao::class.java)
     }
 
     @Bean

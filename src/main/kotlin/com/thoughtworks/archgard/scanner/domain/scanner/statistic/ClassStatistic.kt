@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.statistic
 
-data class Statistic(
+data class ClassStatistic(
         val id: String,
         val projectName: String,
         val packageName: String,
