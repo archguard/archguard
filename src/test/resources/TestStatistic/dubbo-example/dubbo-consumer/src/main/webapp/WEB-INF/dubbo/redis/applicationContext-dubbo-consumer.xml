@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- Redis config -->
+	<bean name="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="5" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+	<bean name="redisPool" class="redis.clients.jedis.JedisPool"
+		  destroy-method="destroy">
+		<constructor-arg name="poolConfig" ref="poolConfig" />
+		<constructor-arg name="host" value="127.0.0.1" />
+		<constructor-arg name="port" value="6379" />
+	</bean>
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="dubbo-consumer" />
+	<dubbo:consumer retries="0" timeout="120000" check="false"/>
+	<!-- 使用redis注册中心暴露发现服务地址 -->
+	<dubbo:registry address="127.0.0.1:6379" protocol="redis"/>
+	<dubbo:annotation/>
+	<context:component-scan base-package="net.aimeizi.dubbo.controller">
+		<context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Reference"/>
+	</context:component-scan>
+	<!-- 使用@Autowired或@Resource注解时需要使用dubbo:reference来声明 -->
+	<!--<dubbo:reference interface="UserService" id="userService"/>-->
+	<!--<dubbo:reference interface="DemoService" id="demoService"/>-->
+</beans>
