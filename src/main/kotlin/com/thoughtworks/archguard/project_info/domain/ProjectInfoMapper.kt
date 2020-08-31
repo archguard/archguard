@@ -8,14 +8,14 @@ class ProjectInfoMapper {
 
     fun fromDTO(dto: ProjectInfoDTO): ProjectInfo {
         return ProjectInfo(id = dto.id, projectName = dto.projectName, sql = dto.sql, username = dto.username,
-                password = AESCrypt.encrypt(dto.password), repoType = dto.repoType,
+                password = AESCrypt.encrypt(dto.password), repoType = dto.repoType, scanned = dto.scanned,
                 repo = dto.repo.joinToString(","))
 
     }
 
     fun toDTO(info: ProjectInfo): ProjectInfoDTO {
         return ProjectInfoDTO(id = info.id, projectName = info.projectName, sql = info.sql, username = info.username,
-                password = info.password, repoType = info.repoType,
+                password = info.password, repoType = info.repoType, scanned = info.scanned,
                 repo = info.repo.split(','))
     }
 }

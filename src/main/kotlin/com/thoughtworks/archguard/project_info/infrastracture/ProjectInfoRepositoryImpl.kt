@@ -15,7 +15,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
     override fun getProjectInfo(id: Long): ProjectInfo? =
             jdbi.withHandle<ProjectInfo, Nothing> {
                 it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`," +
-                        " username username, password password, repo_type repoType from project_info where id = :id")
+                        " username username, password password, repo_type repoType, scanned scanned from project_info where id = :id")
                         .bind("id", id)
                         .mapTo<ProjectInfo>()
                         .firstOrNull()
@@ -23,7 +23,7 @@ class ProjectInfoRepositoryImpl : ProjectInfoRepository {
 
     override fun getProjectInfoList(): List<ProjectInfo> =
             jdbi.withHandle<List<ProjectInfo>, Nothing> {
-                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, repo_type repoType from project_info")
+                it.createQuery("select id, project_name projectName, repo repo, sql_table `sql`, username username, password password, scanned scanned, repo_type repoType from project_info")
                         .mapTo<ProjectInfo>()
                         .list()
             }
