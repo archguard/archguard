@@ -50,8 +50,8 @@ class ClassServiceTest {
         (expected.dependencers as MutableList).add(dependencer)
         //when
         every { jClassRepository.getJClassBy(any(), any(), any()) } returns expected
-        every { classDependenceesService.findDependencees(any(), any()) } returns expected
-        every { classDependencerService.findDependencers(any(), any()) } returns expected
+        every { classDependenceesService.findDependencees(projectId, any(), any()) } returns expected
+        every { classDependencerService.findDependencers(projectId, any(), any()) } returns expected
 
         val result = service.getDependencies(projectId, "module", targetName, 1)
         //then

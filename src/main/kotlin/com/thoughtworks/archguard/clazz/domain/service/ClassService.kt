@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val classDependenceesService: ClassDependenceesService,
-                   val classDependencerService: ClassDependencerService, val jClassRepository: JClassRepository, val classInvokeService: ClassInvokeService) {
+                   val classDependencerService: ClassDependencerService, val jClassRepository: JClassRepository,
+                   val classInvokeService: ClassInvokeService) {
 
     fun getDependencies(projectId: Long, module: String, name: String, deep: Int): JClass {
         val target = getTargetClass(projectId, module, name)
-        classDependenceesService.findDependencees(target, deep)
-        classDependencerService.findDependencers(target, deep)
+        classDependenceesService.findDependencees(projectId, target, deep)
+        classDependencerService.findDependencers(projectId, target, deep)
         return target
     }
 

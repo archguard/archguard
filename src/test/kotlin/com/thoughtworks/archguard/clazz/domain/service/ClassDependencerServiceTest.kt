@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -15,15 +16,20 @@ internal class ClassDependencerServiceTest {
     @MockK
     private lateinit var repo: JClassRepository
 
+    @MockK
+    private lateinit var configureService: ConfigureService
+
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassDependencerService(repo)
+        service = ClassDependencerService(repo, configureService)
     }
 
     @Test
     internal fun `should get callers`() {
         //given
+        val projectId = 1L
+
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val caller1 = JClass("2", "caller1", "module")
@@ -31,7 +37,9 @@ internal class ClassDependencerServiceTest {
         //when
         every { repo.findDependencers(target.id) } returns listOf(caller1)
         every { repo.findDependencers(caller1.id) } returns listOf(caller2)
-        val result = service.findDependencers(target, 2)
+        every { configureService.isDisplayNode(any(), any()) } returns true
+
+        val result = service.findDependencers(projectId, target, 2)
         //then
         Assertions.assertThat(result.dependencers.size).isEqualTo(1)
         Assertions.assertThat(result.dependencers[0].name).isEqualTo("caller1")
@@ -43,6 +51,8 @@ internal class ClassDependencerServiceTest {
     @Test
     internal fun `should get class dependencers when deep is larger`() {
         //given
+        val projectId = 1L
+
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val dependencer1 = JClass("2", "dependencer1", "module")
@@ -51,7 +61,9 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(target.id) } returns listOf(dependencer1)
         every { repo.findDependencers(dependencer1.id) } returns listOf(dependencer2)
         every { repo.findDependencers(dependencer2.id) } returns listOf()
-        val result = service.findDependencers(target, 4)
+        every { configureService.isDisplayNode(any(), any()) } returns true
+
+        val result = service.findDependencers(projectId, target, 4)
         //then
         Assertions.assertThat(result.dependencers.size).isEqualTo(1)
         Assertions.assertThat(result.dependencers[0].name).isEqualTo("dependencer1")

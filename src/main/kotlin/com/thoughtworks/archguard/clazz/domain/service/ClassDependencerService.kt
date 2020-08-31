@@ -2,30 +2,31 @@ package com.thoughtworks.archguard.clazz.domain.service
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.stereotype.Service
 
 @Service
-class ClassDependencerService(val repo: JClassRepository) {
+class ClassDependencerService(val repo: JClassRepository, val configureService: ConfigureService) {
 
-    fun findDependencers(target: JClass, deep: Int): JClass {
-        buildDependencers(listOf(target), deep)
+    fun findDependencers(projectId: Long, target: JClass, deep: Int): JClass {
+        buildDependencers(projectId, listOf(target), deep)
         return target
     }
 
-    private fun buildDependencers(target: List<JClass>, deep: Int): List<JClass> {
+    private fun buildDependencers(projectId: Long, target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
-        doBuildDependencers(target, deep, container)
+        doBuildDependencers(projectId, target, deep, container)
         return target
     }
 
-    private fun doBuildDependencers(target: List<JClass>, deep: Int, container: MutableList<JClass>) {
+    private fun doBuildDependencers(projectId: Long, target: List<JClass>, deep: Int, container: MutableList<JClass>) {
         var pendingClasses = target.filterNot { container.contains(it) }
         if (pendingClasses.isEmpty() || deep == 0) {
             container.addAll(pendingClasses)
         } else {
-            pendingClasses.forEach { it.dependencers = repo.findDependencers(it.id) }
+            pendingClasses.forEach { it.dependencers = repo.findDependencers(it.id).filter { configureService.isDisplayNode(projectId, it.name) } }
             container.addAll(pendingClasses)
-            doBuildDependencers(pendingClasses.flatMap { it.dependencers }, deep - 1, container)
+            doBuildDependencers(projectId, pendingClasses.flatMap { it.dependencers }, deep - 1, container)
         }
     }
 
