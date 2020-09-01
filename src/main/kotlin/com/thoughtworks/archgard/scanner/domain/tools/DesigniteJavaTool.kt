@@ -15,15 +15,15 @@ class DesigniteJavaTool(val systemRoot: File) {
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
         prepareTool()
         return getTargetFile(systemRoot)
-                .map { generateReport(it, designiteJavaReportType)?.readLines() }
+                .map { generateReport(designiteJavaReportType, it.absolutePath)?.readLines() }
                 .filterNotNull()
                 .flatten()
                 .filter { !it.contains("Project Name") }
     }
 
-    private fun generateReport(target: File, type: DesigniteJavaReportType): File? {
-        process(target.absolutePath)
-        val report = File(target.absolutePath + "/DesigniteReport/${type.reportName}")
+    private fun generateReport(type: DesigniteJavaReportType, currentScannedDirection: String): File? {
+        process(currentScannedDirection)
+        val report = File(currentScannedDirection + "/DesigniteReport/${type.reportName}")
         return if (report.exists()) report else null
     }
 
