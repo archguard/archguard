@@ -10,7 +10,6 @@ import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,20 +25,8 @@ import java.util.*
 
 @RestController
 @RequestMapping("/systems/{systemId}/logic-modules")
-class LogicModuleController {
-
-    @Autowired
-    private lateinit var logicModuleService: LogicModuleService
-
-    @Autowired
-    private lateinit var dependencyService: DependencyService
-
-    @Autowired
-    private lateinit var metricsService: MetricsService
-
-    @Autowired
-    private lateinit var graphService: GraphService
-
+class LogicModuleController(val logicModuleService: LogicModuleService, val dependencyService: DependencyService,
+                            val metricsService: MetricsService, val graphService: GraphService) {
     @GetMapping
     fun getLogicModules(@PathVariable("systemId") systemId: Long): List<LogicModuleLegacy> {
         return logicModuleService.getLogicModules(systemId)

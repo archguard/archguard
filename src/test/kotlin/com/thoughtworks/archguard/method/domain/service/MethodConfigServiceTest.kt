@@ -30,14 +30,14 @@ internal class MethodConfigServiceTest {
         val jMethod2 = JMethod("id2", "isRight", "org.Answer", "m1", "boolean", emptyList())
         val jMethods: List<JMethod> = mutableListOf(jMethod1, jMethod2)
 
-        val projectId = 1L
+        val systemId = 1L
         val configure1 = Configure("cid1", 1L, "nodeColor", "print", "#ff8975", 1)
         val configure2 = Configure("cid2", 1L, "nodeColor", "print", "#ff8999", 2)
         val configure3 = Configure("cid3", 1L, "nodeDisplay", "logger", "hidden", 2)
         val configs: List<Configure> = mutableListOf(configure1, configure2, configure3)
-        every { configureRepository.getConfigures(projectId) } returns configs
+        every { configureRepository.getConfigures(systemId) } returns configs
 
-        methodConfigService.buildColorConfig(jMethods, projectId)
+        methodConfigService.buildColorConfig(jMethods, systemId)
         assertThat(jMethods[0].configuresMap["nodeColor"]).isEqualTo("#ff8999")
         assertThat(jMethods[1].configuresMap["nodeColor"]).isNull()
     }

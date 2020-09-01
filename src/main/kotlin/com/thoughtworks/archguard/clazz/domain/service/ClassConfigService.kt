@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service
 @Service
 class ClassConfigService(val configureService: ConfigureService) {
 
-    fun buildClassRelationColorConfig(classRelations: List<ClassRelation>, projectId: Long) {
-        classRelations.forEach { classRelation -> classRelation.clazz.buildColorConfigure(configureService.getNodeRelatedColorConfigures(projectId, classRelation.clazz.name)) }
+    fun buildClassRelationColorConfig(classRelations: List<ClassRelation>, systemId: Long) {
+        classRelations.forEach { classRelation -> classRelation.clazz.buildColorConfigure(configureService.getNodeRelatedColorConfigures(systemId, classRelation.clazz.name)) }
     }
 
-    fun buildJClassColorConfig(jClasses: List<JClass>, projectId: Long) {
-        jClasses.forEach { jClass -> jClass.buildColorConfigure(configureService.getNodeRelatedColorConfigures(projectId, jClass.name)) }
+    fun buildJClassColorConfig(jClasses: List<JClass>, systemId: Long) {
+        jClasses.forEach { jClass -> jClass.buildColorConfigure(configureService.getNodeRelatedColorConfigures(systemId, jClass.name)) }
     }
 }

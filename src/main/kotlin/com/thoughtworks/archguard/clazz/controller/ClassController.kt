@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.clazz.controller
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.service.ClassService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/systems/{systemId}/classes")
-class ClassController {
-
-    @Autowired
-    private lateinit var service: ClassService
+class ClassController(val service: ClassService) {
 
     @GetMapping("/{name}/dependencies")
     fun getDependencies(@PathVariable("systemId") systemId: Long,

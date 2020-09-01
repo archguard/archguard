@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class MethodConfigService(val configureService: ConfigureService) {
 
-    fun buildColorConfig(jMethods: List<JMethod>, projectId: Long) {
+    fun buildColorConfig(jMethods: List<JMethod>, systemId: Long) {
         // 当方法名包含配置key时，着色配置生效
-        jMethods.forEach { jMethod -> jMethod.buildColorConfigure(configureService.getNodeRelatedColorConfigures(projectId, jMethod.name)) }
+        jMethods.forEach { jMethod -> jMethod.buildColorConfigure(configureService.getNodeRelatedColorConfigures(systemId, jMethod.name)) }
     }
 }

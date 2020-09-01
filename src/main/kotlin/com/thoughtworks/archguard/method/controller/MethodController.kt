@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.method.controller
 
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.MethodService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/systems/{systemId}/methods")
-class MethodController {
-    @Autowired
-    private lateinit var methodService: MethodService
+class MethodController(val methodService: MethodService) {
 
     @GetMapping("/{name}/callees")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
@@ -54,8 +51,8 @@ class MethodController {
 
     @GetMapping("")
     fun getMethodsBelongToClass(@PathVariable("systemId") systemId: Long,
-                         @RequestParam(value = "clazz") clazzName: String,
-                         @RequestParam(value = "submodule") submoduleName: String): ResponseEntity<List<JMethod>> {
+                                @RequestParam(value = "clazz") clazzName: String,
+                                @RequestParam(value = "submodule") submoduleName: String): ResponseEntity<List<JMethod>> {
         val jMethod = methodService.findMethodByModuleAndClazz(systemId, clazzName, submoduleName)
         return ResponseEntity.ok(jMethod)
     }

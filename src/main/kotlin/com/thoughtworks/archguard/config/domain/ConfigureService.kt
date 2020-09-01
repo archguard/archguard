@@ -40,8 +40,8 @@ class ConfigureService(val configureRepository: ConfigureRepository) {
         return (continueNodes.isEmpty() || continueNodes.any { nodeName.contains(it) }) && hiddenNodes.all { !nodeName.contains(it) }
     }
 
-    fun getNodeRelatedColorConfigures(projectId: Long, nodePropertyName: String): List<Configure> {
-        val colorConfigures = this.getColorConfigures(projectId)
+    fun getNodeRelatedColorConfigures(systemId: Long, nodePropertyName: String): List<Configure> {
+        val colorConfigures = this.getColorConfigures(systemId)
         return colorConfigures.filter { nodePropertyName.contains(it.key) }
     }
 

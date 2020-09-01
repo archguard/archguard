@@ -4,14 +4,11 @@ import com.thoughtworks.archguard.config.domain.Configure
 import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class ConfigureRepositoryImpl : ConfigureRepository {
-    @Autowired
-    lateinit var jdbi: Jdbi
+class ConfigureRepositoryImpl(val jdbi: Jdbi) : ConfigureRepository {
 
     override fun getConfigures(systemId: Long): List<Configure> {
         val sql = "SELECT id, `system_id`, type, `key`, value, `order` FROM Configure where `system_id` = :systemId"
@@ -72,8 +69,8 @@ class ConfigureRepositoryImpl : ConfigureRepository {
         }
     }
 
-    override fun deleteConfiguresByType(projectId: Long, type: String) {
-        val sql = "delete from Configure where type = '$type' and project_id = $projectId"
+    override fun deleteConfiguresByType(systemId: Long, type: String) {
+        val sql = "delete from Configure where type = '$type' and system_id = $systemId"
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute(sql)
         }

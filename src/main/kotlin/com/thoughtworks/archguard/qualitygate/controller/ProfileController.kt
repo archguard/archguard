@@ -2,16 +2,20 @@ package com.thoughtworks.archguard.qualitygate.controller
 
 import com.thoughtworks.archguard.qualitygate.domain.ProfileService
 import com.thoughtworks.archguard.qualitygate.domain.QualityGateProfileDTO
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/quality-gate-profile")
-class ProfileController {
-    @Autowired
-    private lateinit var service: ProfileService
+class ProfileController(val service: ProfileService) {
 
     @GetMapping("/{name}")
     fun getByName(@PathVariable("name") name: String): ResponseEntity<QualityGateProfileDTO> {

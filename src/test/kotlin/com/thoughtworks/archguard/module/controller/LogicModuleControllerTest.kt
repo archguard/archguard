@@ -1,12 +1,14 @@
 package com.thoughtworks.archguard.module.controller
 
+import com.thoughtworks.archguard.metrics.appl.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
+import com.thoughtworks.archguard.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.module.domain.graph.GraphService
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.infrastructure.dto.LogicModuleLegacy
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.runs
@@ -18,14 +20,22 @@ import java.util.*
 
 class LogicModuleControllerTest {
     @MockK
-    lateinit var service: LogicModuleService
+    private lateinit var service: LogicModuleService
 
-    @InjectMockKs
-    var controller = LogicModuleController()
+    @MockK
+    private lateinit var dependencyService: DependencyService
+
+    @MockK
+    private lateinit var metricsService: MetricsService
+
+    @MockK
+    private lateinit var graphService: GraphService
+    private lateinit var controller: LogicModuleController
 
     @BeforeEach
     fun setUp() {
         init(this)
+        controller = LogicModuleController(service, dependencyService, metricsService, graphService)
     }
 
     private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {
