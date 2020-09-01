@@ -15,7 +15,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
 
     override fun getSystemInfo(id: Long): SystemInfo? =
             jdbi.withHandle<SystemInfo, Nothing> {
-                it.createQuery("select id, project_name systemName, repo repo, sql_table `sql`," +
+                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
