@@ -25,6 +25,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
         assertEquals(8, classStatistic.size)
 
         val specificClassStatisticItem = classStatistic.find { it.moduleName == "dubbo-service" && it.typeName == "User" }
+        assertEquals(1, specificClassStatisticItem?.systemId)
         assertEquals("dubbo-service", specificClassStatisticItem?.moduleName)
         assertEquals("net.aimeizi.dubbo.service.entity", specificClassStatisticItem?.packageName)
         assertEquals("User", specificClassStatisticItem?.typeName)
@@ -37,6 +38,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
         val specificMethodStatistic = methodStatistic.find { it.moduleName == "dubbo-service" && it.typeName == "User" && it.methodName == "getUserId"}
 
         assertEquals(21, methodStatistic.size)
+        assertEquals(1, specificMethodStatistic?.systemId)
         assertEquals("dubbo-service", specificMethodStatistic?.moduleName)
         assertEquals("net.aimeizi.dubbo.service.entity", specificMethodStatistic?.packageName)
         assertEquals("User", specificMethodStatistic?.typeName)

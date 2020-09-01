@@ -48,14 +48,14 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private fun toClassStatistic(line: String, currentDirectionName: String): ClassStatistic {
         val elements = line.split(",")
         val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
-        return ClassStatistic(UUID.randomUUID().toString(), moduleName, elements[0], elements[1], elements[2],
-                elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
+        return ClassStatistic(UUID.randomUUID().toString(), 1, moduleName, elements[0], elements[1],
+                elements[2], elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
     }
 
     private fun toMethodStatistic(line: String, currentDirectionName: String): MethodStatistic {
         val elements = line.split(",")
         val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
-        return MethodStatistic(UUID.randomUUID().toString(), moduleName, elements[1], elements[2],
-                elements[3], elements[4].toInt())
+        return MethodStatistic(UUID.randomUUID().toString(), 1, moduleName, elements[1],
+                elements[2], elements[3], elements[4].toInt())
     }
 }

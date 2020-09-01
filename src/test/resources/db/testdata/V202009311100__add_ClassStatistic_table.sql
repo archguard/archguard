@@ -2,7 +2,8 @@ create table ClassStatistic
 (
     id          char(36)   not null
         primary key,
-    moduleName mediumtext null,
+    systemId    char(36)   not null,
+    moduleName  mediumtext null,
     projectName mediumtext not null,
     packageName mediumtext not null,
     typeName    mediumtext not null,

@@ -2,6 +2,7 @@ package com.thoughtworks.archgard.scanner.domain.scanner.statistic
 
 data class ClassStatistic(
         val id: String,
+        val systemId: Long,
         val moduleName: String? = null,
         val projectName: String,
         val packageName: String,
