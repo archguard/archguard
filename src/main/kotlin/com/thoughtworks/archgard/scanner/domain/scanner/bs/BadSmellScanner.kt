@@ -46,8 +46,8 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
         return designiteJavaTool.readReport(DesigniteJavaReportType.BAD_SMELL_METRICS).map {
             val elements = it.split(",")
-            BadSmell(UUID.randomUUID().toString(), elements[1] + "." + elements[2], 0,
-                    elements[3], 0, elements[3])
+            BadSmell(UUID.randomUUID().toString(), context.systemId, elements[1] + "." + elements[2],
+                    0, elements[3], 0, elements[3])
         }
     }
 
@@ -55,7 +55,7 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
         val cocaTool = CocaTool(context.workspace)
         val report = cocaTool.getBadSmellReport()
         val cocaModels = mapper.readValue<CocaBadSmellModel>(report?.readText() ?: "{}")
-        return cocaModels.toBadSmell()
+        return cocaModels.toBadSmell(context.systemId)
     }
 
     data class CocaBadSmellModel(val complexCondition: List<CocaBadSmellItem>?,
@@ -66,22 +66,22 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
                                  val longMethod: List<CocaBadSmellItem>?,
                                  val longParameterList: List<CocaBadSmellItem>?,
                                  val repeatedSwitches: List<CocaBadSmellItem>?) {
-        fun toBadSmell(): List<BadSmell> {
-            return listOf(complexCondition?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "complexCondition") }
+        fun toBadSmell(systemId: Long): List<BadSmell> {
+            return listOf(complexCondition?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "complexCondition") }
                     ?: emptyList(),
-                    dataClass?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "dataClass") }
+                    dataClass?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "dataClass") }
                             ?: emptyList(),
-                    graphConnectedCall?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "graphConnectedCall") }
+                    graphConnectedCall?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "graphConnectedCall") }
                             ?: emptyList(),
-                    largeClass?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "largeClass") }
+                    largeClass?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "largeClass") }
                             ?: emptyList(),
-                    lazyElement?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "lazyElement") }
+                    lazyElement?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "lazyElement") }
                             ?: emptyList(),
-                    longMethod?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "longMethod") }
+                    longMethod?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "longMethod") }
                             ?: emptyList(),
-                    longParameterList?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "longParameterList") }
+                    longParameterList?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "longParameterList") }
                             ?: emptyList(),
-                    repeatedSwitches?.map { c -> BadSmell(UUID.randomUUID().toString(), c.EntityName, c.Line, c.Description, c.Size, "repeatedSwitches") }
+                    repeatedSwitches?.map { c -> BadSmell(UUID.randomUUID().toString(), systemId, c.EntityName, c.Line, c.Description, c.Size, "repeatedSwitches") }
                             ?: emptyList()
             ).flatten()
         }

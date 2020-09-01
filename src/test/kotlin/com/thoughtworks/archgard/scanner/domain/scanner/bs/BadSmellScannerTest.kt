@@ -19,10 +19,11 @@ internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScann
         val scanContext = ScanContext(1, "repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestProject").toURI()), ArrayList())
         badSmellScanner.scan(scanContext)
 
-        val count = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from badSmell")
-                    .mapTo(Int::class.java).one()
+        val badSmells = jdbi.withHandle<List<BadSmell>, RuntimeException> { handle: Handle ->
+            handle.createQuery("select * from badSmell")
+                    .mapTo(BadSmell::class.java).list()
         }
-        Assertions.assertEquals(count, 2)
+        Assertions.assertEquals(badSmells.size, 2)
+        Assertions.assertEquals(badSmells[0].systemId, 1)
     }
 }
