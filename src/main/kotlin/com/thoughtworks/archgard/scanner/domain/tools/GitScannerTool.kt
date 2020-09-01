@@ -46,7 +46,7 @@ class GitScannerTool(val systemRoot: File, val branch: String) : GitReport {
 
     private fun download() {
         val downloadUrl = "http://$host/job/code-scanners/lastSuccessfulBuild/artifact/scan_git/target/scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar"
-        FileOperator.download(URL(downloadUrl), File("$projectRoot/scan_git.jar"))
+        FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_git.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

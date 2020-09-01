@@ -28,7 +28,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     fun getMethodMetricsReport(): List<String> {
-        return getTargetFile(projectRoot)
+        return getTargetFile(systemRoot)
                 .map { getMethodMetricsReport(it)?.readLines() }
                 .filterNotNull()
                 .flatten()
@@ -56,7 +56,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getMethodMetricsReport(target: File): File? {
-        val report = File(projectRoot.toString() + "/methodMetrics.csv")
+        val report = File(systemRoot.toString() + "/methodMetrics.csv")
         process(target)
         return if (report.exists()) {
             report
