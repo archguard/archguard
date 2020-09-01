@@ -14,8 +14,8 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
         prepareTool()
-        return getTargetFile(systemRoot)
-                .map { generateReport(designiteJavaReportType, it.absolutePath)?.readLines() }
+        return getTargetScannedDirections(systemRoot)
+                .map { generateReport(designiteJavaReportType, it)?.readLines() }
                 .filterNotNull()
                 .flatten()
                 .filter { !it.contains("Project Name") }
@@ -62,14 +62,14 @@ class DesigniteJavaTool(val systemRoot: File) {
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
     }
 
-    private fun getTargetFile(workspace: File): List<File> {
+    private fun getTargetScannedDirections(workspace: File): List<String> {
         val target = workspace.walkTopDown()
                 .filter { f -> f.absolutePath.endsWith("pom.xml") || f.absolutePath.endsWith("build.gradle") }
-                .map { f -> f.parentFile }
+                .map { f -> f.parentFile.absolutePath }
                 .distinct()
                 .toList()
         if (target.size > 1) {
-            return target.filter { it.absolutePath != workspace.absolutePath }
+            return target.filter { it != workspace.absolutePath }
         } else {
             return target
         }
