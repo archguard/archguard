@@ -46,7 +46,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private fun toClassStatistic(line: String, currentDirectionName: String, systemId: Long): ClassStatistic {
         val elements = line.split(",")
         val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
-        return ClassStatistic(UUID.randomUUID().toString(), systemId, moduleName, elements[0], elements[1],
+        return ClassStatistic(UUID.randomUUID().toString(), systemId, moduleName, elements[1],
                 elements[2], elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
     }
 
