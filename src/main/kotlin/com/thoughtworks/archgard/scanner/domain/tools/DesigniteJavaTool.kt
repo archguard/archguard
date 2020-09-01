@@ -78,5 +78,5 @@ class DesigniteJavaTool(val systemRoot: File) {
 }
 
 enum class DesigniteJavaReportType(val reportName: String) {
-    TYPE_METHRICS("typeMetrics.csv"), METHOD_METRICS("methodMetrics.csv"), BAD_SMELL_METRICS("designCodeSmells.csv")
+    TYPE_METRICS("typeMetrics.csv"), METHOD_METRICS("methodMetrics.csv"), BAD_SMELL_METRICS("designCodeSmells.csv")
 }

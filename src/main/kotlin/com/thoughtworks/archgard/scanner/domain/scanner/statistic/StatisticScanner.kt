@@ -40,7 +40,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private fun generateStatistic(context: ScanContext): Pair<List<ClassStatistic>, List<MethodStatistic>> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
         val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
-        val classStatistics = designiteJavaTool.readReport(DesigniteJavaReportType.TYPE_METHRICS).map { toClassStatistic(it, currentDirectionName) }
+        val classStatistics = designiteJavaTool.readReport(DesigniteJavaReportType.TYPE_METRICS).map { toClassStatistic(it, currentDirectionName) }
         val methodStatistic = designiteJavaTool.readReport(DesigniteJavaReportType.METHOD_METRICS).map { toMethodStatistic(it, currentDirectionName) }
         return Pair(classStatistics, methodStatistic)
     }
