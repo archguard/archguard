@@ -22,10 +22,13 @@ internal class LCOM4ServiceTest {
     @MockK
     private lateinit var jMethodRepo: JMethodRepository
 
+    @MockK
+    private lateinit var jClassLCOM4Repository: JClassLCOM4Repository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo)
+        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo, jClassLCOM4Repository)
     }
 
     @Test
