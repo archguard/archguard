@@ -35,6 +35,14 @@ class DesigniteJavaTool(val systemRoot: File) {
                 .filter { !it.contains("Project Name") }
     }
 
+    fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
+        return getTargetFile(systemRoot)
+                .map { getReport(it, designiteJavaReportType)?.readLines() }
+                .filterNotNull()
+                .flatten()
+                .filter { !it.contains("Project Name") }
+    }
+
     private fun getReport(target: File, type: DesigniteJavaReportType): File? {
         val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
         process(target)
