@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class StatisticRepo(@Autowired val jdbi: Jdbi) {
+class ClassStatisticRepo(@Autowired val jdbi: Jdbi) {
 
     fun getCodeLinesCount(): Int {
         return jdbi.withHandle<Int, Nothing> {

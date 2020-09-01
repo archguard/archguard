@@ -4,13 +4,13 @@ import com.thoughtworks.archguard.evaluation.domain.ModuleCouplingQuality
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.ModuleCouplingQualityReport
 import com.thoughtworks.archguard.evaluation.domain.analysis.report.Report
 import com.thoughtworks.archguard.report.infrastructure.HotSpotRepo
-import com.thoughtworks.archguard.report.infrastructure.StatisticRepo
+import com.thoughtworks.archguard.report.infrastructure.ClassStatisticRepo
 import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
+class ModuleCouplingAnalysis(@Autowired val classStatisticRepo: ClassStatisticRepo,
                              @Autowired val hotSpotRepo: HotSpotRepo) : Analysis {
     override fun getName(): String {
         return "模块耦合"
@@ -32,7 +32,7 @@ class ModuleCouplingAnalysis(@Autowired val statisticRepo: StatisticRepo,
     }
 
     private fun getModuleCouplingQuality(): List<ModuleCouplingQuality> {
-        val fanInFanOut = statisticRepo.getModuleFanInFanOut()
+        val fanInFanOut = classStatisticRepo.getModuleFanInFanOut()
         val result = HashMap(initMap(fanInFanOut.map { it.packageName }, getLatestModule()))
         fanInFanOut.forEach {
             val key = getKeyLike(result.keys, it.packageName)
