@@ -23,7 +23,7 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     private fun generateReport(target: File, type: DesigniteJavaReportType): File? {
         process(target.absolutePath)
-        val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
+        val report = File(target.absolutePath + "/DesigniteReport/${type.reportName}")
         return if (report.exists()) report else null
     }
 
