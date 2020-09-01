@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.analyser
 
+import com.thoughtworks.archgard.scanner.domain.hubexecutor.HubService
 import com.thoughtworks.archgard.scanner.domain.tools.JavaByteCodeTool
 import com.thoughtworks.archgard.scanner.domain.tools.TableUsedTool
 import com.thoughtworks.archgard.scanner.infrastructure.client.AnalysisModuleClient
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
                              @Value("\${spring.datasource.username}") val username: String,
                              @Value("\${spring.datasource.password}") val password: String,
+                             @Autowired val hubService: HubService,
                              @Autowired val analysisService: AnalysisService,
                              @Autowired val analysisModuleClient: AnalysisModuleClient) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
@@ -28,5 +30,8 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         tableUsedTool.analyse()
         analysisModuleClient.autoDefine(id)
         log.info("finished scan java analysis")
+
+        hubService.doScanIfNotRunning(id);
+        log.info("finished scan hub")
     }
 }
