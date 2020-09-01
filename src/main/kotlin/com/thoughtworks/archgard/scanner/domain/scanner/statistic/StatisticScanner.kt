@@ -40,22 +40,22 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private fun generateStatistic(context: ScanContext): Pair<List<ClassStatistic>, List<MethodStatistic>> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
         val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
-        val classStatistics = designiteJavaTool.readReport(DesigniteJavaReportType.TYPE_METRICS).map { toClassStatistic(it, currentDirectionName) }
-        val methodStatistic = designiteJavaTool.readReport(DesigniteJavaReportType.METHOD_METRICS).map { toMethodStatistic(it, currentDirectionName) }
+        val classStatistics = designiteJavaTool.readReport(DesigniteJavaReportType.TYPE_METRICS).map { toClassStatistic(it, currentDirectionName, context.systemId) }
+        val methodStatistic = designiteJavaTool.readReport(DesigniteJavaReportType.METHOD_METRICS).map { toMethodStatistic(it, currentDirectionName, context.systemId) }
         return Pair(classStatistics, methodStatistic)
     }
 
-    private fun toClassStatistic(line: String, currentDirectionName: String): ClassStatistic {
+    private fun toClassStatistic(line: String, currentDirectionName: String, systemId: Long): ClassStatistic {
         val elements = line.split(",")
         val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
-        return ClassStatistic(UUID.randomUUID().toString(), 1, moduleName, elements[0], elements[1],
+        return ClassStatistic(UUID.randomUUID().toString(), systemId, moduleName, elements[0], elements[1],
                 elements[2], elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
     }
 
-    private fun toMethodStatistic(line: String, currentDirectionName: String): MethodStatistic {
+    private fun toMethodStatistic(line: String, currentDirectionName: String, systemId: Long): MethodStatistic {
         val elements = line.split(",")
         val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
-        return MethodStatistic(UUID.randomUUID().toString(), 1, moduleName, elements[1],
+        return MethodStatistic(UUID.randomUUID().toString(), systemId, moduleName, elements[1],
                 elements[2], elements[3], elements[4].toInt())
     }
 }

@@ -58,6 +58,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
         assertEquals(23, classStatistic.size)
 
         val specificClassStatisticItem = classStatistic.find { it.typeName == "SmartParkingBoyTest" }
+        assertEquals(2, specificClassStatisticItem?.systemId)
         assertEquals(null, specificClassStatisticItem?.moduleName)
         assertEquals("com.qicaisheng.parkinglot", specificClassStatisticItem?.packageName)
         assertEquals("SmartParkingBoyTest", specificClassStatisticItem?.typeName)
@@ -71,6 +72,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
         assertEquals(97, methodStatistic.size)
         
         val specificMethodStatistic = methodStatistic.find { it.methodName == "should_be_picked_up_from_managed_parking_lot_when_smart_park_boy_park_card"}
+        assertEquals(2, specificMethodStatistic?.systemId)
         assertEquals(null, specificMethodStatistic?.moduleName)
         assertEquals("com.qicaisheng.parkinglot", specificMethodStatistic?.packageName)
         assertEquals("SmartParkingBoyTest", specificMethodStatistic?.typeName)
