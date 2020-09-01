@@ -4,7 +4,9 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,6 +16,12 @@ import java.io.File
 @SpringBootTest
 @ActiveProfiles("test")
 internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticScanner, @Autowired val jdbi: Jdbi) {
+    @AfterEach
+    internal fun tearDown() {
+        statisticScanner.classClassStatisticRepo.delete();
+        statisticScanner.methodClassStatisticRepo.delete();
+    }
+
     @Test
     fun should_generate_statistics_given_multiple_modules_examples() {
         statisticScanner.scan(ScanContext(1, "", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/multiple-modules-example").toURI()), ArrayList()))
