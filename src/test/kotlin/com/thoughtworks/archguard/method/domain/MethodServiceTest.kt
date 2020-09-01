@@ -35,18 +35,18 @@ class MethodServiceTest {
     @Test
     internal fun `should get method callers`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
-        every { callerService.findCallers(projectId, target, deep) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
+        every { callerService.findCallers(systemId, target, deep) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findMethodCallers(projectId, moduleName, clazzName, methodName, deep)
+        val result = service.findMethodCallers(systemId, moduleName, clazzName, methodName, deep)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
@@ -54,18 +54,18 @@ class MethodServiceTest {
     @Test
     fun `should get method callees`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
-        every { calleeService.findCallees(projectId, target, deep, true) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
+        every { calleeService.findCallees(systemId, target, deep, true) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findMethodCallees(projectId, moduleName, clazzName, methodName, deep, true)
+        val result = service.findMethodCallees(systemId, moduleName, clazzName, methodName, deep, true)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
@@ -73,19 +73,19 @@ class MethodServiceTest {
     @Test
     fun `should get method invokes`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         //when
-        every { repo.findMethodByModuleAndClazzAndName(projectId, moduleName, clazzName, methodName) } returns target
-        every { calleeService.findCallees(projectId, target, deep, true) } returns target
-        every { callerService.findCallers(projectId, target, deep) } returns target
+        every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
+        every { calleeService.findCallees(systemId, target, deep, true) } returns target
+        every { callerService.findCallers(systemId, target, deep) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findMethodInvokes(projectId, moduleName, clazzName, methodName, deep, deep, true)
+        val result = service.findMethodInvokes(systemId, moduleName, clazzName, methodName, deep, deep, true)
         //then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }

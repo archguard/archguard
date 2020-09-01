@@ -6,13 +6,13 @@ import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/projects/{projectId}/metric/lcom4")
+@RequestMapping("/systems/{systemId}/metric/lcom4")
 class LCOM4MetricController(val metricsService: MetricsService) {
     @GetMapping("/class")
-    fun getClassLCOM4Metric(@PathVariable("projectId") projectId: Long,
+    fun getClassLCOM4Metric(@PathVariable("systemId") systemId: Long,
                             @RequestParam className: String,
                             @RequestParam moduleName: String): GraphWithConnectivityCount {
-        val graphStore = metricsService.getClassLCOM4(projectId, JClassVO(className, moduleName))
+        val graphStore = metricsService.getClassLCOM4(systemId, JClassVO(className, moduleName))
         return GraphWithConnectivityCount(graphStore.getGraph(), graphStore.getConnectivityCount())
     }
 }

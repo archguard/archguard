@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service
 @Service
 class ConfigureService(val repo: ConfigureRepository) {
 
-    fun getConfigures(projectId: Long): List<Configure> {
-        return repo.getConfigures(projectId)
+    fun getConfigures(systemId: Long): List<Configure> {
+        return repo.getConfigures(systemId)
     }
 
     fun create(config: Configure) {
@@ -14,7 +14,7 @@ class ConfigureService(val repo: ConfigureRepository) {
     }
 
     fun update(id: String, config: Configure) {
-        val nodeConfigure = Configure(id, config.projectId, config.type, config.key, config.value, config.order)
+        val nodeConfigure = Configure(id, config.systemId, config.type, config.key, config.value, config.order)
         repo.update(nodeConfigure)
     }
 
@@ -22,10 +22,10 @@ class ConfigureService(val repo: ConfigureRepository) {
         repo.delete(id)
     }
 
-    fun isDisplayNode(projectId: Long, nodeName: String): Boolean {
+    fun isDisplayNode(systemId: Long, nodeName: String): Boolean {
         if (nodeName.endsWith("Test")) return false
 
-        val displayConfig = repo.getConfiguresByType(projectId, "nodeDisplay")
+        val displayConfig = repo.getConfiguresByType(systemId, "nodeDisplay")
         val continueNodes = displayConfig.filter { it.value == "contain" }.map { it.key }
         val hiddenNodes = displayConfig.filter { it.value == "hidden" }.map { it.key }
 
@@ -33,9 +33,9 @@ class ConfigureService(val repo: ConfigureRepository) {
     }
 
 
-    fun updateConfigsByType(projectId: Long, type: String, configs: List<Configure>) {
-        repo.deleteConfiguresByType(projectId, type)
-        configs.forEach { it.projectId = projectId }
+    fun updateConfigsByType(systemId: Long, type: String, configs: List<Configure>) {
+        repo.deleteConfiguresByType(systemId, type)
+        configs.forEach { it.systemId = systemId }
         repo.batchCreateConfigures(configs)
     }
 }

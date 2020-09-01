@@ -11,58 +11,58 @@ import java.util.*
 class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val couplingService: CouplingService) {
     private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
 
-    fun getLogicModules(projectId: Long): List<LogicModule> {
-        return logicModuleRepository.getAllByProjectId(projectId)
+    fun getLogicModules(systemId: Long): List<LogicModule> {
+        return logicModuleRepository.getAllBysystemId(systemId)
     }
 
-    fun getLogicModule(projectId: Long, name: String): LogicModule {
-        return logicModuleRepository.get(projectId, name)
+    fun getLogicModule(systemId: Long, name: String): LogicModule {
+        return logicModuleRepository.get(systemId, name)
     }
 
-    fun hideAllLogicModules(projectId: Long) {
-        val logicModules = getLogicModules(projectId)
+    fun hideAllLogicModules(systemId: Long) {
+        val logicModules = getLogicModules(systemId)
         logicModules.forEach { it.hide() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun showAllLogicModules(projectId: Long) {
-        val logicModules = getLogicModules(projectId)
+    fun showAllLogicModules(systemId: Long) {
+        val logicModules = getLogicModules(systemId)
         logicModules.forEach { it.show() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun reverseAllLogicModulesStatus(projectId: Long) {
-        val logicModules = getLogicModules(projectId)
+    fun reverseAllLogicModulesStatus(systemId: Long) {
+        val logicModules = getLogicModules(systemId)
         logicModules.forEach { it.reverse() }
         logicModuleRepository.updateAll(logicModules)
     }
 
-    fun updateLogicModule(projectId: Long, id: String, logicModule: LogicModule) {
+    fun updateLogicModule(systemId: Long, id: String, logicModule: LogicModule) {
         logicModuleRepository.update(id, logicModule)
-        couplingService.persistAllClassCouplingResults(projectId)
+        couplingService.persistAllClassCouplingResults(systemId)
     }
 
-    fun createLogicModule(projectId: Long, logicModule: LogicModule): String {
-        logicModuleRepository.create(projectId, logicModule)
+    fun createLogicModule(systemId: Long, logicModule: LogicModule): String {
+        logicModuleRepository.create(systemId, logicModule)
         return logicModule.id
     }
 
-    fun createLogicModuleWithCompositeNodes(projectId: Long, logicModule: LogicModuleWithCompositeNodes): String {
-        logicModuleRepository.createWithCompositeNodes(projectId, logicModule)
+    fun createLogicModuleWithCompositeNodes(systemId: Long, logicModule: LogicModuleWithCompositeNodes): String {
+        logicModuleRepository.createWithCompositeNodes(systemId, logicModule)
         return logicModule.id!!
     }
 
-    fun deleteLogicModule(projectId: Long, id: String) {
+    fun deleteLogicModule(systemId: Long, id: String) {
         logicModuleRepository.delete(id)
-        couplingService.persistAllClassCouplingResults(projectId)
+        couplingService.persistAllClassCouplingResults(systemId)
     }
 
-    fun autoDefineLogicModule(projectId: Long) {
-        logicModuleRepository.deleteByProjectId(projectId)
-        val defaultModules = logicModuleRepository.getAllSubModule(projectId)
+    fun autoDefineLogicModule(systemId: Long) {
+        logicModuleRepository.deleteBysystemId(systemId)
+        val defaultModules = logicModuleRepository.getAllSubModule(systemId)
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
-        logicModuleRepository.saveAll(projectId, defaultModules)
-        couplingService.persistAllClassCouplingResults(projectId)
+        logicModuleRepository.saveAll(systemId, defaultModules)
+        couplingService.persistAllClassCouplingResults(systemId)
     }
 
 }

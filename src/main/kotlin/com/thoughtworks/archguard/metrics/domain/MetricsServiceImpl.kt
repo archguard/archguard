@@ -48,9 +48,9 @@ class MetricsServiceImpl(
 ) : MetricsService {
     private val log = LoggerFactory.getLogger(MetricsServiceImpl::class.java)
 
-    override fun calculateCouplingLegacy(projectId: Long) {
-        val modules = logicModuleRepository.getAllByProjectId(projectId)
-        val classDependency = dependencyService.getAllClassDependencies(projectId)
+    override fun calculateCouplingLegacy(systemId: Long) {
+        val modules = logicModuleRepository.getAllBysystemId(systemId)
+        val classDependency = dependencyService.getAllClassDependencies(systemId)
 
         val classMetrics = getClassMetrics(classDependency, modules)
         val moduleMetrics = groupPackageMetrics(groupToPackage(classMetrics), modules)
@@ -58,100 +58,100 @@ class MetricsServiceImpl(
         metricsRepository.insert(moduleMetrics)
     }
 
-    override fun getAllMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy> {
-        val modules = logicModuleRepository.getAllByShowStatus(projectId, true)
+    override fun getAllMetricsLegacy(systemId: Long): List<ModuleMetricsLegacy> {
+        val modules = logicModuleRepository.getAllByShowStatus(systemId, true)
         val moduleNames = modules.map { it.name }.toList()
         var metrics = metricsRepository.findAllMetrics(moduleNames)
         if (metrics.isEmpty()) {
-            calculateCouplingLegacy(projectId)
+            calculateCouplingLegacy(systemId)
             metrics = metricsRepository.findAllMetrics(moduleNames)
         }
         return metrics
     }
 
-    override fun getClassAbstractMetric(projectId: Long, jClassVO: JClassVO): ClassAbstractRatio {
-        val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
+    override fun getClassAbstractMetric(systemId: Long, jClassVO: JClassVO): ClassAbstractRatio {
+        val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
-        val methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
+        val methods = jMethodRepository.findMethodsByModuleAndClass(systemId, jClass.module, jClass.name)
         jClass.methods = methods
         return ClassAbstractRatio.fromJClass(jClass)
     }
 
-    override fun getPackageAbstractMetric(projectId: Long, packageVO: PackageVO): PackageAbstractRatio {
-        return abstractAnalysisService.calculatePackageAbstractRatio(projectId, packageVO)
+    override fun getPackageAbstractMetric(systemId: Long, packageVO: PackageVO): PackageAbstractRatio {
+        return abstractAnalysisService.calculatePackageAbstractRatio(systemId, packageVO)
     }
 
-    override fun getClassNoc(projectId: Long, jClassVO: JClassVO): Int {
-        val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
+    override fun getClassNoc(systemId: Long, jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
-        return nocService.getNoc(projectId, jClass)
+        return nocService.getNoc(systemId, jClass)
     }
 
-    override fun getClassAbc(projectId: Long, jClassVO: JClassVO): Int {
-        val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
+    override fun getClassAbc(systemId: Long, jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
-        jClass.methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
+        jClass.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, jClass.module, jClass.name)
         return abcService.calculateAbc(jClass)
     }
 
-    override fun calculateAllNoc(projectId: Long): List<ClassNoc> {
-        val jClasses = jClassRepository.getJClassesHasModules(projectId)
+    override fun calculateAllNoc(systemId: Long): List<ClassNoc> {
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
         val classNocList = mutableListOf<ClassNoc>()
-        jClasses.forEach { classNocList.add(ClassNoc(it.toVO(), nocService.getNoc(projectId, it))) }
+        jClasses.forEach { classNocList.add(ClassNoc(it.toVO(), nocService.getNoc(systemId, it))) }
         return classNocList
     }
 
-    override fun calculateAllDit(projectId: Long): List<ClassDit> {
-        val jClasses = jClassRepository.getJClassesHasModules(projectId)
+    override fun calculateAllDit(systemId: Long): List<ClassDit> {
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
         val classDitList = mutableListOf<ClassDit>()
-        jClasses.forEach { classDitList.add(ClassDit(it.toVO(), ditService.getDepthOfInheritance(projectId, it))) }
+        jClasses.forEach { classDitList.add(ClassDit(it.toVO(), ditService.getDepthOfInheritance(systemId, it))) }
         return classDitList
     }
 
-    override fun calculateAllAbc(projectId: Long): List<ClassAbc> {
-        val jClasses = jClassRepository.getJClassesHasModules(projectId)
-        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(projectId, it.module, it.name) }
+    override fun calculateAllAbc(systemId: Long): List<ClassAbc> {
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name) }
 
         val classAbcList = mutableListOf<ClassAbc>()
         jClasses.forEach { classAbcList.add(ClassAbc(it.toVO(), abcService.calculateAbc(it))) }
         return classAbcList
     }
 
-    override fun calculateAllLCOM4(projectId: Long): List<ClassLCOM4> {
-        val jClasses = jClassRepository.getJClassesHasModules(projectId)
-        jClasses.forEach { prepareJClassBasicDataForLCOM4(projectId, it) }
+    override fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4> {
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+        jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val classLCOM4List = mutableListOf<ClassLCOM4>()
         jClasses.forEach { classLCOM4List.add(ClassLCOM4(it.toVO(), lcom4Service.getLCOM4Graph(it).getConnectivityCount())) }
         return classLCOM4List
     }
 
-    override fun calculateAllModuleDfms(projectId: Long): List<ModuleDfms> {
-        val logicModules = logicModuleRepository.getAllByProjectId(projectId)
-        return logicModules.map { ModuleDfms.of(it, couplingService.calculateModuleCoupling(projectId, it), getModuleAbstractMetric(projectId, it.name)) }
+    override fun calculateAllModuleDfms(systemId: Long): List<ModuleDfms> {
+        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        return logicModules.map { ModuleDfms.of(it, couplingService.calculateModuleCoupling(systemId, it), getModuleAbstractMetric(systemId, it.name)) }
     }
 
-    override fun calculateAllClassDfms(projectId: Long): List<ClassDfms> {
-        val jClasses = jClassRepository.getJClassesHasModules(projectId)
-        return jClasses.map { getClassDfms(projectId, it.toVO()) }
+    override fun calculateAllClassDfms(systemId: Long): List<ClassDfms> {
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+        return jClasses.map { getClassDfms(systemId, it.toVO()) }
     }
 
-    override fun getClassDfms(projectId: Long, jClassVO: JClassVO): ClassDfms {
-        return ClassDfms.of(jClassVO, couplingService.calculateClassCoupling(projectId, jClassVO), getClassAbstractMetric(projectId, jClassVO))
+    override fun getClassDfms(systemId: Long, jClassVO: JClassVO): ClassDfms {
+        return ClassDfms.of(jClassVO, couplingService.calculateClassCoupling(systemId, jClassVO), getClassAbstractMetric(systemId, jClassVO))
     }
 
-    override fun getPackageDfms(projectId: Long, packageVO: PackageVO): PackageDfms {
-        return PackageDfms.of(packageVO, couplingService.calculatePackageCoupling(projectId, packageVO), getPackageAbstractMetric(projectId, packageVO))
+    override fun getPackageDfms(systemId: Long, packageVO: PackageVO): PackageDfms {
+        return PackageDfms.of(packageVO, couplingService.calculatePackageCoupling(systemId, packageVO), getPackageAbstractMetric(systemId, packageVO))
     }
 
-    override fun getModuleDfms(projectId: Long, moduleName: String): ModuleDfms {
-        val logicModule = logicModuleRepository.get(projectId, moduleName)
-        return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(projectId, logicModule), getModuleAbstractMetric(projectId, moduleName))
+    override fun getModuleDfms(systemId: Long, moduleName: String): ModuleDfms {
+        val logicModule = logicModuleRepository.get(systemId, moduleName)
+        return ModuleDfms.of(logicModule, couplingService.calculateModuleCoupling(systemId, logicModule), getModuleAbstractMetric(systemId, moduleName))
     }
 
-    override fun getModuleAbstractMetric(projectId: Long, moduleName: String): ModuleAbstractRatio {
-        val logicModule = logicModuleRepository.get(projectId, moduleName)
-        return abstractAnalysisService.calculateModuleAbstractRatio(projectId, logicModule)
+    override fun getModuleAbstractMetric(systemId: Long, moduleName: String): ModuleAbstractRatio {
+        val logicModule = logicModuleRepository.get(systemId, moduleName)
+        return abstractAnalysisService.calculateModuleAbstractRatio(systemId, logicModule)
     }
 
     private fun getClassMetrics(dependency: List<Dependency<JClassVO>>,
@@ -189,24 +189,24 @@ class MetricsServiceImpl(
                 .map { ModuleMetricsLegacy.of(it.key, it.value) }
     }
 
-    override fun getClassLCOM4(projectId: Long, jClassVO: JClassVO): GraphStore {
-        val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
+    override fun getClassLCOM4(systemId: Long, jClassVO: JClassVO): GraphStore {
+        val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
-        prepareJClassBasicDataForLCOM4(projectId, jClass)
+        prepareJClassBasicDataForLCOM4(systemId, jClass)
         return lcom4Service.getLCOM4Graph(jClass)
     }
 
-    private fun prepareJClassBasicDataForLCOM4(projectId: Long, jClass: JClass) {
+    private fun prepareJClassBasicDataForLCOM4(systemId: Long, jClass: JClass) {
         jClass.fields = jClassRepository.findFields(jClass.id)
-        val methods = jMethodRepository.findMethodsByModuleAndClass(projectId, jClass.module, jClass.name)
+        val methods = jMethodRepository.findMethodsByModuleAndClass(systemId, jClass.module, jClass.name)
         methods.forEach { it.fields = jMethodRepository.findMethodFields(it.id) }
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
     }
 
-    override fun getClassDit(projectId: Long, jClassVO: JClassVO): Int {
-        val jClass = jClassRepository.getJClassBy(projectId, jClassVO.name, jClassVO.module)
+    override fun getClassDit(systemId: Long, jClassVO: JClassVO): Int {
+        val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
                 ?: throw ClassNotFountException("""Cannot find class with module: ${jClassVO.module} name: ${jClassVO.name}""")
-        return ditService.getDepthOfInheritance(projectId, jClass)
+        return ditService.getDepthOfInheritance(systemId, jClass)
     }
 }

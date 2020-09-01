@@ -5,7 +5,7 @@ import org.jdbi.v3.core.mapper.reflect.ColumnName
 
 data class ConfigureDTO(
         val id: String?,
-        @ColumnName("project_id") val projectId: Long,
+        @ColumnName("system_id") val systemId: Long,
         val type: String,
         val key: String,
         val value: String,
@@ -14,7 +14,7 @@ data class ConfigureDTO(
     companion object {
         fun of(configure: Configure) = ConfigureDTO(
                 configure.id,
-                configure.projectId,
+                configure.systemId,
                 configure.type,
                 configure.key,
                 configure.value,
@@ -22,5 +22,5 @@ data class ConfigureDTO(
         )
     }
 
-    fun toDomainObject() = Configure(id, projectId, type, key, value, order)
+    fun toDomainObject() = Configure(id, systemId, type, key, value, order)
 }

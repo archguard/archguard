@@ -27,8 +27,8 @@ class ConfigureServiceTest {
         //given
         val configure = Configure("id", 1L, "nodeHidden", "clz", "21", 1)
         //when
-        every { configureRepository.getConfigures(configure.projectId) } returns listOf(configure)
-        val configures = service.getConfigures(configure.projectId)
+        every { configureRepository.getConfigures(configure.systemId) } returns listOf(configure)
+        val configures = service.getConfigures(configure.systemId)
         //then
         assertThat(configures.size).isEqualTo(1)
         assertThat(configures[0]).isEqualToComparingFieldByField(configure)

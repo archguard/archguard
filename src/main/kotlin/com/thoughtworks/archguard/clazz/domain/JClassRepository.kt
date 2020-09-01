@@ -1,27 +1,27 @@
 package com.thoughtworks.archguard.clazz.domain
 
 interface JClassRepository {
-    fun getJClassBy(projectId:Long, name: String, module: String): JClass?
+    fun getJClassBy(systemId:Long, name: String, module: String): JClass?
 
     fun getJClassById(id: String): JClass?
 
-    fun getAllByProjectId(projectId: Long): List<JClass>
+    fun getAllBysystemId(systemId: Long): List<JClass>
 
-    fun getAllByProjectIdAndFullName(projectId: Long, fullNames: List<FullName>): List<JClass>
+    fun getAllBysystemIdAndFullName(systemId: Long, fullNames: List<FullName>): List<JClass>
 
-    fun getJClassesHasModules(projectId: Long): List<JClass>
+    fun getJClassesHasModules(systemId: Long): List<JClass>
 
     fun findDependencees(id: String): List<JClass>
 
     fun findDependencers(id: String): List<JClass>
 
-    fun findClassParents(projectId: Long, module: String?, name: String?): List<JClass>
+    fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass>
 
-    fun findClassImplements(projectId: Long, name: String?, module: String?): List<JClass>
+    fun findClassImplements(systemId: Long, name: String?, module: String?): List<JClass>
 
-    fun findCallees(projectId:Long, name: String?, module: String?): List<ClassRelation>
+    fun findCallees(systemId:Long, name: String?, module: String?): List<ClassRelation>
 
-    fun findCallers(projectId:Long, name: String?, module: String?): List<ClassRelation>
+    fun findCallers(systemId:Long, name: String?, module: String?): List<ClassRelation>
 
     fun findFields(id: String): List<JField>
 }

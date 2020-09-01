@@ -23,7 +23,7 @@ internal class NocServiceImplTest {
 
     @Test
     internal fun `should get noc for class`() {
-        val projectId: Long = 1
+        val systemId: Long = 1
         val jClass = JClass("0", "c", "m")
         val jClass1 = JClass("1", "c1", "m1")
         val jClass2 = JClass("2", "c2", "m2")
@@ -31,18 +31,18 @@ internal class NocServiceImplTest {
         val jClass4 = JClass("4", "c4", "m4")
         val jClass5 = JClass("5", "c5", "m5")
         val jClass6 = JClass("6", "c6", "m6")
-        every { jClassRepository.findClassImplements(projectId, "c", "m") } returns listOf(jClass1, jClass2)
-        every { jClassRepository.findClassImplements(projectId, "c1", "m1") } returns listOf(jClass3)
-        every { jClassRepository.findClassImplements(projectId, "c2", "m2") } returns listOf(jClass4, jClass5)
-        every { jClassRepository.findClassImplements(projectId, "c3", "m3") } returns listOf()
-        every { jClassRepository.findClassImplements(projectId, "c4", "m4") } returns listOf()
-        every { jClassRepository.findClassImplements(projectId, "c5", "m5") } returns listOf(jClass6)
-        every { jClassRepository.findClassImplements(projectId, "c6", "m6") } returns listOf()
+        every { jClassRepository.findClassImplements(systemId, "c", "m") } returns listOf(jClass1, jClass2)
+        every { jClassRepository.findClassImplements(systemId, "c1", "m1") } returns listOf(jClass3)
+        every { jClassRepository.findClassImplements(systemId, "c2", "m2") } returns listOf(jClass4, jClass5)
+        every { jClassRepository.findClassImplements(systemId, "c3", "m3") } returns listOf()
+        every { jClassRepository.findClassImplements(systemId, "c4", "m4") } returns listOf()
+        every { jClassRepository.findClassImplements(systemId, "c5", "m5") } returns listOf(jClass6)
+        every { jClassRepository.findClassImplements(systemId, "c6", "m6") } returns listOf()
 
-        val noc = nocService.getNoc(projectId, jClass)
+        val noc = nocService.getNoc(systemId, jClass)
         assertThat(noc).isEqualTo(6)
 
-        val noc2 = nocService.getNoc(projectId, jClass2)
+        val noc2 = nocService.getNoc(systemId, jClass2)
         assertThat(noc2).isEqualTo(3)
     }
 }

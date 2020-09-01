@@ -33,14 +33,14 @@ class LogicModuleServiceTest {
     @Test
     fun `should get logic modules`() {
         // given
-        val projectId:Long = 1
+        val systemId:Long = 1
         val logicModule1 = LogicModule("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
         val logicModule2 = LogicModule("2", "m2", listOf(LogicComponent.createLeaf("bm3"), LogicComponent.createLeaf("bm4")))
         val logicModules = listOf(logicModule1, logicModule2)
-        every { logicModuleRepository.getAllByProjectId(projectId) } returns logicModules
+        every { logicModuleRepository.getAllBysystemId(systemId) } returns logicModules
 
         // when
-        val actual = service.getLogicModules(projectId)
+        val actual = service.getLogicModules(systemId)
 
         // then
         assertThat(actual.size).isEqualTo(logicModules.size)
@@ -92,24 +92,24 @@ class LogicModuleServiceTest {
 
     @Test
     fun `should update and calculate when update module`() {
-        val projectId:Long = 1
+        val systemId:Long = 1
         val logicModule = LogicModule.createWithOnlyLeafMembers("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
 
         val slot = slot<LogicModule>()
         every { logicModuleRepository.update(capture(slot()), capture(slot)) } just Runs
 
-        service.updateLogicModule(projectId, "id", logicModule)
+        service.updateLogicModule(systemId, "id", logicModule)
 
-        verify(exactly = 1) { couplingService.persistAllClassCouplingResults(projectId) }
+        verify(exactly = 1) { couplingService.persistAllClassCouplingResults(systemId) }
         assertEquals(logicModule.name, slot.captured.name)
     }
 
     @Test
     fun `should delete and calculate when delete module`() {
-        val projectId:Long = 1
-        service.deleteLogicModule(projectId, "id")
+        val systemId:Long = 1
+        service.deleteLogicModule(systemId, "id")
 
         verify(exactly = 1) { logicModuleRepository.delete("id") }
-        verify(exactly = 1) { couplingService.persistAllClassCouplingResults(projectId) }
+        verify(exactly = 1) { couplingService.persistAllClassCouplingResults(systemId) }
     }
 }

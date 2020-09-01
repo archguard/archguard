@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service
 class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo: JClassRepository,
                                 val methodCalleesService: MethodCalleesService, val configureService: ConfigureService) {
 
-    fun findClassMethodsCallees(projectId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
+    fun findClassMethodsCallees(systemId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {
-        target.methods = methodRepo.findMethodsByModuleAndClass(projectId, target.module, target.name).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
-        methodCalleesService.buildMethodCallees(projectId, target.methods, calleeDeep, needIncludeImpl)
+        target.methods = methodRepo.findMethodsByModuleAndClass(systemId, target.module, target.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+        methodCalleesService.buildMethodCallees(systemId, target.methods, calleeDeep, needIncludeImpl)
         if (needParents) {
-            (target.parents as MutableList).addAll(classRepo.findClassParents(projectId, target.module, target.name).filter { configureService.isDisplayNode(projectId, it.name) })
-            target.parents.forEach { findClassMethodsCallees(projectId, it, calleeDeep, needIncludeImpl, needParents) }
+            (target.parents as MutableList).addAll(classRepo.findClassParents(systemId, target.module, target.name).filter { configureService.isDisplayNode(systemId, it.name) })
+            target.parents.forEach { findClassMethodsCallees(systemId, it, calleeDeep, needIncludeImpl, needParents) }
         }
         return target
     }

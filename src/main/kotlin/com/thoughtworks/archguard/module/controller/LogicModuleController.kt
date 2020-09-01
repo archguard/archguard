@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/projects/{projectId}/logic-modules")
+@RequestMapping("/systems/{systemId}/logic-modules")
 class LogicModuleController {
 
     @Autowired
@@ -41,88 +41,88 @@ class LogicModuleController {
     private lateinit var graphService: GraphService
 
     @GetMapping
-    fun getLogicModules(@PathVariable("projectId") projectId: Long): List<LogicModuleLegacy> {
-        return logicModuleService.getLogicModules(projectId)
+    fun getLogicModules(@PathVariable("systemId") systemId: Long): List<LogicModuleLegacy> {
+        return logicModuleService.getLogicModules(systemId)
                 .filter { it.isLogicModule() }.map { LogicModuleLegacy.fromLogicModule(it) }
     }
 
     @PostMapping("/hide-all")
-    fun hideAllLogicModules(@PathVariable("projectId") projectId: Long) {
-        logicModuleService.hideAllLogicModules(projectId)
+    fun hideAllLogicModules(@PathVariable("systemId") systemId: Long) {
+        logicModuleService.hideAllLogicModules(systemId)
     }
 
     @PostMapping("/show-all")
-    fun showAllLogicModules(@PathVariable("projectId") projectId: Long) {
-        logicModuleService.showAllLogicModules(projectId)
+    fun showAllLogicModules(@PathVariable("systemId") systemId: Long) {
+        logicModuleService.showAllLogicModules(systemId)
     }
 
     @PostMapping("/reverse-all")
-    fun reverseAllLogicModules(@PathVariable("projectId") projectId: Long) {
-        logicModuleService.reverseAllLogicModulesStatus(projectId)
+    fun reverseAllLogicModules(@PathVariable("systemId") systemId: Long) {
+        logicModuleService.reverseAllLogicModulesStatus(systemId)
     }
 
     @PutMapping("/{id}")
-    fun updateLogicModule(@PathVariable("projectId") projectId: Long,
+    fun updateLogicModule(@PathVariable("systemId") systemId: Long,
                           @PathVariable id: String,
                           @RequestBody logicModule: LogicModuleLegacy) {
-        logicModuleService.updateLogicModule(projectId, id, logicModule.toLogicModule())
+        logicModuleService.updateLogicModule(systemId, id, logicModule.toLogicModule())
     }
 
     @PostMapping
-    fun createLogicModule(@PathVariable("projectId") projectId: Long,
+    fun createLogicModule(@PathVariable("systemId") systemId: Long,
                           @RequestBody logicModule: LogicModuleLegacy): String {
         logicModule.id = UUID.randomUUID().toString()
-        return logicModuleService.createLogicModule(projectId, logicModule.toLogicModule())
+        return logicModuleService.createLogicModule(systemId, logicModule.toLogicModule())
     }
 
     @PostMapping("/service")
-    fun createLogicModuleWithCompositeNodes(@PathVariable("projectId") projectId: Long,
+    fun createLogicModuleWithCompositeNodes(@PathVariable("systemId") systemId: Long,
                                             @RequestBody logicModule: LogicModuleWithCompositeNodes): String {
         logicModule.id = UUID.randomUUID().toString()
-        return logicModuleService.createLogicModuleWithCompositeNodes(projectId, logicModule.toLogicModule())
+        return logicModuleService.createLogicModuleWithCompositeNodes(systemId, logicModule.toLogicModule())
     }
 
     @DeleteMapping("/{id}")
-    fun deleteLogicModule(@PathVariable("projectId") projectId: Long,
+    fun deleteLogicModule(@PathVariable("systemId") systemId: Long,
                           @PathVariable id: String) {
-        logicModuleService.deleteLogicModule(projectId, id)
+        logicModuleService.deleteLogicModule(systemId, id)
     }
 
     @PostMapping("/auto-define")
     @ResponseStatus(HttpStatus.OK)
-    fun autoDefineLogicModule(@PathVariable projectId: Long) {
-        logicModuleService.autoDefineLogicModule(projectId)
+    fun autoDefineLogicModule(@PathVariable systemId: Long) {
+        logicModuleService.autoDefineLogicModule(systemId)
     }
 
     @GetMapping("/dependencies")
-    fun getLogicModulesDependencies(@PathVariable projectId: Long,
+    fun getLogicModulesDependencies(@PathVariable systemId: Long,
                                     @RequestParam caller: String,
                                     @RequestParam callee: String): List<Dependency<JMethodVO>> {
-        return dependencyService.getAllMethodDependencies(projectId, caller, callee)
+        return dependencyService.getAllMethodDependencies(systemId, caller, callee)
     }
 
     @PostMapping("/calculate-coupling")
     @ResponseStatus(HttpStatus.OK)
     @Deprecated("Remove in the future")
-    fun calculateCoupling(@PathVariable projectId: Long) {
-        metricsService.calculateCouplingLegacy(projectId)
+    fun calculateCoupling(@PathVariable systemId: Long) {
+        metricsService.calculateCouplingLegacy(systemId)
     }
 
     @GetMapping("/metrics")
     @Deprecated("Remove in the future")
-    fun getAllMetrics(@PathVariable projectId: Long): List<ModuleMetricsLegacy> {
-        return metricsService.getAllMetricsLegacy(projectId)
+    fun getAllMetrics(@PathVariable systemId: Long): List<ModuleMetricsLegacy> {
+        return metricsService.getAllMetricsLegacy(systemId)
     }
 
     @GetMapping("/metrics/modules")
     @Deprecated("Remove in the future")
-    fun getModuleMetrics(@PathVariable projectId: Long): List<ModuleMetricsLegacy> {
-        return metricsService.getAllMetricsLegacy(projectId)
+    fun getModuleMetrics(@PathVariable systemId: Long): List<ModuleMetricsLegacy> {
+        return metricsService.getAllMetricsLegacy(systemId)
     }
 
     @GetMapping("/dependencies/graph")
-    fun getDependenciesGraph(@PathVariable projectId: Long): Graph {
-        return graphService.getLogicModuleGraph(projectId)
+    fun getDependenciesGraph(@PathVariable systemId: Long): Graph {
+        return graphService.getLogicModuleGraph(systemId)
     }
 
 }

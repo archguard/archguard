@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository
 class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
 
-    override fun getJClassBy(projectId: Long, name: String, module: String): JClass? {
-        val sql = "select id, name, module, loc, access from JClass where project_id=:projectId and name=:name and module=:module"
+    override fun getJClassBy(systemId: Long, name: String, module: String): JClass? {
+        val sql = "select id, name, module, loc, access from JClass where system_id=:systemId and name=:name and module=:module"
         val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .bind("name", name)
                     .bind("module", module)
                     .mapTo(JClassDto::class.java)
@@ -26,7 +26,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         return jClassDto?.toJClass()
     }
 
-    override fun findClassParents(projectId: Long, module: String?, name: String?): List<JClass> {
+    override fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and c.module='$module'"
@@ -34,7 +34,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           And c.project_id = $projectId" +
+                "           And c.system_id = $systemId" +
                 "           AND c.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -44,7 +44,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toJClass() }
     }
 
-    override fun findClassImplements(projectId: Long, name: String?, module: String?): List<JClass> {
+    override fun findClassImplements(systemId: Long, name: String?, module: String?): List<JClass> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and p.module='$module'"
@@ -52,7 +52,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
-                "           AND c.project_id = $projectId" +
+                "           AND c.system_id = $systemId" +
                 "           AND p.name = '$name' $moduleFilter"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
@@ -62,7 +62,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toJClass() }
     }
 
-    override fun findCallees(projectId: Long, name: String?, module: String?): List<ClassRelation> {
+    override fun findCallees(systemId: Long, name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
@@ -72,18 +72,18 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
                 "                     AND a.clzname = '$name' $moduleFilter" +
                 "                     AND b.clzname <> '$name'" +
-                "                     AND a.project_id = b.project_id" +
-                "                     AND a.project_id = $projectId" +
+                "                     AND a.system_id = b.system_id" +
+                "                     AND a.system_id = $systemId" +
                 "                     GROUP BY b.clzname, b.module"
         return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
             it.createQuery(sql)
                     .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { toClassRelation(projectId, it) }
+        }.map { toClassRelation(systemId, it) }
     }
 
-    override fun findCallers(projectId: Long, name: String?, module: String?): List<ClassRelation> {
+    override fun findCallers(systemId: Long, name: String?, module: String?): List<ClassRelation> {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and a.module='$module'"
@@ -91,8 +91,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "SELECT a.clzname as clzname, a.module as module, COUNT(1) as count " +
                 "                     FROM JMethod a,`_MethodCallees` cl,JMethod b" +
                 "                     WHERE a.id = cl.a and b.id = cl.b" +
-                "                     AND a.project_id = b.project_id" +
-                "                     AND a.project_id = $projectId" +
+                "                     AND a.system_id = b.system_id" +
+                "                     AND a.system_id = $systemId" +
                 "                     AND b.clzname = '$name' $moduleFilter" +
                 "                     AND a.clzname <> '$name'" +
                 "                     GROUP BY a.clzname, a.module"
@@ -101,7 +101,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
             it.createQuery(sql)
                     .mapTo(ClassRelationDTO::class.java)
                     .list()
-        }.map { toClassRelation(projectId, it) }
+        }.map { toClassRelation(systemId, it) }
     }
 
     override fun findFields(id: String): List<JField> {
@@ -114,8 +114,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }
     }
 
-    private fun toClassRelation(projectId: Long, it: ClassRelationDTO): ClassRelation {
-        val jClassByName = getJClassBy(projectId, it.clzname, it.module)
+    private fun toClassRelation(systemId: Long, it: ClassRelationDTO): ClassRelation {
+        val jClassByName = getJClassBy(systemId, it.clzname, it.module)
         return if (jClassByName == null) {
             ClassRelation(JClass(NOT_EXIST_ID, it.clzname, it.module), it.count)
         } else {
@@ -153,31 +153,31 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.toJClass()
     }
 
-    override fun getAllByProjectId(projectId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where project_id = :projectId"
+    override fun getAllBysystemId(systemId: Long): List<JClass> {
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .mapTo(JClassDto::class.java)
                     .list()
         }.map { it.toJClass() }
     }
 
-    override fun getAllByProjectIdAndFullName(projectId: Long, fullNames: List<FullName>): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass WHERE project_id = :projectId and concat(module, '.', name) IN (<fullNameList>)"
+    override fun getAllBysystemIdAndFullName(systemId: Long, fullNames: List<FullName>): List<JClass> {
+        val sql = "SELECT id, name, module, loc, access FROM JClass WHERE system_id = :systemId and concat(module, '.', name) IN (<fullNameList>)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .bindList("fullNameList", fullNames.map { fullName -> "${fullName.module}.${fullName.name}" })
                     .mapTo(JClassDto::class.java)
                     .list()
         }.map { it.toJClass() }
     }
 
-    override fun getJClassesHasModules(projectId: Long): List<JClass> {
-        return this.getAllByProjectId(projectId).filter { it.module != "null" }
+    override fun getJClassesHasModules(systemId: Long): List<JClass> {
+        return this.getAllBysystemId(systemId).filter { it.module != "null" }
     }
 
 }

@@ -18,34 +18,34 @@ class DubboPlugin : AbstractDependPlugin() {
         return PluginType.DUBBO
     }
 
-    override fun fixMethodDependencies(projectId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
+    override fun fixMethodDependencies(systemId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
         // A -> I, B : I
         // A -> B override
-        val interfaces = jClassRepository.getJClassesHasModules(projectId).filter { it.isInterface() }
-        return methodDependencies.flatMap { fixMethodDependency(projectId, it, interfaces) }
+        val interfaces = jClassRepository.getJClassesHasModules(systemId).filter { it.isInterface() }
+        return methodDependencies.flatMap { fixMethodDependency(systemId, it, interfaces) }
     }
 
     private fun isInterface(jClassVO: JClassVO, interfaces: List<JClass>): Boolean{
         return interfaces.any { it.getFullName() == jClassVO.getFullName() }
     }
 
-    private fun fixMethodDependency(projectId: Long, methodDependency: Dependency<JMethodVO>, interfaces: List<JClass>): List<Dependency<JMethodVO>> {
+    private fun fixMethodDependency(systemId: Long, methodDependency: Dependency<JMethodVO>, interfaces: List<JClass>): List<Dependency<JMethodVO>> {
         val caller = methodDependency.caller
         val callee = methodDependency.callee
 
         if (!isInterface(callee.clazz, interfaces) || caller.clazz.module == callee.clazz.module) {
             return listOf(methodDependency)
         }
-        return mapCalleeToReal(projectId, caller, callee).map { Dependency(caller, it) }
+        return mapCalleeToReal(systemId, caller, callee).map { Dependency(caller, it) }
 
     }
 
-    fun mapCalleeToReal(projectId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO>{
-        return jClassRepository.findClassImplements(projectId, callee.name, callee.module).map { it.toVO() }
+    fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO>{
+        return jClassRepository.findClassImplements(systemId, callee.name, callee.module).map { it.toVO() }
     }
 
-    private fun mapCalleeToReal(projectId: Long, caller: JMethodVO, callee: JMethodVO): List<JMethodVO> {
-        val realCalleeClasses = mapCalleeToReal(projectId, caller.clazz, callee.clazz)
+    private fun mapCalleeToReal(systemId: Long, caller: JMethodVO, callee: JMethodVO): List<JMethodVO> {
+        val realCalleeClasses = mapCalleeToReal(systemId, caller.clazz, callee.clazz)
         return realCalleeClasses.map { JMethodVO(callee.name, it, callee.returnType, callee.argumentTypes) }
     }
 

@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/projects/{projectId}/configures")
+@RequestMapping("/systems/{systemId}/configures")
 class ConfigController(val configureService: ConfigureService) {
 
     @GetMapping
-    fun getConfigures(@PathVariable("projectId") projectId: Long): List<Configure> {
-        return configureService.getConfigures(projectId)
+    fun getConfigures(@PathVariable("systemId") systemId: Long): List<Configure> {
+        return configureService.getConfigures(systemId)
     }
 
     @PostMapping
-    fun create(@PathVariable("projectId") projectId: Long,
+    fun create(@PathVariable("systemId") systemId: Long,
                @RequestBody config: Configure): ResponseEntity<Nothing> {
         configureService.create(config)
-        config.projectId = projectId
+        config.systemId = systemId
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("projectId") projectId: Long,
+    fun update(@PathVariable("systemId") systemId: Long,
                @PathVariable("id") id: String,
                @RequestBody config: Configure): ResponseEntity<Nothing> {
         configureService.update(id, config)
@@ -39,17 +39,17 @@ class ConfigController(val configureService: ConfigureService) {
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable("projectId") projectId: Long,
+    fun delete(@PathVariable("systemId") systemId: Long,
                @PathVariable("id") id: String): ResponseEntity<Nothing> {
         configureService.delete(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @PostMapping("/types/{type}")
-    fun updateConfigsByType(@PathVariable("projectId") projectId: Long,
+    fun updateConfigsByType(@PathVariable("systemId") systemId: Long,
                             @PathVariable("type") type: String,
                             @RequestBody configs: List<Configure>): ResponseEntity<Nothing> {
-        configureService.updateConfigsByType(projectId, type, configs)
+        configureService.updateConfigsByType(systemId, type, configs)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

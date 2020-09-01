@@ -13,12 +13,12 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getConfigures(projectId: Long): List<Configure> {
-        val sql = "SELECT id, `project_id`, type, `key`, value, `order` FROM Configure where `project_id` = :projectId"
+    override fun getConfigures(systemId: Long): List<Configure> {
+        val sql = "SELECT id, `system_id`, type, `key`, value, `order` FROM Configure where `system_id` = :systemId"
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .mapTo(ConfigureDTO::class.java)
                     .map { configure -> configure.toDomainObject() }
                     .list()
@@ -28,12 +28,12 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     override fun batchCreateConfigures(configs: List<Configure>) {
         val configureDTOList = configs.map { ConfigureDTO.of(it) }.toList()
         jdbi.withHandle<IntArray, Nothing> { handle ->
-            val sql = "INSERT INTO Configure (id, project_id, type, `key`, value, `order`) VALUES (:id, :projectId, :type, :key, :value, :order)"
+            val sql = "INSERT INTO Configure (id, system_id, type, `key`, value, `order`) VALUES (:id, :systemId, :type, :key, :value, :order)"
             val batch = handle.prepareBatch(sql)
             configureDTOList.forEach {
                 val id = it.id ?: UUID.randomUUID().toString()
                 batch.bind("id", id)
-                        .bind("projectId", it.projectId)
+                        .bind("systemId", it.systemId)
                         .bind("type", it.type)
                         .bind("key", it.key)
                         .bind("value", it.value)
@@ -47,8 +47,8 @@ class ConfigureRepositoryImpl : ConfigureRepository {
     override fun create(config: Configure) {
         val configureDTO = ConfigureDTO.of(config)
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("INSERT INTO Configure (id, project_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
-                    configureDTO.id, configureDTO.projectId, configureDTO.type, configureDTO.key, configureDTO.value, configureDTO.order)
+            handle.execute("INSERT INTO Configure (id, system_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
+                    configureDTO.id, configureDTO.systemId, configureDTO.type, configureDTO.key, configureDTO.value, configureDTO.order)
         }
     }
 
@@ -72,21 +72,21 @@ class ConfigureRepositoryImpl : ConfigureRepository {
         }
     }
 
-    override fun getConfiguresByType(projectId: Long, type: String): List<Configure> {
-        val sql = "SELECT id, project_id, type, `key`, value, `order` FROM Configure WHERE type=:type and project_id = :projectId"
+    override fun getConfiguresByType(systemId: Long, type: String): List<Configure> {
+        val sql = "SELECT id, system_id, type, `key`, value, `order` FROM Configure WHERE type=:type and system_id = :systemId"
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
                     .bind("type", type)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .mapTo(ConfigureDTO::class.java)
                     .map { configure -> configure.toDomainObject() }
                     .list()
         }
     }
 
-    override fun deleteConfiguresByType(projectId: Long, type: String) {
-        val sql = "delete from Configure where type = '$type' and project_id = $projectId"
+    override fun deleteConfiguresByType(systemId: Long, type: String) {
+        val sql = "delete from Configure where type = '$type' and system_id = $systemId"
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute(sql)
         }

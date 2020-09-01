@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service
 class ClassInvokeService(val repo: JClassRepository, val configureService: ConfigureService) {
     private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
 
-    fun findInvokes(projectId: Long, target: JClass, callerDeep: Int, calleeDeep: Int,
+    fun findInvokes(systemId: Long, target: JClass, callerDeep: Int, calleeDeep: Int,
                     needIncludeImpl: Boolean): JClass {
-        findClassCallers(projectId, target, callerDeep, needIncludeImpl)
-        findClassCallees(projectId, target, calleeDeep, needIncludeImpl)
+        findClassCallers(systemId, target, callerDeep, needIncludeImpl)
+        findClassCallees(systemId, target, calleeDeep, needIncludeImpl)
         return target
     }
 
-    private fun findClassCallees(projectId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
+    private fun findClassCallees(systemId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
             return
         }
@@ -26,36 +26,36 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
         }
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
-            implements = repo.findClassImplements(projectId, target.name, target.module)
-                    .filter { configureService.isDisplayNode(projectId, it.name) }
+            implements = repo.findClassImplements(systemId, target.name, target.module)
+                    .filter { configureService.isDisplayNode(systemId, it.name) }
         }
         target.implements = implements
-        target.callees = repo.findCallees(projectId, target.name, target.module)
-                .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
+        target.callees = repo.findCallees(systemId, target.name, target.module)
+                .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
         if (deep == 1) {
             return
         } else {
-            target.implements.map { findClassCallees(projectId, it, deep - 1, needIncludeImpl) }
-            target.callees.map { findClassCallees(projectId, it.clazz, deep - 1, needIncludeImpl) }
+            target.implements.map { findClassCallees(systemId, it, deep - 1, needIncludeImpl) }
+            target.callees.map { findClassCallees(systemId, it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 
-    private fun findClassCallers(projectId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
+    private fun findClassCallers(systemId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
         if (deep == 0) {
             return
         }
         if (target.module == "null") {
             return
         }
-        target.parents = repo.findClassParents(projectId, target.module, target.name)
-                .filter { configureService.isDisplayNode(projectId, it.name) }
-        target.callers = repo.findCallers(projectId, target.name, target.module)
-                .filter { configureService.isDisplayNode(projectId, it.clazz.name) }
+        target.parents = repo.findClassParents(systemId, target.module, target.name)
+                .filter { configureService.isDisplayNode(systemId, it.name) }
+        target.callers = repo.findCallers(systemId, target.name, target.module)
+                .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
         if (deep == 1) {
             return
         } else {
-            target.parents.map { findClassCallers(projectId, it, deep - 1, needIncludeImpl) }
-            target.callers.map { findClassCallers(projectId, it.clazz, deep - 1, needIncludeImpl) }
+            target.parents.map { findClassCallers(systemId, it, deep - 1, needIncludeImpl) }
+            target.callers.map { findClassCallers(systemId, it.clazz, deep - 1, needIncludeImpl) }
         }
     }
 

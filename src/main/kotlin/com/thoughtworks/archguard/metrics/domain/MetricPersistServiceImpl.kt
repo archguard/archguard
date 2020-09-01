@@ -11,23 +11,23 @@ class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetr
                                val influxDBClient: InfluxDBClient) : MetricPersistService {
     private val log = LoggerFactory.getLogger(MetricPersistServiceImpl::class.java)
 
-    override fun persistClassMetrics(projectId: Long) {
-        val allAbc = metricsService.calculateAllAbc(projectId)
+    override fun persistClassMetrics(systemId: Long) {
+        val allAbc = metricsService.calculateAllAbc(systemId)
         val abcMap: MutableMap<String, Int> = mutableMapOf()
         allAbc.forEach { abcMap[it.jClassVO.id!!] = it.abcValue }
         log.info("Finish calculate all abc, count: {}", abcMap.keys.size)
 
-        val allDit = metricsService.calculateAllDit(projectId)
+        val allDit = metricsService.calculateAllDit(systemId)
         val ditMap: MutableMap<String, Int> = mutableMapOf()
         allDit.forEach { ditMap[it.jClassVO.id!!] = it.ditValue }
         log.info("Finish calculate all dit, count: {}", ditMap.keys.size)
 
-        val allNoc = metricsService.calculateAllNoc(projectId)
+        val allNoc = metricsService.calculateAllNoc(systemId)
         val nocMap: MutableMap<String, Int> = mutableMapOf()
         allNoc.forEach { nocMap[it.jClassVO.id!!] = it.nocValue }
         log.info("Finish calculate all noc, count: {}", nocMap.keys.size)
 
-        val allLCOM4 = metricsService.calculateAllLCOM4(projectId)
+        val allLCOM4 = metricsService.calculateAllLCOM4(systemId)
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
         allLCOM4.forEach { lcom4Map[it.jClassVO.id!!] = it.lcom4Value }
         log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
@@ -36,13 +36,13 @@ class MetricPersistServiceImpl(val metricsService: MetricsService, val classMetr
         val classMetricPOs = mutableListOf<ClassMetricPO>()
         val classMetrics = mutableListOf<ClassMetric>()
 
-        allJClassVO.forEach { classMetricPOs.add(ClassMetricPO(projectId, it.id!!, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
-        allJClassVO.forEach { classMetrics.add(ClassMetric(projectId, it, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
+        allJClassVO.forEach { classMetricPOs.add(ClassMetricPO(systemId, it.id!!, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
+        allJClassVO.forEach { classMetrics.add(ClassMetric(systemId, it, abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!])) }
 
-        classMetricRepository.insertOrUpdateClassMetricPOs(projectId, classMetricPOs)
+        classMetricRepository.insertOrUpdateClassMetricPOs(systemId, classMetricPOs)
         influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
     }
 }
 
-data class ClassMetricPO(val projectId: Long, val classId: String, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
-data class ClassMetric(val projectId: Long, val jClassVO: JClassVO, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
+data class ClassMetricPO(val systemId: Long, val classId: String, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)
+data class ClassMetric(val systemId: Long, val jClassVO: JClassVO, val abc: Int?, val dit: Int?, val noc: Int?, val lcom4: Int?)

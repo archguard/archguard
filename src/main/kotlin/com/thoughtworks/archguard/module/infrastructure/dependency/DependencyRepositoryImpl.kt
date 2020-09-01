@@ -15,14 +15,14 @@ class DependencyRepositoryImpl : DependencyRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getAllMethodDependencies(projectId: Long): List<Dependency<JMethodVO>> {
+    override fun getAllMethodDependencies(systemId: Long): List<Dependency<JMethodVO>> {
         val sql = "select ${generateSelectMethodTemplate("a", "caller")}, ${generateSelectMethodTemplate("b", "callee")} " +
-                "from JMethod a, JMethod b, `_MethodCallees` mc where a.module != 'null' and b.module != 'null' and a.id = mc.a and b.id = mc.b and a.project_id = :projectId and b.project_id = :projectId and mc.project_id = :projectId"
+                "from JMethod a, JMethod b, `_MethodCallees` mc where a.module != 'null' and b.module != 'null' and a.id = mc.a and b.id = mc.b and a.system_id = :systemId and b.system_id = :systemId and mc.system_id = :systemId"
 
         return jdbi.withHandle<List<JMethodDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodDependencyDto::class.java))
             it.createQuery(sql)
-                    .bind("projectId", projectId)
+                    .bind("systemId", systemId)
                     .mapTo(JMethodDependencyDto::class.java)
                     .list()
         }.map { it.toJMethodDependency() }

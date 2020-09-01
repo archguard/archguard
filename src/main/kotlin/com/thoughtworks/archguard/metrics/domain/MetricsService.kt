@@ -13,32 +13,32 @@ import com.thoughtworks.archguard.module.domain.model.PackageVO
 
 interface MetricsService {
     @Deprecated("")
-    fun calculateCouplingLegacy(projectId: Long)
+    fun calculateCouplingLegacy(systemId: Long)
 
     @Deprecated("")
-    fun getAllMetricsLegacy(projectId: Long): List<ModuleMetricsLegacy>
+    fun getAllMetricsLegacy(systemId: Long): List<ModuleMetricsLegacy>
 
-    fun getClassAbstractMetric(projectId: Long, jClassVO: JClassVO): ClassAbstractRatio
-    fun getPackageAbstractMetric(projectId: Long, packageVO: PackageVO): PackageAbstractRatio
-    fun getModuleAbstractMetric(projectId: Long, moduleName: String): ModuleAbstractRatio
+    fun getClassAbstractMetric(systemId: Long, jClassVO: JClassVO): ClassAbstractRatio
+    fun getPackageAbstractMetric(systemId: Long, packageVO: PackageVO): PackageAbstractRatio
+    fun getModuleAbstractMetric(systemId: Long, moduleName: String): ModuleAbstractRatio
 
-    fun getClassNoc(projectId: Long, jClassVO: JClassVO): Int
+    fun getClassNoc(systemId: Long, jClassVO: JClassVO): Int
 
-    fun getClassDit(projectId: Long, jClassVO: JClassVO): Int
+    fun getClassDit(systemId: Long, jClassVO: JClassVO): Int
 
-    fun getClassAbc(projectId: Long, jClassVO: JClassVO): Int
+    fun getClassAbc(systemId: Long, jClassVO: JClassVO): Int
 
-    fun getClassDfms(projectId: Long, jClassVO: JClassVO): ClassDfms
-    fun getPackageDfms(projectId: Long, packageVO: PackageVO): PackageDfms
-    fun getModuleDfms(projectId: Long, moduleName: String): ModuleDfms
+    fun getClassDfms(systemId: Long, jClassVO: JClassVO): ClassDfms
+    fun getPackageDfms(systemId: Long, packageVO: PackageVO): PackageDfms
+    fun getModuleDfms(systemId: Long, moduleName: String): ModuleDfms
 
-    fun getClassLCOM4(projectId: Long, jClassVO: JClassVO): GraphStore
+    fun getClassLCOM4(systemId: Long, jClassVO: JClassVO): GraphStore
 
-    fun calculateAllNoc(projectId: Long): List<ClassNoc>
-    fun calculateAllDit(projectId: Long): List<ClassDit>
-    fun calculateAllAbc(projectId: Long): List<ClassAbc>
-    fun calculateAllLCOM4(projectId: Long): List<ClassLCOM4>
-    fun calculateAllClassDfms(projectId: Long): List<ClassDfms>
-    fun calculateAllModuleDfms(projectId: Long): List<ModuleDfms>
+    fun calculateAllNoc(systemId: Long): List<ClassNoc>
+    fun calculateAllDit(systemId: Long): List<ClassDit>
+    fun calculateAllAbc(systemId: Long): List<ClassAbc>
+    fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4>
+    fun calculateAllClassDfms(systemId: Long): List<ClassDfms>
+    fun calculateAllModuleDfms(systemId: Long): List<ModuleDfms>
 
 }
