@@ -13,7 +13,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun getBadSmellReport(): List<String> {
-        return getTargetFile(systemRoot).map { getBadSmellReport(it)?.readLines() }
+        return getTargetFile(systemRoot).map { getReport(it, DesigniteJavaReportType.BAD_SMELL_METRICS)?.readLines() }
                 .filterNotNull()
                 .flatten()
                 .filter { !it.contains("Project Name") }
@@ -21,7 +21,7 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     fun getTypeMetricsReport(): List<String> {
         return getTargetFile(systemRoot)
-                .map { getTypeMetricsReport(it)?.readLines() }
+                .map { getReport(it, DesigniteJavaReportType.TYPE_METHRICS)?.readLines() }
                 .filterNotNull()
                 .flatten()
                 .filter { !it.contains("Project Name") }
@@ -29,22 +29,10 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     fun getMethodMetricsReport(): List<String> {
         return getTargetFile(systemRoot)
-                .map { getMethodMetricsReport(it)?.readLines() }
+                .map { getReport(it, DesigniteJavaReportType.METHOD_METRICS)?.readLines() }
                 .filterNotNull()
                 .flatten()
                 .filter { !it.contains("Project Name") }
-    }
-
-    private fun getBadSmellReport(target: File): File? {
-        return getReport(target, DesigniteJavaReportType.BAD_SMELL_METRICS)
-    }
-
-    private fun getTypeMetricsReport(target: File): File? {
-        return getReport(target, DesigniteJavaReportType.TYPE_METHRICS)
-    }
-
-    private fun getMethodMetricsReport(target: File): File? {
-        return getReport(target, DesigniteJavaReportType.METHOD_METRICS)
     }
 
     private fun getReport(target: File, type: DesigniteJavaReportType): File? {
