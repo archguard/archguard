@@ -1,7 +1,8 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
 
-data class Violation(val file: String,
+data class Violation(val systemId: Long,
+                     val file: String,
                      val beginline: Int,
                      val endline: Int,
                      val priority: Int,

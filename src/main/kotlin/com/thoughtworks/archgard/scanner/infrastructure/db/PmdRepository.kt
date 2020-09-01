@@ -9,9 +9,9 @@ class PmdRepository(@Autowired val jdbi: Jdbi) {
 
     fun save(vs: List<Violation>) {
         jdbi.useHandle<Exception> {
-            val insert = "insert into violation(`file`,beginline,endline,priority,`text`) values (?,?,?,?,?)"
+            val insert = "insert into violation(system_id,`file`,beginline,endline,priority,`text`) values (?,?,?,?,?,?)"
             vs.forEach { v ->
-                it.execute(insert, v.file, v.beginline, v.endline, v.priority, v.text)
+                it.execute(insert, v.systemId, v.file, v.beginline, v.endline, v.priority, v.text)
             }
         }
     }

@@ -32,11 +32,11 @@ class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
 
     override fun scan(context: ScanContext) {
         val reportFiles = PmdTool(context).getReportFiles()
-        val voilations = reportFiles.mapNotNull { mapTo(it) }.flatten()
+        val voilations = reportFiles.mapNotNull { mapTo(it, context.systemId) }.flatten()
         save(voilations)
     }
 
-    private fun mapTo(file: File): List<Violation>? {
+    private fun mapTo(file: File, systemId: Long): List<Violation>? {
         val saxReader = SAXReader()
         try {
             val rootElement = saxReader.read(file).rootElement
@@ -44,7 +44,7 @@ class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
                 val list = rootElement.elements().map { fileE ->
                     fileE as Element
                     val fileName = fileE.attributeValue("name")
-                    fileE.elements().map { elementToViolation(it as Element, fileName) }
+                    fileE.elements().map { elementToViolation(it as Element, fileName, systemId) }
                 }
                 return list.flatten()
             }
@@ -54,8 +54,8 @@ class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
         return null
     }
 
-    private fun elementToViolation(violationE: Element, file: String): Violation {
-        return Violation(file = file,
+    private fun elementToViolation(violationE: Element, file: String, systemId: Long): Violation {
+        return Violation(systemId = systemId, file = file,
                 beginline = violationE.attributeValue("beginline").toInt(),
                 endline = violationE.attributeValue("endline").toInt(),
                 priority = violationE.attributeValue("priority").toInt(),
