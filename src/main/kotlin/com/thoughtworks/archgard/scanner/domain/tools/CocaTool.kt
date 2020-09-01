@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class CocaTool(val projectRoot: File) : TestBadSmellReport {
+class CocaTool(val systemRoot: File) : TestBadSmellReport {
 
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
     private val log = LoggerFactory.getLogger(CocaTool::class.java)
@@ -14,23 +14,23 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
         if (jarExist) {
-            copyIntoProjectRoot()
+            copyIntoSystemRoot()
         } else {
             download()
         }
     }
 
-    private fun copyIntoProjectRoot() {
+    private fun copyIntoSystemRoot() {
         val system = System.getProperty("os.name").toLowerCase()
         if (system.indexOf("mac") >= 0) {
             log.info("copy coca_macos jar tool from local")
-            FileOperator.copyTo(File("coca_macos"), File(projectRoot.toString() + "/coca"))
+            FileOperator.copyTo(File("coca_macos"), File(systemRoot.toString() + "/coca"))
         } else {
             log.info("copy coca_linux jar tool from local")
-            FileOperator.copyTo(File("coca_linux"), File(projectRoot.toString() + "/coca"))
+            FileOperator.copyTo(File("coca_linux"), File(systemRoot.toString() + "/coca"))
         }
         val chmod = ProcessBuilder("chmod", "+x", "coca")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
@@ -46,7 +46,7 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
     fun getBadSmellReport(): File? {
         prepareTool()
         scan(listOf("./coca", "bs", "-s", "type"))
-        val report = File(projectRoot.toString() + "/coca_reporter/bs.json")
+        val report = File(systemRoot.toString() + "/coca_reporter/bs.json")
         return if (report.exists()) {
             report
         } else {
@@ -58,7 +58,7 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
     override fun getTestBadSmellReport(): File? {
         prepareTool()
         scan(listOf("./coca", "tbs"))
-        val report = File(projectRoot.toString() + "/coca_reporter/tbs.json")
+        val report = File(systemRoot.toString() + "/coca_reporter/tbs.json")
         return if (report.exists()) {
             report
         } else {
@@ -68,7 +68,7 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), projectRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
     }
 
     private fun download() {
@@ -80,9 +80,9 @@ class CocaTool(val projectRoot: File) : TestBadSmellReport {
                     "http://$host/job/coca/lastSuccessfulBuild/artifact/coca_linux"
                 }
 
-        FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/coca"))
+        FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/coca"))
         val chmod = ProcessBuilder("chmod", "+x", "coca")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 }

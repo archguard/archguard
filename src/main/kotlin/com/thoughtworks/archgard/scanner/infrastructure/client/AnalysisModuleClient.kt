@@ -12,10 +12,10 @@ import java.util.HashMap
 class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
     private val log = LoggerFactory.getLogger(AnalysisModuleClient::class.java)
 
-    fun autoDefine(projectId: Long) {
+    fun autoDefine(systemId: Long) {
         val params = HashMap<String, Any>()
-        params["projectId"] = projectId
-        RestTemplate().postForLocation("$url/{projectId}/logic-modules/auto-define", null, params)
+        params["systemId"] = systemId
+        RestTemplate().postForLocation("$url/{systemId}/logic-modules/auto-define", null, params)
         log.info("send auto define request to module service")
     }
 

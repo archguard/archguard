@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
+class GitScannerTool(val systemRoot: File, val branch: String) : GitReport {
 
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
@@ -14,7 +14,7 @@ class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
     override fun getGitReport(): File? {
         prepareTool()
         scan(listOf("java", "-jar", "scan_git.jar", "--git-path=.", "--branch=" + branch))
-        val report = File(projectRoot.toString() + "/output.sql")
+        val report = File(systemRoot.toString() + "/output.sql")
         return if (report.exists()) {
             report
         } else {
@@ -26,17 +26,17 @@ class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
         if (jarExist) {
-            copyIntoProjectRoot()
+            copyIntoSystemRoot()
         } else {
             download()
         }
     }
 
-    private fun copyIntoProjectRoot() {
+    private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(projectRoot.toString() + "/scan_git.jar"))
+        FileOperator.copyTo(File("scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(systemRoot.toString() + "/scan_git.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
@@ -48,12 +48,12 @@ class GitScannerTool(val projectRoot: File, val branch: String) : GitReport {
         val downloadUrl = "http://$host/job/code-scanners/lastSuccessfulBuild/artifact/scan_git/target/scan_git-1.0-SNAPSHOT-jar-with-dependencies.jar"
         FileOperator.download(URL(downloadUrl), File("$projectRoot/scan_git.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), projectRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
     }
 
 }

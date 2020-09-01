@@ -6,29 +6,29 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeTool(val projectRoot: File, val dbUrl: String, val projectId: Long) {
+class JavaByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
     private val log = LoggerFactory.getLogger(JavaByteCodeTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-id", "$projectId"))
+        scan(listOf("java", "-jar", "-Ddburl=" + dbUrl + "?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-id", "$systemId"))
     }
 
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
         if (jarExist) {
-            copyIntoProjectRoot()
+            copyIntoSystemRoot()
         } else {
             download()
         }
     }
 
-    private fun copyIntoProjectRoot() {
+    private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_java_bytecode-1.3-jar-with-dependencies.jar"), File(projectRoot.toString() + "/scan_java_bytecode.jar"))
+        FileOperator.copyTo(File("scan_java_bytecode-1.3-jar-with-dependencies.jar"), File(systemRoot.toString() + "/scan_java_bytecode.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
@@ -39,14 +39,14 @@ class JavaByteCodeTool(val projectRoot: File, val dbUrl: String, val projectId: 
     private fun download() {
         log.info("download jar tool")
         val downloadUrl = "http://$host/job/code-scanners/lastSuccessfulBuild/artifact/scan_java_bytecode/target/scan_java_bytecode-1.3-jar-with-dependencies.jar"
-        FileOperator.download(URL(downloadUrl), File(projectRoot.toString() + "/scan_java_bytecode.jar"))
+        FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/scan_java_bytecode.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
-        chmod.directory(projectRoot)
+        chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), projectRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
     }
 
 }

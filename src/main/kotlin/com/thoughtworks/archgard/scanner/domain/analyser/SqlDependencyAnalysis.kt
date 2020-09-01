@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.analyser
 
-import com.thoughtworks.archgard.scanner.domain.project.CompiledProject
+import com.thoughtworks.archgard.scanner.domain.system.CompiledProject
 import com.thoughtworks.archgard.scanner.domain.tools.InvokeSqlTool
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator.deleteDirectory
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
@@ -20,9 +20,9 @@ class SqlDependencyAnalysis(@Autowired val analysisService: AnalysisService,
     private val DELETE_ACTION = "delete from _PLProcedureSqlAction where 1=1"
     fun analyse(id: Long) {
         log.info("start scan sql analysis")
-        val projectOperator = analysisService.getProjectOperator(id)
-        projectOperator.cloneAllRepo()
-        projectOperator.compiledProjectMap.forEach { (_, compiledProject) ->
+        val systemOperator = analysisService.getSystemOperator(id)
+        systemOperator.cloneAllRepo()
+        systemOperator.compiledProjectMap.forEach { (_, compiledProject) ->
             analysisSingleCompliedProject(compiledProject)
         }
 

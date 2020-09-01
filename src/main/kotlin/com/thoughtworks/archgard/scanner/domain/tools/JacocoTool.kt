@@ -1,20 +1,20 @@
 package com.thoughtworks.archgard.scanner.domain.tools
 
-import com.thoughtworks.archgard.scanner.domain.project.BuildTool
+import com.thoughtworks.archgard.scanner.domain.system.BuildTool
 import com.thoughtworks.archgard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: BuildTool) {
+class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool) {
 
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun execToSql(): File? {
         prepareTool()
-        call(listOf("java", "-jar", "scan_jacoco.jar", "--target-project=${projectRoot.absolutePath}",
+        call(listOf("java", "-jar", "scan_jacoco.jar", "--target-project=${systemRoot.absolutePath}",
                 "--bin=${buildTool.target}/classes",
                 "--exec=${buildTool.target}/jacoco.exec"))
         val sqlFile = File("${workspace.absolutePath}/jacoco.sql")
@@ -29,13 +29,13 @@ class JacocoTool(val workspace: File, val projectRoot: File, val buildTool: Buil
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
         if (jarExist) {
-            copyIntoProjectRoot()
+            copyIntoSystemRoot()
         } else {
             download()
         }
     }
 
-    private fun copyIntoProjectRoot() {
+    private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
         FileOperator.copyTo(File("scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(workspace.absolutePath.toString() + "/scan_jacoco.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
