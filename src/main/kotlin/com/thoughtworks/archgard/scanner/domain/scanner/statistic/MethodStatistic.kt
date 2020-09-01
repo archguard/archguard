@@ -7,3 +7,4 @@ data class MethodStatistic(
         val typeName: String,
         val methodName: String,
         val lines: Int)
+

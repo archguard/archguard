@@ -16,7 +16,7 @@ import java.io.File
 internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_generate_statistics_given_multiple_modules_examples() {
-        statisticScanner.scan(ScanContext("", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/multiple-modules-example").toURI()), ArrayList()))
+        statisticScanner.scan(ScanContext(1, "", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestStatistic/multiple-modules-example").toURI()), ArrayList()))
 
         val classStatistic = jdbi.withHandle<List<ClassStatistic>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from ClassStatistic")
@@ -47,7 +47,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
 
     @Test
     fun should_generate_statistics_given_single_module_example() {
-        statisticScanner.scan(ScanContext("", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestStatistic/single-module-example").toURI()), ArrayList()))
+        statisticScanner.scan(ScanContext(2, "", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestStatistic/single-module-example").toURI()), ArrayList()))
 
         val classStatistic = jdbi.withHandle<List<ClassStatistic>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from ClassStatistic")

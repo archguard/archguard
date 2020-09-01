@@ -16,7 +16,7 @@ import java.io.File
 internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_get_bad_smell_report() {
-        val scanContext = ScanContext("repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestProject").toURI()), ArrayList())
+        val scanContext = ScanContext(1, "repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestProject").toURI()), ArrayList())
         badSmellScanner.scan(scanContext)
 
         val count = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->

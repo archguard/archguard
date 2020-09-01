@@ -54,7 +54,7 @@ class HubService {
         val systemOperator = analysisService.getSystemOperator(id)
         systemOperator.cloneAndBuildAllRepo()
         systemOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
-            val context = ScanContext(repo, compiledProject.buildTool, compiledProject.workspace, config)
+            val context = ScanContext(id, repo, compiledProject.buildTool, compiledProject.workspace, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
         }
