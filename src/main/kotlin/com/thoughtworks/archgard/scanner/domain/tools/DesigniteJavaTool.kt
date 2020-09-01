@@ -13,26 +13,15 @@ class DesigniteJavaTool(val systemRoot: File) {
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun getBadSmellReport(): List<String> {
-        return getTargetFile(systemRoot).map { getReport(it, DesigniteJavaReportType.BAD_SMELL_METRICS)?.readLines() }
-                .filterNotNull()
-                .flatten()
-                .filter { !it.contains("Project Name") }
+        return readReport(DesigniteJavaReportType.BAD_SMELL_METRICS)
     }
 
     fun getTypeMetricsReport(): List<String> {
-        return getTargetFile(systemRoot)
-                .map { getReport(it, DesigniteJavaReportType.TYPE_METHRICS)?.readLines() }
-                .filterNotNull()
-                .flatten()
-                .filter { !it.contains("Project Name") }
+        return readReport(DesigniteJavaReportType.TYPE_METHRICS)
     }
 
     fun getMethodMetricsReport(): List<String> {
-        return getTargetFile(systemRoot)
-                .map { getReport(it, DesigniteJavaReportType.METHOD_METRICS)?.readLines() }
-                .filterNotNull()
-                .flatten()
-                .filter { !it.contains("Project Name") }
+        return readReport(DesigniteJavaReportType.METHOD_METRICS)
     }
 
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
