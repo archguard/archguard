@@ -20,11 +20,12 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
         val scanContext = ScanContext(1, "repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestBadSmell").toURI()), ArrayList())
         testBadSmellScanner.scan(scanContext)
 
-        val count = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from testBadSmell")
-                    .mapTo(Int::class.java).one()
+        val testBadSmells = jdbi.withHandle<List<TestBadSmell>, RuntimeException> { handle: Handle ->
+            handle.createQuery("select * from testBadSmell")
+                    .mapTo(TestBadSmell::class.java).list()
         }
-        assertEquals(count, 12)
+        assertEquals(testBadSmells.size, 12)
+        assertEquals(testBadSmells[0].systemId, 1)
 
         val testCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
             handle.createQuery("select overview_value from overview where overview_type='test'")

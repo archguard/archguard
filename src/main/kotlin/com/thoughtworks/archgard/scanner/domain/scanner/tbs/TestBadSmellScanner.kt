@@ -36,7 +36,7 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
         val report = coca.getTestBadSmellReport()
         val model = mapper.readValue<List<CocaTestBadSmellModel>>(report?.readText() ?: "[]")
         val testBadSmells = model
-                .map { m -> TestBadSmell(UUID.randomUUID().toString(), m.Line, m.FileName, m.Description, m.Type) }
+                .map { m -> TestBadSmell(UUID.randomUUID().toString(), context.systemId, m.Line, m.FileName, m.Description, m.Type) }
         testBadSmellRepo.save(testBadSmells)
 
         val shellTool = ShellTool(context.workspace)
