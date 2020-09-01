@@ -22,8 +22,8 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getReport(target: File, type: DesigniteJavaReportType): File? {
-        val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
         process(target)
+        val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
         return if (report.exists()) report else null
     }
 
