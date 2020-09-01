@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.metrics.domain
+package com.thoughtworks.archguard.metrics.appl
 
 interface MetricPersistService {
     fun persistClassMetrics(systemId: Long)

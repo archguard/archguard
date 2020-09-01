@@ -1,5 +1,9 @@
-package com.thoughtworks.archguard.metrics.domain
+package com.thoughtworks.archguard.metrics.appl
 
+import com.thoughtworks.archguard.metrics.domain.ClassAbc
+import com.thoughtworks.archguard.metrics.domain.ClassDit
+import com.thoughtworks.archguard.metrics.domain.ClassLCOM4
+import com.thoughtworks.archguard.metrics.domain.ClassNoc
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
@@ -23,22 +27,14 @@ interface MetricsService {
     fun getModuleAbstractMetric(systemId: Long, moduleName: String): ModuleAbstractRatio
 
     fun getClassNoc(systemId: Long, jClassVO: JClassVO): Int
-
     fun getClassDit(systemId: Long, jClassVO: JClassVO): Int
-
+    fun getClassLCOM4(systemId: Long, jClassVO: JClassVO): GraphStore
     fun getClassAbc(systemId: Long, jClassVO: JClassVO): Int
 
     fun getClassDfms(systemId: Long, jClassVO: JClassVO): ClassDfms
+    fun calculateAllClassDfms(systemId: Long): List<ClassDfms>
     fun getPackageDfms(systemId: Long, packageVO: PackageVO): PackageDfms
     fun getModuleDfms(systemId: Long, moduleName: String): ModuleDfms
-
-    fun getClassLCOM4(systemId: Long, jClassVO: JClassVO): GraphStore
-
-    fun calculateAllNoc(systemId: Long): List<ClassNoc>
-    fun calculateAllDit(systemId: Long): List<ClassDit>
-    fun calculateAllAbc(systemId: Long): List<ClassAbc>
-    fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4>
-    fun calculateAllClassDfms(systemId: Long): List<ClassDfms>
     fun calculateAllModuleDfms(systemId: Long): List<ModuleDfms>
 
 }

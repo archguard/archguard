@@ -1,26 +1,35 @@
 package com.thoughtworks.archguard.metrics.domain.lcom4
 
 import com.thoughtworks.archguard.clazz.domain.JClass
+import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.domain.JField
 import com.thoughtworks.archguard.method.domain.JMethod
+import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.module.domain.graph.Edge
 import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
-internal class LCOM4ServiceImplTest {
-    private lateinit var lcoM4Service: LCOM4ServiceImpl
+internal class LCOM4ServiceTest {
+    private lateinit var lcoM4Service: LCOM4Service
+
+    @MockK
+    private lateinit var jClassRepository: JClassRepository
+
+    @MockK
+    private lateinit var jMethodRepo: JMethodRepository
 
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        lcoM4Service = LCOM4ServiceImpl()
+        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo)
     }
 
     @Test
-    internal fun `should get lcom4 graph`() {
+    internal fun should_get_lcom4_graph() {
         val jClass = JClass("id1", "clazz1", "module1")
         val jField1 = JField("f1", "f1", "String")
         val jField2 = JField("f2", "f2", "Int")

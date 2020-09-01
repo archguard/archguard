@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.controller
 
-import com.thoughtworks.archguard.metrics.domain.MetricPersistService
+import com.thoughtworks.archguard.metrics.appl.MetricPersistService
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping

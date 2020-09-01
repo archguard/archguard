@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.module.domain
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.method.domain.JMethodRepository
-import com.thoughtworks.archguard.metrics.domain.MetricsServiceImpl
+import com.thoughtworks.archguard.metrics.appl.MetricsServiceImpl
 import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassMetricsLegacy

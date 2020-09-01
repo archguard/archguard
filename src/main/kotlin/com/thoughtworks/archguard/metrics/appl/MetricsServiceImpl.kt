@@ -1,9 +1,13 @@
-package com.thoughtworks.archguard.metrics.domain
+package com.thoughtworks.archguard.metrics.appl
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.method.domain.JMethodRepository
+import com.thoughtworks.archguard.metrics.domain.ClassAbc
+import com.thoughtworks.archguard.metrics.domain.ClassDit
+import com.thoughtworks.archguard.metrics.domain.ClassLCOM4
+import com.thoughtworks.archguard.metrics.domain.ClassNoc
 import com.thoughtworks.archguard.metrics.domain.abc.AbcService
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
@@ -92,38 +96,6 @@ class MetricsServiceImpl(
                 ?: throw ClassNotFoundException("Cannot find class by name: $jClassVO.name module: $jClassVO.module")
         jClass.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, jClass.module, jClass.name)
         return abcService.calculateAbc(jClass)
-    }
-
-    override fun calculateAllNoc(systemId: Long): List<ClassNoc> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
-        val classNocList = mutableListOf<ClassNoc>()
-        jClasses.forEach { classNocList.add(ClassNoc(it.toVO(), nocService.getNoc(systemId, it))) }
-        return classNocList
-    }
-
-    override fun calculateAllDit(systemId: Long): List<ClassDit> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
-        val classDitList = mutableListOf<ClassDit>()
-        jClasses.forEach { classDitList.add(ClassDit(it.toVO(), ditService.getDepthOfInheritance(systemId, it))) }
-        return classDitList
-    }
-
-    override fun calculateAllAbc(systemId: Long): List<ClassAbc> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
-        jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name) }
-
-        val classAbcList = mutableListOf<ClassAbc>()
-        jClasses.forEach { classAbcList.add(ClassAbc(it.toVO(), abcService.calculateAbc(it))) }
-        return classAbcList
-    }
-
-    override fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
-        jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
-
-        val classLCOM4List = mutableListOf<ClassLCOM4>()
-        jClasses.forEach { classLCOM4List.add(ClassLCOM4(it.toVO(), lcom4Service.getLCOM4Graph(it).getConnectivityCount())) }
-        return classLCOM4List
     }
 
     override fun calculateAllModuleDfms(systemId: Long): List<ModuleDfms> {

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class DitServiceTest {
-    private lateinit var service: DitServiceImpl
+    private lateinit var service: DitService
 
     @MockK
     private lateinit var repo: JClassRepository
@@ -18,7 +18,7 @@ class DitServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = DitServiceImpl(repo)
+        service = DitService(repo)
     }
 
     @Test

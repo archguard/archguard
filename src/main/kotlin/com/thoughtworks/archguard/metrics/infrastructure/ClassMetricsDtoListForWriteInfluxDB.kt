@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.metrics.domain.ClassMetric
+import com.thoughtworks.archguard.metrics.appl.ClassMetric
 
 data class ClassMetricsDtoListForWriteInfluxDB(val classMetrics: List<ClassMetric>) {
     fun toRequestBody() = classMetrics.joinToString("\n") { ClassMetricsDtoForWriteInfluxDB(it).toInfluxDBRequestBody() }

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.module.domain
 import com.thoughtworks.archguard.clazz.domain.ClazzType
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisServiceImpl
+import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.PackageVO
 import com.thoughtworks.archguard.module.domain.model.SubModule
@@ -14,19 +14,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class AbstractAnalysisServiceImplTest {
+internal class AbstractAnalysisServiceTest {
     @MockK
     lateinit var jClassRepository: JClassRepository
 
     @MockK
     lateinit var logicModuleRepository: LogicModuleRepository
 
-    private lateinit var abstractAnalysisService: AbstractAnalysisServiceImpl
+    private lateinit var abstractAnalysisService: AbstractAnalysisService
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        abstractAnalysisService = AbstractAnalysisServiceImpl(jClassRepository, logicModuleRepository)
+        abstractAnalysisService = AbstractAnalysisService(jClassRepository, logicModuleRepository)
     }
 
     @Test

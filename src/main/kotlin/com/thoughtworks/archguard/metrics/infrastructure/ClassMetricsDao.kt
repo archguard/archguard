@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.metrics.domain.ClassMetricPO
+import com.thoughtworks.archguard.metrics.appl.ClassMetricPO
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBeanList

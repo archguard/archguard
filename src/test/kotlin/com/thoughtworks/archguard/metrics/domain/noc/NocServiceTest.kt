@@ -9,16 +9,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class NocServiceImplTest {
+internal class NocServiceTest {
     @MockK
     lateinit var jClassRepository: JClassRepository
 
-    private lateinit var nocService: NocServiceImpl
+    private lateinit var nocService: NocService
 
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        nocService = NocServiceImpl(jClassRepository)
+        nocService = NocService(jClassRepository)
     }
 
     @Test

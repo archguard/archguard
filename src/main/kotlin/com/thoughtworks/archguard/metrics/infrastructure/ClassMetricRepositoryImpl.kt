@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.metrics.domain.ClassMetricPO
+import com.thoughtworks.archguard.metrics.appl.ClassMetricPO
 import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository

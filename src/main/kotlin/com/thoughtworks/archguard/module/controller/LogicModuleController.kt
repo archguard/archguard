@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.metrics.domain.MetricsService
+import com.thoughtworks.archguard.metrics.appl.MetricsService
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleMetricsLegacy
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.LogicModuleWithCompositeNodes

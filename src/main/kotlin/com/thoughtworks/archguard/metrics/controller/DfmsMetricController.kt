@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.controller
 
-import com.thoughtworks.archguard.metrics.domain.MetricsService
+import com.thoughtworks.archguard.metrics.appl.MetricsService
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.PackageDfms

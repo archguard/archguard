@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.controller
 
-import com.thoughtworks.archguard.metrics.domain.MetricsService
+import com.thoughtworks.archguard.metrics.appl.MetricsService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.ModuleAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
