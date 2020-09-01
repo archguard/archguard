@@ -72,11 +72,12 @@ class ConfigureServiceTest {
     fun `should display class`() {
         //given
         //when
-        every { configureRepository.getConfiguresByType(1L, "nodeDisplay") } returns listOf(
+        every { configureRepository.getConfigures(1L) } returns listOf(
                 Configure("", 1L, "nodeDisplay", "com", "contain", 1),
                 Configure("", 1L, "nodeDisplay", "org", "contain", 1),
                 Configure("", 1L, "nodeDisplay", "common", "contain", 1),
-                Configure("", 1L, "nodeDisplay", "org.scalatest", "hidden", 1)
+                Configure("", 1L, "nodeDisplay", "org.scalatest", "hidden", 1),
+                Configure("", 1L, "nodeColor", "org.scalatest", "#ff8975", 1)
         )
 
         assert(service.isDisplayNode(1L, "common.domain.ConfigureService"))

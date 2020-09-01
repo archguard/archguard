@@ -28,10 +28,13 @@ class ClassMethodCalleesServiceTest {
     @MockK
     private lateinit var configureService: ConfigureService
 
+    @MockK
+    private lateinit var classConfigService: ClassConfigService
+
     @BeforeEach
     fun setUp() {
         init(this)
-        service = ClassMethodCalleesService(jMethodRepository, jClassRepository, methodCalleesService, configureService)
+        service = ClassMethodCalleesService(jMethodRepository, jClassRepository, methodCalleesService, configureService, classConfigService)
     }
 
     @Test
@@ -52,6 +55,7 @@ class ClassMethodCalleesServiceTest {
         every { methodCalleesService.buildMethodCallees(systemId, listOf(method1, method2), 1, true) } returns listOf(method1)
         every { methodCalleesService.buildMethodCallees(systemId, listOf(method1), 1, true) } returns listOf(method2)
         every { configureService.isDisplayNode(any(), any()) } returns true
+        every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
 
 
         val result = service.findClassMethodsCallees(systemId, target, 1, true, true)

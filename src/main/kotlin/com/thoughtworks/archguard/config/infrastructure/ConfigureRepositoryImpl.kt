@@ -72,21 +72,8 @@ class ConfigureRepositoryImpl : ConfigureRepository {
         }
     }
 
-    override fun getConfiguresByType(systemId: Long, type: String): List<Configure> {
-        val sql = "SELECT id, system_id, type, `key`, value, `order` FROM Configure WHERE type=:type and system_id = :systemId"
-        return jdbi.withHandle<List<Configure>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
-            it.createQuery(sql)
-                    .bind("type", type)
-                    .bind("systemId", systemId)
-                    .mapTo(ConfigureDTO::class.java)
-                    .map { configure -> configure.toDomainObject() }
-                    .list()
-        }
-    }
-
-    override fun deleteConfiguresByType(systemId: Long, type: String) {
-        val sql = "delete from Configure where type = '$type' and system_id = $systemId"
+    override fun deleteConfiguresByType(projectId: Long, type: String) {
+        val sql = "delete from Configure where type = '$type' and project_id = $projectId"
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute(sql)
         }

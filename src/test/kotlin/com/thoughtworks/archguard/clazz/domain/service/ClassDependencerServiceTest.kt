@@ -19,10 +19,16 @@ internal class ClassDependencerServiceTest {
     @MockK
     private lateinit var configureService: ConfigureService
 
+    @MockK
+    private lateinit var classConfigService: ClassConfigService
+
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassDependencerService(repo, configureService)
+        service = ClassDependencerService(repo, configureService, classConfigService)
+        every { configureService.isDisplayNode(any(), any()) } returns true
+        every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
+
     }
 
     @Test
@@ -37,7 +43,6 @@ internal class ClassDependencerServiceTest {
         //when
         every { repo.findDependencers(target.id) } returns listOf(caller1)
         every { repo.findDependencers(caller1.id) } returns listOf(caller2)
-        every { configureService.isDisplayNode(any(), any()) } returns true
 
         val result = service.findDependencers(systemId, target, 2)
         //then
@@ -61,7 +66,6 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(target.id) } returns listOf(dependencer1)
         every { repo.findDependencers(dependencer1.id) } returns listOf(dependencer2)
         every { repo.findDependencers(dependencer2.id) } returns listOf()
-        every { configureService.isDisplayNode(any(), any()) } returns true
 
         val result = service.findDependencers(systemId, target, 4)
         //then

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.clazz.controller
 
-import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import com.thoughtworks.archguard.clazz.domain.JClass
+import com.thoughtworks.archguard.clazz.domain.service.ClassService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -32,7 +32,8 @@ class ClassController {
                    @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
                    @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
                    @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?): JClass {
-        return service.findInvokes(systemId, module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true)
+        return service.findInvokes(systemId, module, name, callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl
+                ?: true)
     }
 
     @GetMapping("/{name}/methods_callees")

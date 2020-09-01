@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.method.domain
 
 import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.config.domain.ConfigType
+import com.thoughtworks.archguard.config.domain.Configure
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
 
 class JMethod(val id: String, val name: String, val clazz: String, val module: String, val returnType: String, val argumentTypes: List<String>) {
@@ -10,6 +12,8 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
     var implements: List<JMethod> = ArrayList()
     val methodTypes: MutableList<MethodType> = mutableListOf()
     var fields: List<JField> = ArrayList()
+
+    val configuresMap: MutableMap<String, String> = mutableMapOf()
 
     fun addType(methodType: MethodType) {
         this.methodTypes.add(methodType)
@@ -23,6 +27,19 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
         val jMethodVO = JMethodVO(name, clazz, module, returnType, argumentTypes)
         jMethodVO.id = id
         return jMethodVO
+    }
+
+    fun buildColorConfigure(configures: List<Configure>) {
+        var highestOrder = 0
+        for (configure in configures.filter { it.type == ConfigType.COLOR.typeName }) {
+            val order = configure.order
+            if (order <= highestOrder) {
+                continue
+            }
+            highestOrder = order
+            val color = configure.value
+            configuresMap[ConfigType.COLOR.typeName] = color
+        }
     }
 }
 

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class MethodCalleesService(val repo: JMethodRepository, val configureService: ConfigureService) {
+class MethodCalleesService(val repo: JMethodRepository, val configureService: ConfigureService, val methodConfigService: MethodConfigService) {
     private val log = LoggerFactory.getLogger(MethodCalleesService::class.java)
 
 
@@ -24,9 +24,13 @@ class MethodCalleesService(val repo: JMethodRepository, val configureService: Co
             container.addAll(pendindMethods)
         } else {
             pendindMethods.parallelStream().forEach {
-                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                val callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                methodConfigService.buildColorConfig(callees, systemId)
+                it.callees = callees
                 if (needIncludeImpl) {
-                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                    val implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                    methodConfigService.buildColorConfig(implements, systemId)
+                    it.implements = implements
                 }
             }
             doBuildCallees(systemId,

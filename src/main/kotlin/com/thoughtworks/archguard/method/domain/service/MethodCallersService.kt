@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.method.domain.JMethodRepository
 import org.springframework.stereotype.Service
 
 @Service
-class MethodCallersService(val repo: JMethodRepository, val configureService: ConfigureService) {
+class MethodCallersService(val repo: JMethodRepository, val configureService: ConfigureService, val methodConfigService: MethodConfigService) {
     fun findCallers(systemId: Long, target: List<JMethod>, deep: Int): List<JMethod> {
         buildMethodCallers(systemId, target, deep)
         return target
@@ -24,7 +24,9 @@ class MethodCallersService(val repo: JMethodRepository, val configureService: Co
             container.addAll(pendindMethods)
         } else {
             pendindMethods.forEach {
-                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                val callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+                methodConfigService.buildColorConfig(callers, systemId)
+                it.callers = callers
             }
             doBuildCallers(systemId, pendindMethods.flatMap { it.callers }, deep - 1, container)
         }

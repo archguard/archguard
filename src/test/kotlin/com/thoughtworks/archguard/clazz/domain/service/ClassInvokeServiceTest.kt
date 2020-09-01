@@ -20,10 +20,13 @@ class ClassInvokeServiceTest {
     @MockK
     private lateinit var configService: ConfigureService
 
+    @MockK
+    private lateinit var classConfigService: ClassConfigService
+
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassInvokeService(repo, configService)
+        service = ClassInvokeService(repo, configService, classConfigService)
     }
 
     @Test
@@ -43,6 +46,9 @@ class ClassInvokeServiceTest {
         every { repo.findCallees(systemId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(systemId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
         service.findInvokes(systemId, target, 1, 1, true)
+        every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
+        every { classConfigService.buildClassRelationColorConfig(any(), any()) } returns Unit
+
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)
         Assertions.assertThat(target.implements.size).isEqualTo(1)

@@ -19,10 +19,13 @@ class MethodCallersServiceTest {
     @MockK
     private lateinit var configureService: ConfigureService
 
+    @MockK
+    private lateinit var methodConfigService: MethodConfigService
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        service = MethodCallersService(repo, configureService)
+        service = MethodCallersService(repo, configureService, methodConfigService)
 
     }
 
@@ -38,6 +41,7 @@ class MethodCallersServiceTest {
         every { repo.findMethodCallers(caller1.id) } returns listOf(caller2)
         every { repo.findMethodCallers(caller2.id) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
+        every { methodConfigService.buildColorConfig(any(), any()) } returns Unit
 
         val result = service.findCallers(systemId, listOf(target), 2)[0]
         //then

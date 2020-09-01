@@ -19,10 +19,13 @@ class MethodCalleesServiceTest {
     @MockK
     private lateinit var configureService: ConfigureService
 
+    @MockK
+    private lateinit var methodConfigService: MethodConfigService
+
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = MethodCalleesService(repo, configureService)
+        service = MethodCalleesService(repo, configureService, methodConfigService)
     }
 
     @Test
@@ -43,6 +46,7 @@ class MethodCalleesServiceTest {
         every { repo.findMethodImplements(callee2.id, callee2.name) } returns listOf()
         every { repo.findMethodImplements(implement.id, implement.name) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
+        every { methodConfigService.buildColorConfig(any(), any()) } returns Unit
 
         val result = service.findCallees(systemId, listOf(target), 2, true)[0]
         //then

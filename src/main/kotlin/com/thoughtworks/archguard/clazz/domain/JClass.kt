@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.clazz.domain
 
+import com.thoughtworks.archguard.config.domain.ConfigType
+import com.thoughtworks.archguard.config.domain.Configure
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.slf4j.LoggerFactory
@@ -7,7 +9,7 @@ import org.slf4j.LoggerFactory
 /**
  * JClass is an Entity, so it must have an id.
  */
-class JClass(val id: String, val name: String, val module: String) {
+open class JClass(val id: String, val name: String, val module: String) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
     var methods: List<JMethod> = ArrayList()
@@ -19,6 +21,9 @@ class JClass(val id: String, val name: String, val module: String) {
     var dependencers: List<JClass> = ArrayList()
     var fields: List<JField> = ArrayList()
     private val classType: MutableList<ClazzType> = mutableListOf()
+
+    val configuresMap: MutableMap<String, String> = mutableMapOf()
+
 
     fun addClassType(clazzType: ClazzType) {
         classType.add(clazzType)
@@ -69,6 +74,18 @@ class JClass(val id: String, val name: String, val module: String) {
         return result
     }
 
+    fun buildColorConfigure(configures: List<Configure>) {
+        var highestOrder = 0
+        for (configure in configures.filter { it.type == ConfigType.COLOR.typeName }) {
+            val order = configure.order
+            if (order <= highestOrder) {
+                continue
+            }
+            highestOrder = order
+            val color = configure.value
+            configuresMap[ConfigType.COLOR.typeName] = color
+        }
+    }
 }
 
 // 暂时只有接口和类
