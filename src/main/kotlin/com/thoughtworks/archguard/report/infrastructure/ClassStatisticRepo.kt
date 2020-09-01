@@ -11,7 +11,7 @@ class ClassStatisticRepo(@Autowired val jdbi: Jdbi) {
     fun getCodeLinesCount(): Int {
         return jdbi.withHandle<Int, Nothing> {
             it
-                    .createQuery("select sum(`lines`) from Statistic where 1 = 1")
+                    .createQuery("select sum(`lines`) from ClassStatistic where 1 = 1")
                     .mapTo(Int::class.java)
                     .first()
         }
@@ -21,7 +21,7 @@ class ClassStatisticRepo(@Autowired val jdbi: Jdbi) {
         return jdbi.withHandle<List<FanInOutDBO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(FanInOutDBO::class.java))
             it.createQuery(" select packageName, sum(fanin) as fanin,sum(fanout) as fanout " +
-                    "from Statistic " +
+                    "from ClassStatistic " +
                     "group by packageName " +
                     "order by packageName")
                     .mapTo(FanInOutDBO::class.java)
