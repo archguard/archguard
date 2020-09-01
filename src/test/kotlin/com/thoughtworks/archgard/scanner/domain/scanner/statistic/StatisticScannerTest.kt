@@ -50,6 +50,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(ClassStatistic::class.java).list()
         }
         assertEquals(23, classStatistic.size)
+        assertEquals(null, classStatistic[0].moduleName)
         assertEquals("com.qicaisheng.parkinglot", classStatistic[0].packageName)
         assertEquals("SmartParkingBoyTest", classStatistic[0].typeName)
         assertEquals(50, classStatistic[0].lines)
@@ -59,6 +60,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(MethodStatistic::class.java).list()
         }
         assertEquals(97, methodStatistic.size)
+        assertEquals(null, methodStatistic[0].moduleName)
         assertEquals("com.qicaisheng.parkinglot", methodStatistic[0].packageName)
         assertEquals("SmartParkingBoyTest", methodStatistic[0].typeName)
         assertEquals("should_be_picked_up_from_managed_parking_lot_when_smart_park_boy_park_card", methodStatistic[0].methodName)

@@ -29,8 +29,9 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report, workspcase: {}", context.workspace)
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it) }
-        val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it) }
+        val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
+        val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it, currentDirectionName) }
+        val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it, currentDirectionName) }
         classClassStatisticRepo.delete()
         classClassStatisticRepo.save(classStatistics)
         methodClassStatisticRepo.delete()
@@ -38,15 +39,17 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
         log.info("finished scan statistic report")
     }
 
-    private fun toClassStatistic(line: String): ClassStatistic {
+    private fun toClassStatistic(line: String, currentDirectionName: String): ClassStatistic {
         val elements = line.split(",")
-        return ClassStatistic(UUID.randomUUID().toString(), elements[0], elements[0], elements[1], elements[2],
+        val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
+        return ClassStatistic(UUID.randomUUID().toString(), moduleName, elements[0], elements[1], elements[2],
                 elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
     }
 
-    private fun toMethodStatistic(line: String): MethodStatistic {
+    private fun toMethodStatistic(line: String, currentDirectionName: String): MethodStatistic {
         val elements = line.split(",")
-        return MethodStatistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
+        val moduleName = if (currentDirectionName == elements[0]) null else elements[0]
+        return MethodStatistic(UUID.randomUUID().toString(), moduleName, elements[1], elements[2],
                 elements[3], elements[4].toInt())
     }
 }
