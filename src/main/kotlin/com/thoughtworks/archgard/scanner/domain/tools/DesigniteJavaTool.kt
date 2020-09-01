@@ -22,13 +22,13 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun generateReport(target: File, type: DesigniteJavaReportType): File? {
-        process(target)
+        process(target.absolutePath)
         val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
         return if (report.exists()) report else null
     }
 
-    private fun process(target: File) {
-        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "${target.absolutePath}/DesigniteReport"))
+    private fun process(currentScannedDirection: String) {
+        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/DesigniteJava.jar", "-i", currentScannedDirection, "-o", "$currentScannedDirection/DesigniteReport"))
     }
 
     private fun prepareTool() {
