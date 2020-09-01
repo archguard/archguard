@@ -7,6 +7,7 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.CocaTool
+import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,7 +44,7 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
     private fun getDesigniteJavaBadSmell(context: ScanContext): List<BadSmell> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        return designiteJavaTool.getBadSmellReport().map {
+        return designiteJavaTool.readReport(DesigniteJavaReportType.BAD_SMELL_METRICS).map {
             val elements = it.split(",")
             BadSmell(UUID.randomUUID().toString(), elements[1] + "." + elements[2], 0,
                     elements[3], 0, elements[3])

@@ -3,6 +3,7 @@ package com.thoughtworks.archgard.scanner.domain.scanner.statistic
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,8 +40,8 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private fun generateStatistic(context: ScanContext): Pair<List<ClassStatistic>, List<MethodStatistic>> {
         val designiteJavaTool = DesigniteJavaTool(context.workspace)
         val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
-        val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it, currentDirectionName) }
-        val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it, currentDirectionName) }
+        val classStatistics = designiteJavaTool.readReport(DesigniteJavaReportType.TYPE_METHRICS).map { toClassStatistic(it, currentDirectionName) }
+        val methodStatistic = designiteJavaTool.readReport(DesigniteJavaReportType.METHOD_METRICS).map { toMethodStatistic(it, currentDirectionName) }
         return Pair(classStatistics, methodStatistic)
     }
 

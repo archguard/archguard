@@ -12,18 +12,6 @@ class DesigniteJavaTool(val systemRoot: File) {
     private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
-    fun getBadSmellReport(): List<String> {
-        return readReport(DesigniteJavaReportType.BAD_SMELL_METRICS)
-    }
-
-    fun getTypeMetricsReport(): List<String> {
-        return readReport(DesigniteJavaReportType.TYPE_METHRICS)
-    }
-
-    fun getMethodMetricsReport(): List<String> {
-        return readReport(DesigniteJavaReportType.METHOD_METRICS)
-    }
-
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
         return getTargetFile(systemRoot)
                 .map { getReport(it, designiteJavaReportType)?.readLines() }
