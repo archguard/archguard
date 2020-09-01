@@ -28,7 +28,7 @@ class MethodCallersServiceTest {
 
     @Test
     fun `should get method callers`() {
-        val projectId = 1L
+        val systemId = 1L
         //given
         val target = JMethod("id", "method", "clazz", "module", "void", emptyList())
         val caller1 = JMethod("1", "caller1", "clazz2", "module", "void", emptyList())
@@ -39,7 +39,7 @@ class MethodCallersServiceTest {
         every { repo.findMethodCallers(caller2.id) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findCallers(projectId, listOf(target), 2)[0]
+        val result = service.findCallers(systemId, listOf(target), 2)[0]
         //then
         Assertions.assertThat(result.callers.size).isEqualTo(1)
         Assertions.assertThat(result.callers[0]).isEqualToComparingFieldByField(caller1)

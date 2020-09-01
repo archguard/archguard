@@ -28,7 +28,7 @@ internal class ClassDependencerServiceTest {
     @Test
     internal fun `should get callers`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
 
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
@@ -39,7 +39,7 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(caller1.id) } returns listOf(caller2)
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findDependencers(projectId, target, 2)
+        val result = service.findDependencers(systemId, target, 2)
         //then
         Assertions.assertThat(result.dependencers.size).isEqualTo(1)
         Assertions.assertThat(result.dependencers[0].name).isEqualTo("caller1")
@@ -51,7 +51,7 @@ internal class ClassDependencerServiceTest {
     @Test
     internal fun `should get class dependencers when deep is larger`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
 
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
@@ -63,7 +63,7 @@ internal class ClassDependencerServiceTest {
         every { repo.findDependencers(dependencer2.id) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findDependencers(projectId, target, 4)
+        val result = service.findDependencers(systemId, target, 4)
         //then
         Assertions.assertThat(result.dependencers.size).isEqualTo(1)
         Assertions.assertThat(result.dependencers[0].name).isEqualTo("dependencer1")

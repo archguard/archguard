@@ -8,25 +8,25 @@ import org.springframework.stereotype.Service
 @Service
 class ClassDependencerService(val repo: JClassRepository, val configureService: ConfigureService) {
 
-    fun findDependencers(projectId: Long, target: JClass, deep: Int): JClass {
-        buildDependencers(projectId, listOf(target), deep)
+    fun findDependencers(systemId: Long, target: JClass, deep: Int): JClass {
+        buildDependencers(systemId, listOf(target), deep)
         return target
     }
 
-    private fun buildDependencers(projectId: Long, target: List<JClass>, deep: Int): List<JClass> {
+    private fun buildDependencers(systemId: Long, target: List<JClass>, deep: Int): List<JClass> {
         val container = ArrayList<JClass>()
-        doBuildDependencers(projectId, target, deep, container)
+        doBuildDependencers(systemId, target, deep, container)
         return target
     }
 
-    private fun doBuildDependencers(projectId: Long, target: List<JClass>, deep: Int, container: MutableList<JClass>) {
+    private fun doBuildDependencers(systemId: Long, target: List<JClass>, deep: Int, container: MutableList<JClass>) {
         var pendingClasses = target.filterNot { container.contains(it) }
         if (pendingClasses.isEmpty() || deep == 0) {
             container.addAll(pendingClasses)
         } else {
-            pendingClasses.forEach { it.dependencers = repo.findDependencers(it.id).filter { configureService.isDisplayNode(projectId, it.name) } }
+            pendingClasses.forEach { it.dependencers = repo.findDependencers(it.id).filter { configureService.isDisplayNode(systemId, it.name) } }
             container.addAll(pendingClasses)
-            doBuildDependencers(projectId, pendingClasses.flatMap { it.dependencers }, deep - 1, container)
+            doBuildDependencers(systemId, pendingClasses.flatMap { it.dependencers }, deep - 1, container)
         }
     }
 

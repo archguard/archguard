@@ -11,32 +11,32 @@ class MethodCalleesService(val repo: JMethodRepository, val configureService: Co
     private val log = LoggerFactory.getLogger(MethodCalleesService::class.java)
 
 
-    fun buildMethodCallees(projectId: Long, methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
+    fun buildMethodCallees(systemId: Long, methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val container = ArrayList<JMethod>()
         // FIXME Cost too much time
-        doBuildCallees(projectId, methods, calleeDeep, container, needIncludeImpl)
+        doBuildCallees(systemId, methods, calleeDeep, container, needIncludeImpl)
         return methods
     }
 
-    private fun doBuildCallees(projectId: Long, methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
+    private fun doBuildCallees(systemId: Long, methods: List<JMethod>, calleeDeep: Int, container: MutableList<JMethod>, needIncludeImpl: Boolean) {
         val pendindMethods = methods.filterNot { container.contains(it) }
         if (pendindMethods.isEmpty() || calleeDeep == 0) {
             container.addAll(pendindMethods)
         } else {
             pendindMethods.parallelStream().forEach {
-                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
+                it.callees = repo.findMethodCallees(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
                 if (needIncludeImpl) {
-                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
+                    it.implements = repo.findMethodImplements(it.id, it.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
                 }
             }
-            doBuildCallees(projectId,
+            doBuildCallees(systemId,
                     pendindMethods.flatMap { it.callees }, calleeDeep - 1, container, needIncludeImpl)
-            doBuildCallees(projectId,
+            doBuildCallees(systemId,
                     pendindMethods.flatMap { it.implements }, calleeDeep, container, needIncludeImpl)
         }
     }
 
-    fun findCallees(projectId: Long, target: List<JMethod>, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
-        return buildMethodCallees(projectId, target, deep, needIncludeImpl)
+    fun findCallees(systemId: Long, target: List<JMethod>, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
+        return buildMethodCallees(systemId, target, deep, needIncludeImpl)
     }
 }

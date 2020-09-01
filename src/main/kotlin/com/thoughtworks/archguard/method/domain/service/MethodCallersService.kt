@@ -7,26 +7,26 @@ import org.springframework.stereotype.Service
 
 @Service
 class MethodCallersService(val repo: JMethodRepository, val configureService: ConfigureService) {
-    fun findCallers(projectId: Long, target: List<JMethod>, deep: Int): List<JMethod> {
-        buildMethodCallers(projectId, target, deep)
+    fun findCallers(systemId: Long, target: List<JMethod>, deep: Int): List<JMethod> {
+        buildMethodCallers(systemId, target, deep)
         return target
     }
 
-    fun buildMethodCallers(projectId: Long, methods: List<JMethod>, deep: Int): List<JMethod> {
+    fun buildMethodCallers(systemId: Long, methods: List<JMethod>, deep: Int): List<JMethod> {
         val container = ArrayList<JMethod>()
-        doBuildCallers(projectId, methods, deep, container)
+        doBuildCallers(systemId, methods, deep, container)
         return methods
     }
 
-    private fun doBuildCallers(projectId: Long, methods: List<JMethod>, deep: Int, container: MutableList<JMethod>) {
+    private fun doBuildCallers(systemId: Long, methods: List<JMethod>, deep: Int, container: MutableList<JMethod>) {
         val pendindMethods = methods.filterNot { container.contains(it) }
         if (pendindMethods.isEmpty() || deep == 0) {
             container.addAll(pendindMethods)
         } else {
             pendindMethods.forEach {
-                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(projectId, it.name) && configureService.isDisplayNode(projectId, it.clazz) }
+                it.callers = repo.findMethodCallers(it.id).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
             }
-            doBuildCallers(projectId, pendindMethods.flatMap { it.callers }, deep - 1, container)
+            doBuildCallers(systemId, pendindMethods.flatMap { it.callers }, deep - 1, container)
         }
     }
 }

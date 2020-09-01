@@ -28,7 +28,7 @@ class MethodCalleesServiceTest {
     @Test
     fun `should get method callees`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
         val target = JMethod("id", "method", "clazz", "module", "void", emptyList())
         val callee1 = JMethod("1", "callee1", "clazz2", "module", "void", emptyList())
         val callee2 = JMethod("2", "callee2", "clazz3", "module", "void", emptyList())
@@ -44,7 +44,7 @@ class MethodCalleesServiceTest {
         every { repo.findMethodImplements(implement.id, implement.name) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findCallees(projectId, listOf(target), 2, true)[0]
+        val result = service.findCallees(systemId, listOf(target), 2, true)[0]
         //then
         assertThat(result.callees.size).isEqualTo(1)
         assertThat(result.callees[0]).isEqualToComparingFieldByField(callee1)

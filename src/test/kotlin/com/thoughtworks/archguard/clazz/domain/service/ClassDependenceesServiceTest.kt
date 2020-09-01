@@ -29,7 +29,7 @@ internal class ClassDependenceesServiceTest {
     @Test
     internal fun `should get class dependencees`() {
         //given
-        val projectId = 1L
+        val systemId = 1L
 
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
@@ -40,7 +40,7 @@ internal class ClassDependenceesServiceTest {
         every { repo.findDependencees(callee1.id) } returns listOf(callee2)
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findDependencees(projectId, target, 2)
+        val result = service.findDependencees(systemId, target, 2)
         //then
         assertThat(result.dependencees.size).isEqualTo(1)
         assertThat(result.dependencees[0].name).isEqualTo("callee1")
@@ -52,7 +52,7 @@ internal class ClassDependenceesServiceTest {
     internal fun `should get class dependencees when deep is larger`() {
         //given
         val targetName = "clazz"
-        val projectId = 1L
+        val systemId = 1L
 
         val target = JClass("1", targetName, "module")
         val dependencee1 = JClass("2", "dependencee1", "module")
@@ -63,7 +63,7 @@ internal class ClassDependenceesServiceTest {
         every { repo.findDependencees(dependencee2.id) } returns listOf()
         every { configureService.isDisplayNode(any(), any()) } returns true
 
-        val result = service.findDependencees(projectId, target, 4)
+        val result = service.findDependencees(systemId, target, 4)
         //then
         assertThat(result.dependencees.size).isEqualTo(1)
         assertThat(result.dependencees[0].name).isEqualTo("dependencee1")
