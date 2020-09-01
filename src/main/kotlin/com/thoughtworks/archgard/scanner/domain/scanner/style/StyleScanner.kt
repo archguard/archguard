@@ -38,12 +38,12 @@ class StyleScanner : Scanner {
     override fun scan(context: ScanContext) {
         if (context.config.find { it.type == "CheckStyle" }?.configs?.get("available") == "true") {
             val styleReport = CheckStyleTool(context).getStyleReport()
-            val checkStyles = styleReport.mapNotNull { mapTo(it) }.flatten()
+            val checkStyles = styleReport.mapNotNull { mapTo(it, context.systemId) }.flatten()
             save(checkStyles)
         }
     }
 
-    private fun mapTo(file: File): List<Style>? {
+    private fun mapTo(file: File, systemId: Long): List<Style>? {
         val saxReader = SAXReader()
         try {
             val rootElement = saxReader.read(file).rootElement
@@ -51,7 +51,7 @@ class StyleScanner : Scanner {
                 val list = rootElement.elements().map { e ->
                     e as Element
                     val name = e.attributeValue("name")
-                    e.elements().map { elementToStyle(it as Element, name) }
+                    e.elements().map { elementToStyle(it as Element, name, systemId) }
                 }
                 return list.flatten()
             }
@@ -61,8 +61,8 @@ class StyleScanner : Scanner {
         return null
     }
 
-    private fun elementToStyle(element: Element, name: String): Style {
-        return Style(UUID.randomUUID().toString(), name,
+    private fun elementToStyle(element: Element, name: String, systemId: Long): Style {
+        return Style(UUID.randomUUID().toString(), systemId, name,
                 element.attributeValue("source"),
                 element.attributeValue("message"),
                 element.attributeValue("line").toInt(),
