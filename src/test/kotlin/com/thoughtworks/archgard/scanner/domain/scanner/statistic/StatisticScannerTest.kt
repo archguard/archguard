@@ -23,6 +23,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(ClassStatistic::class.java).list()
         }
         assertEquals(8, classStatistic.size)
+        assertEquals("dubbo-service", classStatistic[0].moduleName)
         assertEquals("net.aimeizi.dubbo.service.entity", classStatistic[0].packageName)
         assertEquals("User", classStatistic[0].typeName)
         assertEquals(45, classStatistic[0].lines)
@@ -32,6 +33,7 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(MethodStatistic::class.java).list()
         }
         assertEquals(21, methodStatistic.size)
+        assertEquals("dubbo-service", methodStatistic[0].moduleName)
         assertEquals("net.aimeizi.dubbo.service.entity", methodStatistic[0].packageName)
         assertEquals("User", methodStatistic[0].typeName)
         assertEquals("User", methodStatistic[0].typeName)

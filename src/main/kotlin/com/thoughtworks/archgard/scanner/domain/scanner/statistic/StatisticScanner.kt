@@ -40,13 +40,13 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
 
     private fun toClassStatistic(line: String): ClassStatistic {
         val elements = line.split(",")
-        return ClassStatistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
+        return ClassStatistic(UUID.randomUUID().toString(), elements[0], elements[0], elements[1], elements[2],
                 elements[7].toInt(), elements[12].toInt(), elements[13].toInt())
     }
 
     private fun toMethodStatistic(line: String): MethodStatistic {
         val elements = line.split(",")
-        return MethodStatistic(UUID.randomUUID().toString(), elements[1], elements[2],
+        return MethodStatistic(UUID.randomUUID().toString(), elements[0], elements[1], elements[2],
                 elements[3], elements[4].toInt())
     }
 }

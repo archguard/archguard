@@ -6,8 +6,8 @@ import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface ClassStatisticDao {
-    @SqlBatch("insert into ClassStatistic (id, projectName, packageName, typeName, `lines`, fanin, fanout, updateAt, createAt) " +
-            "values (:classStatistic.id, :classStatistic.projectName, :classStatistic.packageName, :classStatistic.typeName," +
+    @SqlBatch("insert into ClassStatistic (id, projectName, moduleName, packageName, typeName, `lines`, fanin, fanout, updateAt, createAt) " +
+            "values (:classStatistic.id, :classStatistic.projectName, :classStatistic.moduleName, :classStatistic.packageName, :classStatistic.typeName," +
             " :classStatistic.lines, :classStatistic.fanIn, :classStatistic.fanOut, NOW(), NOW())")
     fun saveAll(@BindBean("classStatistic") classStatistic: List<ClassStatistic>)
 

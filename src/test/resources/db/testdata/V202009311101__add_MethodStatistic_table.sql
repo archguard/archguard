@@ -2,6 +2,7 @@ create table MethodStatistic
 (
     id          char(36)   not null
         primary key,
+    moduleName mediumtext null,
     packageName mediumtext not null,
     typeName    mediumtext not null,
     methodName  mediumtext not null,

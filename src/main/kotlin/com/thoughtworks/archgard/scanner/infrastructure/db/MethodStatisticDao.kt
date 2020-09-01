@@ -6,8 +6,8 @@ import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface MethodStatisticDao {
-    @SqlBatch("insert into MethodStatistic (id, packageName, typeName, methodName, `lines`, updateAt, createAt) " +
-            "values (:methodStatistic.id, :methodStatistic.packageName, :methodStatistic.typeName, :methodStatistic.methodName," +
+    @SqlBatch("insert into MethodStatistic (id, moduleName, packageName, typeName, methodName, `lines`, updateAt, createAt) " +
+            "values (:methodStatistic.id, :methodStatistic.moduleName, :methodStatistic.packageName, :methodStatistic.typeName, :methodStatistic.methodName," +
             " :methodStatistic.lines, NOW(), NOW())")
     fun saveAll(@BindBean("methodStatistic") methodStatistic: List<MethodStatistic>)
 
