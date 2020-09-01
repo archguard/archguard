@@ -23,22 +23,26 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(ClassStatistic::class.java).list()
         }
         assertEquals(8, classStatistic.size)
-        assertEquals("dubbo-service", classStatistic[0].moduleName)
-        assertEquals("net.aimeizi.dubbo.service.entity", classStatistic[0].packageName)
-        assertEquals("User", classStatistic[0].typeName)
-        assertEquals(45, classStatistic[0].lines)
+
+        val specificClassStatisticItem = classStatistic.find { it.moduleName == "dubbo-service" && it.typeName == "User" }
+        assertEquals("dubbo-service", specificClassStatisticItem?.moduleName)
+        assertEquals("net.aimeizi.dubbo.service.entity", specificClassStatisticItem?.packageName)
+        assertEquals("User", specificClassStatisticItem?.typeName)
+        assertEquals(45, specificClassStatisticItem?.lines)
 
         val methodStatistic = jdbi.withHandle<List<MethodStatistic>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from MethodStatistic")
                     .mapTo(MethodStatistic::class.java).list()
         }
+        val specificMethodStatistic = methodStatistic.find { it.moduleName == "dubbo-service" && it.typeName == "User" && it.methodName == "getUserId"}
+
         assertEquals(21, methodStatistic.size)
-        assertEquals("dubbo-service", methodStatistic[0].moduleName)
-        assertEquals("net.aimeizi.dubbo.service.entity", methodStatistic[0].packageName)
-        assertEquals("User", methodStatistic[0].typeName)
-        assertEquals("User", methodStatistic[0].typeName)
-        assertEquals("getUserId", methodStatistic[0].methodName)
-        assertEquals(3, methodStatistic[0].lines)
+        assertEquals("dubbo-service", specificMethodStatistic?.moduleName)
+        assertEquals("net.aimeizi.dubbo.service.entity", specificMethodStatistic?.packageName)
+        assertEquals("User", specificMethodStatistic?.typeName)
+        assertEquals("User", specificMethodStatistic?.typeName)
+        assertEquals("getUserId", specificMethodStatistic?.methodName)
+        assertEquals(3, specificMethodStatistic?.lines)
     }
 
     @Test
@@ -50,20 +54,25 @@ internal class StatisticScannerTest(@Autowired val statisticScanner: StatisticSc
                     .mapTo(ClassStatistic::class.java).list()
         }
         assertEquals(23, classStatistic.size)
-        assertEquals(null, classStatistic[0].moduleName)
-        assertEquals("com.qicaisheng.parkinglot", classStatistic[0].packageName)
-        assertEquals("SmartParkingBoyTest", classStatistic[0].typeName)
-        assertEquals(50, classStatistic[0].lines)
+
+        val specificClassStatisticItem = classStatistic.find { it.typeName == "SmartParkingBoyTest" }
+        assertEquals(null, specificClassStatisticItem?.moduleName)
+        assertEquals("com.qicaisheng.parkinglot", specificClassStatisticItem?.packageName)
+        assertEquals("SmartParkingBoyTest", specificClassStatisticItem?.typeName)
+        assertEquals(50, specificClassStatisticItem?.lines)
 
         val methodStatistic = jdbi.withHandle<List<MethodStatistic>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from MethodStatistic")
                     .mapTo(MethodStatistic::class.java).list()
         }
+
         assertEquals(97, methodStatistic.size)
-        assertEquals(null, methodStatistic[0].moduleName)
-        assertEquals("com.qicaisheng.parkinglot", methodStatistic[0].packageName)
-        assertEquals("SmartParkingBoyTest", methodStatistic[0].typeName)
-        assertEquals("should_be_picked_up_from_managed_parking_lot_when_smart_park_boy_park_card", methodStatistic[0].methodName)
-        assertEquals(8, methodStatistic[0].lines)
+        
+        val specificMethodStatistic = methodStatistic.find { it.methodName == "should_be_picked_up_from_managed_parking_lot_when_smart_park_boy_park_card"}
+        assertEquals(null, specificMethodStatistic?.moduleName)
+        assertEquals("com.qicaisheng.parkinglot", specificMethodStatistic?.packageName)
+        assertEquals("SmartParkingBoyTest", specificMethodStatistic?.typeName)
+        assertEquals("should_be_picked_up_from_managed_parking_lot_when_smart_park_boy_park_card", specificMethodStatistic?.methodName)
+        assertEquals(8, specificMethodStatistic?.lines)
     }
 }
