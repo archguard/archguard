@@ -36,27 +36,19 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun getBadSmellReport(target: File): File? {
-        val report = File(target.toString() + "/DesigniteReport/designCodeSmells.csv")
-        process(target)
-        return if (report.exists()) {
-            report
-        } else {
-            null
-        }
+        return getReport(target, DesigniteJavaReportType.BAD_SMELL_METRICS)
     }
 
     private fun getTypeMetricsReport(target: File): File? {
-        val report = File(target.toString() + "/DesigniteReport/typeMetrics.csv")
-        process(target)
-        return if (report.exists()) {
-            report
-        } else {
-            null
-        }
+        return getReport(target, DesigniteJavaReportType.TYPE_METHRICS)
     }
 
     private fun getMethodMetricsReport(target: File): File? {
-        val report = File(target.toString() + "/DesigniteReport/methodMetrics.csv")
+        return getReport(target, DesigniteJavaReportType.METHOD_METRICS)
+    }
+
+    private fun getReport(target: File, type: DesigniteJavaReportType): File? {
+        val report = File(target.toString() + "/DesigniteReport/${type.reportName}")
         process(target)
         return if (report.exists()) {
             report
@@ -114,4 +106,8 @@ class DesigniteJavaTool(val systemRoot: File) {
         }
     }
 
+}
+
+enum class DesigniteJavaReportType(val reportName: String) {
+    TYPE_METHRICS("typeMetrics.csv"), METHOD_METRICS("methodMetrics.csv"), BAD_SMELL_METRICS("designCodeSmells.csv")
 }
