@@ -45,9 +45,9 @@ class ClassInvokeServiceTest {
         every { repo.findClassImplements(systemId, target.name, target.module) } returns listOf(impl)
         every { repo.findCallees(systemId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
         every { repo.findCallers(systemId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
-        service.findInvokes(systemId, target, 1, 1, true)
         every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
         every { classConfigService.buildClassRelationColorConfig(any(), any()) } returns Unit
+        service.findInvokes(systemId, target, 1, 1, true)
 
         //then
         Assertions.assertThat(target.parents.size).isEqualTo(1)
