@@ -28,15 +28,20 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
 
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report, workspcase: {}", context.workspace)
-        val designiteJavaTool = DesigniteJavaTool(context.workspace)
-        val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
-        val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it, currentDirectionName) }
-        val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it, currentDirectionName) }
+        val (classStatistics, methodStatistic) = generateStatistic(context)
         classClassStatisticRepo.delete()
         classClassStatisticRepo.save(classStatistics)
         methodClassStatisticRepo.delete()
         methodClassStatisticRepo.save(methodStatistic)
         log.info("finished scan statistic report")
+    }
+
+    private fun generateStatistic(context: ScanContext): Pair<List<ClassStatistic>, List<MethodStatistic>> {
+        val designiteJavaTool = DesigniteJavaTool(context.workspace)
+        val currentDirectionName = context.workspace.path.substring(context.workspace.path.lastIndexOf("/") + 1)
+        val classStatistics = designiteJavaTool.getTypeMetricsReport().map { toClassStatistic(it, currentDirectionName) }
+        val methodStatistic = designiteJavaTool.getMethodMetricsReport().map { toMethodStatistic(it, currentDirectionName) }
+        return Pair(classStatistics, methodStatistic)
     }
 
     private fun toClassStatistic(line: String, currentDirectionName: String): ClassStatistic {
