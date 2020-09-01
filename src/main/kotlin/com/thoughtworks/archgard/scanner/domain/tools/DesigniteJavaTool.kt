@@ -13,6 +13,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
 
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
+        prepareTool()
         return getTargetFile(systemRoot)
                 .map { getReport(it, designiteJavaReportType)?.readLines() }
                 .filterNotNull()
@@ -27,7 +28,6 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun process(target: File) {
-        prepareTool()
         scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/DesigniteJava.jar", "-i", target.absolutePath, "-o", "${target.absolutePath}/DesigniteReport"))
     }
 
