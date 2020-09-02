@@ -26,12 +26,19 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         systemOperator.cloneAndBuildAllRepo()
         val javaByteCodeTool = JavaByteCodeTool(systemOperator.workspace, url, id)
         javaByteCodeTool.analyse()
+        log.info("finished scan java byte code")
+
         val tableUsedTool = TableUsedTool(systemOperator.workspace, systemOperator.sql)
         tableUsedTool.analyse()
+        log.info("finished scan tables")
+
         analysisModuleClient.autoDefine(id)
-        log.info("finished scan java analysis")
+        log.info("finished logic module auto define")
 
         hubService.doScanIfNotRunning(id);
-        log.info("finished scan hub")
+        log.info("finished level 1 scanners")
+
+        analysisModuleClient.metricsAnalysis(id)
+        log.info("finished level 2 analysis metrics")
     }
 }
