@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.metrics.domain.dit
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -13,12 +14,14 @@ class DitServiceTest {
     private lateinit var service: DitService
 
     @MockK
-    private lateinit var repo: JClassRepository
+    private lateinit var jClassRepository: JClassRepository
+    @MockK
+    private lateinit var classMetricRepository: ClassMetricRepository
 
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = DitService(repo)
+        service = DitService(jClassRepository, classMetricRepository)
     }
 
     @Test
@@ -29,9 +32,9 @@ class DitServiceTest {
         val parent = JClass("any", "Parent", "module")
         val grandparent = JClass("any", "Grandparent", "module")
 
-        every { repo.findClassParents(systemId, "module", "Child") } returns listOf(parent)
-        every { repo.findClassParents(systemId, "module", "Parent") } returns listOf(grandparent)
-        every { repo.findClassParents(systemId, "module", "Grandparent") } returns listOf()
+        every { jClassRepository.findClassParents(systemId, "module", "Child") } returns listOf(parent)
+        every { jClassRepository.findClassParents(systemId, "module", "Parent") } returns listOf(grandparent)
+        every { jClassRepository.findClassParents(systemId, "module", "Grandparent") } returns listOf()
 
         //when
         val childDIT = service.getDepthOfInheritance(systemId, child)
