@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.method.controller
 
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.MethodService
-import org.apache.commons.lang.StringEscapeUtils
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,8 +20,7 @@ class MethodController(val methodService: MethodService) {
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean,
                          @RequestParam(value = "module") moduleName: String): ResponseEntity<List<JMethod>> {
-        val escapedMethodName = StringEscapeUtils.escapeHtml(methodName)
-        val jMethod = methodService.findMethodCallees(systemId, moduleName, clazzName, escapedMethodName, deep, needIncludeImpl)
+        val jMethod = methodService.findMethodCallees(systemId, moduleName, clazzName, methodName, deep, needIncludeImpl)
         return ResponseEntity.ok(jMethod)
     }
 
@@ -32,8 +30,7 @@ class MethodController(val methodService: MethodService) {
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "module") moduleName: String): ResponseEntity<List<JMethod>> {
-        val escapedMethodName = StringEscapeUtils.escapeHtml(methodName)
-        val jMethod = methodService.findMethodCallers(systemId, moduleName, clazzName, escapedMethodName, deep)
+        val jMethod = methodService.findMethodCallers(systemId, moduleName, clazzName, methodName, deep)
         return ResponseEntity.ok(jMethod)
     }
 
@@ -46,8 +43,7 @@ class MethodController(val methodService: MethodService) {
                          @RequestParam(value = "calleeDeep", required = false) calleeDeep: Int?,
                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean,
                          @RequestParam(value = "module") moduleName: String): ResponseEntity<List<JMethod>> {
-        val escapedMethodName = StringEscapeUtils.escapeHtml(methodName)
-        val jMethod = methodService.findMethodInvokes(systemId, moduleName, clazzName, escapedMethodName, callerDeep
+        val jMethod = methodService.findMethodInvokes(systemId, moduleName, clazzName, methodName, callerDeep
                 ?: deep, calleeDeep
                 ?: deep, needIncludeImpl)
         return ResponseEntity.ok(jMethod)
