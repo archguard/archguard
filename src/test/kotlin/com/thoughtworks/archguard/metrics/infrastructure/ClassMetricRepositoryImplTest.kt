@@ -2,9 +2,6 @@ package com.thoughtworks.archguard.metrics.infrastructure
 
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.jdbc.Sql
@@ -19,27 +16,36 @@ internal class ClassMetricRepositoryImplTest {
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_lcom4_dit.sql")
-    fun getClassLCOM4ExceedThreshold() {
-        val classLCOM4ExceedThreshold = classMetricRepositoryImpl
-                .getClassLCOM4ExceedThreshold(1, 1)
-        kotlin.test.assertEquals(1, classLCOM4ExceedThreshold.size)
-        kotlin.test.assertEquals(3, classLCOM4ExceedThreshold.get(0).lcom4Value)
+    fun should_get_one_lcom4_class_when_threshold_1_page_1() {
+        val page1 = classMetricRepositoryImpl
+                .getClassLCOM4ExceedThresholdWithPaging(1, 1, 1, 0)
+        kotlin.test.assertEquals(1, page1.size)
+        kotlin.test.assertEquals(3, page1.get(0).lcom4Value)
         kotlin.test.assertEquals("org.apache.dubbo.demo.DemoService",
-                classLCOM4ExceedThreshold.get(0).jClassVO.name)
+                page1.get(0).jClassVO.name)
         kotlin.test.assertEquals("dubbo-demo-interface",
-                classLCOM4ExceedThreshold.get(0).jClassVO.module)
+                page1.get(0).jClassVO.module)
+
+        val page2 = classMetricRepositoryImpl
+                .getClassLCOM4ExceedThresholdWithPaging(1, 1, 1, 1)
+        kotlin.test.assertEquals(1, page2.size)
+        kotlin.test.assertEquals(2, page2.get(0).lcom4Value)
+        kotlin.test.assertEquals("org.apache.dubbo.demo.TestService",
+                page2.get(0).jClassVO.name)
+        kotlin.test.assertEquals("test-demo-interface",
+                page2.get(0).jClassVO.module)
     }
 
-//    @Test
-//    @Sql("classpath:sqls/insert_jclass_and_lcom4_dit.sql")
-//    fun getClassDitExceedThreshold() {
-//        val classDitExceedThreshold = classMetricRepositoryImpl
-//                .getClassDitExceedThreshold(1, 1)
-//        kotlin.test.assertEquals(1, classDitExceedThreshold.size)
-//        kotlin.test.assertEquals(3, classDitExceedThreshold.get(0).ditValue)
-//        kotlin.test.assertEquals("org.apache.dubbo.demo.DemoService",
-//                classDitExceedThreshold.get(0).jClassVO.name)
-//        kotlin.test.assertEquals("dubbo-demo-interface",
-//                classDitExceedThreshold.get(0).jClassVO.module)
-//    }
+    @Test
+    @Sql("classpath:sqls/insert_jclass_and_lcom4_dit.sql")
+    fun should_get_one_dit_class_when_threshold_is_3() {
+        val classDitExceedThreshold = classMetricRepositoryImpl
+                .getClassDitExceedThreshold(1, 1, 1, 0)
+        kotlin.test.assertEquals(1, classDitExceedThreshold.size)
+        kotlin.test.assertEquals(3, classDitExceedThreshold.get(0).ditValue)
+        kotlin.test.assertEquals("org.apache.dubbo.demo.DemoService",
+                classDitExceedThreshold.get(0).jClassVO.name)
+        kotlin.test.assertEquals("dubbo-demo-interface",
+                classDitExceedThreshold.get(0).jClassVO.module)
+    }
 }

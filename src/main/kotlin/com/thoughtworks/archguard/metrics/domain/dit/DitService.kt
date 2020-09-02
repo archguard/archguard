@@ -39,7 +39,8 @@ class DitService(val repo: JClassRepository,
         }
     }
 
-    fun getClassDitExceedThreshold(systemId: Long, threshold: Integer): List<ClassDit> {
-        return classMetricRepository.getClassDitExceedThreshold(systemId, threshold.toInt());
+    fun getClassDitExceedThreshold(systemId: Long, threshold: Int,
+                                   limitPerPage: Int, numOfPage: Int): List<ClassDit> {
+        return classMetricRepository.getClassDitExceedThreshold(systemId, threshold.toInt(), limitPerPage, numOfPage);
     }
 }

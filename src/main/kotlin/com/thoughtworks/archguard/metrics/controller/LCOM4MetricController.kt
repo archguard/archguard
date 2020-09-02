@@ -21,8 +21,10 @@ class LCOM4MetricController(val metricsService: MetricsService, val lcoM4Service
 
     @GetMapping("/exceed")
     fun queryClassLCOM4ExceedThreshold(@PathVariable("systemId") systemId: Long,
-                                               @RequestParam threshold: Integer): List<ClassLCOM4> {
-        return lcoM4Service.getClassLCOM4ExceedThreshold(systemId, threshold)
+                                       @RequestParam threshold: Int,
+                                       @RequestParam limitPerPage: Int,
+                                       @RequestParam numOfPage: Int): List<ClassLCOM4> {
+        return lcoM4Service.getClassLCOM4ExceedThresholdWithPaging(systemId, threshold, limitPerPage, numOfPage)
     }
 }
 

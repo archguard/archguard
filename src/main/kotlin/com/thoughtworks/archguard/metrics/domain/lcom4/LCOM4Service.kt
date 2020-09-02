@@ -41,7 +41,8 @@ class LCOM4Service(val jClassRepository: JClassRepository,
         return graphStore
     }
 
-    fun getClassLCOM4ExceedThreshold(systemId: Long, threshold: Integer): List<ClassLCOM4> {
-        return classMetricRepository.getClassLCOM4ExceedThreshold(systemId, threshold.toInt());
+    fun getClassLCOM4ExceedThresholdWithPaging(systemId: Long, threshold: Int,
+                                               limitPerPage: Int, numOfPage: Int): List<ClassLCOM4> {
+        return classMetricRepository.getClassLCOM4ExceedThresholdWithPaging(systemId, threshold.toInt(), limitPerPage, numOfPage);
     }
 }

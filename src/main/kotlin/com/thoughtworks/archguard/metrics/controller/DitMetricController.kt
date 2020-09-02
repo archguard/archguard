@@ -19,7 +19,9 @@ class DitMetricController(val metricsService: MetricsService, val ditService: Di
 
     @GetMapping("/exceed")
     fun queryClassDitExceedThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestParam threshold: Integer): List<ClassDit> {
-        return ditService.getClassDitExceedThreshold(systemId, threshold)
+                                     @RequestParam threshold: Int,
+                                     @RequestParam limitPerPage: Int,
+                                     @RequestParam numOfPage: Int): List<ClassDit> {
+        return ditService.getClassDitExceedThreshold(systemId, threshold, limitPerPage, numOfPage)
     }
 }
