@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/systems/{systemId}/methods")
 class MethodController(val methodService: MethodService) {
 
-    @GetMapping("/{name}/callees")
+    @GetMapping("/callees")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
                          @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
@@ -24,7 +24,7 @@ class MethodController(val methodService: MethodService) {
         return ResponseEntity.ok(jMethod)
     }
 
-    @GetMapping("/{name}/callers")
+    @GetMapping("/allers")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
                          @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
@@ -34,7 +34,7 @@ class MethodController(val methodService: MethodService) {
         return ResponseEntity.ok(jMethod)
     }
 
-    @GetMapping("/{name}/invokes")
+    @GetMapping("/invokes")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
                          @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
