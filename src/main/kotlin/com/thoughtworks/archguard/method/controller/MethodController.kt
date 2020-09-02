@@ -15,7 +15,7 @@ class MethodController(val methodService: MethodService) {
 
     @GetMapping("/{name}/callees")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
-                         @PathVariable("name") methodName: String,
+                         @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean,
@@ -26,7 +26,7 @@ class MethodController(val methodService: MethodService) {
 
     @GetMapping("/{name}/callers")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
-                         @PathVariable("name") methodName: String,
+                         @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "module") moduleName: String): ResponseEntity<List<JMethod>> {
@@ -36,7 +36,7 @@ class MethodController(val methodService: MethodService) {
 
     @GetMapping("/{name}/invokes")
     fun getMethodCallees(@PathVariable("systemId") systemId: Long,
-                         @PathVariable("name") methodName: String,
+                         @RequestParam("name") methodName: String,
                          @RequestParam(value = "clazz") clazzName: String,
                          @RequestParam(value = "deep", required = false, defaultValue = "3") deep: Int,
                          @RequestParam(value = "callerDeep", required = false) callerDeep: Int?,
