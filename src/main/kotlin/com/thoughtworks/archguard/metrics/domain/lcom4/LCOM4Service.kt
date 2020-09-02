@@ -4,14 +4,14 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.metrics.domain.ClassLCOM4
+import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import com.thoughtworks.archguard.module.domain.graph.GraphStore
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LCOM4Service(val jClassRepository: JClassRepository,
                    val jMethodRepository: JMethodRepository,
-                   val jClassLCOM4Repository: JClassLCOM4Repository) {
+                   val classMetricRepository: ClassMetricRepository) {
 
     fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4> {
         val jClasses = jClassRepository.getJClassesHasModules(systemId)
@@ -41,8 +41,7 @@ class LCOM4Service(val jClassRepository: JClassRepository,
         return graphStore
     }
 
-    @Transactional
     fun getClassLCOM4ExceedThreshold(systemId: Long, threshold: Integer): List<ClassLCOM4> {
-        return jClassLCOM4Repository.getClassLCOM4ExceedThreshold(systemId, threshold);
+        return classMetricRepository.getClassLCOM4ExceedThreshold(systemId, threshold.toInt());
     }
 }

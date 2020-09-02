@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/systems/{systemId}/metric/lcom4")
 class LCOM4MetricController(val metricsService: MetricsService, val lcoM4Service: LCOM4Service) {
+
     @GetMapping("/class")
     fun getClassLCOM4Metric(@PathVariable("systemId") systemId: Long,
                             @RequestParam className: String,
@@ -19,7 +20,7 @@ class LCOM4MetricController(val metricsService: MetricsService, val lcoM4Service
     }
 
     @GetMapping("/exceed")
-    fun getClassLCOM4ExceedPreDefinedThreshold(@PathVariable("systemId") systemId: Long,
+    fun queryClassLCOM4ExceedThreshold(@PathVariable("systemId") systemId: Long,
                                                @RequestParam threshold: Integer): List<ClassLCOM4> {
         return lcoM4Service.getClassLCOM4ExceedThreshold(systemId, threshold)
     }

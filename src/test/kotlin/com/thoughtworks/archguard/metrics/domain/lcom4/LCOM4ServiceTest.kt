@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.clazz.domain.JField
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository
+import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import com.thoughtworks.archguard.module.domain.graph.Edge
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
@@ -23,12 +24,12 @@ internal class LCOM4ServiceTest {
     private lateinit var jMethodRepo: JMethodRepository
 
     @MockK
-    private lateinit var jClassLCOM4Repository: JClassLCOM4Repository
+    private lateinit var classMetricRepository: ClassMetricRepository
 
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo, jClassLCOM4Repository)
+        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo, classMetricRepository)
     }
 
     @Test
