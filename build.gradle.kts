@@ -35,6 +35,7 @@ dependencies {
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.3.RELEASE")
+    implementation("org.apache.commons:commons-lang3:3.11")
 
     runtimeOnly("mysql:mysql-connector-java")
 
