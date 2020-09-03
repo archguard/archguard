@@ -18,8 +18,8 @@ class CodeLineController(val codeLineService: CodeLineService) {
 
     @GetMapping("/methods/above-threshold")
     fun getOverview(@PathVariable("systemId") systemId: Long,
-                    @RequestParam(value = "numberPerPage", required = false, defaultValue = "0") limit: Long,
-                    @RequestParam(value = "currentPageNumber", required = false, defaultValue = "0") currentPageNumber: Long): ResponseEntity<MethodLinesDto> {
+                    @RequestParam(value = "numberPerPage") limit: Long,
+                    @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodLinesDto> {
         val offset = currentPageNumber * limit
         return ResponseEntity.ok(codeLineService.getMethodLinesAboveThreshold(systemId, methodLineThreshold, limit, offset))
     }
