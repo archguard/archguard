@@ -6,7 +6,7 @@ import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class SystemOperator(val systemInfo: SystemInfo) {
+class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val compiledProjectMap = mutableMapOf<String, CompiledProject>()
     val workspace: File = createTempDir()

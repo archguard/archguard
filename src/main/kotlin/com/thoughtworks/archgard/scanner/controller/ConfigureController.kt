@@ -1,6 +1,5 @@
 package com.thoughtworks.archgard.scanner.controller
 
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archgard.scanner.domain.config.dto.UpdateDTO
 import com.thoughtworks.archgard.scanner.domain.config.dto.UpdateMessageDTO

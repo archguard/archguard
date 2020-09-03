@@ -1,8 +1,8 @@
 package com.thoughtworks.archgard.scanner.domain.analyser
 
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfo
-import com.thoughtworks.archgard.scanner.domain.system.SystemOperator
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfoRepository
+import com.thoughtworks.archgard.scanner.domain.system.SystemOperator
 import com.thoughtworks.archguard.common.exception.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,7 +16,7 @@ class AnalysisService(@Autowired val systemInfoRepository: SystemInfoRepository)
         val systemInfo = systemInfoRepository.getSystemInfo(id)
                 ?: throw EntityNotFoundException(SystemInfo::class.java, id)
         checkAnalysable(systemInfo)
-        return SystemOperator(systemInfo)
+        return SystemOperator(systemInfo, id)
     }
 
     fun checkAnalysable(systemInfo: SystemInfo) {

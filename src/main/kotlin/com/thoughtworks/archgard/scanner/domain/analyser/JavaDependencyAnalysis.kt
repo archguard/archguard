@@ -35,7 +35,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         analysisModuleClient.autoDefine(id)
         log.info("finished logic module auto define")
 
-        hubService.doScanIfNotRunning(id);
+        hubService.doScanIfNotRunning(systemOperator);
         log.info("finished level 1 scanners")
 
         analysisModuleClient.metricsAnalysis(id)

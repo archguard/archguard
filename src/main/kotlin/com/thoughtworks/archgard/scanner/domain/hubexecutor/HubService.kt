@@ -3,6 +3,7 @@ package com.thoughtworks.archgard.scanner.domain.hubexecutor
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
+import com.thoughtworks.archgard.scanner.domain.system.SystemOperator
 import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -37,6 +38,15 @@ class HubService {
         return concurrentSet.contains(id)
     }
 
+    fun doScanIfNotRunning(systemOperator: SystemOperator): Boolean {
+        if (!concurrentSet.contains(systemOperator.id)) {
+            concurrentSet.add(systemOperator.id)
+            doScan(systemOperator)
+            concurrentSet.remove(systemOperator.id)
+        }
+        return concurrentSet.contains(systemOperator.id)
+    }
+
     fun evaluate(type: String, id: Long): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
@@ -55,6 +65,15 @@ class HubService {
         systemOperator.cloneAndBuildAllRepo()
         systemOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
             val context = ScanContext(id, repo, compiledProject.buildTool, compiledProject.workspace, config)
+            val hubExecutor = HubExecutor(context, manager)
+            hubExecutor.execute()
+        }
+    }
+
+    private fun doScan(systemOperator: SystemOperator) {
+        val config = configureRepository.getToolConfigures()
+        systemOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
+            val context = ScanContext(systemOperator.id, repo, compiledProject.buildTool, compiledProject.workspace, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
         }
