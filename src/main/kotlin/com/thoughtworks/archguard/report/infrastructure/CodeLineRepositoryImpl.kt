@@ -24,7 +24,7 @@ class CodeLineRepositoryImpl(val jdbi: Jdbi) : CodeLineRepository {
 
     override fun getMethodLinesAboveThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from MethodStatistic where systemId = :systemId and `lines`>:threshold"
+            val sql = "select count(1) from MethodStatistic m1 where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId) and m1.systemId = :systemId and m1.`lines`>:threshold"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
