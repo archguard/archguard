@@ -33,6 +33,7 @@ dependencies {
 
     implementation("org.jdbi:jdbi3-core:$jdbiVersion")
     implementation("org.jdbi:jdbi3-spring4:$jdbiVersion") // provide JdbiFactoryBean
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.10.1")
 
     implementation("io.ktor:ktor-server-core:1.1.4")
     implementation("io.ktor:ktor-server-netty:1.1.4")
@@ -56,7 +57,7 @@ dependencies {
 
     runtimeOnly("mysql:mysql-connector-java")
 
-	testImplementation("org.flywaydb:flyway-core:6.2.2")
+    testImplementation("org.flywaydb:flyway-core:6.2.2")
     testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
