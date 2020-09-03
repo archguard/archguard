@@ -6,7 +6,6 @@ import com.thoughtworks.archguard.metrics.infrastructure.ClassMetricsDao
 import com.thoughtworks.archguard.metrics.infrastructure.ClassMetricsDaoLegacy
 import com.thoughtworks.archguard.metrics.infrastructure.ModuleMetricsDao
 import com.thoughtworks.archguard.metrics.infrastructure.PackageMetricsDao
-import com.thoughtworks.archguard.qualitygate.infrastructure.ProfileDao
 import org.jdbi.v3.core.Jdbi
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
@@ -27,11 +26,6 @@ class JdbiDaoConfig {
     @Bean
     fun classMetricsDao(jdbi: Jdbi): ClassMetricsDaoLegacy {
         return jdbi.onDemand(ClassMetricsDaoLegacy::class.java)
-    }
-
-    @Bean
-    fun profileDao(jdbi: Jdbi): ProfileDao {
-        return jdbi.onDemand(ProfileDao::class.java)
     }
 
     @Bean
