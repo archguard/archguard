@@ -13,5 +13,4 @@ interface MethodStatisticDao {
 
     @SqlUpdate("delete from MethodStatistic where 1=1 ")
     fun deleteAll()
-
 }
