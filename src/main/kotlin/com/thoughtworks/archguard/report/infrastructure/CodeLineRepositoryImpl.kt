@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository
 class CodeLineRepositoryImpl(val jdbi: Jdbi) : CodeLineRepository {
     override fun getMethodLinesAboveThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodLine> {
         return jdbi.withHandle<List<MethodLine>, Exception> {
-            val sql = "select systemId, moduleName, packageName, typeName, methodName, `lines` from MethodStatistic where systemId = :systemId and `lines`>:threshold order by `lines` desc limit :limit offset :offset"
+            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, m1.methodName, m1.`lines` from MethodStatistic m1 " +
+                    "where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId) " +
+                    "and m1.systemId = :systemId and m1.`lines`>:threshold order by m1.`lines` desc limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
