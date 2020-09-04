@@ -2,7 +2,6 @@ package com.thoughtworks.archgard.scanner.domain.analyser
 
 import com.thoughtworks.archgard.scanner.domain.hubexecutor.HubService
 import com.thoughtworks.archgard.scanner.domain.tools.JavaByteCodeTool
-import com.thoughtworks.archgard.scanner.domain.tools.TableUsedTool
 import com.thoughtworks.archgard.scanner.infrastructure.client.AnalysisModuleClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,10 +26,6 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         val javaByteCodeTool = JavaByteCodeTool(systemOperator.workspace, url, id)
         javaByteCodeTool.analyse()
         log.info("finished scan java byte code")
-
-        val tableUsedTool = TableUsedTool(systemOperator.workspace, systemOperator.sql)
-        tableUsedTool.analyse()
-        log.info("finished scan tables")
 
         analysisModuleClient.autoDefine(id)
         log.info("finished logic module auto define")
