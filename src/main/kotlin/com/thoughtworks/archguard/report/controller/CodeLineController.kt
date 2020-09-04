@@ -20,7 +20,7 @@ class CodeLineController(val codeLineService: CodeLineService) {
     fun getOverview(@PathVariable("systemId") systemId: Long,
                     @RequestParam(value = "numberPerPage") limit: Long,
                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodLinesDto> {
-        val offset = currentPageNumber * limit
+        val offset = (currentPageNumber - 1) * limit
         return ResponseEntity.ok(codeLineService.getMethodLinesAboveThreshold(systemId, methodLineThreshold, limit, offset))
     }
 
