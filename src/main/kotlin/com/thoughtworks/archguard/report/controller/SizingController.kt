@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/codeline")
+@RequestMapping("/systems/{systemId}/sizing")
 class SizingController(val sizingService: SizingService) {
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
@@ -31,7 +31,7 @@ class SizingController(val sizingService: SizingService) {
         return ResponseEntity.ok(sizingService.getMethodSizingListAboveLineThreshold(systemId, methodSizingThreshold, limit, offset))
     }
 
-    @GetMapping("/classes/above-threshold")
+    @GetMapping("/classes/above-line-threshold")
     fun getClassesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithLineDto> {
