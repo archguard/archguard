@@ -33,20 +33,24 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     private fun prepareTool() {
         val file = File(systemRoot.toString() + "/DesigniteJava.jar")
-        if (file.exists()) {
-            log.info("DesigniteJava.jar already exists in systemRoot")
-            Files.copy(file.toPath(),
-                    File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
-                    StandardCopyOption.REPLACE_EXISTING)
-        } else if (checkIfExistInLocal()) {
-            log.info("DesigniteJava.jar exists in local")
-            Files.copy(File("DesigniteJava.jar").toPath(),
-                    File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
-                    StandardCopyOption.REPLACE_EXISTING)
-        } else {
-            log.info("Download DesigniteJava.jar from remote")
-            val downloadUrl = "http://$host/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
-            FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/DesigniteJava.jar"))
+        when {
+            file.exists() -> {
+                log.info("DesigniteJava.jar already exists in systemRoot")
+                Files.copy(file.toPath(),
+                        File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
+                        StandardCopyOption.REPLACE_EXISTING)
+            }
+            checkIfExistInLocal() -> {
+                log.info("DesigniteJava.jar exists in local")
+                Files.copy(File("DesigniteJava.jar").toPath(),
+                        File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
+                        StandardCopyOption.REPLACE_EXISTING)
+            }
+            else -> {
+                log.info("Download DesigniteJava.jar from remote")
+                val downloadUrl = "http://$host/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
+                FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/DesigniteJava.jar"))
+            }
         }
 
         val chmod = ProcessBuilder("chmod", "+x", "DesigniteJava.jar")
