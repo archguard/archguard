@@ -5,6 +5,6 @@ data class BadSmell(
         val systemId: Long,
         val entityName: String,
         val line: Int,
-        val description: String,
+        val description: String?,
         val size: Int,
         val type: String)
