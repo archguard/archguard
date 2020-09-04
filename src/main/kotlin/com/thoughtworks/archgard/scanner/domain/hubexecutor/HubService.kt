@@ -29,29 +29,29 @@ class HubService {
     @Autowired
     private lateinit var configureRepository: ConfigureRepository
 
-    fun doScanIfNotRunning(id: Long): Boolean {
+    fun doScanIfNotRunning(id: Long, dbUrl: String): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
-            doScan(id)
+            doScan(id, dbUrl)
             concurrentSet.remove(id)
         }
         return concurrentSet.contains(id)
     }
 
-    fun doScanIfNotRunning(systemOperator: SystemOperator): Boolean {
+    fun doScanIfNotRunning(systemOperator: SystemOperator, dbUrl: String): Boolean {
         if (!concurrentSet.contains(systemOperator.id)) {
             concurrentSet.add(systemOperator.id)
-            doScan(systemOperator)
+            doScan(systemOperator, dbUrl)
             concurrentSet.remove(systemOperator.id)
         }
         return concurrentSet.contains(systemOperator.id)
     }
 
-    fun evaluate(type: String, id: Long): Boolean {
+    fun evaluate(type: String, id: Long, dbUrl: String): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             thread {
-                doScan(id)
+                doScan(id, dbUrl)
                 concurrentSet.remove(id)
                 evaluationReportClient.generate(type)
             }
@@ -59,21 +59,21 @@ class HubService {
         return concurrentSet.contains(id)
     }
 
-    private fun doScan(id: Long) {
+    private fun doScan(id: Long, dbUrl: String) {
         val config = configureRepository.getToolConfigures()
         val systemOperator = analysisService.getSystemOperator(id)
         systemOperator.cloneAndBuildAllRepo()
         systemOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
-            val context = ScanContext(id, repo, compiledProject.buildTool, compiledProject.workspace, config)
+            val context = ScanContext(id, repo, compiledProject.buildTool, compiledProject.workspace, dbUrl, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
         }
     }
 
-    private fun doScan(systemOperator: SystemOperator) {
+    private fun doScan(systemOperator: SystemOperator, dbUrl: String) {
         val config = configureRepository.getToolConfigures()
         systemOperator.compiledProjectMap.forEach { (repo, compiledProject) ->
-            val context = ScanContext(systemOperator.id, repo, compiledProject.buildTool, compiledProject.workspace, config)
+            val context = ScanContext(systemOperator.id, repo, compiledProject.buildTool, compiledProject.workspace, dbUrl, config)
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
         }

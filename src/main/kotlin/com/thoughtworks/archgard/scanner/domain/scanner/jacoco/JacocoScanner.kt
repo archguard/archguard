@@ -20,14 +20,6 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
         return "Jacoco"
     }
 
-    override fun toolListGenerator(): List<ToolConfigure> {
-        val result = ArrayList<ToolConfigure>()
-        val config = HashMap<String, String>()
-        config["available"] = "false"
-        result.add(ToolConfigure(getScannerName(), config))
-        return result
-    }
-
     override fun scan(context: ScanContext) {
         log.info("start scan jacoco exec file")
         sqlScriptRunner.run(DELETE_BUNDLE)

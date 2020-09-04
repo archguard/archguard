@@ -21,15 +21,6 @@ class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
         return "pmd"
     }
 
-    override fun toolListGenerator(): List<ToolConfigure> {
-        val result = ArrayList<ToolConfigure>()
-        val config = HashMap<String, String>()
-        config["available"] = "false"
-        config["reportFile"] = ""
-        result.add(ToolConfigure(getScannerName(), config))
-        return result
-    }
-
     override fun scan(context: ScanContext) {
         val reportFiles = PmdTool(context).getReportFiles()
         val voilations = reportFiles.mapNotNull { mapTo(it, context.systemId) }.flatten()

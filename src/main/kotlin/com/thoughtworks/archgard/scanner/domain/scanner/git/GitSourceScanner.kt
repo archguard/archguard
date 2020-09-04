@@ -21,14 +21,6 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
         return "GitSource"
     }
 
-    override fun toolListGenerator(): List<ToolConfigure> {
-        val result = ArrayList<ToolConfigure>()
-        val config = HashMap<String, String>()
-        config["available"] = "false"
-        result.add(ToolConfigure(getScannerName(), config))
-        return result
-    }
-
     override fun scan(context: ScanContext) {
         log.info("start scan git source")
         val gitScannerTool = GitScannerTool(context.workspace, "master")

@@ -24,7 +24,6 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
                 }
     }
 
-
     fun cloneAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()

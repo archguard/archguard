@@ -2,23 +2,28 @@ package com.thoughtworks.archgard.scanner.controller
 
 import com.thoughtworks.archgard.scanner.domain.hubexecutor.HubService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/")
-class HubController {
+class HubController(@Value("\${spring.datasource.url}") val dbUrl: String,
+                    @Value("\${spring.datasource.username}") val username: String,
+                    @Value("\${spring.datasource.password}") val password: String) {
 
     @Autowired
     private lateinit var hubService: HubService
 
+    val url = dbUrl.replace("://", "://$username:$password@")
+
     @PostMapping("/{id}/reports")
     fun scanModule(@PathVariable("id") id: Long): ModuleScanResponse {
-        return ModuleScanResponse(hubService.doScanIfNotRunning(id))
+        return ModuleScanResponse(hubService.doScanIfNotRunning(id, url))
     }
 
     @PostMapping("/{id}/evaluations")
     fun evaluate(@PathVariable("id") id: Long, @RequestBody evaluation: EvaluationRequest): ModuleScanResponse {
-        return ModuleScanResponse(hubService.evaluate(evaluation.type, id))
+        return ModuleScanResponse(hubService.evaluate(evaluation.type, id, url))
     }
 
     @GetMapping("/{id}/evaluations/status")

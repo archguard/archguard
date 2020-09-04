@@ -19,14 +19,6 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
         return "Statistic"
     }
 
-    override fun toolListGenerator(): List<ToolConfigure> {
-        val result = ArrayList<ToolConfigure>()
-        val config = HashMap<String, String>()
-        config["available"] = "false"
-        result.add(ToolConfigure(getScannerName(), config))
-        return result
-    }
-
     override fun scan(context: ScanContext) {
         log.info("start scan statistic report, workspcase: {}", context.workspace)
         val (classStatistics, methodStatistic) = generateStatistic(context)
