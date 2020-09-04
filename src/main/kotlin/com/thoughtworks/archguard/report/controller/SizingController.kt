@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.domain.service.ClassSizingListWithLineDto
+import com.thoughtworks.archguard.report.domain.service.ClassSizingListWithMethodCountDto
 import com.thoughtworks.archguard.report.domain.service.MethodSizingListDto
 import com.thoughtworks.archguard.report.domain.service.SizingService
 import org.springframework.beans.factory.annotation.Value
@@ -37,6 +38,15 @@ class SizingController(val sizingService: SizingService) {
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithLineDto> {
         val offset = (currentPageNumber - 1) * limit
         return ResponseEntity.ok(sizingService.getClassSizingListAboveLineThreshold(systemId, classSizingThreshold, limit, offset))
+    }
+
+
+    @GetMapping("/classes/above-method-count-threshold")
+    fun getClassesAboveMethodCountThreshold(@PathVariable("systemId") systemId: Long,
+                                            @RequestParam(value = "numberPerPage") limit: Long,
+                                            @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithMethodCountDto> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(sizingService.getClassSizingListAboveMethodCountThreshold(systemId, classMethodCountSizingThreshold, limit, offset))
     }
 
 

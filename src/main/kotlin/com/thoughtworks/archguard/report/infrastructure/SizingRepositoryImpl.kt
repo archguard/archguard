@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.model.ClassSizingWithLine
+import com.thoughtworks.archguard.report.domain.model.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.model.MethodSizing
 import com.thoughtworks.archguard.report.domain.repository.SizingRepository
 import org.jdbi.v3.core.Jdbi
@@ -37,6 +38,23 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount> {
+        return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
+            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
+                    "from MethodStatistic m1 " +
+                    "where m1.createAt = (SELECT MAX(c2.createAt) FROM MethodStatistic c2 WHERE c2.systemId = :systemId) " +
+                    "and m1.systemId = :systemId " +
+                    "group by m1.typeName, m1.packageName, m1.moduleName having methodCount > :threshold " +
+                    "order by methodCount desc limit :limit offset :offset"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ClassSizingWithMethodCount::class.java).list()
+        }
+    }
+
     override fun getMethodSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from MethodStatistic m1 where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId) and m1.systemId = :systemId and m1.`lines`>:threshold"
@@ -58,4 +76,22 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .one()
         }
     }
+
+    override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = "select count(1) from " +
+                    "(select count(1) as methodCount " +
+                    "from MethodStatistic m1 " +
+                    "where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId) " +
+                    "and m1.systemId = :systemId " +
+                    "group by m1.typeName, m1.packageName, m1.moduleName " +
+                    "having methodCount > :threshold) as groupCount"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
 }

@@ -32,5 +32,17 @@ class SizingService(val sizingRepository: SizingRepository) {
         return ClassSizingListWithLineDto(classLinesAboveThreshold, classLinesCount, offset / limit + 1)
     }
 
+    fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): ClassSizingListWithMethodCountDto {
+        if (limit <= 0) {
+            throw WrongLimitException("limit $limit is smaller than 1")
+        }
+        if (offset < 0) {
+            throw WrongOffsetException("offset $offset is smaller than 0")
+        }
+        val classSizingListAboveMethodCountThresholdCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
+        val classSizingListAboveMethodCountThreshold = sizingRepository.getClassSizingListAboveMethodCountThreshold(systemId, threshold, limit, offset)
+        return ClassSizingListWithMethodCountDto(classSizingListAboveMethodCountThreshold, classSizingListAboveMethodCountThresholdCount, offset / limit + 1)
+    }
+
 
 }
