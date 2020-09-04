@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository
 class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
-            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, m1.methodName, m1.`lines` from MethodStatistic m1 " +
+            val sql = "select m1.id, m1.systemId, m1.moduleName, m1.packageName, m1.typeName, m1.methodName, m1.`lines` from MethodStatistic m1 " +
                     "where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId) " +
                     "and m1.systemId = :systemId and m1.`lines`>:threshold order by m1.`lines` desc limit :limit offset :offset"
             it.createQuery(sql)
@@ -26,7 +26,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithLine> {
         return jdbi.withHandle<List<ClassSizingWithLine>, Exception> {
-            val sql = "select c1.systemId, c1.moduleName, c1.packageName, c1.typeName, c1.`lines` from ClassStatistic c1 " +
+            val sql = "select c1.id, c1.systemId, c1.moduleName, c1.packageName, c1.typeName, c1.`lines` from ClassStatistic c1 " +
                     "where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId) " +
                     "and c1.systemId = :systemId and c1.`lines`>:threshold order by c1.`lines` desc limit :limit offset :offset"
             it.createQuery(sql)
@@ -40,7 +40,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount> {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
-            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
+            val sql = "select m1.id, m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
                     "from MethodStatistic m1 " +
                     "where m1.createAt = (SELECT MAX(c2.createAt) FROM MethodStatistic c2 WHERE c2.systemId = :systemId) " +
                     "and m1.systemId = :systemId " +

@@ -29,7 +29,7 @@ class HubRepositoryImpl(val jdbi: Jdbi) : HubRepository {
             orderSqlPiece = "order by c1.fanout desc, c1.fanin desc "
         }
         return jdbi.withHandle<List<ClassHub>, Exception> {
-            val sql = "select c1.systemId, c1.moduleName, c1.packageName, c1.typeName, c1.fanin, c1.fanout " +
+            val sql = "select c1.id, c1.systemId, c1.moduleName, c1.packageName, c1.typeName, c1.fanin, c1.fanout " +
                     "from ClassStatistic c1 " +
                     "where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId) " +
                     "and c1.systemId = :systemId " +

@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.model
 
-data class MethodSizing(val systemId: Long,
+data class MethodSizing(val id: String,
+                        val systemId: Long,
                         val moduleName: String? = null,
                         val packageName: String,
                         val typeName: String,
