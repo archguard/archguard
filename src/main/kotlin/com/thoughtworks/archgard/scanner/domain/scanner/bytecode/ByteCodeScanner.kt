@@ -15,6 +15,10 @@ class ByteCodeScanner() : Scanner {
         return "Byte Code"
     }
 
+    override fun canScan(context: ScanContext): Boolean {
+        return true
+    }
+
     override val toolList: List<ToolConfigure>
         get() = ArrayList()
 
