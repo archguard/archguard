@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.domain.service.ClassSizingListDto
 import com.thoughtworks.archguard.report.domain.service.MethodSizingListDto
 import com.thoughtworks.archguard.report.domain.service.SizingService
 import org.springframework.beans.factory.annotation.Value
@@ -16,12 +17,26 @@ class SizingController(val sizingService: SizingService) {
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
 
+    @Value("\${threshold.class.line}")
+    private val classSizingThreshold: Int = 0
+
+    @Value("\${threshold.class.method.count}")
+    private val classMethodCountSizingThreshold: Int = 0
+
     @GetMapping("/methods/above-threshold")
-    fun getOverview(@PathVariable("systemId") systemId: Long,
-                    @RequestParam(value = "numberPerPage") limit: Long,
-                    @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodSizingListDto> {
+    fun getMethodsAboveThreshold(@PathVariable("systemId") systemId: Long,
+                                 @RequestParam(value = "numberPerPage") limit: Long,
+                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodSizingListDto> {
         val offset = (currentPageNumber - 1) * limit
         return ResponseEntity.ok(sizingService.getMethodLinesAboveThreshold(systemId, methodSizingThreshold, limit, offset))
+    }
+
+    @GetMapping("/classes/above-threshold")
+    fun getClassesAboveThreshold(@PathVariable("systemId") systemId: Long,
+                                 @RequestParam(value = "numberPerPage") limit: Long,
+                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListDto> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(sizingService.getClassLinesAboveThreshold(systemId, classSizingThreshold, limit, offset))
     }
 
 
