@@ -88,6 +88,6 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    data class CocaBadSmellItem(val EntityName: String, val Line: Int, val Description: String, val Size: Int)
+    data class CocaBadSmellItem(val EntityName: String, val Line: Int, val Description: String?, val Size: Int)
 
 }

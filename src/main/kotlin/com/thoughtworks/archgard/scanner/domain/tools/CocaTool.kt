@@ -24,10 +24,10 @@ class CocaTool(val systemRoot: File) : TestBadSmellReport {
         val system = System.getProperty("os.name").toLowerCase()
         if (system.indexOf("mac") >= 0) {
             log.info("copy coca_macos jar tool from local")
-            FileOperator.copyTo(File("coca_macos"), File(systemRoot.toString() + "/coca"))
+            FileOperator.copyTo(File("coca_macos"), File("$systemRoot/coca"))
         } else {
             log.info("copy coca_linux jar tool from local")
-            FileOperator.copyTo(File("coca_linux"), File(systemRoot.toString() + "/coca"))
+            FileOperator.copyTo(File("coca_linux"), File("$systemRoot/coca"))
         }
         val chmod = ProcessBuilder("chmod", "+x", "coca")
         chmod.directory(systemRoot)
@@ -46,7 +46,7 @@ class CocaTool(val systemRoot: File) : TestBadSmellReport {
     fun getBadSmellReport(): File? {
         prepareTool()
         scan(listOf("./coca", "bs", "-s", "type"))
-        val report = File(systemRoot.toString() + "/coca_reporter/bs.json")
+        val report = File("$systemRoot/coca_reporter/bs.json")
         return if (report.exists()) {
             report
         } else {
@@ -58,7 +58,7 @@ class CocaTool(val systemRoot: File) : TestBadSmellReport {
     override fun getTestBadSmellReport(): File? {
         prepareTool()
         scan(listOf("./coca", "tbs"))
-        val report = File(systemRoot.toString() + "/coca_reporter/tbs.json")
+        val report = File("$systemRoot/coca_reporter/tbs.json")
         return if (report.exists()) {
             report
         } else {
@@ -80,7 +80,7 @@ class CocaTool(val systemRoot: File) : TestBadSmellReport {
                     "http://$host/job/coca/lastSuccessfulBuild/artifact/coca_linux"
                 }
 
-        FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/coca"))
+        FileOperator.download(URL(downloadUrl), File("$systemRoot/coca"))
         val chmod = ProcessBuilder("chmod", "+x", "coca")
         chmod.directory(systemRoot)
         chmod.start().waitFor()
