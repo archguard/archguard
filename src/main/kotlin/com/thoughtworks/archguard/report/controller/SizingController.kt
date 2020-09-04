@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.service.CodeLineService
-import com.thoughtworks.archguard.report.domain.service.MethodLinesDto
+import com.thoughtworks.archguard.report.domain.service.MethodSizingListDto
+import com.thoughtworks.archguard.report.domain.service.SizingService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/systems/{systemId}/codeline")
-class CodeLineController(val codeLineService: CodeLineService) {
+class SizingController(val sizingService: SizingService) {
     @Value("\${threshold.method.line}")
-    private val methodLineThreshold: Int = 0
+    private val methodSizingThreshold: Int = 0
 
     @GetMapping("/methods/above-threshold")
     fun getOverview(@PathVariable("systemId") systemId: Long,
                     @RequestParam(value = "numberPerPage") limit: Long,
-                    @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodLinesDto> {
+                    @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodSizingListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(codeLineService.getMethodLinesAboveThreshold(systemId, methodLineThreshold, limit, offset))
+        return ResponseEntity.ok(sizingService.getMethodLinesAboveThreshold(systemId, methodSizingThreshold, limit, offset))
     }
 
 

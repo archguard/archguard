@@ -1,17 +1,14 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.web.WebAppConfiguration
 
 @SpringBootTest
 @WebAppConfiguration
 internal class CodeLineRepositoryImplTest {
     @Autowired
-    lateinit var codeLineRepositoryImpl: CodeLineRepositoryImpl
+    lateinit var codeLineRepositoryImpl: SizingRepositoryImpl
 
     /**
      *   H2 似乎不支持日期比较。。。
