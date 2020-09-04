@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.bytecode
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
+import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.JavaByteCodeTool
 import org.slf4j.LoggerFactory
@@ -13,6 +14,9 @@ class ByteCodeScanner() : Scanner {
     override fun getScannerName(): String {
         return "Byte Code"
     }
+
+    override val toolList: List<ToolConfigure>
+        get() = ArrayList()
 
     override fun scan(context: ScanContext) {
         val javaByteCodeTool = JavaByteCodeTool(context.workspace, context.dbUrl, context.systemId)

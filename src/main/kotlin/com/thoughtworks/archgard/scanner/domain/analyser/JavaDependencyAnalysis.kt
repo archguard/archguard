@@ -45,11 +45,8 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
     fun analyse(systemId: Long) {
         log.info("start scan java analysis")
         val url = dbUrl.replace("://", "://$username:$password@")
-        val systemOperator = analysisService.getSystemOperator(systemId)
 
-        systemOperator.cloneAndBuildAllRepo()
-
-        hubService.doScanIfNotRunning(systemOperator, url);
+        hubService.doScanIfNotRunning(systemId, url);
         log.info("finished level 1 scanners")
 
         analysisModuleClient.autoDefine(systemId)
