@@ -2,6 +2,12 @@ package com.thoughtworks.archguard.report.domain.sizing
 
 
 interface SizingRepository {
+    fun getModuleSizingListAbovePackageCountThresholdCount(systemId: Long, threshold: Int): Long
+    fun getModuleSizingListAbovePackageCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing>
+
+    fun getModuleSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
+    fun getModuleSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing>
+
     fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int): Long
     fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
 

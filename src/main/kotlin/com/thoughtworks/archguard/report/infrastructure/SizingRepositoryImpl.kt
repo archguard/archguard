@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.infrastructure
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
+import com.thoughtworks.archguard.report.domain.model.ModuleSizing
 import com.thoughtworks.archguard.report.domain.model.PackageSizing
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.jdbi.v3.core.Jdbi
@@ -11,6 +12,92 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
+    override fun getModuleSizingListAbovePackageCountThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(1)
+                    from (
+                             select count(distinct packageName) packageCount
+                             from ClassStatistic c1
+                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                             group by c1.systemId, c1.moduleName
+                         ) as c
+                    where c.packageCount > :threshold
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getModuleSizingListAbovePackageCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing> {
+        return jdbi.withHandle<List<ModuleSizing>, Exception> {
+            val sql = """
+                select systemId, moduleName, packageCount, classCount, `lines`
+                    from (
+                             select c1.systemId, c1.moduleName, count(distinct packageName) packageCount, count(1) classCount, sum(c1.`lines`) `lines`
+                             from ClassStatistic c1
+                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                             group by c1.systemId, c1.moduleName
+                             order by `packageCount` desc
+                             limit :limit offset :offset
+                         ) as c
+                    where c.packageCount > :threshold;
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ModuleSizing::class.java).list()
+        }
+    }
+
+    override fun getModuleSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(1)
+                    from (
+                             select  sum(c1.`lines`) `lines`
+                             from ClassStatistic c1
+                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                             group by c1.systemId, c1.moduleName
+                         ) as c
+                    where c.lines > :threshold;
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getModuleSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing> {
+        return jdbi.withHandle<List<ModuleSizing>, Exception> {
+            val sql = """
+                select systemId, moduleName, packageCount, classCount, `lines`
+                    from (
+                             select c1.systemId, c1.moduleName, count(distinct packageName) packageCount, count(1) classCount, sum(c1.`lines`) `lines`
+                             from ClassStatistic c1
+                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                             group by c1.systemId, c1.moduleName
+                             order by `lines` desc
+                             limit :limit offset :offset
+                         ) as c
+                    where c.lines > :threshold;
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ModuleSizing::class.java).list()
+        }
+    }
+
     override fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
