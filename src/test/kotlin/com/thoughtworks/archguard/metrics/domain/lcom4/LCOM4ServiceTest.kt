@@ -29,7 +29,7 @@ internal class LCOM4ServiceTest {
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo, classMetricRepository)
+        lcoM4Service = LCOM4Service(jClassRepository, jMethodRepo)
     }
 
     @Test

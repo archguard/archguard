@@ -4,14 +4,12 @@ import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.metrics.domain.ClassLCOM4
-import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import com.thoughtworks.archguard.module.domain.graph.GraphStore
 import org.springframework.stereotype.Service
 
 @Service
 class LCOM4Service(val jClassRepository: JClassRepository,
-                   val jMethodRepository: JMethodRepository,
-                   val classMetricRepository: ClassMetricRepository) {
+                   val jMethodRepository: JMethodRepository) {
 
     fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4> {
         val jClasses = jClassRepository.getJClassesHasModules(systemId)
@@ -39,10 +37,5 @@ class LCOM4Service(val jClassRepository: JClassRepository,
             methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(method.toVO(), it.toVO()) }
         }
         return graphStore
-    }
-
-    fun getClassLCOM4ExceedThresholdWithPaging(systemId: Long, threshold: Int,
-                                               limitPerPage: Int, numOfPage: Int): List<ClassLCOM4> {
-        return classMetricRepository.getClassLCOM4ExceedThresholdWithPaging(systemId, threshold.toInt(), limitPerPage, numOfPage);
     }
 }

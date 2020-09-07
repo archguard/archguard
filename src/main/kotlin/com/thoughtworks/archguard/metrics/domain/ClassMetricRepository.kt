@@ -5,9 +5,6 @@ import com.thoughtworks.archguard.metrics.appl.ClassMetricPO
 interface ClassMetricRepository {
     fun insertOrUpdateClassMetricPOs(systemId: Long, classMetricPOs: List<ClassMetricPO>)
 
-    fun getClassLCOM4ExceedThresholdWithPaging(systemId: Long, threshold: Int,
-                                               limitPerPage: Int, numOfPage: Int): List<ClassLCOM4>
-
     fun getClassDitExceedThreshold(systemId: Long, threshold: Int,
                                    limitPerPage: Int, numOfPage: Int): List<ClassDit>
 }
