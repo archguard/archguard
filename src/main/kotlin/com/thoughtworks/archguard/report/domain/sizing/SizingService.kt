@@ -7,6 +7,13 @@ import org.springframework.stereotype.Service
 @Service
 class SizingService(val sizingRepository: SizingRepository) {
 
+    fun getPackageClassCountSizingAboveThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): PackagesSizingListDto {
+        checkLimitAndOffset(limit, offset)
+        val count = sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, threshold)
+        val packageLinesAboveThreshold = sizingRepository.getPackageSizingListAboveClassCountThreshold(systemId, threshold, limit, offset)
+        return PackagesSizingListDto(packageLinesAboveThreshold, count, offset / limit + 1)
+    }
+
     fun getPackageSizingListAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): PackagesSizingListDto {
         checkLimitAndOffset(limit, offset)
         val count = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, threshold)
