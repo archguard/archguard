@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.report.infrastructure
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
-import com.thoughtworks.archguard.report.domain.model.ModuleSizing
-import com.thoughtworks.archguard.report.domain.model.PackageSizing
+import com.thoughtworks.archguard.report.domain.sizing.ModuleSizing
+import com.thoughtworks.archguard.report.domain.sizing.PackageSizing
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository

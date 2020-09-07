@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.report.controller
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingListWithLineDto
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingListWithMethodCountDto
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizingListDto
-import com.thoughtworks.archguard.report.domain.service.ModulesSizingListDto
-import com.thoughtworks.archguard.report.domain.service.PackagesSizingListDto
+import com.thoughtworks.archguard.report.domain.sizing.ModulesSizingListDto
+import com.thoughtworks.archguard.report.domain.sizing.PackagesSizingListDto
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
