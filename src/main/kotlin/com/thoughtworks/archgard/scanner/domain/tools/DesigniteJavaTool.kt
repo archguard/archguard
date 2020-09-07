@@ -68,15 +68,23 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     private fun getTargetScannedDirections(workspace: File): List<String> {
         val target = workspace.walkTopDown()
-                .filter { f -> f.absolutePath.endsWith("pom.xml") || f.absolutePath.endsWith("build.gradle") }
-                .map { f -> f.parentFile.absolutePath }
+                .filter { f -> checkIsSubModulePath(f) }
+                .map { f -> f.absolutePath }
                 .distinct()
                 .toList()
-        if (target.size > 1) {
-            return target.filter { it != workspace.absolutePath }
+        return if (target.size > 1) {
+            target.filter { it != workspace.absolutePath }
         } else {
-            return target
+            target
         }
+    }
+
+    private fun checkIsSubModulePath(f: File): Boolean {
+        val list = f.list() ?: return false
+        if (list.contains("src") && list.any { it.contains("pom.xml") || it.contains("build.gradle") }) {
+            return true
+        }
+        return false
     }
 
 }
