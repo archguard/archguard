@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.model
+package com.thoughtworks.archguard.report.domain.hub
 
 data class ClassHub(val id: String,
                     val systemId: Long,

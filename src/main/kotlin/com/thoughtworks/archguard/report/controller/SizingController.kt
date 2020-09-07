@@ -1,16 +1,12 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.service.ClassSizingListWithLineDto
-import com.thoughtworks.archguard.report.domain.service.ClassSizingListWithMethodCountDto
-import com.thoughtworks.archguard.report.domain.service.MethodSizingListDto
-import com.thoughtworks.archguard.report.domain.service.SizingService
+import com.thoughtworks.archguard.report.domain.sizing.ClassSizingListWithLineDto
+import com.thoughtworks.archguard.report.domain.sizing.ClassSizingListWithMethodCountDto
+import com.thoughtworks.archguard.report.domain.sizing.MethodSizingListDto
+import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/systems/{systemId}/sizing")

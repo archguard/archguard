@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.model
+package com.thoughtworks.archguard.report.domain.sizing
 
 data class ClassSizingWithMethodCount(val id: String,
                                       val systemId: Long,

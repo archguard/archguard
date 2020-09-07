@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import com.thoughtworks.archguard.report.domain.model.ClassHub
-import com.thoughtworks.archguard.report.domain.repository.HubRepository
+import com.thoughtworks.archguard.report.domain.hub.ClassHub
+import com.thoughtworks.archguard.report.domain.hub.HubRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 

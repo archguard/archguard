@@ -1,6 +1,5 @@
-package com.thoughtworks.archguard.report.domain.service
+package com.thoughtworks.archguard.report.domain.hub
 
-import com.thoughtworks.archguard.report.domain.repository.HubRepository
 import com.thoughtworks.archguard.report.exception.WrongLimitException
 import com.thoughtworks.archguard.report.exception.WrongOffsetException
 import org.springframework.stereotype.Service

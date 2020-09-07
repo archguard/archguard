@@ -1,8 +1,4 @@
-package com.thoughtworks.archguard.report.domain.repository
-
-import com.thoughtworks.archguard.report.domain.model.ClassSizingWithLine
-import com.thoughtworks.archguard.report.domain.model.ClassSizingWithMethodCount
-import com.thoughtworks.archguard.report.domain.model.MethodSizing
+package com.thoughtworks.archguard.report.domain.sizing
 
 
 interface SizingRepository {

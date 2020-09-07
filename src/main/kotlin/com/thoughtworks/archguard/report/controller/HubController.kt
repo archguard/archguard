@@ -1,14 +1,10 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.service.ClassHubListDto
-import com.thoughtworks.archguard.report.domain.service.HubService
+import com.thoughtworks.archguard.report.domain.hub.ClassHubListDto
+import com.thoughtworks.archguard.report.domain.hub.HubService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/systems/{systemId}/hub")
