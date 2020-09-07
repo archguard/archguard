@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.infrastructure
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
+import com.thoughtworks.archguard.report.domain.model.PackageSizing
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
@@ -10,6 +11,44 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
+    override fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(1)
+                    from (select count(1)
+                          from ClassStatistic c1
+                          where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                            and c1.`lines` > :threshold
+                          group by c1.packageName, c1.moduleName) as linesCount
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
+        return jdbi.withHandle<List<PackageSizing>, Exception> {
+            val sql = """
+                select c1.systemId, c1.packageName, c1.moduleName, sum(c1.`lines`) `lines`
+                from ClassStatistic c1
+                where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                and c1.`lines` > :threshold
+                group by c1.systemId, c1.packageName, c1.moduleName
+                order by `lines` desc
+                limit :limit offset :offset
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(PackageSizing::class.java).list()
+        }
+    }
+
     override fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select m1.id, m1.systemId, m1.moduleName, m1.packageName, m1.typeName, m1.methodName, m1.`lines` from MethodStatistic m1 " +

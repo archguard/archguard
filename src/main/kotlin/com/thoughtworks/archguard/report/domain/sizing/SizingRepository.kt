@@ -2,6 +2,9 @@ package com.thoughtworks.archguard.report.domain.sizing
 
 
 interface SizingRepository {
+    fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
+    fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
+
     fun getMethodSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
     fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing>
 
