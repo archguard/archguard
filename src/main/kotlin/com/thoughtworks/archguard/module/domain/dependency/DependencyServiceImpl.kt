@@ -32,11 +32,8 @@ class DependencyServiceImpl : DependencyService {
     }
 
     override fun getAllMethodDependencies(systemId: Long, caller: String, callee: String): List<Dependency<JMethodVO>> {
-        val callerLogicModule = logicModuleRepository.get(systemId, caller)
-        val calleeLogicModule = logicModuleRepository.get(systemId, callee)
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
-
-        return getAllMethodDependencies(systemId).filter { inModule(it.caller, callerLogicModule, logicModules) && inModule(it.callee, calleeLogicModule, logicModules) }
+        val methodDependencies = getAllMethodDependencies(systemId)
+        return methodDependencies.filter { it.caller.clazz.module == caller && it.callee.clazz.module == callee }
     }
 
     override fun getAllWithFullNameStart(systemId: Long, callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>> {
@@ -49,7 +46,8 @@ class DependencyServiceImpl : DependencyService {
     }
 
     private fun inModule(method: JMethodVO, logicModule: LogicModule, logicModules: List<LogicModule>): Boolean {
-        return getModule(logicModules, method.clazz).contains(logicModule)
+        val module = getModule(logicModules, method.clazz)
+        return module.contains(logicModule)
     }
 
 }
