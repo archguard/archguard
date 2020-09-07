@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.metrics.domain.dit
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.metrics.domain.ClassDit
-import com.thoughtworks.archguard.metrics.domain.ClassLCOM4
 import com.thoughtworks.archguard.metrics.domain.ClassMetricRepository
 import org.springframework.stereotype.Service
 
@@ -37,10 +36,5 @@ class DitService(val repo: JClassRepository,
             System.err.println("Inheritance depth analysis step skipped due to memory overflow.")
             0
         }
-    }
-
-    fun getClassDitExceedThreshold(systemId: Long, threshold: Int,
-                                   limitPerPage: Int, numOfPage: Int): List<ClassDit> {
-        return classMetricRepository.getClassDitExceedThreshold(systemId, threshold.toInt(), limitPerPage, numOfPage);
     }
 }

@@ -1,0 +1,41 @@
+package com.thoughtworks.archguard.report.infrastructure
+
+import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritance
+import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
+import org.jdbi.v3.core.Jdbi
+import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
+import org.springframework.stereotype.Repository
+
+@Repository
+class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository {
+
+    override fun getDitAboveThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = "select count(c.id) from JClass c inner join class_metrics m on m.class_id = c.id " +
+                    "where c.system_id =:system_id and m.dit > :dit"
+            it.createQuery(sql)
+                    .bind("system_id", systemId)
+                    .bind("dit", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getDitAboveThresholdList(systemId: Long, threshold: Int, limit: Long, offset: Long): List<DeepInheritance> {
+        val sql = "select c.id, c.system_id, c.name, c.module, m.dit from JClass c " +
+                "inner join class_metrics m on m.class_id = c.id " +
+                "where c.system_id =:system_id and m.dit > :dit " +
+                "order by m.dit desc LIMIT :limit OFFSET :offset"
+        val classWithLCOM4List = jdbi.withHandle<List<ClassWithDitPO>, Exception> {
+            it.registerRowMapper(ConstructorMapper.factory(ClassWithDitPO::class.java))
+            it.createQuery(sql)
+                    .bind("system_id", systemId)
+                    .bind("dit", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ClassWithDitPO::class.java)
+                    .list()
+        }
+        return classWithLCOM4List.map { it.toDeepInheritance() }
+    }
+}
