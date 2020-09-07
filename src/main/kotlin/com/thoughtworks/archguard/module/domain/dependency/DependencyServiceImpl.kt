@@ -1,11 +1,9 @@
 package com.thoughtworks.archguard.module.domain.dependency
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
-import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.module.domain.plugin.PluginManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,11 +41,6 @@ class DependencyServiceImpl : DependencyService {
 
     override fun getAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
         return getAllMethodDependencies(systemId).map { Dependency(it.caller.clazz, it.callee.clazz) }
-    }
-
-    private fun inModule(method: JMethodVO, logicModule: LogicModule, logicModules: List<LogicModule>): Boolean {
-        val module = getModule(logicModules, method.clazz)
-        return module.contains(logicModule)
     }
 
 }
