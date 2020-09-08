@@ -5,8 +5,8 @@ import com.thoughtworks.archgard.scanner2.domain.DitService
 import com.thoughtworks.archgard.scanner2.domain.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.NocService
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
+import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
-import com.thoughtworks.archgard.scanner2.domain.repository.MetricRepository
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ class MetricPersistApplService(val abcService: AbcService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
                                val jClassRepository: JClassRepository,
-                               val metricRepository: MetricRepository,
+                               val classMetricRepository: ClassMetricRepository,
                                val influxDBClient: InfluxDBClient) {
 
     fun persistLevel2Metrics(systemId: Long) {
@@ -35,7 +35,7 @@ class MetricPersistApplService(val abcService: AbcService,
                     abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!]))
         }
 
-        metricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
+        classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
         influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
     }
 }

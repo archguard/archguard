@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.infrastructure
+package com.thoughtworks.archgard.scanner2.infrastructure.persist
 
 import com.thoughtworks.archgard.scanner2.domain.model.ClazzType
 import com.thoughtworks.archgard.scanner2.domain.model.MethodType

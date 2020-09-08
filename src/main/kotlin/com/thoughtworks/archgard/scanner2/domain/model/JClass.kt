@@ -1,12 +1,9 @@
 package com.thoughtworks.archgard.scanner2.domain.model
 
-import org.slf4j.LoggerFactory
-
 /**
  * JClass is an Entity, so it must have an id.
  */
 open class JClass(val id: String, val name: String, val module: String) {
-    private val log = LoggerFactory.getLogger(JClass::class.java)
 
     var methods: List<JMethod> = ArrayList()
     var callees: List<ClassRelation> = ArrayList()

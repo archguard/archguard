@@ -3,6 +3,6 @@ package com.thoughtworks.archgard.scanner2.domain.repository
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 
 
-interface MetricRepository {
+interface ClassMetricRepository {
     fun insertOrUpdateClassMetric(systemId: Long, classMetricPOs: List<ClassMetric>)
 }

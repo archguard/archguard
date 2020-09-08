@@ -15,10 +15,6 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
         this.methodTypes.add(methodType)
     }
 
-    fun isAbstract(): Boolean {
-        return methodTypes.contains(MethodType.ABSTRACT_METHOD)
-    }
-
     fun toVO(): JMethodVO {
         val jMethodVO = JMethodVO(name, clazz, module, returnType, argumentTypes)
         jMethodVO.id = id
