@@ -37,6 +37,6 @@ class CouplingController(val dataClumpsService: DataClumpsService,
 
     @GetMapping("/")
     fun getAllCouplingData(@PathVariable("systemId") systemId: Long): ResponseEntity<List<ClassCoupling>> {
-        return ResponseEntity.ok(classCouplingRepository.getCoupling(systemId))
+        return ResponseEntity.ok(classCouplingRepository.getAllCoupling(systemId))
     }
 }
