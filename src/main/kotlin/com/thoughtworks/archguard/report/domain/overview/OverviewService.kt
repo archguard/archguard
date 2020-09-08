@@ -1,16 +1,16 @@
 package com.thoughtworks.archguard.report.domain.overview
 
+import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
-import com.thoughtworks.archguard.report.domain.hub.HubRepository
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
 class OverviewService(val sizingRepository: SizingRepository,
-                      val hubRepository: HubRepository,
                       val dataClumpsRepository: DataClumpsRepository,
+                      val couplingRepository: CouplingRepository,
                       val deepInheritanceRepository: DeepInheritanceRepository) {
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
@@ -65,7 +65,7 @@ class OverviewService(val sizingRepository: SizingRepository,
     }
 
     private fun getClassOverSizingOverview(systemId: Long): OverviewItem {
-        val methodCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classSizingThreshold);
+        val methodCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold);
         val lineCount = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold)
 
         return OverviewItem(BadSmell.CLASS_OVER_SIZING, BadSmellCategory.OVER_SIZING, methodCount + lineCount)
@@ -84,7 +84,7 @@ class OverviewService(val sizingRepository: SizingRepository,
     }
 
     private fun getClassHubOverview(systemId: Long): OverviewItem {
-        val count = hubRepository.getClassAboveHubThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
+        val count = couplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
         return OverviewItem(BadSmell.COUPLING_CLASS_HUB, BadSmellCategory.COUPLING, count)
     }
 
