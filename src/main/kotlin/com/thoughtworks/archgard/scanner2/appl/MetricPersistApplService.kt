@@ -2,9 +2,9 @@ package com.thoughtworks.archgard.scanner2.appl
 
 import com.thoughtworks.archgard.scanner2.domain.*
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
-import com.thoughtworks.archgard.scanner2.infrastructure.persist.ClassMetricPO
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
+import com.thoughtworks.archgard.scanner2.infrastructure.persist.ClassMetricPO
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
