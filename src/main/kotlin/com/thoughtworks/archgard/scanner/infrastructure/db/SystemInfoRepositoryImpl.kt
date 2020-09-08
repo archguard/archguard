@@ -31,6 +31,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "username = :username, " +
                     "password = :password, " +
                     "repo_type = :repoType, " +
+                    "scanned = :scanned, " +
                     "updated_time = NOW() " +
                     "where id = :id")
                     .bindBean(systemInfo)
