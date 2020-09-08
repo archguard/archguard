@@ -29,8 +29,10 @@ internal class DeepInheritanceRepositoryImplTest {
                 .getDitAboveThresholdList(1, 1, 1, 0)
         kotlin.test.assertEquals(1, classDitExceedThreshold.size)
         kotlin.test.assertEquals(3, classDitExceedThreshold.get(0).dit)
-        kotlin.test.assertEquals("org.apache.dubbo.demo.DemoService",
-                classDitExceedThreshold.get(0).classFullName)
+        kotlin.test.assertEquals("org.apache.dubbo.demo",
+                classDitExceedThreshold.get(0).packageName)
+        kotlin.test.assertEquals("DemoService",
+                classDitExceedThreshold.get(0).typeName)
         kotlin.test.assertEquals("dubbo-demo-interface",
                 classDitExceedThreshold.get(0).moduleName)
     }
