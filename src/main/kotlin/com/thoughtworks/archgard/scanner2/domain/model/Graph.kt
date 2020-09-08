@@ -1,5 +1,7 @@
 package com.thoughtworks.archgard.scanner2.domain.model
 
+import com.thoughtworks.archgard.scanner2.domain.DfsUtil
+
 class GraphStore {
     private val nodes = mutableListOf<Node>()
     private var edges = mutableListOf<Edge>()
@@ -44,7 +46,7 @@ class GraphStore {
     }
 
     fun getConnectivityCount(): Int {
-        return DfsService(this.toUndirectedGraph()).getConnectivityCount()
+        return DfsUtil(this.toUndirectedGraph()).getConnectivityCount()
     }
 
     fun toUndirectedGraph(): Graph {

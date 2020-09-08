@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.domain
+package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.model.Edge
 import com.thoughtworks.archgard.scanner2.domain.model.JClass

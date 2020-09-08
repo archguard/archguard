@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.domain
+package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.model.GraphStore
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
@@ -32,7 +32,7 @@ class LCOM4Service(val jClassRepository: JClassRepository,
     }
 
     fun getLCOM4Graph(jClass: JClass): GraphStore {
-        val graphStore: GraphStore = GraphStore()
+        val graphStore = GraphStore()
         val methods = jClass.methods
         methods.forEach { method ->
             method.fields.forEach { graphStore.addEdge(method.toVO(), it) }

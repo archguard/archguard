@@ -12,7 +12,7 @@ class InfluxDBClient(@Value("\${influxdb.url}") val url: String) {
 
     fun save(requestBody: String) {
         RestTemplate().postForObject("$url/api/v2/write?bucket=db0&precision=s", requestBody, Void::class.java)
-        log.info("save metrics to InfluxDB")
+        log.info("Saved metrics to InfluxDB")
     }
 }
 

@@ -1,9 +1,12 @@
-package com.thoughtworks.archgard.scanner2.domain.model
+package com.thoughtworks.archgard.scanner2.domain
+
+import com.thoughtworks.archgard.scanner2.domain.model.Edge
+import com.thoughtworks.archgard.scanner2.domain.model.Graph
 
 /**
  * 将无向图转换为邻接矩阵表示的图。之后进行DFS，计算连通子图个数
  */
-class DfsService(undirectedGraph: Graph) {
+class DfsUtil(undirectedGraph: Graph) {
     private var vertices: Array<String> = undirectedGraph.nodes.map { it.getNodeId() }.toTypedArray()
     private var arcs: Array<IntArray>
     private var vexnum = 0

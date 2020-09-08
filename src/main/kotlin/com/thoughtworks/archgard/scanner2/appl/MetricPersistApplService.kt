@@ -1,12 +1,12 @@
 package com.thoughtworks.archgard.scanner2.appl
 
-import com.thoughtworks.archgard.scanner2.domain.AbcService
-import com.thoughtworks.archgard.scanner2.domain.DitService
-import com.thoughtworks.archgard.scanner2.domain.LCOM4Service
-import com.thoughtworks.archgard.scanner2.domain.NocService
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.service.AbcService
+import com.thoughtworks.archgard.scanner2.domain.service.DitService
+import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
+import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
 import org.springframework.stereotype.Service
@@ -21,7 +21,6 @@ class MetricPersistApplService(val abcService: AbcService,
                                val influxDBClient: InfluxDBClient) {
 
     fun persistLevel2Metrics(systemId: Long) {
-
         val jClasses = jClassRepository.getJClassesHasModules(systemId)
 
         val abcMap = abcService.calculate(systemId, jClasses)
