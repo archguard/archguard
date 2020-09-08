@@ -1,7 +1,12 @@
 package com.thoughtworks.archgard.scanner2.appl
 
-import com.thoughtworks.archgard.scanner2.domain.*
+import com.thoughtworks.archgard.scanner2.domain.AbcService
+import com.thoughtworks.archgard.scanner2.domain.DitService
+import com.thoughtworks.archgard.scanner2.domain.LCOM4Service
+import com.thoughtworks.archgard.scanner2.domain.NocService
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
+import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.MetricRepository
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
 import org.springframework.stereotype.Service

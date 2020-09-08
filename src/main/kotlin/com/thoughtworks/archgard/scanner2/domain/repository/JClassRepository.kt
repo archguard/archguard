@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.domain
+package com.thoughtworks.archgard.scanner2.domain.repository
 
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.JField

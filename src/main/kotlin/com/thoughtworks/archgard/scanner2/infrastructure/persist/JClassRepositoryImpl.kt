@@ -1,8 +1,8 @@
 package com.thoughtworks.archgard.scanner2.infrastructure.persist
 
-import com.thoughtworks.archgard.scanner2.domain.JClassRepository
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.JField
+import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archgard.scanner2.infrastructure.TypeMap
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

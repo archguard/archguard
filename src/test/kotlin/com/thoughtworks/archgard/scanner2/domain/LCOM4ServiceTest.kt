@@ -4,6 +4,8 @@ import com.thoughtworks.archgard.scanner2.domain.model.Edge
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.JField
 import com.thoughtworks.archgard.scanner2.domain.model.JMethod
+import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat

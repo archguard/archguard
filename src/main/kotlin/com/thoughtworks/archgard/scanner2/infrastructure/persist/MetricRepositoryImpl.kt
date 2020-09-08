@@ -1,7 +1,7 @@
 package com.thoughtworks.archgard.scanner2.infrastructure.persist
 
-import com.thoughtworks.archgard.scanner2.domain.MetricRepository
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
+import com.thoughtworks.archgard.scanner2.domain.repository.MetricRepository
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository

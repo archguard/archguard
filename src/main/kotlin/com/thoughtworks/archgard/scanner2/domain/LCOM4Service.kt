@@ -2,6 +2,8 @@ package com.thoughtworks.archgard.scanner2.domain
 
 import com.thoughtworks.archgard.scanner2.domain.model.GraphStore
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
