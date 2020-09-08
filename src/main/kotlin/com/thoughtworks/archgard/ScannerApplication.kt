@@ -2,6 +2,7 @@ package com.thoughtworks.archgard
 
 import com.thoughtworks.archgard.scanner.domain.hubexecutor.ScannerManager
 import com.thoughtworks.archgard.scanner.infrastructure.db.*
+import com.thoughtworks.archgard.scanner2.infrastructure.persist.ClassMetricsDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
@@ -72,6 +73,11 @@ class ScannerApplication {
     @Bean
     fun configDao(jdbi: Jdbi): ConfigDao {
         return jdbi.onDemand(ConfigDao::class.java)
+    }
+
+    @Bean
+    fun classMetricsDao(jdbi: Jdbi): ClassMetricsDao {
+        return jdbi.onDemand(ClassMetricsDao::class.java)
     }
 }
 
