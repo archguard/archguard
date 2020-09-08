@@ -1,7 +1,7 @@
 package com.thoughtworks.archgard.scanner2.domain
 
-import com.thoughtworks.archgard.scanner2.domain.model.ClassAbc
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 /**
@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service
  * is the number of members of others types it directly uses in the body of its methods.
  */
 @Service
-class AbcService(val jMethodRepository: JMethodRepository,
-                 val jClassRepository: JClassRepository) {
+class AbcService(val jMethodRepository: JMethodRepository) {
 
-    fun calculateAllAbc(systemId: Long): List<ClassAbc> {
+    private val log = LoggerFactory.getLogger(AbcService::class.java)
 
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+    fun calculateAllAbc(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name) }
 
-        val classAbcList = mutableListOf<ClassAbc>()
-        jClasses.forEach { classAbcList.add(ClassAbc(it.toVO(), this.calculateAbc(it))) }
+        val abcMap: MutableMap<String, Int> = mutableMapOf()
+        jClasses.forEach { abcMap[it.toVO().id!!] = this.calculateAbc(it) }
+        log.info("Finish calculate all ABC, count: {}", abcMap.keys.size)
 
-        return classAbcList
+        return abcMap
     }
 
     fun calculateAbc(jClass: JClass): Int {

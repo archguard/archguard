@@ -1,12 +1,12 @@
 package com.thoughtworks.archgard.scanner2.domain
 
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class DitServiceTest{
     private lateinit var service: DitService
@@ -21,7 +21,7 @@ internal class DitServiceTest{
     }
 
     @Test
-    fun `should get DepthOfInheritance`() {
+    fun should_get_depthOfInheritance() {
         //given
         val systemId: Long = 1
         val child = JClass("any", "Child", "module")

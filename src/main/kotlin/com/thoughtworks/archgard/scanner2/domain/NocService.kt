@@ -1,17 +1,20 @@
 package com.thoughtworks.archgard.scanner2.domain
 
-import com.thoughtworks.archgard.scanner2.domain.model.ClassNoc
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class NocService(val jClassRepository: JClassRepository) {
 
-    fun calculateAllNoc(systemId: Long): List<ClassNoc> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
-        val classNocList = mutableListOf<ClassNoc>()
-        jClasses.forEach { classNocList.add(ClassNoc(it.toVO(), getNoc(systemId, it))) }
-        return classNocList
+    private val log = LoggerFactory.getLogger(NocService::class.java)
+
+    fun calculateAllNoc(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
+        val nocMap: MutableMap<String, Int> = mutableMapOf()
+        jClasses.forEach { nocMap[it.toVO().id!!] = getNoc(systemId, it) }
+        log.info("Finish calculate all noc, count: {}", nocMap.keys.size)
+
+        return nocMap
     }
 
     fun getNoc(systemId: Long, jClass: JClass): Int {

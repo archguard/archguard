@@ -1,21 +1,24 @@
 package com.thoughtworks.archgard.scanner2.domain
 
-import com.thoughtworks.archgard.scanner2.domain.model.ClassLCOM4
 import com.thoughtworks.archgard.scanner2.domain.model.GraphStore
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class LCOM4Service(val jClassRepository: JClassRepository,
                    val jMethodRepository: JMethodRepository) {
 
-    fun calculateAllLCOM4(systemId: Long): List<ClassLCOM4> {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+    private val log = LoggerFactory.getLogger(LCOM4Service::class.java)
+
+    fun calculateAllLCOM4(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
-        val classLCOM4List = mutableListOf<ClassLCOM4>()
-        jClasses.forEach { classLCOM4List.add(ClassLCOM4(it.toVO(), getLCOM4Graph(it).getConnectivityCount())) }
-        return classLCOM4List
+        val lcom4Map: MutableMap<String, Int> = mutableMapOf()
+        jClasses.forEach { lcom4Map[it.toVO().id!!] = getLCOM4Graph(it).getConnectivityCount() }
+        log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
+
+        return lcom4Map
     }
 
     private fun prepareJClassBasicDataForLCOM4(systemId: Long, jClass: JClass) {

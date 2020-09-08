@@ -1,8 +1,8 @@
 package com.thoughtworks.archgard.scanner2.domain
 
-import com.thoughtworks.archgard.scanner2.infrastructure.persist.ClassMetricPO
+import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 
 
 interface MetricRepository {
-    fun insertOrUpdateClassMetricPOs(systemId: Long, classMetricPOs: List<ClassMetricPO>)
+    fun insertOrUpdateClassMetric(systemId: Long, classMetricPOs: List<ClassMetric>)
 }
