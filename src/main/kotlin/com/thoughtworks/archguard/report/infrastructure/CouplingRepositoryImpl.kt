@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CouplingRepositoryImpl(val jdbi: Jdbi) : CouplingRepository {
-    override fun getCoupling(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ClassCoupling> {
+    override fun getCouplingAboveThreshold(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ClassCoupling> {
         var orderSqlPiece = "order by fanIn desc, fanOut desc "
         if (!orderByFanIn) {
             orderSqlPiece = "order by fanOut desc, fanIn desc "
@@ -29,7 +29,7 @@ class CouplingRepositoryImpl(val jdbi: Jdbi) : CouplingRepository {
         }
     }
 
-    override fun getCouplingCount(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int): Long {
+    override fun getCouplingAboveThresholdCount(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1)" +
                     "from class_coupling cc " +

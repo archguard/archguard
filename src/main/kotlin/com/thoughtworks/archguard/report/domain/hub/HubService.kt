@@ -14,8 +14,8 @@ class HubService(val couplingRepository: CouplingRepository) {
         if (offset < 0) {
             throw WrongOffsetException("offset $offset is smaller than 0")
         }
-        val classesCount = couplingRepository.getCouplingCount(systemId, classFanInThreshold, classFanOutThreshold)
-        val classesAboveThreshold = couplingRepository.getCoupling(systemId, classFanInThreshold, classFanOutThreshold, offset, limit, orderByFanIn)
+        val classesCount = couplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
+        val classesAboveThreshold = couplingRepository.getCouplingAboveThreshold(systemId, classFanInThreshold, classFanOutThreshold, offset, limit, orderByFanIn)
         return ClassHubListDto(classesAboveThreshold, classesCount, offset / limit + 1)
     }
 
