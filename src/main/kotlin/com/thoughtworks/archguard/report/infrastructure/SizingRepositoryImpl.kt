@@ -214,11 +214,11 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount> {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
-            val sql = "select m1.id, m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
+            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
                     "from MethodStatistic m1 " +
                     "where m1.createAt = (SELECT MAX(c2.createAt) FROM MethodStatistic c2 WHERE c2.systemId = :systemId) " +
                     "and m1.systemId = :systemId " +
-                    "group by m1.typeName, m1.packageName, m1.moduleName having methodCount > :threshold " +
+                    "group by m1.systemId, m1.typeName, m1.packageName, m1.moduleName having methodCount > :threshold " +
                     "order by methodCount desc limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
