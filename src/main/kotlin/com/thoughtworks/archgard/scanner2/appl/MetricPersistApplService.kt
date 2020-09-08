@@ -24,10 +24,10 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val jClasses = jClassRepository.getJClassesHasModules(systemId)
 
-        val abcMap = abcService.calculateAllAbc(systemId, jClasses)
-        val ditMap = ditService.calculateAllDit(systemId, jClasses)
-        val nocMap = nocService.calculateAllNoc(systemId, jClasses)
-        val lcom4Map = lcoM4Service.calculateAllLCOM4(systemId, jClasses)
+        val abcMap = abcService.calculate(systemId, jClasses)
+        val ditMap = ditService.calculate(systemId, jClasses)
+        val nocMap = nocService.calculate(systemId, jClasses)
+        val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
 
         val classMetrics = mutableListOf<ClassMetric>()
         jClasses.forEach {

@@ -10,7 +10,7 @@ class DitService(val jClassRepository: JClassRepository) {
 
     private val log = LoggerFactory.getLogger(DitService::class.java)
 
-    fun calculateAllDit(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
+    fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         val ditMap: MutableMap<String, Int> = mutableMapOf()
         jClasses.forEach { ditMap[it.toVO().id!!] = getDepthOfInheritance(systemId, it) }
         log.info("Finish calculate all DIT, count: {}", ditMap.keys.size)

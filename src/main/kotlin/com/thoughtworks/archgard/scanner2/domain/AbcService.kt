@@ -14,7 +14,7 @@ class AbcService(val jMethodRepository: JMethodRepository) {
 
     private val log = LoggerFactory.getLogger(AbcService::class.java)
 
-    fun calculateAllAbc(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
+    fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name) }
 
         val abcMap: MutableMap<String, Int> = mutableMapOf()

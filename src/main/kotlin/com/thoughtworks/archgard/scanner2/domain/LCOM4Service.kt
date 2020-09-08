@@ -13,7 +13,7 @@ class LCOM4Service(val jClassRepository: JClassRepository,
 
     private val log = LoggerFactory.getLogger(LCOM4Service::class.java)
 
-    fun calculateAllLCOM4(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
+    fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
