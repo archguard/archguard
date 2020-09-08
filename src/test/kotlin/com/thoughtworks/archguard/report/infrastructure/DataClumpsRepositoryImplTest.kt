@@ -42,7 +42,7 @@ internal class DataClumpsRepositoryImplTest {
         kotlin.test.assertEquals(2, page2.get(0).lcom4)
         kotlin.test.assertEquals("org.apache.dubbo.demo",
                 page2.get(0).packageName)
-        kotlin.test.assertEquals("TestService",
+        kotlin.test.assertEquals("TestService$1",
                 page2.get(0).typeName)
         kotlin.test.assertEquals("test-demo-interface",
                 page2.get(0).moduleName)

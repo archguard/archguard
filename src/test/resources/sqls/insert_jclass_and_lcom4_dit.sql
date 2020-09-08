@@ -1,12 +1,12 @@
 delete from JClass where id is not null;
 insert into JClass (id, system_id, name, updatedAt, createdAt, module, loc, access)
-values ('c1983476-7bd8-4e52-a523-71c4f3f5098e', 1, 'org.apache.dubbo.demo$GreetingService', '2020-06-29 22:03:48',
+values ('c1983476-7bd8-4e52-a523-71c4f3f5098e', 1, 'org.apache.dubbo.demo.GreetingService', '2020-06-29 22:03:48',
         '2020-06-29 22:03:48', 'dubbo-demo-interface', null, '512');
 insert into JClass (id, system_id, name, updatedAt, createdAt, module, loc, access)
-values ('c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d8', 1, 'org.apache.dubbo.demo$DemoService', '2020-06-29 22:03:48',
+values ('c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d8', 1, 'org.apache.dubbo.demo.DemoService', '2020-06-29 22:03:48',
         '2020-06-29 22:03:48', 'dubbo-demo-interface', null, 'null');
 insert into JClass (id, system_id, name, updatedAt, createdAt, module, loc, access)
-values ('c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d9', 1, 'org.apache.dubbo.demo$TestService', '2020-06-29 23:03:48',
+values ('c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d9', 1, 'org.apache.dubbo.demo.TestService$1', '2020-06-29 23:03:48',
         '2020-06-29 22:03:48', 'test-demo-interface', null, 'null');
 
 delete from class_metrics where id is not null;
