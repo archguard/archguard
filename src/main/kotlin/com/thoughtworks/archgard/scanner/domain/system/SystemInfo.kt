@@ -8,6 +8,7 @@ class SystemInfo(var id: Long? = null,
                  val sql: String = "",
                  val username: String = "",
                  val password: String = "",
+                 var scanned: ScannedType = ScannedType.NONE,
                  val repoType: String = "GIT") {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
 

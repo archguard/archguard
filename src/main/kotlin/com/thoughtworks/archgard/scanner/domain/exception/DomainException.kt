@@ -1,3 +1,3 @@
-package com.thoughtworks.archguard.common.exception
+package com.thoughtworks.archgard.scanner.domain.exception
 
 abstract class DomainException(message: String) : RuntimeException(message)

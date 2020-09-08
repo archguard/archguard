@@ -3,7 +3,7 @@ package com.thoughtworks.archgard.scanner.domain.analyser
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfoRepository
 import com.thoughtworks.archgard.scanner.domain.system.SystemOperator
-import com.thoughtworks.archguard.common.exception.EntityNotFoundException
+import com.thoughtworks.archgard.scanner.domain.exception.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.FileNotFoundException

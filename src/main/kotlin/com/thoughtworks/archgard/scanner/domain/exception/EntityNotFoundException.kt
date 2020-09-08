@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.common.exception
+package com.thoughtworks.archgard.scanner.domain.exception
 
 class EntityNotFoundException : DomainException {
     constructor(message: String) : super(message)

@@ -21,4 +21,20 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                         .mapTo<SystemInfo>()
                         .firstOrNull()
             }
+
+    override fun updateSystemInfo(systemInfo: SystemInfo): Int {
+        return jdbi.withHandle<Int, Nothing> {
+            it.createUpdate("update system_info set " +
+                    "system_name = :systemName, " +
+                    "repo = :repo, " +
+                    "sql_table = :sql, " +
+                    "username = :username, " +
+                    "password = :password, " +
+                    "repo_type = :repoType, " +
+                    "updated_time = NOW() " +
+                    "where id = :id")
+                    .bindBean(systemInfo)
+                    .execute()
+        }
+    }
 }
