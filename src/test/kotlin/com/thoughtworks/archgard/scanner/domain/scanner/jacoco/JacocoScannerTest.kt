@@ -21,11 +21,11 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
             handle.createQuery("select count(*) from bundle")
                     .mapTo(Int::class.java).one()
         }
-        assertEquals(bundle, 2)
+        assertEquals(2, bundle)
         val item = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
             handle.createQuery("select count(*) from item")
                     .mapTo(Int::class.java).one()
         }
-        assertEquals(item, 87)
+        assertEquals(87, item)
     }
 }

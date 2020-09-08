@@ -2,20 +2,23 @@ package com.thoughtworks.archgard.scanner2.domain
 
 import com.thoughtworks.archgard.scanner2.domain.model.ClassDit
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class DitService(val repo: JClassRepository) {
+class DitService(val jClassRepository: JClassRepository) {
+
+    private val log = LoggerFactory.getLogger(DitService::class.java)
 
     fun calculateAllDit(systemId: Long): List<ClassDit> {
-        val jClasses = repo.getJClassesHasModules(systemId)
+        val jClasses = jClassRepository.getJClassesHasModules(systemId)
         val classDitList = mutableListOf<ClassDit>()
         jClasses.forEach { classDitList.add(ClassDit(it.toVO(), getDepthOfInheritance(systemId, it))) }
         return classDitList
     }
 
     fun getDepthOfInheritance(systemId: Long, target: JClass): Int {
-        val parents = repo.findClassParents(systemId, target.module, target.name)
+        val parents = jClassRepository.findClassParents(systemId, target.module, target.name)
         return findInheritanceDepth(systemId, parents)
     }
 
@@ -25,12 +28,12 @@ class DitService(val repo: JClassRepository) {
         }
         val deeperSuperClasses = mutableListOf<JClass>()
         for (superClass in superClasses) {
-            deeperSuperClasses.addAll(repo.findClassParents(systemId, superClass.module, superClass.name))
+            deeperSuperClasses.addAll(jClassRepository.findClassParents(systemId, superClass.module, superClass.name))
         }
         return try {
             findInheritanceDepth(systemId, deeperSuperClasses) + 1
         } catch (ex: StackOverflowError) {
-            System.err.println("Inheritance depth analysis step skipped due to memory overflow.")
+            log.error("Inheritance depth analysis step skipped due to memory overflow.")
             0
         }
     }

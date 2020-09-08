@@ -21,7 +21,7 @@ internal class NocServiceTest{
     }
 
     @Test
-    internal fun `should get noc for class`() {
+    internal fun should_get_noc_for_class() {
         val systemId: Long = 1
         val jClass = JClass("0", "c", "m")
         val jClass1 = JClass("1", "c1", "m1")

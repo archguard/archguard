@@ -17,22 +17,22 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
 
     @Test
     fun should_get_test_bad_smell_report() {
-        val scanContext = ScanContext(1, "repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestBadSmell").toURI()), "",ArrayList())
+        val scanContext = ScanContext(1, "repo", BuildTool.GRADLE, File(javaClass.classLoader.getResource("TestBadSmell").toURI()), "", ArrayList())
         testBadSmellScanner.scan(scanContext)
 
         val testBadSmells = jdbi.withHandle<List<TestBadSmell>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from testBadSmell")
                     .mapTo(TestBadSmell::class.java).list()
         }
-        assertEquals(testBadSmells.size, 12)
-        assertEquals(testBadSmells[0].systemId, 1)
+        assertEquals(12, testBadSmells.size)
+        assertEquals(1, testBadSmells[0].systemId)
 
         val testCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
             handle.createQuery("select overview_value from overview where overview_type='test'")
                     .mapTo(Int::class.java).one()
         }
 
-        assertEquals(testCount, 1)
+        assertEquals(1, testCount)
 
     }
 
