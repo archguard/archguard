@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
+import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 class OverviewService(val sizingRepository: SizingRepository,
                       val dataClumpsRepository: DataClumpsRepository,
                       val couplingRepository: CouplingRepository,
+                      val systemOverviewRepository: SystemOverviewRepository,
                       val deepInheritanceRepository: DeepInheritanceRepository) {
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
@@ -46,8 +48,15 @@ class OverviewService(val sizingRepository: SizingRepository,
     @Value("\${threshold.deep-inheritance.dit}")
     private val deepInheritanceDitThreshold: Int = 1
 
-    fun getOverview(systemId: Long): OverviewDto {
-        val list = mutableListOf<OverviewItem>()
+    fun getSystemOverview(systemId: Long): SystemOverview {
+        val repoCount = getRepoCount(systemId)
+        val moduleCount = getModuleCount(systemId)
+        val lineCount = getLineCount(systemId)
+        return SystemOverview(repoCount, moduleCount, lineCount)
+    }
+
+    fun getOverview(systemId: Long): BadSmellOverviewDto {
+        val list = mutableListOf<BadSmellOverviewItem>()
         list.add(this.getMethodOverSizingOverview(systemId))
         list.add(this.getClassOverSizingOverview(systemId))
         list.add(this.getPackageOverSizingOverview(systemId))
@@ -56,52 +65,66 @@ class OverviewService(val sizingRepository: SizingRepository,
         list.add(this.getDataClumpsOverview(systemId))
         list.add(this.getDeepInheritanceOverview(systemId))
         list.add(this.getCycleDependency(systemId))
-        return OverviewDto(list)
+        return BadSmellOverviewDto(list)
     }
 
-    private fun getMethodOverSizingOverview(systemId: Long): OverviewItem {
+    private fun getRepoCount(systemId: Long): Int {
+        val repo = systemOverviewRepository.getSystemInfoRepoBySystemId(systemId)
+        val repoList: List<String> = repo.split(",")
+        return repoList.size
+    }
+
+    private fun getModuleCount(systemId: Long): Long {
+        return systemOverviewRepository.getSystemModuleCountBySystemId(systemId)
+    }
+
+    private fun getLineCount(systemId: Long): Long {
+        return systemOverviewRepository.getSystemLineCountBySystemId(systemId)
+    }
+
+    private fun getMethodOverSizingOverview(systemId: Long): BadSmellOverviewItem {
         val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
-        return OverviewItem(BadSmell.METHOD_OVER_SIZING, BadSmellCategory.OVER_SIZING, count)
+        return BadSmellOverviewItem(BadSmell.METHOD_OVER_SIZING, BadSmellCategory.OVER_SIZING, count)
     }
 
-    private fun getClassOverSizingOverview(systemId: Long): OverviewItem {
+    private fun getClassOverSizingOverview(systemId: Long): BadSmellOverviewItem {
         val methodCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold);
         val lineCount = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold)
 
-        return OverviewItem(BadSmell.CLASS_OVER_SIZING, BadSmellCategory.OVER_SIZING, methodCount + lineCount)
+        return BadSmellOverviewItem(BadSmell.CLASS_OVER_SIZING, BadSmellCategory.OVER_SIZING, methodCount + lineCount)
     }
 
-    private fun getPackageOverSizingOverview(systemId: Long): OverviewItem {
+    private fun getPackageOverSizingOverview(systemId: Long): BadSmellOverviewItem {
         val classCount = sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
         val lineCount = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold)
-        return OverviewItem(BadSmell.PACKAGE_OVER_SIZING, BadSmellCategory.OVER_SIZING, classCount + lineCount)
+        return BadSmellOverviewItem(BadSmell.PACKAGE_OVER_SIZING, BadSmellCategory.OVER_SIZING, classCount + lineCount)
     }
 
-    private fun getModuleOverSizingOverview(systemId: Long): OverviewItem {
+    private fun getModuleOverSizingOverview(systemId: Long): BadSmellOverviewItem {
         val packageCount = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, modulePackageCountSizingThreshold)
         val lineCount = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold)
-        return OverviewItem(BadSmell.MODULE_OVER_SIZING, BadSmellCategory.OVER_SIZING, packageCount + lineCount)
+        return BadSmellOverviewItem(BadSmell.MODULE_OVER_SIZING, BadSmellCategory.OVER_SIZING, packageCount + lineCount)
     }
 
-    private fun getClassHubOverview(systemId: Long): OverviewItem {
+    private fun getClassHubOverview(systemId: Long): BadSmellOverviewItem {
         val count = couplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
-        return OverviewItem(BadSmell.COUPLING_CLASS_HUB, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_CLASS_HUB, BadSmellCategory.COUPLING, count)
     }
 
-    private fun getDataClumpsOverview(systemId: Long): OverviewItem {
+    private fun getDataClumpsOverview(systemId: Long): BadSmellOverviewItem {
         val count = dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, dataClumpsLCOM4Threshold)
-        return OverviewItem(BadSmell.COUPLING_DATA_CLUMPS, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_DATA_CLUMPS, BadSmellCategory.COUPLING, count)
     }
 
-    private fun getDeepInheritanceOverview(systemId: Long): OverviewItem {
+    private fun getDeepInheritanceOverview(systemId: Long): BadSmellOverviewItem {
         val count = deepInheritanceRepository.getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)
-        return OverviewItem(BadSmell.COUPLING_DEEP_INHERITANCE, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_DEEP_INHERITANCE, BadSmellCategory.COUPLING, count)
     }
 
-    private fun getCycleDependency(systemId: Long): OverviewItem {
+    private fun getCycleDependency(systemId: Long): BadSmellOverviewItem {
         //todo
         val count: Long = 0
-        return OverviewItem(BadSmell.COUPLING_CYCLE_DEPENDENCY, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_CYCLE_DEPENDENCY, BadSmellCategory.COUPLING, count)
     }
 
 
