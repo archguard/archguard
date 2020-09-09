@@ -29,7 +29,6 @@ class AbcService(val jMethodRepository: JMethodRepository) {
         return allMethodCallees.asSequence().map { it.clazz }
                 .filter { it.module != "null" }
                 .filter { it.module != jClass.module }
-                .filter { it.name != jClass.name }
                 .toSet().count()
     }
 }
