@@ -17,7 +17,7 @@ class LCOM4Service(val jClassRepository: JClassRepository,
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { lcom4Map[it.toVO().id!!] = getLCOM4Graph(it).getConnectivityCount() }
+        jClasses.forEach { lcom4Map[it.id] = getLCOM4Graph(it).getConnectivityCount() }
         log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
 
         return lcom4Map

@@ -12,7 +12,7 @@ class DitService(val jClassRepository: JClassRepository) {
 
     fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         val ditMap: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { ditMap[it.toVO().id!!] = getDepthOfInheritance(systemId, it) }
+        jClasses.forEach { ditMap[it.id] = getDepthOfInheritance(systemId, it) }
         log.info("Finish calculate all DIT, count: {}", ditMap.keys.size)
 
         return ditMap

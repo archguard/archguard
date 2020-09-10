@@ -12,7 +12,7 @@ class NocService(val jClassRepository: JClassRepository) {
 
     fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         val nocMap: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { nocMap[it.toVO().id!!] = getNoc(systemId, it) }
+        jClasses.forEach { nocMap[it.id] = getNoc(systemId, it) }
         log.info("Finish calculate all noc, count: {}", nocMap.keys.size)
 
         return nocMap

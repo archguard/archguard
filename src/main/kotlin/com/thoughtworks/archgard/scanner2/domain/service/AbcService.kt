@@ -18,7 +18,7 @@ class AbcService(val jMethodRepository: JMethodRepository) {
         jClasses.forEach { it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name) }
 
         val abcMap: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { abcMap[it.toVO().id!!] = this.calculateAbc(it) }
+        jClasses.forEach { abcMap[it.id] = this.calculateAbc(it) }
         log.info("Finish calculate all ABC, count: {}", abcMap.keys.size)
 
         return abcMap

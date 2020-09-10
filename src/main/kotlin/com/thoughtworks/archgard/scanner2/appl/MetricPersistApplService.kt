@@ -31,7 +31,7 @@ class MetricPersistApplService(val abcService: AbcService,
         val classMetrics = mutableListOf<ClassMetric>()
         jClasses.forEach {
             classMetrics.add(ClassMetric(systemId, it.toVO(),
-                    abcMap[it.id!!], ditMap[it.id!!], nocMap[it.id!!], lcom4Map[it.id!!]))
+                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id]))
         }
 
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
