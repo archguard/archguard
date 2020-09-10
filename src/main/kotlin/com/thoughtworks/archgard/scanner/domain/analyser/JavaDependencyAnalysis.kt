@@ -7,11 +7,13 @@ import com.thoughtworks.archgard.scanner.domain.system.ScannedType
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archgard.scanner.domain.system.SystemInfoRepository
 import com.thoughtworks.archgard.scanner.infrastructure.client.AnalysisModuleClient
+import com.thoughtworks.archgard.scanner.infrastructure.client.Scanner2Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.concurrent.*
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.Executors
 
 @Service
 class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
@@ -20,7 +22,8 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                              @Autowired val hubService: HubService,
                              @Autowired val systemInfoRepository: SystemInfoRepository,
                              @Autowired val analysisService: AnalysisService,
-                             @Autowired val analysisModuleClient: AnalysisModuleClient) {
+                             @Autowired val analysisModuleClient: AnalysisModuleClient,
+                             @Autowired val scanner2Client: Scanner2Client) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
     private val runningSystemIdSet = CopyOnWriteArraySet<Long>()
     private val executor = Executors.newFixedThreadPool(5)
@@ -52,7 +55,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         analysisModuleClient.autoDefine(systemId)
         log.info("finished logic module auto define")
 
-        analysisModuleClient.metricsAnalysis(systemId)
+        scanner2Client.level2MetricsAnalysis(systemId)
         log.info("finished level 2 analysis metrics")
     }
 
