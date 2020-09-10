@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.application.ClassCouplingAppService
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClumpsListDto
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/systems/{systemId}/coupling")
 class CouplingController(val dataClumpsService: DataClumpsService,
                          val deepInheritanceService: DeepInheritanceService,
-                         val classCouplingRepository: CouplingRepository) {
+                         val classCouplingRepository: CouplingRepository,
+                         val classCouplingAppService: ClassCouplingAppService) {
 
     @GetMapping("/data-clumps")
     fun getClassesDataClumpsWithTotalCount(@PathVariable("systemId") systemId: Long,
@@ -38,5 +40,10 @@ class CouplingController(val dataClumpsService: DataClumpsService,
     @GetMapping("/")
     fun getAllCouplingData(@PathVariable("systemId") systemId: Long): ResponseEntity<List<ClassCoupling>> {
         return ResponseEntity.ok(classCouplingRepository.getAllCoupling(systemId))
+    }
+
+    @GetMapping("/quality-gate")
+    fun getAllCouplingData(@PathVariable("systemId") systemId: Long, @RequestParam("qualityGateName") qualityGateName: String): ResponseEntity<List<ClassCoupling>> {
+        return ResponseEntity.ok(classCouplingAppService.getCouplingFilterByQualityGate(systemId, qualityGateName))
     }
 }
