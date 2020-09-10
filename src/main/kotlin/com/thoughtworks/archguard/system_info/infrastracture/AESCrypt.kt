@@ -11,6 +11,9 @@ class AESCrypt() {
         const val key = "thoughtworks.com"
 
         fun encrypt(msg: String): String {
+            if (msg.isEmpty()) {
+                return msg
+            }
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(key.toByteArray(), "AES")
             cipher.init(Cipher.ENCRYPT_MODE, keySpec)
@@ -19,6 +22,9 @@ class AESCrypt() {
         }
 
         fun decrypt(msg: String): String {
+            if (msg.isEmpty()) {
+                return msg
+            }
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(key.toByteArray(), "AES")
             cipher.init(Cipher.DECRYPT_MODE, keySpec)
