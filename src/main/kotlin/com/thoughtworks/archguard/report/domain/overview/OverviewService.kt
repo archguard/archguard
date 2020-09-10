@@ -65,6 +65,7 @@ class OverviewService(val sizingRepository: SizingRepository,
         list.add(this.getDataClumpsOverview(systemId))
         list.add(this.getDeepInheritanceOverview(systemId))
         list.add(this.getCycleDependency(systemId))
+        // todo 补充其他维度坏味道
         return BadSmellOverviewDto(list)
     }
 
