@@ -16,7 +16,7 @@ data class QualityGateConfig(var layer: LayerType,
 }
 
 enum class LayerType {
-    MODULE, PACKAGE, CLASS
+    MODULE, PACKAGE, CLASS, COUPLINGS
 }
 
 enum class ComparationOperator {

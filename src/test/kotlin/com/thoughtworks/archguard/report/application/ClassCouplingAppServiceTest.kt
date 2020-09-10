@@ -39,9 +39,9 @@ internal class ClassCouplingAppServiceTest {
         val classCoupling4 = ClassCoupling("id4", "m1", "p1", "c4", 8, 20, 0.1, 1.0)
         every { classCouplingRepository.getAllCoupling(systemId) } returns listOf(classCoupling1, classCoupling2, classCoupling3, classCoupling4)
 
-        val qualityGateConfig1 = QualityGateConfig(LayerType.CLASS, "fanIn", ComparationOperator.BIGGER, 5)
-        val qualityGateConfig2 = QualityGateConfig(LayerType.CLASS, "instability", ComparationOperator.LESS, 0.8)
-        val qualityGateConfig3 = QualityGateConfig(LayerType.CLASS, "fanOut", ComparationOperator.EQUAL, 20)
+        val qualityGateConfig1 = QualityGateConfig(LayerType.COUPLINGS, "fanIn", ComparationOperator.BIGGER, 5)
+        val qualityGateConfig2 = QualityGateConfig(LayerType.COUPLINGS, "instability", ComparationOperator.LESS, 0.8)
+        val qualityGateConfig3 = QualityGateConfig(LayerType.COUPLINGS, "fanOut", ComparationOperator.EQUAL, 20)
         every { qualityGateClient.getQualityGate(qualityGateName) } returns CouplingQualityGate(1L, "qualityGate1", listOf(qualityGateConfig1, qualityGateConfig2, qualityGateConfig3), null, null)
 
         val couplingFilterByQualityGate = classCouplingAppService.getCouplingFilterByQualityGate(systemId, qualityGateName)
