@@ -1,15 +1,17 @@
 package com.thoughtworks.archgard.scanner.infrastructure.client
 
+import com.thoughtworks.archgard.scanner2.controller.MetricController
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import java.util.HashMap
-
+import java.util.*
 
 
 @Component
-class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
+class AnalysisModuleClient(@Value("\${module.client.host}") val url: String,
+                           val metricController: MetricController) {
+
     private val log = LoggerFactory.getLogger(AnalysisModuleClient::class.java)
 
     fun autoDefine(systemId: Long) {
@@ -22,7 +24,7 @@ class AnalysisModuleClient (@Value("\${module.client.host}") val url: String) {
     fun metricsAnalysis(systemId: Long) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
-        RestTemplate().postForLocation("$url/systems/{systemId}/metric/class/persist", null, params)
+        metricController.persistClassMetrics(systemId)
         log.info("send metrics analysis request to module service")
     }
 
