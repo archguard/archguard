@@ -1,18 +1,20 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingInfluxDTO
+import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class ClassCouplingDtoListForWriteInfluxDBTest {
+internal class ClassCouplingListInfluxDTOTest {
     @Test
-    internal fun shouldGenerateInfluxDBRequestString() {
+    internal fun should_generate_influx_request_string() {
         val classCouplings = listOf(
                 ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 0, 4),
                 ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.OtherService", "dubbo-service"), 0, 0, 1, 3)
         )
-        val classCouplingDtoListForWriteInfluxDB = ClassCouplingDtoListForWriteInfluxDB(0, classCouplings)
+        val classCouplingDtoListForWriteInfluxDB = ClassCouplingListInfluxDTO(0, classCouplings)
 
         val influxDBRequestBody = classCouplingDtoListForWriteInfluxDB.toRequestBody()
 
@@ -21,8 +23,8 @@ internal class ClassCouplingDtoListForWriteInfluxDBTest {
     }
 
     @Test
-    internal fun shouldConvertObjectToInfluxDBRequestBody() {
-        val classCouplingDtoForWriteInfluxDB = ClassCouplingDtoForWriteInfluxDB(0,
+    internal fun should_convert_object_to_influx_request_body() {
+        val classCouplingDtoForWriteInfluxDB = ClassCouplingInfluxDTO(0,
                 ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 4, 0))
 
         val toInfluxDBRequestBody = classCouplingDtoForWriteInfluxDB.toInfluxDBRequestBody()

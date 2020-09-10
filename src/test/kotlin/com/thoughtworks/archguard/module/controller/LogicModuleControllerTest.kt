@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.module.controller
 
-import com.thoughtworks.archguard.metrics.appl.MetricsService
 import com.thoughtworks.archguard.module.domain.LogicModuleService
 import com.thoughtworks.archguard.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.module.domain.graph.GraphService
@@ -26,16 +25,13 @@ class LogicModuleControllerTest {
     private lateinit var dependencyService: DependencyService
 
     @MockK
-    private lateinit var metricsService: MetricsService
-
-    @MockK
     private lateinit var graphService: GraphService
     private lateinit var controller: LogicModuleController
 
     @BeforeEach
     fun setUp() {
         init(this)
-        controller = LogicModuleController(service, dependencyService, metricsService, graphService)
+        controller = LogicModuleController(service, dependencyService, graphService)
     }
 
     private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {

@@ -42,7 +42,6 @@ class ClassServiceTest {
         //given
         val systemId: Long = 1
         val targetName = "clazz"
-        val target = JClass("1", targetName, "module")
         val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
         val dependencer = JClass("id2", "com.thoughtworks.archguard.domain.dependencer", "archguard")
         val expected = JClass("1", targetName, "module")
