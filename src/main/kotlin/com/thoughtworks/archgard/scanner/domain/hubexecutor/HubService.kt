@@ -3,15 +3,17 @@ package com.thoughtworks.archgard.scanner.domain.hubexecutor
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
-import com.thoughtworks.archgard.scanner.domain.system.SystemOperator
 import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.*
 import kotlin.concurrent.thread
 
 @Service
 class HubService {
+    private val log = LoggerFactory.getLogger(HubService::class.java)
+
     @Autowired
     private lateinit var manager: ScannerManager
 
@@ -32,8 +34,13 @@ class HubService {
     fun doScanIfNotRunning(id: Long, dbUrl: String): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
-            doScan(id, dbUrl)
-            concurrentSet.remove(id)
+            try {
+                doScan(id, dbUrl)
+            } catch (e: Exception) {
+                log.error(e.message)
+            } finally {
+                concurrentSet.remove(id)
+            }
         }
         return concurrentSet.contains(id)
     }
