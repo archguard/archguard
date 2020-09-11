@@ -40,8 +40,8 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("org.flywaydb:flyway-core:6.2.2")
-    testImplementation("com.h2database:h2")
+    testImplementation("org.flywaydb:flyway-core:6.5.5")
+    testImplementation("com.h2database:h2:1.4.200")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
     testImplementation("io.mockk:mockk:1.10.0")
