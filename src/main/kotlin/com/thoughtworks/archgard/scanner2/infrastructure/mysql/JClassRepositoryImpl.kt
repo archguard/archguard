@@ -3,6 +3,7 @@ package com.thoughtworks.archgard.scanner2.infrastructure.mysql
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.JField
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.service.Dependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
@@ -56,6 +57,20 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }
     }
 
+    override fun getAllClassDependencies(systemId: Long): List<Dependency<String>> {
+        val sql = "select DISTINCT a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
+                "and a in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
+                "and b in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
+                "and a!=b"
+        return jdbi.withHandle<List<JClassIdDependencyDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassIdDependencyDto::class.java))
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(JClassIdDependencyDto::class.java)
+                    .list()
+        }.map { it.toDependency() }
+    }
+
     override fun getJClassesHasModules(systemId: Long): List<JClass> {
         val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
@@ -68,4 +83,11 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
 }
+
+data class JClassIdDependencyDto(val caller: String, val callee: String) {
+    fun toDependency(): Dependency<String> {
+        return Dependency(caller, callee)
+    }
+}
+
 
