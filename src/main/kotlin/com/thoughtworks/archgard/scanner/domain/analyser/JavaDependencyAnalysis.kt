@@ -37,10 +37,10 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
             try {
                 startScanSystem(systemInfo)
                 analyse(systemId)
+                finishScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error(e.message)
-            } finally {
-                finishScanSystem(systemInfo)
+                finishScanSystem(systemInfo, ScannedType.FAILED)
             }
         }
     }
@@ -65,13 +65,15 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
     }
 
     private fun startScanSystem(systemInfo: SystemInfo) {
+        log.info("SET SYSTEM INFO {} SCANNED TO :{}", systemInfo.id, ScannedType.SCANNING)
         systemInfo.scanned = ScannedType.SCANNING
         systemInfoRepository.updateSystemInfo(systemInfo)
         this.runningSystemIdSet.add(systemInfo.id)
     }
 
-    private fun finishScanSystem(systemInfo: SystemInfo) {
-        systemInfo.scanned = ScannedType.SCANNED
+    private fun finishScanSystem(systemInfo: SystemInfo, scannedType: ScannedType) {
+        log.info("SET SYSTEM INFO {} SCANNED TO :{}", systemInfo.id, scannedType)
+        systemInfo.scanned = scannedType
         systemInfoRepository.updateSystemInfo(systemInfo)
         this.runningSystemIdSet.remove(systemInfo.id)
     }
