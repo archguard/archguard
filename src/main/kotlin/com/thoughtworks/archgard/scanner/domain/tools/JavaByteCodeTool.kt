@@ -12,7 +12,7 @@ class JavaByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Lo
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-id", "$systemId"))
+        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-xml", "false", "-id", "$systemId"))
     }
 
     private fun prepareTool() {
