@@ -23,33 +23,33 @@ class ClassCouplingAppService(val classCouplingRepository: CouplingRepository, v
         val fanIn = qualityGateConfigs.firstOrNull { it.layer == LayerType.COUPLINGS && it.quota == "fanIn" }
         if (fanIn != null) {
             duplicatedCouplings = when (fanIn.operator) {
-                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.fanIn > fanIn.value.toInt() }
-                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.fanIn == fanIn.value.toInt() }
-                ComparationOperator.LESS -> duplicatedCouplings.filter { it.fanIn < fanIn.value.toInt() }
+                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.fanIn < fanIn.value.toInt() }
+                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.fanIn != fanIn.value.toInt() }
+                ComparationOperator.LESS -> duplicatedCouplings.filter { it.fanIn > fanIn.value.toInt() }
             }
         }
         val fanOut = qualityGateConfigs.firstOrNull { it.layer == LayerType.COUPLINGS && it.quota == "fanOut" }
         if (fanOut != null) {
             duplicatedCouplings = when (fanOut.operator) {
-                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.fanOut > fanOut.value.toInt() }
-                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.fanOut == fanOut.value.toInt() }
-                ComparationOperator.LESS -> duplicatedCouplings.filter { it.fanOut < fanOut.value.toInt() }
+                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.fanOut < fanOut.value.toInt() }
+                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.fanOut != fanOut.value.toInt() }
+                ComparationOperator.LESS -> duplicatedCouplings.filter { it.fanOut > fanOut.value.toInt() }
             }
         }
         val coupling = qualityGateConfigs.firstOrNull { it.layer == LayerType.COUPLINGS && it.quota == "coupling" }
         if (coupling != null) {
             duplicatedCouplings = when (coupling.operator) {
-                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.coupling > coupling.value.toDouble() }
-                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.coupling == coupling.value.toDouble() }
-                ComparationOperator.LESS -> duplicatedCouplings.filter { it.coupling < coupling.value.toDouble() }
+                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.coupling < coupling.value.toDouble() }
+                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.coupling != coupling.value.toDouble() }
+                ComparationOperator.LESS -> duplicatedCouplings.filter { it.coupling > coupling.value.toDouble() }
             }
         }
         val instability = qualityGateConfigs.firstOrNull { it.layer == LayerType.COUPLINGS && it.quota == "instability" }
         if (instability != null) {
             duplicatedCouplings = when (instability.operator) {
-                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.instability > instability.value.toDouble() }
-                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.instability == instability.value.toDouble() }
-                ComparationOperator.LESS -> duplicatedCouplings.filter { it.instability < instability.value.toDouble() }
+                ComparationOperator.BIGGER -> duplicatedCouplings.filter { it.instability < instability.value.toDouble() }
+                ComparationOperator.EQUAL -> duplicatedCouplings.filter { it.instability != instability.value.toDouble() }
+                ComparationOperator.LESS -> duplicatedCouplings.filter { it.instability > instability.value.toDouble() }
             }
         }
         return duplicatedCouplings
