@@ -5,14 +5,12 @@ import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepositor
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class ClassClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao,
                                      val jdbi: Jdbi) : ClassMetricRepository {
     private val log = LoggerFactory.getLogger(ClassClassMetricRepositoryImpl::class.java)
 
-    @Transactional
     override fun insertOrUpdateClassMetric(systemId: Long, classMetric: List<ClassMetric>) {
         val classMetricPOs = classMetric
                 .map { ClassMetricPO(it.systemId, it.jClassVO.id!!, it.abc, it.dit, it.noc, it.lcom4) }

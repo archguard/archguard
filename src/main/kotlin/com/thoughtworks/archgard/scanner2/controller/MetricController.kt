@@ -15,4 +15,9 @@ class MetricController(val metricPersistService: MetricPersistApplService) {
     fun persistClassMetrics(@PathVariable("systemId") systemId: Long) {
         return metricPersistService.persistLevel2Metrics(systemId)
     }
+
+    @PostMapping("/cycle-dependency/persist")
+    fun persistCircularDependencyMetrics(@PathVariable("systemId") systemId: Long) {
+        return metricPersistService.persistCircularDependencyMetrics(systemId)
+    }
 }

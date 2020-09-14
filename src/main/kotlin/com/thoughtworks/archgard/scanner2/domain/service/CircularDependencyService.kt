@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CircularDependencyService(val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository) {
+class CircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
         val allClassDependencies = jClassRepository.getAllClassDependencies(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
