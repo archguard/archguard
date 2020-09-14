@@ -9,12 +9,12 @@ import java.util.*
 /**
  * Reference: https://www.baeldung.com/cs/detecting-cycles-in-directed-graph
  */
-class CycleDetector(val directedGraph: Graph) {
+class CycleDetector(directedGraph: Graph) {
     private var vertices: Array<String> = directedGraph.nodes.map { it.getNodeId() }.toTypedArray()
     private var arcs: Array<IntArray>
     private var vexnum = 0
     private var visited: Array<VisitStatus>
-    val cycles: MutableList<MutableList<Node>> = mutableListOf()
+    private val cycles: MutableList<MutableList<Node>> = mutableListOf()
     private var stack = Stack<Int>()
 
     init {
