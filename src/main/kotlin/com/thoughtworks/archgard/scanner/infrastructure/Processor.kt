@@ -22,4 +22,19 @@ object Processor {
         inputStream.close()
         p.waitFor()
     }
+
+    fun executeWithLogsAndAppendToFile(pb: ProcessBuilder, workspace: File, reportPath: String) {
+        pb.redirectErrorStream(true)
+        pb.directory(workspace)
+        pb.redirectOutput(File(reportPath))
+        val p = pb.start()
+        val inputStream: InputStream = p.inputStream
+        val bufferedReader = BufferedReader(InputStreamReader(inputStream, "gbk"))
+        while (true) {
+            val line = bufferedReader.readLine() ?: break
+            log.info(line)
+        }
+        inputStream.close()
+        p.waitFor()
+    }
 }
