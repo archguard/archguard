@@ -62,11 +62,11 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "and a in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
                 "and b in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
                 "and a!=b"
-        return jdbi.withHandle<List<JClassIdDependencyDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassIdDependencyDto::class.java))
+        return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
             it.createQuery(sql)
                     .bind("systemId", systemId)
-                    .mapTo(JClassIdDependencyDto::class.java)
+                    .mapTo(IdDependencyDto::class.java)
                     .list()
         }.map { it.toDependency() }
     }
@@ -82,12 +82,6 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toJClass() }.filter { it.module != "null" }
     }
 
-}
-
-data class JClassIdDependencyDto(val caller: String, val callee: String) {
-    fun toDependency(): Dependency<String> {
-        return Dependency(caller, callee)
-    }
 }
 
 

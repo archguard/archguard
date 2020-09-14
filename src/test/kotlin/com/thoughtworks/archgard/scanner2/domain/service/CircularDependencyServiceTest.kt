@@ -2,6 +2,7 @@ package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -15,10 +16,13 @@ class CircularDependencyServiceTest {
     @MockK
     private lateinit var jClassRepository: JClassRepository
 
+    @MockK
+    private lateinit var jMethodRepository: JMethodRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        circularDependencyService = CircularDependencyService(jClassRepository)
+        circularDependencyService = CircularDependencyService(jClassRepository, jMethodRepository)
     }
 
     @Test
