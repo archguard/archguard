@@ -23,6 +23,19 @@ class GitScannerTool(val systemRoot: File, val branch: String) : GitReport {
         }
     }
 
+    override fun getGitCommitFrequentModifiedFileReport(): File? {
+        val reportPath = systemRoot.toString() + "/frequent_modified_file.txt"
+        scan(listOf("git", "log", "--name-only", "--oneline", "--pretty='format:'", " > ", reportPath))
+        val report = File(reportPath)
+        return if (report.exists()) {
+            report
+        } else {
+            log.info("failed to get frequent_modified_file.txt")
+            null
+        }
+    }
+
+
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
         if (jarExist) {
