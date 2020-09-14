@@ -12,7 +12,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class LCOM4ServiceTest{
+internal class LCOM4ServiceTest {
     private lateinit var lcom4Service: LCOM4Service
 
     @MockK
@@ -43,8 +43,8 @@ internal class LCOM4ServiceTest{
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3)
         val lcom4Graph = lcom4Service.getLCOM4Graph(jClass)
 
-        assertThat(lcom4Graph.getGraph().nodes.size).isEqualTo(5)
-        assertThat(lcom4Graph.getGraph().edges.size).isEqualTo(3)
-        assertThat(lcom4Graph.getGraph().edges).contains(Edge("m1", "f1", 1), Edge("m2", "f2", 1), Edge("m3", "m2", 1))
+        assertThat(lcom4Graph.toDirectedGraph().nodes.size).isEqualTo(5)
+        assertThat(lcom4Graph.toDirectedGraph().edges.size).isEqualTo(3)
+        assertThat(lcom4Graph.toDirectedGraph().edges).contains(Edge("m1", "f1", 1), Edge("m2", "f2", 1), Edge("m3", "m2", 1))
     }
 }

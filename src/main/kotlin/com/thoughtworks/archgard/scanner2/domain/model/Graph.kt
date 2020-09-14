@@ -41,7 +41,7 @@ class GraphStore {
         return nodes.map { it.getNodeId() }.contains(caller.getNodeId())
     }
 
-    fun getGraph(): Graph {
+    fun toDirectedGraph(): Graph {
         return Graph(nodes, edges)
     }
 
