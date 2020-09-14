@@ -10,23 +10,15 @@ object Processor {
     private val log = LoggerFactory.getLogger(Processor::class.java)
 
     fun executeWithLogs(pb: ProcessBuilder, workspace: File) {
-        pb.redirectErrorStream(true)
-        pb.directory(workspace)
-        val p = pb.start()
-        val inputStream: InputStream = p.inputStream
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream, "gbk"))
-        while (true) {
-            val line = bufferedReader.readLine() ?: break
-            log.info(line)
-        }
-        inputStream.close()
-        p.waitFor()
+        executeWithLogsAndAppendToFile(pb, workspace, null)
     }
 
-    fun executeWithLogsAndAppendToFile(pb: ProcessBuilder, workspace: File, reportPath: String) {
+    fun executeWithLogsAndAppendToFile(pb: ProcessBuilder, workspace: File, reportPath: String?) {
         pb.redirectErrorStream(true)
         pb.directory(workspace)
-        pb.redirectOutput(File(reportPath))
+        if (reportPath != null) {
+            pb.redirectOutput(File(reportPath))
+        }
         val p = pb.start()
         val inputStream: InputStream = p.inputStream
         val bufferedReader = BufferedReader(InputStreamReader(inputStream, "gbk"))
