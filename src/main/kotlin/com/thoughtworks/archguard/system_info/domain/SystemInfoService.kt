@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.system_info.controller.SystemInfoAddMessage
 import com.thoughtworks.archguard.system_info.controller.SystemInfoUpdateMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SystemInfoService {
@@ -16,12 +17,13 @@ class SystemInfoService {
     lateinit var systemInfoMapper: SystemInfoMapper
 
     fun getSystemInfo(id: Long): SystemInfoDTO {
-        val SystemInfo = systemInfoRepository.getSystemInfo(id) ?: throw EntityNotFoundException(SystemInfo::class.java, id)
+        val SystemInfo = systemInfoRepository.getSystemInfo(id)
+                ?: throw EntityNotFoundException(SystemInfo::class.java, id)
         return systemInfoMapper.toDTO(SystemInfo)
     }
 
     fun getAllSystemInfo(): List<SystemInfoDTO> {
-        return systemInfoRepository.getSystemInfoList().map ( systemInfoMapper::toDTO )
+        return systemInfoRepository.getSystemInfoList().map(systemInfoMapper::toDTO)
     }
 
     fun updateSystemInfo(systemInfoDTO: SystemInfoDTO): SystemInfoUpdateMessage {
@@ -43,7 +45,9 @@ class SystemInfoService {
         }
     }
 
+    @Transactional
     fun deleteSystemInfo(id: Long) {
         systemInfoRepository.deleteSystemInfo(id)
+        systemInfoRepository.deleteSystemInfoRelated(id)
     }
 }

@@ -14,4 +14,5 @@ interface SystemInfoRepository {
 
     fun deleteSystemInfo(id: Long): Int
 
+    fun deleteSystemInfoRelated(id: Long)
 }

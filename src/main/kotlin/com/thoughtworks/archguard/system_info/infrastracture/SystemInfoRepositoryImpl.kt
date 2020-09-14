@@ -83,4 +83,26 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         }
     }
 
+    override fun deleteSystemInfoRelated(id: Long) {
+        val sqls = mutableListOf<String>()
+        val tables = listOf(
+                "_ClassDependences", "_ClassFields", "_ClassMethods", "_ClassParent", "_MethodCallees",
+                "_MethodFields", "badSmell", "CheckStyle", "class_coupling", "class_metrics", "Configure",
+                "dubbo_bean", "dubbo_module", "dubbo_reference_config", "dubbo_service_config", "JAnnotation",
+                "JAnnotationValue", "JClass", "JField", "JMethod", "logic_module", "testBadSmell", "violation"
+        )
+
+        tables.forEach { sqls.add("delete from $it where system_id = $id") }
+        // "ClassStatistic","MethodStatistic"
+        sqls.add("delete from ClassStatistic where systemId = $id")
+        sqls.add("delete from MethodStatistic where systemId = $id")
+
+        jdbi.withHandle<IntArray, Nothing> {
+            val batch = it.createBatch()
+            for (sql in sqls) {
+                batch.add(sql)
+            }
+            batch.execute()
+        }
+    }
 }
