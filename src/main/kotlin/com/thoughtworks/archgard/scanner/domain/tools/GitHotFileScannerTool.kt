@@ -10,7 +10,7 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String) {
 
     fun getGitHotFileModifiedCountMap(): Map<String, Int> {
         if (getGitHotFileCommitFile() == null) return mapOf()
-        val map = mutableMapOf<String, Int>();
+        val map = mutableMapOf<String, Int>()
         getGitHotFileCommitFile()!!.readLines().stream()
                 .map { it.replace("\n", "").replace("\r", "") }
                 .filter { it != "" }

@@ -79,6 +79,12 @@ class ScannerApplication {
     fun classMetricsDao(jdbi: Jdbi): ClassMetricsDao {
         return jdbi.onDemand(ClassMetricsDao::class.java)
     }
+
+    @Bean
+    fun gitHotFileDao(jdbi: Jdbi): GitHotFileDao {
+        return jdbi.onDemand(GitHotFileDao::class.java)
+    }
+
 }
 
 fun main(args: Array<String>) {

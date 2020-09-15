@@ -6,7 +6,7 @@ import com.thoughtworks.archgard.scanner.domain.tools.GitHotFileScannerTool
 import org.springframework.stereotype.Service
 
 @Service
-class GitHotFileScanner() : Scanner {
+class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo) : Scanner {
     override fun canScan(context: ScanContext): Boolean {
         return true
     }
@@ -16,13 +16,14 @@ class GitHotFileScanner() : Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        getHotFileReport(context)
+        val hotFileReport = getHotFileReport(context)
+        gitHotFileRepo.save(hotFileReport)
     }
 
-    private fun getHotFileReport(context: ScanContext) {
+    fun getHotFileReport(context: ScanContext) : List<GitHotFile> {
         val gitHotFileScannerTool = GitHotFileScannerTool(context.workspace, "master")
         val gitHotFileModifiedCountMap = gitHotFileScannerTool.getGitHotFileModifiedCountMap()
-        
+        return gitHotFileModifiedCountMap.entries.map { GitHotFile(context.systemId, it.key, it.value) }
     }
 
 }
