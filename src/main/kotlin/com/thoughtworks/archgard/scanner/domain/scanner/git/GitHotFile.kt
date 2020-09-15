@@ -1,17 +1,17 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
 class GitHotFile(val systemId: Long, val name: String, val modifiedCount: Int) {
-    private val jvmClassSuffix: List<String> = listOf(".java", ".kt")
-    
+    private val jvmClassSuffixMap: Map<String, String> = mapOf("java" to ".java", "kotlin" to ".kt")
+
     fun isJVMClass(): Boolean {
-        return jvmClassSuffix.filter { name.endsWith(it) }.any()
+        return jvmClassSuffixMap.values.filter { name.endsWith(it) }.any()
     }
 
-    fun className(): String {
-        if (!isJVMClass()) return ""
-        if (name.endsWith(".java")) return name.substringAfter("java/").replace("/", ".").substringBefore(".java")
-        if (name.endsWith(".kt")) return name.substringAfter("kotlin/").replace("/", ".").substringBefore(".kt")
-        return ""
+    fun className(): String? {
+        return jvmClassSuffixMap.entries
+                .filter { name.endsWith(it.value) }
+                .map { name.substringAfter("${it.key}/").replace("/", ".").substringBefore(it.value) }
+                .firstOrNull()
     }
 
 }

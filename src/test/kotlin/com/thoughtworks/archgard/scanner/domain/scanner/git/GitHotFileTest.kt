@@ -38,4 +38,11 @@ internal class GitHotFileTest {
 
         assertEquals("com.qicaisheng.parkinglot.HTMLReportVisitor", gitHotFile.className())
     }
+
+    @Test
+    internal fun shouldGetNullClassNameGivenNonJVMFile() {
+        val gitHotFile = GitHotFile(1, "README.MD", 10)
+
+        assertEquals(null, gitHotFile.className())
+    }
 }
