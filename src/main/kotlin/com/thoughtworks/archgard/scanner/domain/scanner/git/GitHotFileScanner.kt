@@ -17,7 +17,7 @@ class GitHotFileScanner() : Scanner {
 
     override fun scan(context: ScanContext) {
         val gitHotFileScannerTool = GitHotFileScannerTool(context.workspace, "master")
-        val gitHotFileReport = gitHotFileScannerTool.getGitHotFileReport()
+        val gitHotFileModifiedCountMap = gitHotFileScannerTool.getGitHotFileModifiedCountMap()
     }
 
 }

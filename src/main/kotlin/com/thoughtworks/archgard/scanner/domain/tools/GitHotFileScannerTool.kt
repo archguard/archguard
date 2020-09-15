@@ -9,22 +9,6 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String) {
 
     private val log = LoggerFactory.getLogger(GitHotFileScannerTool::class.java)
 
-    fun getGitHotFileReport(): File? {
-        val reportPath = systemRoot.toString() + "/git_hot_file.txt"
-        scan(listOf("git", "log", branch, "--no-merges", "--name-only", "--oneline", "--pretty=format:"), reportPath)
-        val report = File(reportPath)
-        return if (report.exists()) {
-            report
-        } else {
-            log.info("failed to get git_hot_file.txt")
-            null
-        }
-    }
-
-    private fun scan(cmd: List<String>, reportPath: String) {
-        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, reportPath)
-    }
-
     fun getGitHotFileModifiedCountMap(): Map<String, Int> {
         if (getGitHotFileReport() == null) return mapOf()
         val map = mutableMapOf<String, Int>();
@@ -39,5 +23,21 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String) {
                     }
                 }
         return map
+    }
+
+    private fun getGitHotFileReport(): File? {
+        val reportPath = systemRoot.toString() + "/git_hot_file.txt"
+        scan(listOf("git", "log", branch, "--no-merges", "--name-only", "--oneline", "--pretty=format:"), reportPath)
+        val report = File(reportPath)
+        return if (report.exists()) {
+            report
+        } else {
+            log.info("failed to get git_hot_file.txt")
+            null
+        }
+    }
+
+    private fun scan(cmd: List<String>, reportPath: String) {
+        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, reportPath)
     }
 }
