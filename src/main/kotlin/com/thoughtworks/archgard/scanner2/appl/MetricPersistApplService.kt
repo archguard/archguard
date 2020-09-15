@@ -48,8 +48,8 @@ class MetricPersistApplService(val abcService: AbcService,
     fun persistCircularDependencyMetrics(systemId: Long) {
         val classCircularDependency = circularDependencyService.getClassCircularDependency(systemId)
         val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
-        circularDependencyMetricRepository.saveClassCircularDependency(classCircularDependency)
-        circularDependencyMetricRepository.saveMethodCircularDependency(methodCircularDependency)
+        circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
+        circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
     }
 }
 
