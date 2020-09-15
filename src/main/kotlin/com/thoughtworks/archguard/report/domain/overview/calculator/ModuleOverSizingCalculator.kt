@@ -28,12 +28,12 @@ class ModuleOverSizingCalculator(val sizingRepository: SizingRepository) : BaseO
         return arrayOf(moduleCountRangeLevel1, moduleCountRangeLevel2, moduleCountRangeLevel3)
     }
 
-    override fun getCount(systemId: Long): Long {
-        return sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, modulePackageCountSizingThreshold)
+    override fun getCount(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getModuleSizingListAbovePackageCountBadSmellResult(systemId, getCountLevelRanges())
     }
 
-    override fun getLineCount(systemId: Long): Long {
-        return sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold)
+    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getModuleSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
     override fun getBadSmellType(): BadSmell {

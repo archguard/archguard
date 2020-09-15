@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure
 
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
@@ -28,6 +29,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getModuleSizingListAbovePackageCountBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.packageCount >= :level1Start and c.packageCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.packageCount >= :level2Start and c.packageCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.packageCount > :level3Start then 1 else 0 end)                                  AS 'level3'
+                from (
+                         select count(distinct packageName) packageCount
+                         from ClassStatistic c1
+                         where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                         group by c1.systemId, c1.moduleName
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
                     .one()
         }
     }
@@ -75,6 +101,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getModuleSizingAboveLineBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                from (
+                         select sum(c1.`lines`) lineCount
+                         from ClassStatistic c1
+                         where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                         group by c1.systemId, c1.moduleName
+                     ) as c;
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
+                    .one()
+        }
+    }
+
     override fun getModuleSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing> {
         return jdbi.withHandle<List<ModuleSizing>, Exception> {
             val sql = """
@@ -118,6 +169,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getPackageSizingListAboveClassCountBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.classCount >= :level1Start and c.classCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.classCount >= :level2Start and c.classCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.classCount > :level3Start then 1 else 0 end)                                AS 'level3'
+                from (
+                         select count(1) classCount
+                         from ClassStatistic c1
+                         where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                         group by c1.systemId, c1.moduleName, c1.packageName
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
+                    .one()
+        }
+    }
+
     override fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
@@ -157,6 +233,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getPackageSizingAboveLineBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                from (
+                         select sum(c1.`lines`) lineCount
+                         from ClassStatistic c1
+                         where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                         group by c1.systemId, c1.moduleName, c1.packageName
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
                     .one()
         }
     }
@@ -240,6 +341,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getMethodSizingAboveLineBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.methodCount >= :level1Start and c.methodCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.methodCount >= :level2Start and c.methodCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.methodCount > :level3Start then 1 else 0 end)                                 AS 'level3'
+                from (
+                         select m1.`lines` methodCount
+                         from MethodStatistic m1
+                         where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId)
+                           and m1.systemId = :systemId
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
+                    .one()
+        }
+    }
+
     override fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from ClassStatistic c1 where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId) and c1.systemId = :systemId and c1.`lines`>:threshold"
@@ -247,6 +373,31 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getClassSizingAboveLineBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                from (
+                         select `lines` as lineCount
+                         from ClassStatistic c1
+                         where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                           and c1.systemId = :systemId
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
                     .one()
         }
     }
@@ -268,4 +419,29 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getClassSizingListAboveMethodCountBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.methodCount >= :level1Start and c.methodCount < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.methodCount >= :level2Start and c.methodCount < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.methodCount > :level3Start then 1 else 0 end)                                AS 'level3'
+                from (
+                         select count(1) as methodCount
+                         from MethodStatistic m1
+                         where m1.createAt = (SELECT MAX(m2.createAt) FROM MethodStatistic m2 WHERE m2.systemId = :systemId)
+                           and m1.systemId = :systemId
+                         group by m1.typeName, m1.packageName, m1.moduleName
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
+                    .one()
+        }
+    }
 }

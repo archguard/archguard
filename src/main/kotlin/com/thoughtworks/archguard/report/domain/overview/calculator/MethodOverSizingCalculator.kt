@@ -3,17 +3,19 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 import com.thoughtworks.archguard.report.domain.overview.BadSmell
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 
+@Component
 class MethodOverSizingCalculator(val sizingRepository: SizingRepository) : BaseOverSizingCalculator() {
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
 
-    override fun getCount(systemId: Long): Long {
-        return 0L
+    override fun getCount(systemId: Long): BadSmellCalculateResult {
+        return BadSmellCalculateResult()
     }
 
-    override fun getLineCount(systemId: Long): Long {
-        return sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
+    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getMethodSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
     override fun getBadSmellType(): BadSmell {

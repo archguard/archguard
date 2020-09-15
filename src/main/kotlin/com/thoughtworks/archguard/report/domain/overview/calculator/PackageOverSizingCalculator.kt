@@ -14,12 +14,12 @@ class PackageOverSizingCalculator(val sizingRepository: SizingRepository) : Base
     @Value("\${threshold.package.line}")
     private val packageSizingLineThreshold: Int = 0
 
-    override fun getCount(systemId: Long): Long {
-        return sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
+    override fun getCount(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(systemId, getCountLevelRanges())
     }
 
-    override fun getLineCount(systemId: Long): Long {
-        return sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold)
+    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getPackageSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
     override fun getBadSmellType(): BadSmell {
