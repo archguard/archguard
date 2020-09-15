@@ -10,7 +10,7 @@ class GitHotFile(val systemId: Long, val name: String, val modifiedCount: Int) {
     fun className(): String? {
         return jvmClassSuffixMap.entries
                 .filter { name.endsWith(it.value) }
-                .map { name.substringAfter("${it.key}/").replace("/", ".").substringBefore(it.value) }
+                .map { name.substringAfter("${it.key}/").substringBefore(it.value).replace("/", ".") }
                 .firstOrNull()
     }
 
