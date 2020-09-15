@@ -13,7 +13,7 @@ internal class GitHotFileScannerToolTest {
     @Test
     internal fun shouldGetGitHotFileModifiedCountMap() {
         val spyGitHotFileScannerTool = spyk(GitHotFileScannerTool(mockk(), "master"), recordPrivateCalls = true)
-        every { spyGitHotFileScannerTool["getGitHotFileReport"]() } returns File(javaClass.classLoader.getResource("TestGitHotFile/git_hot_file.txt").toURI())
+        every { spyGitHotFileScannerTool["getGitHotFileCommitFile"]() } returns File(javaClass.classLoader.getResource("TestGitHotFile/git_hot_file.txt").toURI())
         val map = spyGitHotFileScannerTool.getGitHotFileModifiedCountMap()
         
         assertNotEquals(0, map.size)
