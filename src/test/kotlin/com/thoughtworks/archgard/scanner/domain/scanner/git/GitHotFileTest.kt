@@ -20,8 +20,22 @@ internal class GitHotFileTest {
 
     @Test
     internal fun shouldReturnTrueWhenCheckIfJVMClassGivenKotlinFile() {
-        val gitHotFile = GitHotFile(1, "src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.kt", 10)
+        val gitHotFile = GitHotFile(1, "src/main/kotlin/com/qicaisheng/parkinglot/HTMLReportVisitor.kt", 10)
 
         assertTrue(gitHotFile.isJVMClass())
+    }
+
+    @Test
+    internal fun shouldGetClassNameGivenJavaFile() {
+        val gitHotFile = GitHotFile(1, "src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.java", 10)
+
+        assertEquals("com.qicaisheng.parkinglot.HTMLReportVisitor", gitHotFile.className())
+    }
+
+    @Test
+    internal fun shouldGetClassNameGivenKotlinFile() {
+        val gitHotFile = GitHotFile(1, "src/main/kotlin/com/qicaisheng/parkinglot/HTMLReportVisitor.kt", 10)
+
+        assertEquals("com.qicaisheng.parkinglot.HTMLReportVisitor", gitHotFile.className())
     }
 }
