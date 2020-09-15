@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository
 class GitHotFileRepoImpl(val gitHotFileDao: GitHotFileDao) : GitHotFileRepo {
 
     override fun save(gitHotFiles: List<GitHotFile>) {
+        gitHotFileDao.deleteBySystemId(gitHotFiles[0].systemId)
         gitHotFileDao.saveAll(gitHotFiles)
     }
 
-    override fun delete(systemId: Long) {
+    override fun deleteBySystemId(systemId: Long) {
         TODO("Not yet implemented")
     }
 
