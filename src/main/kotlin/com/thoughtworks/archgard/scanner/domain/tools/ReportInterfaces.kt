@@ -4,7 +4,6 @@ import java.io.File
 
 interface GitReport {
     fun getGitReport(): File?
-    fun getGitCommitFrequentModifiedFileReport(): File?
 }
 
 interface StyleReport {
