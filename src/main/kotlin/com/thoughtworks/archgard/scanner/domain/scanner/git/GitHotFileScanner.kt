@@ -16,12 +16,13 @@ class GitHotFileScanner() : Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        getHotFileCountMap(context)
+        getHotFileReport(context)
     }
 
-    private fun getHotFileCountMap(context: ScanContext) {
+    private fun getHotFileReport(context: ScanContext) {
         val gitHotFileScannerTool = GitHotFileScannerTool(context.workspace, "master")
         val gitHotFileModifiedCountMap = gitHotFileScannerTool.getGitHotFileModifiedCountMap()
+        
     }
 
 }
