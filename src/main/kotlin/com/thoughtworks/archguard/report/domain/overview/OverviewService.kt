@@ -3,8 +3,11 @@ package com.thoughtworks.archguard.report.domain.overview
 import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateService
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleOverSizingCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -13,7 +16,14 @@ class OverviewService(val sizingRepository: SizingRepository,
                       val dataClumpsRepository: DataClumpsRepository,
                       val couplingRepository: CouplingRepository,
                       val systemOverviewRepository: SystemOverviewRepository,
-                      val deepInheritanceRepository: DeepInheritanceRepository) {
+                      val deepInheritanceRepository: DeepInheritanceRepository,
+                      val badSmellCalculateService: BadSmellCalculateService) {
+
+
+    @Autowired
+    lateinit var moduleCalculator: ModuleOverSizingCalculator
+
+
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
 
@@ -57,10 +67,14 @@ class OverviewService(val sizingRepository: SizingRepository,
 
     fun getOverview(systemId: Long): BadSmellOverviewDto {
         val list = mutableListOf<BadSmellOverviewItem>()
-        list.add(this.getMethodOverSizingOverview(systemId))
-        list.add(this.getClassOverSizingOverview(systemId))
-        list.add(this.getPackageOverSizingOverview(systemId))
-        list.add(this.getModuleOverSizingOverview(systemId))
+//        list.add(this.getMethodOverSizingOverview(systemId))
+//        list.add(this.getClassOverSizingOverview(systemId))
+//        list.add(this.getPackageOverSizingOverview(systemId))
+//        list.add(this.getModuleOverSizingOverview(systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.METHOD_OVER_SIZING, systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.CLASS_OVER_SIZING, systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.PACKAGE_OVER_SIZING, systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.MODULE_OVER_SIZING, systemId))
         list.add(this.getClassHubOverview(systemId))
         list.add(this.getDataClumpsOverview(systemId))
         list.add(this.getDeepInheritanceOverview(systemId))
