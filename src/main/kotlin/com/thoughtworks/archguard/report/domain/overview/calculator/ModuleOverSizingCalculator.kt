@@ -14,17 +14,17 @@ class ModuleOverSizingCalculator(val sizingRepository: SizingRepository) : BaseO
     @Value("\${threshold.module.line}")
     private val moduleSizingLineThreshold: Int = 0
 
-    override fun getLineCountLevelRanges(): Array<Any> {
-        val linesRangeLevel1 = 24_000 until 30_000
-        val linesRangeLevel2 = 30_000 until 50_000
-        val linesRangeLevel3 = 50_000 until Long.MAX_VALUE
+    override fun getLineCountLevelRanges(): Array<LongRange> {
+        val linesRangeLevel1 = 24_0000L until 30_0000L
+        val linesRangeLevel2 = 30_0000L until 50_0000L
+        val linesRangeLevel3 = 50_0000L until Long.MAX_VALUE
         return arrayOf(linesRangeLevel1, linesRangeLevel2, linesRangeLevel3)
     }
 
-    override fun getCountLevelRanges(): Array<Any> {
-        val moduleCountRangeLevel1 = 20 until 40
-        val moduleCountRangeLevel2 = 40 until 60
-        val moduleCountRangeLevel3 = 60 until Long.MAX_VALUE
+    override fun getCountLevelRanges(): Array<LongRange> {
+        val moduleCountRangeLevel1 = 20L until 40L
+        val moduleCountRangeLevel2 = 40L until 60L
+        val moduleCountRangeLevel3 = 60L until Long.MAX_VALUE
         return arrayOf(moduleCountRangeLevel1, moduleCountRangeLevel2, moduleCountRangeLevel3)
     }
 

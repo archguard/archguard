@@ -14,6 +14,10 @@ class BadSmellCalculateService() {
     fun calculateBadSmell(badSmell: BadSmell, systemId: Long): BadSmellOverviewItem {
         return when (badSmell) {
             BadSmell.MODULE_OVER_SIZING -> moduleCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.PACKAGE_OVER_SIZING -> moduleCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.CLASS_OVER_SIZING -> moduleCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.METHOD_OVER_SIZING -> moduleCalculator.getOverSizingOverviewItem(systemId)
+            else -> throw RuntimeException()
         }
     }
 }
