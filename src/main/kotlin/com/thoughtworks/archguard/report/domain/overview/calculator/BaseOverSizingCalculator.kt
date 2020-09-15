@@ -35,11 +35,13 @@ abstract class BaseOverSizingCalculator {
             in linesRanges[2] -> level3++
         }
 
-        val countRanges = getLineCountLevelRanges()
-        when (count) {
-            in countRanges[0] -> level1++
-            in countRanges[1] -> level2++
-            in countRanges[2] -> level3++
+        val countRanges = getCountLevelRanges()
+        if (countRanges.size == 3) {
+            when (count) {
+                in countRanges[0] -> level1++
+                in countRanges[1] -> level2++
+                in countRanges[2] -> level3++
+            }
         }
 
         return getLevelResult(level1, level2, level3)

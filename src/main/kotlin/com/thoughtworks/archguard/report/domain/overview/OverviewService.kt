@@ -67,10 +67,6 @@ class OverviewService(val sizingRepository: SizingRepository,
 
     fun getOverview(systemId: Long): BadSmellOverviewDto {
         val list = mutableListOf<BadSmellOverviewItem>()
-//        list.add(this.getMethodOverSizingOverview(systemId))
-//        list.add(this.getClassOverSizingOverview(systemId))
-//        list.add(this.getPackageOverSizingOverview(systemId))
-//        list.add(this.getModuleOverSizingOverview(systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.METHOD_OVER_SIZING, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.CLASS_OVER_SIZING, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.PACKAGE_OVER_SIZING, systemId))
@@ -97,49 +93,25 @@ class OverviewService(val sizingRepository: SizingRepository,
         return systemOverviewRepository.getSystemLineCountBySystemId(systemId)
     }
 
-    private fun getMethodOverSizingOverview(systemId: Long): BadSmellOverviewItem {
-        val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
-        return BadSmellOverviewItem(BadSmell.METHOD_OVER_SIZING, BadSmellCategory.OVER_SIZING, count)
-    }
-
-    private fun getClassOverSizingOverview(systemId: Long): BadSmellOverviewItem {
-        val methodCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold);
-        val lineCount = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold)
-
-        return BadSmellOverviewItem(BadSmell.CLASS_OVER_SIZING, BadSmellCategory.OVER_SIZING, methodCount + lineCount)
-    }
-
-    private fun getPackageOverSizingOverview(systemId: Long): BadSmellOverviewItem {
-        val classCount = sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
-        val lineCount = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold)
-        return BadSmellOverviewItem(BadSmell.PACKAGE_OVER_SIZING, BadSmellCategory.OVER_SIZING, classCount + lineCount)
-    }
-
-    private fun getModuleOverSizingOverview(systemId: Long): BadSmellOverviewItem {
-        val packageCount = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, modulePackageCountSizingThreshold)
-        val lineCount = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold)
-        return BadSmellOverviewItem(BadSmell.MODULE_OVER_SIZING, BadSmellCategory.OVER_SIZING, packageCount + lineCount)
-    }
-
     private fun getClassHubOverview(systemId: Long): BadSmellOverviewItem {
         val count = couplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
-        return BadSmellOverviewItem(BadSmell.COUPLING_CLASS_HUB, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_CLASS_HUB, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
     }
 
     private fun getDataClumpsOverview(systemId: Long): BadSmellOverviewItem {
         val count = dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, dataClumpsLCOM4Threshold)
-        return BadSmellOverviewItem(BadSmell.COUPLING_DATA_CLUMPS, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_DATA_CLUMPS, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
     }
 
     private fun getDeepInheritanceOverview(systemId: Long): BadSmellOverviewItem {
         val count = deepInheritanceRepository.getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)
-        return BadSmellOverviewItem(BadSmell.COUPLING_DEEP_INHERITANCE, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_DEEP_INHERITANCE, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
     }
 
     private fun getCycleDependency(systemId: Long): BadSmellOverviewItem {
         //todo
         val count: Long = 0
-        return BadSmellOverviewItem(BadSmell.COUPLING_CYCLE_DEPENDENCY, BadSmellCategory.COUPLING, count)
+        return BadSmellOverviewItem(BadSmell.COUPLING_CYCLE_DEPENDENCY, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
     }
 
 
