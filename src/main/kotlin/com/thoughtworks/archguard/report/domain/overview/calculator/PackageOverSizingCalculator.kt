@@ -14,11 +14,11 @@ class PackageOverSizingCalculator(val sizingRepository: SizingRepository) : Base
     @Value("\${threshold.package.line}")
     private val packageSizingLineThreshold: Int = 0
 
-    override fun getCount(systemId: Long): BadSmellCalculateResult {
-        return sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(systemId, getCountLevelRanges())
+    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(systemId, getTypeCountLevelRanges())
     }
 
-    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         return sizingRepository.getPackageSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
@@ -33,7 +33,7 @@ class PackageOverSizingCalculator(val sizingRepository: SizingRepository) : Base
         return arrayOf(linesRangeLevel1, linesRangeLevel2, linesRangeLevel3)
     }
 
-    override fun getCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 20L until 40L
         val countRangeLevel2 = 40L until 60L
         val countRangeLevel3 = 60L until Long.MAX_VALUE

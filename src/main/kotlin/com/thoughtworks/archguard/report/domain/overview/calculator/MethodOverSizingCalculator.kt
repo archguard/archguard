@@ -10,11 +10,11 @@ class MethodOverSizingCalculator(val sizingRepository: SizingRepository) : BaseO
     @Value("\${threshold.method.line}")
     private val methodSizingThreshold: Int = 0
 
-    override fun getCount(systemId: Long): BadSmellCalculateResult {
+    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         return BadSmellCalculateResult()
     }
 
-    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         return sizingRepository.getMethodSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
@@ -29,7 +29,7 @@ class MethodOverSizingCalculator(val sizingRepository: SizingRepository) : BaseO
         return arrayOf(linesRangeLevel1, linesRangeLevel2, linesRangeLevel3)
     }
 
-    override fun getCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         TODO("Not yet implemented")
     }
 }

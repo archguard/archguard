@@ -21,18 +21,18 @@ class ModuleOverSizingCalculator(val sizingRepository: SizingRepository) : BaseO
         return arrayOf(linesRangeLevel1, linesRangeLevel2, linesRangeLevel3)
     }
 
-    override fun getCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val moduleCountRangeLevel1 = 20L until 40L
         val moduleCountRangeLevel2 = 40L until 60L
         val moduleCountRangeLevel3 = 60L until Long.MAX_VALUE
         return arrayOf(moduleCountRangeLevel1, moduleCountRangeLevel2, moduleCountRangeLevel3)
     }
 
-    override fun getCount(systemId: Long): BadSmellCalculateResult {
-        return sizingRepository.getModuleSizingListAbovePackageCountBadSmellResult(systemId, getCountLevelRanges())
+    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+        return sizingRepository.getModuleSizingListAbovePackageCountBadSmellResult(systemId, getTypeCountLevelRanges())
     }
 
-    override fun getLineCount(systemId: Long): BadSmellCalculateResult {
+    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         return sizingRepository.getModuleSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
