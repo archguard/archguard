@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets
 
 class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) {
 
-    fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: String, publish: (Any) -> Unit) {
+    fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long, publish: (Any) -> Unit) {
         val repPath = File(path)
 
         val repository = FileRepositoryBuilder().findGitDir(repPath).build()
@@ -30,7 +30,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         revCommitSequence.map { r -> toChangeEntry(repository, r) }.map(publish)
     }
 
-    private fun toCommitLog(revCommit: RevCommit, repoId: String,systemId: String): CommitLog {
+    private fun toCommitLog(revCommit: RevCommit, repoId: String,systemId: Long): CommitLog {
         val committer = revCommit.committerIdent
         val msg = revCommit.shortMessage
         return CommitLog(id = revCommit.name,

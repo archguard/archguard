@@ -10,7 +10,7 @@ data class CommitLog(
         @Sql("committer_name") val committerName: String,
         @Sql("committer_email") val committerEmail: String,
         @Sql("repo_id") val repositoryId: String,
-        @Sql("system_id") val systemId: String
+        @Sql("system_id") val systemId: Long
 )
 
 @Sql("change_entry")

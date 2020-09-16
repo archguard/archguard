@@ -15,7 +15,7 @@ class Runner : CliktCommand() {
 
     override fun run() {
         val service = ScannerService(JGitAdapter(CognitiveComplexityParser()), Bean2Sql())
-        service.git2SqlFile(gitPath, branch, after, repoId, systemId)
+        service.git2SqlFile(gitPath, branch, after, repoId, systemId.toLong())
     }
 }
 
