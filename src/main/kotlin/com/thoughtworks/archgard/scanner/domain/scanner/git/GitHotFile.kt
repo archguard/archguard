@@ -14,4 +14,10 @@ class GitHotFile(val systemId: Long, val name: String, val modifiedCount: Int) {
                 .firstOrNull()
     }
 
+    fun moduleName(): String? {
+        if (name.startsWith("src/")) return null
+        if (name.contains("/src/")) return name.substringBefore("/src")
+        return null
+    }
+
 }
