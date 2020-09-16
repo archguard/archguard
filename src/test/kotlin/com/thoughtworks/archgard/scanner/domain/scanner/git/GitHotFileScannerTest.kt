@@ -14,7 +14,7 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 @ActiveProfiles("test")
-internal class GitHotFileVOScannerTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
+internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
 
     private lateinit var spyGitHotFileScanner: GitHotFileScanner
 
