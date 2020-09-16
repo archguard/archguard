@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClump
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
@@ -17,6 +18,31 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
                     .bind("system_id", systemId)
                     .bind("lcom4", threshold)
                     .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getLCOM4AboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select sum(CASE when c.lcom4 >= :level1Start and c.lcom4 < :level1End then 1 else 0 end) AS 'level1',
+                       sum(CASE when c.lcom4 >= :level2Start and c.lcom4 < :level2End then 1 else 0 end) AS 'level2',
+                       sum(CASE when c.lcom4 > :level3Start then 1 else 0 end)                           AS 'level3'
+                from (
+                         select lcom4
+                         from JClass c
+                                  inner join class_metrics m on m.class_id = c.id
+                         where c.system_id = :system_id
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
                     .one()
         }
     }
