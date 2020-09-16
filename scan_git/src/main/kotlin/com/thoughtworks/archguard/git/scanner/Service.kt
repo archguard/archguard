@@ -7,12 +7,12 @@ import java.io.PrintWriter
 * core scanner
 */
 
-class ScannerService(private val gitAdapter: GitAdapter,
+class ScannerService(private val gitAdapter: JGitAdapter,
                      private val bean2Sql: Bean2Sql) {
 
-    fun git2SqlFile(config: Config) {
+    fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: String) {
         PrintWriter("output.sql").use { out ->
-            gitAdapter.scan(config) { model ->
+            gitAdapter.scan(gitPath, branch, after, repoId, systemId) { model ->
                 out.println(bean2Sql.bean2Sql(model))
             }
         }

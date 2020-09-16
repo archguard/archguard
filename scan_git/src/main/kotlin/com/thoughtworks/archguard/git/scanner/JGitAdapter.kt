@@ -10,89 +10,69 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets
-
 
 /**
  * @param path  repository location
  * @param branch  branch name, default is master
  */
-data class Config(val path: String, val branch: String = "master", val after: String = "0")
 
+class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) {
 
-interface GitAdapter {
-    fun scan(config: Config, publish: (Any) -> Unit)
-}
+    fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: String, publish: (Any) -> Unit) {
+        val repPath = File(path)
 
-class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) : GitAdapter {
-    private val logger: Logger = LoggerFactory.getLogger(JGitAdapter::class.java)
-
-    override fun scan(config: Config, publish: (Any) -> Unit) {
-        val repPath = File(config.path)
-        val from = config.after.toLong()
-        logger.info("git repository locate at {}, only get commits whose timestamp after {}",
-                repPath.absolutePath, config.after)
-        val repId = System.nanoTime()
-        publish(GitRepository(repPath.absolutePath, config.branch, id = repId))
-        FileRepositoryBuilder()
-                .findGitDir(repPath)
-                .build()
-                .use { repository ->
-                    Git(repository).specifyBranch(config.branch).use { git ->
-                        DiffFormatter(DisabledOutputStream.INSTANCE).config(repository).use { diffFormatter ->
-                            git.log().call()
-                                    .asSequence().takeWhile {
-                                        it.commitTime * 1000L > from
-                                    }.forEach { revCommit ->
-                                        val committer = revCommit.committerIdent
-                                        val msg = revCommit.shortMessage
-
-                                        val commit = CommitLog(id = revCommit.name,
-                                                commitTime = committer.`when`.time,
-                                                shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
-                                                committerName = committer.name,
-                                                committerEmail = committer.emailAddress,
-                                                repositoryId = repId)
-                                        publish(commit)
-
-                                val parent: RevCommit? = if (revCommit.parentCount == 0) null else revCommit.getParent(0)
-                                diffFormatter.scan(parent?.tree, revCommit.tree).forEach {
-                                    val classComplexity: Int = cognitiveComplexityForJavaFile(it, repository, revCommit)
-                                    val changeEntry = ChangeEntry(oldPath = it.oldPath,
-                                            newPath = it.newPath,
-                                            cognitiveComplexity = classComplexity,
-                                            changeMode = it.changeType.name,
-                                            commitId = revCommit.name)
-                                    publish(changeEntry)
-                                }
-                            }
-                        }
-                    }
-                }
+        val repository = FileRepositoryBuilder().findGitDir(repPath).build()
+        val git = Git(repository).specifyBranch(branch)
+        val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }
+        revCommitSequence.map { r -> toCommitLog(r, repoId, systemId) }.map(publish)
+        revCommitSequence.map { r -> toChangeEntry(repository, r) }.map(publish)
     }
 
-    private fun cognitiveComplexityForJavaFile(it: DiffEntry, repository: Repository, revCommit: RevCommit): Int {
-        var classComplexity = 0
-        val javaFile = it.newPath.endsWith(".java")
-        if (javaFile) {
-            TreeWalk.forPath(repository, it.newPath, revCommit.tree).use { treeWalk ->
-                if (treeWalk != null) {
-                    val objectId = treeWalk.getObjectId(0)
-                    repository.newObjectReader().use { objectReader ->
-                        val bytes = objectReader.open(objectId).bytes
-                        val code = String(bytes, StandardCharsets.UTF_8)
-                        val cplx = cognitiveComplexityParser.processCode(code)
-                        classComplexity = cplx.sumBy { it.complexity }
-                    }
-                }
-            }
+    private fun toCommitLog(revCommit: RevCommit, repoId: String,systemId: String): CommitLog {
+        val committer = revCommit.committerIdent
+        val msg = revCommit.shortMessage
+        return CommitLog(id = revCommit.name,
+                commitTime = committer.`when`.time,
+                shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
+                committerName = committer.name,
+                committerEmail = committer.emailAddress,
+                repositoryId = repoId, systemId = systemId)
+    }
+
+    private fun toChangeEntry(repository: Repository, revCommit: RevCommit): List<ChangeEntry> {
+        val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
+        return diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
+                .map { d -> doCovertToChangeEntry(d, repository, revCommit) }
+    }
+
+    private fun getParent(revCommit: RevCommit): RevCommit? {
+        return if (revCommit.parentCount == 0) {
+            null
+        } else
+            revCommit.getParent(0)
+    }
+
+    private fun doCovertToChangeEntry(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit): ChangeEntry {
+        val classComplexity: Int = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
+        return ChangeEntry(oldPath = diffEntry.oldPath,
+                newPath = diffEntry.newPath,
+                cognitiveComplexity = classComplexity,
+                changeMode = diffEntry.changeType.name,
+                commitId = revCommit.name)
+    }
+
+    private fun cognitiveComplexityForJavaFile(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit): Int {
+        val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
+        if (treeWalk != null) {
+            val objectId = treeWalk.getObjectId(0)
+            val code = String(repository.newObjectReader().open(objectId).bytes, StandardCharsets.UTF_8)
+            val cplx = cognitiveComplexityParser.processCode(code)
+            return cplx.sumBy { it.complexity }
         }
-        return classComplexity
+        return 0
     }
-
 
     private fun DiffFormatter.config(repository: Repository): DiffFormatter {
         setRepository(repository)
