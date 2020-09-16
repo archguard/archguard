@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/dashboard")
+@RequestMapping("/systems/{systemId}")
 class DashboardController() {
 
-    @GetMapping("/")
+    @GetMapping("/dashboard")
     fun getDashborad(@PathVariable("systemId") systemId: Long): ResponseEntity<List<Dashboard>> {
         val couplingDashboard = Dashboard(DashboardGroup.COUPLING,
                 listOf(
