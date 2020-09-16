@@ -16,5 +16,5 @@ interface JClassRepository {
 
     fun getAllClassDependencies(systemId: Long): List<Dependency<String>>
     
-    fun findClassBy(systemId: Long, name: String, module: String?): JClass
+    fun findClassBy(systemId: Long, name: String, module: String?): JClass?
 }

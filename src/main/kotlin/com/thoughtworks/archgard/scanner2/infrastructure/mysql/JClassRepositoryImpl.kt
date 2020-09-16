@@ -7,6 +7,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.Dependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
+import java.lang.RuntimeException
 
 @Repository
 class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
@@ -71,18 +72,19 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toDependency() }
     }
 
-    override fun findClassBy(systemId: Long, name: String, module: String?): JClass {
+    override fun findClassBy(systemId: Long, name: String, module: String?): JClass? {
         var moduleFilter = ""
         if (!module.isNullOrEmpty()) {
             moduleFilter = "and module='$module'"
         }
         val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = $systemId and name = '$name' $moduleFilter limit 1"
-        return jdbi.withHandle<JClassPO, Nothing> {
+        val withHandle = jdbi.withHandle<JClassPO?, RuntimeException> {
             it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))
             it.createQuery(sql)
                     .mapTo(JClassPO::class.java)
-                    .one()
-        }.toJClass()
+                    .firstOrNull()
+        }
+        return withHandle?.toJClass()
     }
 
     override fun getJClassesHasModules(systemId: Long): List<JClass> {

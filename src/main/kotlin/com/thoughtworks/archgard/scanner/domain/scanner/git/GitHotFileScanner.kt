@@ -25,7 +25,7 @@ class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo, val jClassRepository
     private fun getGitHotFIles(hotFileReport: List<GitHotFileVO>, context: ScanContext): List<GitHotFile> {
         return hotFileReport.map {
             var jclassId: String? = null
-            if (it.className() != null) jclassId = jClassRepository.findClassBy(context.systemId, it.className()!!, it.moduleName()).id
+            if (it.className() != null) jclassId = jClassRepository.findClassBy(context.systemId, it.className()!!, it.moduleName())?.id
             GitHotFile(context.systemId, context.repo, it.path, it.moduleName(), it.className(), it.modifiedCount, jclassId)
         }
     }

@@ -25,8 +25,15 @@ internal class JClassRepositoryImplTest {
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_class_dependencies.sql")
-    fun should_find_classes_by_systemId_className_and_moduleName() {
+    fun should_find_class_by_systemId_className_and_moduleName() {
         val jClass = jClassRepositoryImpl.findClassBy(8L, "org.springframework.messaging.simp.stomp.StompCommand", "spring-messaging")
         assertThat(jClass).isEqualTo(JClass("0b463b79-a8dd-4df7-8dc9-3eee8737c1ad", "org.springframework.messaging.simp.stomp.StompCommand", "spring-messaging"))
+    }
+
+    @Test
+    @Sql("classpath:sqls/insert_jclass_and_class_dependencies.sql")
+    fun should_find_null_class_by_systemId_className_and_moduleName_when_not_exists() {
+        val jClass = jClassRepositoryImpl.findClassBy(81L, "not_existed_class", "spring-messaging")
+        assertThat(jClass).isNull()
     }
 }
