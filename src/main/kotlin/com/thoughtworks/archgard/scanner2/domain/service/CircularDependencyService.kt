@@ -34,12 +34,34 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         return cycles.map { it.map { methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }.toVO() } }
     }
 
-    private fun findCyclesFromDependencies(dependencies: List<Dependency<String>>): List<List<Node>> {
+    fun getModuleCircularDependency(systemId: Long): List<List<String>> {
+        val moduleDependencies = buildModuleDependencies(systemId)
+        val cycles = findCyclesFromDependencies(moduleDependencies)
+        if (cycles.isEmpty()) {
+            return emptyList()
+        }
+        return cycles.map { it.map { it.getNodeId() } }
+    }
+
+    private fun buildModuleDependencies(systemId: Long): MutableSet<Dependency<String>> {
+        val allClassIdDependencies = jClassRepository.getAllClassDependencies(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
+        val allClassDependencies = allClassIdDependencies.map { dependency: Dependency<String> -> Dependency(jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(), jClassesHasModules.first { jClass -> jClass.id == dependency.callee }.toVO()) }
+        val moduleDependencies = mutableSetOf<Dependency<String>>()
+        allClassDependencies.forEach {
+            if (it.caller.module != it.callee.module) {
+                moduleDependencies.add(Dependency(it.caller.module, it.callee.module))
+            }
+        }
+        return moduleDependencies
+    }
+
+    private fun findCyclesFromDependencies(dependencies: Collection<Dependency<String>>): List<List<Node>> {
         val graph = buildGraph(dependencies)
         return CycleDetector(graph).findCycles()
     }
 
-    private fun buildGraph(allClassDependencies: List<Dependency<String>>): Graph {
+    private fun buildGraph(allClassDependencies: Collection<Dependency<String>>): Graph {
         val graph = GraphStore()
         allClassDependencies.forEach { graph.addEdge(IdNode(it.caller), IdNode(it.callee)) }
         return graph.toDirectedGraph()

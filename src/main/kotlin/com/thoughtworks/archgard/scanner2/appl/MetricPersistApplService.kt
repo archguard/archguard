@@ -11,6 +11,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,7 @@ class MetricPersistApplService(val abcService: AbcService,
                                val classMetricRepository: ClassMetricRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
                                val influxDBClient: InfluxDBClient) {
+    private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
     @Transactional
     fun persistLevel2Metrics(systemId: Long) {
@@ -46,10 +48,18 @@ class MetricPersistApplService(val abcService: AbcService,
 
     @Transactional
     fun persistCircularDependencyMetrics(systemId: Long) {
+        val moduleCircularDependency = circularDependencyService.getModuleCircularDependency(systemId)
+        circularDependencyMetricRepository.insertOrUpdateModuleCircularDependency(systemId, moduleCircularDependency)
+        log.info("Finished persist moduleCircularDependency in projectId $systemId")
+
         val classCircularDependency = circularDependencyService.getClassCircularDependency(systemId)
-        val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
+        log.info("Finished persist classCircularDependency in projectId $systemId")
+
+        val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
+        log.info("Finished persist methodCircularDependency in projectId $systemId")
+
     }
 }
 

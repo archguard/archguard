@@ -24,6 +24,22 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependenc
         }
     }
 
+    override fun insertOrUpdateModuleCircularDependency(systemId: Long, moduleCircularDependency: List<List<String>>) {
+        deleteCircularDependency(systemId, type = CircularDependencyType.MODULE)
+        moduleCircularDependency.forEach {
+            val circularDependency = it.joinToString(separator = ",")
+            saveCircularDependency(systemId, circularDependency, CircularDependencyType.MODULE)
+        }
+    }
+
+    override fun insertOrUpdatePackageCircularDependency(systemId: Long, packageCircularDependency: List<List<String>>) {
+        deleteCircularDependency(systemId, type = CircularDependencyType.PACKAGE)
+        packageCircularDependency.forEach {
+            val circularDependency = it.joinToString(separator = ",")
+            saveCircularDependency(systemId, circularDependency, CircularDependencyType.PACKAGE)
+        }
+    }
+
     fun saveCircularDependency(systemId: Long, circularDependency: String, type: CircularDependencyType) {
         jdbi.useHandle<Exception> {
             it.createUpdate("insert into circular_dependency_metrics (system_id, circular_dependency, type) values (:system_id, :circular_dependency, :type)")
