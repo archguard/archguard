@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.tbs.TestBadSmell
+import com.thoughtworks.archgard.scanner.domain.scanner.bak.tbs.TestBadSmell
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlUpdate

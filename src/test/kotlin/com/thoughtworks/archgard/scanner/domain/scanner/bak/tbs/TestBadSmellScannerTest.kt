@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.tbs
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.tbs
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.system.BuildTool

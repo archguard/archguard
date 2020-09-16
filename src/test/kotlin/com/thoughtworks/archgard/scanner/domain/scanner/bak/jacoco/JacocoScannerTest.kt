@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.jacoco
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.jacoco
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.system.BuildTool

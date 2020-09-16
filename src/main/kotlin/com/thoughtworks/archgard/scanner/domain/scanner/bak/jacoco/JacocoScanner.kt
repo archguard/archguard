@@ -1,7 +1,6 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.jacoco
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.jacoco
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.JacocoTool
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner

@@ -1,7 +1,7 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.tbs.TestBadSmell
-import com.thoughtworks.archgard.scanner.domain.scanner.tbs.TestBadSmellRepo
+import com.thoughtworks.archgard.scanner.domain.scanner.bak.tbs.TestBadSmell
+import com.thoughtworks.archgard.scanner.domain.scanner.bak.tbs.TestBadSmellRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.util.*

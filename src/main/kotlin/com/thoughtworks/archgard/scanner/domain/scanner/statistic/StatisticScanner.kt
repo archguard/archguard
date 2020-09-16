@@ -1,7 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.statistic
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaTool
@@ -17,6 +16,10 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     private val log = LoggerFactory.getLogger(StatisticScanner::class.java)
     override fun getScannerName(): String {
         return "Statistic"
+    }
+
+    override fun canScan(context: ScanContext): Boolean {
+        return true
     }
 
     override fun scan(context: ScanContext) {

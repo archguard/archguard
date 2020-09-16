@@ -1,7 +1,6 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.pmd
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.pmd
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.PmdTool
 import com.thoughtworks.archgard.scanner.infrastructure.db.PmdRepository

@@ -1,10 +1,9 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.bs
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.bs
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.CocaTool
 import com.thoughtworks.archgard.scanner.domain.tools.DesigniteJavaReportType

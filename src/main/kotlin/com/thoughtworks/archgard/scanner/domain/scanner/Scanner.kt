@@ -21,6 +21,6 @@ interface Scanner {
     fun scan(context: ScanContext)
 
     fun canScan(context: ScanContext): Boolean {
-        return context.canScan(getScannerName())
+        return false
     }
 }

@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.style
+package com.thoughtworks.archgard.scanner.domain.scanner.bak.style
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.analyser.JavaDependencyAnalysis
