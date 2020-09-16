@@ -1,18 +1,12 @@
 package com.thoughtworks.archguard.report.domain.overview
 
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateService
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
 class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
-                      val deepInheritanceRepository: DeepInheritanceRepository,
                       val badSmellCalculateService: BadSmellCalculateService) {
-
-    @Value("\${threshold.deep-inheritance.dit}")
-    private val deepInheritanceDitThreshold: Int = 1
 
     fun getSystemOverview(systemId: Long): SystemOverview {
         val repoCount = getRepoCount(systemId)
@@ -29,7 +23,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.MODULE_OVER_SIZING, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_CLASS_HUB, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_DATA_CLUMPS, systemId))
-        list.add(this.getDeepInheritanceOverview(systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_DEEP_INHERITANCE, systemId))
         list.add(this.getCycleDependency(systemId))
         // todo 补充其他维度坏味道
         return BadSmellOverviewDto(list)
@@ -47,11 +41,6 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
 
     private fun getLineCount(systemId: Long): Long {
         return systemOverviewRepository.getSystemLineCountBySystemId(systemId)
-    }
-
-    private fun getDeepInheritanceOverview(systemId: Long): BadSmellOverviewItem {
-        val count = deepInheritanceRepository.getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)
-        return BadSmellOverviewItem(BadSmell.COUPLING_DEEP_INHERITANCE, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
     }
 
     private fun getCycleDependency(systemId: Long): BadSmellOverviewItem {
