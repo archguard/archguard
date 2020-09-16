@@ -25,14 +25,16 @@ class GitHotFileDTO(private val gitHotFile: GitHotFile) {
     val systemId: Long
         get() = gitHotFile.systemId
     
-    val moduleName: String?
-        get() = gitHotFile.moduleName
+    val moduleName: String
+        get() {
+            return if (gitHotFile.moduleName != null) return gitHotFile.moduleName else ""
+        } 
     
     val packageName: String
-        get() = JClassVO(gitHotFile.className!!, gitHotFile.moduleName!!).getPackageName()
+        get() = JClassVO(gitHotFile.className!!, moduleName).getPackageName()
 
     val typeName: String
-        get() = JClassVO(gitHotFile.className!!, gitHotFile.moduleName!!).getTypeName()
+        get() = JClassVO(gitHotFile.className!!, moduleName).getTypeName()
     
     val modifiedCount: Int
         get() = gitHotFile.modifiedCount
