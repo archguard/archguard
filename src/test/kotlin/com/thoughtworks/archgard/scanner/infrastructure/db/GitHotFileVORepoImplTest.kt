@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFile
+import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFileVO
 import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFileRepo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,13 +11,13 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 @ActiveProfiles("test")
-internal class GitHotFileRepoImplTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
+internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
     
     @Test
     fun shouldUpdateGitHotFilesGivenHistoryGItHotFilesWhenSave() {
-        gitHotFileRepo.save(listOf(GitHotFile(1, "name1", 10), GitHotFile(1, "name2", 10)))
+        gitHotFileRepo.save(listOf(GitHotFileVO(1, "name1", 10), GitHotFileVO(1, "name2", 10)))
         
-        gitHotFileRepo.save(listOf(GitHotFile(1, "name1", 12), GitHotFile(1, "name2", 13)))
+        gitHotFileRepo.save(listOf(GitHotFileVO(1, "name1", 12), GitHotFileVO(1, "name2", 13)))
         val findBySystemId = gitHotFileRepo.findBySystemId(1);
 
         assertNotNull(findBySystemId)

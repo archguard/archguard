@@ -1,6 +1,5 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
-import com.thoughtworks.archgard.scanner.domain.ScanContext
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -14,7 +13,7 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 @ActiveProfiles("test")
-internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
+internal class GitHotFileVOScannerTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
 
     private lateinit var spyGitHotFileScanner: GitHotFileScanner
 
@@ -26,8 +25,8 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRe
     @Test
     internal fun shouldSaveGitHotFileReport() {
         every { spyGitHotFileScanner.getHotFileReport(any()) } returns listOf(
-                GitHotFile(1, "name1", 10),
-                GitHotFile(1, "name2", 10)
+                GitHotFileVO(1, "name1", 10),
+                GitHotFileVO(1, "name2", 10)
         )
         
         spyGitHotFileScanner.scan(mockk())

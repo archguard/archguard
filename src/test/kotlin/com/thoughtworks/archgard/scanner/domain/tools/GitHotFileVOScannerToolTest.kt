@@ -8,7 +8,7 @@ import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-internal class GitHotFileScannerToolTest {
+internal class GitHotFileVOScannerToolTest {
     
     @Test
     internal fun shouldGetGitHotFileModifiedCountMap() {

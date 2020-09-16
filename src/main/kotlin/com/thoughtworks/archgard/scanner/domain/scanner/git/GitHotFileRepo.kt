@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
 interface GitHotFileRepo {
-    fun save(gitHotFiles: List<GitHotFile>)
-    fun findBySystemId(systemId: Long) : List<GitHotFile>
+    fun save(gitHotFileVOS: List<GitHotFileVO>)
+    fun findBySystemId(systemId: Long) : List<GitHotFileVO>
 }
