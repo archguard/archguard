@@ -73,4 +73,4 @@ enum class BadSmellType {
 
 data class Dashboard(val dashboardGroup: DashboardGroup, val groupData: List<GroupData>)
 data class GroupData(val type: BadSmellType, val level: BadSmellLevel, val graphData: List<GraphData>)
-data class GraphData(val data: String, val value: Int)
+data class GraphData(val date: String, val value: Int)
