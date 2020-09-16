@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
+import com.thoughtworks.archgard.scanner.domain.ScanContext
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -28,8 +29,11 @@ internal class GitHotFileVOScannerTest(@Autowired val gitHotFileRepo: GitHotFile
                 GitHotFileVO(1, "name1", 10),
                 GitHotFileVO(1, "name2", 10)
         )
-        
-        spyGitHotFileScanner.scan(mockk())
+
+        val scanContext = mockk<ScanContext>()
+        every { scanContext.systemId } returns 1
+        every { scanContext.repo } returns "repo1"
+        spyGitHotFileScanner.scan(scanContext)
 
         val findBySystemId = gitHotFileRepo.findBySystemId(1);
         

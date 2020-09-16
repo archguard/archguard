@@ -17,7 +17,7 @@ class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo) : Scanner {
 
     override fun scan(context: ScanContext) {
         val hotFileReport = getHotFileReport(context)
-        gitHotFileRepo.save(hotFileReport)
+        gitHotFileRepo.save(hotFileReport.map { GitHotFile(it, context.systemId, context.repo, null) })
     }
 
     fun getHotFileReport(context: ScanContext) : List<GitHotFileVO> {
