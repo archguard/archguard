@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
-class GitHotFileVO(val systemId: Long, val name: String, val modifiedCount: Int) {
+class GitHotFileVO(val name: String, val modifiedCount: Int) {
     private val jvmClassSuffixMap: Map<String, String> = mapOf("java" to ".java", "kotlin" to ".kt")
 
     fun isJVMClass(): Boolean {

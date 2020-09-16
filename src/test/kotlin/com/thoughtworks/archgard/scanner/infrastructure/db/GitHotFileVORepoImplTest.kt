@@ -16,17 +16,16 @@ internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: GitHotFil
     
     @Test
     fun shouldUpdateGitHotFilesGivenHistoryGItHotFilesWhenSave() {
-        gitHotFileRepo.save(listOf(GitHotFile(GitHotFileVO(1, "name1", 10), 1, "repo1", null), 
-                GitHotFile(GitHotFileVO(1, "name2", 10), 1, "repo1", null)))
+        gitHotFileRepo.save(listOf(GitHotFile(GitHotFileVO("name1", 10), 1, "repo1", null), 
+                GitHotFile(GitHotFileVO("name2", 10), 1, "repo1", null)))
 
-        gitHotFileRepo.save(listOf(GitHotFile(GitHotFileVO(1, "name1", 12), 1, "repo1", null),
-                GitHotFile(GitHotFileVO(1, "name2", 13), 1, "repo1", null)))
+        gitHotFileRepo.save(listOf(GitHotFile(GitHotFileVO("name1", 12), 1, "repo1", null),
+                GitHotFile(GitHotFileVO("name2", 13), 1, "repo1", null)))
 
         val findBySystemId = gitHotFileRepo.findBySystemId(1);
         
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
-        assertEquals(1, findBySystemId[0].systemId)
         assertEquals("name1", findBySystemId[0].name)
         assertEquals(12, findBySystemId[0].modifiedCount)
         assertEquals(13, findBySystemId[1].modifiedCount)

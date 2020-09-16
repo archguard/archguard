@@ -26,8 +26,8 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRe
     @Test
     internal fun shouldSaveGitHotFileReport() {
         every { spyGitHotFileScanner.getHotFileReport(any()) } returns listOf(
-                GitHotFileVO(1, "name1", 10),
-                GitHotFileVO(1, "name2", 10)
+                GitHotFileVO("name1", 10),
+                GitHotFileVO("name2", 10)
         )
 
         val scanContext = mockk<ScanContext>()
@@ -39,7 +39,6 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRe
         
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
-        assertEquals(1, findBySystemId[0].systemId)
         assertEquals("name1", findBySystemId[0].name)
         assertEquals(10, findBySystemId[0].modifiedCount)
     }
