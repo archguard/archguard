@@ -25,7 +25,7 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
 
     override fun scan(context: ScanContext) {
         log.info("start scan git source")
-        val gitScannerTool = GitScannerTool(context.workspace, "master")
+        val gitScannerTool = GitScannerTool(context.workspace, "master", context.systemId, context.repo)
         val gitReport = gitScannerTool.getGitReport()
         if (gitReport != null) {
             sqlScriptRunner.run(DELETE_GIT_REPO)
