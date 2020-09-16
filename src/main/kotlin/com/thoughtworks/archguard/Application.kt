@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard
 
+import com.thoughtworks.archguard.report.infrastructure.GitHotFileDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
@@ -36,6 +37,12 @@ class Application {
     fun jdbiPlugins(): List<JdbiPlugin> {
         return listOf(SqlObjectPlugin(), KotlinPlugin(), KotlinSqlObjectPlugin())
     }
+
+    @Bean
+    fun gitHotFileDao(jdbi: Jdbi): GitHotFileDao {
+        return jdbi.onDemand(GitHotFileDao::class.java)
+    }
+
 }
 
 fun main(args: Array<String>) {
