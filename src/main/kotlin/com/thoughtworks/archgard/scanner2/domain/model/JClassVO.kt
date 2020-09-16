@@ -50,4 +50,8 @@ class JClassVO(val name: String, val module: String) : Node {
         return name.substring(0, endIndex)
     }
 
+    fun getTypeName(): String {
+        return name.substringAfterLast(".")
+    }
+
 }
