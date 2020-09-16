@@ -15,4 +15,6 @@ interface JClassRepository {
     fun findFields(id: String): List<JField>
 
     fun getAllClassDependencies(systemId: Long): List<Dependency<String>>
+    
+    fun findClassBy(systemId: Long, name: String, module: String?): JClass
 }

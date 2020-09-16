@@ -71,6 +71,20 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }.map { it.toDependency() }
     }
 
+    override fun findClassBy(systemId: Long, name: String, module: String?): JClass {
+        var moduleFilter = ""
+        if (!module.isNullOrEmpty()) {
+            moduleFilter = "and module='$module'"
+        }
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = $systemId and name = '$name' $moduleFilter limit 1"
+        return jdbi.withHandle<JClassPO, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))
+            it.createQuery(sql)
+                    .mapTo(JClassPO::class.java)
+                    .one()
+        }.toJClass()
+    }
+
     override fun getJClassesHasModules(systemId: Long): List<JClass> {
         val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
