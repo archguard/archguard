@@ -10,7 +10,7 @@ create table commit_log(
     committer_name      varchar(50),
     committer_email     varchar(100),
     repo_id          varchar(50),
-    system_id        varchar(50)
+    system_id        int
 );
 
 
