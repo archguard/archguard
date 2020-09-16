@@ -41,18 +41,18 @@ class DashboardController() {
                                         GraphData("2020-10-12", 15),
                                         GraphData("2020-10-15", 20),
                                         GraphData("2020-10-16", 9))),
+                        GroupData(BadSmellType.SIZINGCLASS,
+                                listOf(GraphData("2020-10-1", 303),
+                                        GraphData("2020-10-5", 34),
+                                        GraphData("2020-10-12", 15),
+                                        GraphData("2020-10-15", 95),
+                                        GraphData("2020-10-16", 39))),
                         GroupData(BadSmellType.SIZINGMETHOD,
                                 listOf(GraphData("2020-10-1", 3),
                                         GraphData("2020-10-5", 334),
                                         GraphData("2020-10-12", 235),
                                         GraphData("2020-10-15", 35),
-                                        GraphData("2020-10-16", 129))),
-                        GroupData(BadSmellType.SIZINGFUNCTION,
-                                listOf(GraphData("2020-10-1", 303),
-                                        GraphData("2020-10-5", 34),
-                                        GraphData("2020-10-12", 15),
-                                        GraphData("2020-10-15", 95),
-                                        GraphData("2020-10-16", 39)))
+                                        GraphData("2020-10-16", 129)))
                 ))
         return ResponseEntity.ok(listOf(couplingDashboard, sizingDashboard));
     }
@@ -64,7 +64,7 @@ enum class DashboardGroup {
 
 enum class BadSmellType {
     DATACLUMPS, DEEPINHERITANCE,
-    SIZINGMODULES, SIZINGPACKAGE, SIZINGMETHOD, SIZINGFUNCTION
+    SIZINGMODULES, SIZINGPACKAGE, SIZINGMETHOD, SIZINGCLASS
 }
 
 data class Dashboard(val dashboardGroup: DashboardGroup, val groupData: List<GroupData>)
