@@ -1,22 +1,22 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
-class GitHotFileVO(val name: String, val modifiedCount: Int) {
+class GitHotFileVO(val path: String, val modifiedCount: Int) {
     private val jvmClassSuffixMap: Map<String, String> = mapOf("java" to ".java", "kotlin" to ".kt")
 
     fun isJVMClass(): Boolean {
-        return jvmClassSuffixMap.values.filter { name.endsWith(it) }.any()
+        return jvmClassSuffixMap.values.filter { path.endsWith(it) }.any()
     }
 
     fun className(): String? {
         return jvmClassSuffixMap.entries
-                .filter { name.endsWith(it.value) }
-                .map { name.substringAfter("${it.key}/").substringBefore(it.value).replace("/", ".") }
+                .filter { path.endsWith(it.value) }
+                .map { path.substringAfter("${it.key}/").substringBefore(it.value).replace("/", ".") }
                 .firstOrNull()
     }
 
     fun moduleName(): String? {
-        if (name.startsWith("src/")) return null
-        if (name.contains("/src/")) return name.substringBefore("/src")
+        if (path.startsWith("src/")) return null
+        if (path.contains("/src/")) return path.substringBefore("/src")
         return null
     }
 

@@ -39,7 +39,7 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRe
         
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
-        assertEquals("name1", findBySystemId[0].name)
+        assertEquals("name1", findBySystemId[0].path)
         assertEquals(10, findBySystemId[0].modifiedCount)
     }
 }

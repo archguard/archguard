@@ -1,7 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
 import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFile
-import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFileVO
 import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFileRepo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +25,7 @@ internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: GitHotFil
         
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
-        assertEquals("name1", findBySystemId[0].name)
+        assertEquals("name1", findBySystemId[0].path)
         assertEquals(12, findBySystemId[0].modifiedCount)
         assertEquals(13, findBySystemId[1].modifiedCount)
     }
