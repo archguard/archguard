@@ -4,10 +4,14 @@ import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.GitHotFileScannerTool
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo, val jClassRepository: JClassRepository) : Scanner {
+
+    private val log = LoggerFactory.getLogger(GitHotFileScanner::class.java)
+
     override fun canScan(context: ScanContext): Boolean {
         return true
     }
@@ -20,6 +24,7 @@ class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo, val jClassRepository
         val hotFileReport = getHotFileReport(context)
         val gitHotFiles = getGitHotFIles(hotFileReport, context)
         gitHotFileRepo.save(gitHotFiles)
+        log.info("Saved gitHotFiles, systemId={}", context.systemId)
     }
 
     private fun getGitHotFIles(hotFileReport: List<GitHotFileVO>, context: ScanContext): List<GitHotFile> {
