@@ -17,10 +17,10 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
         val allClassDependencies = jClassRepository.getAllClassDependencies(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
+        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
         return cycles.map { it.map { jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }.toVO() } }
     }
 
@@ -43,10 +43,17 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         return cycles.map { it.map { it.getNodeId() } }
     }
 
+    fun getPackageCircularDependency(systemId: Long): List<List<String>> {
+        val packageDependencies = buildPackageDependencies(systemId)
+        val cycles = findCyclesFromDependencies(packageDependencies)
+        if (cycles.isEmpty()) {
+            return emptyList()
+        }
+        return cycles.map { it.map { it.getNodeId() } }
+    }
+
     private fun buildModuleDependencies(systemId: Long): MutableSet<Dependency<String>> {
-        val allClassIdDependencies = jClassRepository.getAllClassDependencies(systemId)
-        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
-        val allClassDependencies = allClassIdDependencies.map { dependency: Dependency<String> -> Dependency(jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(), jClassesHasModules.first { jClass -> jClass.id == dependency.callee }.toVO()) }
+        val allClassDependencies = buildAllClassDependencies(systemId)
         val moduleDependencies = mutableSetOf<Dependency<String>>()
         allClassDependencies.forEach {
             if (it.caller.module != it.callee.module) {
@@ -54,6 +61,30 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
             }
         }
         return moduleDependencies
+    }
+
+    private fun buildPackageDependencies(systemId: Long): MutableSet<Dependency<String>> {
+        val allClassDependencies = buildAllClassDependencies(systemId)
+        val packageDependencies = mutableSetOf<Dependency<String>>()
+        allClassDependencies.forEach {
+            val callerPackageName = "${it.caller.module}.${it.caller.getPackageName()}"
+            val calleePackageName = "${it.caller.module}.${it.callee.getPackageName()}"
+            if (callerPackageName != calleePackageName) {
+                packageDependencies.add(Dependency(callerPackageName, calleePackageName))
+            }
+        }
+        return packageDependencies
+    }
+
+    private fun buildAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
+        val allClassIdDependencies = jClassRepository.getAllClassDependencies(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
+        return allClassIdDependencies.map { dependency: Dependency<String> ->
+            Dependency(
+                    jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(),
+                    jClassesHasModules.first { jClass -> jClass.id == dependency.callee }.toVO()
+            )
+        }
     }
 
     private fun findCyclesFromDependencies(dependencies: Collection<Dependency<String>>): List<List<Node>> {

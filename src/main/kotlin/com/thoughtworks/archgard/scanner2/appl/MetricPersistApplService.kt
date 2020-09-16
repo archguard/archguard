@@ -52,6 +52,10 @@ class MetricPersistApplService(val abcService: AbcService,
         circularDependencyMetricRepository.insertOrUpdateModuleCircularDependency(systemId, moduleCircularDependency)
         log.info("Finished persist moduleCircularDependency in projectId $systemId")
 
+        val packageCircularDependency = circularDependencyService.getPackageCircularDependency(systemId)
+        circularDependencyMetricRepository.insertOrUpdatePackageCircularDependency(systemId, packageCircularDependency)
+        log.info("Finished persist packageCircularDependency in projectId $systemId")
+
         val classCircularDependency = circularDependencyService.getClassCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
         log.info("Finished persist classCircularDependency in projectId $systemId")

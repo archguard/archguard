@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
  */
 class JClassVO(val name: String, val module: String) : Node {
     var id: String? = null
-    val fullName = module + name
+    val fullName = "$module.$name"
 
     companion object {
         fun create(fullName: String): JClassVO {
