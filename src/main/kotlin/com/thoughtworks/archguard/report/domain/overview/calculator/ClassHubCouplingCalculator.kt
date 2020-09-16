@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
+import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
-import com.thoughtworks.archguard.report.domain.overview.BadSmell
 import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCouplingCalculator
 import org.springframework.stereotype.Component
 
@@ -11,8 +11,8 @@ class ClassHubCouplingCalculator(val couplingRepository: CouplingRepository) : B
         return couplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    override fun getBadSmellType(): BadSmell {
-        return BadSmell.COUPLING_CLASS_HUB
+    override fun getBadSmellType(): BadSmellType {
+        return BadSmellType.CLASSHUB
     }
 
     override fun getTypeCountLevelRanges(): Array<LongRange> {

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
+import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
-import com.thoughtworks.archguard.report.domain.overview.BadSmell
 import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCouplingCalculator
 import org.springframework.stereotype.Component
 
@@ -11,8 +11,8 @@ class DeepInheritanceCouplingCalculator(val deepInheritanceRepository: DeepInher
         return deepInheritanceRepository.getDitAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    override fun getBadSmellType(): BadSmell {
-        return BadSmell.COUPLING_DEEP_INHERITANCE
+    override fun getBadSmellType(): BadSmellType {
+        return BadSmellType.DEEPINHERITANCE
     }
 
     override fun getTypeCountLevelRanges(): Array<LongRange> {

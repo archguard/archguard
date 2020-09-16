@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.overview.BadSmellLevel
+import com.thoughtworks.archguard.report.controller.BadSmellLevel
 
 class BadSmellCalculateResult(var level1: Long = 0, var level2: Long = 0, var level3: Long = 0) {
     fun totalCount(): Long {

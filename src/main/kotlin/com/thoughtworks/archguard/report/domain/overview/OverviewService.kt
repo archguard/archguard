@@ -1,12 +1,15 @@
 package com.thoughtworks.archguard.report.domain.overview
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateService
+import com.thoughtworks.archguard.report.controller.BadSmellLevel
+import com.thoughtworks.archguard.report.controller.BadSmellType
+import com.thoughtworks.archguard.report.controller.DashboardGroup
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.springframework.stereotype.Service
 
 @Service
 class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
-                      val badSmellCalculateService: BadSmellCalculateService) {
+                      val badSmellCalculator: BadSmellCalculator) {
 
     fun getSystemOverview(systemId: Long): SystemOverview {
         val repoCount = getRepoCount(systemId)
@@ -17,13 +20,13 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
 
     fun getOverview(systemId: Long): BadSmellOverviewDto {
         val list = mutableListOf<BadSmellOverviewItem>()
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.METHOD_OVER_SIZING, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.CLASS_OVER_SIZING, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.PACKAGE_OVER_SIZING, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.MODULE_OVER_SIZING, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_CLASS_HUB, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_DATA_CLUMPS, systemId))
-        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_DEEP_INHERITANCE, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMETHOD, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGCLASS, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGPACKAGE, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMODULES, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.CLASSHUB, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId))
         list.add(this.getCycleDependency(systemId))
         // todo 补充其他维度坏味道
         return BadSmellOverviewDto(list)
@@ -46,7 +49,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
     private fun getCycleDependency(systemId: Long): BadSmellOverviewItem {
         //todo
         val count: Long = 0
-        return BadSmellOverviewItem(BadSmell.COUPLING_CYCLE_DEPENDENCY, BadSmellCategory.COUPLING, BadSmellLevel.A, count)
+        return BadSmellOverviewItem(BadSmellType.CYCLEDEPENDENCY, DashboardGroup.COUPLING, BadSmellLevel.A, count)
     }
 
 

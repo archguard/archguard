@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
+import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
-import com.thoughtworks.archguard.report.domain.overview.BadSmell
 import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCouplingCalculator
 import org.springframework.stereotype.Component
 
@@ -11,8 +11,8 @@ class DataClumpsCouplingCalculator(val dataClumpsRepository: DataClumpsRepositor
         return dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    override fun getBadSmellType(): BadSmell {
-        return BadSmell.COUPLING_DATA_CLUMPS
+    override fun getBadSmellType(): BadSmellType {
+        return BadSmellType.DATACLUMPS
     }
 
     override fun getTypeCountLevelRanges(): Array<LongRange> {

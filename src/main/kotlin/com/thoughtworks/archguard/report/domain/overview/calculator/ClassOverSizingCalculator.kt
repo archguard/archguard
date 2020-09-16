@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.overview.BadSmell
+import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseOverSizingCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.beans.factory.annotation.Value
@@ -8,12 +8,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class ClassOverSizingCalculator(val sizingRepository: SizingRepository) : BaseOverSizingCalculator() {
-
-    @Value("\${threshold.class.method.count}")
-    private val classMethodCountSizingThreshold: Int = 0
-
-    @Value("\${threshold.class.line}")
-    private val classSizingThreshold: Int = 0
 
     override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         return sizingRepository.getClassSizingListAboveMethodCountBadSmellResult(systemId, getTypeCountLevelRanges());
@@ -23,8 +17,8 @@ class ClassOverSizingCalculator(val sizingRepository: SizingRepository) : BaseOv
         return sizingRepository.getClassSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 
-    override fun getBadSmellType(): BadSmell {
-        return BadSmell.CLASS_OVER_SIZING
+    override fun getBadSmellType(): BadSmellType {
+        return BadSmellType.SIZINGCLASS
     }
 
     override fun getLineCountLevelRanges(): Array<LongRange> {
