@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner2.appl
 
+import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archgard.scanner2.domain.repository.CircularDependencyMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
@@ -9,6 +10,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyServi
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
+import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
 import org.slf4j.LoggerFactory
@@ -63,6 +65,10 @@ class MetricPersistApplService(val abcService: AbcService,
         val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
         log.info("Finished persist methodCircularDependency in projectId $systemId")
+
+        val circularDependenciesCount = CircularDependenciesCount(systemId, moduleCircularDependency.size, packageCircularDependency.size, classCircularDependency.size, methodCircularDependency.size)
+        influxDBClient.save(CircularDependenciesCountDtoForWriteInfluxDB(circularDependenciesCount).toRequestBody())
+        log.info("Finished persist circularDependenciesCount to influxdb in projectId $systemId")
 
     }
 }
