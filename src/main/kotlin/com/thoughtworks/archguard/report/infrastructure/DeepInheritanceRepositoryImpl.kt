@@ -32,7 +32,7 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
                          select dit
                          from JClass c
                                   inner join class_metrics m on m.class_id = c.id
-                         where c.system_id = :system_id) as c
+                         where c.system_id = :systemId) as c
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)

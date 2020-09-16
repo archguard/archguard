@@ -32,7 +32,7 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
                          select lcom4
                          from JClass c
                                   inner join class_metrics m on m.class_id = c.id
-                         where c.system_id = :system_id
+                         where c.system_id = :systemId
                      ) as c
             """.trimIndent()
             it.createQuery(sql)

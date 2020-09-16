@@ -9,7 +9,9 @@ class BadSmellCalculateService(val moduleCalculator: ModuleOverSizingCalculator,
                                val packageCalculator: PackageOverSizingCalculator,
                                val classCalculator: ClassOverSizingCalculator,
                                val methodCalculator: MethodOverSizingCalculator,
-                               val classHubCalculator: ClassHubCouplingCalculator) {
+                               val classHubCalculator: ClassHubCouplingCalculator,
+                               val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
+                               val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator) {
 
 
     fun calculateBadSmell(badSmell: BadSmell, systemId: Long): BadSmellOverviewItem {
@@ -19,6 +21,8 @@ class BadSmellCalculateService(val moduleCalculator: ModuleOverSizingCalculator,
             BadSmell.CLASS_OVER_SIZING -> classCalculator.getOverSizingOverviewItem(systemId)
             BadSmell.METHOD_OVER_SIZING -> methodCalculator.getOverSizingOverviewItem(systemId)
             BadSmell.COUPLING_CLASS_HUB -> classHubCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.COUPLING_DATA_CLUMPS -> dataClumpsCouplingCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.COUPLING_DEEP_INHERITANCE -> deepInheritanceCouplingCalculator.getOverSizingOverviewItem(systemId)
             else -> throw RuntimeException()
         }
     }
