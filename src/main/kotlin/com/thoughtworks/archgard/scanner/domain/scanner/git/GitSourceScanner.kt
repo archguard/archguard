@@ -1,14 +1,12 @@
 package com.thoughtworks.archgard.scanner.domain.scanner.git
 
 import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archgard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archgard.scanner.domain.tools.GitScannerTool
 import com.thoughtworks.archgard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
@@ -19,6 +17,10 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
     private val log = LoggerFactory.getLogger(GitSourceScanner::class.java)
     override fun getScannerName(): String {
         return "GitSource"
+    }
+
+    override fun canScan(context: ScanContext): Boolean {
+        return true
     }
 
     override fun scan(context: ScanContext) {
