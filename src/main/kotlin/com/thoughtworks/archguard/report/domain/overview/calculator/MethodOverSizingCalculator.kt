@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmell
+import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseOverSizingCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

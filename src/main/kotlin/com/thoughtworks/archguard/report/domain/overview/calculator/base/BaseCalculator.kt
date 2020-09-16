@@ -1,14 +1,16 @@
-package com.thoughtworks.archguard.report.domain.overview.calculator
+package com.thoughtworks.archguard.report.domain.overview.calculator.base
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmell
 import com.thoughtworks.archguard.report.domain.overview.BadSmellCategory
 import com.thoughtworks.archguard.report.domain.overview.BadSmellOverviewItem
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 
-abstract class BaseOverSizingCalculator {
+abstract class BaseCalculator {
 
     abstract fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult
     abstract fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult
     abstract fun getBadSmellType(): BadSmell
+    abstract fun getBadSmellCategory(): BadSmellCategory
 
     abstract fun getLineCountLevelRanges(): Array<LongRange>
     abstract fun getTypeCountLevelRanges(): Array<LongRange>
@@ -17,7 +19,7 @@ abstract class BaseOverSizingCalculator {
         val count = getTypeCountCalculateResult(systemId)
         val lineCount = getLineCountCalculateResult(systemId)
         val result = count.plus(lineCount)
-        return BadSmellOverviewItem(getBadSmellType(), BadSmellCategory.OVER_SIZING, result.calculateLevel(), result.totalCount())
+        return BadSmellOverviewItem(getBadSmellType(), getBadSmellCategory(), result.calculateLevel(), result.totalCount())
     }
 
 }

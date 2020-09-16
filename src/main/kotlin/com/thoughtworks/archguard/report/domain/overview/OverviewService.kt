@@ -71,7 +71,7 @@ class OverviewService(val sizingRepository: SizingRepository,
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.CLASS_OVER_SIZING, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.PACKAGE_OVER_SIZING, systemId))
         list.add(badSmellCalculateService.calculateBadSmell(BadSmell.MODULE_OVER_SIZING, systemId))
-        list.add(this.getClassHubOverview(systemId))
+        list.add(badSmellCalculateService.calculateBadSmell(BadSmell.COUPLING_CLASS_HUB, systemId))
         list.add(this.getDataClumpsOverview(systemId))
         list.add(this.getDeepInheritanceOverview(systemId))
         list.add(this.getCycleDependency(systemId))

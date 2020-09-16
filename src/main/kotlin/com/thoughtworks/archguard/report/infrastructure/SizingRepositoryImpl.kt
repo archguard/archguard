@@ -38,7 +38,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.packageCount >= :level1Start and c.packageCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.packageCount >= :level2Start and c.packageCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.packageCount > :level3Start then 1 else 0 end)                                  AS 'level3'
+                       sum(CASE when c.packageCount >= :level3Start then 1 else 0 end)                                  AS 'level3'
                 from (
                          select count(distinct packageName) packageCount
                          from ClassStatistic c1
@@ -106,7 +106,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                       sum(CASE when c.lineCount >= :level3Start then 1 else 0 end)                               AS 'level3'
                 from (
                          select sum(c1.`lines`) lineCount
                          from ClassStatistic c1
@@ -174,7 +174,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.classCount >= :level1Start and c.classCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.classCount >= :level2Start and c.classCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.classCount > :level3Start then 1 else 0 end)                                AS 'level3'
+                       sum(CASE when c.classCount >= :level3Start then 1 else 0 end)                                AS 'level3'
                 from (
                          select count(1) classCount
                          from ClassStatistic c1
@@ -242,7 +242,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                       sum(CASE when c.lineCount >= :level3Start then 1 else 0 end)                               AS 'level3'
                 from (
                          select sum(c1.`lines`) lineCount
                          from ClassStatistic c1
@@ -346,7 +346,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.methodCount >= :level1Start and c.methodCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.methodCount >= :level2Start and c.methodCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.methodCount > :level3Start then 1 else 0 end)                                 AS 'level3'
+                       sum(CASE when c.methodCount >= :level3Start then 1 else 0 end)                                 AS 'level3'
                 from (
                          select m1.`lines` methodCount
                          from MethodStatistic m1
@@ -382,7 +382,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.lineCount >= :level1Start and c.lineCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.lineCount >= :level2Start and c.lineCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.lineCount > :level3Start then 1 else 0 end)                               AS 'level3'
+                       sum(CASE when c.lineCount >= :level3Start then 1 else 0 end)                               AS 'level3'
                 from (
                          select `lines` as lineCount
                          from ClassStatistic c1
@@ -424,7 +424,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select sum(CASE when c.methodCount >= :level1Start and c.methodCount < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.methodCount >= :level2Start and c.methodCount < :level2End then 1 else 0 end) AS 'level2',
-                       sum(CASE when c.methodCount > :level3Start then 1 else 0 end)                                AS 'level3'
+                       sum(CASE when c.methodCount >= :level3Start then 1 else 0 end)                                AS 'level3'
                 from (
                          select count(1) as methodCount
                          from MethodStatistic m1

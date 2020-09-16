@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 class BadSmellCalculateService(val moduleCalculator: ModuleOverSizingCalculator,
                                val packageCalculator: PackageOverSizingCalculator,
                                val classCalculator: ClassOverSizingCalculator,
-                               val methodCalculator: MethodOverSizingCalculator) {
+                               val methodCalculator: MethodOverSizingCalculator,
+                               val classHubCalculator: ClassHubCouplingCalculator) {
 
 
     fun calculateBadSmell(badSmell: BadSmell, systemId: Long): BadSmellOverviewItem {
@@ -17,6 +18,7 @@ class BadSmellCalculateService(val moduleCalculator: ModuleOverSizingCalculator,
             BadSmell.PACKAGE_OVER_SIZING -> packageCalculator.getOverSizingOverviewItem(systemId)
             BadSmell.CLASS_OVER_SIZING -> classCalculator.getOverSizingOverviewItem(systemId)
             BadSmell.METHOD_OVER_SIZING -> methodCalculator.getOverSizingOverviewItem(systemId)
+            BadSmell.COUPLING_CLASS_HUB -> classHubCalculator.getOverSizingOverviewItem(systemId)
             else -> throw RuntimeException()
         }
     }
