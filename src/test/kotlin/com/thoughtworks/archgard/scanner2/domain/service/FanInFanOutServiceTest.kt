@@ -2,6 +2,7 @@ package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat
@@ -14,10 +15,13 @@ internal class FanInFanOutServiceTest {
     @MockK
     private lateinit var jClassRepository: JClassRepository
 
+    @MockK
+    private lateinit var jMethodRepository: JMethodRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        fanInFanOutService = FanInFanOutService(jClassRepository)
+        fanInFanOutService = FanInFanOutService(jClassRepository, jMethodRepository)
     }
 
     @Test
@@ -28,7 +32,7 @@ internal class FanInFanOutServiceTest {
         val d4 = Dependency("c1", "c5")
         val allClassDependencies = listOf(d1, d2, d3, d4)
 
-        val fanInFanOutMap = fanInFanOutService.calculateClassFanInFanOutWithClassDependency(allClassDependencies)
+        val fanInFanOutMap = fanInFanOutService.calculateFanInFanOutWithDependency(allClassDependencies)
         assertThat(fanInFanOutMap).containsExactlyInAnyOrderEntriesOf(
                 mapOf("c1" to FanInFanOut(1, 3), "c2" to FanInFanOut(1, 0),
                         "c3" to FanInFanOut(1, 1), "c5" to FanInFanOut(1, 0)))

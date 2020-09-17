@@ -2,9 +2,12 @@ package com.thoughtworks.archgard.scanner2.appl
 
 import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
+import com.thoughtworks.archgard.scanner2.domain.model.MethodMetric
 import com.thoughtworks.archgard.scanner2.domain.repository.CircularDependencyMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.MethodMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.service.AbcService
 import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
@@ -14,6 +17,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
+import com.thoughtworks.archgard.scanner2.infrastructure.influx.MethodMetricsDtoListForWriteInfluxDB
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,9 +28,11 @@ class MetricPersistApplService(val abcService: AbcService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
                                val jClassRepository: JClassRepository,
+                               val jMethodRepository: JMethodRepository,
                                val fanInFanOutService: FanInFanOutService,
                                val circularDependencyService: CircularDependencyService,
                                val classMetricRepository: ClassMetricRepository,
+                               val methodMetricRepository: MethodMetricRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
                                val influxDBClient: InfluxDBClient) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
@@ -41,15 +47,25 @@ class MetricPersistApplService(val abcService: AbcService,
         val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
         val classFanInFanOutMap = fanInFanOutService.calculateAtClassLevel(systemId)
 
-        val classMetrics = mutableListOf<ClassMetric>()
-        jClasses.forEach {
-            classMetrics.add(ClassMetric(systemId, it.toVO(),
+        val classMetrics = jClasses.map {
+            ClassMetric(systemId, it.toVO(),
                     abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
-                    classFanInFanOutMap[it.id]?.fanIn, classFanInFanOutMap[it.id]?.fanOut))
+                    classFanInFanOutMap[it.id]?.fanIn, classFanInFanOutMap[it.id]?.fanOut)
+        }
+
+        val methods = jMethodRepository.getMethodsNotThirdParty(systemId)
+        val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
+
+        val methodMetrics = methods.map {
+            MethodMetric(systemId, it.toVO(),
+                    methodFanInFanOutMap[it.id]?.fanIn, methodFanInFanOutMap[it.id]?.fanOut)
         }
 
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
+        methodMetricRepository.insertOrUpdateMethodMetric(systemId, methodMetrics)
+
         influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
+        influxDBClient.save(MethodMetricsDtoListForWriteInfluxDB(methodMetrics).toRequestBody())
     }
 
     @Transactional

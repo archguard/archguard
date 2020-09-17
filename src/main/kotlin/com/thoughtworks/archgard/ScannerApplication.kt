@@ -1,8 +1,16 @@
 package com.thoughtworks.archgard
 
 import com.thoughtworks.archgard.scanner.domain.hubexecutor.ScannerManager
-import com.thoughtworks.archgard.scanner.infrastructure.db.*
+import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.ClassStatisticDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.ConfigDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.GitHotFileDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.MethodStatisticDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.OverviewDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.StyleDao
+import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
 import com.thoughtworks.archgard.scanner2.infrastructure.mysql.ClassMetricsDao
+import com.thoughtworks.archgard.scanner2.infrastructure.mysql.MethodMetricsDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
@@ -78,6 +86,11 @@ class ScannerApplication {
     @Bean
     fun classMetricsDao(jdbi: Jdbi): ClassMetricsDao {
         return jdbi.onDemand(ClassMetricsDao::class.java)
+    }
+
+    @Bean
+    fun methodMetricsDao(jdbi: Jdbi): MethodMetricsDao {
+        return jdbi.onDemand(MethodMetricsDao::class.java)
     }
 
     @Bean

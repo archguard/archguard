@@ -50,7 +50,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun getMethodsHasModules(systemId: Long): List<JMethod> {
+    override fun getMethodsNotThirdParty(systemId: Long): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
                 "system_id=:systemId AND module!='null'"
         return jdbi.withHandle<List<JMethodPO>, Nothing> {

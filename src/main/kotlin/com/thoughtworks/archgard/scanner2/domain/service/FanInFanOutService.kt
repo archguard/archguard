@@ -2,19 +2,35 @@ package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class FanInFanOutService(val jClassRepository: JClassRepository) {
+class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository) {
     private val log = LoggerFactory.getLogger(FanInFanOutService::class.java)
 
     fun calculateAtClassLevel(systemId: Long): Map<String, FanInFanOut> {
         val allClassDependencies = jClassRepository.getAllClassDependenciesAndNotThirdParty(systemId)
-        return calculateClassFanInFanOutWithClassDependency(allClassDependencies)
+        return calculateFanInFanOutWithDependency(allClassDependencies)
     }
 
-    internal fun calculateClassFanInFanOutWithClassDependency(allClassDependencies: List<Dependency<String>>): Map<String, FanInFanOut> {
+    fun calculateAtMethodLevel(systemId: Long): Map<String, FanInFanOut> {
+        val allMethodDependencies = jMethodRepository.getAllMethodDependenciesAndNotThirdParty(systemId)
+        return calculateFanInFanOutWithDependency(allMethodDependencies)
+    }
+
+    fun calculateAtPackageLevel(systemId: Long): Map<String, FanInFanOut> {
+        // TODO
+        return emptyMap()
+    }
+
+    fun calculateAtModuleLevel(systemId: Long): Map<String, FanInFanOut> {
+        // TODO
+        return emptyMap()
+    }
+
+    internal fun calculateFanInFanOutWithDependency(allClassDependencies: List<Dependency<String>>): Map<String, FanInFanOut> {
         val fanInFanOutMap: MutableMap<String, FanInFanOut> = mutableMapOf()
         allClassDependencies.forEach {
             if (fanInFanOutMap.containsKey(it.caller)) {

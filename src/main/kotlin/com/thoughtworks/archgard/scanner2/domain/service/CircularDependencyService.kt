@@ -31,7 +31,7 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        val methodsHasModules = jMethodRepository.getMethodsHasModules(systemId)
+        val methodsHasModules = jMethodRepository.getMethodsNotThirdParty(systemId)
         return cycles.map { it.map { methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }.toVO() } }
     }
 

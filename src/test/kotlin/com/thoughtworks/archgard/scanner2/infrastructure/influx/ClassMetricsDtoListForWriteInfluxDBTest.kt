@@ -20,9 +20,9 @@ internal class ClassMetricsDtoListForWriteInfluxDBTest {
 
         val influxDBRequestBody = dtoListForWriteInfluxDB.toRequestBody()
 
-        val expect = "class_metric,class_name=com.service.UserService,package_name=com.service," +
+        val expect = "class_metric,class_name=UserService,package_name=com.service," +
                 "module_name=dubbo-service,system_id=1 abc=1,noc=1,dit=1,lcom4=1,fanIn=5,fanOut=10\n" +
-                "class_metric,class_name=com.service.DemoService,package_name=com.service," +
+                "class_metric,class_name=DemoService,package_name=com.service," +
                 "module_name=dubbo-service,system_id=1 abc=2,noc=2,dit=2,lcom4=2,fanIn=10,fanOut=5"
         assertEquals(expect, influxDBRequestBody)
     }

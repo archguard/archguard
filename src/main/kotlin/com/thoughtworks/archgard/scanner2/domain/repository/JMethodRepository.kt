@@ -10,6 +10,6 @@ interface JMethodRepository {
     fun findMethodFields(id: String): List<JField>
     fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
     fun getDistinctMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
-    fun getMethodsHasModules(systemId: Long): List<JMethod>
+    fun getMethodsNotThirdParty(systemId: Long): List<JMethod>
 }
 
