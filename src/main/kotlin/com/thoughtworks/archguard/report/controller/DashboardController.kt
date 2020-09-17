@@ -58,19 +58,32 @@ class DashboardController() {
     }
 }
 
-enum class DashboardGroup {
-    COUPLING, SIZING
+enum class DashboardGroup(var value: String) {
+    COUPLING("过高耦合"),
+    SIZING("体量过大")
 }
 
 enum class BadSmellLevel {
     A, B, C, D
 }
 
-enum class BadSmellType {
-    DATACLUMPS, DEEPINHERITANCE, CLASSHUB, CYCLEDEPENDENCY,
-    SIZINGMODULES, SIZINGPACKAGE, SIZINGMETHOD, SIZINGCLASS
+enum class BadSmellType(var value: String) {
+    DATACLUMPS("过高耦合-数据泥团"),
+    DEEPINHERITANCE("过高耦合-过深继承"),
+    CLASSHUB("过高耦合-枢纽模块"),
+    CYCLEDEPENDENCY("过高耦合-循环依赖"),
+    SIZINGMODULES("体量过大-子模块过大"),
+    SIZINGPACKAGE("体量过大-包过大"),
+    SIZINGMETHOD("体量过大-方法过大"),
+    SIZINGCLASS("体量过大-类过大")
 }
 
-data class Dashboard(val dashboardGroup: DashboardGroup, val groupData: List<GroupData>)
-data class GroupData(val type: BadSmellType, val level: BadSmellLevel, val graphData: List<GraphData>)
+class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
+    var dashboardGroup: String = eDashboardGroup.value
+}
+
+class GroupData(eBadSmellType: BadSmellType, val level: BadSmellLevel, val graphData: List<GraphData>) {
+    var type: String = eBadSmellType.value
+}
+
 data class GraphData(val date: String, val value: Int)
