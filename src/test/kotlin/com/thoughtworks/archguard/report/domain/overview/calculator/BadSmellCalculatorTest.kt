@@ -61,8 +61,8 @@ internal class BadSmellCalculatorTest {
         every { couplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = classHubCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.CLASSHUB)
-        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.CLASSHUB.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.D)
         assertThat(result.count).isEqualTo(9)
     }
@@ -73,8 +73,8 @@ internal class BadSmellCalculatorTest {
         every { dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = dataClumpsCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.DATACLUMPS)
-        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.DATACLUMPS.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.A)
         assertThat(result.count).isEqualTo(0)
     }
@@ -85,8 +85,8 @@ internal class BadSmellCalculatorTest {
         every { deepInheritanceRepository.getDitAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = deepInheritanceCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.DEEPINHERITANCE)
-        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.DEEPINHERITANCE.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.B)
         assertThat(result.count).isEqualTo(5)
     }
@@ -100,8 +100,8 @@ internal class BadSmellCalculatorTest {
 
         val result = moduleCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGMODULES)
-        assertThat(result.category).isEqualTo(DashboardGroup.SIZING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGMODULES.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.C)
         assertThat(result.count).isEqualTo(8)
     }
@@ -115,8 +115,8 @@ internal class BadSmellCalculatorTest {
 
         val result = packageCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE)
-        assertThat(result.category).isEqualTo(DashboardGroup.SIZING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.D)
         assertThat(result.count).isEqualTo(9)
     }
@@ -130,8 +130,8 @@ internal class BadSmellCalculatorTest {
 
         val result = classCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGCLASS)
-        assertThat(result.category).isEqualTo(DashboardGroup.SIZING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGCLASS.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.D)
         assertThat(result.count).isEqualTo(2)
     }
@@ -144,8 +144,8 @@ internal class BadSmellCalculatorTest {
 
         val result = methodCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD)
-        assertThat(result.category).isEqualTo(DashboardGroup.SIZING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.A)
         assertThat(result.count).isEqualTo(0)
     }
@@ -157,8 +157,8 @@ internal class BadSmellCalculatorTest {
 
         val result = circularDependencyCalculator.getOverSizingOverviewItem(1)
 
-        assertThat(result.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY)
-        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING)
+        assertThat(result.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY.value)
+        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING.value)
         assertThat(result.level).isEqualTo(BadSmellLevel.D)
         assertThat(result.count).isEqualTo(69 * 4)
     }
