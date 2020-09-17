@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview
 
-import com.thoughtworks.archguard.report.controller.BadSmellLevel
 import com.thoughtworks.archguard.report.controller.BadSmellType
-import com.thoughtworks.archguard.report.controller.DashboardGroup
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.springframework.stereotype.Service
@@ -27,7 +25,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
         list.add(badSmellCalculator.calculateBadSmell(BadSmellType.CLASSHUB, systemId))
         list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId))
         list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId))
-        list.add(this.getCycleDependency(systemId))
+        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.CYCLEDEPENDENCY, systemId))
         // todo 补充其他维度坏味道
         return BadSmellOverviewDto(list)
     }
@@ -45,12 +43,4 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
     private fun getLineCount(systemId: Long): Long {
         return systemOverviewRepository.getSystemLineCountBySystemId(systemId)
     }
-
-    private fun getCycleDependency(systemId: Long): BadSmellOverviewItem {
-        //todo
-        val count: Long = 0
-        return BadSmellOverviewItem(BadSmellType.CYCLEDEPENDENCY, DashboardGroup.COUPLING, BadSmellLevel.A, count)
-    }
-
-
 }

@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
@@ -27,6 +28,32 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
                     .bind("system_id", systemId)
                     .bind("type", type)
                     .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getCircularDependencyBadSmellCalculateResult(systemId: Long, type: CircularDependencyType, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
+        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+            val sql = """
+                select (CASE when c.cd >= :level1Start and c.cd < :level1End then c.cd else 0 end) AS 'level1',
+                       (CASE when c.cd >= :level2Start and c.cd < :level2End then c.cd else 0 end) AS 'level2',
+                       (CASE when c.cd > :level3Start then c.cd else 0 end)                        AS 'level3'
+                from (
+                         select count(1) cd
+                         from circular_dependency_metrics
+                         where system_id = :systemId
+                           and type = :type
+                     ) as c
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("type", type)
+                    .bind("level1Start", thresholdRanges[0].first)
+                    .bind("level1End", thresholdRanges[0].last)
+                    .bind("level2Start", thresholdRanges[1].first)
+                    .bind("level2End", thresholdRanges[0].last)
+                    .bind("level3Start", thresholdRanges[2].first)
+                    .mapTo(BadSmellCalculateResult::class.java)
                     .one()
         }
     }
