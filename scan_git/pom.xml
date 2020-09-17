@@ -37,6 +37,10 @@
             <version>5.3.1.201904271842-r</version>
             <exclusions>
                 <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcpg-jdk15on</artifactId>
                 </exclusion>
