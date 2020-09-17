@@ -20,17 +20,17 @@ import java.nio.charset.StandardCharsets
 
 class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) {
 
-    fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long, publish: (Any) -> Unit) {
+    fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long): Pair<List<CommitLog>, List<ChangeEntry>> {
         val repPath = File(path)
 
         val repository = FileRepositoryBuilder().findGitDir(repPath).build()
         val git = Git(repository).specifyBranch(branch)
         val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }
-        revCommitSequence.map { r -> toCommitLog(r, repoId, systemId) }.map(publish)
-        revCommitSequence.map { r -> toChangeEntry(repository, r) }.map(publish)
+        return (revCommitSequence.map { toCommitLog(it, repoId, systemId) }.toList() to
+                revCommitSequence.map { toChangeEntry(repository, it) }.flatten().toList())
     }
 
-    private fun toCommitLog(revCommit: RevCommit, repoId: String,systemId: Long): CommitLog {
+    private fun toCommitLog(revCommit: RevCommit, repoId: String, systemId: Long): CommitLog {
         val committer = revCommit.committerIdent
         val msg = revCommit.shortMessage
         return CommitLog(id = revCommit.name,

@@ -37,10 +37,6 @@
             <version>5.3.1.201904271842-r</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcpg-jdk15on</artifactId>
                 </exclusion>
@@ -81,6 +77,11 @@
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.13</version>
         </dependency>
 
         <!--test-->
