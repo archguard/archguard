@@ -26,7 +26,7 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
     }
 
     fun getMethodCircularDependency(systemId: Long): List<List<JMethodVO>> {
-        val allMethodDependencies = jMethodRepository.getAllMethodDependencies(systemId)
+        val allMethodDependencies = jMethodRepository.getDistinctMethodDependenciesAndNotThirdParty(systemId)
         val cycles = findCyclesFromDependencies(allMethodDependencies)
         if (cycles.isEmpty()) {
             return emptyList()

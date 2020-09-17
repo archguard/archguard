@@ -8,7 +8,8 @@ interface JMethodRepository {
     fun findMethodsByModuleAndClass(systemId: Long, module: String, name: String): List<JMethod>
     fun findMethodCallees(id: String): List<JMethod>
     fun findMethodFields(id: String): List<JField>
-    fun getAllMethodDependencies(systemId: Long): List<Dependency<String>>
+    fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
+    fun getDistinctMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
     fun getMethodsHasModules(systemId: Long): List<JMethod>
 }
 

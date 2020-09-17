@@ -21,8 +21,12 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun getAllMethodDependencies(systemId: Long): List<Dependency<String>> {
-        val sql = "select DISTINCT a as caller, b as callee from _MethodCallees  where system_id = :systemId " +
+    override fun getDistinctMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
+        return getAllMethodDependenciesAndNotThirdParty(systemId).toSet().toList()
+    }
+
+    override fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
+        val sql = "select a as caller, b as callee from _MethodCallees where system_id = :systemId " +
                 "and a in (select id from JMethod where JMethod.system_id = :systemId and module != 'null') " +
                 "and b in (select id from JMethod where JMethod.system_id = :systemId and module != 'null') " +
                 "and a!=b"
