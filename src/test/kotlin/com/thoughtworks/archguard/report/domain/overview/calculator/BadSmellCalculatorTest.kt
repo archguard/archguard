@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 import com.thoughtworks.archguard.report.controller.BadSmellLevel
 import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.controller.DashboardGroup
+import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
@@ -24,6 +25,7 @@ internal class BadSmellCalculatorTest {
     lateinit var packageCalculator: PackageOverSizingCalculator
     lateinit var classCalculator: ClassOverSizingCalculator
     lateinit var methodCalculator: MethodOverSizingCalculator
+    lateinit var circularDependencyCalculator: CircularDependencyCalculator
 
     @MockK
     lateinit var couplingRepository: CouplingRepository
@@ -37,6 +39,9 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var sizingRepository: SizingRepository
 
+    @MockK
+    lateinit var circularDenpendencyRepository: CircularDependencyRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -47,6 +52,7 @@ internal class BadSmellCalculatorTest {
         packageCalculator = PackageOverSizingCalculator(sizingRepository)
         classCalculator = ClassOverSizingCalculator(sizingRepository)
         methodCalculator = MethodOverSizingCalculator(sizingRepository)
+        circularDependencyCalculator = CircularDependencyCalculator(circularDenpendencyRepository)
     }
 
     @Test
@@ -142,5 +148,18 @@ internal class BadSmellCalculatorTest {
         assertThat(result.category).isEqualTo(DashboardGroup.SIZING)
         assertThat(result.level).isEqualTo(BadSmellLevel.A)
         assertThat(result.count).isEqualTo(0)
+    }
+
+    @Test
+    fun should_calculate_circular_denpendency_bad_smell_result() {
+        val mockResult = BadSmellCalculateResult(12, 23, 34)
+        every { circularDenpendencyRepository.getCircularDependencyBadSmellCalculateResult(any(), any(), any()) } returns mockResult
+
+        val result = circularDependencyCalculator.getOverSizingOverviewItem(1)
+
+        assertThat(result.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY)
+        assertThat(result.category).isEqualTo(DashboardGroup.COUPLING)
+        assertThat(result.level).isEqualTo(BadSmellLevel.D)
+        assertThat(result.count).isEqualTo(69 * 4)
     }
 }
