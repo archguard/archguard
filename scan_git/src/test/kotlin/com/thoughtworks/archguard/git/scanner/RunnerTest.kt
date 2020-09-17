@@ -13,7 +13,7 @@ internal class RunnerTest {
 //        val calendar = Calendar.getInstance()
 //        calendar.set(2019, 1, 1)
 //        Runner().main(arrayOf("--git-path=/Users/ygdong/git/spring-framework", "--branch=master","--after=${calendar.timeInMillis}"))
-        Runner().main(arrayOf("--git-path=../code-scan-tools", "--branch=master"))
+        Runner().main(arrayOf("--git-path=../", "--branch=master"))
         assertTrue(file.exists())
     }
 }
