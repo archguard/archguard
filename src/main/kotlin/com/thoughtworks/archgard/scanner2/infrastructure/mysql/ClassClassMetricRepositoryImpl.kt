@@ -13,7 +13,7 @@ class ClassClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao,
 
     override fun insertOrUpdateClassMetric(systemId: Long, classMetric: List<ClassMetric>) {
         val classMetricPOs = classMetric
-                .map { ClassMetricPO(it.systemId, it.jClassVO.id!!, it.abc, it.dit, it.noc, it.lcom4) }
+                .map { ClassMetricPO(it.systemId, it.jClassVO.id!!, it.abc, it.dit, it.noc, it.lcom4, it.fanIn, it.fanOut) }
 
         classMetricsDao.deleteBy(systemId)
         log.info("Delete project old data with id: {}", systemId)

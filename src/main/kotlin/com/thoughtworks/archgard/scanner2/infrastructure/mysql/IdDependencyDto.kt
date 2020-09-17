@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archgard.scanner2.domain.service.Dependency
+import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 
 data class IdDependencyDto(val caller: String, val callee: String) {
     fun toDependency(): Dependency<String> {

@@ -9,6 +9,6 @@ data class ClassMetricsDtoListForWriteInfluxDB(val classMetrics: List<ClassMetri
 data class ClassMetricsDtoForWriteInfluxDB(val classMetric: ClassMetric) {
     fun toInfluxDBRequestBody(): String {
         return "class_metric,class_name=${classMetric.jClassVO.name},package_name=${classMetric.jClassVO.getPackageName()},module_name=${classMetric.jClassVO.module},system_id=${classMetric.systemId} " +
-                "abc=${classMetric.abc},noc=${classMetric.noc},dit=${classMetric.dit},lcom4=${classMetric.lcom4}"
+                "abc=${classMetric.abc},noc=${classMetric.noc},dit=${classMetric.dit},lcom4=${classMetric.lcom4},fanIn=${classMetric.fanIn},fanOut=${classMetric.fanOut}"
     }
 }

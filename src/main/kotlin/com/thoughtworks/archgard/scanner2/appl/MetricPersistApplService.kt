@@ -8,6 +8,7 @@ import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archgard.scanner2.domain.service.AbcService
 import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
+import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
@@ -23,6 +24,7 @@ class MetricPersistApplService(val abcService: AbcService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
                                val jClassRepository: JClassRepository,
+                               val fanInFanOutService: FanInFanOutService,
                                val circularDependencyService: CircularDependencyService,
                                val classMetricRepository: ClassMetricRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
@@ -31,17 +33,19 @@ class MetricPersistApplService(val abcService: AbcService,
 
     @Transactional
     fun persistLevel2Metrics(systemId: Long) {
-        val jClasses = jClassRepository.getJClassesHasModules(systemId)
+        val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
         val abcMap = abcService.calculate(systemId, jClasses)
         val ditMap = ditService.calculate(systemId, jClasses)
         val nocMap = nocService.calculate(systemId, jClasses)
         val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
+        val hubMap = fanInFanOutService.calculateAtClassLevel(systemId, jClasses)
 
         val classMetrics = mutableListOf<ClassMetric>()
         jClasses.forEach {
             classMetrics.add(ClassMetric(systemId, it.toVO(),
-                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id]))
+                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
+                    hubMap[it.id]?.fanIn, hubMap[it.id]?.fanOut))
         }
 
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)

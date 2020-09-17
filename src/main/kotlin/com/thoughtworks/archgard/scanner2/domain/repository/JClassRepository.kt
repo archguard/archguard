@@ -1,12 +1,12 @@
 package com.thoughtworks.archgard.scanner2.domain.repository
 
+import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.JField
-import com.thoughtworks.archgard.scanner2.domain.service.Dependency
 
 interface JClassRepository {
 
-    fun getJClassesHasModules(systemId: Long): List<JClass>
+    fun getJClassesNotThirdParty(systemId: Long): List<JClass>
 
     fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass>
 
@@ -14,7 +14,9 @@ interface JClassRepository {
 
     fun findFields(id: String): List<JField>
 
+    fun getDistinctClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
+
     fun getAllClassDependencies(systemId: Long): List<Dependency<String>>
-    
+
     fun findClassBy(systemId: Long, name: String, module: String?): JClass?
 }

@@ -24,7 +24,7 @@ class AbcService(val jMethodRepository: JMethodRepository) {
         return abcMap
     }
 
-    fun calculateAbc(jClass: JClass): Int {
+    private fun calculateAbc(jClass: JClass): Int {
         val allMethodCallees = jClass.methods.map { jMethodRepository.findMethodCallees(it.id) }.flatten().map { it.toVO() }
         return allMethodCallees.asSequence().map { it.clazz }
                 .filter { it.module != "null" }

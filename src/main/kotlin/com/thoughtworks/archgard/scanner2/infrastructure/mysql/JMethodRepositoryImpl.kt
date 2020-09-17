@@ -1,9 +1,9 @@
 package com.thoughtworks.archgard.scanner2.infrastructure.mysql
 
+import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.model.JField
 import com.thoughtworks.archgard.scanner2.domain.model.JMethod
 import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
-import com.thoughtworks.archgard.scanner2.domain.service.Dependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository

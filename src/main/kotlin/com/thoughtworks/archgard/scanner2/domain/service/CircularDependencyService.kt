@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner2.domain.service
 
 import com.thoughtworks.archgard.scanner2.domain.CycleDetector
+import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.model.Graph
 import com.thoughtworks.archgard.scanner2.domain.model.GraphStore
 import com.thoughtworks.archgard.scanner2.domain.model.IdNode
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Service
 @Service
 class CircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
-        val allClassDependencies = jClassRepository.getAllClassDependencies(systemId)
+        val allClassDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
-        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesNotThirdParty(systemId)
         if (cycles.isEmpty()) {
             return emptyList()
         }
@@ -77,8 +78,8 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
     }
 
     private fun buildAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
-        val allClassIdDependencies = jClassRepository.getAllClassDependencies(systemId)
-        val jClassesHasModules = jClassRepository.getJClassesHasModules(systemId)
+        val allClassIdDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesNotThirdParty(systemId)
         return allClassIdDependencies.map { dependency: Dependency<String> ->
             Dependency(
                     jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(),

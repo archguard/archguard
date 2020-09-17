@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner2.domain.service
 
+import com.thoughtworks.archgard.scanner2.domain.model.Dependency
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
@@ -36,7 +37,7 @@ class CircularDependencyServiceTest {
         val dependency5 = Dependency("m", "n")
         val dependency6 = Dependency("n", "p")
         val dependency7 = Dependency("p", "m")
-        every { jClassRepository.getAllClassDependencies(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6, dependency7)
+        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6, dependency7)
         val jClassA = JClass("a", "a", "m1")
         val jClassB = JClass("b", "b", "m1")
         val jClassC = JClass("c", "c", "m1")
@@ -44,7 +45,7 @@ class CircularDependencyServiceTest {
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("n", "n", "m1")
         val jClassP = JClass("p", "p", "m1")
-        every { jClassRepository.getJClassesHasModules(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN, jClassP)
+        every { jClassRepository.getJClassesNotThirdParty(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN, jClassP)
         val classCircularDependency = circularDependencyService.getClassCircularDependency(projectId)
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(2)

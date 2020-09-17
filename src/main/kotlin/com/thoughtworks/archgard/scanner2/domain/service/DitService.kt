@@ -18,7 +18,7 @@ class DitService(val jClassRepository: JClassRepository) {
         return ditMap
     }
 
-    fun getDepthOfInheritance(systemId: Long, target: JClass): Int {
+    internal fun getDepthOfInheritance(systemId: Long, target: JClass): Int {
         val parents = jClassRepository.findClassParents(systemId, target.module, target.name)
         return findInheritanceDepth(systemId, parents)
     }

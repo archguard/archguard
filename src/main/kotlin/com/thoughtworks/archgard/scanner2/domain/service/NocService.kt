@@ -18,11 +18,11 @@ class NocService(val jClassRepository: JClassRepository) {
         return nocMap
     }
 
-    fun getNoc(systemId: Long, jClass: JClass): Int {
+    internal fun getNoc(systemId: Long, jClass: JClass): Int {
         return getNodeCount(systemId, jClass) - 1
     }
 
-    fun getNodeCount(systemId: Long, jClass: JClass): Int {
+    internal fun getNodeCount(systemId: Long, jClass: JClass): Int {
         val implements = jClassRepository.findClassImplements(systemId, jClass.name, jClass.module)
         if (implements.isEmpty()) {
             return 1
