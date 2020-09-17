@@ -16,7 +16,7 @@ interface JClassRepository {
 
     fun getDistinctClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
 
-    fun getAllClassDependencies(systemId: Long): List<Dependency<String>>
+    fun getAllClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
 
     fun findClassBy(systemId: Long, name: String, module: String?): JClass?
 }

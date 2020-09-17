@@ -58,21 +58,14 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getDistinctClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
-        val sql = "select DISTINCT a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
+        return getAllClassDependenciesAndNotThirdParty(systemId).toSet().toList()
+    }
+
+    override fun getAllClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
+        val sql = "select a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
                 "and a in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
                 "and b in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
                 "and a!=b"
-        return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
-            it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(IdDependencyDto::class.java)
-                    .list()
-        }.map { it.toDependency() }
-    }
-
-    override fun getAllClassDependencies(systemId: Long): List<Dependency<String>> {
-        val sql = "select a as caller, b as callee from _ClassDependences  where system_id = :systemId and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
             it.createQuery(sql)

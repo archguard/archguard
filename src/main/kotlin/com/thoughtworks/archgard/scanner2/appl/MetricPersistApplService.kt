@@ -39,7 +39,7 @@ class MetricPersistApplService(val abcService: AbcService,
         val ditMap = ditService.calculate(systemId, jClasses)
         val nocMap = nocService.calculate(systemId, jClasses)
         val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
-        val hubMap = fanInFanOutService.calculateAtClassLevel(systemId, jClasses)
+        val hubMap = fanInFanOutService.calculateAtClassLevel(systemId)
 
         val classMetrics = mutableListOf<ClassMetric>()
         jClasses.forEach {
