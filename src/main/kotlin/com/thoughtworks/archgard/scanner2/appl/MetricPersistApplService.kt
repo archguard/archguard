@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner2.appl
 
+import com.thoughtworks.archgard.scanner2.common.Scanner2ThreadPool
 import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
@@ -43,22 +44,27 @@ class MetricPersistApplService(val abcService: AbcService,
                                val packageMetricRepository: PackageMetricRepository,
                                val moduleMetricRepository: ModuleMetricRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
-                               val influxDBClient: InfluxDBClient) {
+                               val influxDBClient: InfluxDBClient,
+                               val scanner2ThreadPool: Scanner2ThreadPool) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
-    @Transactional
     fun persistLevel2Metrics(systemId: Long) {
 
         val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
         log.info("begin calculate and persist Metric in systemId $systemId")
-
-        persistClassLevel2Metrics(systemId, jClasses)
-        persistMethodLevel2Metrics(systemId)
-        persistPackageLevel2Metrics(systemId, jClasses)
-        persistModuleLevel2Metrics(systemId, jClasses)
-
-        log.info("finish calculate and persist Metric in systemId $systemId")
+        scanner2ThreadPool.submit(Runnable {
+            persistClassLevel2Metrics(systemId, jClasses)
+        })
+        scanner2ThreadPool.submit(Runnable {
+            persistMethodLevel2Metrics(systemId)
+        })
+        scanner2ThreadPool.submit(Runnable {
+            persistPackageLevel2Metrics(systemId, jClasses)
+        })
+        scanner2ThreadPool.submit(Runnable {
+            persistModuleLevel2Metrics(systemId, jClasses)
+        })
     }
 
     @Transactional
@@ -105,7 +111,7 @@ class MetricPersistApplService(val abcService: AbcService,
         }
         log.info("Finished calculate packageMetric in systemId $systemId")
 
-        packageMetricRepository.insertOrUpdateMethodMetric(systemId, packageMetrics)
+        packageMetricRepository.insertOrUpdatePackageMetric(systemId, packageMetrics)
         influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
         log.info("Finished persist package Metric to mysql and influxdb in systemId $systemId")
     }

@@ -10,9 +10,9 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 interface MethodMetricsDao {
     @GetGeneratedKeys
     @SqlUpdate("insert into method_metrics (" +
-            "class_id, system_id, fanin, fanout) " +
+            "method_id, system_id, fanin, fanout) " +
             "values <values>")
-    fun insert(@BindBeanList(value = "values", propertyNames = ["classId", "systemId", "fanIn", "fanOut"]) methodMetricPOs: List<MethodMetricPO>): Long
+    fun insert(@BindBeanList(value = "values", propertyNames = ["methodId", "systemId", "fanIn", "fanOut"]) methodMetricPOs: List<MethodMetricPO>): Long
 
     @SqlUpdate("DELETE FROM method_metrics where system_id = :systemId")
     fun deleteBy(@Bind("systemId") systemId: Long)

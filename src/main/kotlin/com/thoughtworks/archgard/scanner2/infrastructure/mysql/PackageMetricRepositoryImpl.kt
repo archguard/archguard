@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 class PackageMetricRepositoryImpl(val packageMetricsDao: PackageMetricsDao) : PackageMetricRepository {
     private val log = LoggerFactory.getLogger(ModuleMetricRepositoryImpl::class.java)
 
-    override fun insertOrUpdateMethodMetric(systemId: Long, packageMetrics: List<PackageMetric>) {
+    override fun insertOrUpdatePackageMetric(systemId: Long, packageMetrics: List<PackageMetric>) {
         packageMetricsDao.deleteBy(systemId)
         log.info("Delete system package metric old data with id: {}", systemId)
         packageMetricsDao.insert(packageMetrics)

@@ -13,7 +13,7 @@ interface PackageMetricsDao {
     @SqlUpdate("insert into package_metrics (" +
             "module_name, package_name, system_id, fanin, fanout) " +
             "values <values>")
-    fun insert(@BindBeanList(value = "values", propertyNames = ["moduleName", "package_name", "systemId", "fanIn", "fanOut"]) packageMetrics: List<PackageMetric>): Long
+    fun insert(@BindBeanList(value = "values", propertyNames = ["moduleName", "packageName", "systemId", "fanIn", "fanOut"]) packageMetrics: List<PackageMetric>): Long
 
     @SqlUpdate("DELETE FROM package_metrics where system_id = :systemId")
     fun deleteBy(@Bind("systemId") systemId: Long)
