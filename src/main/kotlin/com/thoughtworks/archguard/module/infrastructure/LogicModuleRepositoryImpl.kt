@@ -97,7 +97,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()
-                    .filter { it != "null" }
+                    .filterNotNull()
                     .map { SubModule(it) }
         }
         val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
