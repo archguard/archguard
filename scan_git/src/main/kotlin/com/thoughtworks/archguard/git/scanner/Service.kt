@@ -12,9 +12,12 @@ class ScannerService(private val gitAdapter: JGitAdapter,
 
     fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: Long) {
         val result = gitAdapter.scan(gitPath, branch, after, repoId, systemId)
-        val printWriter = File("output.sql").printWriter()
-        result.first.forEach { printWriter.println(bean2Sql.bean2Sql(it)) }
-        result.second.forEach { printWriter.println(bean2Sql.bean2Sql(it)) }
+        val file = File("output.sql")
+        if (file.exists()) {
+            file.delete()
+        }
+        file.appendText(result.first.joinToString("\n") { bean2Sql.bean2Sql(it) })
+        file.appendText(result.second.joinToString("\n") { bean2Sql.bean2Sql(it) })
     }
 
 }

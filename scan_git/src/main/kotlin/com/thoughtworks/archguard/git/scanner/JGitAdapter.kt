@@ -25,9 +25,10 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
 
         val repository = FileRepositoryBuilder().findGitDir(repPath).build()
         val git = Git(repository).specifyBranch(branch)
-        val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }
-        return (revCommitSequence.map { toCommitLog(it, repoId, systemId) }.toList() to
-                revCommitSequence.map { toChangeEntry(repository, it) }.flatten().toList())
+        val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }.toList()
+        val commitLog = revCommitSequence.map { toCommitLog(it, repoId, systemId) }.toList()
+        val changeEntry = revCommitSequence.map { toChangeEntry(repository, it) }.flatten().toList()
+        return (commitLog to changeEntry)
     }
 
     private fun toCommitLog(revCommit: RevCommit, repoId: String, systemId: Long): CommitLog {
