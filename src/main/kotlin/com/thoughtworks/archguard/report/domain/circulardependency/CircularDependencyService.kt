@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class CircularDependencyService(val circularDependencyRepository: CircularDependencyRepository) {
-    fun getCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long, type: CircularDependencyType): CircularDependencyListDto {
+    fun getCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long, type: CircularDependencyType): CircularDependencyStringListDto {
         validPagingParam(limit, offset)
         val circularDependencyCount = circularDependencyRepository.getCircularDependencyCount(systemId, type)
         val circularDependencyList = circularDependencyRepository.getCircularDependency(systemId, type, limit, offset)
-        return CircularDependencyListDto(circularDependencyList,
+        return CircularDependencyStringListDto(circularDependencyList,
                 circularDependencyCount,
                 offset / limit + 1)
     }
