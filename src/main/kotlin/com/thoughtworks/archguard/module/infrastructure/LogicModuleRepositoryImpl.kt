@@ -105,7 +105,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()
-                    .filter { it != "null" }
+                    .filterNotNull()
                     .map { SubModule(it) }
         }
         return subModulesFromJClasses.union(subModulesFromJMethods).toList()
