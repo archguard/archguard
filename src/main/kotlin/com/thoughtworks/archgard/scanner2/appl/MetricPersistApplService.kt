@@ -2,6 +2,7 @@ package com.thoughtworks.archgard.scanner2.appl
 
 import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
+import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.MethodMetric
 import com.thoughtworks.archgard.scanner2.domain.model.ModuleMetric
 import com.thoughtworks.archgard.scanner2.domain.model.PackageMetric
@@ -50,54 +51,14 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
-        log.info("begin calculate Metric in systemId $systemId")
+        log.info("begin calculate and persist Metric in systemId $systemId")
 
-        val abcMap = abcService.calculate(systemId, jClasses)
-        val ditMap = ditService.calculate(systemId, jClasses)
-        val nocMap = nocService.calculate(systemId, jClasses)
-        val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
-        val classFanInFanOutMap = fanInFanOutService.calculateAtClassLevel(systemId)
+        persistClassLevel2Metrics(systemId, jClasses)
+        persistMethodLevel2Metrics(systemId)
+        persistPackageLevel2Metrics(systemId, jClasses)
+        persistModuleLevel2Metrics(systemId, jClasses)
 
-        val classMetrics = jClasses.map {
-            ClassMetric(systemId, it.toVO(),
-                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
-                    classFanInFanOutMap[it.id]?.fanIn, classFanInFanOutMap[it.id]?.fanOut)
-        }
-        log.info("Finished calculate classMetric in systemId $systemId")
-
-        val methods = jMethodRepository.getMethodsNotThirdParty(systemId)
-        val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
-
-        val methodMetrics = methods.map {
-            MethodMetric(systemId, it.toVO(),
-                    methodFanInFanOutMap[it.id]?.fanIn, methodFanInFanOutMap[it.id]?.fanOut)
-        }
-        log.info("Finished calculate methodMetric in systemId $systemId")
-
-        val packageFanInFanOutMap = fanInFanOutService.calculateAtPackageLevel(systemId, jClasses)
-        val packageMetrics = packageFanInFanOutMap.map {
-            PackageMetric(systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
-                    it.value.fanIn, it.value.fanOut)
-        }
-        log.info("Finished calculate packageMetric in systemId $systemId")
-
-        val moduleFanInFanOutMap = fanInFanOutService.calculateAtModuleLevel(systemId, jClasses)
-        val moduleMetrics = moduleFanInFanOutMap.map {
-            ModuleMetric(systemId, it.key, it.value.fanIn, it.value.fanOut)
-        }
-        log.info("Finished calculate moduleMetric in systemId $systemId")
-
-        classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
-        methodMetricRepository.insertOrUpdateMethodMetric(systemId, methodMetrics)
-        packageMetricRepository.insertOrUpdateMethodMetric(systemId, packageMetrics)
-        moduleMetricRepository.insertOrUpdateModuleMetric(systemId, moduleMetrics)
-        log.info("Finished persist class, method, package, module Metric to mysql in systemId $systemId")
-
-        influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
-        influxDBClient.save(MethodMetricsDtoListForWriteInfluxDB(methodMetrics).toRequestBody())
-        influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
-        influxDBClient.save(ModuleMetricsDtoListForWriteInfluxDB(moduleMetrics).toRequestBody())
-        log.info("Finished persist class, method, package, module Metric to influxdb in systemId $systemId")
+        log.info("finish calculate and persist Metric in systemId $systemId")
     }
 
     @Transactional
@@ -122,6 +83,65 @@ class MetricPersistApplService(val abcService: AbcService,
         influxDBClient.save(CircularDependenciesCountDtoForWriteInfluxDB(circularDependenciesCount).toRequestBody())
         log.info("Finished persist circularDependenciesCount to influxdb in systemId $systemId")
 
+    }
+
+    private fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+        val moduleFanInFanOutMap = fanInFanOutService.calculateAtModuleLevel(systemId, jClasses)
+        val moduleMetrics = moduleFanInFanOutMap.map {
+            ModuleMetric(systemId, it.key, it.value.fanIn, it.value.fanOut)
+        }
+        log.info("Finished calculate moduleMetric in systemId $systemId")
+
+        moduleMetricRepository.insertOrUpdateModuleMetric(systemId, moduleMetrics)
+        influxDBClient.save(ModuleMetricsDtoListForWriteInfluxDB(moduleMetrics).toRequestBody())
+        log.info("Finished persist module Metric to mysql and influxdb in systemId $systemId")
+    }
+
+    private fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+        val packageFanInFanOutMap = fanInFanOutService.calculateAtPackageLevel(systemId, jClasses)
+        val packageMetrics = packageFanInFanOutMap.map {
+            PackageMetric(systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
+                    it.value.fanIn, it.value.fanOut)
+        }
+        log.info("Finished calculate packageMetric in systemId $systemId")
+
+        packageMetricRepository.insertOrUpdateMethodMetric(systemId, packageMetrics)
+        influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
+        log.info("Finished persist package Metric to mysql and influxdb in systemId $systemId")
+    }
+
+    private fun persistMethodLevel2Metrics(systemId: Long) {
+        val methods = jMethodRepository.getMethodsNotThirdParty(systemId)
+        val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
+
+        val methodMetrics = methods.map {
+            MethodMetric(systemId, it.toVO(),
+                    methodFanInFanOutMap[it.id]?.fanIn, methodFanInFanOutMap[it.id]?.fanOut)
+        }
+        log.info("Finished calculate methodMetric in systemId $systemId")
+
+        methodMetricRepository.insertOrUpdateMethodMetric(systemId, methodMetrics)
+        influxDBClient.save(MethodMetricsDtoListForWriteInfluxDB(methodMetrics).toRequestBody())
+        log.info("Finished persist method Metric to mysql and influxdb in systemId $systemId")
+    }
+
+    private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+        val abcMap = abcService.calculate(systemId, jClasses)
+        val ditMap = ditService.calculate(systemId, jClasses)
+        val nocMap = nocService.calculate(systemId, jClasses)
+        val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
+        val classFanInFanOutMap = fanInFanOutService.calculateAtClassLevel(systemId)
+
+        val classMetrics = jClasses.map {
+            ClassMetric(systemId, it.toVO(),
+                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
+                    classFanInFanOutMap[it.id]?.fanIn, classFanInFanOutMap[it.id]?.fanOut)
+        }
+        log.info("Finished calculate classMetric in systemId $systemId")
+
+        classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
+        influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
+        log.info("Finished persist class Metric to mysql and influxdb in systemId $systemId")
     }
 }
 
