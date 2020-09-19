@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/systems/{systemId}/metric")
 class MetricController(val metricPersistService: MetricPersistApplService) {
 
-    @PostMapping("/class/persist")
-    fun persistClassMetrics(@PathVariable("systemId") systemId: Long) {
+    @PostMapping("/basic/persist")
+    fun persistBasicMetrics(@PathVariable("systemId") systemId: Long) {
         return metricPersistService.persistLevel2Metrics(systemId)
     }
 

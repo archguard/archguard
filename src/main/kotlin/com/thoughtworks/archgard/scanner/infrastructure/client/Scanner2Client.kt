@@ -14,7 +14,8 @@ class Scanner2Client(val metricController: MetricController) {
     fun level2MetricsAnalysis(systemId: Long) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
-        metricController.persistClassMetrics(systemId)
+        metricController.persistBasicMetrics(systemId)
+        metricController.persistCircularDependencyMetrics(systemId)
         log.info("send metrics analysis request to module service")
     }
 
