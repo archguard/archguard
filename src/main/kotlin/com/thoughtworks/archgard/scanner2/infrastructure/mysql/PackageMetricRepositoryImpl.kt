@@ -12,6 +12,10 @@ class PackageMetricRepositoryImpl(val packageMetricsDao: PackageMetricsDao) : Pa
     override fun insertOrUpdatePackageMetric(systemId: Long, packageMetrics: List<PackageMetric>) {
         packageMetricsDao.deleteBy(systemId)
         log.info("Delete system package metric old data with id: {}", systemId)
+        if (packageMetrics.isEmpty()) {
+            log.warn("Insert system package metric new data with id is empty!: {}", systemId)
+            return
+        }
         packageMetricsDao.insert(packageMetrics)
         log.info("Insert system package metric new data with id: {}", systemId)
     }

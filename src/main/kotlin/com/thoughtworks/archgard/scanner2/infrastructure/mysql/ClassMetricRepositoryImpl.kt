@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 
 @Repository
-class ClassClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : ClassMetricRepository {
-    private val log = LoggerFactory.getLogger(ClassClassMetricRepositoryImpl::class.java)
+class ClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : ClassMetricRepository {
+    private val log = LoggerFactory.getLogger(ClassMetricRepositoryImpl::class.java)
 
     override fun insertOrUpdateClassMetric(systemId: Long, classMetrics: List<ClassMetric>) {
         val classMetricPOs = classMetrics
@@ -15,6 +15,10 @@ class ClassClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : Cla
 
         classMetricsDao.deleteBy(systemId)
         log.info("Delete system class metric old data with id: {}", systemId)
+        if (classMetricPOs.isEmpty()) {
+            log.warn("Insert system module metric new data with id is empty!: {}", systemId)
+            return
+        }
         classMetricsDao.insert(classMetricPOs)
         log.info("Insert system class metric new data with id: {}", systemId)
     }

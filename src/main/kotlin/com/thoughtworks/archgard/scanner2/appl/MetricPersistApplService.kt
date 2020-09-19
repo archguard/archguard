@@ -110,7 +110,6 @@ class MetricPersistApplService(val abcService: AbcService,
                     it.value.fanIn, it.value.fanOut)
         }
         log.info("Finished calculate packageMetric in systemId $systemId")
-
         packageMetricRepository.insertOrUpdatePackageMetric(systemId, packageMetrics)
         influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
         log.info("Finished persist package Metric to mysql and influxdb in systemId $systemId")
@@ -122,7 +121,7 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val methodMetrics = methods.map {
             MethodMetric(systemId, it.toVO(),
-                    methodFanInFanOutMap[it.id]?.fanIn, methodFanInFanOutMap[it.id]?.fanOut)
+                    methodFanInFanOutMap[it.id]?.fanIn ?: 0, methodFanInFanOutMap[it.id]?.fanOut ?: 0)
         }
         log.info("Finished calculate methodMetric in systemId $systemId")
 
@@ -141,7 +140,7 @@ class MetricPersistApplService(val abcService: AbcService,
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(),
                     abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
-                    classFanInFanOutMap[it.id]?.fanIn, classFanInFanOutMap[it.id]?.fanOut)
+                    classFanInFanOutMap[it.id]?.fanIn ?: 0, classFanInFanOutMap[it.id]?.fanOut ?: 0)
         }
         log.info("Finished calculate classMetric in systemId $systemId")
 
@@ -149,12 +148,4 @@ class MetricPersistApplService(val abcService: AbcService,
         influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
         log.info("Finished persist class Metric to mysql and influxdb in systemId $systemId")
     }
-}
-
-fun getModuleNameFromPackageFullName(fullName: String): String {
-    return fullName.substring(0, fullName.indexOfFirst { it == '.' })
-}
-
-fun getPackageNameFromPackageFullName(fullName: String): String {
-    return fullName.substring(fullName.indexOfFirst { it == '.' } + 1)
 }

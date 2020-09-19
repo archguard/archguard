@@ -9,7 +9,7 @@ data class MethodMetricsDtoListForWriteInfluxDB(val methodMetrics: List<MethodMe
 data class MethodMetricsDtoForWriteInfluxDB(val methodMetric: MethodMetric) {
     fun toInfluxDBRequestBody(): String {
         return "method_metric," +
-                "method_name=${methodMetric.jMethodVO.name}(${methodMetric.jMethodVO.argumentTypes.joinToString(separator = ",")})," +
+                "method_name=${methodMetric.jMethodVO.name}(${methodMetric.jMethodVO.argumentTypes.joinToString(separator = "\\,")})," +
                 "class_name=${methodMetric.jMethodVO.clazz.getTypeName()}," +
                 "package_name=${methodMetric.jMethodVO.clazz.getPackageName()}," +
                 "module_name=${methodMetric.jMethodVO.clazz.module}," +

@@ -15,6 +15,10 @@ class MethodMetricRepositoryImpl(val methodMetricsDao: MethodMetricsDao) : Metho
 
         methodMetricsDao.deleteBy(systemId)
         log.info("Delete system method metric old data with id: {}", systemId)
+        if (methodMetric.isEmpty()) {
+            log.warn("Insert system method metric new data with id is empty!: {}", systemId)
+            return
+        }
         methodMetricsDao.insert(methodMetricPOs)
         log.info("Insert system method metric new data with id: {}", systemId)
     }
