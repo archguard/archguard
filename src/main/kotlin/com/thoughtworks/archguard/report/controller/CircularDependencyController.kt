@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyListDto
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
 import org.springframework.http.ResponseEntity
@@ -16,66 +17,32 @@ class CircularDependencyController(val circularDependencyService: CircularDepend
     @GetMapping("/module")
     fun getModuleCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                   @RequestParam(value = "numberPerPage") limit: Long,
-                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<ModuleViewObject>> {
+                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
         val offset = (currentPageNumber - 1) * limit
-        val circularDependencyStringListDto =
-                circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE)
-        val circularDependencyModuleListDto =
-                CircularDependencyListDto(circularDependencyStringListDto.data.map {
-                    it.split(",").map { ModuleViewObject(it) }
-                },
-                        circularDependencyStringListDto.count, circularDependencyStringListDto.currentPageNumber)
-        return ResponseEntity.ok(circularDependencyModuleListDto)
+        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE))
     }
 
     @GetMapping("/package")
     fun getPackageCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                    @RequestParam(value = "numberPerPage") limit: Long,
-                                                   @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<PackageViewObject>> {
+                                                   @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
         val offset = (currentPageNumber - 1) * limit
-        val circularDependencyStringListDto = circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.PACKAGE)
-        val circularDependencyPackageListDto =
-                CircularDependencyListDto(
-                        circularDependencyStringListDto.data.map {
-                            it.split(",").map { PackageViewObject.create(it) }
-                        },
-                        circularDependencyStringListDto.count,
-                        circularDependencyStringListDto.currentPageNumber
-                )
-        return ResponseEntity.ok(circularDependencyPackageListDto)
+        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.PACKAGE))
     }
 
     @GetMapping("/class")
     fun getClassCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                  @RequestParam(value = "numberPerPage") limit: Long,
-                                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<JClassViewObject>> {
+                                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
         val offset = (currentPageNumber - 1) * limit
-        val circularDependencyStringListDto = circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.CLASS)
-        val circularDependencyJClassListDto =
-                CircularDependencyListDto(
-                        circularDependencyStringListDto.data.map {
-                            it.split(",").map { JClassViewObject.create(it) }
-                        },
-                        circularDependencyStringListDto.count,
-                        circularDependencyStringListDto.currentPageNumber
-                )
-        return ResponseEntity.ok(circularDependencyJClassListDto)
+        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.CLASS))
     }
 
     @GetMapping("/method")
     fun getMethodCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                   @RequestParam(value = "numberPerPage") limit: Long,
-                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<JMethodViewObject>> {
+                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
         val offset = (currentPageNumber - 1) * limit
-        val circularDependencyStringListDto = circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD)
-        val circularDependencyJMethodListDto =
-                CircularDependencyListDto(
-                        circularDependencyStringListDto.data.map {
-                            it.split(",").map { JMethodViewObject.create(it) }
-                        },
-                        circularDependencyStringListDto.count,
-                        circularDependencyStringListDto.currentPageNumber
-                )
-        return ResponseEntity.ok(circularDependencyJMethodListDto)
+        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD))
     }
 }
