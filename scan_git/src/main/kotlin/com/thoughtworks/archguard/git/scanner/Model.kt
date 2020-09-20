@@ -17,6 +17,7 @@ data class CommitLog(
 data class ChangeEntry(
         @Sql("old_path") val oldPath: String,
         @Sql("new_path") val newPath: String,
+        @Sql("commit_time") val commitTime: Long,
         @Sql("cognitive_complexity") val cognitiveComplexity: Int,
         @Sql("change_mode") val changeMode: String,
         @Sql("commit_id") val commitId: String)

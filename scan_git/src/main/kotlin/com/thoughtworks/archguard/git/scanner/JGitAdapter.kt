@@ -59,6 +59,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         val classComplexity: Int = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
         return ChangeEntry(oldPath = diffEntry.oldPath,
                 newPath = diffEntry.newPath,
+                commitTime = revCommit.committerIdent.`when`.time,
                 cognitiveComplexity = classComplexity,
                 changeMode = diffEntry.changeType.name,
                 commitId = revCommit.name)
