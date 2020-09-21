@@ -40,9 +40,10 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod> {
-        var moduleFilter = ""
-        if (!module.isNullOrEmpty()) {
-            moduleFilter = "and module is NULL"
+        val moduleFilter = if (module == null) {
+            "and module is NULL"
+        } else {
+            "and module='$module'"
         }
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId'" + moduleFilter
         return jdbi.withHandle<List<JMethod>, Nothing> {
