@@ -1,8 +1,13 @@
 package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyListDto
+import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyStringListDto
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
+import com.thoughtworks.archguard.report.domain.circulardependency.ClassVO
+import com.thoughtworks.archguard.report.domain.circulardependency.MethodVO
+import com.thoughtworks.archguard.report.domain.circulardependency.ModuleVO
+import com.thoughtworks.archguard.report.domain.circulardependency.PackageVO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,32 +22,32 @@ class CircularDependencyController(val circularDependencyService: CircularDepend
     @GetMapping("/module")
     fun getModuleCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                   @RequestParam(value = "numberPerPage") limit: Long,
-                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
+                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<ModuleVO>> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE))
+        return ResponseEntity.ok(circularDependencyService.getModuleCircularDependencyWithTotalCount(systemId, limit, offset))
     }
 
     @GetMapping("/package")
     fun getPackageCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                    @RequestParam(value = "numberPerPage") limit: Long,
-                                                   @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
+                                                   @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<PackageVO>> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.PACKAGE))
+        return ResponseEntity.ok(circularDependencyService.getPackageCircularDependencyWithTotalCount(systemId, limit, offset))
     }
 
     @GetMapping("/class")
     fun getClassCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                  @RequestParam(value = "numberPerPage") limit: Long,
-                                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
+                                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<ClassVO>> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.CLASS))
+        return ResponseEntity.ok(circularDependencyService.getClassCircularDependencyWithTotalCount(systemId, limit, offset))
     }
 
     @GetMapping("/method")
     fun getMethodCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
                                                   @RequestParam(value = "numberPerPage") limit: Long,
-                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto> {
+                                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<CircularDependencyListDto<MethodVO>> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(circularDependencyService.getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD))
+        return ResponseEntity.ok(circularDependencyService.getMethodCircularDependencyWithTotalCount(systemId, limit, offset))
     }
 }
