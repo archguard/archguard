@@ -57,7 +57,7 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         val allClassDependencies = buildAllClassDependencies(systemId)
         val moduleDependencies = mutableSetOf<Dependency<String>>()
         allClassDependencies.forEach {
-            if (it.caller.module != it.callee.module) {
+            if (it.caller.module!! != it.callee.module!!) {
                 moduleDependencies.add(Dependency(it.caller.module, it.callee.module))
             }
         }

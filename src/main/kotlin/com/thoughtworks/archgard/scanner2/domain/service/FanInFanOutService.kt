@@ -37,7 +37,7 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         return classDependencies.map { classDependency ->
             val callerClass = jClasses.first { it.id == classDependency.caller }.toVO()
             val calleeClass = jClasses.first { it.id == classDependency.callee }.toVO()
-            Dependency(callerClass.module, calleeClass.module)
+            Dependency(callerClass.module!!, calleeClass.module!!)
         }
     }
 

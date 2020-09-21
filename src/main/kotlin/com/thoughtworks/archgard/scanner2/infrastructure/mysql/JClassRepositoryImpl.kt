@@ -12,9 +12,10 @@ import org.springframework.stereotype.Repository
 class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass> {
-        var moduleFilter = ""
-        if (!module.isNullOrEmpty()) {
-            moduleFilter = "and c.module='$module'"
+        val moduleFilter = if (module == null) {
+            "and c.module is NULL"
+        } else {
+            "and c.module='$module'"
         }
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
@@ -30,9 +31,10 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findClassImplements(systemId: Long, name: String?, module: String?): List<JClass> {
-        var moduleFilter = ""
-        if (!module.isNullOrEmpty()) {
-            moduleFilter = "and p.module='$module'"
+        val moduleFilter = if (module == null) {
+            "and p.module is NULL"
+        } else {
+            "and p.module='$module'"
         }
         val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
                 "           FROM JClass c,`_ClassParent` cp,JClass p" +
@@ -63,8 +65,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun getAllClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
         val sql = "select a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
-                "and a in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
-                "and b in (select id from JClass where JClass.system_id = :systemId and module != 'null') " +
+                "and a in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0) " +
+                "and b in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0) " +
                 "and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
@@ -76,9 +78,10 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findClassBy(systemId: Long, name: String, module: String?): JClass? {
-        var moduleFilter = ""
-        if (!module.isNullOrEmpty()) {
-            moduleFilter = "and module='$module'"
+        val moduleFilter = if (module == null) {
+            "and module is NULL"
+        } else {
+            "and module='$module'"
         }
         val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = $systemId and name = '$name' $moduleFilter limit 1"
         val withHandle = jdbi.withHandle<JClassPO?, RuntimeException> {
@@ -91,14 +94,14 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getJClassesNotThirdParty(systemId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_thirdparty = 0"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .mapTo(JClassPO::class.java)
                     .list()
-        }.map { it.toJClass() }.filter { it.module != "null" }
+        }.map { it.toJClass() }
     }
 
 }

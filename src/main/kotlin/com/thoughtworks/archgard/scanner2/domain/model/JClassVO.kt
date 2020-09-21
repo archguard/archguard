@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
-class JClassVO(val name: String, val module: String) : Node {
+class JClassVO(val name: String, val module: String?) : Node {
     var id: String? = null
     val fullName = "$module.$name"
 

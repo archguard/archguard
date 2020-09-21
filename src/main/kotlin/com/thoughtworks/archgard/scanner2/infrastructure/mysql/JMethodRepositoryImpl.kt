@@ -27,8 +27,8 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
         val sql = "select a as caller, b as callee from _MethodCallees where system_id = :systemId " +
-                "and a in (select id from JMethod where JMethod.system_id = :systemId and module != 'null') " +
-                "and b in (select id from JMethod where JMethod.system_id = :systemId and module != 'null') " +
+                "and a in (select id from JMethod where JMethod.system_id = :systemId and module is not NULL) " +
+                "and b in (select id from JMethod where JMethod.system_id = :systemId and module is not NULL) " +
                 "and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
@@ -39,8 +39,12 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }.map { it.toDependency() }
     }
 
-    override fun findMethodsByModuleAndClass(systemId: Long, module: String, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND module='$module' AND system_id='$systemId'"
+    override fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod> {
+        var moduleFilter = ""
+        if (!module.isNullOrEmpty()) {
+            moduleFilter = "and module is NULL"
+        }
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId'" + moduleFilter
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -52,18 +56,18 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun getMethodsNotThirdParty(systemId: Long): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "system_id=:systemId AND module!='null'"
+                "system_id=:systemId AND module is not NULL"
         return jdbi.withHandle<List<JMethodPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodPO::class.java))
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .mapTo(JMethodPO::class.java)
                     .list()
-        }.map { it.toJMethod() }.filter { it.module != "null" }
+        }.map { it.toJMethod() }
     }
 
     override fun findMethodCallees(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
