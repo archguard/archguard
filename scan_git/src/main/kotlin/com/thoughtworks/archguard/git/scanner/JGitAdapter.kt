@@ -27,7 +27,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         val git = Git(repository).specifyBranch(branch)
         val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }.toList()
         val commitLog = revCommitSequence.map { toCommitLog(it, repoId, systemId) }.toList()
-        val changeEntry = revCommitSequence.map { toChangeEntry(repository, it) }.flatten().toList()
+        val changeEntry = revCommitSequence.map { toChangeEntry(repository, it, systemId) }.flatten().toList()
         return (commitLog to changeEntry)
     }
 
@@ -39,13 +39,14 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
                 shortMessage = if (msg.length < 200) msg else msg.substring(0, 200),
                 committerName = committer.name,
                 committerEmail = committer.emailAddress,
-                repositoryId = repoId, systemId = systemId)
+                repositoryId = repoId,
+                systemId = systemId)
     }
 
-    private fun toChangeEntry(repository: Repository, revCommit: RevCommit): List<ChangeEntry> {
+    private fun toChangeEntry(repository: Repository, revCommit: RevCommit, systemId: Long): List<ChangeEntry> {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         return diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
-                .map { d -> doCovertToChangeEntry(d, repository, revCommit) }
+                .map { d -> doCovertToChangeEntry(d, repository, revCommit, systemId) }
     }
 
     private fun getParent(revCommit: RevCommit): RevCommit? {
@@ -55,13 +56,14 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
             revCommit.getParent(0)
     }
 
-    private fun doCovertToChangeEntry(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit): ChangeEntry {
+    private fun doCovertToChangeEntry(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit, systemId: Long): ChangeEntry {
         val classComplexity: Int = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
         return ChangeEntry(oldPath = diffEntry.oldPath,
                 newPath = diffEntry.newPath,
                 commitTime = revCommit.committerIdent.`when`.time,
                 cognitiveComplexity = classComplexity,
                 changeMode = diffEntry.changeType.name,
+                systemId = systemId,
                 commitId = revCommit.name)
     }
 
