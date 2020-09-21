@@ -11,7 +11,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependenc
     override fun insertOrUpdateClassCircularDependency(systemId: Long, classCircularDependency: List<List<JClassVO>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.CLASS)
         classCircularDependency.forEach {
-            val circularDependency = it.joinToString(separator = ",") { it.fullName }
+            val circularDependency = it.joinToString(separator = ";") { it.fullName }
             saveCircularDependency(systemId, circularDependency, CircularDependencyType.CLASS)
         }
     }
@@ -19,7 +19,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependenc
     override fun insertOrUpdateMethodCircularDependency(systemId: Long, methodCircularDependency: List<List<JMethodVO>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.METHOD)
         methodCircularDependency.forEach {
-            val circularDependency = it.joinToString(separator = ",") { it.fullName }
+            val circularDependency = it.joinToString(separator = ";") { it.fullName }
             saveCircularDependency(systemId, circularDependency, CircularDependencyType.METHOD)
         }
     }
@@ -27,7 +27,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependenc
     override fun insertOrUpdateModuleCircularDependency(systemId: Long, moduleCircularDependency: List<List<String>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.MODULE)
         moduleCircularDependency.forEach {
-            val circularDependency = it.joinToString(separator = ",")
+            val circularDependency = it.joinToString(separator = ";")
             saveCircularDependency(systemId, circularDependency, CircularDependencyType.MODULE)
         }
     }
@@ -35,7 +35,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependenc
     override fun insertOrUpdatePackageCircularDependency(systemId: Long, packageCircularDependency: List<List<String>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.PACKAGE)
         packageCircularDependency.forEach {
-            val circularDependency = it.joinToString(separator = ",")
+            val circularDependency = it.joinToString(separator = ";")
             saveCircularDependency(systemId, circularDependency, CircularDependencyType.PACKAGE)
         }
     }
