@@ -45,7 +45,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         } else {
             "and module='$module'"
         }
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId'" + moduleFilter
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId' " + moduleFilter
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
