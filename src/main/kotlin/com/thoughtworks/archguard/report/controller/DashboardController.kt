@@ -68,14 +68,14 @@ enum class BadSmellLevel {
 }
 
 enum class BadSmellType(var value: String) {
-    DATACLUMPS("过高耦合-数据泥团"),
-    DEEPINHERITANCE("过高耦合-过深继承"),
-    CLASSHUB("过高耦合-枢纽模块"),
-    CYCLEDEPENDENCY("过高耦合-循环依赖"),
-    SIZINGMODULES("体量过大-子模块过大"),
-    SIZINGPACKAGE("体量过大-包过大"),
-    SIZINGMETHOD("体量过大-方法过大"),
-    SIZINGCLASS("体量过大-类过大")
+    DATACLUMPS("数据泥团"),
+    DEEPINHERITANCE("过深继承"),
+    CLASSHUB("枢纽模块"),
+    CYCLEDEPENDENCY("循环依赖"),
+    SIZINGMODULES("子模块过大"),
+    SIZINGPACKAGE("包过大"),
+    SIZINGMETHOD("方法过大"),
+    SIZINGCLASS("类过大")
 }
 
 class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
