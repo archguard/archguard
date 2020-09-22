@@ -37,13 +37,13 @@ class CouplingController(val dataClumpsService: DataClumpsService,
         return ResponseEntity.ok(deepInheritanceService.getDeepInheritanceWithTotalCount(systemId, limit, offset))
     }
 
-    @GetMapping("/")
-    fun getAllCouplingData(@PathVariable("systemId") systemId: Long): ResponseEntity<List<ClassCoupling>> {
+    @GetMapping("/class/")
+    fun getAllClassCouplingData(@PathVariable("systemId") systemId: Long): ResponseEntity<List<ClassCoupling>> {
         return ResponseEntity.ok(classCouplingRepository.getAllCoupling(systemId))
     }
 
-    @GetMapping("/quality-gate")
-    fun getAllCouplingData(@PathVariable("systemId") systemId: Long, @RequestParam("qualityGateName") qualityGateName: String): ResponseEntity<List<ClassCoupling>> {
+    @GetMapping("/class/quality-gate")
+    fun getAllClassCouplingData(@PathVariable("systemId") systemId: Long, @RequestParam("qualityGateName") qualityGateName: String): ResponseEntity<List<ClassCoupling>> {
         return ResponseEntity.ok(classCouplingAppService.getCouplingFilterByQualityGate(systemId, qualityGateName))
     }
 }
