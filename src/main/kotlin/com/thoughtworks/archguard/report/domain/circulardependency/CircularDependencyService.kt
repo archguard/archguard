@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.report.domain.circulardependency
 
-import com.thoughtworks.archguard.report.exception.WrongLimitException
-import com.thoughtworks.archguard.report.exception.WrongOffsetException
+import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,15 +18,6 @@ class CircularDependencyService(val circularDependencyRepository: CircularDepend
         val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE)
         val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { ModuleVO(it) }) }
         return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
-    }
-
-    private fun validPagingParam(limit: Long, offset: Long) {
-        if (limit <= 0) {
-            throw WrongLimitException("limit $limit is smaller than 1")
-        }
-        if (offset < 0) {
-            throw WrongOffsetException("offset $offset is smaller than 0")
-        }
     }
 
     fun getPackageCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long): CircularDependencyListDto<PackageVO> {
