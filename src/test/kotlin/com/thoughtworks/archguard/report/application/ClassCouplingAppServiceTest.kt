@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.qualitygate.ComparationOperator
 import com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate
 import com.thoughtworks.archguard.report.domain.qualitygate.LayerType
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 
 internal class ClassCouplingAppServiceTest {
     @MockK
-    lateinit var classCouplingRepository: CouplingRepository
+    lateinit var classCouplingRepository: ClassCouplingRepository
 
     @MockK
     lateinit var qualityGateClient: QualityGateClient

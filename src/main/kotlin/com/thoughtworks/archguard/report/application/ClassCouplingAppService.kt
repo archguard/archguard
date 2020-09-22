@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.qualitygate.ComparationOperator
 import com.thoughtworks.archguard.report.domain.qualitygate.LayerType
 import com.thoughtworks.archguard.report.domain.qualitygate.QualityGateClient
@@ -9,7 +9,7 @@ import com.thoughtworks.archguard.report.domain.qualitygate.QualityGateConfig
 import org.springframework.stereotype.Service
 
 @Service
-class ClassCouplingAppService(val classCouplingRepository: CouplingRepository, val qualityGateClient: QualityGateClient) {
+class ClassCouplingAppService(val classCouplingRepository: ClassCouplingRepository, val qualityGateClient: QualityGateClient) {
     fun getCouplingFilterByQualityGate(systemId: Long, qualityGateName: String): List<ClassCoupling> {
         val allCoupling = classCouplingRepository.getAllCoupling(systemId)
         val couplingQualityGate = qualityGateClient.getQualityGate(qualityGateName)

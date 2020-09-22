@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.application.ClassCouplingAppService
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClumpsListDto
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceListDto
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/systems/{systemId}/coupling")
 class CouplingController(val dataClumpsService: DataClumpsService,
                          val deepInheritanceService: DeepInheritanceService,
-                         val classCouplingRepository: CouplingRepository,
+                         val classCouplingRepository: ClassCouplingRepository,
                          val classCouplingAppService: ClassCouplingAppService) {
 
     @GetMapping("/data-clumps")

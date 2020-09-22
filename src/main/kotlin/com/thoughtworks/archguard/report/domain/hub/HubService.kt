@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.report.domain.hub
 
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.exception.WrongLimitException
 import com.thoughtworks.archguard.report.exception.WrongOffsetException
 import org.springframework.stereotype.Service
 
 @Service
-class HubService(val couplingRepository: CouplingRepository) {
+class HubService(val classCouplingRepository: ClassCouplingRepository) {
     fun getClassHubListAboveThreshold(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int, limit: Long, offset: Long, orderByFanIn: Boolean): ClassHubListDto {
         if (limit <= 0) {
             throw WrongLimitException("limit $limit is smaller than 1")
@@ -14,8 +14,8 @@ class HubService(val couplingRepository: CouplingRepository) {
         if (offset < 0) {
             throw WrongOffsetException("offset $offset is smaller than 0")
         }
-        val classesCount = couplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
-        val classesAboveThreshold = couplingRepository.getCouplingAboveThreshold(systemId, classFanInThreshold, classFanOutThreshold, offset, limit, orderByFanIn)
+        val classesCount = classCouplingRepository.getCouplingAboveThresholdCount(systemId, classFanInThreshold, classFanOutThreshold)
+        val classesAboveThreshold = classCouplingRepository.getCouplingAboveThreshold(systemId, classFanInThreshold, classFanOutThreshold, offset, limit, orderByFanIn)
         return ClassHubListDto(classesAboveThreshold, classesCount, offset / limit + 1)
     }
 

@@ -10,10 +10,10 @@ import org.springframework.test.context.web.WebAppConfiguration
 
 @SpringBootTest
 @WebAppConfiguration
-internal class CouplingRepositoryImplTest {
+internal class ClassCouplingRepositoryImplTest {
 
     @Autowired
-    lateinit var couplingRepositoryImpl: CouplingRepositoryImpl
+    lateinit var couplingRepositoryImpl: ClassCouplingRepositoryImpl
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_class_coupling.sql")

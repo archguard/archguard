@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.report.controller.BadSmellLevel
 import com.thoughtworks.archguard.report.controller.BadSmellType
 import com.thoughtworks.archguard.report.controller.DashboardGroup
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
@@ -28,7 +28,7 @@ internal class BadSmellCalculatorTest {
     lateinit var circularDependencyCalculator: CircularDependencyCalculator
 
     @MockK
-    lateinit var couplingRepository: CouplingRepository
+    lateinit var classCouplingRepository: ClassCouplingRepository
 
     @MockK
     lateinit var dataClumpsRepository: DataClumpsRepository
@@ -45,7 +45,7 @@ internal class BadSmellCalculatorTest {
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        classHubCalculator = ClassHubCouplingCalculator(couplingRepository)
+        classHubCalculator = ClassHubCouplingCalculator(classCouplingRepository)
         dataClumpsCalculator = DataClumpsCouplingCalculator(dataClumpsRepository)
         deepInheritanceCalculator = DeepInheritanceCouplingCalculator(deepInheritanceRepository)
         moduleCalculator = ModuleOverSizingCalculator(sizingRepository)
@@ -58,7 +58,7 @@ internal class BadSmellCalculatorTest {
     @Test
     fun should_calculate_class_hub_bad_smell_result() {
         val mockResult = BadSmellCalculateResult(3, 3, 3)
-        every { couplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
+        every { classCouplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = classHubCalculator.getOverSizingOverviewItem(1)
 
         assertThat(result.badSmell).isEqualTo(BadSmellType.CLASSHUB.value)

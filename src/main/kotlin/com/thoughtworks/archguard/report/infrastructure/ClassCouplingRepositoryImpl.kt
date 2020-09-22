@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.CouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
 @Repository
-class CouplingRepositoryImpl(val jdbi: Jdbi) : CouplingRepository {
+class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
     override fun getCouplingAboveThreshold(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ClassCoupling> {
         var orderSqlPiece = "order by fanIn desc, fanOut desc "
         if (!orderByFanIn) {
