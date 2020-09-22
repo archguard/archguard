@@ -4,20 +4,24 @@ import com.thoughtworks.archguard.clazz.domain.ClazzType
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @WebAppConfiguration
+@Transactional
 internal class JClassRepositoryImplTest {
     @Autowired
     lateinit var jClassRepository: JClassRepository
 
     @Test
     @Sql("classpath:sqls/insert_jclass.sql")
+    @Disabled
     internal fun should_get_jclass_by_name() {
         val systemId: Long = 1
         val jClass = jClassRepository.getJClassBy(systemId, "org.apache.dubbo.demo.GreetingService", "dubbo-demo-interface")

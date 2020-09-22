@@ -40,11 +40,11 @@ class ClassInvokeServiceTest {
         val callee = JClass("2", "callee", "module")
         val caller = JClass("3", "caller", "module")
         //when
-        every { repo.findClassParents(systemId, target.module, target.name) } returns listOf(parent)
+        every { repo.findClassParents(systemId, target.module!!, target.name) } returns listOf(parent)
         every { configService.isDisplayNode(any(), any()) } returns true
-        every { repo.findClassImplements(systemId, target.name, target.module) } returns listOf(impl)
-        every { repo.findCallees(systemId, target.name, target.module) } returns listOf(ClassRelation(callee, 1))
-        every { repo.findCallers(systemId, target.name, target.module) } returns listOf(ClassRelation(caller, 1))
+        every { repo.findClassImplements(systemId, target.name, target.module!!) } returns listOf(impl)
+        every { repo.findCallees(systemId, target.name, target.module!!) } returns listOf(ClassRelation(callee, 1))
+        every { repo.findCallers(systemId, target.name, target.module!!) } returns listOf(ClassRelation(caller, 1))
         every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
         every { classConfigService.buildClassRelationColorConfig(any(), any()) } returns Unit
         service.findInvokes(systemId, target, 1, 1, true)

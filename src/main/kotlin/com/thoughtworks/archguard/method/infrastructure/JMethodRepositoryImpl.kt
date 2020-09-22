@@ -24,8 +24,8 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun findMethodsByModuleAndClass(systemId: Long, module: String, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND module='$module' AND system_id='$systemId'"
+    override fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod> {
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId' AND NOT module <=>'$module'"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -81,16 +81,15 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }
     }
 
-    override fun findMethodByModuleAndClazzAndName(systemId: Long, moduleName: String, clazzName: String, methodName: String): List<JMethod> {
+    override fun findMethodByModuleAndClazzAndName(systemId: Long, moduleName: String?, clazzName: String, methodName: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "system_id=:systemId AND name=:methodName AND clzname=:clazzName AND module=:moduleName"
+                "system_id=:systemId AND name=:methodName AND clzname=:clazzName AND NOT module <=>'$moduleName'"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("methodName", methodName)
                     .bind("clazzName", clazzName)
-                    .bind("moduleName", moduleName)
                     .mapTo(JMethodDto::class.java)
                     .map { it.toJMethod() }
                     .list()
@@ -98,7 +97,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 }
 
-class JMethodDto(val id: String, val name: String, val clazz: String, val module: String, val returnType: String, val argumentTypes: String?, val access: String) {
+class JMethodDto(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: String?, val access: String) {
     fun toJMethod(): JMethod {
         val argumentTypeList = if (argumentTypes.isNullOrBlank()) emptyList() else argumentTypes.split(",")
         val jMethod = JMethod(id, name, clazz, module, returnType, argumentTypeList)

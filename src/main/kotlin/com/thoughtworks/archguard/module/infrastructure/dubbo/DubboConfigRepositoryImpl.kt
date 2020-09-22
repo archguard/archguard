@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.module.domain.dubbo.DubboConfigRepository
 import com.thoughtworks.archguard.module.domain.dubbo.ReferenceConfig
 import com.thoughtworks.archguard.module.domain.dubbo.ServiceConfig
 import com.thoughtworks.archguard.module.domain.dubbo.SubModuleDubbo
-import com.thoughtworks.archguard.module.infrastructure.Utils.convertToNullIfStringValueEqualsNull
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -58,7 +57,7 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
         val sqlPrefix = "select sc.id, sc.interface as interfaceName, sc.ref, sc.version, sc.`group`, " +
                 "sc.module_id as moduleId, m.name, m.path " +
                 "from dubbo_service_config as sc, dubbo_module as m where "
-        val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id "+
+        val sqlSuffix = "sc.interface='${referenceConfig.interfaceName}' and sc.module_id=m.id " +
                 " and sc.system_id = m.system_id and sc.system_id = $systemId "
 
         return sqlPrefix +
@@ -101,20 +100,20 @@ class DubboConfigRepositoryImpl : DubboConfigRepository {
 }
 
 class ReferenceConfigDto(val id: String, private val referenceId: String, private val interfaceName: String,
-                         private val version: String, private val group: String, private val moduleId: String) {
+                         private val version: String?, private val group: String?, private val moduleId: String) {
     fun toReferenceConfigWithSubModule(subModule: SubModuleDubbo): ReferenceConfig {
         if (subModule.id == moduleId) {
-            return ReferenceConfig(id, referenceId, interfaceName, convertToNullIfStringValueEqualsNull(version),
-                    convertToNullIfStringValueEqualsNull(group), subModule)
+            return ReferenceConfig(id, referenceId, interfaceName, version,
+                    group, subModule)
         }
         throw RuntimeException("SubModule Not Matching!")
     }
 }
 
-class ServiceConfigDto(val id: String, private val interfaceName: String, private val ref: String, private val version: String,
-                       private val group: String, private val moduleId: String, val name: String, private val path: String) {
+class ServiceConfigDto(val id: String, private val interfaceName: String, private val ref: String, private val version: String?,
+                       private val group: String?, private val moduleId: String, val name: String, private val path: String) {
     fun toServiceConfig(): ServiceConfig {
-        return ServiceConfig(id, interfaceName, ref, convertToNullIfStringValueEqualsNull(version),
-                convertToNullIfStringValueEqualsNull(group), SubModuleDubbo(moduleId, name, path))
+        return ServiceConfig(id, interfaceName, ref, version,
+                group, SubModuleDubbo(moduleId, name, path))
     }
 }

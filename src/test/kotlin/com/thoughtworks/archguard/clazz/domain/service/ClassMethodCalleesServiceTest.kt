@@ -56,7 +56,7 @@ class ClassMethodCalleesServiceTest {
         every { jMethodRepository.findMethodsByModuleAndClass(systemId, module, name) } returns listOf(method1, method2)
         every { jMethodRepository.findMethodsByModuleAndClass(systemId, module, parent.name) } returns listOf(method1)
         every { jClassRepository.findClassParents(systemId, module, name) } returns listOf(parent)
-        every { jClassRepository.findClassParents(systemId, parent.module, parent.name) } returns listOf()
+        every { jClassRepository.findClassParents(systemId, parent.module!!, parent.name) } returns listOf()
         every { methodCalleesService.buildMethodCallees(systemId, listOf(method1, method2), 1, true) } returns listOf(method1)
         every { methodCalleesService.buildMethodCallees(systemId, listOf(method1), 1, true) } returns listOf(method2)
         every { configureService.isDisplayNode(any(), any()) } returns true

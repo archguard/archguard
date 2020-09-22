@@ -54,7 +54,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculatePackageCoupling(systemId: Long, packageVO: PackageVO): PackageCoupling {
-        val classes = jClassRepository.getAllBysystemId(systemId)
+        val classes = jClassRepository.getAllBySystemId(systemId)
         val classesBelongToPackage = classes.filter { packageVO.containClass(it.toVO()) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToPackage.map { it.toVO() })
         if (classCouplingsCached.isNotEmpty()) {
@@ -68,13 +68,13 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculatePackageDirectClassCouplings(systemId: Long, packageVO: PackageVO): List<ClassCoupling> {
-        val classes = jClassRepository.getAllBysystemId(systemId)
+        val classes = jClassRepository.getAllBySystemId(systemId)
         val classesDirectBelongToPackage = classes.filter { packageVO.directContainClass(it.toVO()) }
         return calculateClassCouplings(systemId, classesDirectBelongToPackage.map { it.toVO() })
     }
 
     override fun calculateModuleCoupling(systemId: Long, logicModule: LogicModule): ModuleCoupling {
-        val classes = jClassRepository.getAllBysystemId(systemId)
+        val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBysystemId(systemId)
         val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
@@ -88,7 +88,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
     }
 
     override fun calculateAllModuleCoupling(systemId: Long): List<ModuleCoupling> {
-        val classes = jClassRepository.getAllBysystemId(systemId)
+        val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBysystemId(systemId)
         val moduleCouplings = mutableListOf<ModuleCoupling>()
         var classDependency = mutableListOf<Dependency<JClassVO>>()

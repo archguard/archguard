@@ -2,7 +2,9 @@ package com.thoughtworks.archguard.module.domain.dubbo
 
 import com.thoughtworks.archguard.clazz.domain.JClass
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.module.domain.model.*
+import com.thoughtworks.archguard.module.domain.model.Dependency
+import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.module.domain.plugin.AbstractDependPlugin
 import com.thoughtworks.archguard.module.domain.plugin.PluginType
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +27,7 @@ class DubboPlugin : AbstractDependPlugin() {
         return methodDependencies.flatMap { fixMethodDependency(systemId, it, interfaces) }
     }
 
-    private fun isInterface(jClassVO: JClassVO, interfaces: List<JClass>): Boolean{
+    private fun isInterface(jClassVO: JClassVO, interfaces: List<JClass>): Boolean {
         return interfaces.any { it.getFullName() == jClassVO.getFullName() }
     }
 
@@ -33,15 +35,15 @@ class DubboPlugin : AbstractDependPlugin() {
         val caller = methodDependency.caller
         val callee = methodDependency.callee
 
-        if (!isInterface(callee.clazz, interfaces) || caller.clazz.module == callee.clazz.module) {
+        if (!isInterface(callee.clazz, interfaces) || caller.clazz.module == callee.clazz.module || caller.clazz.module == null || callee.clazz.module == null) {
             return listOf(methodDependency)
         }
         return mapCalleeToReal(systemId, caller, callee).map { Dependency(caller, it) }
 
     }
 
-    fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO>{
-        return jClassRepository.findClassImplements(systemId, callee.name, callee.module).map { it.toVO() }
+    fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO> {
+        return jClassRepository.findClassImplements(systemId, callee.name, callee.module!!).map { it.toVO() }
     }
 
     private fun mapCalleeToReal(systemId: Long, caller: JMethodVO, callee: JMethodVO): List<JMethodVO> {

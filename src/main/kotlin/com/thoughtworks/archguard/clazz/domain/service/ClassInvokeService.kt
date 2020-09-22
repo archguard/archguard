@@ -21,7 +21,7 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
         if (deep == 0) {
             return
         }
-        if (target.module == "null") {
+        if (target.module == null) {
             return
         }
         var implements = listOf<JClass>()
@@ -49,7 +49,7 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
         if (deep == 0) {
             return
         }
-        if (target.module == "null") {
+        if (target.module == null) {
             return
         }
         val parents = repo.findClassParents(systemId, target.module, target.name)

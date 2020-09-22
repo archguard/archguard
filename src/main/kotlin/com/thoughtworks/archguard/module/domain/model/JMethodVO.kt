@@ -9,7 +9,7 @@ data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: Stri
     val fullName = "${clazz.getFullName()}.$name"
 
     @JdbiConstructor
-    constructor(name: String, className: String, moduleName: String, returnType: String, argumentTypes: List<String>) : this(name, JClassVO(className, moduleName), returnType, argumentTypes)
+    constructor(name: String, className: String, moduleName: String?, returnType: String, argumentTypes: List<String>) : this(name, JClassVO(className, moduleName), returnType, argumentTypes)
 
     @JsonIgnore
     override fun getNodeId(): String {

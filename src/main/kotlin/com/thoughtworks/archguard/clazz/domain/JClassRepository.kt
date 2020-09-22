@@ -1,13 +1,11 @@
 package com.thoughtworks.archguard.clazz.domain
 
 interface JClassRepository {
-    fun getJClassBy(systemId:Long, name: String, module: String): JClass?
+    fun getJClassBy(systemId: Long, name: String, module: String?): JClass?
 
     fun getJClassById(id: String): JClass?
 
-    fun getAllBysystemId(systemId: Long): List<JClass>
-
-    fun getAllBysystemIdAndFullName(systemId: Long, fullNames: List<FullName>): List<JClass>
+    fun getAllBySystemId(systemId: Long): List<JClass>
 
     fun getJClassesHasModules(systemId: Long): List<JClass>
 
@@ -15,33 +13,13 @@ interface JClassRepository {
 
     fun findDependencers(id: String): List<JClass>
 
-    fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass>
+    fun findClassParents(systemId: Long, module: String, name: String): List<JClass>
 
-    fun findClassImplements(systemId: Long, name: String?, module: String?): List<JClass>
+    fun findClassImplements(systemId: Long, name: String, module: String): List<JClass>
 
-    fun findCallees(systemId:Long, name: String?, module: String?): List<ClassRelation>
+    fun findCallees(systemId: Long, name: String, module: String): List<ClassRelation>
 
-    fun findCallers(systemId:Long, name: String?, module: String?): List<ClassRelation>
+    fun findCallers(systemId: Long, name: String, module: String): List<ClassRelation>
 
     fun findFields(id: String): List<JField>
-}
-
-class FullName(val name: String, val module: String) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as FullName
-
-        if (name != other.name) return false
-        if (module != other.module) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + module.hashCode()
-        return result
-    }
 }

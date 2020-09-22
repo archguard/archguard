@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.module.domain.graph.Node
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
-class JClassVO(val name: String, val module: String) : LogicComponent(), Node {
+class JClassVO(val name: String, val module: String?) : LogicComponent(), Node {
     var id: String? = null
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()

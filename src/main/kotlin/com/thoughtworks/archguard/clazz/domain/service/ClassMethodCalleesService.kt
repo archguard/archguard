@@ -15,6 +15,9 @@ class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo
 
     fun findClassMethodsCallees(systemId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
                                 needParents: Boolean): JClass {
+        if (target.module == null) {
+            return target
+        }
         val methods = methodRepo.findMethodsByModuleAndClass(systemId, target.module, target.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
         methodConfigService.buildColorConfig(methods, systemId)
         target.methods = methods
