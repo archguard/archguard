@@ -42,7 +42,7 @@ class Scanner2ExtendedExecutor(nThread: Int) : ThreadPoolExecutor(nThread, nThre
             }
         }
         t?.let {
-            log.error(it.toString())
+            throw RuntimeException("Scanner2ExtendedExecutor run with: $it")
         }
     }
 }
