@@ -15,7 +15,7 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
         }
         return jdbi.withHandle<List<ModuleCoupling>, Exception> {
             val sql = "select id, module_name as moduleName, fanin as fanIn, fanout as fanOut from module_metrics where system_id = :systemId and " +
-                    "(cm.fanin > :moduleFanInThreshold or cm.fanout > :moduleFanOutThreshold) " +
+                    "(fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) " +
                     orderSqlPiece + ", moduleName limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -29,10 +29,8 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
 
     override fun getCouplingAboveThresholdCount(systemId: Long, moduleFanInThreshold: Int, moduleFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from module_metrics where system_id = :systemId and " +
-                    "(cm.fanin > :moduleFanInThreshold or cm.fanout > :moduleFanOutThreshold) "
+            val sql = "select count(1) from module_metrics where system_id = :systemId and (fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) "
             it.createQuery(sql)
-                    .bind("systemId", systemId)
                     .bind("systemId", systemId)
                     .bind("moduleFanInThreshold", moduleFanInThreshold)
                     .bind("moduleFanOutThreshold", moduleFanOutThreshold)
@@ -73,8 +71,7 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
 
     override fun getAllCoupling(systemId: Long): List<ModuleCoupling> {
         return jdbi.withHandle<List<ModuleCoupling>, Exception> {
-            val sql = "select id, module_name as moduleName, fanin as fanIn, fanout as fanOut from module_metrics where system_id = :systemId " +
-                    "order by fanIn desc, fanOut desc, moduleName"
+            val sql = "select id, module_name as moduleName, fanin as fanIn, fanout as fanOut from module_metrics where system_id = :systemId order by fanIn desc, fanOut desc, moduleName"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .mapTo(ModuleCouplingPO::class.java).list().map { it.toModuleCoupling() }
