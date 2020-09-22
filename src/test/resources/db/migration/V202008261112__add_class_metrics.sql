@@ -9,7 +9,9 @@ create table class_metrics
     abc  int,
     noc int,
     dit  int,
-    lcom4 int
+    lcom4 int,
+    fanin int,
+    fanout int
 );
 
 --create index idx_project_id
