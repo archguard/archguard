@@ -17,7 +17,7 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
             val sql = "select jc.id as id, jc.module as moduleName, jc.name as classFullName, " +
                     "cm.fanin as fanIn, cm.fanout as fanOut from class_metrics cm JOIN JClass jc " +
                     "on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId and " +
-                    "(cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold)" +
+                    "(cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold) " +
                     orderSqlPiece + ", moduleName, classFullName limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
