@@ -59,10 +59,9 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
                                    then 1
                                else 0 end) AS 'level3'
                 from (
-                         select cm.fanin as fanin, cm.fanout as fanout
-                         from class_metrics cm
-                                  JOIN JClass jc on cm.system_id = jc.system_id and cm.class_id = jc.id
-                         where cm.system_id = :systemId
+                         select fanin, fanout
+                         from class_metrics
+                         where system_id = :systemId
                      ) as c
             """.trimIndent()
             it.createQuery(sql)

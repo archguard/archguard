@@ -58,10 +58,9 @@ class MethodCouplingRepositoryImpl(val jdbi: Jdbi) : MethodCouplingRepository {
                                    then 1
                                else 0 end) AS 'level3'
                 from (
-                         select mm.fanin as fanin, mm.fanout as fanout
-                         from method_metrics mm
-                                  JOIN JMethod jm on mm.system_id = jm.system_id and mm.class_id = jm.id
-                         where cm.system_id = :systemId
+                         select fanin, fanout
+                         from method_metrics 
+                         where system_id = :systemId
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
