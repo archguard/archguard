@@ -84,7 +84,7 @@ class LogicModuleController(val logicModuleService: LogicModuleService,
     fun getLogicModulesDependencies(@PathVariable systemId: Long,
                                     @RequestParam caller: String,
                                     @RequestParam callee: String): List<Dependency<JMethodVO>> {
-        return dependencyService.getAllMethodDependencies(systemId, caller, callee)
+        return dependencyService.getAllDistinctMethodDependencies(systemId, caller, callee)
     }
 
     @GetMapping("/dependencies/graph")

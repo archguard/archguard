@@ -9,4 +9,5 @@ interface DependencyService {
     fun getAllWithFullNameStart(systemId: Long, callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>>
     fun getAllClassDependencies(systemId: Long): List<Dependency<JClassVO>>
     fun getAllMethodDependencies(systemId: Long, caller: String, callee: String): List<Dependency<JMethodVO>>
+    fun getAllDistinctMethodDependencies(systemId: Long, caller: String, callee: String): List<Dependency<JMethodVO>>
 }

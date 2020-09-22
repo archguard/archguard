@@ -34,6 +34,10 @@ class DependencyServiceImpl : DependencyService {
         return methodDependencies.filter { it.caller.clazz.module == caller && it.callee.clazz.module == callee }
     }
 
+    override fun getAllDistinctMethodDependencies(systemId: Long, caller: String, callee: String): List<Dependency<JMethodVO>> {
+        return getAllMethodDependencies(systemId, caller, callee).toSet().toList()
+    }
+
     override fun getAllWithFullNameStart(systemId: Long, callerStart: List<String>, calleeStart: List<String>): List<Dependency<JMethodVO>> {
         return getAllMethodDependencies(systemId).filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
     }

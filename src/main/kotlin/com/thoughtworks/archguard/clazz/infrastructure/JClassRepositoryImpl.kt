@@ -16,7 +16,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
 
     override fun getJClassBy(systemId: Long, name: String, module: String?): JClass? {
-        val sql = "select id, name, module, loc, access from JClass where system_id=:systemId and name=:name and not module <=> :module"
+        val sql = "select id, name, module, loc, access from JClass where system_id=:systemId and name=:name and module <=> :module"
         val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
