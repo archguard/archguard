@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/systems/{systemId}")
-class DashboardController() {
+class DashboardController {
 
     @GetMapping("/dashboard")
     fun getDashborad(@PathVariable("systemId") systemId: Long): ResponseEntity<List<Dashboard>> {
@@ -54,7 +54,7 @@ class DashboardController() {
                                         GraphData("2020-10-15", 35),
                                         GraphData("2020-10-16", 129)))
                 ))
-        return ResponseEntity.ok(listOf(couplingDashboard, sizingDashboard));
+        return ResponseEntity.ok(listOf(couplingDashboard, sizingDashboard))
     }
 }
 
@@ -70,7 +70,10 @@ enum class BadSmellLevel {
 enum class BadSmellType(var value: String) {
     DATACLUMPS("数据泥团"),
     DEEPINHERITANCE("过深继承"),
-    CLASSHUB("枢纽模块"),
+    CLASSHUB("枢纽类"),
+    METHODHUB("枢纽方法"),
+    PACKAGEHUB("枢纽包"),
+    MODULEHUB("枢纽模块"),
     CYCLEDEPENDENCY("循环依赖"),
     SIZINGMODULES("子模块过大"),
     SIZINGPACKAGE("包过大"),

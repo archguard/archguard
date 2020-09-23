@@ -10,6 +10,9 @@ class BadSmellCalculator(val moduleCalculator: ModuleOverSizingCalculator,
                          val classCalculator: ClassOverSizingCalculator,
                          val methodCalculator: MethodOverSizingCalculator,
                          val classHubCalculator: ClassHubCouplingCalculator,
+                         val methodHubCalculator: MethodHubCouplingCalculator,
+                         val packageHubCalculator: PackageHubCouplingCalculator,
+                         val moduleHubCalculator: ModuleHubCouplingCalculator,
                          val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
                          val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
                          val circularDependencyCalculator: CircularDependencyCalculator) {
@@ -22,6 +25,9 @@ class BadSmellCalculator(val moduleCalculator: ModuleOverSizingCalculator,
             BadSmellType.SIZINGCLASS -> classCalculator.getOverSizingOverviewItem(systemId)
             BadSmellType.SIZINGMETHOD -> methodCalculator.getOverSizingOverviewItem(systemId)
             BadSmellType.CLASSHUB -> classHubCalculator.getOverSizingOverviewItem(systemId)
+            BadSmellType.METHODHUB -> methodHubCalculator.getOverSizingOverviewItem(systemId)
+            BadSmellType.PACKAGEHUB -> packageHubCalculator.getOverSizingOverviewItem(systemId)
+            BadSmellType.MODULEHUB -> moduleHubCalculator.getOverSizingOverviewItem(systemId)
             BadSmellType.DATACLUMPS -> dataClumpsCouplingCalculator.getOverSizingOverviewItem(systemId)
             BadSmellType.DEEPINHERITANCE -> deepInheritanceCouplingCalculator.getOverSizingOverviewItem(systemId)
             BadSmellType.CYCLEDEPENDENCY -> circularDependencyCalculator.getOverSizingOverviewItem(systemId)
