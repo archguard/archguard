@@ -56,7 +56,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
                                    then 1
                                else 0 end) AS 'level3'
                 from (
-                         "select fanIn, fanOut from package_metrics where system_id = :systemId" +
+                         "select fanin, fanout from package_metrics where system_id = :systemId" +
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
