@@ -20,6 +20,9 @@ data class ClassVO(val moduleName: String, val packageName: String, val classNam
                 while (i > 1) {
                     if (path.subpath(i - 1, i).toFile().name == "src")
                         break
+                    if (parentFile.parentFile == null) {
+                        return null
+                    }
                     parentFile = parentFile.parentFile
                     i--
                 }
