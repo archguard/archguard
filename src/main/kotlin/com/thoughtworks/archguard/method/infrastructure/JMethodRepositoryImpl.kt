@@ -83,13 +83,14 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun findMethodByModuleAndClazzAndName(systemId: Long, moduleName: String?, clazzName: String, methodName: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
-                "system_id=:systemId AND name=:methodName AND clzname=:clazzName AND module <=>'$moduleName'"
+                "system_id=:systemId AND name=:methodName AND clzname=:clazzName AND module <=> :moduleName"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("methodName", methodName)
                     .bind("clazzName", clazzName)
+                    .bind("moduleName", moduleName)
                     .mapTo(JMethodDto::class.java)
                     .map { it.toJMethod() }
                     .list()
