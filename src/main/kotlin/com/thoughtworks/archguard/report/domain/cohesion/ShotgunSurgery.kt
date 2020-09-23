@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.report.domain.cohesion
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.model.ClassVO
 import java.nio.file.Path
 
 data class ShotgunSurgery(val commitId: String,

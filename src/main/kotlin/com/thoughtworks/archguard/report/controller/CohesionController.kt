@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.model.ClassVO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

@@ -2,10 +2,10 @@ package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyListDto
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
-import com.thoughtworks.archguard.report.domain.module.ClassVO
-import com.thoughtworks.archguard.report.domain.module.MethodVO
-import com.thoughtworks.archguard.report.domain.module.ModuleVO
-import com.thoughtworks.archguard.report.domain.module.PackageVO
+import com.thoughtworks.archguard.report.domain.model.ClassVO
+import com.thoughtworks.archguard.report.domain.model.MethodVO
+import com.thoughtworks.archguard.report.domain.model.ModuleVO
+import com.thoughtworks.archguard.report.domain.model.PackageVO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

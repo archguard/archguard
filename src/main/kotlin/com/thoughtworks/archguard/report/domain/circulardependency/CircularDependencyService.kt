@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.report.domain.circulardependency
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
-import com.thoughtworks.archguard.report.domain.module.ClassVO
-import com.thoughtworks.archguard.report.domain.module.MethodVO
-import com.thoughtworks.archguard.report.domain.module.ModuleVO
-import com.thoughtworks.archguard.report.domain.module.PackageVO
+import com.thoughtworks.archguard.report.domain.model.ClassVO
+import com.thoughtworks.archguard.report.domain.model.MethodVO
+import com.thoughtworks.archguard.report.domain.model.ModuleVO
+import com.thoughtworks.archguard.report.domain.model.PackageVO
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.module
+package com.thoughtworks.archguard.report.domain.model
 
 import java.io.File
 import java.nio.file.Path

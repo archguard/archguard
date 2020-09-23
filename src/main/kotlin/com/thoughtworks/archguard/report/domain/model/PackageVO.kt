@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.module
+package com.thoughtworks.archguard.report.domain.model
 
 data class PackageVO(val moduleName: String, val packageName: String) {
     companion object {
