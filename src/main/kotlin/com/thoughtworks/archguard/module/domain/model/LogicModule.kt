@@ -10,7 +10,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
     private val log = LoggerFactory.getLogger(LogicModule::class.java)
     private var type: LogicModuleType? = null
 
-    @Deprecated("Please use Factory Method")
+//    @Deprecated("Please use Factory Method")
     constructor(id: String, name: String, members: List<LogicComponent>) : this(id, name) {
         this.members = members
         this.type = LogicModuleType.LOGIC_MODULE
