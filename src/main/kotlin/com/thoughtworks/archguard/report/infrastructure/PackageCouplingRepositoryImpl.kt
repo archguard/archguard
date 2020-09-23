@@ -30,7 +30,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
 
     override fun getCouplingAboveThresholdCount(systemId: Long, packageFanInThreshold: Int, packageFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from package_metrics where system_id = :systemId and (fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) "
+            val sql = "select count(1) from package_metrics where system_id = :systemId and (fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) "
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("packageFanInThreshold", packageFanInThreshold)
