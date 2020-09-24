@@ -13,4 +13,11 @@ class RedundancyService(val redundancyRepository: RedundancyRepository) {
         return (oneMethodClassCount to oneMethodClassList)
     }
 
+    fun getOneFieldClassWithTotalCount(systemId: Long, limit: Long, offset: Long): Pair<Long, List<ClassVO>> {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val oneFieldClassCount = redundancyRepository.getOneFieldClassCount(systemId, limit, offset)
+        val oneFieldClassList = redundancyRepository.getOneFieldClass(systemId, limit, offset)
+        return (oneFieldClassCount to oneFieldClassList)
+    }
+
 }

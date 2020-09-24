@@ -35,4 +35,15 @@ class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
                     .map { p -> ClassVO.create(p.name, p.module) }
         }
     }
+
+    override fun getOneFieldClassCount(systemId: Long, limit: Long, offset: Long): Long {
+        return 24
+    }
+
+    override fun getOneFieldClass(systemId: Long, limit: Long, offset: Long): List<ClassVO> {
+        return listOf(ClassVO("a", "b.c.e.d", "e.java"),
+                ClassVO("a", "b.c.e.d", "e1.java"))
+    }
+
+
 }

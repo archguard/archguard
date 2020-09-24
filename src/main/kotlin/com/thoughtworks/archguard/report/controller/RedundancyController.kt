@@ -18,6 +18,17 @@ class RedundancyController(val redundancyService: RedundancyService) {
         val result = redundancyService.getOneMethodClassWithTotalCount(systemId, limit, offset)
         return ResponseEntity.ok(OneMethodClassDto(result.second, result.first, offset / limit + 1))
     }
+
+    @GetMapping("/class/one-field")
+    fun getOneFieldClassWithTotalCount(@PathVariable("systemId") systemId: Long,
+                                        @RequestParam(value = "numberPerPage") limit: Long,
+                                        @RequestParam(value = "currentPageNumber") currentPageNumber: Long):
+            ResponseEntity<OneMethodClassDto> {
+        val offset = (currentPageNumber - 1) * limit
+        val result = redundancyService.getOneFieldClassWithTotalCount(systemId, limit, offset)
+        return ResponseEntity.ok(OneMethodClassDto(result.second, result.first, offset / limit + 1))
+    }
+
 }
 
 data class OneMethodClassDto(val data: List<ClassVO>, val count: Long, val currentPageNumber: Long)
