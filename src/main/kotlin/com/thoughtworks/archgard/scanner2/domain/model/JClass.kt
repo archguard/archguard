@@ -39,6 +39,16 @@ open class JClass(val id: String, val name: String, val module: String?) {
         return true
     }
 
+    fun isInterface(): Boolean {
+        return classType.contains(ClazzType.INTERFACE);
+    }
+    fun isAbstract(): Boolean {
+        return classType.contains(ClazzType.ABSTRACT_CLASS);
+    }
+    fun isSynthetic(): Boolean {
+        return classType.contains(ClazzType.SYNTHETIC)
+    }
+
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + name.hashCode()
@@ -50,5 +60,5 @@ open class JClass(val id: String, val name: String, val module: String?) {
 
 // 暂时只有接口和类
 enum class ClazzType {
-    INTERFACE, CLASS, NOT_DEFINED, ABSTRACT_CLASS
+    INTERFACE, CLASS, NOT_DEFINED, ABSTRACT_CLASS, SYNTHETIC
 }

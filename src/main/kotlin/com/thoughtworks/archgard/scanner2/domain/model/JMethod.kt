@@ -15,9 +15,17 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
         jMethodVO.id = id
         return jMethodVO
     }
+
+    fun isAbstract(): Boolean {
+        return methodTypes.contains(MethodType.ABSTRACT_METHOD);
+    }
+    fun isSynthetic(): Boolean {
+        return methodTypes.contains(MethodType.SYNTHETIC)
+    }
+
 }
 
 // 暂时只有接口和类
 enum class MethodType {
-    NOT_DEFINED, ABSTRACT_METHOD
+    NOT_DEFINED, ABSTRACT_METHOD, SYNTHETIC
 }
