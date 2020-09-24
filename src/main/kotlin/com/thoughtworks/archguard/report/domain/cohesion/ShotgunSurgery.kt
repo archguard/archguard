@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.report.domain.cohesion
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.thoughtworks.archguard.report.domain.module.ClassVO
 import java.nio.file.Path
 
