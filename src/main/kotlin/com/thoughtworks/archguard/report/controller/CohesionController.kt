@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class CohesionController(val shotgunSurgeryService: ShotgunSurgeryService) {
 
     @GetMapping("/shotgun-surgery")
-    fun getShotgunSurgeryithTotalCount(@PathVariable("systemId") systemId: Long,
+    fun getShotgunSurgeryWithTotalCount(@PathVariable("systemId") systemId: Long,
                                        @RequestParam(value = "numberPerPage") limit: Long,
                                        @RequestParam(value = "currentPageNumber") currentPageNumber: Long):
             ResponseEntity<ShotgunSurgeryListDto> {

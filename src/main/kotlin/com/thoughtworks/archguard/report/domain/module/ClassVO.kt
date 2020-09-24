@@ -12,6 +12,12 @@ data class ClassVO(val moduleName: String, val packageName: String, val classNam
             return ClassVO(moduleName, packageName, className)
         }
 
+        fun create(classFullName: String, moduleName: String): ClassVO {
+            val packageName = classFullName.substring(0, classFullName.indexOfLast { it == '.' })
+            val className = classFullName.substring(classFullName.indexOfLast { it == '.' } + 1)
+            return ClassVO(moduleName, packageName, className)
+        }
+
         fun create(path: Path): ClassVO? {
             if (path.toString().endsWith(".java") || path.toString().endsWith(".kt")) {
                 var i = path.nameCount
