@@ -7,11 +7,13 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@Transactional
 internal class CohesionControllerTest(@LocalServerPort val port: Int) {
 
     private val restTemplate = RestTemplate()
