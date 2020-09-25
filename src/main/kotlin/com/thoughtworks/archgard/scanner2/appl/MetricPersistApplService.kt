@@ -9,6 +9,7 @@ import com.thoughtworks.archgard.scanner2.domain.model.ModuleMetric
 import com.thoughtworks.archgard.scanner2.domain.model.PackageMetric
 import com.thoughtworks.archgard.scanner2.domain.repository.CircularDependencyMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
+import com.thoughtworks.archgard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.MethodMetricRepository
@@ -16,6 +17,7 @@ import com.thoughtworks.archgard.scanner2.domain.repository.ModuleMetricReposito
 import com.thoughtworks.archgard.scanner2.domain.repository.PackageMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.service.AbcService
 import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
+import com.thoughtworks.archgard.scanner2.domain.service.DataClassService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
 import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
@@ -35,6 +37,7 @@ class MetricPersistApplService(val abcService: AbcService,
                                val ditService: DitService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
+                               val dataClassService: DataClassService,
                                val jClassRepository: JClassRepository,
                                val jMethodRepository: JMethodRepository,
                                val fanInFanOutService: FanInFanOutService,
@@ -43,6 +46,7 @@ class MetricPersistApplService(val abcService: AbcService,
                                val methodMetricRepository: MethodMetricRepository,
                                val packageMetricRepository: PackageMetricRepository,
                                val moduleMetricRepository: ModuleMetricRepository,
+                               val dataClassRepository: DataClassRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
                                val influxDBClient: InfluxDBClient,
                                val scanner2ThreadPool: Scanner2ThreadPool) {
@@ -65,6 +69,11 @@ class MetricPersistApplService(val abcService: AbcService,
         scanner2ThreadPool.submit(Runnable {
             persistModuleLevel2Metrics(systemId, jClasses)
         })
+    }
+
+    @Transactional
+    fun persistDataClass(systemId: Long) {
+        dataClassRepository.insertOrUpdateDataClass(systemId, dataClassService.findAllDataClasses(systemId))
     }
 
     @Transactional

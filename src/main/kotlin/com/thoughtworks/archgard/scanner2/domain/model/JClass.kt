@@ -3,7 +3,7 @@ package com.thoughtworks.archgard.scanner2.domain.model
 /**
  * JClass is an Entity, so it must have an id.
  */
-open class JClass(val id: String, val name: String, val module: String?) {
+class JClass(val id: String, val name: String, val module: String?) {
 
     var methods: List<JMethod> = ArrayList()
     var parents: List<JClass> = ArrayList()
@@ -40,11 +40,13 @@ open class JClass(val id: String, val name: String, val module: String?) {
     }
 
     fun isInterface(): Boolean {
-        return classType.contains(ClazzType.INTERFACE);
+        return classType.contains(ClazzType.INTERFACE)
     }
+
     fun isAbstract(): Boolean {
-        return classType.contains(ClazzType.ABSTRACT_CLASS);
+        return classType.contains(ClazzType.ABSTRACT_CLASS)
     }
+
     fun isSynthetic(): Boolean {
         return classType.contains(ClazzType.SYNTHETIC)
     }
