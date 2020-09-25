@@ -16,7 +16,7 @@ class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {
                     .execute()
         }
         classAccesses.forEach {
-            save(it)
+            save(it, systemId)
         }
     }
 
@@ -27,28 +27,32 @@ class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {
                     .execute()
         }
         methodAccesses.forEach {
-            save(it)
+            save(it, systemId)
         }
     }
 
-    private fun save(clazz: ClassAccess) {
+    private fun save(clazz: ClassAccess, systemId: Long) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into class_access (id, class_id, is_abstract, is_interface) values (:id, :class_id, :is_abstract, :is_interface)")
+            it.createUpdate("insert into class_access (id, class_id, is_abstract, is_interface, system_id) " +
+                    "values (:id, :class_id, :is_abstract, :is_interface, :system_id)")
                     .bind("id", UUID.randomUUID().toString())
                     .bind("class_id", clazz.id)
                     .bind("is_abstract", clazz.isAbstract)
                     .bind("is_interface", clazz.isInterface)
+                    .bind("system_id", systemId)
                     .execute()
         }
     }
 
-    private fun save(method: MethodAccess) {
+    private fun save(method: MethodAccess, systemId: Long) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into method_access (id, method_id, is_abstract, is_synthetic) values (:id, :method_id, :is_abstract, :is_synthetic)")
+            it.createUpdate("insert into method_access (id, method_id, is_abstract, is_synthetic, system_id) " +
+                    "values (:id, :method_id, :is_abstract, :is_synthetic, :system_id)")
                     .bind("id", UUID.randomUUID().toString())
                     .bind("method_id", method.id)
                     .bind("is_abstract", method.isAbstract)
                     .bind("is_synthetic", method.isSynthetic)
+                    .bind("system_id", systemId)
                     .execute()
         }
     }
