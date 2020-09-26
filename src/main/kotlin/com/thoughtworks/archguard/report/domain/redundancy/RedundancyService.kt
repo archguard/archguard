@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.report.domain.module.ClassVO
 import org.springframework.stereotype.Service
 
 @Service
-class RedundancyService(val redundancyRepository: RedundancyRepository) {
+class RedundancyService(val redundancyRepository: RedundancyRepository, val dataClassRepository: DataClassRepository) {
     fun getOneMethodClassWithTotalCount(systemId: Long, limit: Long, offset: Long): Pair<Long, List<ClassVO>> {
         ValidPagingParam.validPagingParam(limit, offset)
         val oneMethodClassCount = redundancyRepository.getOneMethodClassCount(systemId, limit, offset)
@@ -13,10 +13,10 @@ class RedundancyService(val redundancyRepository: RedundancyRepository) {
         return (oneMethodClassCount to oneMethodClassList)
     }
 
-    fun getOneFieldClassWithTotalCount(systemId: Long, limit: Long, offset: Long): Pair<Long, List<ClassVO>> {
+    fun getOneFieldClassWithTotalCount(systemId: Long, limit: Long, offset: Long): Pair<Long, List<DataClass>> {
         ValidPagingParam.validPagingParam(limit, offset)
-        val oneFieldClassCount = redundancyRepository.getOneFieldClassCount(systemId, limit, offset)
-        val oneFieldClassList = redundancyRepository.getOneFieldClass(systemId, limit, offset)
+        val oneFieldClassCount = dataClassRepository.getAllDataClassWithOnlyOneFieldCount(systemId)
+        val oneFieldClassList = dataClassRepository.getAllDataClassWithOnlyOneField(systemId, limit, offset)
         return (oneFieldClassCount to oneFieldClassList)
     }
 
