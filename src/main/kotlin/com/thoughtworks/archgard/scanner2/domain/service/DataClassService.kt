@@ -14,7 +14,7 @@ class DataClassService(val jClassRepository: JClassRepository, val jMethodReposi
         jClasses.forEach {
             it.fields = jClassRepository.findFields(it.id)
             it.methods = jMethodRepository.findMethodsByModuleAndClass(systemId, it.module, it.name).filterNot {
-                it.name in listOf("toString", "equals", "hashCode", "<init>", "<clinit>")
+                it.name in listOf("toString", "equals", "hashCode", "<init>", "<clinit>", "main")
             }
             it.methods.forEach { method ->
                 method.fields = jMethodRepository.findMethodFields(method.id)
