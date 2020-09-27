@@ -14,7 +14,7 @@ class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo, val jClassRepository
     private val log = LoggerFactory.getLogger(GitHotFileScanner::class.java)
 
     override fun canScan(context: ScanContext): Boolean {
-        return false
+        return true
     }
 
     override fun getScannerName(): String {
