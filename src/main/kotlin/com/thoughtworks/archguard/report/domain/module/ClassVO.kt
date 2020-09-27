@@ -35,7 +35,7 @@ data class ClassVO(val moduleName: String, val packageName: String, val classNam
                 val moduleName: String = parentFile.toString()
                 val packageName: String = path.subpath(i + 2, path.nameCount - 1).toString().replace("/", ".")
                 val classFullName = path.subpath(path.nameCount - 1, path.nameCount).toString()
-                val className = classFullName.substring(0, classFullName.indexOfLast { it == '.' } + 1)
+                val className = classFullName.substring(0, classFullName.indexOfLast { it == '.' })
                 return ClassVO(moduleName, packageName, className)
             }
             return null;
