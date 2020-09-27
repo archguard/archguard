@@ -28,7 +28,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
         }
     }
 
-    override fun getAllDataClass(systemId: Long, offset: Long, limit: Long): List<DataClass> {
+    override fun getAllDataClass(systemId: Long, limit: Long, offset: Long): List<DataClass> {
         val sql = "select distinct class_id as classId, module, name as className from data_class join JClass JC on data_class.class_id = JC.id and JC.system_id=:system_id and data_class.system_id=:system_id order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
@@ -53,7 +53,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
 
     }
 
-    override fun getAllDataClassWithOnlyOneField(systemId: Long, offset: Long, limit: Long): List<DataClass> {
+    override fun getAllDataClassWithOnlyOneField(systemId: Long, limit: Long, offset: Long): List<DataClass> {
         val sql = "select distinct class_id as classId, module, name as className from data_class join JClass JC on data_class.class_id = JC.id and JC.system_id=:system_id and data_class.system_id=:system_id group by class_id, module, name having count(1)=1 order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
