@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
+import com.thoughtworks.archguard.report.util.NameUtil.getClassName
+import com.thoughtworks.archguard.report.util.NameUtil.getPackageName
 
 data class ClassCouplingPO(val id: String, val moduleName: String? = null,
                            val classFullName: String, val fanIn: Int, val fanOut: Int) {
@@ -17,15 +19,3 @@ data class ClassCouplingPO(val id: String, val moduleName: String? = null,
     }
 }
 
-fun getPackageName(name: String): String {
-    if (!name.contains('.')) return ""
-
-    val endIndex = name.indexOfLast { it == '.' }
-    return name.substring(0, endIndex)
-}
-
-fun getClassName(name: String): String {
-    if (!name.contains('.')) return name
-    val endIndex = name.indexOfLast { it == '.' }
-    return name.substring(endIndex + 1)
-}

@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.coupling.MethodCoupling
+import com.thoughtworks.archguard.report.util.NameUtil.getClassName
+import com.thoughtworks.archguard.report.util.NameUtil.getPackageName
 
 data class MethodCouplingPO(val id: String, val moduleName: String? = null,
                             val classFullName: String, val methodName: String, val args: String?, val fanIn: Int, val fanOut: Int) {
