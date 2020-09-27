@@ -10,7 +10,7 @@ class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
     private val table = "select sum(1) sum, m.clzname as name, m.module as module " +
             "from JMethod m, JClass c, method_access ma, class_access ca " +
             "where ca.class_id=c.id  and ca.is_interface = false and ca.is_abstract = false " +
-            "and ma.method_id = m.id and m.name != '<clinit>' and m.name != 'toString' " +
+            "and ma.method_id = m.id and m.name != '<clinit>' and m.name != 'main' and m.name != '<init>'" +
             "and m.name != 'toString' and m.name != 'equals' and m.name != 'hashCode' and m.name != 'clone'" +
             "and m.clzname = c.name and c.module=m.module and c.is_thirdparty = false " +
             "and m.system_id=:system_id and c.system_id=:system_id and ma.system_id=:system_id " +
