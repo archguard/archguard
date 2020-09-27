@@ -34,7 +34,7 @@ internal class LogicModuleRepositoryImplTest {
     @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should select all data from logic module`() {
         val systemId:Long = 1
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         assertThat(logicModules.size).isEqualTo(4)
         val lg1 = LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
         val lg2 = LogicModule("id2", "dubbo-consumer", listOf(LogicComponent.createLeaf("dubbo-consumer")))

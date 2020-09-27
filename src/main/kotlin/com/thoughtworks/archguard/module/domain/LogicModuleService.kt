@@ -12,7 +12,7 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
     private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
 
     fun getLogicModules(systemId: Long): List<LogicModule> {
-        return logicModuleRepository.getAllBysystemId(systemId)
+        return logicModuleRepository.getAllBySystemId(systemId)
     }
 
     fun getLogicModule(systemId: Long, name: String): LogicModule {
@@ -58,7 +58,7 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
     }
 
     fun autoDefineLogicModule(systemId: Long) {
-        logicModuleRepository.deleteBysystemId(systemId)
+        logicModuleRepository.deleteBySystemId(systemId)
         val defaultModules = logicModuleRepository.getAllSubModule(systemId)
                 .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(systemId, defaultModules)

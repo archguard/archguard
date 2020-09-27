@@ -16,12 +16,12 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun getAllByShowStatus(systemId: Long, isShow: Boolean): List<LogicModule> {
         if (isShow) {
-            return this.getAllBysystemId(systemId).filter { it.status == LogicModuleStatus.NORMAL }
+            return this.getAllBySystemId(systemId).filter { it.status == LogicModuleStatus.NORMAL }
         }
-        return this.getAllBysystemId(systemId).filter { it.status == LogicModuleStatus.HIDE }
+        return this.getAllBySystemId(systemId).filter { it.status == LogicModuleStatus.HIDE }
     }
 
-    override fun getAllBysystemId(systemId: Long): List<LogicModule> {
+    override fun getAllBySystemId(systemId: Long): List<LogicModule> {
         val modules = jdbi.withHandle<List<LogicModuleDTO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(LogicModuleDTO::class.java))
             it.createQuery("select id, name, members, lg_members, status from logic_module where system_id = :systemId")
@@ -76,7 +76,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
         }
     }
 
-    override fun deleteBysystemId(systemId: Long) {
+    override fun deleteBySystemId(systemId: Long) {
         jdbi.withHandle<Int, Nothing> { handle ->
             handle.execute("delete from logic_module where system_id = ?", systemId)
         }

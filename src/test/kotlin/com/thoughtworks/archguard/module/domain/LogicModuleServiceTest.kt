@@ -37,7 +37,7 @@ class LogicModuleServiceTest {
         val logicModule1 = LogicModule("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
         val logicModule2 = LogicModule("2", "m2", listOf(LogicComponent.createLeaf("bm3"), LogicComponent.createLeaf("bm4")))
         val logicModules = listOf(logicModule1, logicModule2)
-        every { logicModuleRepository.getAllBysystemId(systemId) } returns logicModules
+        every { logicModuleRepository.getAllBySystemId(systemId) } returns logicModules
 
         // when
         val actual = service.getLogicModules(systemId)

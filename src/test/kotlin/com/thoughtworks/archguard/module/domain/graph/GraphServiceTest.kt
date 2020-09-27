@@ -72,7 +72,7 @@ class GraphServiceTest {
         val service2 = LogicModule.createWithOnlyLogicModuleMembers("id12", "lg12", listOf(logicModule2, logicModule4))
         val bottomLogicModules = listOf(Dependency(logicModule1, logicModule2),
                 Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5))
-        every { logicModuleRepository.getAllBysystemId(systemId) } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
+        every { logicModuleRepository.getAllBySystemId(systemId) } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
         val serviceDependencies = service.mapModuleDependencyToServiceDependency(systemId, bottomLogicModules)
         Assertions.assertThat(serviceDependencies.size).isEqualTo(3)
         val results = listOf(Dependency(service1, service2), Dependency(service1, service2), Dependency(service2, logicModule5))

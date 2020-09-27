@@ -47,7 +47,7 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
     }
 
     fun mapModuleDependencyToServiceDependency(systemId: Long, moduleDependencies: List<Dependency<LogicModule>>): List<Dependency<LogicModule>> {
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val servicesDependencies = mutableListOf<Dependency<LogicModule>>()
         for (it in moduleDependencies) {
             val callerModule = it.caller

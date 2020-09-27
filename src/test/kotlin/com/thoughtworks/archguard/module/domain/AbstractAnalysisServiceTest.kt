@@ -51,7 +51,7 @@ internal class AbstractAnalysisServiceTest {
         jClass2.addClassType(ClazzType.INTERFACE)
         val jClass3 = JClass("3", "pk1.name3", "module1")
         val lg1 = LogicModule.createWithOnlyLeafMembers("id1", "lg1", listOf(SubModule("module1")))
-        every { logicModuleRepository.getAllBysystemId(systemId) } returns listOf(lg1)
+        every { logicModuleRepository.getAllBySystemId(systemId) } returns listOf(lg1)
         every { jClassRepository.getAllBySystemId(systemId) } returns listOf(jClass1, jClass2, jClass3)
         val abstractRatio = abstractAnalysisService.calculateModuleAbstractRatio(systemId, lg1)
         assertThat(abstractRatio.ratio).isEqualTo(2.0 / 3)

@@ -22,7 +22,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
 
     override fun getAllClassCouplingResults(systemId: Long): List<ClassCoupling> {
         val classes = jClassRepository.getJClassesHasModules(systemId)
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classDependency = dependencyService.getAllClassDependencies(systemId)
         return classes.map { getClassCouplingWithData(it.toVO(), classDependency, logicModules) }
     }
@@ -40,7 +40,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
             return classCoupling
         }
 
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classDependency = dependencyService.getAllClassDependencies(systemId)
         return getClassCouplingWithData(jClassVO, classDependency, logicModules)
     }
@@ -61,7 +61,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
             return PackageCoupling.of(packageVO, classCouplingsCached)
         }
 
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classDependency = dependencyService.getAllClassDependencies(systemId)
         val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return PackageCoupling.of(packageVO, classCouplings)
@@ -75,7 +75,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
 
     override fun calculateModuleCoupling(systemId: Long, logicModule: LogicModule): ModuleCoupling {
         val classes = jClassRepository.getAllBySystemId(systemId)
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
         if (classCouplingsCached.isNotEmpty()) {
@@ -89,7 +89,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
 
     override fun calculateAllModuleCoupling(systemId: Long): List<ModuleCoupling> {
         val classes = jClassRepository.getAllBySystemId(systemId)
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val moduleCouplings = mutableListOf<ModuleCoupling>()
         var classDependency = mutableListOf<Dependency<JClassVO>>()
         logicModules.parallelStream().forEach { logicModule ->

@@ -20,7 +20,7 @@ class AbstractAnalysisService(val jClassRepository: JClassRepository,
 
     fun calculateModuleAbstractRatio(systemId: Long, logicModule: LogicModule): ModuleAbstractRatio {
         val classes = jClassRepository.getAllBySystemId(systemId)
-        val logicModules = logicModuleRepository.getAllBysystemId(systemId)
+        val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
         val abstractClassesBelongToModule = classesBelongToModule.filter { it.isAbstractClass() || it.isInterface() }
         return ModuleAbstractRatio(abstractClassesBelongToModule.size.toDouble() / classesBelongToModule.size, logicModule)
