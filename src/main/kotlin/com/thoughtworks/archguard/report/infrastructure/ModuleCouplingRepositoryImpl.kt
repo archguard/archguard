@@ -54,7 +54,7 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
                                    then 1
                                else 0 end) AS 'level3'
                 from (
-                         "select fanin, fanout from module_metrics where system_id = :systemId" +
+                         select fanin, fanout from module_metrics where system_id = :systemId
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
