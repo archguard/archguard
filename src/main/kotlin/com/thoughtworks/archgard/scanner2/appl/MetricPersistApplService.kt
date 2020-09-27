@@ -19,6 +19,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.AbcService
 import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
 import com.thoughtworks.archgard.scanner2.domain.service.DataClassService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
+import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOut
 import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
@@ -31,6 +32,8 @@ import com.thoughtworks.archgard.scanner2.infrastructure.influx.PackageMetricsDt
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.CountDownLatch
+
 
 @Service
 class MetricPersistApplService(val abcService: AbcService,
@@ -139,13 +142,34 @@ class MetricPersistApplService(val abcService: AbcService,
         log.info("Finished persist method Metric to mysql and influxdb in systemId $systemId")
     }
 
-    // TODO并行
     private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
-        val abcMap = abcService.calculate(systemId, jClasses)
-        val ditMap = ditService.calculate(systemId, jClasses)
-        val nocMap = nocService.calculate(systemId, jClasses)
-        val lcom4Map = lcoM4Service.calculate(systemId, jClasses)
-        val classFanInFanOutMap = fanInFanOutService.calculateAtClassLevel(systemId)
+        val latch = CountDownLatch(5)
+        var abcMap = emptyMap<String, Int>()
+        var ditMap = emptyMap<String, Int>()
+        var nocMap = emptyMap<String, Int>()
+        var lcom4Map = emptyMap<String, Int>()
+        var classFanInFanOutMap = emptyMap<String, FanInFanOut>()
+        scanner2ThreadPool.submit(Runnable {
+            abcMap = abcService.calculate(systemId, jClasses)
+            latch.countDown()
+        })
+        scanner2ThreadPool.submit(Runnable {
+            ditMap = ditService.calculate(systemId, jClasses)
+            latch.countDown()
+        })
+        scanner2ThreadPool.submit(Runnable {
+            nocMap = nocService.calculate(systemId, jClasses)
+            latch.countDown()
+        })
+        scanner2ThreadPool.submit(Runnable {
+            lcom4Map = lcoM4Service.calculate(systemId, jClasses)
+            latch.countDown()
+        })
+        scanner2ThreadPool.submit(Runnable {
+            classFanInFanOutMap = fanInFanOutService.calculateAtClassLevel(systemId)
+            latch.countDown()
+        })
+        latch.await()
 
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(),
