@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
+import com.thoughtworks.archguard.report.domain.redundancy.FieldVO
 import com.thoughtworks.archguard.report.util.NameUtil
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
@@ -38,17 +39,17 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
                     .mapTo(DataClassPO::class.java)
                     .list()
         }
-        val fieldSql = "select name from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
+        val fieldSql = "select name, type from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
-            val fieldNames = jdbi.withHandle<List<String>, Exception> {
-                it.createQuery(fieldSql)
+            val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->
+                handle.createQuery(fieldSql)
                         .bind("system_id", systemId)
-                        .bind("class_id", systemId)
-                        .mapTo(String()::class.java)
+                        .bind("class_id", it.classId)
+                        .mapTo(FieldPO::class.java)
                         .list()
             }
-            DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames)
+            DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames.map { FieldVO(it.name, it.type) })
         }
 
     }
@@ -63,20 +64,21 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
                     .mapTo(DataClassPO::class.java)
                     .list()
         }
-        val fieldSql = "select name from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
+        val fieldSql = "select name, type from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
-            val fieldNames = jdbi.withHandle<List<String>, Exception> {
-                it.createQuery(fieldSql)
+            val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->
+                handle.createQuery(fieldSql)
                         .bind("system_id", systemId)
-                        .bind("class_id", systemId)
-                        .mapTo(String()::class.java)
+                        .bind("class_id", it.classId)
+                        .mapTo(FieldPO::class.java)
                         .list()
             }
-            DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames)
+            DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames.map { FieldVO(it.name, it.type) })
         }
     }
 
 }
 
 data class DataClassPO(val classId: String, val module: String, val className: String)
+data class FieldPO(val name: String, val type: String)
