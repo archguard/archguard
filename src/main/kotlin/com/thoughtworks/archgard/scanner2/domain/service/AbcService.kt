@@ -27,7 +27,7 @@ class AbcService(val jMethodRepository: JMethodRepository) {
     private fun calculateAbc(jClass: JClass): Int {
         val allMethodCallees = jClass.methods.map { jMethodRepository.findMethodCallees(it.id) }.flatten().map { it.toVO() }
         return allMethodCallees.asSequence().map { it.clazz }
-                .filter { it.module != "null" }
+                .filter { it.module != null }
                 .filter { it.module != jClass.module }
                 .toSet().count()
     }

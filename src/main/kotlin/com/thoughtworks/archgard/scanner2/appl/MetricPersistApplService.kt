@@ -139,6 +139,7 @@ class MetricPersistApplService(val abcService: AbcService,
         log.info("Finished persist method Metric to mysql and influxdb in systemId $systemId")
     }
 
+    // TODO并行
     private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val abcMap = abcService.calculate(systemId, jClasses)
         val ditMap = ditService.calculate(systemId, jClasses)
