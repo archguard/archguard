@@ -19,4 +19,11 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
         log.info("send auto define request to module service")
     }
 
+    fun badSmellDashboard(systemId: Long){
+        val params = HashMap<String, Any>()
+        params["systemId"] = systemId
+        RestTemplate().postForLocation("$url/systems/{systemId}/dashboard", null, params)
+        log.info("send badSmellDashboard")
+    }
+
 }
