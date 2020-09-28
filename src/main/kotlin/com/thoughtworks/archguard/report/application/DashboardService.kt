@@ -94,10 +94,10 @@ class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>)
 }
 
 enum class DashboardGroup(var value: String) {
-    COUPLING("耦合度"),
-    SIZING("体量"),
-    COHESION("内聚度"),
-    REDUNDANCY("冗余度")
+    COUPLING("过高耦合"),
+    SIZING("体量过大"),
+    COHESION("内聚度不足"),
+    REDUNDANCY("冗余度高")
 }
 
 
