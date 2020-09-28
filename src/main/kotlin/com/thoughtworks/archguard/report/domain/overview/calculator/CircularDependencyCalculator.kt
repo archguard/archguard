@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.controller.BadSmellType
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
 import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCouplingCalculator
