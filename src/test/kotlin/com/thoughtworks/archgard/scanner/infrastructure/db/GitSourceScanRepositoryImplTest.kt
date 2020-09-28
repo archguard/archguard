@@ -20,16 +20,16 @@ internal class GitSourceScanRepositoryImplTest {
     lateinit var jdbi: Jdbi
 
     @Test
-    @Sql("classpath:sqls/insert_commit_log_and_change_log.sql")
+    @Sql("classpath:sqls/insert_commit_log_for_clean_up_test.sql")
     fun cleanupCommitLog() {
         checkCommitLogTableCount(2)
-        gitSourceScanRepositoryImpl.cleanupCommitLog(0)
+        gitSourceScanRepositoryImpl.cleanupCommitLog(1)
         checkCommitLogTableCount(0)
     }
 
     private fun checkCommitLogTableCount(count: Int) {
         val afterCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from commit_log")
+            handle.createQuery("select count(*) from commit_log where system_id=1")
                     .mapTo(Int::class.java).one()
         }
         assertEquals(count, afterCount)
