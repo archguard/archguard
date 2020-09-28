@@ -21,7 +21,7 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
                        val circularDependencyService: CircularDependencyService,
                        val influxDBClient: InfluxDBClient) {
 
-    private val TIME: String = "1h";
+    private val TIME: String = "1m";
     private val SIZNG_REPORT: String = "sizing_report"
     private val COUPLING_REPORT: String = "coupling_report"
 
