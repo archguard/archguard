@@ -60,4 +60,18 @@ internal class GitHotFileVOTest {
         assertEquals("dubbo-samples-zookeeper", gitHotFile.moduleName())
     }
 
+    @Test
+    internal fun shouldGetModuleNameGivenJVMFileNotInModuleSrcTopDirection() {
+        val gitHotFile = GitHotFileVO("dubbo/dubbo-samples-zookeeper/src/main/java/org/apache/dubbo/samples/action/GreetingServiceConsumer.java", 10)
+
+        assertEquals("dubbo-samples-zookeeper", gitHotFile.moduleName())
+    }
+
+    @Test
+    internal fun shouldGetModuleNameGivenJVMFileNotInModuleSrcTopDirection2() {
+        val gitHotFile = GitHotFileVO("dir/dubbo/dubbo-samples-zookeeper/src/main/java/org/apache/dubbo/samples/action/GreetingServiceConsumer.java", 10)
+
+        assertEquals("dubbo-samples-zookeeper", gitHotFile.moduleName())
+    }
+
 }

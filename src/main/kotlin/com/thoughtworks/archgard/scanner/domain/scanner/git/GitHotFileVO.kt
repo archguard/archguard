@@ -16,7 +16,12 @@ class GitHotFileVO(val path: String, val modifiedCount: Int) {
 
     fun moduleName(): String? {
         if (path.startsWith("src/")) return null
-        if (path.contains("/src/")) return path.substringBefore("/src")
+        if (path.contains("/src/")) {
+            val pathBeforeSrc = path.substringBefore("/src")
+            val indexOfLastSlash = pathBeforeSrc.indexOfLast { it == '/' }
+            return pathBeforeSrc.substring(indexOfLastSlash + 1)
+        }
+
         return null
     }
 
