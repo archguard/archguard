@@ -10,6 +10,7 @@ import com.thoughtworks.archguard.report.domain.hub.HubService
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.stereotype.Service
+import kotlin.math.roundToInt
 
 @Service
 class DashboardService(val badSmellCalculator: BadSmellCalculator,
@@ -56,7 +57,7 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
                 "FROM \"${reportName}\" " +
                 "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME})"
         return influxDBClient.query(query).map { it.values }
-                .flatten().map { GraphData(it[0], it[1].toInt()) }
+                .flatten().map { GraphData(it[0], it[1].toDouble().roundToInt()) }
     }
 
     private fun getCouplingDashboard(systemId: Long): Dashboard {
