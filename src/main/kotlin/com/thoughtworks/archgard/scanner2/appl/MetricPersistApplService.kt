@@ -25,6 +25,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
+import com.thoughtworks.archgard.scanner2.infrastructure.influx.DataClassDtoForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.MethodMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ModuleMetricsDtoListForWriteInfluxDB
@@ -76,7 +77,13 @@ class MetricPersistApplService(val abcService: AbcService,
 
     @Transactional
     fun persistDataClass(systemId: Long) {
-        dataClassRepository.insertOrUpdateDataClass(systemId, dataClassService.findAllDataClasses(systemId))
+        val dataClasses = dataClassService.findAllDataClasses(systemId)
+        dataClassRepository.insertOrUpdateDataClass(systemId, dataClasses)
+        val dataClassCount = dataClasses.size
+        val dataClassWithOneFieldCount = dataClasses.filter { it.fields.size == 1 }.size
+
+        influxDBClient.save(DataClassDtoForWriteInfluxDB(systemId, dataClassCount, dataClassWithOneFieldCount).toRequestBody())
+        log.info("Finished persist data class Metric to mysql and influxdb in systemId $systemId")
     }
 
     @Transactional
