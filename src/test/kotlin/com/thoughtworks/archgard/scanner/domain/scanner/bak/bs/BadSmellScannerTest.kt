@@ -5,6 +5,7 @@ import com.thoughtworks.archgard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,6 +14,7 @@ import java.io.File
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Disabled
 internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_get_bad_smell_report() {
