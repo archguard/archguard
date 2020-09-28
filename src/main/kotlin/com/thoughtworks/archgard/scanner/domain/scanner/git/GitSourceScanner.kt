@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
-    private val DELETE_COMMIT_LOG = "delete from commit_log where 1=1"
-    private val DELETE_CHANGE_ENTRY = "delete from change_entry where 1=1"
+    private val DELETE_COMMIT_LOG = "delete from commit_log where system_id="
+    private val DELETE_CHANGE_ENTRY = "delete from change_entry system_id="
 
     private val log = LoggerFactory.getLogger(GitSourceScanner::class.java)
     override fun getScannerName(): String {
@@ -27,8 +27,8 @@ class GitSourceScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanne
         val gitScannerTool = GitScannerTool(context.workspace, "master", context.systemId, context.repo)
         val gitReport = gitScannerTool.getGitReport()
         if (gitReport != null) {
-            sqlScriptRunner.run(DELETE_COMMIT_LOG)
-            sqlScriptRunner.run(DELETE_CHANGE_ENTRY)
+            sqlScriptRunner.run(DELETE_COMMIT_LOG + context.systemId)
+            sqlScriptRunner.run(DELETE_CHANGE_ENTRY + context.systemId)
             sqlScriptRunner.run(gitReport)
         }
         log.info("finished scan git source")
