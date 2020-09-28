@@ -21,7 +21,7 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
                        val circularDependencyService: CircularDependencyService,
                        val influxDBClient: InfluxDBClient) {
 
-    private val TIME: String = "1d";
+    private val TIME: String = "1h";
     private val SIZNG_REPORT: String = "sizing_report"
     private val COUPLING_REPORT: String = "coupling_report"
 
@@ -55,7 +55,7 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
         val query = "SELECT " +
                 "mean(\"${badSmellType.name}\") AS \"${badSmellType.name}\" " +
                 "FROM \"${reportName}\" " +
-                "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME})"
+                "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME}) fill(none)"
         return influxDBClient.query(query).map { it.values }
                 .flatten().map { GraphData(it[0], it[1].toDouble().roundToInt()) }
     }
