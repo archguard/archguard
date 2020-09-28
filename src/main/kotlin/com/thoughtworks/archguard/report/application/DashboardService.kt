@@ -20,6 +20,10 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
                        val circularDependencyService: CircularDependencyService,
                        val influxDBClient: InfluxDBClient) {
 
+    private val TIME: String = "1d";
+    private val SIZNG_REPORT: String = "sizing_report"
+    private val COUPLING_REPORT: String = "coupling_report"
+
     fun getDashboard(systemId: Long): List<Dashboard> {
         val couplingDashboard = getCouplingDashboard(systemId)
         val sizingDashboard = getSizingDashboard(systemId)
@@ -27,51 +31,60 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
     }
 
     private fun getSizingDashboard(systemId: Long): Dashboard {
+
         return Dashboard(DashboardGroup.SIZING,
                 listOf(
-                        GroupData(BadSmellType.SIZINGMODULES, badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMODULES, systemId).level,
-                                listOf(GraphData("2020-10-1", 4),
-                                        GraphData("2020-10-5", 3),
-                                        GraphData("2020-10-12", 9),
-                                        GraphData("2020-10-15", 8),
-                                        GraphData("2020-10-16", 20))),
-                        GroupData(BadSmellType.SIZINGPACKAGE, badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGPACKAGE, systemId).level,
-                                listOf(GraphData("2020-10-1", 3),
-                                        GraphData("2020-10-5", 4),
-                                        GraphData("2020-10-12", 15),
-                                        GraphData("2020-10-15", 20),
-                                        GraphData("2020-10-16", 9))),
-                        GroupData(BadSmellType.SIZINGCLASS, badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGCLASS, systemId).level,
-                                listOf(GraphData("2020-10-1", 303),
-                                        GraphData("2020-10-5", 34),
-                                        GraphData("2020-10-12", 15),
-                                        GraphData("2020-10-15", 95),
-                                        GraphData("2020-10-16", 39))),
-                        GroupData(BadSmellType.SIZINGMETHOD, badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMETHOD, systemId).level,
-                                listOf(GraphData("2020-10-1", 3),
-                                        GraphData("2020-10-5", 334),
-                                        GraphData("2020-10-12", 235),
-                                        GraphData("2020-10-15", 35),
-                                        GraphData("2020-10-16", 129)))
-                ))
+                        GroupData(BadSmellType.SIZINGMODULES,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMODULES, systemId).level,
+                                queryReport(systemId, BadSmellType.SIZINGMODULES, SIZNG_REPORT)),
+                        GroupData(BadSmellType.SIZINGPACKAGE,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGPACKAGE, systemId).level,
+                                queryReport(systemId, BadSmellType.SIZINGPACKAGE, SIZNG_REPORT)),
+                        GroupData(BadSmellType.SIZINGCLASS,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGCLASS, systemId).level,
+                                queryReport(systemId, BadSmellType.SIZINGCLASS, SIZNG_REPORT)),
+                        GroupData(BadSmellType.SIZINGMETHOD,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMETHOD, systemId).level,
+                                queryReport(systemId, BadSmellType.SIZINGMETHOD, SIZNG_REPORT))
+                )
+        )
+    }
+
+    private fun queryReport(systemId: Long, badSmellType: BadSmellType, reportName: String): List<GraphData> {
+        val query = "SELECT " +
+                "mean(\"${badSmellType.name}\") AS \"${badSmellType.name}\" " +
+                "FROM \"${reportName}\" " +
+                "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME})"
+        return influxDBClient.query(query).map { it.values }
+                .flatten().map { GraphData(it[0], it[1].toInt()) }
     }
 
     private fun getCouplingDashboard(systemId: Long): Dashboard {
         return Dashboard(DashboardGroup.COUPLING,
                 listOf(
-                        GroupData(BadSmellType.DATACLUMPS, badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId).level,
-                                listOf(GraphData("2020-10-1", 4),
-                                        GraphData("2020-10-5", 10),
-                                        GraphData("2020-10-12", 5),
-                                        GraphData("2020-10-15", 8),
-                                        GraphData("2020-10-16", 20))),
-                        GroupData(BadSmellType.DEEPINHERITANCE, badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId).level,
-                                listOf(GraphData("2020-10-1", 3),
-                                        GraphData("2020-10-5", 4),
-                                        GraphData("2020-10-12", 5),
-                                        GraphData("2020-10-15", 5),
-                                        GraphData("2020-10-16", 9)))
-                ))
+                        GroupData(BadSmellType.DATACLUMPS,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId).level,
+                                queryReport(systemId, BadSmellType.DATACLUMPS, COUPLING_REPORT)),
+                        GroupData(BadSmellType.DEEPINHERITANCE,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId).level,
+                                queryReport(systemId, BadSmellType.DEEPINHERITANCE, COUPLING_REPORT)),
+                        GroupData(BadSmellType.CLASSHUB,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.CLASSHUB, systemId).level,
+                                queryReport(systemId, BadSmellType.CLASSHUB, COUPLING_REPORT)),
+                        GroupData(BadSmellType.METHODHUB,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.METHODHUB, systemId).level,
+                                queryReport(systemId, BadSmellType.METHODHUB, COUPLING_REPORT)),
+                        GroupData(BadSmellType.PACKAGEHUB,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.PACKAGEHUB, systemId).level,
+                                queryReport(systemId, BadSmellType.PACKAGEHUB, COUPLING_REPORT)),
+                        GroupData(BadSmellType.MODULEHUB,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.MODULEHUB, systemId).level,
+                                queryReport(systemId, BadSmellType.MODULEHUB, COUPLING_REPORT)),
+                        GroupData(BadSmellType.CYCLEDEPENDENCY,
+                                badSmellCalculator.calculateBadSmell(BadSmellType.CYCLEDEPENDENCY, systemId).level,
+                                queryReport(systemId, BadSmellType.CYCLEDEPENDENCY, COUPLING_REPORT))
+                )
+        )
     }
 
     fun saveReport(systemId: Long) {
@@ -99,7 +112,6 @@ enum class DashboardGroup(var value: String) {
     COHESION("内聚度不足"),
     REDUNDANCY("冗余度高")
 }
-
 
 data class GraphData(val date: String, val value: Int)
 
