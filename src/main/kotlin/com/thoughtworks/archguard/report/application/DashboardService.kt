@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.application
 
+import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
@@ -8,7 +9,6 @@ import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceS
 import com.thoughtworks.archguard.report.domain.hub.HubService
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
-import com.thoughtworks.archguard.report.infrastructure.influx.InfluxDBClient
 import org.springframework.stereotype.Service
 
 @Service
