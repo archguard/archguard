@@ -28,8 +28,10 @@ class GitSourceScanner(@Autowired val gitSourceScanRepo: GitSourceScanRepo) : Sc
             gitSourceScanRepo.cleanupCommitLog(context.systemId)
             gitSourceScanRepo.cleanupChangeEntry(context.systemId)
             gitSourceScanRepo.saveGitReport(gitReport)
+            log.info("finished scan git source")
+        } else {
+            log.warn("get null git report from scan")
         }
-        log.info("finished scan git source")
     }
 
 }
