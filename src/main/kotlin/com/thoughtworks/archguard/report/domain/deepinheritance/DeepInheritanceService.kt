@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.deepinheritance
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -19,5 +20,9 @@ class DeepInheritanceService(val deepInheritanceRepository: DeepInheritanceRepos
         return DeepInheritanceListDto(lcoM4AboveThresholdList,
                 lcoM4AboveThresholdCount,
                 offset / limit + 1)
+    }
+
+    fun getDeepInheritanceReport(systemId: Long): Map<BadSmellType, Long> {
+        return mapOf((BadSmellType.DEEPINHERITANCE to deepInheritanceRepository.getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)))
     }
 }

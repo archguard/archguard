@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -14,7 +15,6 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     @Value("\${threshold.class.method.count}")
     private val classMethodCountSizingThreshold: Int = 0
-
 
     @Value("\${threshold.package.line}")
     private val packageSizingLineThreshold: Int = 0
@@ -81,5 +81,22 @@ class SizingService(val sizingRepository: SizingRepository) {
         return ClassSizingListWithMethodCountDto(classSizingListAboveMethodCountThreshold, classSizingListAboveMethodCountThresholdCount, offset / limit + 1)
     }
 
+    fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {
+        val methodSizing = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
+
+        val classSizing = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold) +
+                sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold)
+
+        val packageSizing = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold) +
+                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
+
+        val moduleSizing = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold) +
+                sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, moduleClassCountSizingThreshold)
+
+        return mapOf((BadSmellType.SIZINGMETHOD to methodSizing),
+                (BadSmellType.SIZINGCLASS to classSizing),
+                (BadSmellType.SIZINGPACKAGE to packageSizing),
+                (BadSmellType.SIZINGMODULES to moduleSizing))
+    }
 
 }

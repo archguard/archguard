@@ -8,6 +8,7 @@ enum class BadSmellType(var value: String) {
     PACKAGEHUB("枢纽包"),
     MODULEHUB("枢纽模块"),
     CYCLEDEPENDENCY("循环依赖"),
+
     SIZINGMODULES("子模块过大"),
     SIZINGPACKAGE("包过大"),
     SIZINGMETHOD("方法过大"),

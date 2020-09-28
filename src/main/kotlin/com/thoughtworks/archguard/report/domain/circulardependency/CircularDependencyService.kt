@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.circulardependency
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.module.ClassVO
 import com.thoughtworks.archguard.report.domain.module.MethodVO
 import com.thoughtworks.archguard.report.domain.module.ModuleVO
@@ -40,5 +41,13 @@ class CircularDependencyService(val circularDependencyRepository: CircularDepend
         val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD)
         val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { MethodVO.create(it) }) }
         return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
+    }
+
+    fun getCircularDependencyReport(systemId: Long): Map<BadSmellType, Long> {
+        val sum = circularDependencyRepository.getCircularDependencyCount(systemId, CircularDependencyType.MODULE) +
+                circularDependencyRepository.getCircularDependencyCount(systemId, CircularDependencyType.PACKAGE) +
+                circularDependencyRepository.getCircularDependencyCount(systemId, CircularDependencyType.CLASS) +
+                circularDependencyRepository.getCircularDependencyCount(systemId, CircularDependencyType.METHOD)
+        return mapOf((BadSmellType.CYCLEDEPENDENCY to sum))
     }
 }

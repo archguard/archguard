@@ -2,12 +2,23 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
+import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
+import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceService
+import com.thoughtworks.archguard.report.domain.hub.HubService
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
+import com.thoughtworks.archguard.report.infrastructure.influx.InfluxDBClient
 import org.springframework.stereotype.Service
 
 @Service
-class DashboardService(val badSmellCalculator: BadSmellCalculator, val sizingService: SizingService ) {
+class DashboardService(val badSmellCalculator: BadSmellCalculator,
+                       val sizingService: SizingService,
+                       val hubService: HubService,
+                       val dataClumpsService: DataClumpsService,
+                       val deepInheritanceService: DeepInheritanceService,
+                       val circularDependencyService: CircularDependencyService,
+                       val influxDBClient: InfluxDBClient) {
 
     fun getDashboard(systemId: Long): List<Dashboard> {
         val couplingDashboard = getCouplingDashboard(systemId)
@@ -64,8 +75,17 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator, val sizingSer
     }
 
     fun saveReport(systemId: Long) {
+        val sizingReport = sizingService.getSizingReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        influxDBClient.save("sizing_report,system_id=${systemId} ${sizingReport}")
 
+        val hubReport = hubService.getHubReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        influxDBClient.save("coupling_report,system_id=${systemId} " +
+                "${hubReport},${dataClumpsReport},${deepInheritanceReport},${circularDependencyReport}")
     }
+
 
 }
 
