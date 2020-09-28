@@ -13,7 +13,12 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
         val repoCount = getRepoCount(systemId)
         val moduleCount = getModuleCount(systemId)
         val lineCount = getLineCount(systemId)
-        return SystemOverview(repoCount, moduleCount, lineCount)
+        val contributorCount = getContributorCount(systemId)
+        return SystemOverview(repoCount, moduleCount, lineCount, contributorCount)
+    }
+
+    private fun getContributorCount(systemId: Long): Long {
+        return systemOverviewRepository.getContributorCountBySystemId(systemId)
     }
 
     fun getOverview(systemId: Long): BadSmellOverviewDto {

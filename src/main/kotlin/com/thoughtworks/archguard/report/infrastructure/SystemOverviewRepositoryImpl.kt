@@ -45,4 +45,18 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
                     .one()
         }
     }
+
+    override fun getContributorCountBySystemId(systemId: Long): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(distinct committer_name)
+                    from commit_log 
+                    WHERE system_id = :systemId
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
 }
