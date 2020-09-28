@@ -19,7 +19,7 @@ class GitSourceScanRepositoryImpl(@Autowired val sqlScriptRunner: SqlScriptRunne
         log.info("clean up commit_log for system {}", systemId)
         jdbi.withHandle<Any, RuntimeException> { handle: Handle ->
             handle.execute(
-                    "delete from commit_log where system_id = :systemId", systemId)
+                    "delete from commit_log where system_id = ?", systemId)
         }
     }
 
@@ -27,7 +27,7 @@ class GitSourceScanRepositoryImpl(@Autowired val sqlScriptRunner: SqlScriptRunne
         log.info("clean up change_entry for system {}", systemId)
         jdbi.withHandle<Any, RuntimeException> { handle: Handle ->
             handle.execute(
-                    "delete from change_entry where system_id = :systemId", systemId)
+                    "delete from change_entry where system_id = ?", systemId)
         }
     }
 
