@@ -3,10 +3,11 @@ package com.thoughtworks.archguard.report.application
 import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
+import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.stereotype.Service
 
 @Service
-class DashboardService(val badSmellCalculator: BadSmellCalculator) {
+class DashboardService(val badSmellCalculator: BadSmellCalculator, val sizingService: SizingService ) {
 
     fun getDashboard(systemId: Long): List<Dashboard> {
         val couplingDashboard = getCouplingDashboard(systemId)
@@ -60,6 +61,10 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator) {
                                         GraphData("2020-10-15", 5),
                                         GraphData("2020-10-16", 9)))
                 ))
+    }
+
+    fun saveReport(systemId: Long) {
+
     }
 
 }
