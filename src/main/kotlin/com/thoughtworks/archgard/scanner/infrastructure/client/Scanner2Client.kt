@@ -20,6 +20,7 @@ class Scanner2Client(val metricController: MetricController,
         params["systemId"] = systemId
         metricController.persistBasicMetrics(systemId)
         metricController.persistCircularDependencyMetrics(systemId)
+        metricController.persistDataClasses(systemId)
         shotgunSurgeryController.persist(systemId)
         accessController.persist(systemId)
         log.info("send metrics analysis request to module service")
