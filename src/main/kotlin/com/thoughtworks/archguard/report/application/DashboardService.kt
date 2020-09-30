@@ -26,29 +26,21 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
     private val COUPLING_REPORT: String = "coupling_report"
 
     fun getDashboard(systemId: Long): List<Dashboard> {
-        val couplingDashboard = getCouplingDashboard(systemId)
-        val sizingDashboard = getSizingDashboard(systemId)
+        val couplingDashboard = getDashboard(systemId, DashboardGroup.COUPLING, COUPLING_REPORT)
+        val sizingDashboard = getDashboard(systemId, DashboardGroup.SIZING, SIZNG_REPORT)
         return listOf(couplingDashboard, sizingDashboard)
     }
 
-    private fun getSizingDashboard(systemId: Long): Dashboard {
+    fun saveReport(systemId: Long) {
+        val sizingReport = sizingService.getSizingReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        influxDBClient.save("$SIZNG_REPORT,system_id=${systemId} $sizingReport")
 
-        return Dashboard(DashboardGroup.SIZING,
-                listOf(
-                        GroupData(BadSmellType.SIZINGMODULES,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMODULES, systemId).level,
-                                queryReport(systemId, BadSmellType.SIZINGMODULES, SIZNG_REPORT)),
-                        GroupData(BadSmellType.SIZINGPACKAGE,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGPACKAGE, systemId).level,
-                                queryReport(systemId, BadSmellType.SIZINGPACKAGE, SIZNG_REPORT)),
-                        GroupData(BadSmellType.SIZINGCLASS,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGCLASS, systemId).level,
-                                queryReport(systemId, BadSmellType.SIZINGCLASS, SIZNG_REPORT)),
-                        GroupData(BadSmellType.SIZINGMETHOD,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMETHOD, systemId).level,
-                                queryReport(systemId, BadSmellType.SIZINGMETHOD, SIZNG_REPORT))
-                )
-        )
+        val hubReport = hubService.getHubReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
+        influxDBClient.save("$COUPLING_REPORT,system_id=${systemId} " +
+                "${hubReport},${dataClumpsReport},${deepInheritanceReport},${circularDependencyReport}")
     }
 
     private fun queryReport(systemId: Long, badSmellType: BadSmellType, reportName: String): List<GraphData> {
@@ -60,58 +52,35 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
                 .flatten().map { GraphData(it[0], it[1].toDouble().roundToInt()) }
     }
 
-    private fun getCouplingDashboard(systemId: Long): Dashboard {
-        return Dashboard(DashboardGroup.COUPLING,
-                listOf(
-                        GroupData(BadSmellType.DATACLUMPS,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId).level,
-                                queryReport(systemId, BadSmellType.DATACLUMPS, COUPLING_REPORT)),
-                        GroupData(BadSmellType.DEEPINHERITANCE,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId).level,
-                                queryReport(systemId, BadSmellType.DEEPINHERITANCE, COUPLING_REPORT)),
-                        GroupData(BadSmellType.CLASSHUB,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.CLASSHUB, systemId).level,
-                                queryReport(systemId, BadSmellType.CLASSHUB, COUPLING_REPORT)),
-                        GroupData(BadSmellType.METHODHUB,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.METHODHUB, systemId).level,
-                                queryReport(systemId, BadSmellType.METHODHUB, COUPLING_REPORT)),
-                        GroupData(BadSmellType.PACKAGEHUB,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.PACKAGEHUB, systemId).level,
-                                queryReport(systemId, BadSmellType.PACKAGEHUB, COUPLING_REPORT)),
-                        GroupData(BadSmellType.MODULEHUB,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.MODULEHUB, systemId).level,
-                                queryReport(systemId, BadSmellType.MODULEHUB, COUPLING_REPORT)),
-                        GroupData(BadSmellType.CYCLEDEPENDENCY,
-                                badSmellCalculator.calculateBadSmell(BadSmellType.CYCLEDEPENDENCY, systemId).level,
-                                queryReport(systemId, BadSmellType.CYCLEDEPENDENCY, COUPLING_REPORT))
-                )
-        )
+    private fun getDashboard(systemId: Long, dashboardGroup: DashboardGroup, reportName: String): Dashboard {
+        val groupData = dashboardGroup.badSmells
+                .map {
+                    GroupData(it,
+                            badSmellCalculator.calculateBadSmell(it, systemId).level,
+                            queryReport(systemId, it, reportName))
+                }
+        return Dashboard(dashboardGroup, groupData)
     }
-
-    fun saveReport(systemId: Long) {
-        val sizingReport = sizingService.getSizingReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        influxDBClient.save("sizing_report,system_id=${systemId} ${sizingReport}")
-
-        val hubReport = hubService.getHubReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        influxDBClient.save("coupling_report,system_id=${systemId} " +
-                "${hubReport},${dataClumpsReport},${deepInheritanceReport},${circularDependencyReport}")
-    }
-
-
 }
 
 class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
     var dashboardGroup: String = eDashboardGroup.value
 }
 
-enum class DashboardGroup(var value: String) {
-    COUPLING("过高耦合"),
-    SIZING("体量过大"),
-    COHESION("内聚度不足"),
-    REDUNDANCY("冗余度高")
+enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
+    COUPLING("过高耦合", listOf(BadSmellType.DATACLUMPS,
+            BadSmellType.DEEPINHERITANCE,
+            BadSmellType.CLASSHUB,
+            BadSmellType.METHODHUB,
+            BadSmellType.PACKAGEHUB,
+            BadSmellType.MODULEHUB,
+            BadSmellType.CYCLEDEPENDENCY)),
+    SIZING("体量过大", listOf(BadSmellType.SIZINGMODULES,
+            BadSmellType.SIZINGPACKAGE,
+            BadSmellType.SIZINGMETHOD,
+            BadSmellType.SIZINGCLASS)),
+    COHESION("内聚度不足", listOf()),
+    REDUNDANCY("冗余度高", listOf())
 }
 
 data class GraphData(val date: String, val value: Int)
