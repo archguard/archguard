@@ -1,13 +1,11 @@
 package com.thoughtworks.archguard.report.domain.overview
 
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.springframework.stereotype.Service
 
 @Service
-class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
-                      val badSmellCalculator: BadSmellCalculator) {
+class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
 
     fun getSystemOverview(systemId: Long): SystemOverview {
         val repoCount = getRepoCount(systemId)
@@ -22,20 +20,8 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository,
     }
 
     fun getOverview(systemId: Long): BadSmellOverviewDto {
-        val list = mutableListOf<BadSmellOverviewItem>()
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMETHOD, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGCLASS, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGPACKAGE, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.SIZINGMODULES, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.CLASSHUB, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.METHODHUB, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.MODULEHUB, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.PACKAGEHUB, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DATACLUMPS, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.DEEPINHERITANCE, systemId))
-        list.add(badSmellCalculator.calculateBadSmell(BadSmellType.CYCLEDEPENDENCY, systemId))
-        // todo 补充其他维度坏味道
-        return BadSmellOverviewDto(list)
+        return BadSmellOverviewDto(BadSmellType.values()
+                .mapNotNull { it.calculate(systemId) })
     }
 
     private fun getRepoCount(systemId: Long): Int {

@@ -2,19 +2,18 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.controller.GroupData
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceService
 import com.thoughtworks.archguard.report.domain.hub.HubService
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.stereotype.Service
 import kotlin.math.roundToInt
 
 @Service
-class DashboardService(val badSmellCalculator: BadSmellCalculator,
-                       val sizingService: SizingService,
+class DashboardService(val sizingService: SizingService,
                        val hubService: HubService,
                        val dataClumpsService: DataClumpsService,
                        val deepInheritanceService: DeepInheritanceService,
@@ -55,9 +54,8 @@ class DashboardService(val badSmellCalculator: BadSmellCalculator,
     private fun getDashboard(systemId: Long, dashboardGroup: DashboardGroup, reportName: String): Dashboard {
         val groupData = dashboardGroup.badSmells
                 .map {
-                    GroupData(it,
-                            badSmellCalculator.calculateBadSmell(it, systemId).level,
-                            queryReport(systemId, it, reportName))
+                    GroupData(it, it.calculate(systemId)?.level
+                            ?: BadSmellLevel.A, queryReport(systemId, it, reportName))
                 }
         return Dashboard(dashboardGroup, groupData)
     }
