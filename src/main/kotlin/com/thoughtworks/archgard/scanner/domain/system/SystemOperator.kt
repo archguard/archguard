@@ -56,8 +56,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
         val pb: ProcessBuilder = when (buildTool) {
-            BuildTool.MAVEN -> ProcessBuilder("./mvnw", "clean", "compile")
-            BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "classes")
+            BuildTool.MAVEN -> ProcessBuilder("./mvnw", "clean", "test", "-DskipTests")
+            BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
             BuildTool.NONE -> return
         }
         Processor.executeWithLogs(pb, workspace)
