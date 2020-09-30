@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.testing.StaticMethod
-import com.thoughtworks.archguard.report.domain.testing.TestingRepository
+import com.thoughtworks.archguard.report.domain.testing.TestBadSmellRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
 @Repository
-class TestingRepositoryImpl(val jdbi: Jdbi) : TestingRepository {
+class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
 
     /* static, not private, not internal method, not compiler auto generated methods */
     override fun getStaticMethodCount(systemId: Long): Long {
