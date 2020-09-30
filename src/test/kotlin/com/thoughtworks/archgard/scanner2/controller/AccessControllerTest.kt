@@ -34,13 +34,22 @@ internal class AccessControllerTest(@Autowired val accessController: AccessContr
         assertTrue(classResult[0].isAbstract)
 
         val methodResult = jdbi.withHandle<List<MethodAccess>, RuntimeException> { handle: Handle ->
-            handle.createQuery("select method_id as id, is_synthetic, is_abstract from method_access order by method_id")
+            handle.createQuery("select method_id as id, is_synthetic, is_abstract, is_static, is_private from method_access order by method_id")
                     .mapTo(MethodAccess::class.java).list()
         }.toList()
         assertEquals(2, methodResult.size)
+
+        //4164: 01000001000100
         assertTrue(methodResult[0].isSynthetic)
         assertFalse(methodResult[0].isAbstract)
+        assertFalse(methodResult[0].isPrivate)
+        assertFalse(methodResult[0].isStatic)
+
+        //4106: 01000000001010
         assertTrue(methodResult[1].isSynthetic)
         assertFalse(methodResult[1].isAbstract)
+        assertTrue(methodResult[1].isStatic)
+        assertTrue(methodResult[1].isPrivate)
+
     }
 }

@@ -18,7 +18,7 @@ VALUES ('23d7905b-7abe-486b-b968-1a8fbca64e9d', 8, 'org.gradle.api.artifacts.Con
         '2020-09-11 01:41:57', null, null, '4104', 1);
 
 INSERT INTO JMethod(createdAt,clzname,access,system_id,argumenttypes,module,name,returntype,id,updatedAt)
-VALUES   ('2020-09-15 16:22:11','org.apache.dubbo.rpc.support.ProtocolUtils','4096',8,'','dubbo-common','<init>','void','16831861-3797-49c4-8711-4c2bf4d28498','2020-09-15 16:22:11');
+VALUES   ('2020-09-15 16:22:11','org.apache.dubbo.rpc.support.ProtocolUtils','4106',8,'','dubbo-common','<init>','void','16831861-3797-49c4-8711-4c2bf4d28498','2020-09-15 16:22:11');
 INSERT INTO JMethod(createdAt,clzname,access,system_id,argumenttypes,module,name,returntype,id,updatedAt)
 VALUES   ('2020-09-15 16:30:33','org.apache.dubbo.rpc.support.ProtocolUtils','4164',8,'','dubbo-common','<init>','void','052c16e9-1999-4829-8710-22a71b6c9ff6','2020-09-15 16:30:33');
 INSERT INTO JMethod(createdAt,clzname,access,system_id,argumenttypes,module,name,returntype,id,updatedAt)

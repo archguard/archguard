@@ -46,12 +46,14 @@ class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {
 
     private fun save(method: MethodAccess, systemId: Long) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into method_access (id, method_id, is_abstract, is_synthetic, system_id) " +
-                    "values (:id, :method_id, :is_abstract, :is_synthetic, :system_id)")
+            it.createUpdate("insert into method_access (id, method_id, is_abstract, is_synthetic, is_static, is_private, system_id) " +
+                    "values (:id, :method_id, :is_abstract, :is_synthetic, :is_static, :is_private, :system_id)")
                     .bind("id", UUID.randomUUID().toString())
                     .bind("method_id", method.id)
                     .bind("is_abstract", method.isAbstract)
                     .bind("is_synthetic", method.isSynthetic)
+                    .bind("is_static", method.isStatic)
+                    .bind("is_private", method.isPrivate)
                     .bind("system_id", systemId)
                     .execute()
         }

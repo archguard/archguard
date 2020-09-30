@@ -2,6 +2,8 @@ package com.thoughtworks.archgard.scanner2.infrastructure.mysql
 
 import com.thoughtworks.archgard.scanner2.domain.model.ClazzType
 import com.thoughtworks.archgard.scanner2.domain.model.MethodType
+import jdk.internal.org.objectweb.asm.Opcodes.ACC_PRIVATE
+import jdk.internal.org.objectweb.asm.Opcodes.ACC_STATIC
 
 object TypeMap {
     private const val ACC_INTERFACE = 512
@@ -30,6 +32,12 @@ object TypeMap {
         }
         if ((access.and(ACC_SYNTHETIC)) != 0) {
             methodTypes.add(MethodType.SYNTHETIC)
+        }
+        if ((access.and(ACC_STATIC)) != 0) {
+            methodTypes.add(MethodType.STATIC)
+        }
+        if ((access.and(ACC_PRIVATE)) != 0) {
+            methodTypes.add(MethodType.PRIVATE)
         }
         // TODO: support more type https://asm.ow2.io/javadoc/constant-values.html#org.objectweb.asm.Opcodes
         return methodTypes
