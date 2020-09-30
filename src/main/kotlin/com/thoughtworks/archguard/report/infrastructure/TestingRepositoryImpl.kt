@@ -14,7 +14,7 @@ class TestingRepositoryImpl(val jdbi: Jdbi) : TestingRepository {
             val sql = """
                 select count(m.id) from method_access m inner join JMethod c where m.method_id = c.id  
                 and m.system_id = :systemId and m.is_static=1 and m.is_private=0 
-                and c.name != '<clinit>' and c.name not like '%$%'
+                and c.name not in ('<clinit>', 'main') and c.name not like '%$%'
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -28,7 +28,8 @@ class TestingRepositoryImpl(val jdbi: Jdbi) : TestingRepository {
             val sql = "select c.id, c.system_id as systemId, c.module as moduleName, c.clzname as classFullName, " +
                     "c.name as methodName from method_access m " +
                     "inner join JMethod c where m.method_id = c.id and m.system_id=:systemId " +
-                    "and m.is_static=1 and m.is_private=0 and c.name != '<clinit>' and c.name not like '%$%' " +
+                    "and m.is_static=1 and m.is_private=0 " +
+                    "and c.name not in ('<clinit>', 'main') and c.name not like '%$%' " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
