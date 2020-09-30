@@ -78,7 +78,14 @@ enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) 
             BadSmellType.SIZINGMETHOD,
             BadSmellType.SIZINGCLASS)),
     COHESION("内聚度不足", listOf()),
-    REDUNDANCY("冗余度高", listOf())
+    REDUNDANCY("冗余度高", listOf()),
+    UNDEFINED("未找到", listOf());
+
+    companion object {
+        fun getGroup(badSmellType: BadSmellType): DashboardGroup {
+            return values().find { it.badSmells.contains(badSmellType) } ?: UNDEFINED
+        }
+    }
 }
 
 data class GraphData(val date: String, val value: Int)

@@ -22,7 +22,7 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BaseCalculato
     SIZINGCLASS("类过大", null);
 
     fun calculate(systemId: Long): BadSmellOverviewItem? {
-        return badSmellCalculator?.getOverSizingOverviewItem(systemId)
+        return badSmellCalculator?.getOverSizingOverviewItem(systemId, this)
     }
 
     @Component

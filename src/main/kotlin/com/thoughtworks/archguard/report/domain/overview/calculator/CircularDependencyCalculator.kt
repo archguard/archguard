@@ -1,13 +1,12 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
-import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCalculator
 import org.springframework.stereotype.Component
 
 @Component
-class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) : BaseCouplingCalculator() {
+class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) : BaseCalculator() {
     override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
         val methodResult = circularDependencyRepository
                 .getCircularDependencyBadSmellCalculateResult(systemId,
@@ -33,13 +32,8 @@ class CircularDependencyCalculator(val circularDependencyRepository: CircularDep
         return result
     }
 
-
-    override fun getBadSmellType(): BadSmellType {
-        return BadSmellType.CYCLEDEPENDENCY
-    }
-
-    override fun getTypeCountLevelRanges(): Array<LongRange> {
-        TODO("Not yet implemented")
+    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+        return BadSmellCalculateResult()
     }
 
     private fun getMethodCircularDependencyLevelRanges(): Array<LongRange> {
