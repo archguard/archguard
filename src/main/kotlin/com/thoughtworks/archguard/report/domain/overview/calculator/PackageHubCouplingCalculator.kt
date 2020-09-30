@@ -1,11 +1,10 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.coupling.PackageCouplingRepository
-import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCalculator
 import org.springframework.stereotype.Component
 
 @Component
-class PackageHubCouplingCalculator(val packageCouplingRepository: PackageCouplingRepository) : BaseCalculator {
+class PackageHubCouplingCalculator(val packageCouplingRepository: PackageCouplingRepository) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         return packageCouplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }

@@ -1,11 +1,10 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCalculator
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.stereotype.Component
 
 @Component
-class ModuleOverSizingCalculator(val sizingRepository: SizingRepository) : BaseCalculator {
+class ModuleOverSizingCalculator(val sizingRepository: SizingRepository) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val abovePackageBadSmellResult = sizingRepository.getModuleSizingListAbovePackageCountBadSmellResult(systemId, getTypeCountLevelRanges())
         val aboveLineBadSmellResult = sizingRepository.getModuleSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())

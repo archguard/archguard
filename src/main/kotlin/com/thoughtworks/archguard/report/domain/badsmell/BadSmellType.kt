@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmellOverviewItem
 import com.thoughtworks.archguard.report.domain.overview.calculator.*
-import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 
-enum class BadSmellType(val value: String, var badSmellCalculator: BaseCalculator?) {
+enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevelCalculator?) {
     DATACLUMPS("数据泥团", null),
     DEEPINHERITANCE("过深继承", null),
     CLASSHUB("枢纽类", null),
