@@ -1,10 +1,13 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
+import ModuleCouplingRepository
 import com.thoughtworks.archguard.report.application.DashboardGroup
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.MethodCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.PackageCouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
@@ -26,6 +29,9 @@ internal class BadSmellCalculatorTest {
     lateinit var classCalculator: ClassOverSizingCalculator
     lateinit var methodCalculator: MethodOverSizingCalculator
     lateinit var circularDependencyCalculator: CircularDependencyCalculator
+    lateinit var methodHubCalculator: MethodHubCouplingCalculator
+    lateinit var packageHubCalculator: PackageHubCouplingCalculator
+    lateinit var moduleHubCalculator: ModuleHubCouplingCalculator
 
     @MockK
     lateinit var classCouplingRepository: ClassCouplingRepository
@@ -42,6 +48,15 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var circularDenpendencyRepository: CircularDependencyRepository
 
+    @MockK
+    lateinit var methodCouplingRepository: MethodCouplingRepository
+
+    @MockK
+    lateinit var packageCouplingRepository: PackageCouplingRepository
+
+    @MockK
+    lateinit var moduleCouplingRepository: ModuleCouplingRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -53,6 +68,13 @@ internal class BadSmellCalculatorTest {
         classCalculator = ClassOverSizingCalculator(sizingRepository)
         methodCalculator = MethodOverSizingCalculator(sizingRepository)
         circularDependencyCalculator = CircularDependencyCalculator(circularDenpendencyRepository)
+        methodHubCalculator = MethodHubCouplingCalculator(methodCouplingRepository)
+        packageHubCalculator = PackageHubCouplingCalculator(packageCouplingRepository)
+        moduleHubCalculator = ModuleHubCouplingCalculator(moduleCouplingRepository)
+
+        BadSmellType.BadSmellTypeInjector(moduleCalculator, packageCalculator, classCalculator, methodCalculator,
+                classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
+                dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator).postConstruct()
     }
 
     @Test

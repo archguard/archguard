@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmellOverviewItem
 import com.thoughtworks.archguard.report.domain.overview.calculator.*
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -30,6 +29,7 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
                                val packageCalculator: PackageOverSizingCalculator,
                                val classCalculator: ClassOverSizingCalculator,
                                val methodCalculator: MethodOverSizingCalculator,
+
                                val classHubCalculator: ClassHubCouplingCalculator,
                                val methodHubCalculator: MethodHubCouplingCalculator,
                                val packageHubCalculator: PackageHubCouplingCalculator,
@@ -39,18 +39,18 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
                                val circularDependencyCalculator: CircularDependencyCalculator) {
         @PostConstruct
         fun postConstruct() {
+            SIZINGMODULES.badSmellCalculator = moduleCalculator
+            SIZINGPACKAGE.badSmellCalculator = packageCalculator
+            SIZINGMETHOD.badSmellCalculator = methodCalculator
+            SIZINGCLASS.badSmellCalculator = classCalculator
+
             DATACLUMPS.badSmellCalculator = dataClumpsCouplingCalculator
             DEEPINHERITANCE.badSmellCalculator = deepInheritanceCouplingCalculator
             CLASSHUB.badSmellCalculator = classHubCalculator
-            METHODHUB.badSmellCalculator = methodCalculator
+            METHODHUB.badSmellCalculator = methodHubCalculator
             PACKAGEHUB.badSmellCalculator = packageHubCalculator
             MODULEHUB.badSmellCalculator = moduleHubCalculator
             CYCLEDEPENDENCY.badSmellCalculator = circularDependencyCalculator
-
-            SIZINGMODULES.badSmellCalculator = moduleCalculator
-            SIZINGPACKAGE.badSmellCalculator = packageCalculator
-            SIZINGMETHOD.badSmellCalculator = methodHubCalculator
-            SIZINGCLASS.badSmellCalculator = classCalculator
         }
     }
 }
