@@ -5,13 +5,10 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCal
 import org.springframework.stereotype.Component
 
 @Component
-class ClassHubCouplingCalculator(val classCouplingRepository: ClassCouplingRepository) : BaseCalculator() {
-    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return classCouplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
-    }
+class ClassHubCouplingCalculator(val classCouplingRepository: ClassCouplingRepository) : BaseCalculator {
 
-    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return BadSmellCalculateResult()
+    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
+        return classCouplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
     private fun getTypeCountLevelRanges(): Array<LongRange> {

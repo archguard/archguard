@@ -6,8 +6,8 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCal
 import org.springframework.stereotype.Component
 
 @Component
-class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) : BaseCalculator() {
-    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) : BaseCalculator {
+    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val methodResult = circularDependencyRepository
                 .getCircularDependencyBadSmellCalculateResult(systemId,
                         CircularDependencyType.METHOD,
@@ -30,10 +30,6 @@ class CircularDependencyCalculator(val circularDependencyRepository: CircularDep
         result = result.plus(packageResult)
         result = result.plus(moduleResult)
         return result
-    }
-
-    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return BadSmellCalculateResult()
     }
 
     private fun getMethodCircularDependencyLevelRanges(): Array<LongRange> {

@@ -5,13 +5,9 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.base.BaseCal
 import org.springframework.stereotype.Component
 
 @Component
-class DataClumpsCouplingCalculator(val dataClumpsRepository: DataClumpsRepository) : BaseCalculator() {
-    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+class DataClumpsCouplingCalculator(val dataClumpsRepository: DataClumpsRepository) : BaseCalculator {
+    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         return dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
-    }
-
-    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return BadSmellCalculateResult()
     }
 
     private fun getTypeCountLevelRanges(): Array<LongRange> {

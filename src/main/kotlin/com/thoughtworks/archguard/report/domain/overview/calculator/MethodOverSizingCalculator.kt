@@ -5,13 +5,9 @@ import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.stereotype.Component
 
 @Component
-class MethodOverSizingCalculator(val sizingRepository: SizingRepository) : BaseCalculator() {
+class MethodOverSizingCalculator(val sizingRepository: SizingRepository) : BaseCalculator {
 
-    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return BadSmellCalculateResult()
-    }
-
-    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
+    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         return sizingRepository.getMethodSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
     }
 

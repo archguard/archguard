@@ -5,14 +5,12 @@ import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.springframework.stereotype.Component
 
 @Component
-class PackageOverSizingCalculator(val sizingRepository: SizingRepository) : BaseCalculator() {
+class PackageOverSizingCalculator(val sizingRepository: SizingRepository) : BaseCalculator {
 
-    override fun getTypeCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(systemId, getTypeCountLevelRanges())
-    }
-
-    override fun getLineCountCalculateResult(systemId: Long): BadSmellCalculateResult {
-        return sizingRepository.getPackageSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
+    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
+        val aboveClassCountBadSmellResult = sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(systemId, getTypeCountLevelRanges())
+        val aboveLineBadSmellResult = sizingRepository.getPackageSizingAboveLineBadSmellResult(systemId, getLineCountLevelRanges())
+        return aboveClassCountBadSmellResult.plus(aboveLineBadSmellResult)
     }
 
     private fun getLineCountLevelRanges(): Array<LongRange> {
