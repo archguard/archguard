@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.report.domain.testing.MethodInfo
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
+import kotlin.streams.toList
 
 @Repository
 class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
@@ -123,6 +124,54 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bindList("listOfAnnotation", ignoreAnnotations)
+                    .bind("offset", offset)
+                    .bind("limit", limit)
+                    .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }
+        }
+    }
+
+    override fun getUnassertTestMethodCount(systemId: Long): List<String> {
+        val methodsWithoutAssert = getMethodsWithoutAssert(systemId)
+        val junit4ExpectExceptionList = getMethodListWithJunit4ExpectException(systemId)
+        return methodsWithoutAssert.stream().filter { m -> junit4ExpectExceptionList.contains(m) }.toList()
+    }
+
+    private fun getMethodsWithoutAssert(systemId: Long): List<String> {
+        return jdbi.withHandle<List<String>, Exception> {
+            val sql = """
+                    select m1.id from JMethod m1 join 
+                    (select  mc.a as callee_id, GROUP_CONCAT(clzname SEPARATOR ', ') as callers from _MethodCallees mc 
+                    join JMethod m on mc.b = m.id where mc.a in (select id from JMethod where system_id=:systemId and is_test=1) 
+                    group by mc.a) as t1 on m1.id = t1.callee_id where callers like '%Assert%'
+                """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
+
+    private fun getMethodListWithJunit4ExpectException(systemId: Long): List<String> {
+        return jdbi.withHandle<List<String>, Exception> {
+            val sql = """
+                     select m.id from JMethod m join 
+                    (select j.id, j.targetId, j.name, jv.value from JAnnotation j join JAnnotationValue jv on j.id = jv.annotationId 
+                    where jv.system_id=:systemId and jv.key='expected') as t1 on m.id = t1.targetId where m.is_test=1
+                """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
+
+
+    override fun getUnassertTestMethods(ids: List<String>, limit: Long, offset: Long): List<MethodInfo> {
+        return jdbi.withHandle<List<MethodInfo>, Exception> {
+            val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
+                    "m.name as methodName FROM JMethod m where id in (<ids>)) limit :limit offset :offset"
+            it.createQuery(sql)
+                    .bindList("ids", ids)
                     .bind("offset", offset)
                     .bind("limit", limit)
                     .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }

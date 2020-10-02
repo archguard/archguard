@@ -34,4 +34,13 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
         return MethodInfoListDTO(ignoreMethods, ignoreMethodCount, offset / limit + 1)
     }
 
+    fun getUnassertTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val unassertTestMethodIds = testBadSmellRepository.getUnassertTestMethodCount(systemId)
+
+        val unassertMethodCount = unassertTestMethodIds.size.toLong()
+        val unassertignoreMethods = testBadSmellRepository.getUnassertTestMethods(unassertTestMethodIds, limit, offset)
+        return MethodInfoListDTO(unassertignoreMethods, unassertMethodCount, offset / limit + 1)
+    }
+
 }

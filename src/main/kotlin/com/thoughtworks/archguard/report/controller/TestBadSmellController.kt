@@ -49,4 +49,13 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
         return ResponseEntity.ok(testBadSmellService.getIgnoreTestMethodList(systemId, limit, offset))
     }
 
+    @GetMapping("/unassert-test-methods")
+    fun getUnassertTests(@PathVariable("systemId") systemId: Long,
+                         @RequestParam(value = "numberPerPage") limit: Long,
+                         @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getUnassertTestMethodList(systemId, limit, offset))
+    }
+
 }

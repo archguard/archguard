@@ -13,4 +13,7 @@ interface TestBadSmellRepository {
 
     fun getIgnoreTestMethodCount(systemId: Long): Long
     fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo>
+
+    fun getUnassertTestMethodCount(systemId: Long): List<String>
+    fun getUnassertTestMethods(ids: List<String>, limit: Long, offset: Long): List<MethodInfo>
 }
