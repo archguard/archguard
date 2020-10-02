@@ -13,4 +13,18 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
         return MethodInfoListDTO(staticMethods, staticMethodCount, offset / limit + 1)
     }
 
+    fun getSleepTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val sleepMethodCount = testBadSmellRepository.getSleepTestMethodCount(systemId)
+        val sleepMethods = testBadSmellRepository.getSleepTestMethods(systemId, limit, offset)
+        return MethodInfoListDTO(sleepMethods, sleepMethodCount, offset / limit + 1)
+    }
+
+    fun getEmptyTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val emptyMethodCount = testBadSmellRepository.getEmptyTestMethodCount(systemId)
+        val emptyMethods = testBadSmellRepository.getEmptyTestMethods(systemId, limit, offset)
+        return MethodInfoListDTO(emptyMethods, emptyMethodCount, offset / limit + 1)
+    }
+
 }

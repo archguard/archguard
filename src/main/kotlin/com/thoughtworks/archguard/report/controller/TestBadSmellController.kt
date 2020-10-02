@@ -13,13 +13,22 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/systems/{systemId}/test-bad-smell")
 class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
 
-    @GetMapping("/static/methods")
+    @GetMapping("/static-methods")
     fun getModulesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
             : ResponseEntity<MethodInfoListDTO> {
         val offset = (currentPageNumber - 1) * limit
         return ResponseEntity.ok(testBadSmellService.getStaticMethodList(systemId, limit, offset))
+    }
+
+    @GetMapping("/empty-test-methods")
+    fun getEmptyTests(@PathVariable("systemId") systemId: Long,
+                      @RequestParam(value = "numberPerPage") limit: Long,
+                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getEmptyTestMethodList(systemId, limit, offset))
     }
 
 }
