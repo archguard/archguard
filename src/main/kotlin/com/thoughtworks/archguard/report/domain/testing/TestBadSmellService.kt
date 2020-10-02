@@ -27,4 +27,11 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
         return MethodInfoListDTO(emptyMethods, emptyMethodCount, offset / limit + 1)
     }
 
+    fun getIgnoreTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val ignoreMethodCount = testBadSmellRepository.getIgnoreTestMethodCount(systemId)
+        val ignoreMethods = testBadSmellRepository.getIgnoreTestMethods(systemId, limit, offset)
+        return MethodInfoListDTO(ignoreMethods, ignoreMethodCount, offset / limit + 1)
+    }
+
 }

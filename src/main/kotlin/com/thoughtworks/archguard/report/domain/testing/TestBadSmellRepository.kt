@@ -10,4 +10,7 @@ interface TestBadSmellRepository {
 
     fun getEmptyTestMethodCount(systemId: Long): Long
     fun getEmptyTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo>
+
+    fun getIgnoreTestMethodCount(systemId: Long): Long
+    fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo>
 }

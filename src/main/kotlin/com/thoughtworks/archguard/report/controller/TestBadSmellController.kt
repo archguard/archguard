@@ -40,4 +40,13 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
         return ResponseEntity.ok(testBadSmellService.getSleepTestMethodList(systemId, limit, offset))
     }
 
+    @GetMapping("/ignore-test-methods")
+    fun getIgnoreTests(@PathVariable("systemId") systemId: Long,
+                       @RequestParam(value = "numberPerPage") limit: Long,
+                       @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getIgnoreTestMethodList(systemId, limit, offset))
+    }
+
 }

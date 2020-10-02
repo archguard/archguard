@@ -95,4 +95,37 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
                     .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }
         }
     }
+
+    override fun getIgnoreTestMethodCount(systemId: Long): Long {
+        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore");
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(id) from JMethod 
+                where id in (select targetId from JAnnotation 
+                where system_id=:systemId and name in (<listOfAnnotation>))
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bindList("listOfAnnotation", ignoreAnnotations)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
+    }
+
+    override fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
+        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore");
+        return jdbi.withHandle<List<MethodInfo>, Exception> {
+            val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
+                    "m.name as methodName FROM JMethod m " +
+                    "where id in (select targetId from JAnnotation " +
+                    "where system_id=:systemId and name in (<listOfAnnotation>)) " +
+                    "limit :limit offset :offset"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bindList("listOfAnnotation", ignoreAnnotations)
+                    .bind("offset", offset)
+                    .bind("limit", limit)
+                    .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }
+        }
+    }
 }
