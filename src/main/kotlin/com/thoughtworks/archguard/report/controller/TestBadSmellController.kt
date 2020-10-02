@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.testing.StaticMethodListDto
+import com.thoughtworks.archguard.report.domain.testing.MethodInfoListDTO
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,7 +17,7 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     fun getModulesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
-            : ResponseEntity<StaticMethodListDto> {
+            : ResponseEntity<MethodInfoListDTO> {
         val offset = (currentPageNumber - 1) * limit
         return ResponseEntity.ok(testBadSmellService.getStaticMethodList(systemId, limit, offset))
     }
