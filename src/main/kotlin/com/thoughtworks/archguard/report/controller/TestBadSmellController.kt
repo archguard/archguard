@@ -31,4 +31,13 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
         return ResponseEntity.ok(testBadSmellService.getEmptyTestMethodList(systemId, limit, offset))
     }
 
+    @GetMapping("/sleep-test-methods")
+    fun getSleepTests(@PathVariable("systemId") systemId: Long,
+                      @RequestParam(value = "numberPerPage") limit: Long,
+                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getSleepTestMethodList(systemId, limit, offset))
+    }
+
 }

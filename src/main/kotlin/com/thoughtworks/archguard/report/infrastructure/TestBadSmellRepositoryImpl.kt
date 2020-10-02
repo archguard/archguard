@@ -40,11 +40,32 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     }
 
     override fun getSleepTestMethodCount(systemId: Long): Long {
-        TODO("Not yet implemented")
+        return jdbi.withHandle<Long, Exception> {
+            val sql = """
+                select count(id) from JMethod where system_id=:systemId and is_test=1 
+                and id in (select mc.a from _MethodCallees mc 
+                where mc.b in (select m.id from JMethod m where name in ('sleep')))
+            """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(Long::class.java)
+                    .one()
+        }
     }
 
     override fun getSleepTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
-        TODO("Not yet implemented")
+        return jdbi.withHandle<List<MethodInfo>, Exception> {
+            val sql = "select id, system_id as systemId, module as moduleName, clzname as classFullName, " +
+                    "name as methodName FROM JMethod where system_id=:systemId and is_test=1 " +
+                    "and id in (select mc.a from _MethodCallees mc " +
+                    "where mc.b in (select id from JMethod  where name in ('sleep'))) " +
+                    "limit :limit offset :offset"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("offset", offset)
+                    .bind("limit", limit)
+                    .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }
+        }
     }
 
     override fun getEmptyTestMethodCount(systemId: Long): Long {
