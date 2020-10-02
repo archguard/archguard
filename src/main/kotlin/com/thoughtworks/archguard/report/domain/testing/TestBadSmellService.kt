@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.domain.testing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
@@ -37,10 +38,13 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
     fun getUnassertTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
         ValidPagingParam.validPagingParam(limit, offset)
         val unassertTestMethodIds = testBadSmellRepository.getUnassertTestMethodCount(systemId)
-
-        val unassertMethodCount = unassertTestMethodIds.size.toLong()
-        val unassertignoreMethods = testBadSmellRepository.getUnassertTestMethods(unassertTestMethodIds, limit, offset)
-        return MethodInfoListDTO(unassertignoreMethods, unassertMethodCount, offset / limit + 1)
+        return if (unassertTestMethodIds.isEmpty()) {
+            MethodInfoListDTO(Collections.emptyList(), 0, offset / limit + 1)
+        } else {
+            val unassertMethodCount = unassertTestMethodIds.size.toLong()
+            val unassertignoreMethods = testBadSmellRepository.getUnassertTestMethods(unassertTestMethodIds, limit, offset)
+            MethodInfoListDTO(unassertignoreMethods, unassertMethodCount, offset / limit + 1)
+        }
     }
 
 }
