@@ -130,10 +130,10 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         }
     }
 
-    override fun getUnassertTestMethodCount(systemId: Long): List<String> {
+    override fun getUnassertTestMethodIds(systemId: Long): List<String> {
         val methodsWithoutAssert = getMethodsWithoutAssert(systemId)
         val junit4ExpectExceptionList = getMethodListWithJunit4ExpectException(systemId)
-        return methodsWithoutAssert.stream().filter { m -> junit4ExpectExceptionList.contains(m) }.toList()
+        return methodsWithoutAssert.stream().filter { m -> !junit4ExpectExceptionList.contains(m) }.toList()
     }
 
     private fun getMethodsWithoutAssert(systemId: Long): List<String> {
@@ -142,7 +142,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
                     select m1.id from JMethod m1 join 
                     (select  mc.a as callee_id, GROUP_CONCAT(clzname SEPARATOR ', ') as callers from _MethodCallees mc 
                     join JMethod m on mc.b = m.id where mc.a in (select id from JMethod where system_id=:systemId and is_test=1) 
-                    group by mc.a) as t1 on m1.id = t1.callee_id where callers like '%Assert%'
+                    group by mc.a) as t1 on m1.id = t1.callee_id where callers not like '%Assert%'
                 """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -166,15 +166,51 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     }
 
 
-    override fun getUnassertTestMethods(ids: List<String>, limit: Long, offset: Long): List<MethodInfo> {
+    override fun getMethodsByIds(ids: List<String>, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
-                    "m.name as methodName FROM JMethod m where id in (<ids>)) limit :limit offset :offset"
+                    "m.name as methodName FROM JMethod m where id in (<ids>) limit :limit offset :offset"
             it.createQuery(sql)
                     .bindList("ids", ids)
                     .bind("offset", offset)
                     .bind("limit", limit)
                     .mapTo(JMethodPO::class.java).list().map { it.toMethodInfo() }
+        }
+    }
+
+    override fun getAssertMethodAboveThresholdIds(systemId: Long, multiAssertThreshold: Int): List<String> {
+        return jdbi.withHandle<List<String>, Exception> {
+            val sql = """
+                    select m1.id from JMethod m1 join 
+                    (select  mc.a as callee_id, count(*) as assert_count from _MethodCallees mc 
+                    join JMethod m on mc.b = m.id where clzname like '%Assert%' and mc.a in 
+                    (select id from JMethod where system_id=:systemId and is_test=1)  group by mc.a) as t1
+                    on m1.id = t1.callee_id and t1.assert_count>:threshold order by t1.assert_count
+                """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", multiAssertThreshold)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
+
+    override fun getRedundantPrintAboveThresholdIds(systemId: Long, redundantPrintThreshold: Int): List<String> {
+        val clzNames = listOf("java.io.PrintStream");
+        return jdbi.withHandle<List<String>, Exception> {
+            val sql = """
+                    select m1.id from JMethod m1 join 
+                    (select  mc.a as callee_id, count(*) as print_count from _MethodCallees mc 
+                    join JMethod m on mc.b = m.id where clzname in (<clzNames>) and mc.a in 
+                    (select id from JMethod where system_id=:systemId and is_test=1)  group by mc.a) as t1
+                    on m1.id = t1.callee_id and print_count>:threshold order by print_count order
+                """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bindList("clzNames", clzNames)
+                    .bind("threshold", redundantPrintThreshold)
+                    .mapTo(String::class.java)
+                    .list()
         }
     }
 }

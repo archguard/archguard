@@ -58,4 +58,22 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
         return ResponseEntity.ok(testBadSmellService.getUnassertTestMethodList(systemId, limit, offset))
     }
 
+    @GetMapping("/multi-assert-test-methods")
+    fun getMultiAssertTests(@PathVariable("systemId") systemId: Long,
+                            @RequestParam(value = "numberPerPage") limit: Long,
+                            @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getMultiAssertTestMethodList(systemId, limit, offset))
+    }
+
+    @GetMapping("/redundant-print-test-methods")
+    fun getRedundantPrintTests(@PathVariable("systemId") systemId: Long,
+                               @RequestParam(value = "numberPerPage") limit: Long,
+                               @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+            : ResponseEntity<MethodInfoListDTO> {
+        val offset = (currentPageNumber - 1) * limit
+        return ResponseEntity.ok(testBadSmellService.getRedundantPrintTestMethodList(systemId, limit, offset))
+    }
+
 }

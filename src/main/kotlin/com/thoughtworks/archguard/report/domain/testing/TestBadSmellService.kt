@@ -1,11 +1,18 @@
 package com.thoughtworks.archguard.report.domain.testing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
+
+    @Value("\${threshold.test-bad-smell.redundant-print}")
+    private val redundantPrintThreshold: Int = 0
+
+    @Value("\${threshold.test-bad-smell.multi-assert}")
+    private val multiAssertThreshold: Int = 0
 
     fun getStaticMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
         ValidPagingParam.validPagingParam(limit, offset)
@@ -37,13 +44,35 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
 
     fun getUnassertTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
         ValidPagingParam.validPagingParam(limit, offset)
-        val unassertTestMethodIds = testBadSmellRepository.getUnassertTestMethodCount(systemId)
+        val unassertTestMethodIds = testBadSmellRepository.getUnassertTestMethodIds(systemId)
         return if (unassertTestMethodIds.isEmpty()) {
             MethodInfoListDTO(Collections.emptyList(), 0, offset / limit + 1)
         } else {
             val unassertMethodCount = unassertTestMethodIds.size.toLong()
-            val unassertignoreMethods = testBadSmellRepository.getUnassertTestMethods(unassertTestMethodIds, limit, offset)
+            val unassertignoreMethods = testBadSmellRepository.getMethodsByIds(unassertTestMethodIds, limit, offset)
             MethodInfoListDTO(unassertignoreMethods, unassertMethodCount, offset / limit + 1)
+        }
+    }
+
+    fun getMultiAssertTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val multiAssertMethodIds = testBadSmellRepository.getAssertMethodAboveThresholdIds(systemId, multiAssertThreshold)
+        return if (multiAssertMethodIds.isEmpty()) {
+            MethodInfoListDTO(Collections.emptyList(), 0, offset / limit + 1)
+        } else {
+            val multiAssertMethods = testBadSmellRepository.getMethodsByIds(multiAssertMethodIds, limit, offset)
+            MethodInfoListDTO(multiAssertMethods, multiAssertMethodIds.size.toLong(), offset / limit + 1)
+        }
+    }
+
+    fun getRedundantPrintTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
+        ValidPagingParam.validPagingParam(limit, offset)
+        val redundantPrintMethodIds = testBadSmellRepository.getRedundantPrintAboveThresholdIds(systemId, multiAssertThreshold)
+        return if (redundantPrintMethodIds.isEmpty()) {
+            MethodInfoListDTO(Collections.emptyList(), 0, offset / limit + 1)
+        } else {
+            val redundantPrintMethods = testBadSmellRepository.getMethodsByIds(redundantPrintMethodIds, limit, offset)
+            MethodInfoListDTO(redundantPrintMethods, redundantPrintMethodIds.size.toLong(), offset / limit + 1)
         }
     }
 

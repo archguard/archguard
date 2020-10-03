@@ -14,6 +14,9 @@ interface TestBadSmellRepository {
     fun getIgnoreTestMethodCount(systemId: Long): Long
     fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo>
 
-    fun getUnassertTestMethodCount(systemId: Long): List<String>
-    fun getUnassertTestMethods(ids: List<String>, limit: Long, offset: Long): List<MethodInfo>
+    fun getUnassertTestMethodIds(systemId: Long): List<String>
+    fun getAssertMethodAboveThresholdIds(systemId: Long, multiAssertThreshold: Int): List<String>
+    fun getRedundantPrintAboveThresholdIds(systemId: Long, redundantPrintThreshold: Int): List<String>
+
+    fun getMethodsByIds(systemId: List<String>, limit: Long, offset: Long): List<MethodInfo>
 }
