@@ -61,18 +61,25 @@ class MetricPersistApplService(val abcService: AbcService,
         val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
         log.info("begin calculate and persist Metric in systemId $systemId")
+        val latch = CountDownLatch(4)
+
         scanner2ThreadPool.submit(Runnable {
             persistClassLevel2Metrics(systemId, jClasses)
+            latch.countDown()
         })
         scanner2ThreadPool.submit(Runnable {
             persistMethodLevel2Metrics(systemId)
+            latch.countDown()
         })
         scanner2ThreadPool.submit(Runnable {
             persistPackageLevel2Metrics(systemId, jClasses)
+            latch.countDown()
         })
         scanner2ThreadPool.submit(Runnable {
             persistModuleLevel2Metrics(systemId, jClasses)
+            latch.countDown()
         })
+        latch.await()
     }
 
     @Transactional
