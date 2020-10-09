@@ -1,7 +1,20 @@
 package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmellOverviewItem
-import com.thoughtworks.archguard.report.domain.overview.calculator.*
+import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellLevelCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.CircularDependencyCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClumpsCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DeepInheritanceCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.OverGeneralizationCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.RedundantElementCalculator
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -18,7 +31,10 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
     SIZINGMODULES("子模块过大", null),
     SIZINGPACKAGE("包过大", null),
     SIZINGMETHOD("方法过大", null),
-    SIZINGCLASS("类过大", null);
+    SIZINGCLASS("类过大", null),
+
+    REDUNDANT_ELEMENT("冗余元素", null),
+    OVER_GENERALIZATION("过度泛化", null);
 
     fun calculate(systemId: Long): BadSmellOverviewItem? {
         return badSmellCalculator?.getBadSmellOverviewItem(systemId, this)
@@ -36,7 +52,10 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
                                val moduleHubCalculator: ModuleHubCouplingCalculator,
                                val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
                                val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
-                               val circularDependencyCalculator: CircularDependencyCalculator) {
+                               val circularDependencyCalculator: CircularDependencyCalculator,
+                               val redundantElementCalculator: RedundantElementCalculator,
+                               val overGeneralizationCalculator: OverGeneralizationCalculator
+    ) {
         @PostConstruct
         fun postConstruct() {
             SIZINGMODULES.badSmellCalculator = moduleCalculator
@@ -51,6 +70,9 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
             PACKAGEHUB.badSmellCalculator = packageHubCalculator
             MODULEHUB.badSmellCalculator = moduleHubCalculator
             CYCLEDEPENDENCY.badSmellCalculator = circularDependencyCalculator
+
+            REDUNDANT_ELEMENT.badSmellCalculator = redundantElementCalculator
+            OVER_GENERALIZATION.badSmellCalculator = overGeneralizationCalculator
         }
     }
 }

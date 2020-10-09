@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.overgeneralization
+package com.thoughtworks.archguard.report.domain.redundancy
 
 import com.thoughtworks.archguard.report.domain.module.ClassVO
 

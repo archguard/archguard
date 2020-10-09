@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.module.ClassVO
-import com.thoughtworks.archguard.report.domain.overgeneralization.OverGeneralizationRepository
+import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 

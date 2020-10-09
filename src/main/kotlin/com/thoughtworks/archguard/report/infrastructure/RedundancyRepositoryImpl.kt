@@ -12,11 +12,11 @@ class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
             "where ca.class_id=c.id  and ca.is_interface = false and ca.is_abstract = false " +
             "and ma.method_id = m.id and m.name != '<clinit>' and m.name != 'main' and m.name != '<init>'" +
             "and m.name != 'toString' and m.name != 'equals' and m.name != 'hashCode' and m.name != 'clone'" +
-            "and m.clzname = c.name and c.module=m.module and c.is_thirdparty = false " +
+            "and m.clzname = c.name and c.module=m.module and c.is_thirdparty = false and c.is_test != true " +
             "and m.system_id=:system_id and c.system_id=:system_id and ma.system_id=:system_id " +
             "group by m.clzname, m.module having sum = 1"
 
-    override fun getOneMethodClassCount(systemId: Long, limit: Long, offset: Long): Long {
+    override fun getOneMethodClassCount(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             it.createQuery("select count(1) from ($table) a")
                     .bind("system_id", systemId)
@@ -33,15 +33,6 @@ class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
                     .mapTo<ClassPO>(ClassPO::class.java).list()
                     .map { p -> ClassVO.create(p.name, p.module) }
         }
-    }
-
-    override fun getOneFieldClassCount(systemId: Long, limit: Long, offset: Long): Long {
-        return 24
-    }
-
-    override fun getOneFieldClass(systemId: Long, limit: Long, offset: Long): List<ClassVO> {
-        return listOf(ClassVO("a", "b.c.e.d", "e.java"),
-                ClassVO("a", "b.c.e.d", "e1.java"))
     }
 
 
