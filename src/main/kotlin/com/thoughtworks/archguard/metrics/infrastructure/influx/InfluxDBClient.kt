@@ -19,9 +19,10 @@ class InfluxDBClient(@Value("\${influxdb.url}") val url: String) {
 
     fun saveReport(reportName: String, systemId: String, vararg report: Map<BadSmellType, Long>) {
         val stringReports = report.map { src: Map<BadSmellType, Long> -> mapToString(src) }
-        val requestBody = "$reportName,system_id=$systemId " + arrayOf(stringReports).joinToString(",")
-        RestTemplate().postForObject("$url/api/v2/write?bucket=db0&precision=s", requestBody, Void::class.java)
-        log.info("save metrics to InfluxDB")
+        val joinReports = arrayOf(stringReports).joinToString(",")
+                .replace("[", "").replace("]", "")
+        val requestBody = "$reportName,system_id=$systemId $joinReports"
+        save(requestBody)
     }
 
     private fun mapToString(report: Map<BadSmellType, Long>): String {
