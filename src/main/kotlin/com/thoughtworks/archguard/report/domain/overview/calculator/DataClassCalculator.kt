@@ -1,7 +1,9 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
+import org.springframework.stereotype.Component
 
+@Component
 class DataClassCalculator(val dataClassRepository: DataClassRepository) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val allDataClassCount = dataClassRepository.getAllDataClassCount(systemId)

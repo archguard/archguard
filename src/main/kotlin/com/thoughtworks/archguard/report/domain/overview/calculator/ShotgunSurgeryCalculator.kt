@@ -1,7 +1,9 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
+import org.springframework.stereotype.Component
 
+@Component
 class ShotgunSurgeryCalculator(val shotgunSurgeryService: ShotgunSurgeryService) : BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
