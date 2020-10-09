@@ -50,7 +50,7 @@ class DashboardService(val sizingService: SizingService,
         val redundancyElementReport = redundancyService.getRedundantReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
         val overGeneralizationReport = overGeneralizationService.getRedundantReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
         influxDBClient.save("$REDUNDANCY_REPORT,system_id=${systemId} " +
-                "$redundancyElementReport, $overGeneralizationReport")
+                "$redundancyElementReport,$overGeneralizationReport")
 
     }
 
