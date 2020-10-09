@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.report.application.DashboardGroup
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
+import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.coupling.MethodCouplingRepository
 import com.thoughtworks.archguard.report.domain.coupling.PackageCouplingRepository
@@ -37,6 +38,8 @@ internal class BadSmellCalculatorTest {
     lateinit var moduleHubCalculator: ModuleHubCouplingCalculator
     lateinit var redundantElementCalculator: RedundantElementCalculator
     lateinit var overGeneralizationCalculator: OverGeneralizationCalculator
+    lateinit var shotgunSurgeryCalculator: ShotgunSurgeryCalculator
+    lateinit var dataClassCalculator: DataClassCalculator
 
     @MockK
     lateinit var classCouplingRepository: ClassCouplingRepository
@@ -71,6 +74,9 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var overGeneralizationRepository: OverGeneralizationRepository
 
+    @MockK
+    lateinit var shotgunSurgeryService: ShotgunSurgeryService
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -87,11 +93,14 @@ internal class BadSmellCalculatorTest {
         moduleHubCalculator = ModuleHubCouplingCalculator(moduleCouplingRepository)
         redundantElementCalculator = RedundantElementCalculator(redundancyRepository, dataClassRepository)
         overGeneralizationCalculator = OverGeneralizationCalculator(overGeneralizationRepository)
+        shotgunSurgeryCalculator = ShotgunSurgeryCalculator(shotgunSurgeryService)
+        dataClassCalculator = DataClassCalculator(dataClassRepository)
 
         BadSmellType.BadSmellTypeInjector(moduleCalculator, packageCalculator, classCalculator, methodCalculator,
                 classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
                 dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
-                redundantElementCalculator, overGeneralizationCalculator).postConstruct()
+                redundantElementCalculator, overGeneralizationCalculator,
+                dataClassCalculator, shotgunSurgeryCalculator).postConstruct()
     }
 
     @Test

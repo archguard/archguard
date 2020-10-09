@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellLeve
 import com.thoughtworks.archguard.report.domain.overview.calculator.CircularDependencyCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.ClassHubCouplingCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.ClassOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClassCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.DataClumpsCouplingCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.DeepInheritanceCouplingCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.MethodHubCouplingCalculator
@@ -15,6 +16,7 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.OverGenerali
 import com.thoughtworks.archguard.report.domain.overview.calculator.PackageHubCouplingCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.PackageOverSizingCalculator
 import com.thoughtworks.archguard.report.domain.overview.calculator.RedundantElementCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ShotgunSurgeryCalculator
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -32,6 +34,9 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
     SIZINGPACKAGE("包过大", null),
     SIZINGMETHOD("方法过大", null),
     SIZINGCLASS("类过大", null),
+
+    DATA_CLASS("数据类", null),
+    SHOTGUN_SURGERY("散弹式修改", null),
 
     REDUNDANT_ELEMENT("冗余元素", null),
     OVER_GENERALIZATION("过度泛化", null);
@@ -54,7 +59,9 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
                                val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
                                val circularDependencyCalculator: CircularDependencyCalculator,
                                val redundantElementCalculator: RedundantElementCalculator,
-                               val overGeneralizationCalculator: OverGeneralizationCalculator
+                               val overGeneralizationCalculator: OverGeneralizationCalculator,
+                               val dataClassCalculator: DataClassCalculator,
+                               val shotgunSurgeryCalculator: ShotgunSurgeryCalculator
     ) {
         @PostConstruct
         fun postConstruct() {
@@ -73,6 +80,9 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
 
             REDUNDANT_ELEMENT.badSmellCalculator = redundantElementCalculator
             OVER_GENERALIZATION.badSmellCalculator = overGeneralizationCalculator
+
+            DATA_CLASS.badSmellCalculator = dataClassCalculator
+            SHOTGUN_SURGERY.badSmellCalculator = shotgunSurgeryCalculator
         }
     }
 }

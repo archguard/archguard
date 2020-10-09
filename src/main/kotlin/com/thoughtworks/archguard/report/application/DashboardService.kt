@@ -5,6 +5,8 @@ import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
+import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
+import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceService
 import com.thoughtworks.archguard.report.domain.hub.HubService
@@ -22,37 +24,44 @@ class DashboardService(val sizingService: SizingService,
                        val circularDependencyService: CircularDependencyService,
                        val redundancyService: RedundancyService,
                        val overGeneralizationService: OverGeneralizationService,
+                       val dataClassService: DataClassService,
+                       val shotgunSurgeryService: ShotgunSurgeryService,
                        val influxDBClient: InfluxDBClient) {
 
     private val TIME: String = "1m";
     private val SIZNG_REPORT: String = "sizing_report"
     private val COUPLING_REPORT: String = "coupling_report"
     private val REDUNDANCY_REPORT: String = "redundancy_report"
+    private val COHESION_REPORT: String = "cohesion_report"
 
     fun getDashboard(systemId: Long): List<Dashboard> {
         val couplingDashboard = getDashboard(systemId, DashboardGroup.COUPLING, COUPLING_REPORT)
         val sizingDashboard = getDashboard(systemId, DashboardGroup.SIZING, SIZNG_REPORT)
         val redundancyDashboard = getDashboard(systemId, DashboardGroup.REDUNDANCY, REDUNDANCY_REPORT)
-        return listOf(couplingDashboard, sizingDashboard, redundancyDashboard)
+        val cohesionDashboard = getDashboard(systemId, DashboardGroup.COHESION, COHESION_REPORT)
+        return listOf(couplingDashboard, sizingDashboard, redundancyDashboard, cohesionDashboard)
     }
 
     fun saveReport(systemId: Long) {
-        val sizingReport = sizingService.getSizingReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        influxDBClient.save("$SIZNG_REPORT,system_id=${systemId} $sizingReport")
+        val sizingReport = sizingService.getSizingReport(systemId)
+        influxDBClient.saveReport(SIZNG_REPORT, systemId.toString(), sizingReport)
 
-        val hubReport = hubService.getHubReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        influxDBClient.save("$COUPLING_REPORT,system_id=${systemId} " +
-                "${hubReport},${dataClumpsReport},${deepInheritanceReport},${circularDependencyReport}")
+        val hubReport = hubService.getHubReport(systemId)
+        val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId)
+        val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId)
+        val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId)
+        influxDBClient.saveReport(COUPLING_REPORT, systemId.toString(),
+                hubReport, dataClumpsReport, deepInheritanceReport, circularDependencyReport)
 
-        val redundancyElementReport = redundancyService.getRedundantReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        val overGeneralizationReport = overGeneralizationService.getRedundantReport(systemId).map { "${it.key}=${it.value}" }.joinToString(",")
-        influxDBClient.save("$REDUNDANCY_REPORT,system_id=${systemId} " +
-                "$redundancyElementReport,$overGeneralizationReport")
+        val redundancyElementReport = redundancyService.getRedundantReport(systemId)
+        val overGeneralizationReport = overGeneralizationService.getRedundantReport(systemId)
+        influxDBClient.saveReport(REDUNDANCY_REPORT, systemId.toString(), redundancyElementReport, overGeneralizationReport)
 
+        val dataClassReport = dataClassService.getCohesionReport(systemId)
+        val shotgunSurgeryReport = shotgunSurgeryService.getCohesionReport(systemId)
+        influxDBClient.saveReport(COHESION_REPORT, systemId.toString(), dataClassReport, shotgunSurgeryReport)
     }
+
 
     private fun queryReport(systemId: Long, badSmellType: BadSmellType, reportName: String): List<GraphData> {
         val query = "SELECT " +
@@ -78,19 +87,24 @@ class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>)
 }
 
 enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
-    COUPLING("过高耦合", listOf(BadSmellType.DATACLUMPS,
+    COUPLING("过高耦合", listOf(
+            BadSmellType.DATACLUMPS,
             BadSmellType.DEEPINHERITANCE,
             BadSmellType.CLASSHUB,
             BadSmellType.METHODHUB,
             BadSmellType.PACKAGEHUB,
             BadSmellType.MODULEHUB,
             BadSmellType.CYCLEDEPENDENCY)),
-    SIZING("体量过大", listOf(BadSmellType.SIZINGMODULES,
+    SIZING("体量过大", listOf(
+            BadSmellType.SIZINGMODULES,
             BadSmellType.SIZINGPACKAGE,
             BadSmellType.SIZINGMETHOD,
             BadSmellType.SIZINGCLASS)),
-    COHESION("内聚度不足", listOf()),
-    REDUNDANCY("冗余度高", listOf(BadSmellType.REDUNDANT_ELEMENT,
+    COHESION("内聚度不足", listOf(
+            BadSmellType.DATA_CLASS,
+            BadSmellType.SHOTGUN_SURGERY)),
+    REDUNDANCY("冗余度高", listOf(
+            BadSmellType.REDUNDANT_ELEMENT,
             BadSmellType.OVER_GENERALIZATION)),
     UNDEFINED("未找到", listOf());
 
