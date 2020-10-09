@@ -10,6 +10,9 @@ import com.thoughtworks.archguard.report.domain.coupling.MethodCouplingRepositor
 import com.thoughtworks.archguard.report.domain.coupling.PackageCouplingRepository
 import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
+import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
+import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
+import com.thoughtworks.archguard.report.domain.redundancy.RedundancyRepository
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -32,6 +35,8 @@ internal class BadSmellCalculatorTest {
     lateinit var methodHubCalculator: MethodHubCouplingCalculator
     lateinit var packageHubCalculator: PackageHubCouplingCalculator
     lateinit var moduleHubCalculator: ModuleHubCouplingCalculator
+    lateinit var redundantElementCalculator: RedundantElementCalculator
+    lateinit var overGeneralizationCalculator: OverGeneralizationCalculator
 
     @MockK
     lateinit var classCouplingRepository: ClassCouplingRepository
@@ -57,6 +62,15 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var moduleCouplingRepository: ModuleCouplingRepository
 
+    @MockK
+    lateinit var redundancyRepository: RedundancyRepository
+
+    @MockK
+    lateinit var dataClassRepository: DataClassRepository
+
+    @MockK
+    lateinit var overGeneralizationRepository: OverGeneralizationRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -71,10 +85,13 @@ internal class BadSmellCalculatorTest {
         methodHubCalculator = MethodHubCouplingCalculator(methodCouplingRepository)
         packageHubCalculator = PackageHubCouplingCalculator(packageCouplingRepository)
         moduleHubCalculator = ModuleHubCouplingCalculator(moduleCouplingRepository)
+        redundantElementCalculator = RedundantElementCalculator(redundancyRepository, dataClassRepository)
+        overGeneralizationCalculator = OverGeneralizationCalculator(overGeneralizationRepository)
 
         BadSmellType.BadSmellTypeInjector(moduleCalculator, packageCalculator, classCalculator, methodCalculator,
                 classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
-                dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator).postConstruct()
+                dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
+                redundantElementCalculator, overGeneralizationCalculator).postConstruct()
     }
 
     @Test
