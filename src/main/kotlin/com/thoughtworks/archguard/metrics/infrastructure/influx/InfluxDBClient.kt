@@ -20,13 +20,13 @@ class InfluxDBClient(@Value("\${influxdb.url}") val url: String) {
     fun saveReport(reportName: String, systemId: String, vararg report: Map<BadSmellType, Long>) {
         val stringReports = report.map { src: Map<BadSmellType, Long> -> mapToString(src) }
         val joinReports = arrayOf(stringReports).joinToString(",")
-                .replace("[", "").replace("]", "")
+                .replace("[", "").replace("]", "").replace(" ", "")
         val requestBody = "$reportName,system_id=$systemId $joinReports"
         save(requestBody)
     }
 
     private fun mapToString(report: Map<BadSmellType, Long>): String {
-        return report.map { "${it.key}=${it.value}" }.joinToString(",")
+        return report.map { "${it.key}=${it.value}" }.joinToString(",").trim()
     }
 
     fun query(query: String): List<InfluxDBSeries> {
