@@ -51,15 +51,17 @@ class DashboardService(val sizingService: SizingService,
         val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId)
         val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId)
         influxDBClient.saveReport(COUPLING_REPORT, systemId.toString(),
-                hubReport, dataClumpsReport, deepInheritanceReport, circularDependencyReport)
+                hubReport.plus(dataClumpsReport).plus(deepInheritanceReport).plus(circularDependencyReport))
 
         val redundancyElementReport = redundancyService.getRedundantReport(systemId)
         val overGeneralizationReport = overGeneralizationService.getRedundantReport(systemId)
-        influxDBClient.saveReport(REDUNDANCY_REPORT, systemId.toString(), redundancyElementReport, overGeneralizationReport)
+        influxDBClient.saveReport(REDUNDANCY_REPORT, systemId.toString(),
+                redundancyElementReport.plus(overGeneralizationReport))
 
         val dataClassReport = dataClassService.getCohesionReport(systemId)
         val shotgunSurgeryReport = shotgunSurgeryService.getCohesionReport(systemId)
-        influxDBClient.saveReport(COHESION_REPORT, systemId.toString(), dataClassReport, shotgunSurgeryReport)
+        influxDBClient.saveReport(COHESION_REPORT, systemId.toString(),
+                dataClassReport.plus(shotgunSurgeryReport))
     }
 
 
