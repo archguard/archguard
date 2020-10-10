@@ -1,6 +1,7 @@
 package com.thoughtworks.archgard.scanner.domain.system
 
 import com.thoughtworks.archgard.scanner.domain.exception.CloneSourceException
+import com.thoughtworks.archgard.scanner.domain.exception.CompileException
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -69,16 +70,17 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         val pb: ProcessBuilder = when (buildTool) {
             BuildTool.MAVEN -> ProcessBuilder("./mvnw", "clean", "test", "-DskipTests")
             BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
-            BuildTool.NONE -> return
+            BuildTool.NONE -> throw CompileException("Fail to identify build tool for compile")
         }
         Processor.executeWithLogs(pb, workspace)
     }
 
     private fun getBuildTool(workspace: File): BuildTool {
-        if (workspace.listFiles().orEmpty().any { it.name == "pom.xml" }) {
-            return BuildTool.MAVEN
+        return when {
+            workspace.listFiles().orEmpty().any { it.name == "pom.xml" } -> BuildTool.MAVEN
+            workspace.listFiles().orEmpty().any { it.name.startsWith("build.gradle") } -> BuildTool.GRADLE
+            else -> BuildTool.NONE
         }
-        return BuildTool.GRADLE
     }
 
     private fun cloneByGitCli(workspace: File, repo: String): Int {

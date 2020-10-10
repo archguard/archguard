@@ -3,7 +3,6 @@ package com.thoughtworks.archgard.scanner.domain.hubexecutor
 import com.thoughtworks.archgard.scanner.domain.ScanContext
 import com.thoughtworks.archgard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archgard.scanner.domain.config.repository.ConfigureRepository
-import com.thoughtworks.archgard.scanner.domain.exception.CloneSourceException
 import com.thoughtworks.archgard.scanner.infrastructure.client.EvaluationReportClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +38,7 @@ class HubService {
                 doScan(id, dbUrl)
             } catch (e: Exception) {
                 log.error(e.message)
-                if (e is CloneSourceException) throw e
+                throw e
             } finally {
                 concurrentSet.remove(id)
             }
