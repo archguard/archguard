@@ -118,7 +118,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
             listOf("svn", "checkout",
                     repo, Paths.get("./").normalize().toString())
         }
-        log.info("command to be executed: {}", cmdList)
+        log.debug("command to be executed: {}", cmdList)
 
         val pb = ProcessBuilder(cmdList)
         return Processor.executeWithLogs(pb, workspace)
