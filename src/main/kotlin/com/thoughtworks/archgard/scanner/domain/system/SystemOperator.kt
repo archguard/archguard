@@ -72,15 +72,16 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
     private fun cloneByGitCli(workspace: File, repo: String) {
         val repoCombineWithAuthInfo = processGitUrl(repo)
-        log.info("Going to clone {}", repoCombineWithAuthInfo)
+        log.debug("Going to clone {}", repoCombineWithAuthInfo)
 
         //TODO: Can use [git clone XXX --shallow-since "2020-09-05T00:00:00"] to shallow clone with a history after the specified time. 
         // So we can get the files often modified in git commit after the specified time via [coca git -t] and clone faster 
         val cmdList = listOf("git", "clone", repoCombineWithAuthInfo, workspace.absolutePath)
-        log.info("command to be executed: {}", cmdList)
+        log.debug("command to be executed: {}", cmdList)
 
         val pb = ProcessBuilder(cmdList)
-        Processor.executeWithLogs(pb, workspace)
+        val exitValue = Processor.executeWithLogs(pb, workspace)
+        log.info("Git clone with result code: {}", exitValue)
     }
 
     private fun processGitUrl(repo: String): String {

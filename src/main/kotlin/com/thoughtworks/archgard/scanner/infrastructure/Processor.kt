@@ -9,11 +9,11 @@ import java.io.InputStreamReader
 object Processor {
     private val log = LoggerFactory.getLogger(Processor::class.java)
 
-    fun executeWithLogs(pb: ProcessBuilder, workspace: File) {
-        executeWithLogsAndAppendToFile(pb, workspace, null)
+    fun executeWithLogs(pb: ProcessBuilder, workspace: File): Int {
+        return executeWithLogsAndAppendToFile(pb, workspace, null)
     }
 
-    fun executeWithLogsAndAppendToFile(pb: ProcessBuilder, workspace: File, reportPath: String?) {
+    fun executeWithLogsAndAppendToFile(pb: ProcessBuilder, workspace: File, reportPath: String?): Int {
         pb.redirectErrorStream(true)
         pb.directory(workspace)
         if (reportPath != null) {
@@ -28,5 +28,6 @@ object Processor {
         }
         inputStream.close()
         p.waitFor()
+        return p.exitValue()
     }
 }
