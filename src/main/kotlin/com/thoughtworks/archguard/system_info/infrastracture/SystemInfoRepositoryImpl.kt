@@ -89,7 +89,10 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "_ClassDependences", "_ClassFields", "_ClassMethods", "_ClassParent", "_MethodCallees",
                 "_MethodFields", "badSmell", "CheckStyle", "class_coupling", "class_metrics", "Configure",
                 "dubbo_bean", "dubbo_module", "dubbo_reference_config", "dubbo_service_config", "JAnnotation",
-                "JAnnotationValue", "JClass", "JField", "JMethod", "logic_module", "testBadSmell", "violation"
+                "JAnnotationValue", "JClass", "JField", "JMethod", "logic_module", "testBadSmell", "violation",
+                "commit_log", "change_entry", "class_access", "method_access", "git_hot_file",
+                "circular_dependency_metrics", "cognitive_complexity", "data_class",
+                "method_metrics", "module_metrics", "package_metrics"
         )
 
         tables.forEach { sqls.add("delete from $it where system_id = $id") }
