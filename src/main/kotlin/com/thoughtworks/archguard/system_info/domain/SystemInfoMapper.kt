@@ -16,7 +16,7 @@ class SystemInfoMapper {
 
     fun toDTO(info: SystemInfo): SystemInfoDTO {
         return SystemInfoDTO(id = info.id, systemName = info.systemName, sql = info.sql, username = info.username,
-                password = AESCrypt.decrypt(info.password), repoType = info.repoType, scanned = info.scanned,
+                password = info.password, repoType = info.repoType, scanned = info.scanned,
                 qualityGateProfileId = info.qualityGateProfileId,
                 repo = info.repo.split(','))
     }
