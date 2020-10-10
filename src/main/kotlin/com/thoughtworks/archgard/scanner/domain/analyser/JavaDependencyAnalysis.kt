@@ -45,20 +45,30 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
     }
 
     fun analyse(systemId: Long) {
-        log.info("start scan java analysis")
+        log.info("************************************")
+        log.info(" Start scan java analysis")
+        log.info("************************************")
         val url = dbUrl.replace("://", "://$username:$password@")
 
         hubService.doScanIfNotRunning(systemId, url);
-        log.info("finished level 1 scanners")
+        log.info("************************************")
+        log.info(" Finished level 1 scanners")
+        log.info("************************************")
 
         analysisModuleClient.autoDefine(systemId)
-        log.info("finished logic module auto define")
+        log.info("************************************")
+        log.info(" Finished logic module auto define")
+        log.info("************************************")
 
         analysisModuleClient.badSmellDashboard(systemId)
-        log.info("finished bad smell dashboard")
+        log.info("************************************")
+        log.info(" Finished bad smell dashboard")
+        log.info("************************************")
 
         scanner2Client.level2MetricsAnalysis(systemId)
-        log.info("finished level 2 analysis metrics")
+        log.info("************************************")
+        log.info(" Finished level 2 analysis metrics")
+        log.info("************************************")
     }
 
     private fun getSystemInfo(systemId: Long): SystemInfo {

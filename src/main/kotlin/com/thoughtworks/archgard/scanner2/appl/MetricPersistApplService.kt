@@ -60,7 +60,10 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
-        log.info("begin calculate and persist Metric in systemId $systemId")
+        log.info("**************************************************************************")
+        log.info(" Begin calculate and persist Level 2 Metric in systemId $systemId")
+        log.info("**************************************************************************")
+
         val latch = CountDownLatch(4)
 
         scanner2ThreadPool.submit(Runnable {
@@ -113,7 +116,9 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val circularDependenciesCount = CircularDependenciesCount(systemId, moduleCircularDependency.size, packageCircularDependency.size, classCircularDependency.size, methodCircularDependency.size)
         influxDBClient.save(CircularDependenciesCountDtoForWriteInfluxDB(circularDependenciesCount).toRequestBody())
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist circularDependenciesCount to influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
 
     }
 
@@ -126,7 +131,10 @@ class MetricPersistApplService(val abcService: AbcService,
 
         moduleMetricRepository.insertOrUpdateModuleMetric(systemId, moduleMetrics)
         influxDBClient.save(ModuleMetricsDtoListForWriteInfluxDB(moduleMetrics).toRequestBody())
+
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist module Metric to mysql and influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
     }
 
     private fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
@@ -138,7 +146,10 @@ class MetricPersistApplService(val abcService: AbcService,
         log.info("Finished calculate packageMetric in systemId $systemId")
         packageMetricRepository.insertOrUpdatePackageMetric(systemId, packageMetrics)
         influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
+
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist package Metric to mysql and influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
     }
 
     private fun persistMethodLevel2Metrics(systemId: Long) {
@@ -153,7 +164,10 @@ class MetricPersistApplService(val abcService: AbcService,
 
         methodMetricRepository.insertOrUpdateMethodMetric(systemId, methodMetrics)
         influxDBClient.save(MethodMetricsDtoListForWriteInfluxDB(methodMetrics).toRequestBody())
+
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist method Metric to mysql and influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
     }
 
     private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
@@ -193,7 +207,10 @@ class MetricPersistApplService(val abcService: AbcService,
         log.info("Finished calculate classMetric in systemId $systemId")
 
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
+
         influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist class Metric to mysql and influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
     }
 }
