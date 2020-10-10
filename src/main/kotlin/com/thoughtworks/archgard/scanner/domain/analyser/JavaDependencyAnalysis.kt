@@ -60,14 +60,14 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         log.info(" Finished logic module auto define")
         log.info("************************************")
 
-        analysisModuleClient.badSmellDashboard(systemId)
-        log.info("************************************")
-        log.info(" Finished bad smell dashboard")
-        log.info("************************************")
-
         scanner2Client.level2MetricsAnalysis(systemId)
         log.info("************************************")
         log.info(" Finished level 2 analysis metrics")
+        log.info("************************************")
+
+        analysisModuleClient.badSmellDashboard(systemId)
+        log.info("************************************")
+        log.info(" Finished bad smell dashboard")
         log.info("************************************")
     }
 
