@@ -93,7 +93,9 @@ class MetricPersistApplService(val abcService: AbcService,
         val dataClassWithOneFieldCount = dataClasses.filter { it.fields.size == 1 }.size
 
         influxDBClient.save(DataClassDtoForWriteInfluxDB(systemId, dataClassCount, dataClassWithOneFieldCount).toRequestBody())
+        log.info("-----------------------------------------------------------------------")
         log.info("Finished persist data class Metric to mysql and influxdb in systemId $systemId")
+        log.info("-----------------------------------------------------------------------")
     }
 
     @Transactional
