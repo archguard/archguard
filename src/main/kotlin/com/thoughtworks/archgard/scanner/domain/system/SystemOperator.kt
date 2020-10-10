@@ -1,5 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.system
 
+import com.thoughtworks.archgard.scanner.domain.exception.CloneSourceException
 import com.thoughtworks.archgard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -33,25 +34,35 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     private fun cloneSingleRepo(repo: String) {
         val repoWorkSpace = createTempDir(directory = workspace)
         log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
-        getSource(repoWorkSpace, repo)
+        val exitCode = getSource(repoWorkSpace, repo)
+        if (exitCode != 0) {
+            throw CloneSourceException("Fail to clone source with exitCode $exitCode")
+        }
         compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql)
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
         val repoWorkSpace = createTempDir(directory = workspace)
         log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
-        getSource(repoWorkSpace, repo)
+        val exitCode = getSource(repoWorkSpace, repo)
+        if (exitCode != 0) {
+            throw CloneSourceException("Fail to clone source with exitCode $exitCode")
+        }
+
         val buildTool = getBuildTool(repoWorkSpace)
         buildSource(repoWorkSpace, buildTool)
         compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.systemInfo.sql)
     }
 
-    private fun getSource(workspace: File, repo: String) {
+    private fun getSource(workspace: File, repo: String): Int {
+        val WRONG_REPO_TYPE = -1
+
         when (this.systemInfo.repoType) {
-            "GIT" -> cloneByGitCli(workspace, repo)
-            "SVN" -> cloneBySvn(workspace, repo)
-            "ZIP" -> cloneByZip(workspace, repo)
+            "GIT" -> return cloneByGitCli(workspace, repo)
+            "SVN" -> return cloneBySvn(workspace, repo)
+            "ZIP" -> return cloneByZip(workspace, repo)
         }
+        return WRONG_REPO_TYPE
     }
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
@@ -70,7 +81,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         return BuildTool.GRADLE
     }
 
-    private fun cloneByGitCli(workspace: File, repo: String) {
+    private fun cloneByGitCli(workspace: File, repo: String): Int {
         val repoCombineWithAuthInfo = processGitUrl(repo)
         log.debug("Going to clone {}", repoCombineWithAuthInfo)
 
@@ -80,8 +91,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         log.debug("command to be executed: {}", cmdList)
 
         val pb = ProcessBuilder(cmdList)
-        val exitValue = Processor.executeWithLogs(pb, workspace)
-        log.info("Git clone with result code: {}", exitValue)
+        return Processor.executeWithLogs(pb, workspace)
     }
 
     private fun processGitUrl(repo: String): String {
@@ -96,7 +106,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         return URLEncoder.encode(msg, "UTF-8")
     }
 
-    private fun cloneBySvn(workspace: File, repo: String) {
+    private fun cloneBySvn(workspace: File, repo: String): Int {
         val cmdList = if (systemInfo.hasAuthInfo()) {
             listOf("svn", "checkout",
                     repo, Paths.get("./").normalize().toString(),
@@ -109,14 +119,14 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         log.info("command to be executed: {}", cmdList)
 
         val pb = ProcessBuilder(cmdList)
-        Processor.executeWithLogs(pb, workspace)
+        return Processor.executeWithLogs(pb, workspace)
     }
 
-    private fun cloneByZip(workspace: File, repo: String) {
+    private fun cloneByZip(workspace: File, repo: String): Int {
         // unzip .zip file to workspace
         // unzip -d /temp test.zip
         val cmdList = listOf("unzip", repo)
         val pb = ProcessBuilder(cmdList)
-        Processor.executeWithLogs(pb, workspace)
+        return Processor.executeWithLogs(pb, workspace)
     }
 }
