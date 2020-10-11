@@ -10,6 +10,7 @@ import com.thoughtworks.archgard.scanner2.domain.model.JMethodVO
 import com.thoughtworks.archgard.scanner2.domain.model.Node
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
+import com.thoughtworks.archgard.scanner2.infrastructure.Toggle
 import org.springframework.stereotype.Service
 
 
@@ -22,8 +23,13 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         if (cycles.isEmpty()) {
             return emptyList()
         }
+
         val cycleList = cycles.map { it.map { jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }.toVO() } }
-        return cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
+        return if (Toggle.EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY.getStatus()) {
+            cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
+        } else {
+            cycleList
+        }
     }
 
     private fun isInternalClassCycle(jClassList: List<JClassVO>): Boolean {
