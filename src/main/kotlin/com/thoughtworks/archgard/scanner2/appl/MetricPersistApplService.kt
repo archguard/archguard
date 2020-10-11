@@ -174,15 +174,15 @@ class MetricPersistApplService(val abcService: AbcService,
 
     private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val latch = CountDownLatch(5)
-//        var abcMap = emptyMap<String, Int>()
+        var abcMap = emptyMap<String, Int>()
         var ditMap = emptyMap<String, Int>()
         var nocMap = emptyMap<String, Int>()
         var lcom4Map = emptyMap<String, Int>()
         var classFanInFanOutMap = emptyMap<String, FanInFanOut>()
-//        scanner2ThreadPool.submit(Runnable {
-//            abcMap = abcService.calculate(systemId, jClasses)
-//            latch.countDown()
-//        })
+        scanner2ThreadPool.submit(Runnable {
+            abcMap = abcService.calculate(systemId, jClasses)
+            latch.countDown()
+        })
         scanner2ThreadPool.submit(Runnable {
             ditMap = ditService.calculate(systemId, jClasses)
             latch.countDown()
@@ -203,7 +203,7 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(),
-                    0, ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
+                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
                     classFanInFanOutMap[it.id]?.fanIn ?: 0, classFanInFanOutMap[it.id]?.fanOut ?: 0)
         }
         log.info("Finished calculate classMetric in systemId $systemId")
