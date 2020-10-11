@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner2.domain.model
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class JClassVOTest {
@@ -38,6 +38,18 @@ internal class JClassVOTest {
         val typeName = jClassVO.getTypeName()
 
         assertEquals("UserService", typeName)
+    }
+
+    @Test
+    internal fun shouldGetBaseClassNameForInternalClass() {
+        val jClassVO = JClassVO("JavaParser\$ElementValueContext ", "dubbo-service")
+        assertEquals("JavaParser", jClassVO.getBaseClassName())
+    }
+
+    @Test
+    internal fun shouldGetBaseClassNameForBaseClass() {
+        val jClassVO = JClassVO("JavaParser", "dubbo-service")
+        assertEquals("JavaParser", jClassVO.getBaseClassName())
     }
 
 }

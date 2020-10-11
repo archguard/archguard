@@ -52,4 +52,30 @@ class CircularDependencyServiceTest {
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
         assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(listOf(jClassM.toVO(), jClassN.toVO(), jClassP.toVO()))
     }
+
+    @Test
+    fun should_filter_out_internal_class_cycles_in_graph() {
+        val projectId = 2L
+        val dependency1 = Dependency("a", "b")
+        val dependency2 = Dependency("b", "c")
+        val dependency3 = Dependency("c", "d")
+        val dependency4 = Dependency("d", "a")
+
+        val dependency5 = Dependency("m", "m$1")
+        val dependency6 = Dependency("m$1", "m")
+        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6)
+        val jClassA = JClass("a", "a", "m1")
+        val jClassB = JClass("b", "b", "m1")
+        val jClassC = JClass("c", "c", "m1")
+        val jClassD = JClass("d", "d", "m1")
+        val jClassM = JClass("m", "m", "m1")
+        val jClassN = JClass("m$1", "m$1", "m1")
+        every { jClassRepository.getJClassesNotThirdParty(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
+        val classCircularDependency = circularDependencyService.getClassCircularDependency(projectId)
+        println(classCircularDependency)
+
+        classCircularDependency.sortedWith(compareBy { it.size })
+        assertThat(classCircularDependency.size).isEqualTo(1)
+        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
+    }
 }

@@ -22,7 +22,15 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        return cycles.map { it.map { jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }.toVO() } }
+        val cycleList = cycles.map { it.map { jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }.toVO() } }
+        return cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
+    }
+
+    private fun isInternalClassCycle(jClassList: List<JClassVO>): Boolean {
+        return when (jClassList.map { it.getBaseClassName() }.toSet().size) {
+            1 -> true
+            else -> false
+        }
     }
 
     fun getMethodCircularDependency(systemId: Long): List<List<JMethodVO>> {

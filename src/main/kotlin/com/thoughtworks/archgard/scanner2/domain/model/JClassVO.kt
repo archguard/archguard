@@ -54,4 +54,8 @@ class JClassVO(val name: String, val module: String?) : Node {
         return name.substringAfterLast(".")
     }
 
+    fun getBaseClassName(): String {
+        return name.substringBefore("$", name)
+    }
+
 }
