@@ -21,9 +21,7 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
     override fun getSystemModuleCountBySystemId(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(distinct moduleName) moduleCount
-                    from ClassStatistic c1
-                    where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                select count(distinct module) from JClass where system_id=:systemId and module is not null
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
