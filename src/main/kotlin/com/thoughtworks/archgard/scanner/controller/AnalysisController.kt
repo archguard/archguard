@@ -25,6 +25,7 @@ class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalys
         }
     }
 
+    @Deprecated("It should be migrated out as not using in ArchGuard")
     @PostMapping("/sql-analyses")
     fun analyseSql(@PathVariable("systemId") id: Long) {
         sqlAnalysis.analyse(id)
