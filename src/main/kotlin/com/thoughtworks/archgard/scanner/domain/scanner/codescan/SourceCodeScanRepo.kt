@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.sourcecode
+package com.thoughtworks.archgard.scanner.domain.scanner.codescan
 
 import java.io.File
 

@@ -1,6 +1,6 @@
 package com.thoughtworks.archgard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.sourcecode.SourceCodeScanRepo
+import com.thoughtworks.archgard.scanner.domain.scanner.codescan.SourceCodeScanRepo
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
