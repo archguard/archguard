@@ -2,13 +2,13 @@ package com.thoughtworks.archgard.scanner2.infrastructure.mysql
 
 import com.thoughtworks.archgard.scanner2.domain.model.ClazzType
 import com.thoughtworks.archgard.scanner2.domain.model.MethodType
-import jdk.internal.org.objectweb.asm.Opcodes.ACC_PRIVATE
-import jdk.internal.org.objectweb.asm.Opcodes.ACC_STATIC
 
 object TypeMap {
     private const val ACC_INTERFACE = 512
     private const val ACC_ABSTRACT = 1024
     private const val ACC_SYNTHETIC = 4096
+    private const val ACC_PRIVATE = 2
+    private const val ACC_STATIC = 8
 
     fun getClassType(access: Int): List<ClazzType> {
         val classTypes: MutableList<ClazzType> = mutableListOf()
