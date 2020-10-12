@@ -10,9 +10,9 @@ class DataClumpsCouplingCalculator(val dataClumpsRepository: DataClumpsRepositor
     }
 
     private fun getTypeCountLevelRanges(): Array<LongRange> {
-        val countRangeLevel1 = 2L until 4L
-        val countRangeLevel2 = 4L until 8L
-        val countRangeLevel3 = 8L until Long.MAX_VALUE
+        val countRangeLevel1 = 7L until 14L
+        val countRangeLevel2 = 14L until 40L
+        val countRangeLevel3 = 40L until Long.MAX_VALUE
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
 }
