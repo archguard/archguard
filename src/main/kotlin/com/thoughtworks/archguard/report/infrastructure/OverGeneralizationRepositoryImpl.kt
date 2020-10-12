@@ -44,7 +44,8 @@ class OverGeneralizationRepositoryImpl(val jdbi: Jdbi) : OverGeneralizationRepos
 
     override fun getOverGeneralizationPairList(parentClassIds: List<String>, limit: Long, offset: Long): List<OverGeneralizationPair> {
         return jdbi.withHandle<List<OverGeneralizationPair>, Exception> {
-            val sql = "select c1.module, c1.name, c2.module, c2.name from " +
+            val sql = "select c1.module as parentModuleName, c1.name as parentClzName, " +
+                    "c2.module as childModuleName, c2.name as childClzName from " +
                     "(select a, b from _ClassParent where b in (<parentClassIds>)) as p " +
                     "inner join JClass c1 on p.b = c1.id " +
                     "inner join JClass c2 on p.a = c2.id " +
