@@ -27,7 +27,7 @@ internal class RunnerTest {
 //        val calendar = Calendar.getInstance()
 //        calendar.set(2019, 1, 1)
 //        Runner().main(arrayOf("--git-path=/Users/ygdong/git/spring-framework", "--branch=master","--after=${calendar.timeInMillis}"))
-        Runner().main(arrayOf("--path=/Users/le.hu/workspace/dubbo-samples/dubbo-samples-configcenter/dubbo-samples-configcenter-xml/src/main/java/org/apache/dubbo/samples/configcenter/api", "--loc=true"))
+        Runner().main(arrayOf("--path=/Users/le.hu/workspace/dubbo-samples/dubbo-samples-configcenter/dubbo-samples-configcenter-xml", "--loc=true"))
         assertTrue(file.exists())
     }
 }

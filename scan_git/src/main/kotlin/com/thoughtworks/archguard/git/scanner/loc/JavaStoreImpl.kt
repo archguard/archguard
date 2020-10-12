@@ -1,14 +1,18 @@
 package com.thoughtworks.archguard.git.scanner.loc
 
+import com.thoughtworks.archguard.git.scanner.loc.model.JMethodLoC
 import java.io.File
-import java.util.*
 
 class JavaStoreImpl {
     private val buffer: MutableList<String> = ArrayList()
-    fun saveClassLoC(clz: String?, loc: Int, systemId: String, module: String) {
-        val sql = String.format("UPDATE JClass SET loc = %d WHERE name = '%s' and system_id='%s' and module='%s'",
+    fun saveClassLoC(clz: String?, loc: Int, systemId: String, module: String, methodLocs: ArrayList<JMethodLoC>) {
+        val classSql = String.format("UPDATE JClass SET loc = %d WHERE name = '%s' and system_id='%s' and module='%s';",
                 loc, clz, systemId, module)
-        buffer.add(sql)
+        buffer.add(classSql)
+
+        val methodSql = methodLocs.map { "UPDATE JMethod SET loc = ${it.loc} WHERE " +
+                "clzname = '$clz' and system_id='$systemId' and module='$module' and name = '${it.methodName}';" }.joinToString("\n")
+        buffer.add(methodSql)
     }
 
     fun toFile() {

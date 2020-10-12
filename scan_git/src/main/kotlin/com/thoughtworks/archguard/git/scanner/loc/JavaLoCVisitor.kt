@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.git.scanner.loc
 
 import com.thoughtworks.archguard.git.scanner.loc.model.JClassLoC
 import dev.evolution.java.JavaParser
+import dev.evolution.java.JavaParser.MethodDeclarationContext
 import dev.evolution.java.JavaParserBaseVisitor
 import org.antlr.v4.runtime.ParserRuleContext
 
@@ -20,6 +21,25 @@ class JavaLoCVisitor(private val loc: JClassLoC) : JavaParserBaseVisitor<Any?>()
     override fun visitPackageDeclaration(ctx: JavaParser.PackageDeclarationContext): Any? {
         currentPkg = ctx.qualifiedName().text
         return super.visitPackageDeclaration(ctx)
+    }
+
+    override fun visitMethodDeclaration(ctx: MethodDeclarationContext?): Any? {
+        if (ctx == null) {
+            return null
+        }
+        val children = ctx.children
+        var count = 0
+        var methodName = ""
+        children.forEach {
+            if (it is JavaParser.MethodBodyContext) {
+                count = (it.stop.line - it.start.line + 1)
+            } else if (it is JavaParser.MethodNameContext) {
+                methodName = it.IDENTIFIER().text
+            }
+        }
+        loc.addMethod(methodName, count)
+
+        return super.visitMethodDeclaration(ctx)
     }
 
     private fun getLoc(ctx: ParserRuleContext, currentClz: String) {
