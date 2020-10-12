@@ -17,7 +17,7 @@ class OverGeneralizationController(val overGeneralizationService: OverGeneraliza
                                         @RequestParam(value = "currentPageNumber") currentPageNumber: Long):
             ResponseEntity<OneMethodClassDto> {
         val offset = (currentPageNumber - 1) * limit
-        val result = overGeneralizationService.getOneExtendsWithTotalCount(systemId, limit, offset)
+        val result = overGeneralizationService.getOneExtendsWithTotalCountOld(systemId, limit, offset)
         return ResponseEntity.ok(OneMethodClassDto(result.second, result.first, offset / limit + 1))
     }
 }

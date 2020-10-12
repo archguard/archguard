@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationPair
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
@@ -31,4 +32,29 @@ class OverGeneralizationRepositoryImpl(val jdbi: Jdbi) : OverGeneralizationRepos
                     .map { p -> ClassVO.create(p.name, p.module) }
         }
     }
+
+    override fun getOverGeneralizationParentClassId(systemId: Long): List<String> {
+        return jdbi.withHandle<List<String>, Exception> {
+            it.createQuery("select b from ($table) a")
+                    .bind("system_id", systemId)
+                    .mapTo(String::class.java)
+                    .list()
+        }
+    }
+
+    override fun getOverGeneralizationPairList(parentClassIds: List<String>, limit: Long, offset: Long): List<OverGeneralizationPair> {
+        return jdbi.withHandle<List<OverGeneralizationPair>, Exception> {
+            val sql = "select c1.module, c1.name, c2.module, c2.name from " +
+                    "(select a, b from _ClassParent where b in (<parentClassIds>)) as p " +
+                    "inner join JClass c1 on p.b = c1.id " +
+                    "inner join JClass c2 on p.a = c2.id " +
+                    "limit :limit offset :offset"
+            it.createQuery(sql)
+                    .bindList("parentClassIds", parentClassIds)
+                    .bind("offset", offset)
+                    .bind("limit", limit)
+                    .mapTo(OverGeneralizationPairPO::class.java).list().map { it.toOverGeneralizationPair() }
+        }
+    }
+
 }
