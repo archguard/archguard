@@ -20,6 +20,7 @@ internal class RunnerTest {
     }
 
     @Test
+    @Disabled
     fun run_loc() {
         val file = File("loc_output.sql")
 //        file.deleteOnExit();
