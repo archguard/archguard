@@ -1,14 +1,14 @@
 package com.thoughtworks.archguard.report.domain.redundancy
 
-data class OverGeneralizationPairDTO(val pair: OverGeneralizationPair) {
-    val parentModuleName: String = pair.parentClass.moduleName
-    val parentPackageName: String = pair.parentClass.packageName
-    val parentClassName: String = pair.parentClass.className
-
-    val childModuleName: String = pair.childClass.moduleName
-    val childPackageName: String = pair.childClass.packageName
-    val childClassName: String = pair.childClass.className
-
+data class OverGeneralizationPairDTO(val parentModuleName: String, val parentPackageName: String, val parentClassName: String,
+                                     val childModuleName: String, val childPackageName: String, val childClassName: String) {
+    companion object {
+        fun create(pair: OverGeneralizationPair): OverGeneralizationPairDTO {
+            return OverGeneralizationPairDTO(pair.parentClass.moduleName,
+                    pair.parentClass.packageName, pair.parentClass.className,
+                    pair.childClass.moduleName, pair.childClass.packageName, pair.childClass.className)
+        }
+    }
 }
 
 data class OverGeneralizationPairListDTO(val data: List<OverGeneralizationPairDTO>,

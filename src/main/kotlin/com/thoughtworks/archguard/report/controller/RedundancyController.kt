@@ -45,7 +45,7 @@ class RedundancyController(val redundancyService: RedundancyService,
             ResponseEntity<OverGeneralizationPairListDTO> {
         val offset = (currentPageNumber - 1) * limit
         val result = overGeneralizationService.getOneExtendsWithTotalCount(systemId, limit, offset)
-        val data = result.second.map { pair -> OverGeneralizationPairDTO(pair) }.toList()
+        val data = result.second.map { pair -> OverGeneralizationPairDTO.create(pair) }.toList()
         return ResponseEntity.ok(OverGeneralizationPairListDTO(data, result.first, offset / limit + 1))
     }
 
