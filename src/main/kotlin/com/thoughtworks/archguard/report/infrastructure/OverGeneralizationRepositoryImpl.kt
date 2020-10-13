@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import com.thoughtworks.archguard.report.domain.module.ClassVO
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationPair
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
 import org.jdbi.v3.core.Jdbi
@@ -19,17 +18,6 @@ class OverGeneralizationRepositoryImpl(val jdbi: Jdbi) : OverGeneralizationRepos
             it.createQuery("select count(1) from ($table) a")
                     .bind("system_id", systemId)
                     .mapTo<Long>(Long::class.java).one()
-        }
-    }
-
-    override fun getOverGeneralizationList(systemId: Long, limit: Long, offset: Long): List<ClassVO> {
-        return jdbi.withHandle<List<ClassVO>, Exception> {
-            it.createQuery("$table order by name LIMIT :limit OFFSET :offset ")
-                    .bind("system_id", systemId)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
-                    .mapTo<ClassPO>(ClassPO::class.java).list()
-                    .map { p -> ClassVO.create(p.name, p.module) }
         }
     }
 
