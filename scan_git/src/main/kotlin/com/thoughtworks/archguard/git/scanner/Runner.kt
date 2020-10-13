@@ -4,7 +4,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
-import com.thoughtworks.archguard.git.scanner.loc.JavaLoCApp
+import com.thoughtworks.archguard.git.scanner.loc.LoCRepository
+import com.thoughtworks.archguard.git.scanner.loc.java.JavaLoCApp
+import com.thoughtworks.archguard.git.scanner.loc.kotlin.KotlinLoCApp
 import com.github.ajalt.clikt.parameters.options.default as default1
 
 class Runner : CliktCommand() {
@@ -21,8 +23,12 @@ class Runner : CliktCommand() {
             val service = ScannerService(JGitAdapter(CognitiveComplexityParser()), Bean2Sql())
             service.git2SqlFile(path, branch, after, repoId, systemId.toLong())
         } else {
-            val javaLoCApp = JavaLoCApp(systemId)
+            val loCRepository = LoCRepository()
+            val javaLoCApp = JavaLoCApp(systemId, loCRepository)
             javaLoCApp.analysisDir(path)
+            val kotlinLoCApp = KotlinLoCApp(systemId, loCRepository)
+            kotlinLoCApp.analysisDir(path)
+            loCRepository.toFile()
         }
 
     }

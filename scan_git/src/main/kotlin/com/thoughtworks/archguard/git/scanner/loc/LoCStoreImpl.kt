@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.git.scanner.loc
 import com.thoughtworks.archguard.git.scanner.loc.model.JMethodLoC
 import java.io.File
 
-class JavaStoreImpl {
+class LoCStoreImpl {
     private val buffer: MutableList<String> = ArrayList()
     fun saveClassLoC(clz: String?, loc: Int, systemId: String, module: String, methodLocs: ArrayList<JMethodLoC>) {
         val classSql = String.format("UPDATE JClass SET loc = %d WHERE name = '%s' and system_id='%s' and module='%s';",

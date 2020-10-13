@@ -1,19 +1,18 @@
-package com.thoughtworks.archguard.git.scanner.loc
+package com.thoughtworks.archguard.git.scanner.loc.kotlin
 
-import dev.evolution.java.JavaLexer
-import dev.evolution.java.JavaParser
+import dev.evolution.kotlin.KotlinLexer
+import dev.evolution.kotlin.KotlinParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import java.io.IOException
 import java.nio.file.Path
 
-object JavaFileParser {
+object KotlinFileParser {
     fun parse(path: Path?): ParseTree {
         val stream = CharStreams.fromPath(path)
-        val lexer = JavaLexer(stream)
+        val lexer = KotlinLexer(stream)
         val tokens = CommonTokenStream(lexer)
-        val parser = JavaParser(tokens)
-        return parser.compilationUnit()
+        val parser = KotlinParser(tokens)
+        return parser.kotlinFile()
     }
 }

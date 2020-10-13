@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.git.scanner.loc
+package com.thoughtworks.archguard.git.scanner.loc.java
 
 import com.thoughtworks.archguard.git.scanner.loc.model.JClassLoC
 import dev.evolution.java.JavaParser

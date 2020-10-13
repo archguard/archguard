@@ -1,5 +1,8 @@
-package com.thoughtworks.archguard.git.scanner.loc
+package com.thoughtworks.archguard.git.scanner.loc.java
 
+import com.thoughtworks.archguard.git.scanner.loc.LoCRepository
+import com.thoughtworks.archguard.git.scanner.loc.ModuleUtil.Companion.getModule
+import com.thoughtworks.archguard.git.scanner.loc.ProcessFiles
 import com.thoughtworks.archguard.git.scanner.loc.model.JClassLoC
 import java.io.IOException
 import java.nio.file.Files
@@ -7,14 +10,12 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.function.Consumer
 
-class JavaLoCApp(private val systemId: String) {
-    private val repository = JavaLoCRepository()
+class JavaLoCApp(private val systemId: String, private val repository: LoCRepository) {
     fun analysisDir(dir: String) {
         val startingDir = Paths.get(dir)
         val fileAnalysis = parseJavaFile()
         val pf = ProcessFiles(fileAnalysis)
         Files.walkFileTree(startingDir, pf)
-        repository.toFile()
     }
 
     private fun parseJavaFile(): Consumer<Path> {
@@ -37,17 +38,5 @@ class JavaLoCApp(private val systemId: String) {
         repository.save(loc, systemId)
     }
 
-    private fun getModule(path: Path): String? {
-        val file = path.toFile()
-        var parentFile = file.parentFile
-        var i = path.nameCount
-        while (!(parentFile.list().orEmpty().toList()).contains("src") || i < 1) {
-            parentFile = parentFile.parentFile
-            if (parentFile == null) {
-                return null
-            }
-            i--
-        }
-        return parentFile.name
-    }
+
 }
