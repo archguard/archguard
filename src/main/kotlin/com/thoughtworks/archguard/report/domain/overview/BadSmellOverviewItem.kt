@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview
 
-import com.thoughtworks.archguard.report.application.DashboardGroup
+import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 
