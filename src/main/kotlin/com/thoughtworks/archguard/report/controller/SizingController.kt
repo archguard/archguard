@@ -68,7 +68,8 @@ class SizingController(val sizingService: SizingService) {
                                             @RequestParam(value = "numberPerPage") limit: Long,
                                             @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithMethodCountDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(sizingService.getClassSizingListAboveMethodCountThreshold(systemId, limit, offset))
+        val (data, count) = sizingService.getClassSizingListAboveMethodCountThreshold(systemId, limit, offset)
+        return ResponseEntity.ok(ClassSizingListWithMethodCountDto(data, count, offset / limit + 1))
     }
 
 

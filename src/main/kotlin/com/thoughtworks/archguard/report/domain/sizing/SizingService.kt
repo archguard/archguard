@@ -53,32 +53,32 @@ class SizingService(val sizingRepository: SizingRepository) {
     fun getPackageSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): PackagesSizingListDto {
         validPagingParam(limit, offset)
         val count = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold)
-        val packageLinesAboveThreshold = sizingRepository.getPackageSizingAboveLineThreshold(systemId, packageSizingLineThreshold, limit, offset)
-        return PackagesSizingListDto(packageLinesAboveThreshold, count, offset / limit + 1)
+        val data = sizingRepository.getPackageSizingAboveLineThreshold(systemId, packageSizingLineThreshold, limit, offset)
+        return PackagesSizingListDto(data, count, offset / limit + 1)
     }
 
     fun getMethodSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<MethodSizing>, Long> {
         validPagingParam(limit, offset)
         val threshold = methodSizingThreshold
-        val methodLinesCount = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
-        val methodLinesAboveThreshold = sizingRepository.getMethodSizingAboveLineThreshold(systemId, threshold, limit, offset)
-        return (methodLinesAboveThreshold to methodLinesCount)
+        val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
+        val data = sizingRepository.getMethodSizingAboveLineThreshold(systemId, threshold, limit, offset)
+        return (data to count)
     }
 
     fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<ClassSizingWithLine>, Long> {
         validPagingParam(limit, offset)
         val threshold = classSizingThreshold
-        val classLinesCount = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold)
-        val classLinesAboveThreshold = sizingRepository.getClassSizingAboveLineThreshold(systemId, threshold, limit, offset)
-        return (classLinesAboveThreshold to classLinesCount)
+        val count = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold)
+        val data = sizingRepository.getClassSizingAboveLineThreshold(systemId, threshold, limit, offset)
+        return (data to count)
     }
 
-    fun getClassSizingListAboveMethodCountThreshold(systemId: Long, limit: Long, offset: Long): ClassSizingListWithMethodCountDto {
+    fun getClassSizingListAboveMethodCountThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<ClassSizingWithMethodCount>, Long> {
         validPagingParam(limit, offset)
         val threshold = classMethodCountSizingThreshold
-        val classSizingListAboveMethodCountThresholdCount = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
-        val classSizingListAboveMethodCountThreshold = sizingRepository.getClassSizingListAboveMethodCountThreshold(systemId, threshold, limit, offset)
-        return ClassSizingListWithMethodCountDto(classSizingListAboveMethodCountThreshold, classSizingListAboveMethodCountThresholdCount, offset / limit + 1)
+        val count = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
+        val data = sizingRepository.getClassSizingListAboveMethodCountThreshold(systemId, threshold, limit, offset)
+        return (data to count)
     }
 
     fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {
