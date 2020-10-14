@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
@@ -86,35 +87,6 @@ class DashboardService(val sizingService: SizingService,
 
 class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
     var dashboardGroup: String = eDashboardGroup.value
-}
-
-enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
-    COUPLING("过高耦合", listOf(
-            BadSmellType.DATACLUMPS,
-            BadSmellType.DEEPINHERITANCE,
-            BadSmellType.CLASSHUB,
-            BadSmellType.METHODHUB,
-            BadSmellType.PACKAGEHUB,
-            BadSmellType.MODULEHUB,
-            BadSmellType.CYCLEDEPENDENCY)),
-    SIZING("体量过大", listOf(
-            BadSmellType.SIZINGMODULES,
-            BadSmellType.SIZINGPACKAGE,
-            BadSmellType.SIZINGMETHOD,
-            BadSmellType.SIZINGCLASS)),
-    COHESION("内聚度不足", listOf(
-            BadSmellType.DATA_CLASS,
-            BadSmellType.SHOTGUN_SURGERY)),
-    REDUNDANCY("冗余度高", listOf(
-            BadSmellType.REDUNDANT_ELEMENT,
-            BadSmellType.OVER_GENERALIZATION)),
-    UNDEFINED("未找到", listOf());
-
-    companion object {
-        fun getGroup(badSmellType: BadSmellType): DashboardGroup {
-            return values().find { it.badSmells.contains(badSmellType) } ?: UNDEFINED
-        }
-    }
 }
 
 data class GraphData(val date: String, val value: Int)
