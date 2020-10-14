@@ -310,18 +310,32 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount> {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
-            val sql = "select m1.systemId, m1.moduleName, m1.packageName, m1.typeName, count(1) as methodCount " +
-                    "from MethodStatistic m1 " +
-                    "where m1.createAt = (SELECT MAX(c2.createAt) FROM MethodStatistic c2 WHERE c2.systemId = :systemId) " +
-                    "and m1.systemId = :systemId " +
-                    "group by m1.systemId, m1.typeName, m1.packageName, m1.moduleName having methodCount > :threshold " +
-                    "order by methodCount desc limit :limit offset :offset"
+            val sql = "select uuid() as id, count(name) as count, module,system_id, clzname as name from JMethod " +
+                    "where system_id = :systemId and is_test=false and loc is not NULL " +
+                    "group by clzname , module " +
+                    "having count>:threshold order by count desc " +
+                    "limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .bind("limit", limit)
                     .bind("offset", offset)
-                    .mapTo(ClassSizingWithMethodCount::class.java).list()
+                    .mapTo(JClassPO::class.java).list()
+                    .map { po->po.toClassSizingWithMethodCount() }
+        }
+    }
+
+    override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = "select count(name) from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
+                    "group by clzname " +
+                    "having count>:threshold " +
+                    "order by count desc"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .one()
         }
     }
 
@@ -396,21 +410,6 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .one()
         }
     }
-
-    override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
-        return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(name) as count from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
-                    "group by clzname " +
-                    "having count>:threshold " +
-                    "order by count desc"
-            it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("threshold", threshold)
-                    .mapTo(Long::class.java)
-                    .one()
-        }
-    }
-
     override fun getClassSizingListAboveMethodCountBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
         return jdbi.withHandle<BadSmellCalculateResult, Exception> {
             val sql = """
