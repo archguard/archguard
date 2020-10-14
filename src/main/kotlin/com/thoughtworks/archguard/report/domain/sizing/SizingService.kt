@@ -57,12 +57,12 @@ class SizingService(val sizingRepository: SizingRepository) {
         return PackagesSizingListDto(packageLinesAboveThreshold, count, offset / limit + 1)
     }
 
-    fun getMethodSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): MethodSizingListDto {
+    fun getMethodSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<MethodSizing>, Long> {
         validPagingParam(limit, offset)
         val threshold = methodSizingThreshold
         val methodLinesCount = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
         val methodLinesAboveThreshold = sizingRepository.getMethodSizingAboveLineThreshold(systemId, threshold, limit, offset)
-        return MethodSizingListDto(methodLinesAboveThreshold, methodLinesCount, offset / limit + 1)
+        return (methodLinesAboveThreshold to methodLinesCount)
     }
 
     fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): ClassSizingListWithLineDto {
