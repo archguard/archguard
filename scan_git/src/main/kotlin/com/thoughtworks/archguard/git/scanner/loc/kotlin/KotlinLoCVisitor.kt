@@ -6,10 +6,12 @@ import dev.evolution.kotlin.KotlinParser.ObjectDeclarationContext
 import dev.evolution.kotlin.KotlinParserBaseVisitor
 import org.antlr.v4.runtime.ParserRuleContext
 
-class KotlinLoCVisitor(private val loc: JClassLoC) : KotlinParserBaseVisitor<Any?>() {
+class KotlinLoCVisitor(private var locs: ArrayList<JClassLoC>, private val module: String?) : KotlinParserBaseVisitor<Any?>() {
     private var currentPkg: String? = null
+
     override fun visitClassDeclaration(ctx: KotlinParser.ClassDeclarationContext): Any? {
-        getLoc(ctx, ctx.simpleIdentifier().text)
+        val loc = getLoc(ctx, ctx.simpleIdentifier().text)
+        locs.add(loc)
         return super.visitClassDeclaration(ctx)
     }
 
@@ -19,7 +21,8 @@ class KotlinLoCVisitor(private val loc: JClassLoC) : KotlinParserBaseVisitor<Any
     }
 
     override fun visitObjectDeclaration(ctx: ObjectDeclarationContext): Any? {
-        getLoc(ctx, ctx.simpleIdentifier().text)
+        val loc = getLoc(ctx, ctx.simpleIdentifier().text)
+        locs.add(loc)
         return super.visitChildren(ctx)
     }
 
@@ -37,18 +40,28 @@ class KotlinLoCVisitor(private val loc: JClassLoC) : KotlinParserBaseVisitor<Any
                 methodName = it.Identifier().text
             }
         }
-        loc.addMethod(methodName, count)
+        val className = getFunClass(ctx)
+        locs.find { it.clz.equals(className) }?.addMethod(methodName, count)
 
         return super.visitFunctionDeclaration(ctx)
     }
 
-    private fun getLoc(ctx: ParserRuleContext, currentClz: String) {
+    private fun getFunClass(ctx: KotlinParser.FunctionDeclarationContext): String? {
+        var parent = ctx.parent
+        while (!(parent is KotlinParser.ClassDeclarationContext)) {
+            if (parent == null) {
+                return null
+            }
+            parent = parent.parent
+        }
+        return parent.simpleIdentifier().text
+    }
+
+    private fun getLoc(ctx: ParserRuleContext, currentClz: String): JClassLoC {
         val startLine = ctx.start.line
         val stopLine = ctx.stop.line
         val count = stopLine - startLine + 1
-        loc.pkg = currentPkg
-        loc.clz = currentClz
-        loc.loc = count
+        return JClassLoC(module, currentPkg, currentClz, count)
     }
 
 }

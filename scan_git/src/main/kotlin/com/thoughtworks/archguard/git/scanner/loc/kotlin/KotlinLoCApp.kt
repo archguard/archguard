@@ -31,11 +31,11 @@ class KotlinLoCApp(private val systemId: String, private val repository: LoCRepo
     }
 
     fun parse(path: Path) {
-        val loc = JClassLoC(module = getModule(path))
-        val visitor = KotlinLoCVisitor(loc)
+        val locs = ArrayList<JClassLoC>()
+        val visitor = KotlinLoCVisitor(locs, getModule(path))
 
         val tree = KotlinFileParser.parse(path)
         visitor.visit(tree)
-        repository.save(loc, systemId)
+        repository.save(locs, systemId)
     }
 }

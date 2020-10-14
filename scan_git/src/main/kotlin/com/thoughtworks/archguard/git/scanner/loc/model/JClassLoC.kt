@@ -1,9 +1,8 @@
 package com.thoughtworks.archguard.git.scanner.loc.model
 
-class JClassLoC(val module: String?) {
-    var pkg: String? = null
-    var clz: String? = null
-    var loc = 0
+class JClassLoC(val module: String?, var pkg: String? = null,
+                var clz: String? = null, var loc: Int = 0) {
+
     var methodLocs: ArrayList<JMethodLoC> = ArrayList()
     override fun toString(): String {
         return "JClassLoC{" +
