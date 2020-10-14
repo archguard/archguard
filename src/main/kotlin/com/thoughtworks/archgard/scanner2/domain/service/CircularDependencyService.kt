@@ -19,7 +19,7 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
         val allClassDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
-        val jClassesHasModules = jClassRepository.getJClassesNotThirdParty(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         if (cycles.isEmpty()) {
             return emptyList()
         }
@@ -93,7 +93,7 @@ class CircularDependencyService(private val jClassRepository: JClassRepository, 
 
     private fun buildAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
         val allClassIdDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
-        val jClassesHasModules = jClassRepository.getJClassesNotThirdParty(systemId)
+        val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         return allClassIdDependencies.map { dependency: Dependency<String> ->
             Dependency(
                     jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(),

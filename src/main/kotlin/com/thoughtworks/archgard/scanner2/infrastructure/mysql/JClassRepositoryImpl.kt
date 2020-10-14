@@ -93,7 +93,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         return withHandle?.toJClass()
     }
 
-    override fun getJClassesNotThirdParty(systemId: Long): List<JClass> {
+    override fun getJClassesNotThirdPartyAndNotTest(systemId: Long): List<JClass> {
         val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_thirdparty = 0 and is_test = 0"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))

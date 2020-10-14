@@ -46,7 +46,7 @@ class CircularDependencyServiceTest {
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("n", "n", "m1")
         val jClassP = JClass("p", "p", "m1")
-        every { jClassRepository.getJClassesNotThirdParty(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN, jClassP)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN, jClassP)
         val classCircularDependency = circularDependencyService.getClassCircularDependency(projectId)
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(2)
@@ -71,7 +71,7 @@ class CircularDependencyServiceTest {
         val jClassD = JClass("d", "d", "m1")
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("m$1", "m$1", "m1")
-        every { jClassRepository.getJClassesNotThirdParty(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
         val classCircularDependency = circularDependencyService.getClassCircularDependency(projectId)
         println(classCircularDependency)
 
@@ -98,7 +98,7 @@ class CircularDependencyServiceTest {
         val jClassD = JClass("d", "d", "m1")
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("m$1", "m$1", "m1")
-        every { jClassRepository.getJClassesNotThirdParty(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
         val classCircularDependency = circularDependencyService.getClassCircularDependency(projectId)
         println(classCircularDependency)
 

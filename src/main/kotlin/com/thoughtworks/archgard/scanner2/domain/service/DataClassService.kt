@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class DataClassService(val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository, val dataClassRepository: DataClassRepository) {
     fun findAllDataClasses(systemId: Long): List<JClass> {
-        val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
+        val jClasses = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         val dataClasses = mutableListOf<JClass>()
         jClasses.forEach {
             it.fields = jClassRepository.findFields(it.id)

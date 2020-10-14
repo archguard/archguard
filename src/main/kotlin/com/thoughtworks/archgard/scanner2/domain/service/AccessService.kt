@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 class AccessService(val accessRepository: AccessRepository,
                     val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository) {
     fun persist(systemId: Long) {
-        val classes = jClassRepository.getJClassesNotThirdParty(systemId)
+        val classes = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         accessRepository.saveOrUpdateAllClass(systemId, ClassAccess.from(classes))
 
         val methods = jMethodRepository.getMethodsNotThirdParty(systemId)

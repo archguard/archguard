@@ -6,7 +6,7 @@ import com.thoughtworks.archgard.scanner2.domain.model.JField
 
 interface JClassRepository {
 
-    fun getJClassesNotThirdParty(systemId: Long): List<JClass>
+    fun getJClassesNotThirdPartyAndNotTest(systemId: Long): List<JClass>
 
     fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass>
 
