@@ -15,7 +15,6 @@ import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.MethodMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ModuleMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.PackageMetricRepository
-import com.thoughtworks.archgard.scanner2.domain.service.AbcService
 import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
 import com.thoughtworks.archgard.scanner2.domain.service.DataClassService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
@@ -37,8 +36,7 @@ import java.util.concurrent.CountDownLatch
 
 
 @Service
-class MetricPersistApplService(val abcService: AbcService,
-                               val ditService: DitService,
+class MetricPersistApplService(val ditService: DitService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
                                val dataClassService: DataClassService,
@@ -173,16 +171,13 @@ class MetricPersistApplService(val abcService: AbcService,
     }
 
     private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
-        val latch = CountDownLatch(5)
-        var abcMap = emptyMap<String, Int>()
+        val latch = CountDownLatch(4)
+
         var ditMap = emptyMap<String, Int>()
         var nocMap = emptyMap<String, Int>()
         var lcom4Map = emptyMap<String, Int>()
         var classFanInFanOutMap = emptyMap<String, FanInFanOut>()
-        scanner2ThreadPool.submit(Runnable {
-            abcMap = abcService.calculate(systemId, jClasses)
-            latch.countDown()
-        })
+
         scanner2ThreadPool.submit(Runnable {
             ditMap = ditService.calculate(systemId, jClasses)
             latch.countDown()
@@ -203,7 +198,7 @@ class MetricPersistApplService(val abcService: AbcService,
 
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(),
-                    abcMap[it.id], ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
+                    0, ditMap[it.id], nocMap[it.id], lcom4Map[it.id],
                     classFanInFanOutMap[it.id]?.fanIn ?: 0, classFanInFanOutMap[it.id]?.fanOut ?: 0)
         }
         log.info("Finished calculate classMetric in systemId $systemId")
