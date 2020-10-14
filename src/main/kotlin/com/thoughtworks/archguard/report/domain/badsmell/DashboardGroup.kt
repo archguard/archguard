@@ -20,6 +20,10 @@ enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) 
     REDUNDANCY("冗余度高", listOf(
             BadSmellType.REDUNDANT_ELEMENT,
             BadSmellType.OVER_GENERALIZATION)),
+    TESTBADSMELL("测试薄弱", listOf(
+            BadSmellType.IGNORE_TEST,
+            BadSmellType.SLEEP_TEST,
+            BadSmellType.UN_ASSERT_TEST)),
     UNDEFINED("未找到", listOf());
 
     companion object {

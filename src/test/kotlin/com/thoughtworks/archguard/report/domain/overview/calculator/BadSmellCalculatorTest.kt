@@ -1,9 +1,10 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import ModuleCouplingRepository
-import com.thoughtworks.archguard.report.application.DashboardGroup
+
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
