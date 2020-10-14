@@ -27,8 +27,8 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
         val sql = "select a as caller, b as callee from _MethodCallees where system_id = :systemId " +
-                "and a in (select id from JMethod where JMethod.system_id = :systemId and module is not NULL) " +
-                "and b in (select id from JMethod where JMethod.system_id = :systemId and module is not NULL) " +
+                "and a in (select id from JMethod where JMethod.system_id = :systemId and is_test = 0 and module is not NULL) " +
+                "and b in (select id from JMethod where JMethod.system_id = :systemId and is_test = 0 and module is not NULL) " +
                 "and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))

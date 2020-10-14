@@ -65,8 +65,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun getAllClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
         val sql = "select a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
-                "and a in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0) " +
-                "and b in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0) " +
+                "and a in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0 and is_test = 0) " +
+                "and b in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0 and is_test = 0) " +
                 "and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
@@ -94,7 +94,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getJClassesNotThirdParty(systemId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_thirdparty = 0"
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_thirdparty = 0 and is_test = 0"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))
             it.createQuery(sql)

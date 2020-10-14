@@ -56,11 +56,11 @@ class MetricPersistApplService(val ditService: DitService,
 
     fun persistLevel2Metrics(systemId: Long) {
 
-        val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
-
         log.info("**************************************************************************")
         log.info(" Begin calculate and persist Level 2 Metric in systemId $systemId")
         log.info("**************************************************************************")
+
+        val jClasses = jClassRepository.getJClassesNotThirdParty(systemId)
 
         val latch = CountDownLatch(4)
 
