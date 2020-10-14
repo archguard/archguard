@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.testing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
@@ -67,13 +68,24 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
 
     fun getRedundantPrintTestMethodList(systemId: Long, limit: Long, offset: Long): MethodInfoListDTO {
         ValidPagingParam.validPagingParam(limit, offset)
-        val redundantPrintMethodIds = testBadSmellRepository.getRedundantPrintAboveThresholdIds(systemId, multiAssertThreshold)
+        val redundantPrintMethodIds = testBadSmellRepository.getRedundantPrintAboveThresholdIds(systemId, redundantPrintThreshold)
         return if (redundantPrintMethodIds.isEmpty()) {
             MethodInfoListDTO(Collections.emptyList(), 0, offset / limit + 1)
         } else {
             val redundantPrintMethods = testBadSmellRepository.getMethodsByIds(redundantPrintMethodIds, limit, offset)
             MethodInfoListDTO(redundantPrintMethods, redundantPrintMethodIds.size.toLong(), offset / limit + 1)
         }
+    }
+
+    fun getTestingReport(systemId: Long): Map<BadSmellType, Long> {
+        val ignoreTestMethodCount = testBadSmellRepository.getIgnoreTestMethodCount(systemId)
+        val sleepTestMethodCount = testBadSmellRepository.getSleepTestMethodCount(systemId)
+        val unAssertTestCount = testBadSmellRepository.getUnassertTestMethodIds(systemId).size.toLong()
+
+        return mapOf(
+                (BadSmellType.IGNORE_TEST to ignoreTestMethodCount),
+                (BadSmellType.SLEEP_TEST to sleepTestMethodCount),
+                (BadSmellType.UN_ASSERT_TEST to unAssertTestCount))
     }
 
 }

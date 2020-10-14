@@ -40,7 +40,8 @@ class DashboardService(val sizingService: SizingService,
         val sizingDashboard = getDashboard(systemId, DashboardGroup.SIZING, SIZNG_REPORT)
         val redundancyDashboard = getDashboard(systemId, DashboardGroup.REDUNDANCY, REDUNDANCY_REPORT)
         val cohesionDashboard = getDashboard(systemId, DashboardGroup.COHESION, COHESION_REPORT)
-        return listOf(couplingDashboard, sizingDashboard, redundancyDashboard, cohesionDashboard)
+        val testDashboard = getDashboard(systemId, DashboardGroup.TESTBADSMELL, TEST_BAD_SMELL_REPORT)
+        return listOf(couplingDashboard, sizingDashboard, redundancyDashboard, cohesionDashboard, testDashboard)
     }
 
     fun saveReport(systemId: Long) {
@@ -87,6 +88,38 @@ class DashboardService(val sizingService: SizingService,
 
 class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
     var dashboardGroup: String = eDashboardGroup.value
+}
+
+enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
+    COUPLING("过高耦合", listOf(
+            BadSmellType.DATACLUMPS,
+            BadSmellType.DEEPINHERITANCE,
+            BadSmellType.CLASSHUB,
+            BadSmellType.METHODHUB,
+            BadSmellType.PACKAGEHUB,
+            BadSmellType.MODULEHUB,
+            BadSmellType.CYCLEDEPENDENCY)),
+    SIZING("体量过大", listOf(
+            BadSmellType.SIZINGMODULES,
+            BadSmellType.SIZINGPACKAGE,
+            BadSmellType.SIZINGMETHOD,
+            BadSmellType.SIZINGCLASS)),
+    COHESION("内聚度不足", listOf(
+            BadSmellType.DATA_CLASS,
+            BadSmellType.SHOTGUN_SURGERY)),
+    REDUNDANCY("冗余度高", listOf(
+            BadSmellType.REDUNDANT_ELEMENT,
+            BadSmellType.OVER_GENERALIZATION)),
+    TESTBADSMELL("测试薄弱", listOf(
+            BadSmellType.REDUNDANT_ELEMENT,
+            BadSmellType.OVER_GENERALIZATION)),
+    UNDEFINED("未找到", listOf());
+
+    companion object {
+        fun getGroup(badSmellType: BadSmellType): DashboardGroup {
+            return values().find { it.badSmells.contains(badSmellType) } ?: UNDEFINED
+        }
+    }
 }
 
 data class GraphData(val date: String, val value: Int)

@@ -2,6 +2,26 @@ package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.domain.overview.BadSmellOverviewItem
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellLevelCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.CircularDependencyCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClassCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClumpsCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DeepInheritanceCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.OverGeneralizationCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.RedundantElementCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ShotgunSurgeryCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.TestIgnoreCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.TestSleepCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.TestUnassertCalculator
+import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
 
 
 enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevelCalculator?) {
@@ -22,9 +42,61 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
     SHOTGUN_SURGERY("散弹式修改", null),
 
     REDUNDANT_ELEMENT("冗余元素", null),
-    OVER_GENERALIZATION("过度泛化", null);
+    OVER_GENERALIZATION("过度泛化", null),
+
+    SLEEP_TEST("含Sleep的测试", null),
+    IGNORE_TEST("被忽略的测试", null),
+    UN_ASSERT_TEST("缺乏校验的测试", null);
 
     fun calculate(systemId: Long): BadSmellOverviewItem? {
         return badSmellCalculator?.getBadSmellOverviewItem(systemId, this)
+    }
+
+    @Component
+    class BadSmellTypeInjector(val moduleCalculator: ModuleOverSizingCalculator,
+                               val packageCalculator: PackageOverSizingCalculator,
+                               val classCalculator: ClassOverSizingCalculator,
+                               val methodCalculator: MethodOverSizingCalculator,
+
+                               val classHubCalculator: ClassHubCouplingCalculator,
+                               val methodHubCalculator: MethodHubCouplingCalculator,
+                               val packageHubCalculator: PackageHubCouplingCalculator,
+                               val moduleHubCalculator: ModuleHubCouplingCalculator,
+                               val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
+                               val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
+                               val circularDependencyCalculator: CircularDependencyCalculator,
+                               val redundantElementCalculator: RedundantElementCalculator,
+                               val overGeneralizationCalculator: OverGeneralizationCalculator,
+                               val dataClassCalculator: DataClassCalculator,
+                               val shotgunSurgeryCalculator: ShotgunSurgeryCalculator,
+                               val testSleepCalculator: TestSleepCalculator,
+                               val testUnassertCalculator: TestUnassertCalculator,
+                               val testIgnoreCalculator: TestIgnoreCalculator
+    ) {
+        @PostConstruct
+        fun postConstruct() {
+            SIZINGMODULES.badSmellCalculator = moduleCalculator
+            SIZINGPACKAGE.badSmellCalculator = packageCalculator
+            SIZINGMETHOD.badSmellCalculator = methodCalculator
+            SIZINGCLASS.badSmellCalculator = classCalculator
+
+            DATACLUMPS.badSmellCalculator = dataClumpsCouplingCalculator
+            DEEPINHERITANCE.badSmellCalculator = deepInheritanceCouplingCalculator
+            CLASSHUB.badSmellCalculator = classHubCalculator
+            METHODHUB.badSmellCalculator = methodHubCalculator
+            PACKAGEHUB.badSmellCalculator = packageHubCalculator
+            MODULEHUB.badSmellCalculator = moduleHubCalculator
+            CYCLEDEPENDENCY.badSmellCalculator = circularDependencyCalculator
+
+            REDUNDANT_ELEMENT.badSmellCalculator = redundantElementCalculator
+            OVER_GENERALIZATION.badSmellCalculator = overGeneralizationCalculator
+
+            DATA_CLASS.badSmellCalculator = dataClassCalculator
+            SHOTGUN_SURGERY.badSmellCalculator = shotgunSurgeryCalculator
+
+            IGNORE_TEST.badSmellCalculator = testIgnoreCalculator
+            SLEEP_TEST.badSmellCalculator = testSleepCalculator
+            UN_ASSERT_TEST.badSmellCalculator = testUnassertCalculator
+        }
     }
 }
