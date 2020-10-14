@@ -289,22 +289,22 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("threshold", threshold)
                     .bind("limit", limit)
                     .bind("offset", offset)
-                    .mapTo(MethodSizingPO::class.java).list()
+                    .mapTo(JMethodPO::class.java).list()
                     .map { po -> po.toMethodSizing() }
         }
     }
 
     override fun getClassSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithLine> {
         return jdbi.withHandle<List<ClassSizingWithLine>, Exception> {
-            val sql = "select c1.id, c1.systemId, c1.moduleName, c1.packageName, c1.typeName, c1.`lines` from ClassStatistic c1 " +
-                    "where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId) " +
-                    "and c1.systemId = :systemId and c1.`lines`>:threshold order by c1.`lines` desc limit :limit offset :offset"
+            val sql = "select id, system_id, module, name, loc from JClass " +
+                    "where system_id = :systemId and loc>:threshold and is_test=false order by loc desc limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .bind("limit", limit)
                     .bind("offset", offset)
-                    .mapTo(ClassSizingWithLine::class.java).list()
+                    .mapTo(JClassPO::class.java).list()
+                    .map { po -> po.toClassSizingWithLine() }
         }
     }
 
@@ -363,7 +363,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from ClassStatistic c1 where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId) and c1.systemId = :systemId and c1.`lines`>:threshold"
+            val sql = "select count(1) from JClass where system_id = :systemId and loc>:threshold and is_test=false"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)

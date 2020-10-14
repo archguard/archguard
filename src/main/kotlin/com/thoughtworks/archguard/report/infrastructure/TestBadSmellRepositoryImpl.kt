@@ -26,8 +26,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
 
     override fun getStaticMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
-            val sql = "select c.id, c.system_id as systemId, c.module as moduleName, c.clzname as classFullName, " +
-                    "c.name as methodName from method_access m " +
+            val sql = "select c.id, c.system_id as systemId, c.module as module, c.clzname as clzname, " +
+                    "c.name as name from method_access m " +
                     "inner join JMethod c where m.method_id = c.id and m.system_id=:systemId " +
                     "and m.is_static=1 and m.is_private=0 " +
                     "and c.name not in ('<clinit>', 'main') and c.name not like '%$%' " +
@@ -56,8 +56,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
 
     override fun getSleepTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
-            val sql = "select id, system_id as systemId, module as moduleName, clzname as classFullName, " +
-                    "name as methodName FROM JMethod where system_id=:systemId and is_test=1 " +
+            val sql = "select id, system_id as systemId, module, clzname, " +
+                    "name FROM JMethod where system_id=:systemId and is_test=1 " +
                     "and id in (select mc.a from _MethodCallees mc " +
                     "where mc.b in (select id from JMethod  where name in ('sleep'))) " +
                     "limit :limit offset :offset"
@@ -84,8 +84,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
 
     override fun getEmptyTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
-            val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
-                    "m.name as methodName FROM JMethod m " +
+            val sql = "SELECT m.id, m.system_id as systemId, m.module , m.clzname , " +
+                    "m.name FROM JMethod m " +
                     "LEFT JOIN _MethodCallees mc ON m.id=mc.a " +
                     "WHERE mc.a IS NULL and m.system_id=:systemId and m.is_test=1 " +
                     "limit :limit offset :offset"
@@ -116,8 +116,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
         val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore");
         return jdbi.withHandle<List<MethodInfo>, Exception> {
-            val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
-                    "m.name as methodName FROM JMethod m " +
+            val sql = "SELECT m.id, m.system_id as systemId, m.module, m.clzname, " +
+                    "m.name FROM JMethod m " +
                     "where id in (select targetId from JAnnotation " +
                     "where system_id=:systemId and name in (<listOfAnnotation>)) " +
                     "limit :limit offset :offset"
@@ -168,8 +168,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
 
     override fun getMethodsByIds(ids: List<String>, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
-            val sql = "SELECT m.id, m.system_id as systemId, m.module as moduleName, m.clzname as classFullName, " +
-                    "m.name as methodName FROM JMethod m where id in (<ids>) limit :limit offset :offset"
+            val sql = "SELECT m.id, m.system_id as systemId, m.module, m.clzname, " +
+                    "m.name FROM JMethod m where id in (<ids>) limit :limit offset :offset"
             it.createQuery(sql)
                     .bindList("ids", ids)
                     .bind("offset", offset)

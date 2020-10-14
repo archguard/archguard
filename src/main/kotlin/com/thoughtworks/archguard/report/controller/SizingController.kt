@@ -49,8 +49,8 @@ class SizingController(val sizingService: SizingService) {
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<MethodSizingListDto> {
         val offset = (currentPageNumber - 1) * limit
-        val result = sizingService.getMethodSizingListAboveLineThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(MethodSizingListDto(result.first, result.second, offset / limit + 1))
+        val (data, count) = sizingService.getMethodSizingListAboveLineThreshold(systemId, limit, offset)
+        return ResponseEntity.ok(MethodSizingListDto(data, count, offset / limit + 1))
     }
 
     @GetMapping("/classes/above-line-threshold")
@@ -58,7 +58,8 @@ class SizingController(val sizingService: SizingService) {
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithLineDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(sizingService.getClassSizingListAboveLineThreshold(systemId, limit, offset))
+        val (data, count) = sizingService.getClassSizingListAboveLineThreshold(systemId, limit, offset)
+        return ResponseEntity.ok(ClassSizingListWithLineDto(data, count, offset / limit + 1))
     }
 
 
@@ -74,3 +75,5 @@ class SizingController(val sizingService: SizingService) {
 }
 
 data class MethodSizingListDto(val data: List<MethodSizing>, val count: Long, val currentPageNumber: Long)
+
+data class ClassSizingListWithLineDto(val data: List<ClassSizingWithLine>, val count: Long, val currentPageNumber: Long)
