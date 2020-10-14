@@ -23,7 +23,7 @@ class StatisticScanner(@Autowired val classClassStatisticRepo: ClassStatisticRep
     }
 
     override fun scan(context: ScanContext) {
-        log.info("start scan statistic report, workspcase: {}", context.workspace)
+        log.info("start scan statistic report, workspace: {}", context.workspace)
         val (classStatistics, methodStatistic) = generateStatistic(context)
         classClassStatisticRepo.save(classStatistics)
         methodClassStatisticRepo.save(methodStatistic)

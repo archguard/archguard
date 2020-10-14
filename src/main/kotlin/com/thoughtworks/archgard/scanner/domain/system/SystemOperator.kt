@@ -68,7 +68,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
         val pb: ProcessBuilder = when (buildTool) {
-            BuildTool.MAVEN -> ProcessBuilder("./mvnw", "clean", "test", "-DskipTests")
+            BuildTool.MAVEN -> ProcessBuilder("mvn", "clean", "test", "-DskipTests")
             BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
             BuildTool.NONE -> throw CompileException("Fail to identify build tool for compile")
         }
