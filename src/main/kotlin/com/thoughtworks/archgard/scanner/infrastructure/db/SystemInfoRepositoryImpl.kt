@@ -38,4 +38,12 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     .execute()
         }
     }
+
+    override fun updateScanningSystemToScanFail() {
+        jdbi.withHandle<Unit, Nothing> {
+            it.createUpdate("update system_info s1 set s1.scanned='FAILED' where s1.id in " +
+                    "(select s2.id from (select * from system_info) s2 where s2.scanned='SCANNING') ;")
+                    .execute()
+        }
+    }
 }

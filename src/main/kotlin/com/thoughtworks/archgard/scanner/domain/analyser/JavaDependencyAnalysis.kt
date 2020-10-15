@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.Executors
+import javax.annotation.PostConstruct
 
 @Service
 class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
@@ -20,12 +21,16 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                              @Value("\${spring.datasource.password}") val password: String,
                              val hubService: HubService,
                              val systemInfoRepository: SystemInfoRepository,
-                             val analysisService: AnalysisService,
                              val analysisModuleClient: AnalysisModuleClient,
                              val scanner2Client: Scanner2Client) {
     private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
     private val runningSystemIdSet = CopyOnWriteArraySet<Long>()
     private val executor = Executors.newFixedThreadPool(5)
+
+    @PostConstruct
+    fun postConstruct() {
+        systemInfoRepository.updateScanningSystemToScanFail();
+    }
 
     fun asyncAnalyse(systemId: Long) {
         if (runningSystemIdSet.contains(systemId)) {
