@@ -24,7 +24,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -92,7 +93,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -160,7 +162,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -228,7 +231,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -321,7 +325,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("limit", limit)
                     .bind("offset", offset)
                     .mapTo(JClassPO::class.java).list()
-                    .map { po->po.toClassSizingWithMethodCount() }
+                    .map { po -> po.toClassSizingWithMethodCount() }
         }
     }
 
@@ -335,7 +339,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -346,7 +351,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -382,7 +388,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
                     .mapTo(Long::class.java)
-                    .one()
+                    .findOne()
+                    .orElse(0)
         }
     }
 
@@ -410,6 +417,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .one()
         }
     }
+
     override fun getClassSizingListAboveMethodCountBadSmellResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
         return jdbi.withHandle<BadSmellCalculateResult, Exception> {
             val sql = """
