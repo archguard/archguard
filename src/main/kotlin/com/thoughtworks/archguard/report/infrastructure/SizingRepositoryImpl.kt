@@ -327,7 +327,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(name) from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
+            val sql = "select count(name) as count from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
                     "group by clzname " +
                     "having count>:threshold " +
                     "order by count desc"
