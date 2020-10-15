@@ -296,7 +296,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithLine> {
         return jdbi.withHandle<List<ClassSizingWithLine>, Exception> {
-            val sql = "select id, system_id, module, name, loc from JClass " +
+            val sql = "select id, system_id, module, class_name, package_name, loc from JClass " +
                     "where system_id = :systemId and loc>:threshold and is_test=false order by loc desc limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -310,7 +310,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount> {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
-            val sql = "select uuid() as id, count(name) as count, module,system_id, clzname as name from JMethod " +
+            val sql = "select uuid() as id, count(name) as count, module,system_id, class_name, package_name from JMethod " +
                     "where system_id = :systemId and is_test=false and loc is not NULL " +
                     "group by clzname , module " +
                     "having count>:threshold order by count desc " +
