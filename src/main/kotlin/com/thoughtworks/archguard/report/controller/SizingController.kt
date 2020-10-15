@@ -32,7 +32,9 @@ class SizingController(val sizingService: SizingService) {
                                       @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
             : ResponseEntity<PackagesSizingListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(sizingService.getPackageSizingListAboveLineThreshold(systemId, limit, offset))
+        val (data, count) = sizingService.getPackageSizingListAboveLineThreshold(systemId, limit, offset)
+        return ResponseEntity.ok(PackagesSizingListDto(data, count, offset / limit + 1))
+
     }
 
     @GetMapping("/packages/above-threshold")

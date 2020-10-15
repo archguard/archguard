@@ -282,7 +282,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
-            val sql = "select id, system_id,  module, clzname, name, loc from JMethod " +
+            val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId and loc>:threshold and is_test=false order by loc desc limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
