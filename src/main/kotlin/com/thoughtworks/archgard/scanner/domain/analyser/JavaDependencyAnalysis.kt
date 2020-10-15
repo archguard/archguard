@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct
 class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
                              @Value("\${spring.datasource.username}") val username: String,
                              @Value("\${spring.datasource.password}") val password: String,
+                             @Value("\${init.scan.status}") val updateScanStatus: Boolean,
                              val hubService: HubService,
                              val systemInfoRepository: SystemInfoRepository,
                              val analysisModuleClient: AnalysisModuleClient,
@@ -29,7 +30,9 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
 
     @PostConstruct
     fun postConstruct() {
-        systemInfoRepository.updateScanningSystemToScanFail();
+        if (updateScanStatus) {
+            systemInfoRepository.updateScanningSystemToScanFail();
+        }
     }
 
     fun asyncAnalyse(systemId: Long) {
