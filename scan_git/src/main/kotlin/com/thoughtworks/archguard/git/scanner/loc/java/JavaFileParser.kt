@@ -5,7 +5,6 @@ import dev.evolution.java.JavaParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import java.io.IOException
 import java.nio.file.Path
 
 object JavaFileParser {
@@ -14,6 +13,9 @@ object JavaFileParser {
         val lexer = JavaLexer(stream)
         val tokens = CommonTokenStream(lexer)
         val parser = JavaParser(tokens)
+        //temp remove logging such as 'unrecognize token'
+        lexer.removeErrorListeners()
+        parser.removeErrorListeners()
         return parser.compilationUnit()
     }
 }

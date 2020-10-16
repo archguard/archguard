@@ -40,6 +40,9 @@ class CognitiveComplexityParser {
         val lexer = JavaLexer(stream)
         val tokens = CommonTokenStream(lexer)
         val parser = JavaParser(tokens)
+        //temp remove logging such as 'unrecognize token'
+        lexer.removeErrorListeners()
+        parser.removeErrorListeners()
         return parser.compilationUnit()
     }
 
