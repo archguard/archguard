@@ -191,7 +191,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
-                select uuid() as id, count(name) as classCount, module as moduleName, system_id, package_name from JClass
+                select uuid() as id, count(name) as classCount,sum(loc) as `lines` module as moduleName, system_id, package_name from JClass
                     where system_id =:systemId and is_test=false and loc is not NULL group by module, package_name
                     having count > :threshold order by count desc
                     limit :limit offset :offset
@@ -209,9 +209,9 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
               select count(1) from (
-                select sum(loc) as lines from JClass 
+                select sum(loc) as `lines` from JClass 
                   where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name 
-                  having lines > :threshold) as p 
+                  having `lines` > :threshold) as p 
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -250,9 +250,9 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
-                select sum(loc) as lines, module, system_id, package_name from JClass 
+                select sum(loc) as `lines`, count(name) as classCount, module, system_id, package_name from JClass 
                   where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name 
-                  having lines > :threshold order by lines desc
+                  having `lines` > :threshold order by `lines` desc
                   limit :limit offset :offset
             """.trimIndent()
             it.createQuery(sql)
