@@ -180,7 +180,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select uuid() as id, count(name) as classCount,sum(loc) as `lines`, module as moduleName, system_id, package_name from JClass
                     where system_id =:systemId and is_test=false and loc is not NULL group by module, package_name
-                    having count > :threshold order by count desc
+                    having classCount > :threshold order by classCount desc
                     limit :limit offset :offset
             """.trimIndent()
             it.createQuery(sql)
