@@ -149,14 +149,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(1)
-                    from (
-                             select count(1) classCount
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.moduleName, c1.packageName
-                         ) as c
-                    where classCount > :threshold
+               select count(1) from 
+                (select count(name) as count from JClass
+                    where system_id = :system_id and is_test=false and loc is not NULL group by module, package_name
+                    having count > :threshold) as p
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -195,16 +191,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
-                select systemId, packageName, moduleName, classCount, `lines`
-                    from (
-                             select c1.systemId, c1.packageName, c1.moduleName, count(1) classCount, sum(c1.`lines`) `lines`
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.packageName, c1.moduleName
-                             order by classCount desc
-                             limit :limit offset :offset
-                         ) as c
-                    where classCount > :threshold;
+                select uuid() as id, count(name) as classCount, module as moduleName, system_id, package_name from JClass
+                    where system_id =:systemId and is_test=false and loc is not NULL group by module, package_name
+                    having count > :threshold order by count desc
+                    limit :limit offset :offset
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -218,14 +208,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(1)
-                    from (
-                             select  sum(c1.`lines`) `lines`
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.moduleName, c1.packageName
-                         ) as c
-                    where `lines` > :threshold
+              select count(1) from (
+                select sum(loc) as lines from JClass 
+                  where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name 
+                  having lines > :threshold) as p 
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -264,16 +250,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
-                select systemId, packageName, moduleName, classCount, `lines`
-                    from (
-                             select c1.systemId, c1.packageName, c1.moduleName, count(1) classCount, sum(c1.`lines`) `lines`
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.packageName, c1.moduleName
-                             order by `lines` desc
-                             limit :limit offset :offset
-                         ) as c
-                    where `lines` > :threshold
+                select sum(loc) as lines, module, system_id, package_name from JClass 
+                  where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name 
+                  having lines > :threshold order by lines desc
+                  limit :limit offset :offset
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -331,10 +311,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(name) as count from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
+            val table = "select count(name) as count from JMethod where system_id = :systemId and is_test=false and loc is not NULL  " +
                     "group by clzname " +
-                    "having count>:threshold " +
-                    "order by count desc"
+                    "having count>:threshold "
+            val sql = "select count(1) from ($table) as c"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
