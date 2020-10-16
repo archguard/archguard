@@ -237,7 +237,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing> {
         return jdbi.withHandle<List<PackageSizing>, Exception> {
             val sql = """
-                select sum(loc) as `lines`, count(name) as classCount, module, system_id, package_name from JClass 
+                select sum(loc) as `lines`, count(name) as classCount, module as moduleName, system_id, package_name from JClass 
                   where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name 
                   having `lines` > :threshold order by `lines` desc
                   limit :limit offset :offset
