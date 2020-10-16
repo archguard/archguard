@@ -316,7 +316,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
             val sql = "select uuid() as id, count(name) as count, module,system_id, class_name, package_name from JMethod " +
                     "where system_id = :systemId and is_test=false and loc is not NULL " +
-                    "group by clzname , module " +
+                    "group by module, class_name, package_name " +
                     "having count>:threshold order by count desc " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
