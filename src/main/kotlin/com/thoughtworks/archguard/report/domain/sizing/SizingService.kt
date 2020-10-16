@@ -36,11 +36,11 @@ class SizingService(val sizingRepository: SizingRepository) {
         return data to count
     }
 
-    fun getModuleSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): ModulesSizingListDto {
+    fun getModuleSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<ModuleSizing>, Long> {
         validPagingParam(limit, offset)
         val count = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold)
-        val moduleLinesAboveThreshold = sizingRepository.getModuleSizingAboveLineThreshold(systemId, moduleSizingLineThreshold, limit, offset)
-        return ModulesSizingListDto(moduleLinesAboveThreshold, count, offset / limit + 1)
+        val data = sizingRepository.getModuleSizingAboveLineThreshold(systemId, moduleSizingLineThreshold, limit, offset)
+        return data to count
     }
 
     fun getPackageClassCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<PackageSizing>, Long> {
