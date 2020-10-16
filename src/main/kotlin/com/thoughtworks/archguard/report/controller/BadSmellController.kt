@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.RestController
 class BadSmellController {
 
     @GetMapping("badsmell-thresholds")
-    fun getThresholds(@PathVariable("systemId") systemId: Long): BadSmellSuite {
-        return BadSmellSuite("id", "架构评估一级指标", true, listOf(
+    fun getThresholds(@PathVariable("systemId") systemId: Long): List<BadSmellSuite> {
+        return listOf(BadSmellSuite("id", "架构评估一级指标", true, listOf(
                 BadSmellGroup("体量维度", listOf(
-                        BadSmellThreshold("过大的方法", "方法代码行数 > 指标阈值",30),
-                        BadSmellThreshold("过大的类", "方法个数 > 指标阈值",20),
-                        BadSmellThreshold("过大的类", "方法代码行数 > 指标阈值",50)
+                        BadSmellThreshold("过大的方法", "方法代码行数 > 指标阈值", 30),
+                        BadSmellThreshold("过大的类", "方法个数 > 指标阈值", 20),
+                        BadSmellThreshold("过大的类", "方法代码行数 > 指标阈值", 50)
                 )),
                 BadSmellGroup("耦合纬度", listOf(
-                        BadSmellThreshold("枢纽模块", "出向依赖或入向依赖 > 指标阈值",8),
-                        BadSmellThreshold("枢纽包", "出向依赖或入向依赖  > 指标阈值",8),
-                        BadSmellThreshold("枢纽类", "出向依赖或入向依赖 > 指标阈值",8)
+                        BadSmellThreshold("枢纽模块", "出向依赖或入向依赖 > 指标阈值", 8),
+                        BadSmellThreshold("枢纽包", "出向依赖或入向依赖  > 指标阈值", 8),
+                        BadSmellThreshold("枢纽类", "出向依赖或入向依赖 > 指标阈值", 8)
                 ))
-        ))
+        )))
     }
 }
 
