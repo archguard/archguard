@@ -15,7 +15,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     from (
                              select count(package_name) as packageCount from JClass 
                              where system_id = :systemId and is_test=false and loc is not NULL group by module
-                             having c.packageCount > :threshold
+                             having packageCount > :threshold
                          ) as m
 
             """.trimIndent()
