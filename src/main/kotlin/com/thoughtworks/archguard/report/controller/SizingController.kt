@@ -23,7 +23,8 @@ class SizingController(val sizingService: SizingService) {
                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
             : ResponseEntity<ModulesSizingListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(sizingService.getModulePackageCountSizingAboveThreshold(systemId, limit, offset))
+        val (data, count) = sizingService.getModulePackageCountSizingAboveThreshold(systemId, limit, offset)
+        return ResponseEntity.ok(ModulesSizingListDto(data, count, offset / limit + 1))
     }
 
     @GetMapping("/packages/above-line-threshold")
@@ -83,3 +84,5 @@ data class MethodSizingListDto(val data: List<MethodSizing>, val count: Long, va
 data class ClassSizingListWithLineDto(val data: List<ClassSizingWithLine>, val count: Long, val currentPageNumber: Long)
 
 data class PackagesSizingListDto(val data: List<PackageSizing>, val count: Long, val currentPageNumber: Long)
+
+data class ModulesSizingListDto(val data: List<ModuleSizing>, val count: Long, val currentPageNumber: Long)

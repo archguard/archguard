@@ -13,12 +13,11 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select count(1)
                     from (
-                             select count(distinct packageName) packageCount
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.moduleName
+                             select count(package_name) as packageCount from JClass 
+                             where system_id = :systemId and is_test=false and loc is not NULL group by module
+                             having c.packageCount > :threshold
                          ) as c
-                    where c.packageCount > :threshold
+
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -57,16 +56,11 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getModuleSizingListAbovePackageCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing> {
         return jdbi.withHandle<List<ModuleSizing>, Exception> {
             val sql = """
-                select systemId, moduleName, packageCount, classCount, `lines`
-                    from (
-                             select c1.systemId, c1.moduleName, count(distinct packageName) packageCount, count(1) classCount, sum(c1.`lines`) `lines`
-                             from ClassStatistic c1
-                             where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
-                             group by c1.systemId, c1.moduleName
-                             order by `packageCount` desc
-                             limit :limit offset :offset
-                         ) as c
-                    where c.packageCount > :threshold;
+                 select uuid() as id, count(class_name) as classCount, sum(loc) as `lines`,
+                   count(package_name) as packageCount, module as moduleName, system_id from JClass
+                   where system_id = :systemId and is_test=false and loc is not NULL group by module
+                   having c.packageCount > :threshold order by packageName desc 
+                   limit :limit offset :offset
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)

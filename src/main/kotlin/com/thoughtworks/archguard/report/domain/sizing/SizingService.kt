@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
+import com.thoughtworks.archguard.report.controller.ModulesSizingListDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import org.springframework.beans.factory.annotation.Value
@@ -28,11 +29,11 @@ class SizingService(val sizingRepository: SizingRepository) {
     @Value("\${threshold.module.package.count}")
     private val moduleClassCountSizingThreshold: Int = 0
 
-    fun getModulePackageCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): ModulesSizingListDto {
+    fun getModulePackageCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Pair<List<ModuleSizing>, Long> {
         validPagingParam(limit, offset)
         val count = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, moduleClassCountSizingThreshold)
-        val moduleLinesAboveThreshold = sizingRepository.getModuleSizingListAbovePackageCountThreshold(systemId, moduleClassCountSizingThreshold, limit, offset)
-        return ModulesSizingListDto(moduleLinesAboveThreshold, count, offset / limit + 1)
+        val data = sizingRepository.getModuleSizingListAbovePackageCountThreshold(systemId, moduleClassCountSizingThreshold, limit, offset)
+        return data to count
     }
 
     fun getModuleSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): ModulesSizingListDto {
