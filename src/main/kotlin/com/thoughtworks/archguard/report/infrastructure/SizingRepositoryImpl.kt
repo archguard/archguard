@@ -13,7 +13,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                 select count(1)
                     from (
-                             select count(package_name) as packageCount from JClass 
+                             select count(distinct package_name) as packageCount from JClass 
                              where system_id = :systemId and is_test=false and loc is not NULL group by module
                              having packageCount > :threshold
                          ) as m
@@ -57,7 +57,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         return jdbi.withHandle<List<ModuleSizing>, Exception> {
             val sql = """
                  select uuid() as id, count(class_name) as classCount, sum(loc) as `lines`,
-                   count(package_name) as packageCount, module as moduleName, system_id from JClass
+                   count(distinct package_name) as packageCount, module as moduleName, system_id from JClass
                    where system_id = :systemId and is_test=false and loc is not NULL group by module
                    having packageCount > :threshold order by packageCount desc 
                    limit :limit offset :offset
@@ -119,7 +119,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         return jdbi.withHandle<List<ModuleSizing>, Exception> {
             val sql = """
                 select uuid() as id, count(class_name) as classCount, sum(loc) as `lines`,
-                  count(package_name) as packageCount, module as moduleName, system_id from JClass
+                  count(distinct package_name) as packageCount, module as moduleName, system_id from JClass
                   where system_id = :systemId and is_test=false and loc is not NULL group by module
                   having `lines` > :threshold order by `lines` desc 
                   limit :limit offset :offset
