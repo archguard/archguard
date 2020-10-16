@@ -151,7 +151,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
                select count(1) from 
                 (select count(name) as count from JClass
-                    where system_id = :system_id and is_test=false and loc is not NULL group by module, package_name
+                    where system_id = :systemId and is_test=false and loc is not NULL group by module, package_name
                     having count > :threshold) as p
             """.trimIndent()
             it.createQuery(sql)
