@@ -33,9 +33,7 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
     override fun getSystemLineCountBySystemId(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select sum(`lines`) lineCount
-                    from ClassStatistic c1
-                    where c1.createAt = (SELECT MAX(c2.createAt) FROM ClassStatistic c2 WHERE c2.systemId = :systemId)
+                select sum(loc) from JClass where system_id=:systemId
                 """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
