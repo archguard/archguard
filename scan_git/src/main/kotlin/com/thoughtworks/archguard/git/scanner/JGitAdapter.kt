@@ -5,7 +5,6 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
-import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -79,12 +78,8 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
                 val cplx = cognitiveComplexityParser.processCode(code)
                 return cplx.sumBy { it.complexity }
             }
-        } catch (e: MissingObjectException) {
-            logger.error("Fail to read file from DiffEntry {}, {}, {}, RevCommit from {} @ {} throw MissingObjectException",
-                    diffEntry.changeType.name, diffEntry.oldPath, diffEntry.newPath,
-                    revCommit.authorIdent.name, revCommit.authorIdent.getWhen())
         } catch (ex: Exception) {
-            logger.error("Fail to read file from DiffEntry {}, {}, {}, RevCommit from {} @ {} throw exception {}",
+            logger.error("Fail to read file from DiffEntry {} / {}, {}, RevCommit from {} @ {} throw exception {}",
                     diffEntry.oldPath, diffEntry.newPath, diffEntry.changeType.name,
                     revCommit.authorIdent.name, revCommit.authorIdent.getWhen(), ex)
         }
