@@ -24,7 +24,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
 
     override fun getSystemInfoList(): List<SystemInfo> =
             jdbi.withHandle<List<SystemInfo>, Nothing> {
-                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, password password, scanned scanned, quality_gate_profile_id qualityGateProfileId,repo_type repoType from system_info")
+                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, password password, scanned scanned, quality_gate_profile_id qualityGateProfileId,repo_type repoType, updated_time updatedTime from system_info")
                         .mapTo<SystemInfo>()
                         .list()
             }
