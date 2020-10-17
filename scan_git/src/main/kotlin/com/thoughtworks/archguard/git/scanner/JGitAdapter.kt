@@ -5,11 +5,13 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
+import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -19,6 +21,7 @@ import java.nio.charset.StandardCharsets
  */
 
 class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long): Pair<List<CommitLog>, List<ChangeEntry>> {
         val repPath = File(path)
@@ -69,11 +72,21 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
 
     private fun cognitiveComplexityForJavaFile(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit): Int {
         val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
-        if (treeWalk != null) {
-            val objectId = treeWalk.getObjectId(0)
-            val code = String(repository.newObjectReader().open(objectId).bytes, StandardCharsets.UTF_8)
-            val cplx = cognitiveComplexityParser.processCode(code)
-            return cplx.sumBy { it.complexity }
+        try {
+            if (treeWalk != null) {
+                val objectId = treeWalk.getObjectId(0)
+                val code = String(repository.newObjectReader().open(objectId).bytes, StandardCharsets.UTF_8)
+                val cplx = cognitiveComplexityParser.processCode(code)
+                return cplx.sumBy { it.complexity }
+            }
+        } catch (e: MissingObjectException) {
+            logger.error("Fail to read file from DiffEntry {}, {}, {}, RevCommit from {} @ {} throw MissingObjectException",
+                    diffEntry.changeType.name, diffEntry.oldPath, diffEntry.newPath,
+                    revCommit.authorIdent.name, revCommit.authorIdent.getWhen())
+        } catch (ex: Exception) {
+            logger.error("Fail to read file from DiffEntry {}, {}, {}, RevCommit from {} @ {} throw exception {}",
+                    diffEntry.oldPath, diffEntry.newPath, diffEntry.changeType.name,
+                    revCommit.authorIdent.name, revCommit.authorIdent.getWhen(), ex)
         }
         return 0
     }
