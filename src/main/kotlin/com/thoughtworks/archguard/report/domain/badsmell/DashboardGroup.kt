@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.badsmell
 
 enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
-    COUPLING("过高耦合", listOf(
+    COUPLING("耦合过高", listOf(
             BadSmellType.DATACLUMPS,
             BadSmellType.DEEPINHERITANCE,
             BadSmellType.CLASSHUB,
@@ -14,10 +14,10 @@ enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) 
             BadSmellType.SIZINGPACKAGE,
             BadSmellType.SIZINGMETHOD,
             BadSmellType.SIZINGCLASS)),
-    COHESION("内聚度不足", listOf(
+    COHESION("内聚不足", listOf(
             BadSmellType.DATA_CLASS,
             BadSmellType.SHOTGUN_SURGERY)),
-    REDUNDANCY("冗余度高", listOf(
+    REDUNDANCY("设计冗余", listOf(
             BadSmellType.REDUNDANT_ELEMENT,
             BadSmellType.OVER_GENERALIZATION)),
     TESTBADSMELL("测试薄弱", listOf(
