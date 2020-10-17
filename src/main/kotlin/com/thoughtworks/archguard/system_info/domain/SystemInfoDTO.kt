@@ -11,4 +11,4 @@ data class SystemInfoDTO(var id: Long? = null,
                          val scanned: ScannedType = ScannedType.NONE,
                          val qualityGateProfileId: Long? = null,
                          val repoType: String = "GIT",
-                         val updatedTime: Timestamp)
+                         val updatedTime: Timestamp? = null)

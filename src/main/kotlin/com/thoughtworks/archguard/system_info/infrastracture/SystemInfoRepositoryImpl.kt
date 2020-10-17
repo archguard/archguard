@@ -16,7 +16,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType, scanned scanned, " +
-                        "quality_gate_profile_id qualityGateProfileId from system_info where id = :id")
+                        "quality_gate_profile_id qualityGateProfileId, updated_time updatedTime from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
                         .firstOrNull()

@@ -10,7 +10,7 @@ class SystemInfoMapper {
         return SystemInfo(id = dto.id, systemName = dto.systemName, sql = dto.sql, username = dto.username,
                 password = AESCrypt.encrypt(dto.password), repoType = dto.repoType, scanned = dto.scanned,
                 qualityGateProfileId = dto.qualityGateProfileId,
-                repo = dto.repo.joinToString(","), updatedTime = dto.updatedTime)
+                repo = dto.repo.joinToString(","))
 
     }
 
