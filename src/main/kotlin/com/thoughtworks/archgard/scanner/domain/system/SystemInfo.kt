@@ -1,7 +1,6 @@
 package com.thoughtworks.archgard.scanner.domain.system
 
 import com.thoughtworks.archgard.scanner.infrastructure.AESCrypt
-import java.sql.Timestamp
 
 class SystemInfo(var id: Long? = null,
                  val systemName: String = "",
@@ -10,8 +9,7 @@ class SystemInfo(var id: Long? = null,
                  val username: String = "",
                  val password: String = "",
                  var scanned: ScannedType = ScannedType.NONE,
-                 val repoType: String = "GIT",
-                 val updatedTime: Timestamp) {
+                 val repoType: String = "GIT") {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
 
     fun hasAuthInfo(): Boolean {
