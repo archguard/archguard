@@ -1,13 +1,11 @@
 package com.thoughtworks.archgard.scanner2.appl
 
 import com.thoughtworks.archgard.scanner2.common.Scanner2ThreadPool
-import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
 import com.thoughtworks.archgard.scanner2.domain.model.MethodMetric
 import com.thoughtworks.archgard.scanner2.domain.model.ModuleMetric
 import com.thoughtworks.archgard.scanner2.domain.model.PackageMetric
-import com.thoughtworks.archgard.scanner2.domain.repository.CircularDependencyMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
@@ -15,14 +13,13 @@ import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.MethodMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.ModuleMetricRepository
 import com.thoughtworks.archgard.scanner2.domain.repository.PackageMetricRepository
-import com.thoughtworks.archgard.scanner2.domain.service.CircularDependencyService
 import com.thoughtworks.archgard.scanner2.domain.service.DataClassService
 import com.thoughtworks.archgard.scanner2.domain.service.DitService
 import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOut
 import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
+import com.thoughtworks.archgard.scanner2.domain.service.circular.CircularService
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.DataClassDtoForWriteInfluxDB
 import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
@@ -43,13 +40,12 @@ class MetricPersistApplService(val ditService: DitService,
                                val jClassRepository: JClassRepository,
                                val jMethodRepository: JMethodRepository,
                                val fanInFanOutService: FanInFanOutService,
-                               val circularDependencyService: CircularDependencyService,
                                val classMetricRepository: ClassMetricRepository,
                                val methodMetricRepository: MethodMetricRepository,
                                val packageMetricRepository: PackageMetricRepository,
                                val moduleMetricRepository: ModuleMetricRepository,
                                val dataClassRepository: DataClassRepository,
-                               val circularDependencyMetricRepository: CircularDependencyMetricRepository,
+                               val circularService: CircularService,
                                val influxDBClient: InfluxDBClient,
                                val scanner2ThreadPool: Scanner2ThreadPool) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
@@ -94,32 +90,6 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
         log.info("Finished persist data class Metric to mysql and influxdb in systemId $systemId")
         log.info("-----------------------------------------------------------------------")
-    }
-
-    @Transactional
-    fun persistCircularDependencyMetrics(systemId: Long) {
-        val moduleCircularDependency = circularDependencyService.getModuleCircularDependency(systemId)
-        circularDependencyMetricRepository.insertOrUpdateModuleCircularDependency(systemId, moduleCircularDependency)
-        log.info("Finished persist moduleCircularDependency in systemId $systemId")
-
-        val packageCircularDependency = circularDependencyService.getPackageCircularDependency(systemId)
-        circularDependencyMetricRepository.insertOrUpdatePackageCircularDependency(systemId, packageCircularDependency)
-        log.info("Finished persist packageCircularDependency in systemId $systemId")
-
-        val classCircularDependency = circularDependencyService.getClassCircularDependency(systemId)
-        circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
-        log.info("Finished persist classCircularDependency in systemId $systemId")
-
-        val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
-        circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
-        log.info("Finished persist methodCircularDependency in systemId $systemId")
-
-        val circularDependenciesCount = CircularDependenciesCount(systemId, moduleCircularDependency.size, packageCircularDependency.size, classCircularDependency.size, methodCircularDependency.size)
-        influxDBClient.save(CircularDependenciesCountDtoForWriteInfluxDB(circularDependenciesCount).toRequestBody())
-        log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist circularDependenciesCount to influxdb in systemId $systemId")
-        log.info("-----------------------------------------------------------------------")
-
     }
 
     private fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
