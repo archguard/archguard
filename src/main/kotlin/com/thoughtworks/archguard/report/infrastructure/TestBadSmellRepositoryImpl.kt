@@ -142,7 +142,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
                     select m1.id from JMethod m1 join 
                     (select  mc.a as callee_id, GROUP_CONCAT(clzname SEPARATOR ', ') as callers from _MethodCallees mc 
                     join JMethod m on mc.b = m.id where mc.a in (select id from JMethod where system_id=:systemId and is_test=1) 
-                    group by mc.a) as t1 on m1.id = t1.callee_id where callers not like '%Assert%' and callers not like '%Matchers%'
+                    group by mc.a) as t1 on m1.id = t1.callee_id 
+                    where callers not like '%Assert%' and callers not like '%Matchers%' and callers not like '%archunit%Should%'
                 """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
