@@ -14,6 +14,7 @@ import com.thoughtworks.archguard.report.domain.hub.HubService
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationService
 import com.thoughtworks.archguard.report.domain.redundancy.RedundancyService
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
+import com.thoughtworks.archguard.report.domain.testing.TestBadSmellService
 import org.springframework.stereotype.Service
 import kotlin.math.roundToInt
 
@@ -27,6 +28,7 @@ class DashboardService(val sizingService: SizingService,
                        val overGeneralizationService: OverGeneralizationService,
                        val dataClassService: DataClassService,
                        val shotgunSurgeryService: ShotgunSurgeryService,
+                       val testBadSmellService: TestBadSmellService,
                        val influxDBClient: InfluxDBClient) {
 
     private val TIME: String = "1d";
@@ -65,6 +67,9 @@ class DashboardService(val sizingService: SizingService,
         val shotgunSurgeryReport = shotgunSurgeryService.getCohesionReport(systemId)
         influxDBClient.saveReport(COHESION_REPORT, systemId.toString(),
                 dataClassReport.plus(shotgunSurgeryReport))
+
+        val testReport = testBadSmellService.getTestingReport(systemId)
+        influxDBClient.saveReport(TEST_BAD_SMELL_REPORT, systemId.toString(), testReport)
     }
 
 
