@@ -141,7 +141,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getAllBySystemId(systemId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId"
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_test = false"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
