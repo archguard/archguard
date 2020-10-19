@@ -39,7 +39,7 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":\"2020-08-11T08:06:06.000+0000\"}]"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -57,7 +57,7 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":\"2020-08-11T08:06:06.000+0000\"}"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}"
         assertEquals(200, status)
         assertEquals(except, content)
 
@@ -68,7 +68,7 @@ class SystemtInfoApiATest {
     @Order(3)
     fun should_get_success_message_when_sent_update_system_info_api_given_there_is_already_system_info_in_database() {
         val updateDTO = "{\"id\":1,\"systemName\":\"systemName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
-                ",\"username\":\"username2\",\"password\":\"admin123456\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":\"2020-08-11T08:06:06.000+0000\"}]>"
+                ",\"username\":\"username2\",\"password\":\"admin123456\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}]>"
 
         val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/system-info")
                 .contentType("application/json")
