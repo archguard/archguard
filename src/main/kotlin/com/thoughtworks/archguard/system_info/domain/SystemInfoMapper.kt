@@ -18,6 +18,6 @@ class SystemInfoMapper {
         return SystemInfoDTO(id = info.id, systemName = info.systemName, sql = info.sql, username = info.username,
                 password = info.password, repoType = info.repoType, scanned = info.scanned,
                 qualityGateProfileId = info.qualityGateProfileId,
-                repo = info.repo.split(','), updatedTime = info.updatedTime)
+                repo = info.repo.split(','), updatedTime = info.updatedTime?.time)
     }
 }
