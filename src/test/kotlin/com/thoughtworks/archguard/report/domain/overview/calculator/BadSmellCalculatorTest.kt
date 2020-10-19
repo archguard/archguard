@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import ModuleCouplingRepository
-
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
@@ -15,7 +14,7 @@ import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceR
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
 import com.thoughtworks.archguard.report.domain.redundancy.RedundancyRepository
-import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
+import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -52,7 +51,7 @@ internal class BadSmellCalculatorTest {
     lateinit var deepInheritanceRepository: DeepInheritanceRepository
 
     @MockK
-    lateinit var sizingRepository: SizingRepository
+    lateinit var sizingService: SizingService
 
     @MockK
     lateinit var circularDenpendencyRepository: CircularDependencyRepository
@@ -93,10 +92,10 @@ internal class BadSmellCalculatorTest {
         classHubCalculator = ClassHubCouplingCalculator(classCouplingRepository)
         dataClumpsCalculator = DataClumpsCouplingCalculator(dataClumpsRepository)
         deepInheritanceCalculator = DeepInheritanceCouplingCalculator(deepInheritanceRepository)
-        moduleCalculator = ModuleOverSizingCalculator(sizingRepository)
-        packageCalculator = PackageOverSizingCalculator(sizingRepository)
-        classCalculator = ClassOverSizingCalculator(sizingRepository)
-        methodCalculator = MethodOverSizingCalculator(sizingRepository)
+        moduleCalculator = ModuleOverSizingCalculator(sizingService)
+        packageCalculator = PackageOverSizingCalculator(sizingService)
+        classCalculator = ClassOverSizingCalculator(sizingService)
+        methodCalculator = MethodOverSizingCalculator(sizingService)
         circularDependencyCalculator = CircularDependencyCalculator(circularDenpendencyRepository)
         methodHubCalculator = MethodHubCouplingCalculator(methodCouplingRepository)
         packageHubCalculator = PackageHubCouplingCalculator(packageCouplingRepository)
@@ -152,61 +151,49 @@ internal class BadSmellCalculatorTest {
 
     @Test
     fun should_calculate_module_sizing_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(5, 0, 0)
-        val mockResultLine = BadSmellCalculateResult(1, 2, 0)
-        every { sizingRepository.getModuleSizingListAbovePackageCountBadSmellResult(any(), any()) } returns mockResult
-        every { sizingRepository.getModuleSizingAboveLineBadSmellResult(any(), any()) } returns mockResultLine
+        every { sizingService.getModuleSizingSmellCount(1) } returns 8L
 
         val result = BadSmellType.SIZINGMODULES.calculate(1)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMODULES.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.C)
-        assertThat(result?.count).isEqualTo(8)
+        assertThat(result?.count).isEqualTo(8L)
     }
 
     @Test
     fun should_calculate_package_sizing_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(5, 0, 1)
-        val mockResultLine = BadSmellCalculateResult(1, 2, 0)
-        every { sizingRepository.getPackageSizingListAboveClassCountBadSmellResult(any(), any()) } returns mockResult
-        every { sizingRepository.getPackageSizingAboveLineBadSmellResult(any(), any()) } returns mockResultLine
+        every { sizingService.getPackageSizingSmellCount(1) } returns 9
 
         val result = BadSmellType.SIZINGPACKAGE.calculate(1)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.D)
+        assertThat(result?.level).isEqualTo(BadSmellLevel.C)
         assertThat(result?.count).isEqualTo(9)
     }
 
     @Test
     fun should_calculate_class_sizing_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(0, 0, 1)
-        val mockResultLine = BadSmellCalculateResult(1, 0, 0)
-        every { sizingRepository.getClassSizingListAboveMethodCountBadSmellResult(any(), any()) } returns mockResult
-        every { sizingRepository.getClassSizingAboveLineBadSmellResult(any(), any()) } returns mockResultLine
+        every { sizingService.getClassSizingSmellCount(1) } returns 2
 
         val result = BadSmellType.SIZINGCLASS.calculate(1)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGCLASS.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.D)
-        assertThat(result?.count).isEqualTo(2)
+        assertThat(result?.level).isEqualTo(BadSmellLevel.A)
     }
 
 
     @Test
     fun should_calculate_method_sizing_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(0, 0, 0)
-        every { sizingRepository.getMethodSizingAboveLineBadSmellResult(any(), any()) } returns mockResult
+        every { sizingService.getMethodSizingSmellCount(1) } returns 1
 
         val result = BadSmellType.SIZINGMETHOD.calculate(1)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.A)
-        assertThat(result?.count).isEqualTo(0)
     }
 
     @Test

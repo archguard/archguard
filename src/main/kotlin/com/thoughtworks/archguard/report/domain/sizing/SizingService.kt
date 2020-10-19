@@ -68,6 +68,7 @@ class SizingService(val sizingRepository: SizingRepository) {
         return Triple(data, count, threshold)
     }
 
+
     fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithLine>, Long, Int> {
         validPagingParam(limit, offset)
         val threshold = classSizingThreshold
@@ -84,17 +85,30 @@ class SizingService(val sizingRepository: SizingRepository) {
         return Triple(data, count, threshold)
     }
 
-    fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {
-        val methodSizing = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
+    fun getMethodSizingSmellCount(systemId: Long): Long {
+        return sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
+    }
 
-        val classSizing = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold) +
+    fun getClassSizingSmellCount(systemId: Long): Long {
+        return sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold) +
                 sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold)
+    }
 
-        val packageSizing = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold) +
-                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
-
-        val moduleSizing = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold) +
+    fun getModuleSizingSmellCount(systemId: Long): Long {
+        return sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold) +
                 sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, moduleClassCountSizingThreshold)
+    }
+
+    fun getPackageSizingSmellCount(systemId: Long): Long {
+        return sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold) +
+                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
+    }
+
+    fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {
+        val methodSizing = getMethodSizingSmellCount(systemId)
+        val classSizing = getClassSizingSmellCount(systemId)
+        val packageSizing = getPackageSizingSmellCount(systemId)
+        val moduleSizing = getModuleSizingSmellCount(systemId)
 
         return mapOf((BadSmellType.SIZINGMETHOD to methodSizing),
                 (BadSmellType.SIZINGCLASS to classSizing),
