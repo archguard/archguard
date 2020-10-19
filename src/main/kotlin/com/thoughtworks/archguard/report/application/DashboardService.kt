@@ -16,6 +16,7 @@ import com.thoughtworks.archguard.report.domain.redundancy.RedundancyService
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellService
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
 @Service
@@ -79,7 +80,11 @@ class DashboardService(val sizingService: SizingService,
                 "FROM \"${reportName}\" " +
                 "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME}) fill(none)"
         return influxDBClient.query(query).map { it.values }
-                .flatten().map { GraphData(it[0], it[1].toDouble().roundToInt()) }
+                .flatten().map {
+                    GraphData(it[0],
+                            SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ").parse(it[0]).time,
+                            it[1].toDouble().roundToInt())
+                }
     }
 
     private fun getDashboard(systemId: Long, dashboardGroup: DashboardGroup, reportName: String): Dashboard {
@@ -96,5 +101,5 @@ class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>)
     var dashboardGroup: String = eDashboardGroup.value
 }
 
-data class GraphData(val date: String, val value: Int)
+data class GraphData(val date: String, val timestamp: Long, val value: Int)
 
