@@ -82,7 +82,7 @@ class DashboardService(val sizingService: SizingService,
         return influxDBClient.query(query).map { it.values }
                 .flatten().map {
                     GraphData(it[0],
-                            SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ").parse(it[0]).time,
+                            SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ss'Z'").parse(it[0]).time,
                             it[1].toDouble().roundToInt())
                 }
     }
