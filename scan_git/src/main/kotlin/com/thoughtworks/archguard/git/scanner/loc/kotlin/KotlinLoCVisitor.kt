@@ -37,7 +37,8 @@ class KotlinLoCVisitor(private var locs: ArrayList<JClassLoC>, private val modul
             if (it is KotlinParser.FunctionBodyContext) {
                 count = (it.stop.line - it.start.line + 1)
             } else if (it is KotlinParser.SimpleIdentifierContext) {
-                methodName = it.Identifier().text
+                methodName = it.Identifier()?.text.let { "anonymous_" + (0..100).random() }
+
             }
         }
         val className = getFunClass(ctx)
