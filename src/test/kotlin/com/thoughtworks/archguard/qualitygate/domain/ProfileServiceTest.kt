@@ -24,7 +24,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    fun `should get all configures`() {
+    fun should_get_all_configures() {
         //given
         val profile = QualityGateProfile("name", "[]")
         //when
@@ -36,7 +36,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    fun `should create configure`() {
+    fun should_create_configure() {
         //given
         val profile = QualityGateProfile("name", "[]")
         //when
@@ -47,7 +47,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    fun `should update configure`() {
+    fun should_update_configure() {
         //given
         val id = 1L
         val profile = QualityGateProfile("name", "[]")
@@ -59,7 +59,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    fun `should delete configure`() {
+    fun should_delete_configure() {
         //given
         val id = 1L
         //when
