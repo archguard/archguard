@@ -2,10 +2,8 @@ package com.thoughtworks.archgard
 
 import com.thoughtworks.archgard.scanner.domain.hubexecutor.ScannerManager
 import com.thoughtworks.archgard.scanner.infrastructure.db.BadSmellDao
-import com.thoughtworks.archgard.scanner.infrastructure.db.ClassStatisticDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.ConfigDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.GitHotFileDao
-import com.thoughtworks.archgard.scanner.infrastructure.db.MethodStatisticDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.OverviewDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.StyleDao
 import com.thoughtworks.archgard.scanner.infrastructure.db.TestBadSmellDao
@@ -63,16 +61,6 @@ class ScannerApplication {
     @Bean
     fun checkStylesDao(jdbi: Jdbi): StyleDao {
         return jdbi.onDemand(StyleDao::class.java)
-    }
-
-    @Bean
-    fun classStatisticDao(jdbi: Jdbi): ClassStatisticDao {
-        return jdbi.onDemand(ClassStatisticDao::class.java)
-    }
-
-    @Bean
-    fun methodStatisticDao(jdbi: Jdbi): MethodStatisticDao {
-        return jdbi.onDemand(MethodStatisticDao::class.java)
     }
 
     @Bean
