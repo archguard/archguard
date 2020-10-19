@@ -17,7 +17,9 @@ class DependencyRepositoryImpl : DependencyRepository {
 
     override fun getAllMethodDependencies(systemId: Long): List<Dependency<JMethodVO>> {
         val sql = "select ${generateSelectMethodTemplate("a", "caller")}, ${generateSelectMethodTemplate("b", "callee")} " +
-                "from JMethod a, JMethod b, `_MethodCallees` mc where a.module IS NOT null and b.module IS NOT null and a.id = mc.a and b.id = mc.b and a.system_id = :systemId and b.system_id = :systemId and mc.system_id = :systemId"
+                "from JMethod a, JMethod b, `_MethodCallees` mc where a.module IS NOT null and b.module IS NOT null " +
+                "and a.id = mc.a and b.id = mc.b and a.system_id = :systemId and b.system_id = :systemId and mc.system_id = :systemId " +
+                "and a.is_test = false and b.is_test = false"
 
         return jdbi.withHandle<List<JMethodDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodDependencyDto::class.java))
