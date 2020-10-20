@@ -10,7 +10,7 @@ class NocService(val jClassRepository: JClassRepository) {
 
     private val log = LoggerFactory.getLogger(NocService::class.java)
 
-    fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
+    suspend fun calculate(systemId: Long, jClasses: List<JClass>): Map<String, Int> {
         val nocMap: MutableMap<String, Int> = mutableMapOf()
         jClasses.forEach { nocMap[it.id] = getNoc(systemId, it) }
         log.info("Finish calculate all noc, count: {}", nocMap.keys.size)
