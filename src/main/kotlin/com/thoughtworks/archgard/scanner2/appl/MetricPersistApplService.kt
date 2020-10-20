@@ -1,6 +1,5 @@
 package com.thoughtworks.archgard.scanner2.appl
 
-import com.thoughtworks.archgard.scanner2.common.Scanner2ThreadPool
 import com.thoughtworks.archgard.scanner2.domain.model.CircularDependenciesCount
 import com.thoughtworks.archgard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archgard.scanner2.domain.model.JClass
@@ -22,11 +21,12 @@ import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.concurrent.CountDownLatch
 
 
 @Service
@@ -43,11 +43,10 @@ class MetricPersistApplService(val ditService: DitService,
                                val packageMetricRepository: PackageMetricRepository,
                                val moduleMetricRepository: ModuleMetricRepository,
                                val dataClassRepository: DataClassRepository,
-                               val circularDependencyMetricRepository: CircularDependencyMetricRepository,
-                               val scanner2ThreadPool: Scanner2ThreadPool) {
+                               val circularDependencyMetricRepository: CircularDependencyMetricRepository) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
-    fun persistLevel2Metrics(systemId: Long) {
+    fun persistLevel2Metrics(systemId: Long) = runBlocking {
 
         log.info("**************************************************************************")
         log.info(" Begin calculate and persist Level 2 Metric in systemId $systemId")
@@ -55,25 +54,12 @@ class MetricPersistApplService(val ditService: DitService,
 
         val jClasses = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
 
-        val latch = CountDownLatch(4)
+        val threadPool = newFixedThreadPoolContext(4, "level2_metrics")
+        async(threadPool) { persistClassLevel2Metrics(systemId, jClasses) }.await()
+        async(threadPool) { persistMethodLevel2Metrics(systemId) }.await()
+        async(threadPool) { persistPackageLevel2Metrics(systemId, jClasses) }.await()
+        async(threadPool) { persistModuleLevel2Metrics(systemId, jClasses) }.await()
 
-        scanner2ThreadPool.submit(Runnable {
-            persistClassLevel2Metrics(systemId, jClasses)
-            latch.countDown()
-        })
-        scanner2ThreadPool.submit(Runnable {
-            persistMethodLevel2Metrics(systemId)
-            latch.countDown()
-        })
-        scanner2ThreadPool.submit(Runnable {
-            persistPackageLevel2Metrics(systemId, jClasses)
-            latch.countDown()
-        })
-        scanner2ThreadPool.submit(Runnable {
-            persistModuleLevel2Metrics(systemId, jClasses)
-            latch.countDown()
-        })
-        latch.await()
     }
 
     @Transactional
@@ -110,7 +96,7 @@ class MetricPersistApplService(val ditService: DitService,
 
     }
 
-    private fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+    private suspend fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val moduleFanInFanOutMap = fanInFanOutService.calculateAtModuleLevel(systemId, jClasses)
         val moduleMetrics = moduleFanInFanOutMap.map {
             ModuleMetric(systemId, it.key, it.value.fanIn, it.value.fanOut)
@@ -124,7 +110,7 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+    private suspend fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val packageFanInFanOutMap = fanInFanOutService.calculateAtPackageLevel(systemId, jClasses)
         val packageMetrics = packageFanInFanOutMap.map {
             PackageMetric(systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
@@ -138,7 +124,7 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistMethodLevel2Metrics(systemId: Long) {
+    private suspend fun persistMethodLevel2Metrics(systemId: Long) {
         val methods = jMethodRepository.getMethodsNotThirdPartyAndNotTest(systemId)
         val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
 
@@ -155,12 +141,12 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) = runBlocking {
-
-        val ditMap = async { ditService.calculate(systemId, jClasses) }
-        val nocMap = async { nocService.calculate(systemId, jClasses) }
-        val lcom4Map = async { lcoM4Service.calculate(systemId, jClasses) }
-        val classFanInFanOutMap = async { fanInFanOutService.calculateAtClassLevel(systemId) }
+    private suspend fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) = coroutineScope {
+        val threadPool = newFixedThreadPoolContext(4, "class_metrics")
+        val ditMap = async(threadPool) { ditService.calculate(systemId, jClasses) }
+        val nocMap = async(threadPool) { nocService.calculate(systemId, jClasses) }
+        val lcom4Map = async(threadPool) { lcoM4Service.calculate(systemId, jClasses) }
+        val classFanInFanOutMap = async(threadPool) { fanInFanOutService.calculateAtClassLevel(systemId) }
 
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(), ditMap.await()[it.id], nocMap.await()[it.id], lcom4Map.await()[it.id],
