@@ -15,15 +15,27 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
     fun autoDefine(systemId: Long) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
-        RestTemplate().postForLocation("$url/systems/{systemId}/logic-modules/auto-define", null, params)
-        log.info("send auto define request to module service")
+        try {
+            RestTemplate().postForLocation("$url/systems/{systemId}/logic-modules/auto-define", null, params)
+            log.info("send auto define request to module service")
+        } catch (ex: Exception) {
+            log.error("HTTP exception when trigger auto-define logic module. {}", ex)
+            /* let scan continue even auto-define fail*/
+            //throw ex
+        }
     }
 
-    fun badSmellDashboard(systemId: Long){
+    fun badSmellDashboard(systemId: Long) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
-        RestTemplate().postForLocation("$url/systems/{systemId}/dashboard", null, params)
-        log.info("send badSmellDashboard")
+        try {
+            RestTemplate().postForLocation("$url/systems/{systemId}/dashboard", null, params)
+            log.info("send badSmellDashboard")
+        } catch (ex: Exception) {
+            log.error("HTTP exception when saving bad-smell dashboard. {}", ex)
+            /* let scan continue even save dashboard fail*/
+            //throw ex
+        }
     }
 
 }
