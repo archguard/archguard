@@ -94,7 +94,8 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getJClassesNotThirdPartyAndNotTest(systemId: Long): List<JClass> {
-        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_thirdparty = 0 and is_test = 0"
+        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId " +
+                "and is_thirdparty = 0 and is_test = 0 and name not like '%$%'"
         return jdbi.withHandle<List<JClassPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassPO::class.java))
             it.createQuery(sql)
