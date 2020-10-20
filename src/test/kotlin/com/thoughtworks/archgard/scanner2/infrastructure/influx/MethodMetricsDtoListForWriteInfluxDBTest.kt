@@ -21,10 +21,10 @@ internal class MethodMetricsDtoListForWriteInfluxDBTest {
 
         val influxDBRequestBody = dtoListForWriteInfluxDB.toRequestBody()
 
-        val expect = "method_metric,method_name='hello(String\\,Int)',class_name='UserService',package_name='com.service'," +
-                "module_name='dubbo-service',system_id=1 fanIn=5,fanOut=10\n" +
-                "method_metric,method_name='hello(String)',class_name='UserService',package_name='com.service'," +
-                "module_name='dubbo-service',system_id=1 fanIn=10,fanOut=5"
+        val expect = "method_metric,method_name=hello(String\\,Int),class_name=UserService,package_name=com.service," +
+                "module_name=dubbo-service,system_id=1 fanIn=5,fanOut=10\n" +
+                "method_metric,method_name=hello(String),class_name=UserService,package_name=com.service," +
+                "module_name=dubbo-service,system_id=1 fanIn=10,fanOut=5"
         Assertions.assertEquals(expect, influxDBRequestBody)
     }
 
