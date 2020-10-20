@@ -32,7 +32,7 @@ class MethodCircularProcessor(val jMethodRepository: JMethodRepository,
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        val methodsHasModules = jMethodRepository.getMethodsNotThirdParty(systemId)
+        val methodsHasModules = jMethodRepository.getMethodsNotThirdPartyAndNotTest(systemId)
         return cycles.map { it.map { methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }.toVO() } }
     }
 }

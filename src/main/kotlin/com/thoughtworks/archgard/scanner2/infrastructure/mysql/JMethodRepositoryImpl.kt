@@ -67,6 +67,18 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         }.map { it.toJMethod() }
     }
 
+    override fun getMethodsNotThirdPartyAndNotTest(systemId: Long): List<JMethod> {
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
+                "system_id=:systemId and is_test = 0 AND module is not NULL and name not like '<%>'"
+        return jdbi.withHandle<List<JMethodPO>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JMethodPO::class.java))
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .mapTo(JMethodPO::class.java)
+                    .list()
+        }.map { it.toJMethod() }
+    }
+
     override fun findMethodCallees(id: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE id IN (SELECT b FROM _MethodCallees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {

@@ -21,10 +21,26 @@ internal class MethodMetricsDtoListForWriteInfluxDBTest {
 
         val influxDBRequestBody = dtoListForWriteInfluxDB.toRequestBody()
 
-        val expect = "method_metric,method_name=hello(String\\,Int),class_name=UserService,package_name=com.service," +
-                "module_name=dubbo-service,system_id=1 fanIn=5,fanOut=10\n" +
-                "method_metric,method_name=hello(String),class_name=UserService,package_name=com.service," +
-                "module_name=dubbo-service,system_id=1 fanIn=10,fanOut=5"
+        val expect = "method_metric,method_name='hello(String\\,Int)',class_name='UserService',package_name='com.service'," +
+                "module_name='dubbo-service',system_id=1 fanIn=5,fanOut=10\n" +
+                "method_metric,method_name='hello(String)',class_name='UserService',package_name='com.service'," +
+                "module_name='dubbo-service',system_id=1 fanIn=10,fanOut=5"
+        Assertions.assertEquals(expect, influxDBRequestBody)
+    }
+
+    @Test
+    internal fun should_generate_influxdb_request_string_when_method_name_contain_space() {
+        val listOfMetrics = listOf(
+                MethodMetric(1,
+                        JMethodVO("hello world", JClassVO("UserService", "dubbo-service"), "Void", listOf()),
+                        5, 10)
+        )
+        val dtoListForWriteInfluxDB = MethodMetricsDtoListForWriteInfluxDB(listOfMetrics)
+
+        val influxDBRequestBody = dtoListForWriteInfluxDB.toRequestBody()
+
+        val expect = "method_metric,method_name=hello_world(),class_name=UserService,package_name=.," +
+                "module_name=dubbo-service,system_id=1 fanIn=5,fanOut=10"
         Assertions.assertEquals(expect, influxDBRequestBody)
     }
 }

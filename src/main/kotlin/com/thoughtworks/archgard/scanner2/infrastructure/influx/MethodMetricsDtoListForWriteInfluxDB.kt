@@ -8,10 +8,13 @@ data class MethodMetricsDtoListForWriteInfluxDB(val methodMetrics: List<MethodMe
 
 data class MethodMetricsDtoForWriteInfluxDB(val methodMetric: MethodMetric) {
     fun toInfluxDBRequestBody(): String {
+        val methodName = methodMetric.jMethodVO.name.replace(" ", "_")
+        val packageName = if (methodMetric.jMethodVO.clazz.getPackageName().isEmpty()) "." else methodMetric.jMethodVO.clazz.getPackageName()
+
         return "method_metric," +
-                "method_name=${methodMetric.jMethodVO.name}(${methodMetric.jMethodVO.argumentTypes.joinToString(separator = "\\,")})," +
+                "method_name=${methodName}(${methodMetric.jMethodVO.argumentTypes.joinToString(separator = "\\,")})," +
                 "class_name=${methodMetric.jMethodVO.clazz.getTypeName()}," +
-                "package_name=${methodMetric.jMethodVO.clazz.getPackageName()}," +
+                "package_name=${packageName}," +
                 "module_name=${methodMetric.jMethodVO.clazz.module}," +
                 "system_id=${methodMetric.systemId} " +
                 "fanIn=${methodMetric.fanIn},fanOut=${methodMetric.fanOut}"

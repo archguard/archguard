@@ -123,7 +123,7 @@ class MetricPersistApplService(val ditService: DitService,
     }
 
     private fun persistMethodLevel2Metrics(systemId: Long) {
-        val methods = jMethodRepository.getMethodsNotThirdParty(systemId)
+        val methods = jMethodRepository.getMethodsNotThirdPartyAndNotTest(systemId)
         val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
 
         val methodMetrics = methods.map {

@@ -11,5 +11,6 @@ interface JMethodRepository {
     fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
     fun getDistinctMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>>
     fun getMethodsNotThirdParty(systemId: Long): List<JMethod>
+    fun getMethodsNotThirdPartyAndNotTest(systemId: Long): List<JMethod>
 }
 

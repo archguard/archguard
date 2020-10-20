@@ -7,8 +7,9 @@ data class PackageMetricsDtoListForWriteInfluxDB(val packageMetrics: List<Packag
 }
 
 data class PackageMetricsDtoForWriteInfluxDB(private val packageMetric: PackageMetric) {
+    private val packageName = if (packageMetric.packageName.isEmpty()) "." else packageMetric.packageName
     fun toInfluxDBRequestBody(): String {
-        return "package_metric,module_name=${packageMetric.moduleName},package_name=${packageMetric.packageName},system_id=${packageMetric.systemId} " +
+        return "package_metric,module_name=${packageMetric.moduleName},package_name=${packageName},system_id=${packageMetric.systemId} " +
                 "fanIn=${packageMetric.fanIn},fanOut=${packageMetric.fanOut}"
     }
 }
