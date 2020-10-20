@@ -22,13 +22,6 @@ import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOut
 import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.CircularDependenciesCountDtoForWriteInfluxDB
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.ClassMetricsDtoListForWriteInfluxDB
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.DataClassDtoForWriteInfluxDB
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.InfluxDBClient
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.MethodMetricsDtoListForWriteInfluxDB
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.ModuleMetricsDtoListForWriteInfluxDB
-import com.thoughtworks.archgard.scanner2.infrastructure.influx.PackageMetricsDtoListForWriteInfluxDB
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -50,7 +43,6 @@ class MetricPersistApplService(val ditService: DitService,
                                val moduleMetricRepository: ModuleMetricRepository,
                                val dataClassRepository: DataClassRepository,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository,
-                               val influxDBClient: InfluxDBClient,
                                val scanner2ThreadPool: Scanner2ThreadPool) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
@@ -87,12 +79,8 @@ class MetricPersistApplService(val ditService: DitService,
     fun persistDataClass(systemId: Long) {
         val dataClasses = dataClassService.findAllDataClasses(systemId)
         dataClassRepository.insertOrUpdateDataClass(systemId, dataClasses)
-        val dataClassCount = dataClasses.size
-        val dataClassWithOneFieldCount = dataClasses.filter { it.fields.size == 1 }.size
-
-        influxDBClient.save(DataClassDtoForWriteInfluxDB(systemId, dataClassCount, dataClassWithOneFieldCount).toRequestBody())
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist data class Metric to mysql and influxdb in systemId $systemId")
+        log.info("Finished persist data class Metric for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
     }
 
@@ -115,9 +103,8 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("Finished persist methodCircularDependency in systemId $systemId")
 
         val circularDependenciesCount = CircularDependenciesCount(systemId, moduleCircularDependency.size, packageCircularDependency.size, classCircularDependency.size, methodCircularDependency.size)
-        influxDBClient.save(CircularDependenciesCountDtoForWriteInfluxDB(circularDependenciesCount).toRequestBody())
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist circularDependenciesCount to influxdb in systemId $systemId")
+        log.info("Finished persist circularDependenciesCount for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
 
     }
@@ -130,10 +117,9 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("Finished calculate moduleMetric in systemId $systemId")
 
         moduleMetricRepository.insertOrUpdateModuleMetric(systemId, moduleMetrics)
-        influxDBClient.save(ModuleMetricsDtoListForWriteInfluxDB(moduleMetrics).toRequestBody())
 
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist module Metric to mysql and influxdb in systemId $systemId")
+        log.info("Finished persist module Metric to mysql for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
     }
 
@@ -145,10 +131,9 @@ class MetricPersistApplService(val ditService: DitService,
         }
         log.info("Finished calculate packageMetric in systemId $systemId")
         packageMetricRepository.insertOrUpdatePackageMetric(systemId, packageMetrics)
-        influxDBClient.save(PackageMetricsDtoListForWriteInfluxDB(packageMetrics).toRequestBody())
 
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist package Metric to mysql and influxdb in systemId $systemId")
+        log.info("Finished persist package Metric to mysql for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
     }
 
@@ -163,10 +148,9 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("Finished calculate methodMetric in systemId $systemId")
 
         methodMetricRepository.insertOrUpdateMethodMetric(systemId, methodMetrics)
-        influxDBClient.save(MethodMetricsDtoListForWriteInfluxDB(methodMetrics).toRequestBody())
 
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist method Metric to mysql and influxdb in systemId $systemId")
+        log.info("Finished persist method Metric to mysql for in systemId $systemId")
         log.info("-----------------------------------------------------------------------")
     }
 
@@ -205,9 +189,8 @@ class MetricPersistApplService(val ditService: DitService,
 
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
 
-        influxDBClient.save(ClassMetricsDtoListForWriteInfluxDB(classMetrics).toRequestBody())
         log.info("-----------------------------------------------------------------------")
-        log.info("Finished persist class Metric to mysql and influxdb in systemId $systemId")
+        log.info("Finished persist class Metric to mysql for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
     }
 }

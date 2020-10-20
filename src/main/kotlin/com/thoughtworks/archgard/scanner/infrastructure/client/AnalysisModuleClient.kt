@@ -20,8 +20,7 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
             log.info("Auto-define request to module-analysis for system {}", systemId)
         } catch (ex: Exception) {
             log.error("HTTP exception when trigger auto-define logic module. {}", ex)
-            /* let scan continue even auto-define fail*/
-            //throw ex
+            throw ex
         }
     }
 
@@ -33,8 +32,7 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
             log.info("BadSmellDashboard saved for system {}", systemId)
         } catch (ex: Exception) {
             log.error("HTTP exception when saving bad-smell dashboard. {}", ex)
-            /* let scan continue even save dashboard fail*/
-            //throw ex
+            throw ex
         }
     }
 
