@@ -20,6 +20,8 @@ import com.thoughtworks.archgard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -48,11 +50,16 @@ class MetricPersistApplService(val ditService: DitService,
         log.info(" Begin calculate and persist Level 2 Metric in systemId $systemId")
         log.info("**************************************************************************")
         val jClasses = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
-        persistPackageLevel2Metrics(systemId, jClasses)
-        persistModuleLevel2Metrics(systemId, jClasses)
-        persistMethodLevel2Metrics(systemId)
-        persistClassLevel2Metrics(systemId, jClasses)
-
+        runBlocking {
+            val classJob = launch { persistClassLevel2Metrics(systemId, jClasses) }
+            val methodJob = launch { persistMethodLevel2Metrics(systemId) }
+            val packageJob = launch { persistPackageLevel2Metrics(systemId, jClasses) }
+            val moduleJob = launch { persistModuleLevel2Metrics(systemId, jClasses) }
+            classJob.join()
+            methodJob.join()
+            packageJob.join()
+            moduleJob.join()
+        }
     }
 
     @Transactional
@@ -88,7 +95,7 @@ class MetricPersistApplService(val ditService: DitService,
 
     }
 
-    private fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+    private suspend fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val moduleFanInFanOutMap = fanInFanOutService.calculateAtModuleLevel(systemId, jClasses)
         val moduleMetrics = moduleFanInFanOutMap.map {
             ModuleMetric(systemId, it.key, it.value.fanIn, it.value.fanOut)
@@ -102,7 +109,7 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
+    private suspend fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val packageFanInFanOutMap = fanInFanOutService.calculateAtPackageLevel(systemId, jClasses)
         val packageMetrics = packageFanInFanOutMap.map {
             PackageMetric(systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
@@ -116,7 +123,7 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistMethodLevel2Metrics(systemId: Long) {
+    private suspend fun persistMethodLevel2Metrics(systemId: Long) {
         val methods = jMethodRepository.getMethodsNotThirdPartyAndNotTest(systemId)
         val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
 
@@ -133,7 +140,7 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
     }
 
-    private fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) = runBlocking {
+    private suspend fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) = coroutineScope {
         val ditMap = async { ditService.calculate(systemId, jClasses) }
         val nocMap = async { nocService.calculate(systemId, jClasses) }
         val lcom4Map = async { lcoM4Service.calculate(systemId, jClasses) }
