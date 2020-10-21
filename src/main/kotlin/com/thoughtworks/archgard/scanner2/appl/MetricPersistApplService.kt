@@ -22,6 +22,7 @@ import com.thoughtworks.archgard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
@@ -46,20 +47,21 @@ class MetricPersistApplService(val ditService: DitService,
                                val circularDependencyMetricRepository: CircularDependencyMetricRepository) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
-    fun persistLevel2Metrics(systemId: Long) = runBlocking {
-
+    fun persistLevel2Metrics(systemId: Long) {
         log.info("**************************************************************************")
         log.info(" Begin calculate and persist Level 2 Metric in systemId $systemId")
         log.info("**************************************************************************")
-
         val jClasses = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
-
-        val threadPool = newFixedThreadPoolContext(4, "level2_metrics")
-        async(threadPool) { persistClassLevel2Metrics(systemId, jClasses) }.await()
-        async(threadPool) { persistMethodLevel2Metrics(systemId) }.await()
-        async(threadPool) { persistPackageLevel2Metrics(systemId, jClasses) }.await()
-        async(threadPool) { persistModuleLevel2Metrics(systemId, jClasses) }.await()
-
+        runBlocking {
+            val classJob = launch { persistClassLevel2Metrics(systemId, jClasses) }
+            val methodJob = launch { persistMethodLevel2Metrics(systemId) }
+            val packageJob = launch { persistPackageLevel2Metrics(systemId, jClasses) }
+            val moduleJob = launch { persistModuleLevel2Metrics(systemId, jClasses) }
+            classJob.join()
+            methodJob.join()
+            packageJob.join()
+            moduleJob.join()
+        }
     }
 
     @Transactional
@@ -154,7 +156,6 @@ class MetricPersistApplService(val ditService: DitService,
                     classFanInFanOutMap.await()[it.id]?.fanOut ?: 0)
         }
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
-
         log.info("-----------------------------------------------------------------------")
         log.info("Finished persist class Metric to mysql for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
