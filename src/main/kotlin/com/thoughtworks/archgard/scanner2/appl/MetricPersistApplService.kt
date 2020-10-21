@@ -23,7 +23,6 @@ import com.thoughtworks.archgard.scanner2.domain.service.NocService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -144,11 +143,10 @@ class MetricPersistApplService(val ditService: DitService,
     }
 
     private suspend fun persistClassLevel2Metrics(systemId: Long, jClasses: List<JClass>) = coroutineScope {
-        val threadPool = newFixedThreadPoolContext(4, "class_metrics")
-        val ditMap = async(threadPool) { ditService.calculate(systemId, jClasses) }
-        val nocMap = async(threadPool) { nocService.calculate(systemId, jClasses) }
-        val lcom4Map = async(threadPool) { lcoM4Service.calculate(systemId, jClasses) }
-        val classFanInFanOutMap = async(threadPool) { fanInFanOutService.calculateAtClassLevel(systemId) }
+        val ditMap = async { ditService.calculate(systemId, jClasses) }
+        val nocMap = async { nocService.calculate(systemId, jClasses) }
+        val lcom4Map = async { lcoM4Service.calculate(systemId, jClasses) }
+        val classFanInFanOutMap = async { fanInFanOutService.calculateAtClassLevel(systemId) }
 
         val classMetrics = jClasses.map {
             ClassMetric(systemId, it.toVO(), ditMap.await()[it.id], nocMap.await()[it.id], lcom4Map.await()[it.id],
