@@ -16,24 +16,24 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         return calculateFanInFanOutWithDependency(allClassDependencies)
     }
 
-    suspend fun calculateAtMethodLevel(systemId: Long): Map<String, FanInFanOut> {
+    fun calculateAtMethodLevel(systemId: Long): Map<String, FanInFanOut> {
         val allMethodDependencies = jMethodRepository.getAllMethodDependenciesAndNotThirdParty(systemId).toSet()
         return calculateFanInFanOutWithDependency(allMethodDependencies)
     }
 
-    suspend fun calculateAtPackageLevel(systemId: Long, jClasses: List<JClass>): Map<String, FanInFanOut> {
+    fun calculateAtPackageLevel(systemId: Long, jClasses: List<JClass>): Map<String, FanInFanOut> {
         val allClassDependencies = jClassRepository.getAllClassDependenciesAndNotThirdParty(systemId)
         val packageDependencies = buildPackageDependencyFromClassDependency(allClassDependencies, jClasses).toSet()
         return calculateFanInFanOutWithDependency(packageDependencies)
     }
 
-    suspend fun calculateAtModuleLevel(systemId: Long, jClasses: List<JClass>): Map<String, FanInFanOut> {
+    fun calculateAtModuleLevel(systemId: Long, jClasses: List<JClass>): Map<String, FanInFanOut> {
         val allClassDependencies = jClassRepository.getAllClassDependenciesAndNotThirdParty(systemId)
         val moduleDependencies = buildModuleDependencyFromClassDependency(allClassDependencies, jClasses).toSet()
         return calculateFanInFanOutWithDependency(moduleDependencies)
     }
 
-    private fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
+    fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
         return classDependencies.map { classDependency ->
             val callerClass = jClasses.first { it.id == classDependency.caller }.toVO()
             val calleeClass = jClasses.first { it.id == classDependency.callee }.toVO()
@@ -41,7 +41,7 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         }
     }
 
-    private fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
+    fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
         return classDependencies.map { classDependency ->
             val callerClass = jClasses.first { it.id == classDependency.caller }.toVO()
             val calleeClass = jClasses.first { it.id == classDependency.callee }.toVO()

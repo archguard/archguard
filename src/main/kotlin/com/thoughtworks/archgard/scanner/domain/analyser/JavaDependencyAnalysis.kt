@@ -46,7 +46,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                 analyse(systemId)
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
-                log.error(e.message)
+                log.error("Exception in asyncAnalyse: {}", e)
                 stopScanSystem(systemInfo, ScannedType.FAILED)
             }
         }
