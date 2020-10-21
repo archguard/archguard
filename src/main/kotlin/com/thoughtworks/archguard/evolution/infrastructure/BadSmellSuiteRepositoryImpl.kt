@@ -20,7 +20,7 @@ class BadSmellSuiteRepositoryImpl(val jdbi: Jdbi) : BadSmellSuiteRepository {
     }
 
     override fun getSelectedBadSmellSuiteIdBySystem(systemId: Long): Long {
-        val sql = "select threshold_suite_id from system_info where system_id=:systemId"
+        val sql = "select threshold_suite_id from system_info where id=:systemId"
         return jdbi.withHandle<Long, Nothing> {
             it.createQuery(sql)
                     .bind("systemId", systemId)

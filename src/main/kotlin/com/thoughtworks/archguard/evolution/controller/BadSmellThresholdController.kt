@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class BadSmellThresholdController(val badSmellThresholdService: BadSmellThresholdService) {
 
     @GetMapping("/badsmell-thresholds")
-    fun getAllThresholds(@PathVariable("systemId") systemId: Long): List<BadSmellSuite> {
+    fun getAllThresholds(): List<BadSmellSuite> {
         return badSmellThresholdService.getAllSuits()
     }
 
