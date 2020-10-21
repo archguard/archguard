@@ -54,11 +54,12 @@ dependencies {
     implementation("org.jdbi:jdbi3-testing:$jdbiVersion")
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.3.RELEASE")
+    implementation("com.google.code.gson:gson:2.8.6")
 
     runtimeOnly("mysql:mysql-connector-java")
 
     testImplementation("org.flywaydb:flyway-core:6.2.2")
-    testImplementation("com.h2database:h2")
+    testImplementation("com.h2database:h2:1.4.200")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
     testImplementation("io.mockk:mockk:1.10.0")
