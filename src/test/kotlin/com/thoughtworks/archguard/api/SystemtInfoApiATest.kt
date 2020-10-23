@@ -1,11 +1,10 @@
 package com.thoughtworks.archguard.api
 
+import com.github.database.rider.core.api.dataset.DataSet
+import com.github.database.rider.spring.api.DBRider
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
@@ -18,7 +17,7 @@ import javax.annotation.Resource
 
 @SpringBootTest
 @WebAppConfiguration
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
+@DBRider
 class SystemtInfoApiATest {
 
     @Autowired
@@ -28,7 +27,7 @@ class SystemtInfoApiATest {
     private lateinit var wac: WebApplicationContext
 
     @Test
-    @Order(1)
+    @DataSet("expect/system_info_api_atest.yml")
     fun should_get_system_info_when_sent_get_system_info_api_given_there_is_already_system_info_in_database() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -39,14 +38,15 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}]"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":null,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
     }
 
     @Test
-    @Order(2)
+    @DataSet("expect/system_info_api_atest.yml")
     fun should_get_system_info_success_when_get_by_id() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
@@ -57,7 +57,8 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":null,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
         assertEquals(200, status)
         assertEquals(except, content)
 
@@ -65,10 +66,11 @@ class SystemtInfoApiATest {
     }
 
     @Test
-    @Order(3)
+    @DataSet("expect/system_info_api_atest.yml")
     fun should_get_success_message_when_sent_update_system_info_api_given_there_is_already_system_info_in_database() {
         val updateDTO = "{\"id\":1,\"systemName\":\"systemName2\",\"repo\":[\"repo2\"],\"sql\":\"sql2\"" +
-                ",\"username\":\"username2\",\"password\":\"admin123456\",\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1597133166000}]>"
+                ",\"username\":\"username2\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"badSmellThresholdSuiteId\":2,\"branch\":\"dev\"}"
 
         val request = MockMvcRequestBuilders.request(HttpMethod.PUT, "/system-info")
                 .contentType("application/json")
@@ -77,12 +79,9 @@ class SystemtInfoApiATest {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        val content = result.response.contentAsString
         val status = result.response.status
-        val except = "{\"success\":true,\"message\":\"update system info success\"}"
 
         assertEquals(200, status)
-        assertEquals(except, content)
 
         val re = jdbi.withHandle<String, Nothing> {
             it.createQuery("select `system_name` from system_info where id = 1")
@@ -94,7 +93,6 @@ class SystemtInfoApiATest {
     }
 
     @Test
-    @Order(4)
     fun should_get_success_massage_when_sent_add_system_info_api_given_there_is_no_system_info_in_database() {
         jdbi.withHandle<Int, Nothing> {
             it.createUpdate("delete from system_info")
@@ -111,7 +109,6 @@ class SystemtInfoApiATest {
                 .andExpect(status().isOk)
                 .andReturn()
 
-        val content = result.response.contentAsString
         val status = result.response.status
 
         assertEquals(200, status)
@@ -123,28 +120,25 @@ class SystemtInfoApiATest {
         }
         assertEquals(1, re.size)
 
-        val except = "{\"success\":true,\"message\":\"add new system info success\",\"id\":${re[0]}}"
-        assertEquals(except, content)
-
     }
 
     @Test
-    @Order(5)
+    @DataSet("expect/system_info_api_atest.yml")
     fun should_delete_system_info_success_when_get_by_id() {
-//        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/system-info/1")
-//        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-//                .andExpect(status().isOk)
-//                .andReturn()
-//
-//        val status = result.response.status
-//
-//        val re = jdbi.withHandle<List<Long>, Nothing> {
-//            it.createQuery("select id from system_info where `system_name` = 'systemName1'")
-//                    .mapTo(Long::class.java)
-//                    .list()
-//        }
-//
-//        assertEquals(200, status)
-//        assertEquals(0, re.size)
+        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/system-info/1")
+        val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val status = result.response.status
+
+        val re = jdbi.withHandle<List<Long>, Nothing> {
+            it.createQuery("select id from system_info where `system_name` = 'systemName1'")
+                    .mapTo(Long::class.java)
+                    .list()
+        }
+
+        assertEquals(200, status)
+        assertEquals(0, re.size)
     }
 }

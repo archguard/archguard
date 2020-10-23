@@ -1,1 +1,0 @@
-ALTER TABLE testBadSmell MODIFY COLUMN file_name text

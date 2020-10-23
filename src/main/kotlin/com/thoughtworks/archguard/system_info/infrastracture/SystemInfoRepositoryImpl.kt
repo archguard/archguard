@@ -43,7 +43,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "password = :password, " +
                     "repo_type = :repoType, " +
                     "quality_gate_profile_id = :qualityGateProfileId, " +
-                    "threshold_suite_id = :badSmellThresholdSuiteId " +
+                    "threshold_suite_id = :badSmellThresholdSuiteId, " +
                     "branch = :branch " +
                     "where id = :id")
                     .bindBean(systemInfo)

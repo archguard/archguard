@@ -40,9 +40,9 @@ class SystemInfoController(val systemInfoService: SystemInfoService,
     }
 
     @PostMapping
-    fun addSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO) {
+    fun addSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO): Long {
         val systemInfo: SystemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
-        systemInfoService.addSystemInfo(systemInfo)
+        return systemInfoService.addSystemInfo(systemInfo)
     }
 
     @DeleteMapping("/{id}")

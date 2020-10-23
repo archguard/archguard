@@ -1,2 +1,0 @@
-INSERT INTO `project_info`(`id`, `project_name`, `repo`, `repo_type`, `username`, `password`, `sql_table`, `updated_time`, `created_time`) 
-VALUES (1, 'projectName1', 'repo1', 'GIT', 'username1', 'WCA5RH/O9J4yxgU40Z+thg==', 'sql1', '2020-08-11 16:06:06', '2020-08-11 16:06:06');

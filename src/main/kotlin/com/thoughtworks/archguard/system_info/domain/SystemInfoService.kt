@@ -1,8 +1,7 @@
 package com.thoughtworks.archguard.system_info.domain
 
+import com.thoughtworks.archguard.common.exception.DuplicateResourceException
 import com.thoughtworks.archguard.common.exception.EntityNotFoundException
-import com.thoughtworks.archguard.system_info.controller.SystemInfoAddMessage
-import com.thoughtworks.archguard.system_info.controller.SystemInfoUpdateMessage
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,20 +17,17 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository) {
         return systemInfoRepository.getSystemInfoList()
     }
 
-    fun updateSystemInfo(systemInfo: SystemInfo): SystemInfoUpdateMessage {
-        return if (systemInfoRepository.updateSystemInfo(systemInfo) == 1) {
-            SystemInfoUpdateMessage(true, "update system info success")
-        } else {
-            SystemInfoUpdateMessage(false, "update error")
-        }
+    fun updateSystemInfo(systemInfo: SystemInfo) {
+        val updatedRow = systemInfoRepository.updateSystemInfo(systemInfo)
+        if (updatedRow != 1)
+            throw EntityNotFoundException(SystemInfo::class.java, systemInfo.id)
     }
 
-    fun addSystemInfo(systemInfo: SystemInfo): SystemInfoAddMessage {
-        return if (systemInfoRepository.queryBysystemName(systemInfo.systemName) == 0) {
-            val id = systemInfoRepository.addSystemInfo(systemInfo)
-            SystemInfoAddMessage(true, "add new system info success", id)
+    fun addSystemInfo(systemInfo: SystemInfo): Long {
+        if (systemInfoRepository.queryBysystemName(systemInfo.systemName) == 0) {
+            return systemInfoRepository.addSystemInfo(systemInfo)
         } else {
-            SystemInfoAddMessage(false, "There is already system info", 0)
+            throw DuplicateResourceException("There is already system info")
         }
     }
 
