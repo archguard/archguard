@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceRepository
 import org.springframework.stereotype.Component
 
 @Component

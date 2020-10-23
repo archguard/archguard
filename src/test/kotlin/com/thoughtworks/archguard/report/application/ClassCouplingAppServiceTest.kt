@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.application
 
-import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.qualitygate.ComparationOperator
 import com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate
 import com.thoughtworks.archguard.report.domain.qualitygate.LayerType

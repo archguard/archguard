@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.coupling.MethodCoupling
+import com.thoughtworks.archguard.report.domain.coupling.hub.MethodCoupling
 import com.thoughtworks.archguard.report.util.NameUtil.getClassName
 import com.thoughtworks.archguard.report.util.NameUtil.getPackageName
 

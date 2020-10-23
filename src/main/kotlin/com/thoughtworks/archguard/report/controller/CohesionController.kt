@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.models.ClassVO
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

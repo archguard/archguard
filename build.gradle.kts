@@ -36,6 +36,7 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.3.RELEASE")
     implementation("com.alibaba:druid-spring-boot-starter:1.1.23")
+    implementation("com.google.code.gson:gson:2.8.6")
 
     runtimeOnly("mysql:mysql-connector-java")
 

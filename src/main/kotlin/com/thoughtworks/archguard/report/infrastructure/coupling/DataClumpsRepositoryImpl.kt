@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClump
-import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.ClassDataClump
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

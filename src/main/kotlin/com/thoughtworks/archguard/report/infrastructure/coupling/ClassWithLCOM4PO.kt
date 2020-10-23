@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClump
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.ClassDataClump
 
 class ClassWithLCOM4PO(val id: String, val systemId: Long, val name: String, val module: String, val lcom4: Int) {
 

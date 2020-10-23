@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.application.ClassCouplingAppService
-import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
-import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClumpsListDto
-import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceListDto
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceService
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.ClassDataClumpsListDto
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsService
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceListDto
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceService
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

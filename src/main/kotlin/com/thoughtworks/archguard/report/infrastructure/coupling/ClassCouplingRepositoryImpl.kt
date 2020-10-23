@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository

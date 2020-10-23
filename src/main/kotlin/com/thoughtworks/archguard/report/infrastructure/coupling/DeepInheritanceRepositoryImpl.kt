@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritance
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceRepository
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritance
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

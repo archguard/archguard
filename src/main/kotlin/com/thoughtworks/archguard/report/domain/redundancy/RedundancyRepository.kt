@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.redundancy
 
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.models.ClassVO
 
 interface RedundancyRepository {
     fun getOneMethodClassCount(systemId: Long): Long

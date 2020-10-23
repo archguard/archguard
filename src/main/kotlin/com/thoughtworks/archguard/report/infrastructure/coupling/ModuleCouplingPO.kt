@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.coupling.ModuleCoupling
+import com.thoughtworks.archguard.report.domain.coupling.hub.ModuleCoupling
 
 data class ModuleCouplingPO(val id: String, val moduleName: String,
                             val fanIn: Int, val fanOut: Int) {

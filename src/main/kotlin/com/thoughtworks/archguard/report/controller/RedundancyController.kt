@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.models.ClassVO
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationPairDTO
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationPairListDTO

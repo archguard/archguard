@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsRepository
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
 import org.springframework.stereotype.Component
 
 @Component

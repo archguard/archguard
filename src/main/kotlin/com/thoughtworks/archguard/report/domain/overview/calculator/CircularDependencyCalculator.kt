@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyRepository
-import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyType
+import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
+import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyType
 import org.springframework.stereotype.Component
 
 @Component

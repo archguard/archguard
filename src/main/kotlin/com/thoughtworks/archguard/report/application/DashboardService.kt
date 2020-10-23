@@ -5,12 +5,12 @@ import com.thoughtworks.archguard.report.controller.GroupData
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
-import com.thoughtworks.archguard.report.domain.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
-import com.thoughtworks.archguard.report.domain.dataclumps.DataClumpsService
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritanceService
-import com.thoughtworks.archguard.report.domain.hub.HubService
+import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyService
+import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsService
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceService
+import com.thoughtworks.archguard.report.domain.coupling.hub.HubService
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationService
 import com.thoughtworks.archguard.report.domain.redundancy.RedundancyService
 import com.thoughtworks.archguard.report.domain.sizing.SizingService

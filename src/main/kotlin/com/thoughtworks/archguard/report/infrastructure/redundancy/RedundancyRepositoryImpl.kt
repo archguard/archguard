@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure.redundancy
 
-import com.thoughtworks.archguard.report.domain.module.ClassVO
+import com.thoughtworks.archguard.report.domain.models.ClassVO
 import com.thoughtworks.archguard.report.domain.redundancy.RedundancyRepository
 import com.thoughtworks.archguard.report.infrastructure.ClassPO
 import org.jdbi.v3.core.Jdbi

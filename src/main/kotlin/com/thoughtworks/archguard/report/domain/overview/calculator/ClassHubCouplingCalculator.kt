@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.coupling.ClassCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
 import org.springframework.stereotype.Component
 
 @Component

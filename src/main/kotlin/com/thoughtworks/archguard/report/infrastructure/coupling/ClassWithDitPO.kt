@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.domain.deepinheritance.DeepInheritance
+import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritance
 
 class ClassWithDitPO(val id: String, val systemId: Long, val name: String, val module: String, val dit: Int) {
 
