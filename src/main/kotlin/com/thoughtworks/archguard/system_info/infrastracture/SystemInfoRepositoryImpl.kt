@@ -15,8 +15,9 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun getSystemInfo(id: Long): SystemInfo? =
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
-                        " username username, password password, repo_type repoType, scanned scanned, " +
-                        "quality_gate_profile_id qualityGateProfileId, updated_time updatedTime from system_info where id = :id")
+                        " username username, password password, repo_type repoType, scanned scanned," +
+                        " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime," +
+                        " threshold_suite_id badSmellThresholdSuiteId, branch from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
                         .firstOrNull()
@@ -24,7 +25,10 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
 
     override fun getSystemInfoList(): List<SystemInfo> =
             jdbi.withHandle<List<SystemInfo>, Nothing> {
-                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, password password, scanned scanned, quality_gate_profile_id qualityGateProfileId,repo_type repoType, updated_time updatedTime from system_info")
+                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, " +
+                        "password password, scanned scanned, quality_gate_profile_id qualityGateProfileId," +
+                        "repo_type repoType, updated_time updatedTime," +
+                        "threshold_suite_id badSmellThresholdSuiteId, branch from system_info")
                         .mapTo<SystemInfo>()
                         .list()
             }
@@ -39,7 +43,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "password = :password, " +
                     "repo_type = :repoType, " +
                     "quality_gate_profile_id = :qualityGateProfileId, " +
-                    "updated_time = NOW() " +
+                    "threshold_suite_id = :badSmellThresholdSuiteId " +
+                    "branch = :branch " +
                     "where id = :id")
                     .bindBean(systemInfo)
                     .execute()
@@ -50,7 +55,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate("insert into system_info" +
                     "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
-                    " updated_time, created_time) " +
+                    " threshold_suite_id, branch) " +
                     "values (:id, :systemName, " +
                     ":repo, " +
                     ":sql, " +
@@ -59,7 +64,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     ":repoType, " +
                     ":scanned, " +
                     ":qualityGateProfileId, " +
-                    "NOW(), NOW())")
+                    ":badSmellThresholdSuiteId, " +
+                    ":branch)")
                     .bindBean(systemInfo)
                     .executeAndReturnGeneratedKeys("id")
                     .mapTo(Long::class.java)
@@ -96,9 +102,6 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         )
 
         tables.forEach { sqls.add("delete from $it where system_id = $id") }
-        // "ClassStatistic","MethodStatistic"
-        sqls.add("delete from ClassStatistic where systemId = $id")
-        sqls.add("delete from MethodStatistic where systemId = $id")
 
         jdbi.withHandle<IntArray, Nothing> {
             val batch = it.createBatch()

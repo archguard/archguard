@@ -11,4 +11,7 @@ data class SystemInfo(var id: Long? = null,
                       val scanned: ScannedType = ScannedType.NONE,
                       val qualityGateProfileId: Long? = null,
                       val repoType: String = "GIT",
-                      val updatedTime: Timestamp? = null)
+                      val updatedTime: Timestamp? = null,
+                      val badSmellThresholdSuiteId: Long? = null,
+                      val branch: String? = "master"
+)
