@@ -16,7 +16,6 @@ import com.thoughtworks.archguard.report.domain.redundancy.RedundancyService
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellService
 import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
 @Service
@@ -82,7 +81,6 @@ class DashboardService(val sizingService: SizingService,
         return influxDBClient.query(query).map { it.values }
                 .flatten().map {
                     GraphData(it[0],
-                            SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ss'Z'").parse(it[0]).time,
                             it[1].toDouble().roundToInt())
                 }
     }
@@ -101,5 +99,5 @@ class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>)
     var dashboardGroup: String = eDashboardGroup.value
 }
 
-data class GraphData(val date: String, val timestamp: Long, val value: Int)
+data class GraphData(val date: String, val value: Int)
 
