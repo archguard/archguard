@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.infrastructure
+package com.thoughtworks.archguard.report.infrastructure.cohesion
 
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository

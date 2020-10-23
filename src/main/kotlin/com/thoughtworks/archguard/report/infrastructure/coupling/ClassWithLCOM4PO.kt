@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.infrastructure
+package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.dataclumps.ClassDataClump
 

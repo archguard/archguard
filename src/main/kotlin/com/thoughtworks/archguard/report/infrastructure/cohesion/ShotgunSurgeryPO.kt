@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.infrastructure
+package com.thoughtworks.archguard.report.infrastructure.cohesion
 
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgery
 import java.nio.file.Paths
