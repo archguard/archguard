@@ -5,6 +5,7 @@ import org.jdbi.v3.core.Jdbi
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import javax.annotation.Resource
 
+@Disabled
 @SpringBootTest
 @WebAppConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
