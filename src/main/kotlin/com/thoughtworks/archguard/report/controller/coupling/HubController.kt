@@ -1,10 +1,6 @@
-package com.thoughtworks.archguard.report.controller
+package com.thoughtworks.archguard.report.controller.coupling
 
-import com.thoughtworks.archguard.report.domain.coupling.hub.ClassHubListDto
 import com.thoughtworks.archguard.report.domain.coupling.hub.HubService
-import com.thoughtworks.archguard.report.domain.coupling.hub.MethodHubListDto
-import com.thoughtworks.archguard.report.domain.coupling.hub.ModuleHubListDto
-import com.thoughtworks.archguard.report.domain.coupling.hub.PackageHubListDto
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,7 +18,8 @@ class HubController(val hubService: HubService) {
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<ClassHubListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(hubService.getClassHubListAboveThreshold(systemId, limit, offset, orderByFanIn))
+        val (resultList, count, threshold) = hubService.getClassHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
+        return ResponseEntity.ok(ClassHubListDto(resultList, count, offset / limit + 1, threshold))
     }
 
     @GetMapping("/methods/above-threshold")
@@ -31,7 +28,8 @@ class HubController(val hubService: HubService) {
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<MethodHubListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(hubService.getMethodHubListAboveThreshold(systemId, limit, offset, orderByFanIn))
+        val (resultList, count, threshold) = hubService.getMethodHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
+        return ResponseEntity.ok(MethodHubListDto(resultList, count, offset / limit + 1, threshold))
     }
 
     @GetMapping("/packages/above-threshold")
@@ -40,7 +38,8 @@ class HubController(val hubService: HubService) {
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
                                      @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<PackageHubListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(hubService.getPackageHubListAboveThreshold(systemId, limit, offset, orderByFanIn))
+        val (resultList, count, threshold) = hubService.getPackageHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
+        return ResponseEntity.ok(PackageHubListDto(resultList, count, offset / limit + 1, threshold))
     }
 
     @GetMapping("/modules/above-threshold")
@@ -49,6 +48,7 @@ class HubController(val hubService: HubService) {
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<ModuleHubListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(hubService.getModuleHubListAboveThreshold(systemId, limit, offset, orderByFanIn))
+        val (resultList, count, threshold) = hubService.getModuleHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
+        return ResponseEntity.ok(ModuleHubListDto(resultList, count, offset / limit + 1, threshold))
     }
 }

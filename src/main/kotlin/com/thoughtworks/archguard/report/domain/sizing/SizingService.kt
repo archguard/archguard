@@ -2,35 +2,17 @@ package com.thoughtworks.archguard.report.domain.sizing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import org.springframework.beans.factory.annotation.Value
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import org.springframework.stereotype.Service
 
 @Service
-class SizingService(val sizingRepository: SizingRepository) {
-    @Value("\${threshold.method.line}")
-    private val methodSizingThreshold: Int = 0
-
-    @Value("\${threshold.class.line}")
-    private val classSizingThreshold: Int = 0
-
-    @Value("\${threshold.class.method.count}")
-    private val classMethodCountSizingThreshold: Int = 0
-
-    @Value("\${threshold.package.line}")
-    private val packageSizingLineThreshold: Int = 0
-
-    @Value("\${threshold.package.class.count}")
-    private val packageClassCountSizingThreshold: Int = 0
-
-    @Value("\${threshold.module.line}")
-    private val moduleSizingLineThreshold: Int = 0
-
-    @Value("\${threshold.module.package.count}")
-    private val moduleClassCountSizingThreshold: Int = 0
+class SizingService(val thresholdSuiteService: ThresholdSuiteService,
+                    val sizingRepository: SizingRepository) {
 
     fun getModulePackageCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ModuleSizing>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = moduleClassCountSizingThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_PACKAGE_COUNT)
         val count = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold)
         val data = sizingRepository.getModuleSizingListAbovePackageCountThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -38,7 +20,7 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getModuleSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ModuleSizing>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = moduleSizingLineThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_LOC)
         val count = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, threshold)
         val data = sizingRepository.getModuleSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -46,7 +28,7 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getPackageClassCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<PackageSizing>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = packageClassCountSizingThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
         val count = sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, threshold)
         val data = sizingRepository.getPackageSizingListAboveClassCountThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -54,7 +36,7 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getPackageSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<PackageSizing>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = packageSizingLineThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_LOC)
         val count = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, threshold)
         val data = sizingRepository.getPackageSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -62,7 +44,7 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getMethodSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<MethodSizing>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = methodSizingThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
         val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
         val data = sizingRepository.getMethodSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -71,7 +53,7 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithLine>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = classSizingThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
         val count = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold)
         val data = sizingRepository.getClassSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
@@ -79,29 +61,36 @@ class SizingService(val sizingRepository: SizingRepository) {
 
     fun getClassSizingListAboveMethodCountThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithMethodCount>, Long, Int> {
         validPagingParam(limit, offset)
-        val threshold = classMethodCountSizingThreshold
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_FUNC_COUNT)
         val count = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
         val data = sizingRepository.getClassSizingListAboveMethodCountThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
     }
 
     fun getMethodSizingSmellCount(systemId: Long): Long {
-        return sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, methodSizingThreshold)
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
+        return sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
     }
 
     fun getClassSizingSmellCount(systemId: Long): Long {
-        return sizingRepository.getClassSizingAboveLineThresholdCount(systemId, classSizingThreshold) +
-                sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, classMethodCountSizingThreshold)
+        val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
+        val methodCountThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_FUNC_COUNT)
+        return sizingRepository.getClassSizingAboveLineThresholdCount(systemId, locThreshold) +
+                sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, methodCountThreshold)
     }
 
     fun getModuleSizingSmellCount(systemId: Long): Long {
-        return sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, moduleSizingLineThreshold) +
-                sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, moduleClassCountSizingThreshold)
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_PACKAGE_COUNT)
+        val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_LOC)
+        return sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, locThreshold) +
+                sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold)
     }
 
     fun getPackageSizingSmellCount(systemId: Long): Long {
-        return sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, packageSizingLineThreshold) +
-                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, packageClassCountSizingThreshold)
+        val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_LOC)
+        val clzCountThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
+        return sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, locThreshold) +
+                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, clzCountThreshold)
     }
 
     fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {

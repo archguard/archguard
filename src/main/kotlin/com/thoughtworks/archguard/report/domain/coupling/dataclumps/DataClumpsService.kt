@@ -2,26 +2,26 @@ package com.thoughtworks.archguard.report.domain.coupling.dataclumps
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import org.springframework.beans.factory.annotation.Value
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import org.springframework.stereotype.Service
 
 @Service
-class DataClumpsService(val dataClumpsRepository: DataClumpsRepository) {
+class DataClumpsService(val thresholdSuiteService: ThresholdSuiteService,
+                        val dataClumpsRepository: DataClumpsRepository) {
 
-    @Value("\${threshold.dataclumps.lcom4}")
-    private val dataClumpsLCOM4Threshold: Int = 1
 
-    fun getClassDataClumpsWithTotalCount(systemId: Long, limit: Long, offset: Long): ClassDataClumpsListDto {
+    fun getClassDataClumpsWithTotalCount(systemId: Long, limit: Long, offset: Long): Triple<List<ClassDataClump>, Long, Int> {
         validPagingParam(limit, offset)
-        val lcoM4AboveThresholdCount = dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, dataClumpsLCOM4Threshold)
-        val lcoM4AboveThresholdList = dataClumpsRepository.getLCOM4AboveThresholdList(systemId, dataClumpsLCOM4Threshold, limit, offset)
-        return ClassDataClumpsListDto(lcoM4AboveThresholdList,
-                lcoM4AboveThresholdCount,
-                offset / limit + 1)
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_DATA_CLUMPS)
+        val lcoM4AboveThresholdCount = dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, threshold)
+        val lcoM4AboveThresholdList = dataClumpsRepository.getLCOM4AboveThresholdList(systemId, threshold, limit, offset)
+        return Triple(lcoM4AboveThresholdList, lcoM4AboveThresholdCount, threshold)
     }
 
     fun getDataClumpReport(systemId: Long): Map<BadSmellType, Long> {
-        return mapOf((BadSmellType.DATACLUMPS to dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, dataClumpsLCOM4Threshold)))
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_DATA_CLUMPS)
+        return mapOf((BadSmellType.DATACLUMPS to dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, threshold)))
 
     }
 

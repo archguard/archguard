@@ -29,7 +29,7 @@ class ThresholdSuiteService(val thresholdSuiteRepository: ThresholdSuiteReposito
         try {
             return allBadSmellThresholdSuites.first { it.systemIds.contains(systemId) }.getValue(key)
         } catch (ex: NoSuchElementException) {
-            throw ThresholdNotDefinedException("Threshold with key $key is not defined for $systemId.")
+            throw ThresholdNotDefinedException("Threshold with key ${key.name} is not defined for $systemId.")
         }
     }
 }

@@ -2,27 +2,27 @@ package com.thoughtworks.archguard.report.domain.coupling.deepinheritance
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import org.springframework.beans.factory.annotation.Value
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
+import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import org.springframework.stereotype.Service
 
 @Service
-class DeepInheritanceService(val deepInheritanceRepository: DeepInheritanceRepository) {
+class DeepInheritanceService(val thresholdSuiteService: ThresholdSuiteService,
+                             val deepInheritanceRepository: DeepInheritanceRepository) {
 
-    @Value("\${threshold.deep-inheritance.dit}")
-    private val deepInheritanceDitThreshold: Int = 1
-
-    fun getDeepInheritanceWithTotalCount(systemId: Long, limit: Long, offset: Long): DeepInheritanceListDto {
+    fun getDeepInheritanceWithTotalCount(systemId: Long, limit: Long, offset: Long): Triple<List<DeepInheritance>, Long, Int> {
         validPagingParam(limit, offset)
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_DEEP_INHERITANCE)
         val lcoM4AboveThresholdCount = deepInheritanceRepository
-                .getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)
+                .getDitAboveThresholdCount(systemId, threshold)
         val lcoM4AboveThresholdList = deepInheritanceRepository
-                .getDitAboveThresholdList(systemId, deepInheritanceDitThreshold, limit, offset)
-        return DeepInheritanceListDto(lcoM4AboveThresholdList,
-                lcoM4AboveThresholdCount,
-                offset / limit + 1)
+                .getDitAboveThresholdList(systemId, threshold, limit, offset)
+        return Triple(lcoM4AboveThresholdList, lcoM4AboveThresholdCount, threshold)
     }
 
     fun getDeepInheritanceReport(systemId: Long): Map<BadSmellType, Long> {
-        return mapOf((BadSmellType.DEEPINHERITANCE to deepInheritanceRepository.getDitAboveThresholdCount(systemId, deepInheritanceDitThreshold)))
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_DEEP_INHERITANCE)
+        return mapOf((BadSmellType.DEEPINHERITANCE to
+                deepInheritanceRepository.getDitAboveThresholdCount(systemId, threshold)))
     }
 }

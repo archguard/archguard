@@ -4,7 +4,9 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalc
 
 
 interface ClassCouplingRepository {
-    fun getCouplingAboveThreshold(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ClassCoupling>
+    fun getCouplingAboveThreshold(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int,
+                                  offset: Long, limit: Long, orderByFanIn: Boolean): List<ClassCoupling>
+
     fun getCouplingAboveThresholdCount(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int): Long
     fun getCouplingAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult
     fun getAllCoupling(systemId: Long): List<ClassCoupling>

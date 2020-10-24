@@ -1,9 +1,7 @@
-package com.thoughtworks.archguard.report.controller
+package com.thoughtworks.archguard.report.controller.coupling
 
 import com.thoughtworks.archguard.report.application.ClassCouplingAppService
-import com.thoughtworks.archguard.report.domain.coupling.dataclumps.ClassDataClumpsListDto
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsService
-import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceListDto
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceService
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
@@ -26,7 +24,8 @@ class CouplingController(val dataClumpsService: DataClumpsService,
                                            @RequestParam(value = "numberPerPage") limit: Long,
                                            @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassDataClumpsListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(dataClumpsService.getClassDataClumpsWithTotalCount(systemId, limit, offset))
+        val (resultList, count, threshold) = dataClumpsService.getClassDataClumpsWithTotalCount(systemId, limit, offset)
+        return ResponseEntity.ok(ClassDataClumpsListDto(resultList, count, offset / limit + 1, threshold))
     }
 
     @GetMapping("/deep-inheritance")
@@ -34,7 +33,8 @@ class CouplingController(val dataClumpsService: DataClumpsService,
                                          @RequestParam(value = "numberPerPage") limit: Long,
                                          @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<DeepInheritanceListDto> {
         val offset = (currentPageNumber - 1) * limit
-        return ResponseEntity.ok(deepInheritanceService.getDeepInheritanceWithTotalCount(systemId, limit, offset))
+        val (resultList, count, threshold) = deepInheritanceService.getDeepInheritanceWithTotalCount(systemId, limit, offset)
+        return ResponseEntity.ok(DeepInheritanceListDto(resultList, count, offset / limit + 1, threshold))
     }
 
     @GetMapping("/class/")
