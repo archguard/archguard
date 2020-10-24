@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class SystemInfoService(val systemInfoRepository: SystemInfoRepository) {
+class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
+                        val analysisClientProxy: AnalysisClientProxy) {
 
     fun getSystemInfo(id: Long): SystemInfo {
         return systemInfoRepository.getSystemInfo(id)
@@ -17,15 +18,22 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository) {
         return systemInfoRepository.getSystemInfoList()
     }
 
+    @Transactional
     fun updateSystemInfo(systemInfo: SystemInfo) {
         val updatedRow = systemInfoRepository.updateSystemInfo(systemInfo)
-        if (updatedRow != 1)
+        if (updatedRow != 1) {
             throw EntityNotFoundException(SystemInfo::class.java, systemInfo.id)
+        } else {
+            analysisClientProxy.refreshThresholdCache()
+        }
     }
 
+    @Transactional
     fun addSystemInfo(systemInfo: SystemInfo): Long {
         if (systemInfoRepository.queryBysystemName(systemInfo.systemName) == 0) {
-            return systemInfoRepository.addSystemInfo(systemInfo)
+            val id = systemInfoRepository.addSystemInfo(systemInfo)
+            analysisClientProxy.refreshThresholdCache()
+            return id
         } else {
             throw DuplicateResourceException("There is already system info")
         }
