@@ -2,7 +2,7 @@ bad_smell_threshold_suite:
   - id: 1
     suite_name: 'Suite1'
     is_default: 1
-    thresholds: '[{"name":"体量维度","threshold":[{"name":"过大的方法","condition":"方法代码行数 > 指标阈值","value":30},{"name":"过大的类","condition":"方法个数 > 指标阈值","value":20},{"name":"过大的类","condition":"类代码行数 > 指标阈值","value":600}]},{"name":"耦合纬度","threshold":[{"name":"枢纽模块","condition":"出向依赖或入向依赖 > 指标阈值","value":8},{"name":"枢纽包","condition":"出向依赖或入向依赖  > 指标阈值","value":8},{"name":"枢纽类","condition":"出向依赖或入向依赖 > 指标阈值","value":8}]}]'
+    thresholds: '[{"name":"体量维度","threshold":[{"name":"过大的包","condition":"包中包含的类个数 \u003e 指标阈值","value":30},{"name":"过大的包","condition":"包的总代码行数（不含import行数） \u003e 指标阈值","value":20000},{"name":"过大的模块","condition":"模块中包含包的个数 \u003e 指标阈值","value":30},{"name":"过大的模块","condition":"模块的总代码行数 \u003e 指标阈值","value":40000},{"name":"过大的类","condition":"类中包含的方法个数 \u003e 指标阈值","value":30},{"name":"过大的类","condition":"类的代码行数 \u003e 指标阈值","value":2000},{"name":"过大的方法","condition":"方法代码行数（含空行） \u003e 指标阈值","value":80}]},{"name":"耦合纬度","threshold":[{"name":"枢纽模块","condition":"出向依赖或入向依赖 \u003e 指标阈值","value":16},{"name":"枢纽包","condition":"出向依赖或入向依赖 \u003e 指标阈值","value":16},{"name":"枢纽类","condition":"出向依赖或入向依赖 \u003e 指标阈值","value":16},{"name":"枢纽方法","condition":"出向依赖或入向依赖 \u003e 指标阈值","value":16},{"name":"数据泥团","condition":"缺乏内聚指标（LCOM） \u003e 指标阈值","value":8},{"name":"过深继承","condition":"继承深度 \u003e 指标阈值","value":6},{"name":"循环依赖","condition":"循环依赖的数量 \u003e 指标阈值","value":0}]}]'
     updated_time: '2020-10-21 10:24:01'
 
 system_info:

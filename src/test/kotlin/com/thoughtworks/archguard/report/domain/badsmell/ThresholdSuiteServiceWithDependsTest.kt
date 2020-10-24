@@ -24,6 +24,6 @@ internal class ThresholdSuiteServiceWithDependsTest {
     @DataSet("expect/threshold_suite_get_value_test.yml")
     fun should_get_threshold_value() {
         val thresholdValue = thresholdSuiteService.getThresholdValue(1, ThresholdKey.SIZING_CLASS_BY_LOC)
-        assertEquals(600, thresholdValue)
+        assertEquals(2000, thresholdValue)
     }
 }

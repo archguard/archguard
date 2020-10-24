@@ -10,37 +10,41 @@ import org.springframework.stereotype.Service
 
 @Service
 class CircularDependencyService(val circularDependencyRepository: CircularDependencyRepository) {
-    private fun getCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long, type: CircularDependencyType): CircularDependencyStringListDto {
+
+    private fun getCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long,
+                                                    type: CircularDependencyType): Triple<List<String>, Long, Int> {
         validPagingParam(limit, offset)
         val circularDependencyCount = circularDependencyRepository.getCircularDependencyCount(systemId, type)
         val circularDependencyList = circularDependencyRepository.getCircularDependency(systemId, type, limit, offset)
-        return CircularDependencyStringListDto(circularDependencyList,
-                circularDependencyCount,
-                offset / limit + 1)
+        return Triple(circularDependencyList, circularDependencyCount, 0)
     }
 
-    fun getModuleCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long): CircularDependencyListDto<ModuleVO> {
-        val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE)
-        val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { ModuleVO(it) }) }
-        return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
+    fun getModuleCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long)
+            : Triple<List<CircularDependency<ModuleVO>>, Long, Int> {
+        val result = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.MODULE)
+        val data = result.first.map { CircularDependency(it.split(";").map { ModuleVO(it) }) }
+        return Triple(data, result.second, result.third)
     }
 
-    fun getPackageCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long): CircularDependencyListDto<PackageVO> {
-        val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.PACKAGE)
-        val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { PackageVO.create(it) }) }
-        return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
+    fun getPackageCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long)
+            : Triple<List<CircularDependency<PackageVO>>, Long, Int> {
+        val result = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.PACKAGE)
+        val data = result.first.map { CircularDependency(it.split(";").map { PackageVO.create(it) }) }
+        return Triple(data, result.second, result.third)
     }
 
-    fun getClassCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long): CircularDependencyListDto<ClassVO> {
-        val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.CLASS)
-        val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { ClassVO.create(it) }) }
-        return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
+    fun getClassCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long)
+            : Triple<List<CircularDependency<ClassVO>>, Long, Int> {
+        val result = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.CLASS)
+        val data = result.first.map { CircularDependency(it.split(";").map { ClassVO.create(it) }) }
+        return Triple(data, result.second, result.third)
     }
 
-    fun getMethodCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long): CircularDependencyListDto<MethodVO> {
-        val circularDependencyWithTotalCount = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD)
-        val data = circularDependencyWithTotalCount.data.map { CircularDependency(it.split(";").map { MethodVO.create(it) }) }
-        return CircularDependencyListDto(data, circularDependencyWithTotalCount.count, circularDependencyWithTotalCount.currentPageNumber)
+    fun getMethodCircularDependencyWithTotalCount(systemId: Long, limit: Long, offset: Long)
+            : Triple<List<CircularDependency<MethodVO>>, Long, Int> {
+        val result = getCircularDependencyWithTotalCount(systemId, limit, offset, CircularDependencyType.METHOD)
+        val data = result.first.map { CircularDependency(it.split(";").map { MethodVO.create(it) }) }
+        return Triple(data, result.second, result.third)
     }
 
     fun getCircularDependencyReport(systemId: Long): Map<BadSmellType, Long> {
