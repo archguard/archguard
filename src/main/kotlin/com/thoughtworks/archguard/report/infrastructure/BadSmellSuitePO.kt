@@ -10,7 +10,7 @@ class BadSmellSuitePO(val id: Long, val suiteName: String, val thresholds: Strin
         val groups = Gson().fromJson(thresholds, Array<BadSmellGroup>::class.java).toList()
         val thresholdMapList = groups.flatMap { it.toThresholdMap() }
         return ThresholdSuite(id, suiteName, thresholdMapList,
-                systemIds.split(",").map { it.toLong() })
+                systemIds.split(",").map { it.trim().toLong() })
     }
 }
 
