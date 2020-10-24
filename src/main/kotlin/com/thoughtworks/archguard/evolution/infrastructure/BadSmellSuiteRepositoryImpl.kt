@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 class BadSmellSuiteRepositoryImpl(val jdbi: Jdbi) : BadSmellSuiteRepository {
 
     override fun getAllBadSmellThresholdSuites(): List<BadSmellSuite> {
-        val sql = "select id, suite_name as suiteName, is_default as isDefault, thresholds from bad_smell_threashold_suite"
+        val sql = "select id, suite_name as suiteName, is_default as isDefault, thresholds from bad_smell_threshold_suite"
         return jdbi.withHandle<List<BadSmellSuitePO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(BadSmellSuitePO::class.java))
             it.createQuery(sql)
