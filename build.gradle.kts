@@ -47,6 +47,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
     testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("com.github.database-rider:rider-spring:1.16.1")
 }
 
 configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
