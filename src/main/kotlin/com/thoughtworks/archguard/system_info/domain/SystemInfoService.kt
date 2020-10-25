@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
-                        val analysisClientProxy: AnalysisClientProxy) {
+                        var analysisClientProxy: AnalysisClientProxy) {
 
     fun getSystemInfo(id: Long): SystemInfo {
         return systemInfoRepository.getSystemInfo(id)
