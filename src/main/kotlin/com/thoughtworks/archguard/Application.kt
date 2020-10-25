@@ -7,12 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
+import org.springframework.scheduling.annotation.EnableScheduling
 import springfox.documentation.oas.annotations.EnableOpenApi
 import javax.sql.DataSource
 
 @EnableOpenApi
 @SpringBootApplication
 @EnableEurekaClient
+@EnableScheduling
 class Application {
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {

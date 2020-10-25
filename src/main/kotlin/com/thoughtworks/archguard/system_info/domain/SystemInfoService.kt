@@ -2,12 +2,16 @@ package com.thoughtworks.archguard.system_info.domain
 
 import com.thoughtworks.archguard.common.exception.DuplicateResourceException
 import com.thoughtworks.archguard.common.exception.EntityNotFoundException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
                         var analysisClientProxy: AnalysisClientProxy) {
+
+    val logger: Logger = LoggerFactory.getLogger(SystemInfoService::class.java)
 
     fun getSystemInfo(id: Long): SystemInfo {
         return systemInfoRepository.getSystemInfo(id)
@@ -43,5 +47,9 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
     fun deleteSystemInfo(id: Long) {
         systemInfoRepository.deleteSystemInfo(id)
         systemInfoRepository.deleteSystemInfoRelated(id)
+    }
+
+    fun cleanupSystemInfo() {
+        logger.info("Daily system info clean up task start ...")
     }
 }
