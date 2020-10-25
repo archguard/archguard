@@ -89,7 +89,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         }
     }
 
-    override fun deleteSystemInfoRelated(id: Long) {
+    override fun deleteSystemInfoRelated() {
         val sqls = mutableListOf<String>()
         val tables = listOf(
                 "_ClassDependences", "_ClassFields", "_ClassMethods", "_ClassParent", "_MethodCallees",
@@ -101,7 +101,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "method_metrics", "module_metrics", "package_metrics"
         )
 
-        tables.forEach { sqls.add("delete from $it where system_id = $id") }
+        tables.forEach { sqls.add("delete from $it where system_id not in (select id from system_info)") }
 
         jdbi.withHandle<IntArray, Nothing> {
             val batch = it.createBatch()

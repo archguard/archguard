@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller
 @Controller
 class SystemInfoCleanupTask(val systemInfoService: SystemInfoService) {
 
-    @Scheduled(cron = "0 0/2 * * * *")
+    @Scheduled(cron = "0 0 1 * * *")
     fun dailyCleanupScheduleTask() {
         systemInfoService.cleanupSystemInfo()
     }

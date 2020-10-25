@@ -46,10 +46,12 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
     @Transactional
     fun deleteSystemInfo(id: Long) {
         systemInfoRepository.deleteSystemInfo(id)
-        systemInfoRepository.deleteSystemInfoRelated(id)
+
     }
 
     fun cleanupSystemInfo() {
         logger.info("Daily system info clean up task start ...")
+        systemInfoRepository.deleteSystemInfoRelated()
+        logger.info("Daily system info clean up task done .")
     }
 }
