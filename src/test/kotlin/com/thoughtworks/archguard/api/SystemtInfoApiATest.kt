@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.api
 import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.spring.api.DBRider
 import org.jdbi.v3.core.Jdbi
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +27,10 @@ class SystemtInfoApiATest {
     @Resource
     private lateinit var wac: WebApplicationContext
 
+    @AfterEach
+    @DataSet("expect/empty_system_info.yml")
+    internal fun tearDown() {
+    }
 
     @Test
     @DataSet("expect/system_info_api_atest.yml")

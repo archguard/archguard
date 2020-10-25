@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.system_info.domain
 
 import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.spring.api.DBRider
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,17 +15,19 @@ internal class SystemInfoServiceTest {
     @Autowired
     lateinit var systemInfoService: SystemInfoService
 
-    @Test
+    @AfterEach
     @DataSet("expect/empty_system_info.yml")
+    internal fun tearDown() {
+    }
+
+    @Test
     fun add_system_info() {
         systemInfoService.analysisClientProxy = DummyAnalysisClientProxy()
         val info = SystemInfo(null, "addSystemInfo", "repo", "sql",
                 "username", "password", ScannedType.SCANNED, 1,
                 "GIT", null, 1, "master")
         val id = systemInfoService.addSystemInfo(info)
-        assertEquals(1, id)
-
-        val info1 = systemInfoService.getSystemInfo(1)
+        val info1 = systemInfoService.getSystemInfo(id)
         assertEquals("addSystemInfo", info1.systemName)
     }
 
