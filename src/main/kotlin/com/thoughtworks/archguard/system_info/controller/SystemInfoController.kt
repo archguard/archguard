@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.system_info.controller
 
 import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
-import org.jetbrains.kotlin.konan.file.createTempDir
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -58,11 +58,18 @@ class SystemInfoController(
             return "上传失败，请选择文件"
         }
 
-        val dir = createTempDir(zipFilePath)
+        val dir = createZipDir(zipFilePath)
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
         return filePath.toString()
+    }
+
+    private fun createZipDir(zipFilePath: String): File {
+
+        val zipTmpDir = createTempDir("tmp", ".tmp", File(zipFilePath))
+
+        return zipTmpDir
     }
 
 
