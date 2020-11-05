@@ -2,6 +2,8 @@ package com.thoughtworks.archguard.system_info.controller
 
 import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import org.jetbrains.kotlin.konan.file.createTempDir
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,8 +20,10 @@ import java.nio.file.Paths
 
 @RestController
 @RequestMapping("/system-info")
-class SystemInfoController(val systemInfoService: SystemInfoService,
-                           val systemInfoMapper: SystemInfoMapper) {
+class SystemInfoController(
+        @Value("\${zipFilePath}") val zipFilePath: String,
+        val systemInfoService: SystemInfoService,
+        val systemInfoMapper: SystemInfoMapper) {
 
 
     @GetMapping("/{id}")
@@ -54,12 +58,13 @@ class SystemInfoController(val systemInfoService: SystemInfoService,
             return "上传失败，请选择文件"
         }
 
-        val dir = createTempDir()
+        val dir = createTempDir(zipFilePath)
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
         return filePath.toString()
     }
+
 
     private fun prepareZipFile(dir: String, fileName: String): Path {
         val filePath = Paths.get(dir, fileName)
