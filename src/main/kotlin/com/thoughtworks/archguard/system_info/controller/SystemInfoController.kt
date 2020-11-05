@@ -21,7 +21,7 @@ import java.nio.file.Paths
 @RestController
 @RequestMapping("/system-info")
 class SystemInfoController(
-        @Value("\${zipFilePath}") val zipFilePath: String,
+        @Value("\${module.zipFilePath}") val zipFilePath: String,
         val systemInfoService: SystemInfoService,
         val systemInfoMapper: SystemInfoMapper) {
 
