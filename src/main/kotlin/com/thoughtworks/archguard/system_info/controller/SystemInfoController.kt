@@ -6,10 +6,10 @@ import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/system-info")
@@ -51,8 +51,7 @@ class SystemInfoController(
             return "上传失败，请选择文件"
         }
 
-
-        val dir = createTempDir("temp", ".tmp", File(zipFilePath))
+        val dir = createTempDir()
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
