@@ -58,18 +58,11 @@ class SystemInfoController(
             return "上传失败，请选择文件"
         }
 
-        val dir = createZipDir(zipFilePath)
+        val dir = createTempDir()
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
         return filePath.toString()
-    }
-
-    private fun createZipDir(zipFilePath: String): File {
-
-        val zipTmpDir = createTempDir("tmp", ".tmp", File(zipFilePath))
-
-        return zipTmpDir
     }
 
 
