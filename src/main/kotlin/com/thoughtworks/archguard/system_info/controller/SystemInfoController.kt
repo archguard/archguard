@@ -51,7 +51,12 @@ class SystemInfoController(
             return "上传失败，请选择文件"
         }
 
-        val dir = createTempDir()
+
+
+        val dir = createTempDir("temp",null, CreateFileUtil.createDir("/tmp/zip/files"))
+//        val createDir = CreateFileUtil.createDir(zipFilePath)
+
+
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())
