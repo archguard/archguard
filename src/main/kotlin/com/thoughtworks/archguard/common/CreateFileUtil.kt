@@ -7,7 +7,7 @@ object CreateFileUtil {
     fun createDir(destDirName: String): File? {
         val dir = File(destDirName)
         if (dir.exists()) {
-            dir.delete()
+            return dir
         }
 
         if (!destDirName.endsWith(File.separator)) {
