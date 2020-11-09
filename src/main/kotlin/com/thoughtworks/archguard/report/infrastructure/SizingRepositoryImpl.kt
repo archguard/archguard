@@ -174,7 +174,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     }
 
 
-    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, filterKeyWord: String?): List<MethodSizing> {
+    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, filterKeyWord: String): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +

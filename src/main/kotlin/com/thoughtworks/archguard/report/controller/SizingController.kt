@@ -56,8 +56,14 @@ class SizingController(val sizingService: SizingService) {
                                      @RequestParam(value = "filterKeyword") filterKeyword: String?)
             : ResponseEntity<MethodSizingListDto> {
 
+
+        var keyword = ""
+        if (filterKeyword != null) {
+            keyword = filterKeyword
+        }
+
         val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, filterKeyword, limit, offset)
+        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, keyword, limit, offset)
         return ResponseEntity.ok(MethodSizingListDto(data, count, offset / limit + 1, threshold))
     }
 
