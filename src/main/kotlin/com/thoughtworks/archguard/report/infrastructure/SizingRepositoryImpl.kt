@@ -7,6 +7,7 @@ import com.thoughtworks.archguard.report.domain.sizing.ModuleSizing
 import com.thoughtworks.archguard.report.domain.sizing.PackageSizing
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.jdbi.v3.core.Jdbi
+import org.jdbi.v3.core.statement.SqlLogger
 import org.springframework.stereotype.Repository
 
 
@@ -179,11 +180,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +
                     "and loc>:threshold " +
-
-                    "and (module like '%:filterKeyWord%' " +
+                    "and ( module like '%:filterKeyWord%' " +
                     "or class_name like '%:filterKeyWord%' " +
                     "or package_name like '%:filterKeyWord%' " +
-                    "or `name` like '%:filterKeyWord%' )" +
+                    "or `name` like '%:filterKeyWord%' ) " +
 
                     "and is_test=false " +
                     "order by loc desc " +
