@@ -6,10 +6,13 @@ import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDate
+import java.util.*
+import kotlin.random.Random
 
 @RestController
 @RequestMapping("/system-info")
@@ -52,15 +55,23 @@ class SystemInfoController(
         }
 
 
-
-        val dir = createTempDir("temp",null, CreateFileUtil.createDir("/tmp/zip/files"))
+//         createTempDir("temp", null, CreateFileUtil.createDir("/tmp/zip/files"))
 //        val createDir = CreateFileUtil.createDir(zipFilePath)
 
 
-        val fileName = file.originalFilename ?: "System-Info"
-        val filePath = this.prepareZipFile(dir.absolutePath, fileName)
-        file.transferTo(filePath.toFile())
-        return filePath.toString()
+        try {
+            val dir = CreateFileUtil.createDir(zipFilePath + "/" + System.nanoTime() + ".temp")
+            val fileName = file.originalFilename ?: "System-Info"
+            val filePath = dir?.absolutePath?.let { this.prepareZipFile(it, fileName) }
+            if (filePath != null) {
+                file.transferTo(filePath.toFile())
+            }
+            return filePath.toString()
+        } catch (e : Exception) {
+            println("常见目录失败")
+            return "创建目录失败"
+        }
+
     }
 
 
