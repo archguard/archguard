@@ -191,9 +191,9 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
+                    .bind("filterKeyWord", filterKeyWord)
                     .bind("limit", limit)
                     .bind("offset", offset)
-                    .bind("filterKeyWord", filterKeyWord)
                     .mapTo(JMethodPO::class.java).list()
                     .map { po -> po.toMethodSizing() }
         }
