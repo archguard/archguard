@@ -1,12 +1,16 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validFilterParam
 import com.thoughtworks.archguard.report.domain.sizing.*
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/systems/{systemId}/sizing")
+@Validated
 class SizingController(val sizingService: SizingService) {
 
     @GetMapping("/modules/above-line-threshold")
@@ -52,19 +56,12 @@ class SizingController(val sizingService: SizingService) {
 
     @GetMapping("/methods/above-threshold")
     fun getMethodsAboveLineThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestParam(value = "numberPerPage") limit: Long,
-                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                     @RequestParam(value = "module", required = false) module: String?,
-                                     @RequestParam(value = "className", required = false) className: String?,
-                                     @RequestParam(value = "packageName", required = false) packageName: String?,
-                                     @RequestParam(value = "name", required = false) name: String?)
+                                     @RequestBody @Valid sizingMethodRequest: SizingMethodRequestDto)
             : ResponseEntity<MethodSizingListDto> {
 
-
-        val sizingMethodDto = validFilterParam(module, className, packageName, name)
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, limit, offset, sizingMethodDto)
-        return ResponseEntity.ok(MethodSizingListDto(data, count, offset / limit + 1, threshold))
+        val request = validFilterParam(sizingMethodRequest)
+        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, request)
+        return ResponseEntity.ok(MethodSizingListDto(data, count, request.currentPageNumber / request.numberPerPage + 1, threshold))
     }
 
     @GetMapping("/classes/above-line-threshold")

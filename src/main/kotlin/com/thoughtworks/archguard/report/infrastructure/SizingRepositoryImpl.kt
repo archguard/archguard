@@ -175,15 +175,15 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     }
 
 
-    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing> {
+    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +
                     "and loc>:threshold " +
                     "and ( module like '%${sizingMethodDto.module}%' " +
-                    "or class_name like '%${sizingMethodDto.className}%' " +
-                    "or package_name like '%${sizingMethodDto.packageName}%' " +
-                    "or `name` like '%${sizingMethodDto.name}%' ) " +
+                    "and class_name like '%${sizingMethodDto.className}%' " +
+                    "and package_name like '%${sizingMethodDto.packageName}%' " +
+                    "and `name` like '%${sizingMethodDto.name}%' ) " +
                     "and is_test=false " +
                     "order by loc desc " +
                     "limit :limit offset :offset"
@@ -191,8 +191,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
+                    .bind("limit", sizingMethodDto.getLimit())
+                    .bind("offset", sizingMethodDto.getOffset())
                     .mapTo(JMethodPO::class.java).list()
                     .map { po -> po.toMethodSizing() }
         }

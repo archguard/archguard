@@ -14,14 +14,15 @@ object ValidPagingParam {
         }
     }
 
-    fun validFilterParam(module: String?, className: String?, packageName: String?, name: String?): SizingMethodRequestDto {
 
+    fun validFilterParam(request: SizingMethodRequestDto): SizingMethodRequestDto {
         return SizingMethodRequestDto(
-                validParam(module),
-                validParam(className),
-                validParam(packageName),
-                validParam(name))
-
+                request.currentPageNumber,
+                request.numberPerPage,
+                validParam(request.module),
+                validParam(request.className),
+                validParam(request.packageName),
+                validParam(request.name))
     }
 
 

@@ -18,7 +18,7 @@ interface SizingRepository {
     fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing>
 
 
-    fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing>
+    fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing>
 
     fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
 
