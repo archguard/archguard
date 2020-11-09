@@ -50,6 +50,14 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
+    fun getMethodSizingListAboveLineThresholdByKeyword(systemId: Long, filterKeyword: String?, limit: Long, offset: Long): Triple<List<MethodSizing>, Long, Int> {
+        validPagingParam(limit, offset)
+        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
+        val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
+        val data = sizingRepository.getMethodSizingAboveLineThresholdByFilterKeyword(systemId, threshold, limit, offset, filterKeyword)
+        return Triple(data, count, threshold)
+    }
+
 
     fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithLine>, Long, Int> {
         validPagingParam(limit, offset)
