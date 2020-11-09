@@ -59,7 +59,6 @@ class SizingController(val sizingService: SizingService) {
 
         val keyword = validFilterParam(filterKeyword)
         val offset = (currentPageNumber - 1) * limit
-        println("limit: $limit, offset : $offset keyword : $keyword")
         val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, keyword, limit, offset)
         return ResponseEntity.ok(MethodSizingListDto(data, count, offset / limit + 1, threshold))
     }

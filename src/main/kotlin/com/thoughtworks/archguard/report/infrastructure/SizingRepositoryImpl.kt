@@ -180,14 +180,13 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +
                     "and loc>:threshold " +
-                    "and ( module like '%$filterKeyWord%' " +
-                    "or class_name like '%$filterKeyWord%' " +
-                    "or package_name like '%$filterKeyWord%' " +
-                    "or `name` like '%$filterKeyWord%' ) " +
+                    "and ( module like '%:filterKeyWord%' " +
+                    "or class_name like '%:filterKeyWord%' " +
+                    "or package_name like '%:filterKeyWord%' " +
+                    "or `name` like '%:filterKeyWord%' ) " +
                     "and is_test=false " +
                     "order by loc desc " +
                     "limit :limit offset :offset"
-            println("sql : $sql")
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
