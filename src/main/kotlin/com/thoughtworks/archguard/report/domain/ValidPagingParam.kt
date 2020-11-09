@@ -13,4 +13,14 @@ object ValidPagingParam {
         }
     }
 
+    fun validFilterParam(filterKeyword: String?): String {
+        val keyword: String
+        if (filterKeyword == null || filterKeyword == "" || filterKeyword == "''" || filterKeyword.contains("\"")) {
+            keyword = ""
+        } else {
+            keyword = filterKeyword
+        }
+        return keyword;
+    }
+
 }

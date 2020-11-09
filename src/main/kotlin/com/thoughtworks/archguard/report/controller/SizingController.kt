@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.domain.ValidPagingParam.validFilterParam
 import com.thoughtworks.archguard.report.domain.sizing.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -56,12 +57,7 @@ class SizingController(val sizingService: SizingService) {
                                      @RequestParam(value = "filterKeyword") filterKeyword: String?)
             : ResponseEntity<MethodSizingListDto> {
 
-
-        var keyword = ""
-        if (filterKeyword != null) {
-            keyword = filterKeyword
-        }
-
+        val keyword = validFilterParam(filterKeyword)
         val offset = (currentPageNumber - 1) * limit
         println("limit: $limit, offset : $offset keyword : $keyword")
         val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, keyword, limit, offset)
