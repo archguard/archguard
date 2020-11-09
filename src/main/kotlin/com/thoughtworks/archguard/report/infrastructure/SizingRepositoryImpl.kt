@@ -184,10 +184,10 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     "or class_name like '%:filterKeyWord%' " +
                     "or package_name like '%:filterKeyWord%' " +
                     "or `name` like '%:filterKeyWord%' ) " +
-
                     "and is_test=false " +
                     "order by loc desc " +
                     "limit :limit, :offset"
+            println("sql : $sql")
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
