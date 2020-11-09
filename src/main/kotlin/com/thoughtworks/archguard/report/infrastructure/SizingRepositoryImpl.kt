@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure
 
+import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
@@ -7,7 +8,6 @@ import com.thoughtworks.archguard.report.domain.sizing.ModuleSizing
 import com.thoughtworks.archguard.report.domain.sizing.PackageSizing
 import com.thoughtworks.archguard.report.domain.sizing.SizingRepository
 import org.jdbi.v3.core.Jdbi
-import org.jdbi.v3.core.statement.SqlLogger
 import org.springframework.stereotype.Repository
 
 
@@ -175,15 +175,15 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     }
 
 
-    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, filterKeyWord: String): List<MethodSizing> {
+    override fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +
                     "and loc>:threshold " +
-                    "and ( module like '%$filterKeyWord%' " +
-                    "or class_name like '%$filterKeyWord%' " +
-                    "or package_name like '%$filterKeyWord%' " +
-                    "or `name` like '%$filterKeyWord%' ) " +
+                    "and ( module like '%${sizingMethodDto.module}%' " +
+                    "or class_name like '%${sizingMethodDto.className}%' " +
+                    "or package_name like '%${sizingMethodDto.packageName}%' " +
+                    "or `name` like '%${sizingMethodDto.name}%' ) " +
                     "and is_test=false " +
                     "order by loc desc " +
                     "limit :limit offset :offset"
@@ -191,7 +191,6 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
-                    .bind("filterKeyWord", filterKeyWord)
                     .bind("limit", limit)
                     .bind("offset", offset)
                     .mapTo(JMethodPO::class.java).list()

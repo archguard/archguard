@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
+import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
+
 
 interface SizingRepository {
     fun getModuleSizingListAbovePackageCountThresholdCount(systemId: Long, threshold: Int): Long
@@ -16,7 +18,7 @@ interface SizingRepository {
     fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing>
 
 
-    fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, filterKeyWord: String): List<MethodSizing>
+    fun getMethodSizingAboveLineThresholdByFilterKeyword(systemId: Long, threshold: Int, limit: Long, offset: Long, sizingMethodDto: SizingMethodRequestDto): List<MethodSizing>
 
     fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
 

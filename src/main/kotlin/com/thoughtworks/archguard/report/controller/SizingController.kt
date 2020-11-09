@@ -54,12 +54,16 @@ class SizingController(val sizingService: SizingService) {
     fun getMethodsAboveLineThreshold(@PathVariable("systemId") systemId: Long,
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                     @RequestParam(value = "filterKeyword") filterKeyword: String?)
+                                     @RequestParam(value = "module", required = false) module: String?,
+                                     @RequestParam(value = "className", required = false) className: String?,
+                                     @RequestParam(value = "packageName", required = false) packageName: String?,
+                                     @RequestParam(value = "name", required = false) name: String?)
             : ResponseEntity<MethodSizingListDto> {
 
-        val keyword = validFilterParam(filterKeyword)
+
+        val sizingMethodDto = validFilterParam(module, className, packageName, name)
         val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, keyword, limit, offset)
+        val (data, count, threshold) = sizingService.getMethodSizingListAboveLineThresholdByKeyword(systemId, limit, offset, sizingMethodDto)
         return ResponseEntity.ok(MethodSizingListDto(data, count, offset / limit + 1, threshold))
     }
 

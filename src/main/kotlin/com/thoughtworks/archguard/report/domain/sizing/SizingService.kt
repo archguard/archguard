@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
+import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
@@ -50,11 +51,11 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
-    fun getMethodSizingListAboveLineThresholdByKeyword(systemId: Long, filterKeyword: String, limit: Long, offset: Long): Triple<List<MethodSizing>, Long, Int> {
+    fun getMethodSizingListAboveLineThresholdByKeyword(systemId: Long, limit: Long, offset: Long, sizingMethodDto: SizingMethodRequestDto): Triple<List<MethodSizing>, Long, Int> {
         validPagingParam(limit, offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
         val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getMethodSizingAboveLineThresholdByFilterKeyword(systemId, threshold, limit, offset, filterKeyword)
+        val data = sizingRepository.getMethodSizingAboveLineThresholdByFilterKeyword(systemId, threshold, limit, offset, sizingMethodDto)
         return Triple(data, count, threshold)
     }
 

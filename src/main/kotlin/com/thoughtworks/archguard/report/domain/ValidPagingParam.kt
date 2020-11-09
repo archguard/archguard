@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.domain
 
+import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
 import com.thoughtworks.archguard.report.exception.WrongLimitException
 import com.thoughtworks.archguard.report.exception.WrongOffsetException
 
@@ -13,14 +14,24 @@ object ValidPagingParam {
         }
     }
 
-    fun validFilterParam(filterKeyword: String?): String {
-        val keyword: String
-        if (filterKeyword == null || filterKeyword == "" || filterKeyword == "''" || filterKeyword.contains("\"")) {
-            keyword = ""
+    fun validFilterParam(module: String?, className: String?, packageName: String?, name: String?): SizingMethodRequestDto {
+
+        return SizingMethodRequestDto(
+                validParam(module),
+                validParam(className),
+                validParam(packageName),
+                validParam(name))
+
+    }
+
+
+    private fun validParam(filterKeyword: String?): String {
+
+        return if (filterKeyword == null || filterKeyword == "" || filterKeyword == "''" || filterKeyword.contains("\"")) {
+            ""
         } else {
-            keyword = filterKeyword
+            filterKeyword
         }
-        return keyword;
     }
 
 }
