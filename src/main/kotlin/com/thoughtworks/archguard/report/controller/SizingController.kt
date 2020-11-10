@@ -35,23 +35,21 @@ class SizingController(val sizingService: SizingService) {
 
     @GetMapping("/packages/above-line-threshold")
     fun getPackagesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
-                                      @RequestParam(value = "numberPerPage") limit: Long,
-                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+                                      @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<PackagesSizingListDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getPackageSizingListAboveLineThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(PackagesSizingListDto(data, count, offset / limit + 1, threshold))
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getPackageSizingListAboveLineThresholdByFilterSizing(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(PackagesSizingListDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
 
     }
 
     @GetMapping("/packages/above-threshold")
     fun getPackagesAboveThreshold(@PathVariable("systemId") systemId: Long,
-                                  @RequestParam(value = "numberPerPage") limit: Long,
-                                  @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+                                  @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<PackagesSizingListDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getPackageClassCountSizingAboveThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(PackagesSizingListDto(data, count, offset / limit + 1, threshold))
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getPackageClassCountSizingAboveThresholdByFilterSizing(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(PackagesSizingListDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
     @PostMapping("/methods/above-threshold")

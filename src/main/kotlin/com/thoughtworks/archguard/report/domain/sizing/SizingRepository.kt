@@ -11,14 +11,22 @@ interface SizingRepository {
 
     fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int): Long
     fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
+
+    fun getPackageSizingListAboveClassCountThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing>
+
+
+
     fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
+
     fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
+
+    fun getPackageSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing>
 
     fun getMethodSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
     fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing>
 
 
-    fun getMethodSizingAboveLineThresholdByRequestSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<MethodSizing>
+    fun getMethodSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<MethodSizing>
 
     fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
 

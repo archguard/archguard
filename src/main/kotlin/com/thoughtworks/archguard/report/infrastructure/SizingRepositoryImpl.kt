@@ -116,6 +116,34 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getPackageSizingListAboveClassCountThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing> {
+        return jdbi.withHandle<List<PackageSizing>, Exception> {
+
+
+            val sql = "select uuid() as id, count(name) as classCount,sum(loc) as `lines`, module as moduleName, system_id, package_name " +
+                    "from JClass" +
+                    "where system_id =:systemId " +
+                    "and loc>:threshold " +
+
+                    "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' ) " +
+
+                    "and is_test=false " +
+                    "and loc is not NULL " +
+                    "group by module, package_name " +
+                    "having classCount > :threshold" +
+                    "order by loc desc " +
+                    "limit :limit offset :offset"
+
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", filter.limit)
+                    .bind("offset", filter.offset)
+                    .mapTo(PackageSizing::class.java).list()
+        }
+    }
+
     override fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
@@ -150,6 +178,36 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getPackageSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing> {
+        return jdbi.withHandle<List<PackageSizing>, Exception> {
+
+            val sql = "select sum(loc) as `lines`, count(name) as classCount, module as moduleName, system_id, package_name " +
+                    "from JClass " +
+                    "where system_id =:systemId " +
+                    "and loc>:threshold " +
+
+                    "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' ) " +
+
+                    "and is_test=false " +
+                    "and loc is not NULL " +
+                    "group by module, package_name " +
+                    "having `lines` > :threshold  " +
+                    "order by `lines` desc " +
+                    "limit :limit offset :offset"
+
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", filter.limit)
+                    .bind("offset", filter.offset)
+                    .mapTo(PackageSizing::class.java).list()
+        }
+
+
+
+    }
+
     override fun getMethodSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
@@ -169,7 +227,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     }
 
 
-    override fun getMethodSizingAboveLineThresholdByRequestSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<MethodSizing> {
+    override fun getMethodSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
             val sql = "select id, system_id,  module, class_name, package_name, name, loc from JMethod " +
                     "where system_id = :systemId " +
