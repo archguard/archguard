@@ -24,7 +24,16 @@ interface SizingRepository {
 
 
     fun getClassSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithLine>
+
+
+
+
     fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long
     fun getClassSizingListAboveMethodCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassSizingWithMethodCount>
 
+
+
+    fun getClassSizingAboveLineThresholdByRequestSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<ClassSizingWithLine>
+
+    fun getClassSizingListAboveMethodCountThresholdByRequestSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<ClassSizingWithMethodCount>
 }

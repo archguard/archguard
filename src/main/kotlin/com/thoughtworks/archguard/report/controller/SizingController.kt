@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
-import com.thoughtworks.archguard.report.domain.sizing.FilterSizingDto
+import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validFilterParam
 import com.thoughtworks.archguard.report.domain.sizing.*
 import org.springframework.http.ResponseEntity
@@ -64,23 +64,23 @@ class SizingController(val sizingService: SizingService) {
         return ResponseEntity.ok(MethodSizingListDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
-    @GetMapping("/classes/above-line-threshold")
+    @PostMapping("/classes/above-line-threshold")
     fun getClassesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestParam(value = "numberPerPage") limit: Long,
-                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithLineDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getClassSizingListAboveLineThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(ClassSizingListWithLineDto(data, count, offset / limit + 1, threshold))
+                                     @RequestBody @Valid filterSizing: FilterSizingDto)
+            : ResponseEntity<ClassSizingListWithLineDto> {
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getClassSizingListAboveLineThreshold(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(ClassSizingListWithLineDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
 
     @GetMapping("/classes/above-method-count-threshold")
     fun getClassesAboveMethodCountThreshold(@PathVariable("systemId") systemId: Long,
-                                            @RequestParam(value = "numberPerPage") limit: Long,
-                                            @RequestParam(value = "currentPageNumber") currentPageNumber: Long): ResponseEntity<ClassSizingListWithMethodCountDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getClassSizingListAboveMethodCountThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(ClassSizingListWithMethodCountDto(data, count, offset / limit + 1, threshold))
+                                            @RequestBody @Valid filterSizing: FilterSizingDto)
+            : ResponseEntity<ClassSizingListWithMethodCountDto> {
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getClassSizingListAboveMethodCountThreshold(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(ClassSizingListWithMethodCountDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
 

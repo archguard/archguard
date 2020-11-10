@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingPara
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
-import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO
 import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO.Companion.fromFilterSizing
 import org.springframework.stereotype.Service
 
@@ -61,19 +60,19 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
     }
 
 
-    fun getClassSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithLine>, Long, Int> {
-        validPagingParam(limit, offset)
+    fun getClassSizingListAboveLineThreshold(systemId: Long, filter: FilterSizing): Triple<List<ClassSizingWithLine>, Long, Int> {
+        validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
         val count = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getClassSizingAboveLineThreshold(systemId, threshold, limit, offset)
+        val data = sizingRepository.getClassSizingAboveLineThresholdByRequestSizing(systemId, threshold, fromFilterSizing(filter))
         return Triple(data, count, threshold)
     }
 
-    fun getClassSizingListAboveMethodCountThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ClassSizingWithMethodCount>, Long, Int> {
-        validPagingParam(limit, offset)
+    fun getClassSizingListAboveMethodCountThreshold(systemId: Long, filter: FilterSizing): Triple<List<ClassSizingWithMethodCount>, Long, Int> {
+        validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_FUNC_COUNT)
         val count = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
-        val data = sizingRepository.getClassSizingListAboveMethodCountThreshold(systemId, threshold, limit, offset)
+        val data = sizingRepository.getClassSizingListAboveMethodCountThresholdByRequestSizing(systemId, threshold, fromFilterSizing(filter))
         return Triple(data, count, threshold)
     }
 

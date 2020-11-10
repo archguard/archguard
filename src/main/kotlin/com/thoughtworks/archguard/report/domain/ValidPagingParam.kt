@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain
 
-import com.thoughtworks.archguard.report.domain.sizing.FilterSizingDto
+import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.exception.WrongLimitException
 import com.thoughtworks.archguard.report.exception.WrongOffsetException
 

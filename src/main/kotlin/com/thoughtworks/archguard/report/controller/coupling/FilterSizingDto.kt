@@ -1,5 +1,6 @@
-package com.thoughtworks.archguard.report.domain.sizing
+package com.thoughtworks.archguard.report.controller.coupling
 
+import com.thoughtworks.archguard.report.domain.sizing.FilterSizing
 import org.jetbrains.annotations.NotNull
 import org.springframework.validation.annotation.Validated
 
