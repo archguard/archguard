@@ -13,27 +13,25 @@ import javax.validation.Valid
 @Validated
 class SizingController(val sizingService: SizingService) {
 
-    @GetMapping("/modules/above-line-threshold")
+    @PostMapping("/modules/above-line-threshold")
     fun getModulesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestParam(value = "numberPerPage") limit: Long,
-                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+                                     @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<ModulesSizingListDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getModuleSizingListAboveLineThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(ModulesSizingListDto(data, count, offset / limit + 1, threshold))
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getModuleSizingListAboveLineThresholdByFilterSizing(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(ModulesSizingListDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
-    @GetMapping("/modules/above-threshold")
+    @PostMapping("/modules/above-threshold")
     fun getModulesAboveThreshold(@PathVariable("systemId") systemId: Long,
-                                 @RequestParam(value = "numberPerPage") limit: Long,
-                                 @RequestParam(value = "currentPageNumber") currentPageNumber: Long)
+                                 @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<ModulesSizingListDto> {
-        val offset = (currentPageNumber - 1) * limit
-        val (data, count, threshold) = sizingService.getModulePackageCountSizingAboveThreshold(systemId, limit, offset)
-        return ResponseEntity.ok(ModulesSizingListDto(data, count, offset / limit + 1, threshold))
+        val request = validFilterParam(filterSizing)
+        val (data, count, threshold) = sizingService.getModulePackageCountSizingAboveThresholdByFilterSizing(systemId, request.toFilterSizing())
+        return ResponseEntity.ok(ModulesSizingListDto(data, count, request.getOffset() / request.getLimit() + 1, threshold))
     }
 
-    @GetMapping("/packages/above-line-threshold")
+    @PostMapping("/packages/above-line-threshold")
     fun getPackagesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
                                       @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<PackagesSizingListDto> {
@@ -43,7 +41,7 @@ class SizingController(val sizingService: SizingService) {
 
     }
 
-    @GetMapping("/packages/above-threshold")
+    @PostMapping("/packages/above-threshold")
     fun getPackagesAboveThreshold(@PathVariable("systemId") systemId: Long,
                                   @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<PackagesSizingListDto> {

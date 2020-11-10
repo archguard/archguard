@@ -45,6 +45,32 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getModuleSizingListAbovePackageCountThresholdByFilterSizing(systemId: Long, threshold: Int, limit: Long, offset: Long, module: String): List<ModuleSizing> {
+        return jdbi.withHandle<List<ModuleSizing>, Exception> {
+
+            val sql = "select uuid() as id, count(class_name) as classCount, sum(loc) as `lines`, " +
+                    "count(distinct package_name) as packageCount, module as moduleName, system_id" +
+                    "from JClass" +
+                    "where system_id =:systemId " +
+
+                    "and module like '%${module}%' " +
+
+                    "and is_test=false " +
+                    "and loc is not NULL " +
+                    "group by module " +
+                    "having packageCount > :threshold" +
+                    "order by packageCount desc " +
+                    "limit :limit offset :offset"
+
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ModuleSizing::class.java).list()
+        }
+    }
+
     override fun getModuleSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
@@ -73,6 +99,32 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                   having `lines` > :threshold order by `lines` desc 
                   limit :limit offset :offset
             """.trimIndent()
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .bind("limit", limit)
+                    .bind("offset", offset)
+                    .mapTo(ModuleSizing::class.java).list()
+        }
+    }
+
+    override fun getModuleSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, limit: Long, offset: Long, module: String): List<ModuleSizing> {
+        return jdbi.withHandle<List<ModuleSizing>, Exception> {
+
+            val sql = "select uuid() as id, count(class_name) as classCount, sum(loc) as `lines`, " +
+                    "count(distinct package_name) as packageCount, module as moduleName, system_id" +
+                    "from JClass" +
+                    "where system_id =:systemId " +
+
+                    "and module like '%${module}%' " +
+
+                    "and is_test=false " +
+                    "and loc is not NULL " +
+                    "group by module " +
+                    "having `lines` > :threshold" +
+                    "order by `lines` desc " +
+                    "limit :limit offset :offset"
+
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
@@ -123,7 +175,6 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = "select uuid() as id, count(name) as classCount,sum(loc) as `lines`, module as moduleName, system_id, package_name " +
                     "from JClass" +
                     "where system_id =:systemId " +
-                    "and loc>:threshold " +
 
                     "and ( module like '%${filter.module}%' " +
                     "and class_name like '%${filter.className}%' ) " +
@@ -184,7 +235,6 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = "select sum(loc) as `lines`, count(name) as classCount, module as moduleName, system_id, package_name " +
                     "from JClass " +
                     "where system_id =:systemId " +
-                    "and loc>:threshold " +
 
                     "and ( module like '%${filter.module}%' " +
                     "and class_name like '%${filter.className}%' ) " +
@@ -203,7 +253,6 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     .bind("offset", filter.offset)
                     .mapTo(PackageSizing::class.java).list()
         }
-
 
 
     }
