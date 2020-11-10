@@ -1,10 +1,11 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
-import com.thoughtworks.archguard.report.controller.coupling.SizingMethodRequestDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
+import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO
+import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO.Companion.fromFilterSizing
 import org.springframework.stereotype.Service
 
 @Service
@@ -51,11 +52,11 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
-    fun getMethodSizingListAboveLineThresholdByKeyword(systemId: Long, request: SizingMethodRequestDto): Triple<List<MethodSizing>, Long, Int> {
-        validPagingParam(request.getLimit(), request.getOffset())
+    fun getMethodSizingListAboveLineThresholdByRequestSizing(systemId: Long, filter: FilterSizing): Triple<List<MethodSizing>, Long, Int> {
+        validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
         val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getMethodSizingAboveLineThresholdByFilterKeyword(systemId, threshold, request)
+        val data = sizingRepository.getMethodSizingAboveLineThresholdByRequestSizing(systemId, threshold, fromFilterSizing(filter))
         return Triple(data, count, threshold)
     }
 
