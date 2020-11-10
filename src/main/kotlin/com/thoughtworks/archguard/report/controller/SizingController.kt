@@ -74,7 +74,7 @@ class SizingController(val sizingService: SizingService) {
     }
 
 
-    @GetMapping("/classes/above-method-count-threshold")
+    @PostMapping("/classes/above-method-count-threshold")
     fun getClassesAboveMethodCountThreshold(@PathVariable("systemId") systemId: Long,
                                             @RequestBody @Valid filterSizing: FilterSizingDto)
             : ResponseEntity<ClassSizingListWithMethodCountDto> {
