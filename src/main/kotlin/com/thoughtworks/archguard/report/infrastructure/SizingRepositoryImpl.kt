@@ -441,7 +441,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     "from JClass " +
                     "where system_id = :systemId " +
                     "and loc>:threshold " +
-                    "and is_test=false" +
+                    "and is_test=false " +
                     "and ( module like '%${filter.module}%' " +
                     "and class_name like '%${filter.className}%' " +
                     "and package_name like '%${filter.packageName}%' ) "
