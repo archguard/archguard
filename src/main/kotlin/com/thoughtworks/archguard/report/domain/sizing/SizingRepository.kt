@@ -21,6 +21,8 @@ interface SizingRepository {
     fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int): Long
     fun getPackageSizingListAboveClassCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
 
+
+    fun getPackageSizingListAboveClassCountThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long
     fun getPackageSizingListAboveClassCountThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing>
 
 
@@ -28,6 +30,8 @@ interface SizingRepository {
 
     fun getPackageSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<PackageSizing>
 
+
+    fun getPackageSizingAboveLineThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long
     fun getPackageSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<PackageSizing>
 
 
