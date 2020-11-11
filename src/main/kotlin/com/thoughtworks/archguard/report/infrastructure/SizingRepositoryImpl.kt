@@ -227,6 +227,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                   having `lines` > :threshold order by `lines` desc
                   limit :limit offset :offset
             """.trimIndent()
+
             println("sql :   $sql")
 
             it.createQuery(sql)
@@ -258,6 +259,30 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+    override fun getMethodSizingAboveLineThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = "select count(1) " +
+                    "from JMethod " +
+                    "where system_id = :systemId " +
+                    "and loc>:threshold " +
+                    "and is_test=false " +
+                    "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' " +
+                    "and package_name like '%${filter.packageName}%' " +
+                    "and `name` like '%${filter.name}%' ) "
+
+            println("sql :   $sql")
+
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .findOne()
+                    .orElse(0)
+        }
+
+    }
+
 
     override fun getMethodSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<MethodSizing> {
         return jdbi.withHandle<List<MethodSizing>, Exception> {
@@ -271,6 +296,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     "and is_test=false " +
                     "order by loc desc " +
                     "limit :limit offset :offset"
+
+            println("sql :   $sql")
 
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -298,6 +325,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                     "order by loc desc " +
                     "limit :limit offset :offset"
 
+            println("sql: $sql ")
 
             it.createQuery(sql)
                     .bind("systemId", systemId)
