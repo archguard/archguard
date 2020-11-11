@@ -164,12 +164,13 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
                select count(1) from 
-                (select count(name) as count from JClass
-                    where system_id = :systemId   
-                    and ( `module` like '% ${filter.module}%' and class_name like '%${filter.className}%' )
-                    and is_test=false and loc is not NULL group by module, package_name
+                (select count(name) as count from JClass 
+                    where system_id = :systemId    
+                    and ( `module` like '%${filter.module}%' and class_name like '%${filter.className}%' )
+                    and is_test=false and loc is not NULL group by module, package_name 
                     having count > :threshold) as p
             """.trimIndent()
+            println("sql :  $sql")
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
@@ -242,9 +243,9 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
             val sql = """
               select count(1) from ( 
                 select sum(loc) as `lines` from JClass 
-                  where system_id = :systemId 
-                  and ( `module` like '%${filter.module}%' and class_name like '%${filter.className}%' )                  
-                  and is_test=false and loc is not NULL group by module, package_name 
+                  where system_id = :systemId  
+                  and ( `module` like '%${filter.module}%' and class_name like '%${filter.className}%' )               
+                  and is_test=false and loc is not NULL group by module, package_name  
                   having `lines` > :threshold) as p 
             """.trimIndent()
             it.createQuery(sql)
