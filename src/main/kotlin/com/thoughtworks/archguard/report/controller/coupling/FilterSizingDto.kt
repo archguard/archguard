@@ -8,10 +8,10 @@ import org.springframework.validation.annotation.Validated
 @Validated
 data class FilterSizingDto(@NotNull val currentPageNumber: Long,
                            @NotNull val numberPerPage: Long,
-                           val module: String,
-                           val className: String,
-                           val packageName: String,
-                           val name: String) {
+                           val module: String?,
+                           val className: String?,
+                           val packageName: String?,
+                           val name: String?) {
     fun getLimit(): Long {
         return numberPerPage
     }
@@ -24,10 +24,10 @@ data class FilterSizingDto(@NotNull val currentPageNumber: Long,
         return FilterSizing(
                 getLimit(),
                 getOffset(),
-                module,
-                className,
-                packageName,
-                name
+                module?:"",
+                className?:"",
+                packageName?:"",
+                name?:""
         )
     }
 
