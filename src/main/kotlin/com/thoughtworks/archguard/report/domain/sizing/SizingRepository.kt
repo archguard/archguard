@@ -9,12 +9,17 @@ interface SizingRepository {
 
     fun getModuleSizingListAbovePackageCountThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing>
 
+
+    fun getModuleSizingListAbovePackageCountThresholdCount(systemId: Long, threshold: Int,module: String): Long
     fun getModuleSizingListAbovePackageCountThresholdByFilterSizing(systemId: Long, threshold: Int, limit: Long, offset: Long, module: String): List<ModuleSizing>
 
 
     fun getModuleSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long
 
     fun getModuleSizingAboveLineThreshold(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ModuleSizing>
+
+
+    fun getModuleSizingAboveLineThresholdCount(systemId: Long, threshold: Int, module: String): Long
     fun getModuleSizingAboveLineThresholdByFilterSizing(systemId: Long, threshold: Int, limit: Long, offset: Long, s: String): List<ModuleSizing>
 
 
