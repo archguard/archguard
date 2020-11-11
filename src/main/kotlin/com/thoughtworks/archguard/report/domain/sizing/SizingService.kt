@@ -96,7 +96,7 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
     fun getClassSizingListAboveLineThreshold(systemId: Long, filter: FilterSizing): Triple<List<ClassSizingWithLine>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
-        val count = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold)
+        val count = sizingRepository.getClassSizingAboveLineThresholdCount(systemId, threshold, fromFilterSizing(filter))
         val data = sizingRepository.getClassSizingAboveLineThresholdByRequestSizing(systemId, threshold, fromFilterSizing(filter))
         return Triple(data, count, threshold)
     }
@@ -104,10 +104,11 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
     fun getClassSizingListAboveMethodCountThreshold(systemId: Long, filter: FilterSizing): Triple<List<ClassSizingWithMethodCount>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_FUNC_COUNT)
-        val count = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold)
+        val count = sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, threshold, fromFilterSizing(filter))
         val data = sizingRepository.getClassSizingListAboveMethodCountThresholdByRequestSizing(systemId, threshold, fromFilterSizing(filter))
         return Triple(data, count, threshold)
     }
+
 
     fun getMethodSizingSmellCount(systemId: Long): Long {
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)

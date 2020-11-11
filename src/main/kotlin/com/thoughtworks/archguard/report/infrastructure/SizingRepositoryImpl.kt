@@ -410,6 +410,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
         }
     }
 
+
     override fun getMethodSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from JMethod where system_id = :systemId and loc>:threshold and is_test=false"
@@ -425,6 +426,49 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from JClass where system_id = :systemId and loc>:threshold and is_test=false"
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .findOne()
+                    .orElse(0)
+        }
+    }
+
+    override fun getClassSizingAboveLineThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val sql = "select count(1) " +
+                    "from JClass " +
+                    "where system_id = :systemId " +
+                    "and loc>:threshold " +
+                    "and is_test=false" +
+                    "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' " +
+                    "and package_name like '%${filter.packageName}%' ) "
+
+            it.createQuery(sql)
+                    .bind("systemId", systemId)
+                    .bind("threshold", threshold)
+                    .mapTo(Long::class.java)
+                    .findOne()
+                    .orElse(0)
+        }
+    }
+
+    override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long {
+        return jdbi.withHandle<Long, Exception> {
+            val table = "select count(name) as count from JMethod " +
+                    "where system_id = :systemId " +
+
+                    "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' " +
+                    "and package_name like '%${filter.packageName}%' ) " +
+
+                    "and is_test=false " +
+                    "and loc is not NULL  " +
+                    "group by clzname " +
+                    "having count>:threshold "
+            val sql = "select count(1) from ($table) as c"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("threshold", threshold)
