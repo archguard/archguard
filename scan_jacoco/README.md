@@ -1,6 +1,6 @@
 ### 说明：
-扫描目标项目下的 jacoco.exec 文件， 将目标项目的覆盖率数据生成 SQL 文件 output.sql 
 
+扫描目标项目下的 jacoco.exec 文件， 将目标项目的覆盖率数据生成 SQL 文件 output.sql 
 
 ### 构建：
 

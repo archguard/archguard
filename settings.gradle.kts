@@ -4,6 +4,7 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
-rootProject.name = "scanner-tools"
+rootProject.name = "ArchGuard Scanner"
+
 include(":scan_git")
 include(":scan_jacoco")

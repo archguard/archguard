@@ -5,6 +5,7 @@
  */
 
 plugins {
+    id("antlr")
     id("com.thougthworks.archguard.java-conventions")
 }
 
@@ -20,3 +21,10 @@ dependencies {
 
 group = "com.thougthworks.archguard.scanners"
 description = "scan_git"
+
+
+tasks.generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments = arguments + listOf("-visitor", "-long-messages")
+}
+
