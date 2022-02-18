@@ -34,6 +34,14 @@ tasks.generateGrammarSource {
     outputDirectory  = file("${project.buildDir}/generated-src/dev/evolution")
 }
 
+tasks.named("compileKotlin") {
+    dependsOn(tasks.withType<AntlrTask>())
+}
+
+tasks.withType<AntlrTask> {
+
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
