@@ -1,16 +1,19 @@
-# code-analysis-addition
+# ArchGuard backend
 
 ## 项目简介
-此项目包含code-analysis-backend以外的后台接口。
+
+ArchGuard backend services;
 
 ## 技术选型
-开发语言：Kotlin  
-开发框架：Spring Boot，JDBI  
-测试框架：Junit5，Spring Boot Test，Flyway， H2  
-构建工具：gradle  
-数据库：MySQL  
+
+- 开发语言：Kotlin  
+- 开发框架：Spring Boot，JDBI  
+- 测试框架：Junit5，Spring Boot Test，Flyway， H2  
+- 构建工具：gradle  
+- 数据库：MySQL  
 
 ## 本地构建
+
 #### build
 `./gradlew build`
 
@@ -21,28 +24,26 @@
 
 ## 领域模型
 
-## 测试策略
-#### 分类
-+ API测试
-    进行API级别测试
-+ 单元测试
-    对各层业务处理进行单元测试
-+ 人工测试
+## Flyway
 
-#### 策略
-+  非必要测试
-    对于无业务逻辑，只做数据转发的层级不做单元测试；对于简单Sql，不做单元测试
-+ 必要测试
-    含有复杂业务逻辑，必须进行单元和API测试；对于复杂Sql，必须做单元测试
+### 查看当前flyway状态
 
-## 技术架构图
+1. ./gradlew clean compile
+2. ./gradlew -Dflyway.configFiles=flyway.conf flywayInfo
 
-## 部署架构图
+### 校验当前flyway状态
 
-## 外部依赖
+1. ./gradlew clean compile
+2. ./gradlew -Dflyway.configFiles=flyway.conf flywayValidate
 
-## 环境信息
+### 迁移flyway
 
-## 编码实践
+1. ./gradlew clean compile
+2. ./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate
 
-## FAQ
+### 修复flyway
+
+1. ./gradlew clean compile
+2. ./gradlew -Dflyway.configFiles=flyway.conf flywayRepair
+
+**如果想要迁移local环境的数据库，将flyway.conf改为flyway-local.conf**
