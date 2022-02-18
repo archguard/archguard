@@ -9,7 +9,7 @@ import com.thoughtworks.archguard.git.scanner.loc.java.JavaLoCApp
 import com.thoughtworks.archguard.git.scanner.loc.kotlin.KotlinLoCApp
 import com.github.ajalt.clikt.parameters.options.default as default1
 
-class Runner : CliktCommand() {
+class Runner : CliktCommand(help = "scan git to sql") {
     private val branch: String by option(help = "git repository branch").default1("master")
     private val after: String by option(help = "scanner only scan commits after this timestamp").default1("0")
 

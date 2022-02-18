@@ -1,11 +1,8 @@
 group = "com.thougthworks.archguard.scanners"
 
-repositories {
-    mavenCentral()
-}
-
 plugins {
     id("antlr")
+    id("application")
     id("com.thougthworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
 }
@@ -13,7 +10,7 @@ plugins {
 dependencies {
     antlr("org.antlr:antlr4:4.9.3")
 
-    implementation("com.github.ajalt:clikt:2.5.0")
+    implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.3.1.201904271842-r")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.30")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
@@ -22,6 +19,10 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+application {
+    mainClass.set("com.thoughtworks.archguard.git.scanner.RunnerKt")
 }
 
 sourceSets.main {

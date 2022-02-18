@@ -1,7 +1,3 @@
-repositories {
-    mavenCentral()
-}
-
 plugins {
     id("antlr")
     id("com.thougthworks.archguard.java-conventions")
