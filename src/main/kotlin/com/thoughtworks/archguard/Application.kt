@@ -18,7 +18,7 @@ import javax.sql.DataSource
 
 @SpringBootApplication
 @EnableOpenApi
-@EnableEurekaClient
+//@EnableEurekaClient
 class Application {
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {

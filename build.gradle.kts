@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.spring") version "1.3.61"
     jacoco
     antlr
+    id("org.flywaydb.flyway").version("6.3.1")
 }
 
 group = "com.thoughtworks.archguard"
