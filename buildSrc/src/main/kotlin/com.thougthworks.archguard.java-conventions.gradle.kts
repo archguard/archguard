@@ -17,8 +17,8 @@ repositories {
 }
 
 group = "com.thougthworks.archguard"
-version = "1.0.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_12
+version = "0.1.0-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 publishing {
     publications.create<MavenPublication>("maven") {
