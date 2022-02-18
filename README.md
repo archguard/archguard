@@ -1,4 +1,6 @@
-## Introduction 
+# Arch Scanner 
+
+[![CI](https://github.com/archguard/scanner/actions/workflows/ci.yaml/badge.svg)](https://github.com/archguard/scanner/actions/workflows/ci.yaml)
 
 * scan_git - Git 提交记录扫描
 * scan_jacoco Jacoco 结果扫描
@@ -9,15 +11,16 @@ tech debt
 
 - [ ] tech debt
   - [ ] better README.md
-  - [ ] maven to gradle
+  - [x] maven to gradle
   - [ ] core code model
   - [ ] tests
 - [ ] Java
   - add Chapi parser
   - antlr grammar: [https://github.com/antlr/grammars-v4/tree/master/java/java](https://github.com/antlr/grammars-v4/tree/master/java/java)
 - [ ] continuous delivery
-  - [ ] GitHub workflow 
-  - [ ] git tag publish to maven
+  - [x] GitHub workflow 
+  - [ ] git tag publish to GitHub
+  - [ ] git tag publish to mavne
 
 model align
 
