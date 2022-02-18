@@ -12,30 +12,18 @@ tech debt
 - [ ] tech debt
   - [ ] better README.md
   - [x] maven to gradle
-  - [ ] core code model
   - [ ] tests
-- [ ] Java
-  - add Chapi parser
-  - antlr grammar: [https://github.com/antlr/grammars-v4/tree/master/java/java](https://github.com/antlr/grammars-v4/tree/master/java/java)
+- [ ] Code scanner
+  - add Chapi parser for Java, TypeScript, Kotlin such as...
 - [ ] continuous delivery
   - [x] GitHub workflow 
   - [ ] git tag publish to GitHub
-  - [ ] git tag publish to mavne
-
-model align
-
-- [ ] model
-  - [ ] code model with full functions
-  - [ ] save model in local
+  - [ ] git tag publish to Maven
 - [ ] data pipeline 
   - data feeder to database/json/others
   - data transform function
-
-addition futures: 
-
-- [ ] languages scanner
-  - [ ] TypeScript
 - [ ] cloc scanner
+- [ ] code change counts
 
 ## Usage
 
@@ -43,11 +31,13 @@ addition futures:
 
 说明：`程序会扫描指定的 GIT 仓库， 并在命令当前目录下生成SQL文件 output.sql`
 
-运行：
+运行：`./gradlew :scan_git:run --args="--path=.."`
 
-```
- ./gradlew run --gitPath=. --branch=master
-```
+### scan_jacoco 工具
+
+说明：`扫描目标项目下的 jacoco.exec 文件， 将目标项目的覆盖率数据生成 SQL 文件 output.sql`
+
+运行：`./gradlew :scan_jacoco:run --args="--target-project=."`
 
 License
 ---

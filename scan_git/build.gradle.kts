@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 group = "com.thougthworks.archguard.scanners"
 
 plugins {
@@ -41,6 +43,13 @@ tasks.named("compileKotlin") {
 
 tasks.withType<AntlrTask> {
 
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+    }
 }
 
 tasks.withType<Test> {
