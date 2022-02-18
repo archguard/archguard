@@ -1,0 +1,13 @@
+system_info:
+  - id: 1
+    system_name: "systemName1"
+    repo: "repo1"
+    repo_type: "GIT"
+    username: "username1"
+    password: "WCA5RH/O9J4yxgU40Z+thg=="
+    sql_table: "sql1"
+    scanned: "NONE"
+    quality_gate_profile_id: 1
+    threshold_suite_id: 1
+    branch: "master"
+    updated_time: '2020-10-21 11:24:01'
