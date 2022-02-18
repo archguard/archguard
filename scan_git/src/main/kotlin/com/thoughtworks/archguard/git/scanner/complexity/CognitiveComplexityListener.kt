@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.git.scanner.complexity
 
-import dev.evolution.java.JavaParser
-import dev.evolution.java.JavaParserBaseListener
+import dev.evolution.JavaParser
+import dev.evolution.JavaParserBaseListener
 import org.antlr.v4.runtime.ParserRuleContext
 
 class CognitiveComplexityListener(val methods: MutableList<MethodCognitiveComplexity>) : JavaParserBaseListener() {

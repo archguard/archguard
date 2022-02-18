@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.git.scanner.loc.java
 
 import com.thoughtworks.archguard.git.scanner.loc.model.JClassLoC
-import dev.evolution.java.JavaParser
-import dev.evolution.java.JavaParser.MethodDeclarationContext
-import dev.evolution.java.JavaParserBaseVisitor
+import dev.evolution.JavaParser
+import dev.evolution.JavaParser.MethodDeclarationContext
+import dev.evolution.JavaParserBaseVisitor
 import org.antlr.v4.runtime.ParserRuleContext
 
 class JavaLoCVisitor(private val loc: JClassLoC) : JavaParserBaseVisitor<Any?>() {

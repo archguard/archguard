@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.git.scanner.complexity
 
 
-import dev.evolution.java.JavaLexer
-import dev.evolution.java.JavaParser
+import dev.evolution.JavaLexer
+import dev.evolution.JavaParser
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream

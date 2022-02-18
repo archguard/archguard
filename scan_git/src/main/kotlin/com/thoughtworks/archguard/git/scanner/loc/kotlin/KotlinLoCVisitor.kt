@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.git.scanner.loc.kotlin
 
 import com.thoughtworks.archguard.git.scanner.loc.model.JClassLoC
-import dev.evolution.kotlin.KotlinParser
-import dev.evolution.kotlin.KotlinParser.ObjectDeclarationContext
-import dev.evolution.kotlin.KotlinParserBaseVisitor
+import dev.evolution.KotlinParser
+import dev.evolution.KotlinParser.ObjectDeclarationContext
+import dev.evolution.KotlinParserBaseVisitor
 import org.antlr.v4.runtime.ParserRuleContext
 
 class KotlinLoCVisitor(private var locs: ArrayList<JClassLoC>, private val module: String?) : KotlinParserBaseVisitor<Any?>() {

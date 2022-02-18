@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.git.scanner.loc.java
 
-import dev.evolution.java.JavaLexer
-import dev.evolution.java.JavaParser
+import dev.evolution.JavaLexer
+import dev.evolution.JavaParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree

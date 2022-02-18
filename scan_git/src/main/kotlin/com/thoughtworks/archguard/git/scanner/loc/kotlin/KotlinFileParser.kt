@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.git.scanner.loc.kotlin
 
-import dev.evolution.kotlin.KotlinLexer
-import dev.evolution.kotlin.KotlinParser
+import dev.evolution.KotlinLexer
+import dev.evolution.KotlinParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
