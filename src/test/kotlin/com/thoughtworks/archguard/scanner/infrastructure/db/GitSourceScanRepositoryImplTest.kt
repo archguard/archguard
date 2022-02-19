@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.scanner.infrastructure.db
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Disabled
 internal class GitSourceScanRepositoryImplTest {
 
     @Autowired

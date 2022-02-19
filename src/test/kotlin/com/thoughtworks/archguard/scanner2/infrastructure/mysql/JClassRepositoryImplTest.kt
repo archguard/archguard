@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 import com.thoughtworks.archguard.scanner2.domain.model.Dependency
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 @WebAppConfiguration
 @Transactional
+@Disabled
 internal class JClassRepositoryImplTest {
 
     @Autowired

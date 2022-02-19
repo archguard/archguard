@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.ClassAccess
 import com.thoughtworks.archguard.scanner2.domain.model.MethodAccess
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,9 +15,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Transactional
+@Disabled
 internal class AccessControllerTest(@Autowired val accessController: AccessController,
                                     @Autowired val jdbi: Jdbi) {
 

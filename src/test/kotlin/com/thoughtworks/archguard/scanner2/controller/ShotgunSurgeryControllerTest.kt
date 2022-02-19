@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.scanner2.controller
 import com.thoughtworks.archguard.scanner2.domain.model.CognitiveComplexity
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,6 +13,7 @@ import kotlin.test.assertEquals
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Disabled
 internal class ShotgunSurgeryControllerTest(@Autowired val shotgunSurgeryController: ShotgunSurgeryController,
                                             @Autowired val jdbi: Jdbi) {
 

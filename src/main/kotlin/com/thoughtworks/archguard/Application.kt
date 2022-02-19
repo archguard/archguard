@@ -33,12 +33,6 @@ class Application {
     }
 
     @Bean
-    fun jdbi(@Autowired factoryBean: JdbiFactoryBean): Jdbi {
-        factoryBean.setAutoInstallPlugins(true)
-        return factoryBean.`object`
-    }
-
-    @Bean
     fun gitHotFileDao(jdbi: Jdbi): GitHotFileDao {
         return jdbi.onDemand(GitHotFileDao::class.java)
     }
