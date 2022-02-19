@@ -29,13 +29,19 @@ jobs:
           ls -alh scan_git/build/libs
 
       - name: Upload scan_git to release
-        uses: ncipollo/release-action@v1
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: "scan_git/build/libs/scan*-all.jar"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: scan_git/build/libs/scan*-all.jar
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
 
       - name: Upload scan_jacoco to release
-        uses: ncipollo/release-action@v1
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: "scan_jacoco/build/libs/scan*-all.jar"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: scan_jacoco/build/libs/scan*-all.jar
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
