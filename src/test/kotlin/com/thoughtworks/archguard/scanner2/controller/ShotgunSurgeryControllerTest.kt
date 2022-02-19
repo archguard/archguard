@@ -24,6 +24,6 @@ internal class ShotgunSurgeryControllerTest(@Autowired val shotgunSurgeryControl
                     .mapTo(CognitiveComplexity::class.java).list()
         }
         val arrayList = ArrayList(result)
-        assertEquals(5, arrayList.size)
+        assertEquals(18, arrayList.size)
     }
 }
