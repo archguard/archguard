@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v2
@@ -29,15 +29,13 @@ jobs:
           ls -alh scan_git/build/libs
 
       - name: Upload scan_git to release
-        uses: svenstaro/upload-release-action@v2
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_git/build/libs/scan_git*-all.jar
-          tag: ${{ github.ref }}
+          artifacts: "scan_git/build/libs/scan*-all.jar"
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload scan_jacoco to release
-        uses: svenstaro/upload-release-action@v2
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_jacoco/build/libs/scan_git*-all.jar
-          tag: ${{ github.ref }}
+          artifacts: "scan_jacoco/build/libs/scan*-all.jar"
+          token: ${{ secrets.GITHUB_TOKEN }}
