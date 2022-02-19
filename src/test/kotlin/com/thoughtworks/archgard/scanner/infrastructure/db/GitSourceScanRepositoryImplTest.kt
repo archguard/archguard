@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.infrastructure.db
+package com.thoughtworks.archguard.scanner.infrastructure.db
 
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi

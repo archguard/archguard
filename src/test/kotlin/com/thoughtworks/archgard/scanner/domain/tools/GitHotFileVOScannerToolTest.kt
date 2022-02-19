@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.tools
 
 import io.mockk.every
 import io.mockk.mockk

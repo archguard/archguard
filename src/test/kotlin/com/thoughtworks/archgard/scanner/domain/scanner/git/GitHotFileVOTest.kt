@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.git
+package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

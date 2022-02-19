@@ -1,7 +1,7 @@
-package com.thoughtworks.archgard.scanner.infrastructure.db
+package com.thoughtworks.archguard.scanner.infrastructure.db
 
-import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFile
-import com.thoughtworks.archgard.scanner.domain.scanner.git.GitHotFileRepo
+import com.thoughtworks.archguard.scanner.domain.scanner.git.GitHotFile
+import com.thoughtworks.archguard.scanner.domain.scanner.git.GitHotFileRepo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,8 +1,8 @@
-package com.thoughtworks.archgard.scanner2.domain.service
+package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archgard.scanner2.domain.model.Dependency
-import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
-import com.thoughtworks.archgard.scanner2.domain.repository.JMethodRepository
+import com.thoughtworks.archguard.scanner2.domain.model.Dependency
+import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.assertThat

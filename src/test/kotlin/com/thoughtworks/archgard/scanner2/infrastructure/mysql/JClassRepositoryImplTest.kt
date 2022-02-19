@@ -1,7 +1,7 @@
-package com.thoughtworks.archgard.scanner2.infrastructure.mysql
+package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archgard.scanner2.domain.model.Dependency
-import com.thoughtworks.archgard.scanner2.domain.model.JClass
+import com.thoughtworks.archguard.scanner2.domain.model.Dependency
+import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

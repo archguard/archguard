@@ -1,7 +1,7 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.bak.jacoco
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
 
-import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner.domain.system.BuildTool
+import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals

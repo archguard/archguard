@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner
+package com.thoughtworks.archguard.scanner
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

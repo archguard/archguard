@@ -1,7 +1,7 @@
-package com.thoughtworks.archgard.scanner2.domain.service
+package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archgard.scanner2.domain.model.JClass
-import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

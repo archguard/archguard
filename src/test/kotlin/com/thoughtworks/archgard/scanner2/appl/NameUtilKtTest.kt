@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.appl
+package com.thoughtworks.archguard.scanner2.appl
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

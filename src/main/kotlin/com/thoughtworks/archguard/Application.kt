@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard
 
-import com.thoughtworks.archgard.scanner.infrastructure.db.*
-import com.thoughtworks.archgard.scanner2.infrastructure.mysql.ClassMetricsDao
-import com.thoughtworks.archgard.scanner2.infrastructure.mysql.MethodMetricsDao
-import com.thoughtworks.archgard.scanner2.infrastructure.mysql.ModuleMetricsDao
-import com.thoughtworks.archgard.scanner2.infrastructure.mysql.PackageMetricsDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.*
+import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ClassMetricsDao
+import com.thoughtworks.archguard.scanner2.infrastructure.mysql.MethodMetricsDao
+import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ModuleMetricsDao
+import com.thoughtworks.archguard.scanner2.infrastructure.mysql.PackageMetricsDao
 import com.thoughtworks.archguard.report.infrastructure.GitHotFileDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin

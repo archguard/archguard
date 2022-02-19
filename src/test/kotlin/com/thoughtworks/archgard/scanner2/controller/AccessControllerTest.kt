@@ -1,7 +1,7 @@
-package com.thoughtworks.archgard.scanner2.controller
+package com.thoughtworks.archguard.scanner2.controller
 
-import com.thoughtworks.archgard.scanner2.domain.model.ClassAccess
-import com.thoughtworks.archgard.scanner2.domain.model.MethodAccess
+import com.thoughtworks.archguard.scanner2.domain.model.ClassAccess
+import com.thoughtworks.archguard.scanner2.domain.model.MethodAccess
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Test

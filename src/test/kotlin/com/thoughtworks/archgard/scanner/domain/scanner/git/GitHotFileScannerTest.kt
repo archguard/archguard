@@ -1,8 +1,8 @@
-package com.thoughtworks.archgard.scanner.domain.scanner.git
+package com.thoughtworks.archguard.scanner.domain.scanner.git
 
-import com.thoughtworks.archgard.scanner.domain.ScanContext
-import com.thoughtworks.archgard.scanner2.domain.model.JClass
-import com.thoughtworks.archgard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

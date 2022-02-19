@@ -1,4 +1,4 @@
-package com.thoughtworks.archgard.scanner2.domain.model
+package com.thoughtworks.archguard.scanner2.domain.model
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
