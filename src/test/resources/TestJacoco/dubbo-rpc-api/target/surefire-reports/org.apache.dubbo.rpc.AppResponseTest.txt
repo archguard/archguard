@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.dubbo.rpc.AppResponseTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.123 s - in org.apache.dubbo.rpc.AppResponseTest

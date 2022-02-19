@@ -1,0 +1,4 @@
+org/apache/dubbo/rpc/protocol/rmi/RmiProtocol.class
+org/apache/dubbo/rpc/protocol/rmi/RmiProtocol$1.class
+org/apache/dubbo/rpc/protocol/rmi/RmiRemoteInvocation.class
+com/alibaba/dubbo/rpc/protocol/rmi/RmiRemoteInvocation.class
