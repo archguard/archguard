@@ -54,6 +54,8 @@ dependencies {
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("com.alibaba:druid-spring-boot-starter:1.2.8")
 
+    implementation("dom4j:dom4j:1.6.1")
+
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
