@@ -18,15 +18,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
-      - name: Publish package
-        uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
-        with:
-          arguments: publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Execute Gradle build
+        run: ./gradlew build
 
       - name: Upload scan_git to release
         uses: svenstaro/upload-release-action@v2
