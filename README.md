@@ -27,6 +27,11 @@ todo:
 - [ ] model refactor
 - [ ] tech stack upgrading
 - [ ] clean unused code
+- [ ] migration tools services to local
+  - [ ] coca
+  - [ ] JavaByteCode
+  - [ ] Git
+  - [ ] DesigniteJava
 
 ### 技术选型
 
