@@ -6,7 +6,7 @@ import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
-interface GitHotFileDao {
+interface ScannerGitHotFileDao {
     @SqlBatch("insert into git_hot_file (system_id, repo, path, module_name, class_name, modified_count, jclass_id) " +
             "values (:gitHotFile.systemId, :gitHotFile.repo, :gitHotFile.path, :gitHotFile.moduleName, :gitHotFile.className, :gitHotFile.modifiedCount, :gitHotFile.jclassId)")
     fun saveAll(@BindBean("gitHotFile") gitHotFile: List<GitHotFile>)

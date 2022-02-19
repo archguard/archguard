@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GitHotFileScanner(val gitHotFileRepo: GitHotFileRepo, val jClassRepository: JClassRepository) : Scanner {
+class GitHotFileScanner(val gitHotFileRepo: ScannerGitHotFileRepo, val jClassRepository: JClassRepository) : Scanner {
 
     private val log = LoggerFactory.getLogger(GitHotFileScanner::class.java)
 

@@ -6,8 +6,6 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import org.aspectj.apache.bcel.util.ClassLoaderRepository
-import org.aspectj.apache.bcel.util.Repository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +16,7 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 @ActiveProfiles("test")
-internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
+internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: ScannerGitHotFileRepo) {
 
     private lateinit var spyGitHotFileScanner: GitHotFileScanner
     private lateinit var jClassRepository: JClassRepository

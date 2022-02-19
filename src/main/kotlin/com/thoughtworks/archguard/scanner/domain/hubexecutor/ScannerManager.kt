@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archguard.scanner.domain.ScanContext
-import com.thoughtworks.archguard.scanner.domain.config.repository.ConfigureRepository
+import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import java.util.concurrent.Executors
 class ScannerManager(@Autowired private val scanners: List<Scanner>) {
 
     @Autowired
-    private lateinit var configureRepository: ConfigureRepository
+    private lateinit var configureRepository: ScannerConfigureRepository
 
     private val log = LoggerFactory.getLogger(ScannerManager::class.java)
 

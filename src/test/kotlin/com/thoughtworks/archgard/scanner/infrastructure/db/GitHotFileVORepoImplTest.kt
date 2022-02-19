@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitHotFile
-import com.thoughtworks.archguard.scanner.domain.scanner.git.GitHotFileRepo
+import com.thoughtworks.archguard.scanner.domain.scanner.git.ScannerGitHotFileRepo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 @ActiveProfiles("test")
-internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: GitHotFileRepo) {
+internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: ScannerGitHotFileRepo) {
     
     @Test
     fun shouldUpdateGitHotFilesGivenHistoryGItHotFilesWhenSave() {

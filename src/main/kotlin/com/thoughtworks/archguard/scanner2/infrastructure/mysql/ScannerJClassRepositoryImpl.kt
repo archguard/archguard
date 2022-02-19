@@ -9,7 +9,7 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
 
 @Repository
-class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
+class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun findClassParents(systemId: Long, module: String?, name: String?): List<JClass> {
         val moduleFilter = if (module == null) {

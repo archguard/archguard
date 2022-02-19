@@ -45,6 +45,12 @@ class Application {
         return jdbi.onDemand(GitHotFileDao::class.java)
     }
 
+    // todo: remove
+    @Bean
+    fun scannerGitHotFileDao(jdbi: Jdbi): ScannerGitHotFileDao {
+        return jdbi.onDemand(ScannerGitHotFileDao::class.java)
+    }
+
     @Bean
     fun jdbi(ds: DataSource, jdbiPlugins: List<JdbiPlugin>): Jdbi {
         val proxy = TransactionAwareDataSourceProxy(ds)

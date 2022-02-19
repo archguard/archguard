@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.controller
 
-import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubService
+import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubExecutorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
@@ -12,7 +12,7 @@ class ScannerHubController(@Value("\${spring.datasource.url}") val dbUrl: String
                            @Value("\${spring.datasource.password}") val password: String) {
 
     @Autowired
-    private lateinit var hubService: HubService
+    private lateinit var hubService: HubExecutorService
 
     val url = dbUrl.replace("://", "://$username:$password@")
 

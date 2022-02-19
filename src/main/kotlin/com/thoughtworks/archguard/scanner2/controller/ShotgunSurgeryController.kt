@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.scanner2.controller
 
-import com.thoughtworks.archguard.scanner2.domain.service.ShotgunSurgeryService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerShotgunSurgeryService
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 
 @Controller
-class ShotgunSurgeryController(val shotgunSurgeryService: ShotgunSurgeryService) {
+class ShotgunSurgeryController(val scannerShotgunSurgeryService: ScannerShotgunSurgeryService) {
 
     fun persist(@PathVariable("systemId") systemId: Long) {
-        return shotgunSurgeryService.persist(systemId)
+        return scannerShotgunSurgeryService.persist(systemId)
     }
 }

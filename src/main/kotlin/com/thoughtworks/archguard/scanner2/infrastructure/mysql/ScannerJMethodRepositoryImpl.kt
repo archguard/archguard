@@ -9,7 +9,7 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
 
 @Repository
-class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
+class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun findMethodFields(id: String): List<JField> {
         val sql = "SELECT id, name, type FROM JField WHERE id in (select b from _MethodFields where a='$id')"

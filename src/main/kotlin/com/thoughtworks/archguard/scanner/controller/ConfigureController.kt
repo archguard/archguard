@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.scanner.controller
 import com.thoughtworks.archguard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archguard.scanner.domain.config.dto.UpdateDTO
 import com.thoughtworks.archguard.scanner.domain.config.dto.UpdateMessageDTO
-import com.thoughtworks.archguard.scanner.domain.config.service.ConfigureService
+import com.thoughtworks.archguard.scanner.domain.config.service.ScannerConfigureService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class ConfigureController {
 
     @Autowired
-    private lateinit var configureService: ConfigureService
+    private lateinit var configureService: ScannerConfigureService
 
 
     @GetMapping("/config")

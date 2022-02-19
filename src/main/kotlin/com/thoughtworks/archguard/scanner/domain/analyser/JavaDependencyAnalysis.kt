@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.analyser
 
 import com.thoughtworks.archguard.scanner.domain.exception.AnalysisException
 import com.thoughtworks.archguard.scanner.domain.exception.EntityNotFoundException
-import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubService
+import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubExecutorService
 import com.thoughtworks.archguard.scanner.domain.system.ScannedType
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfoRepository
@@ -20,7 +20,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
                              @Value("\${spring.datasource.username}") val username: String,
                              @Value("\${spring.datasource.password}") val password: String,
                              @Value("\${init.scan.status}") val updateScanStatus: Boolean,
-                             val hubService: HubService,
+                             val hubService: HubExecutorService,
                              val systemInfoRepository: SystemInfoRepository,
                              val analysisModuleClient: AnalysisModuleClient,
                              val scanner2Client: Scanner2Client) {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class SystemInfoRepositoryImpl : SystemInfoRepository {
+class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi

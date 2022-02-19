@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.scanner.domain.config.repository
 import com.thoughtworks.archguard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 
-interface ConfigureRepository {
+interface ScannerConfigureRepository {
 
     fun getConfigures(): List<ConfigureDTO>
 

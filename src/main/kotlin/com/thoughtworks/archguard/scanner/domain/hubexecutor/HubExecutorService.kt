@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.hubexecutor
 
 import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.AnalysisService
-import com.thoughtworks.archguard.scanner.domain.config.repository.ConfigureRepository
+import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,8 +11,8 @@ import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.concurrent.thread
 
 @Service
-class HubService {
-    private val log = LoggerFactory.getLogger(HubService::class.java)
+class HubExecutorService {
+    private val log = LoggerFactory.getLogger(HubExecutorService::class.java)
 
     @Autowired
     private lateinit var manager: ScannerManager
@@ -29,7 +29,7 @@ class HubService {
     private lateinit var evaluationReportClient: EvaluationReportClient
 
     @Autowired
-    private lateinit var configureRepository: ConfigureRepository
+    private lateinit var configureRepository: ScannerConfigureRepository
 
     fun doScanIfNotRunning(id: Long, dbUrl: String): Boolean {
         if (!concurrentSet.contains(id)) {

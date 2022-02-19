@@ -5,7 +5,7 @@ import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
 @Repository
-class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
+class ScannerDataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     override fun insertOrUpdateDataClass(systemId: Long, dataClasses: List<JClass>) {
         deleteDataClass(systemId)
         dataClasses.flatMap { jclass -> jclass.fields.map { DataClassPO(jclass.id, it.id, systemId) } }.forEach {

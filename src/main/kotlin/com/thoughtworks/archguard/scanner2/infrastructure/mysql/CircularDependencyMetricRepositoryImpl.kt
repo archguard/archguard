@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
 import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
-import com.thoughtworks.archguard.scanner2.domain.repository.CircularDependencyMetricRepository
+import com.thoughtworks.archguard.scanner2.domain.repository.ScannerCircularDependencyMetricRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
 @Repository
-class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : CircularDependencyMetricRepository {
+class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : ScannerCircularDependencyMetricRepository {
     override fun insertOrUpdateClassCircularDependency(systemId: Long, classCircularDependency: List<List<JClassVO>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.CLASS)
         classCircularDependency.forEach {

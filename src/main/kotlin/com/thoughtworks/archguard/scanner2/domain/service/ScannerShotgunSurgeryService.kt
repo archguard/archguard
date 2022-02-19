@@ -6,8 +6,8 @@ import com.thoughtworks.archguard.scanner2.domain.repository.CognitiveComplexity
 import org.springframework.stereotype.Service
 
 @Service
-class ShotgunSurgeryService(val changeEntryRepository: ChangeEntryRepository,
-                            val cognitiveComplexityRepository: CognitiveComplexityRepository) {
+class ScannerShotgunSurgeryService(val changeEntryRepository: ChangeEntryRepository,
+                                   val cognitiveComplexityRepository: CognitiveComplexityRepository) {
 
     fun persist(systemId: Long) {
         val entryList = changeEntryRepository.getAllChangeEntry(systemId);

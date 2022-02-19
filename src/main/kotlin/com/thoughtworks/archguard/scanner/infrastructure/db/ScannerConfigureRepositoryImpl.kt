@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner.infrastructure.db
 
 import com.thoughtworks.archguard.scanner.domain.config.dto.ConfigureDTO
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
-import com.thoughtworks.archguard.scanner.domain.config.repository.ConfigureRepository
+import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +11,7 @@ import java.util.*
 
 
 @Repository
-class ConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ConfigureRepository {
+class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ScannerConfigureRepository {
 
     @Autowired
     lateinit var jdbi: Jdbi

@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.model.MethodMetric
 import com.thoughtworks.archguard.scanner2.domain.model.ModuleMetric
 import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
-import com.thoughtworks.archguard.scanner2.domain.repository.CircularDependencyMetricRepository
+import com.thoughtworks.archguard.scanner2.domain.repository.ScannerCircularDependencyMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
@@ -13,8 +13,8 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.MethodMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.ModuleMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.PackageMetricRepository
-import com.thoughtworks.archguard.scanner2.domain.service.CircularDependencyService
-import com.thoughtworks.archguard.scanner2.domain.service.DataClassService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerCircularDependencyService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerDataClassService
 import com.thoughtworks.archguard.scanner2.domain.service.DitService
 import com.thoughtworks.archguard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archguard.scanner2.domain.service.LCOM4Service
@@ -32,17 +32,17 @@ import org.springframework.transaction.annotation.Transactional
 class MetricPersistApplService(val ditService: DitService,
                                val lcoM4Service: LCOM4Service,
                                val nocService: NocService,
-                               val dataClassService: DataClassService,
+                               val dataClassService: ScannerDataClassService,
                                val jClassRepository: JClassRepository,
                                val jMethodRepository: JMethodRepository,
                                val fanInFanOutService: FanInFanOutService,
-                               val circularDependencyService: CircularDependencyService,
+                               val scannerCircularDependencyService: ScannerCircularDependencyService,
                                val classMetricRepository: ClassMetricRepository,
                                val methodMetricRepository: MethodMetricRepository,
                                val packageMetricRepository: PackageMetricRepository,
                                val moduleMetricRepository: ModuleMetricRepository,
                                val dataClassRepository: DataClassRepository,
-                               val circularDependencyMetricRepository: CircularDependencyMetricRepository) {
+                               val circularDependencyMetricRepository: ScannerCircularDependencyMetricRepository) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
     fun persistLevel2Metrics(systemId: Long) {
@@ -73,19 +73,19 @@ class MetricPersistApplService(val ditService: DitService,
 
     @Transactional
     fun persistCircularDependencyMetrics(systemId: Long) {
-        val moduleCircularDependency = circularDependencyService.getModuleCircularDependency(systemId)
+        val moduleCircularDependency = scannerCircularDependencyService.getModuleCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateModuleCircularDependency(systemId, moduleCircularDependency)
         log.info("Finished persist moduleCircularDependency in systemId $systemId")
 
-        val packageCircularDependency = circularDependencyService.getPackageCircularDependency(systemId)
+        val packageCircularDependency = scannerCircularDependencyService.getPackageCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdatePackageCircularDependency(systemId, packageCircularDependency)
         log.info("Finished persist packageCircularDependency in systemId $systemId")
 
-        val classCircularDependency = circularDependencyService.getClassCircularDependency(systemId)
+        val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
         log.info("Finished persist classCircularDependency in systemId $systemId")
 
-        val methodCircularDependency = circularDependencyService.getMethodCircularDependency(systemId)
+        val methodCircularDependency = scannerCircularDependencyService.getMethodCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
         log.info("Finished persist methodCircularDependency in systemId $systemId")
 

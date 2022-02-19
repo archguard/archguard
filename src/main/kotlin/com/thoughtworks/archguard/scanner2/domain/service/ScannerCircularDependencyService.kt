@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
+class ScannerCircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
         val allClassDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
