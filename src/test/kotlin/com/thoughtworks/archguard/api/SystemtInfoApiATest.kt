@@ -5,6 +5,7 @@ import com.github.database.rider.spring.api.DBRider
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -33,6 +34,7 @@ class SystemtInfoApiATest {
     }
 
     @Test
+    @Disabled
     @DataSet("expect/system_info_api_atest.yml")
     fun should_get_system_info_when_sent_get_system_info_api_given_there_is_already_system_info_in_database() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info")
@@ -52,6 +54,7 @@ class SystemtInfoApiATest {
     }
 
     @Test
+    @Disabled
     @DataSet("expect/system_info_api_atest.yml")
     fun should_get_system_info_success_when_get_by_id() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info/1")
