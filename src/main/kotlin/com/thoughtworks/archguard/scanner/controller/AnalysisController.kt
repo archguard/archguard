@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/systems/{systemId}")
+@RequestMapping("/scanner/systems/{systemId}")
 class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalysis,
                          @Autowired val sqlAnalysis: SqlDependencyAnalysis) {
 
