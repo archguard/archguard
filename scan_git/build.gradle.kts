@@ -7,6 +7,7 @@ plugins {
     id("application")
     id("com.thougthworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 dependencies {
@@ -25,6 +26,14 @@ dependencies {
 
 application {
     mainClass.set("com.thoughtworks.archguard.git.scanner.RunnerKt")
+}
+
+tasks{
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "com.thoughtworks.archguard.scan_jacoco.RunnerKt"))
+        }
+    }
 }
 
 sourceSets.main {

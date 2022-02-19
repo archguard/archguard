@@ -3,6 +3,7 @@ plugins {
     id("application")
     id("com.thougthworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 dependencies {
@@ -15,7 +16,15 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.thoghtworks.archguard.scan_jacoco.RunnerKt")
+    mainClass.set("com.thoughtworks.archguard.scan_jacoco.RunnerKt")
+}
+
+tasks{
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "com.thoughtworks.archguard.scan_jacoco.RunnerKt"))
+        }
+    }
 }
 
 group = "com.thougthworks.archguard.scanners"
@@ -27,3 +36,4 @@ tasks.withType<Test> {
         events("passed", "skipped", "failed")
     }
 }
+
