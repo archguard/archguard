@@ -24,6 +24,7 @@ tech debt
   - data transform function
 - [ ] cloc scanner
 - [ ] code change counts
+- [ ] deploy to github releases.
 
 ## Usage
 
