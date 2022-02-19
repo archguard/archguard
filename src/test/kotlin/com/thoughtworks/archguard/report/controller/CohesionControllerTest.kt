@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -9,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.jdbc.SqlGroup
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.postForEntity
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -22,8 +24,10 @@ internal class CohesionControllerTest(@LocalServerPort val port: Int) {
             Sql("classpath:sqls/insert_commit_log_and_change_log.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
             Sql("classpath:sqls/delete_commit_log_and_change_log.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD))
     fun should_get_shotgun() {
-        val entity = restTemplate.getForEntity("http://localhost:$port/systems/0/cohesion/shotgun-surgery?numberPerPage=1&currentPageNumber=1",
-                ShotgunSurgeryListDto::class.java)
+        val sizingDto = FilterSizingDto(1, 5, "", "", "", "");
+        val entity = restTemplate.postForEntity("http://localhost:$port/systems/0/cohesion/shotgun-surgery",
+            sizingDto, ShotgunSurgeryListDto::class.java)
+
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body?.count).isEqualTo(1)
         assertThat(entity.body?.currentPageNumber).isEqualTo(1)
