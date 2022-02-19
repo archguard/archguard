@@ -17,3 +17,7 @@ jobs:
 
       - name: Execute Gradle build
         run: ./gradlew build
+
+      - name: ls builds
+        run: |
+          ls -alh scan_git/build/libs
