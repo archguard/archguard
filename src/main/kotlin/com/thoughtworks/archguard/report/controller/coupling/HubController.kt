@@ -16,7 +16,7 @@ class HubController(val hubService: HubService) {
     fun getClassesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
                                     @RequestParam(value = "numberPerPage") limit: Long,
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<ClassHubListDto> {
+                                    @RequestParam(value = "orderByFanIn") orderByFanIn:  Boolean = false): ResponseEntity<ClassHubListDto> {
         val offset = (currentPageNumber - 1) * limit
         val (resultList, count, threshold) = hubService.getClassHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
         return ResponseEntity.ok(ClassHubListDto(resultList, count, offset / limit + 1, threshold))
@@ -26,7 +26,7 @@ class HubController(val hubService: HubService) {
     fun getMethodsAboveHubThreshold(@PathVariable("systemId") systemId: Long,
                                     @RequestParam(value = "numberPerPage") limit: Long,
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<MethodHubListDto> {
+                                    @RequestParam(value = "orderByFanIn") orderByFanIn:  Boolean = false): ResponseEntity<MethodHubListDto> {
         val offset = (currentPageNumber - 1) * limit
         val (resultList, count, threshold) = hubService.getMethodHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
         return ResponseEntity.ok(MethodHubListDto(resultList, count, offset / limit + 1, threshold))
@@ -36,7 +36,7 @@ class HubController(val hubService: HubService) {
     fun getPackagesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
                                      @RequestParam(value = "numberPerPage") limit: Long,
                                      @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<PackageHubListDto> {
+                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false): ResponseEntity<PackageHubListDto> {
         val offset = (currentPageNumber - 1) * limit
         val (resultList, count, threshold) = hubService.getPackageHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
         return ResponseEntity.ok(PackageHubListDto(resultList, count, offset / limit + 1, threshold))
@@ -46,7 +46,7 @@ class HubController(val hubService: HubService) {
     fun getModulesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
                                     @RequestParam(value = "numberPerPage") limit: Long,
                                     @RequestParam(value = "currentPageNumber") currentPageNumber: Long,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean): ResponseEntity<ModuleHubListDto> {
+                                    @RequestParam(value = "orderByFanIn") orderByFanIn:  Boolean = false): ResponseEntity<ModuleHubListDto> {
         val offset = (currentPageNumber - 1) * limit
         val (resultList, count, threshold) = hubService.getModuleHubListAboveThreshold(systemId, limit, offset, orderByFanIn)
         return ResponseEntity.ok(ModuleHubListDto(resultList, count, offset / limit + 1, threshold))
