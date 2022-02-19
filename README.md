@@ -8,17 +8,17 @@ Features
 
 todo:
 
-- [ ] export swagger API
+- [x] export swagger API
 - [ ] database specification
 - [ ] model refactor
-- [ ] tech stack upgrading
-- [ ] clean unused code
-- [ ] migration tools services to local
+- [ ] migration scanner tools to 
   - [ ] coca
   - [ ] JavaByteCode
   - [ ] Git
-  - [ ] DesigniteJava
-- [ ] InfluxDB to 2.0
+- [ ] tech debt
+   - [ ] tech stack upgrading
+   - [ ] InfluxDB to 2.0
+   - [ ] clean unused code
 
 ### 技术选型
 
