@@ -2,20 +2,6 @@
 
 Features
 
-- [ ] 架构评估
-  - [ ] 体量维度
-  - [ ] 耦合维度
-  - [ ] 内聚维度
-  - [ ] 冗余维度
-  - [ ] 测试维度
-- [ ] 架构分析
-  - [ ] 依赖分析
-  - [ ] 指标分析
-- [ ] 架构演进
-  - [ ] 指标看板
-  - [ ] 坏味道阈值
-  - [ ] 质量阀
-  
 ## Development
 
 - [API List](http://localhost:8080/api/v3/api-docs)
@@ -32,6 +18,7 @@ todo:
   - [ ] JavaByteCode
   - [ ] Git
   - [ ] DesigniteJava
+- [ ] InfluxDB to 2.0
 
 ### 技术选型
 
@@ -80,5 +67,5 @@ run:
 ### InfluxDB
 
 ```
-brew install influxdb
+brew install influxdb@1
 ```
