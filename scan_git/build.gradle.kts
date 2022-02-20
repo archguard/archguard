@@ -14,13 +14,13 @@ dependencies {
     antlr("org.antlr:antlr4:4.9.3")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
-    implementation("org.eclipse.jgit:org.eclipse.jgit:5.3.1.201904271842-r")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.30")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
-    implementation("org.slf4j:slf4j-jdk14:1.7.13")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation("org.slf4j:slf4j-jdk14:1.7.36")
     implementation("org.antlr:antlr4-runtime:4.9.3")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
