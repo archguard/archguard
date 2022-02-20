@@ -8,3 +8,4 @@ rootProject.name = "ArchGuard Scanner"
 
 include(":scan_git")
 include(":scan_jacoco")
+include(":scan_javasource")

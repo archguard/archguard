@@ -24,10 +24,6 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: ls builds
-        run: |
-          ls -alh scan_git/build/libs
-
       - name: Upload scan_git to release
         uses: svenstaro/upload-release-action@v2
         with:
