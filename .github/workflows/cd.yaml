@@ -24,11 +24,11 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: Upload scan_git to release
+      - name: Upload archguard to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/libs/archguard*-all.jar
+          file: build/libs/archguard*.jar
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
