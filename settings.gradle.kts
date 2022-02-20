@@ -1,4 +1,4 @@
-rootProject.name = "ArchGuard Backend"
+rootProject.name = "archguard"
 
 pluginManagement {
     repositories {
