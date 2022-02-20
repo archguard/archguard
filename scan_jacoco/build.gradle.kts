@@ -1,3 +1,6 @@
+group = "com.thougthworks.archguard.scanners"
+description = "scan_jacoco"
+
 plugins {
     id("antlr")
     id("application")
@@ -26,9 +29,6 @@ tasks{
         }
     }
 }
-
-group = "com.thougthworks.archguard.scanners"
-description = "scan_jacoco"
 
 tasks.withType<Test> {
     useJUnitPlatform()
