@@ -19,6 +19,11 @@ todo:
    - [ ] download from github by config
    - [ ] enable scanner failure
    - [ ] config scanner by optional
+- [ ] System landscape by C4
+   - [ ] Context = System (props: name, aliasName...)
+   - [ ] Containers = Repository or repository with modules (props: name, path, repository...)
+   - [ ] Components = Module (props: name, path, repository...)
+   - [ ] Code = Code dependence (props: name...)
 
 ### 技术选型
 
