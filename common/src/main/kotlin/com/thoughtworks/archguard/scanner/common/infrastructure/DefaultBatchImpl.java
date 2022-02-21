@@ -1,8 +1,7 @@
 package com.thoughtworks.archguard.scanner.common.infrastructure;
 
-import evolution.common.domain.IBatch;
-import evolution.common.infrastructure.utils.UpdateRecord;
-import evolution.common.infrastructure.utils.UpdateRecordSet;
+import com.thoughtworks.archguard.scanner.common.infrastructure.utils.UpdateRecord;
+import com.thoughtworks.archguard.scanner.common.infrastructure.utils.UpdateRecordSet;
 import io.netty.util.internal.ConcurrentSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,11 +1,10 @@
 package com.thoughtworks.archguard.scanner.common.infrastructure.task;
 
-import evolution.common.application.VisitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ShutdownHook {
-    private static final Logger logger = LoggerFactory.getLogger(VisitUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);
 
     public static void register(long startTime) {
         new ShutdownHook(startTime);

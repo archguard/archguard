@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.common.domain;
+package com.thoughtworks.archguard.scanner.common.infrastructure;
 
 import java.util.Map;
 import java.util.Optional;
