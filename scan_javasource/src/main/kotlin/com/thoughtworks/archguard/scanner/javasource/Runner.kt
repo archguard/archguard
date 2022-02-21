@@ -15,7 +15,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
     }
 
     private fun toSql(dataStructs: Array<CodeDataStruct>) {
-        println("data structs: " + dataStructs[0].toString())
+        val repo = ClassRepository ("3")
+        repo.saveClassElement(dataStructs[0])
+        repo.close()
     }
 }
 

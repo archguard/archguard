@@ -8,6 +8,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":common"))
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation(kotlin("stdlib"))
 

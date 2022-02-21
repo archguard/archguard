@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.common.infrastructure.utils;
+package infrastructure.utils;
 
 import java.util.Map;
 

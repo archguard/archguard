@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.scanner.common.infrastructure;
+package infrastructure;
 
-import com.thoughtworks.archguard.scanner.common.infrastructure.utils.UpdateRecord;
-import com.thoughtworks.archguard.scanner.common.infrastructure.utils.UpdateRecordSet;
+import infrastructure.utils.UpdateRecord;
+import infrastructure.utils.UpdateRecordSet;
 import io.netty.util.internal.ConcurrentSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
