@@ -6,11 +6,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ClassRepository(systemId: String) {
-    private val batch: SourceBatch
+    private val batch: SourceBatch = SourceBatch()
     private val systemId: String
 
     init {
-        batch = SourceBatch()
         this.systemId = systemId
     }
 
