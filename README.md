@@ -7,8 +7,13 @@
 
 todo:
 
-- [ ] source_code
-- [ ] api
+- [ ] source code with chapi
+  - [ ] Java
+  - [ ] TypeScript
+- [ ] bytecode scan
+- [ ] api scan
+  - [ ] Java Spring
+- [ ] openapi (yaml/json) insert
 
 ## Todo
 
@@ -22,14 +27,13 @@ tech debt
   - add Chapi parser for Java, TypeScript, Kotlin such as...
 - [ ] continuous delivery
   - [x] GitHub workflow 
-  - [ ] git tag publish to GitHub
+  - [x] git tag publish to GitHub
   - [ ] git tag publish to Maven
 - [ ] data pipeline 
   - data feeder to database/json/others
   - data transform function
 - [ ] cloc scanner
 - [ ] code change counts
-- [ ] deploy to github releases.
 
 ## Usage
 
