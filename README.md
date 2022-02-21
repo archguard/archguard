@@ -5,6 +5,11 @@
 * scan_git - Git 提交记录扫描
 * scan_jacoco Jacoco 结果扫描
 
+todo:
+
+- [ ] source_code
+- [ ] api
+
 ## Todo
 
 tech debt
