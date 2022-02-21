@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.git.scanner
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
 import com.thoughtworks.archguard.git.scanner.loc.LoCRepository
 import com.thoughtworks.archguard.git.scanner.loc.java.JavaLoCApp
 import com.thoughtworks.archguard.git.scanner.loc.kotlin.KotlinLoCApp
-import com.github.ajalt.clikt.parameters.options.default
 
 class Runner : CliktCommand(help = "scan git to sql") {
     private val branch: String by option(help = "git repository branch").default("master")
