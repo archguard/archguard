@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.scanner.javasource
 
-import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeField
-import chapi.domain.core.CodeFunction
+import chapi.domain.core.*
 import infrastructure.SourceBatch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,8 +21,39 @@ class ClassRepository(systemId: String) {
 
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
         for (method in functions) {
-            doSaveMethod(clzName, method, pkgName)
+            val methodId = doSaveMethod(clzName, method, pkgName)
+
+            method.Annotations.forEach {
+                doSaveAnnotation(it, methodId)
+            }
         }
+    }
+
+    private fun doSaveAnnotation(annotation: CodeAnnotation, methodId: String) {
+        val id = generateId()
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = id
+        values["system_id"] = systemId
+        values["targetType"] = "todo"
+        values["targetId"] = methodId
+        values["name"] = annotation.Name
+        batch.add("JAnnotation", values)
+
+
+        for (keyValue in annotation.KeyValues) {
+            doSaveAnnotationValue(id, keyValue)
+        }
+    }
+
+    private fun doSaveAnnotationValue(annotationId: String, map: AnnotationKeyValue) {
+        val id = generateId()
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = id
+        values["system_id"] = systemId
+        values["annotationId"] = annotationId
+        values["key"] = map.Key
+        values["value"] = map.Value
+        batch.add("JAnnotationValue", values)
     }
 
     private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String): String {
@@ -36,7 +65,7 @@ class ClassRepository(systemId: String) {
         values["clzname"] = clzName
         values["name"] = m.Name
         values["returntype"] = m.ReturnType
-        values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString { "," }
+        values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString(",")
 
         if(m.Modifiers.isNotEmpty()){
             values["access"] = m.Modifiers[0]
