@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner.javasource
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeField
+import chapi.domain.core.CodeFunction
 import infrastructure.SourceBatch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,6 +18,40 @@ class ClassRepository(systemId: String) {
     fun saveClassElement(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
+        saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+    }
+
+    private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
+        for (method in functions) {
+            doSaveMethod(clzName, method, pkgName)
+        }
+    }
+
+    private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String): String {
+        val mId = generateId()
+        val time: String = currentTime
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = mId
+        values["system_id"] = systemId
+        values["clzname"] = clzName
+        values["name"] = m.Name
+        values["returntype"] = m.ReturnType
+        values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString { "," }
+
+        if(m.Modifiers.isNotEmpty()){
+            values["access"] = m.Modifiers[0]
+        } else {
+            values["access"] = "public"
+        }
+
+        values["module"] = pkgName
+        values["package_name"] = pkgName
+        values["class_name"] = clzName
+        values["updatedAt"] = time
+        values["createdAt"] = time
+        values["is_test"] = if (m.isJUnitTest()) "true" else "false"
+        batch.add("JMethod", values)
+        return mId
     }
 
     private fun saveClassFields(clzId: String, fields: Array<CodeField>, clzName: String) {
