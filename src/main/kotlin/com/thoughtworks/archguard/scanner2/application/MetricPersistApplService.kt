@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.appl
+package com.thoughtworks.archguard.scanner2.application
 
 import com.thoughtworks.archguard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archguard.scanner2.domain.model.JClass

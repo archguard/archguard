@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.controller
 
 
-import com.thoughtworks.archguard.scanner2.appl.MetricPersistApplService
+import com.thoughtworks.archguard.scanner2.application.MetricPersistApplService
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
