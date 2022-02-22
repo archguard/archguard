@@ -2,10 +2,12 @@ package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.exception.ThresholdNotDefinedException
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
 @Service
+@DependsOn("flywayInitializer")
 class ThresholdSuiteService(val thresholdSuiteRepository: ThresholdSuiteRepository) {
 
     private val logger = LoggerFactory.getLogger(ThresholdSuiteService::class.java)

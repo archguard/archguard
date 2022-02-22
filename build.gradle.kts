@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
     id("org.springframework.boot") version "2.2.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
@@ -8,7 +5,7 @@ plugins {
     kotlin("plugin.spring") version "1.3.61"
     jacoco
     antlr
-    id("org.flywaydb.flyway").version("6.3.1")
+    id("org.flywaydb.flyway").version("6.5.7")
 }
 
 group = "com.thoughtworks.archguard"
@@ -62,10 +59,11 @@ dependencies {
 
     runtimeOnly("mysql:mysql-connector-java")
 
+    implementation("org.flywaydb:flyway-core:6.5.7")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("com.github.database-rider:rider-spring:1.16.1")
     testImplementation("com.h2database:h2:1.4.200")
-    testImplementation("org.flywaydb:flyway-core:6.5.5")
+    testImplementation("org.flywaydb:flyway-core:6.5.7")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
