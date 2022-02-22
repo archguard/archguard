@@ -25,6 +25,17 @@ todo:
    - [ ] Components = Module (props: name, path, repository...)
    - [ ] Code = Code dependence (props: name...)
 
+## Docker Image地址
+```
+docker pull archguard/archguard-backend:latest
+docker pull archguard/archguard-backend:vx.x.x
+```
+
+## 本地docker compose部署
+```
+docker-compose up
+```
+
 ### 技术选型
 
 - 开发语言：Kotlin  

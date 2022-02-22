@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  # 前端待对接
+  # archguard-frontend:
+  #   image: "archguard/archguard-frontend:latest"
+  #   container_name: archguard-frontend
+  #   depends_on:
+  #     - archguard-backend
+  #   ports:
+  #     - "11080:80"
+  #     - "11443:443"
+  #   networks:
+  #     - dependence_network
+
+  archguard-backend:
+    image: "archguard/archguard-backend:latest"
+    container_name: archguard-backend
+    depends_on:
+      archguard_mysql:
+        condition: service_healthy
+    ports:
+      - "18080:8080"
+    environment:
+      app_env: debug
+    volumes:
+      - "~/.m2:/root/.m2"
+      - "~/.gradle:/root/.gradle"
+    healthcheck:
+      test: curl -f http://localhost:8080/hello || exit 1
+      timeout: 10s
+      retries: 5
+    networks:
+      - dependence_network
+    restart: on-failure:10
+
+  archguard_mysql:
+    image: "mysql:8"
+    container_name: archguard_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: prisma
+      MYSQL_DATABASE: archguard
+      TZ: Asia/Shanghai
+    networks:
+      - dependence_network
+    volumes:
+      - ./archguard_mysql:/var/lib/mysql:rw
+    user: mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+
+networks:
+  dependence_network:
