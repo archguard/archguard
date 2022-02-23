@@ -2,8 +2,15 @@
 
 [![CI](https://github.com/archguard/scanner/actions/workflows/ci.yaml/badge.svg)](https://github.com/archguard/scanner/actions/workflows/ci.yaml)
 
+scan
+
 * scan_git - Git 提交记录扫描
-* scan_jacoco Jacoco 结果扫描
+* scan_jacoco - Jacoco 结果扫描
+* scan_javasource - Java 源码扫描
+
+ident
+
+* ident_mysql - 用于标识 MySQL 语句的 `@Query(select...)` 信息等
 
 todo:
 
