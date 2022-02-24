@@ -13,10 +13,9 @@ dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation(kotlin("stdlib"))
 
-
-    implementation("com.phodal.chapi:chapi-domain:0.0.5")
-    implementation("com.phodal.chapi:chapi-application:0.0.5")
-    implementation("com.phodal.chapi:chapi-ast-java:0.0.5")
+    implementation("com.phodal.chapi:chapi-domain:0.0.7")
+    implementation("com.phodal.chapi:chapi-application:0.0.7")
+    implementation("com.phodal.chapi:chapi-ast-java:0.0.7")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
