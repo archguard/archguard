@@ -25,13 +25,17 @@ todo:
    - [ ] Components = Module (props: name, path, repository...)
    - [ ] Code = Code dependence (props: name...)
 
-## Docker Image地址
+### Docker
+
+Docker Image 地址
+
 ```
 docker pull archguard/archguard-backend:latest
 docker pull archguard/archguard-backend:vx.x.x
 ```
 
-## 本地docker compose部署
+本地 docker compose 部署
+
 ```
 docker-compose up
 ```
@@ -85,3 +89,11 @@ run:
 ```
 brew install influxdb@1
 ```
+
+License
+---
+
+@ 2020 ~ Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
+
+
+
