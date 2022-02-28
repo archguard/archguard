@@ -1,16 +1,15 @@
 version: '3.8'
 services:
-  # 前端待对接
-  # archguard-frontend:
-  #   image: "archguard/archguard-frontend:latest"
-  #   container_name: archguard-frontend
-  #   depends_on:
-  #     - archguard-backend
-  #   ports:
-  #     - "11080:80"
-  #     - "11443:443"
-  #   networks:
-  #     - dependence_network
+   archguard-frontend:
+     image: "archguard/archguard-frontend:latest"
+     container_name: archguard-frontend
+     depends_on:
+       - archguard-backend
+     ports:
+       - "11080:80"
+       - "11443:443"
+     networks:
+       - dependence_network
 
   archguard-backend:
     image: "archguard/archguard-backend:latest"
