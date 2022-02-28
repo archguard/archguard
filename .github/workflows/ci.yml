@@ -17,3 +17,6 @@ jobs:
 
       - name: Execute Gradle build
         run: ./gradlew build
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
