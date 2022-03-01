@@ -13,9 +13,6 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-    jcenter {
-        url = uri("https://jcenter.bintray.com")
-    }
     maven {
         url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
@@ -88,17 +85,17 @@ tasks.withType<Test> {
 }
 
 tasks.test {
-    finalizedBy(tasks.jacocoTestCoverageVerification) // report is always generated after tests run
+    finalizedBy(tasks.jacocoTestCoverageVerification)
 }
 tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
+    dependsOn(tasks.test)
 }
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
 }
 
