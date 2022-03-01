@@ -23,7 +23,8 @@ class ModuleCouplingQualityReport(latestQualityList: List<ModuleCouplingQuality>
         val max = listOf(detail.count8,
                 detail.count8To6,
                 detail.count6)
-                .max()
+                .maxOrNull()
+
         val result = HashMap<ReportDms, ReportLevel>()
         when (max) {
             detail.count8 -> result[ReportDms.LatestModuleInstability] = ReportLevel.GOOD

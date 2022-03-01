@@ -87,8 +87,9 @@ private fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>):
     for (logicModule in modules) {
         val maxMatchSizeInLogicModule = logicModule.members
                 .filter { member -> jClass.getFullName().startsWith("${member.getFullName()}.") }
-                .maxBy { it.getFullName().length }
+                .maxByOrNull { it.getFullName().length }
                 ?: continue
+
         if (maxMatchSizeInLogicModule.getFullName().length > maxMatchSize) {
             maxMatchSize = maxMatchSizeInLogicModule.getFullName().length
             matchModule.clear()

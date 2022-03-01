@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.evaluation_bak.domain.analysis.*
 import com.thoughtworks.archguard.evaluation_bak.domain.analysis.report.Report
 import com.thoughtworks.archguard.evaluation_bak.domain.analysis.report.ReportLevel
 import com.thoughtworks.archguard.evaluation_bak.infrastructure.EvaluationRepository
-import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -24,7 +23,8 @@ class QualityEvaluationService(@Autowired val evaluationRepository: EvaluationRe
 
 
     fun generateEvaluation(): String {
-        val analysesReports = analyses.keysToMap { it.getQualityReport() }.filterValues { it != null }
+        val analysesReports = analyses
+            .associateBy({ it }, {it.getQualityReport()})
 
         return evaluationRepository.save(EvaluationReport(null, LocalDateTime.now(), name,
                 analysesReports.map { Dimension(it.key.getName(), it.value!!.getLevel()) },

@@ -5,7 +5,6 @@ import com.thoughtworks.archguard.evaluation_bak.domain.analysis.report.ModuleCo
 import com.thoughtworks.archguard.evaluation_bak.domain.analysis.report.Report
 import com.thoughtworks.archguard.report_bak.infrastructure.HotSpotRepo
 import com.thoughtworks.archguard.report_bak.infrastructure.ClassStatisticRepo
-import org.jetbrains.kotlin.utils.keysToMap
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -65,7 +64,8 @@ class ModuleCouplingAnalysis(@Autowired val classStatisticRepo: ClassStatisticRe
             }
 
         }
-        return latest.keysToMap { Pair(0, 0) }
+
+        return latest.associateBy({ it }, { Pair(0, 0) })
     }
 
     private fun getKeyLike(keys: Set<String>, key: String): String? {

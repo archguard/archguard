@@ -22,6 +22,7 @@ repositories {
         url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -32,11 +33,12 @@ dependencies {
     }
 
     // kotlin configs
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
+    // Kotlin reflection.
+    implementation(kotlin("test"))
+    implementation(kotlin("test-junit"))
 
     implementation("org.jdbi:jdbi3-core:3.10.1")
     implementation("org.jdbi:jdbi3-spring4:3.10.1")    // provide JdbiFactoryBean
