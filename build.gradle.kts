@@ -1,8 +1,13 @@
+val ktlint by configurations.creating
+
 plugins {
     id("org.springframework.boot") version "2.2.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.spring") version "1.3.61"
+
+    kotlin("jvm") version "1.6.10"
+    kotlin("plugin.spring") version "1.6.10"
+    kotlin("plugin.serialization") version "1.6.10"
+
     jacoco
     antlr
     id("org.flywaydb.flyway").version("6.5.7")
@@ -20,9 +25,18 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.30")
+    ktlint("com.pinterest:ktlint:0.44.0") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
+    }
+
+    // kotlin configs
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     implementation("org.jdbi:jdbi3-core:3.10.1")
     implementation("org.jdbi:jdbi3-spring4:3.10.1")    // provide JdbiFactoryBean
@@ -38,10 +52,6 @@ dependencies {
     implementation("io.ktor:ktor-server-core:1.1.4")
     implementation("io.ktor:ktor-server-netty:1.1.4")
     implementation("io.ktor:ktor-gson:1.1.4")
-
-    implementation("com.pinterest.ktlint:ktlint-core:0.31.0-SNAPSHOT")
-    implementation("com.pinterest.ktlint:ktlint-ruleset-standard:0.31.0-SNAPSHOT")
-    implementation("com.pinterest.ktlint:ktlint-ruleset-experimental:0.31.0-SNAPSHOT")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -61,9 +71,6 @@ dependencies {
     testImplementation("com.github.database-rider:rider-spring:1.16.1")
     testImplementation("com.h2database:h2:1.4.200")
     testImplementation("org.flywaydb:flyway-core:6.5.7")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.3.30")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -121,4 +128,27 @@ tasks.jacocoTestCoverageVerification {
 
 tasks.jacocoTestCoverageVerification {
     dependsOn(tasks.jacocoTestReport)
+}
+
+val outputDir = "${project.buildDir}/reports/ktlint/"
+val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Check Kotlin code style."
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args = listOf("src/**/*.kt")
+}
+
+val ktlintFormat by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Fix Kotlin code style deviations."
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args = listOf("-F", "src/**/*.kt")
 }
