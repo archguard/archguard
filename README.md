@@ -68,7 +68,16 @@ run:
 **如果想要迁移local环境的数据库，将flyway.conf改为flyway-local.conf**
 
 ### macOS setup
-
+#### 使用docker-compose启动前后端+数据库
+```
+docker-compose up
+```
+#### 仅启动后端
+1. 启动本地数据库
+```
+docker run --name mysql-archguard -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=archguard -p 3306:3306 -d mysql:8
+```
+2. 指定`application-local.properties`启动Application
 ### InfluxDB
 
 ```
