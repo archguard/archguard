@@ -1,8 +1,6 @@
 package com.thoughtworks.archguard.scanner.httpapi
 
 import chapi.app.analyser.TypeScriptAnalyserApp
-import chapi.app.frontend.ComponentHttpCallInfo
-import chapi.app.frontend.FrontendApiAnalyser
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -14,8 +12,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
     override fun run() {
         val path = File(path).absolutePath
         val nodes = TypeScriptAnalyserApp().analysisNodeByPath(path)
-        val componentCalls: Array<ComponentHttpCallInfo> = FrontendApiAnalyser().analysis(nodes, path)
-//        File("api.json").writeText(Json.encodeToString(componentCalls))
     }
 }
 
