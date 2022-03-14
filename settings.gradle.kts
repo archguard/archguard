@@ -6,8 +6,9 @@
 
 rootProject.name = "ArchGuard Scanner"
 
+include(":common")
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_javasource")
-include(":common")
-include("ident_mysql")
+include(":scan_httpapi")
+include(":ident_mysql")

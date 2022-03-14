@@ -11,13 +11,11 @@ class MysqlIdentApp {
         val table = SimpleRelation()
 
         val statement: Statement = CCJSqlParserUtil.parse(sql)
-
         val selectStatement: Select = statement as Select
-
         val tablesNamesFinder = TablesNamesFinder()
+
         table.tableNames = tablesNamesFinder.getTableList(selectStatement)
 
         return table
     }
-
 }
