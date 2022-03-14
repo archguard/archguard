@@ -7,7 +7,6 @@ services:
       - archguard-backend
     ports:
       - "11080:80"
-      - "11443:443"
     networks:
       - dependence_network
 
@@ -17,8 +16,6 @@ services:
     depends_on:
       archguard_mysql:
         condition: service_healthy
-    ports:
-      - "18080:8080"
     environment:
       app_env: debug
     volumes:
@@ -48,9 +45,27 @@ services:
       - ./archguard_mysql:/var/lib/mysql:rw
     user: mysql
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
       retries: 5
+
+  archguard_influxdb:
+    image: "influxdb:1.8"
+    container_name: archguard_influxdb
+    ports:
+      - '8086:8086'
+    networks:
+      - dependence_network
+    healthcheck:
+      test: curl -f http://localhost:8086/ping || exit 1
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./archguard_influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
 
 networks:
   dependence_network:
