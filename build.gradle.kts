@@ -57,6 +57,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("com.alibaba:druid-spring-boot-starter:1.2.8")
