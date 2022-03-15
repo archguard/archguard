@@ -7,6 +7,7 @@ Features
     - [ ] container dependency analysis. (level: HTTP API)
     - [x] component (module) dependency analysis.
     - [x] code dependency analysis. (level: package, class, method)
+    - [ ] API analysis
 - Scanner integration
     - [x] PMD
     - [x] Git with jGit
@@ -17,6 +18,7 @@ Features
         - [x] Badsmell by DesigniteJava
         - [x] Test Badsmell by Coca (Java only)
     - [ ] TypeScript with Chapi
+    - [ ] Kotlin with Chapi
 
 ## Development
 
