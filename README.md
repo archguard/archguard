@@ -2,9 +2,13 @@
 
 Features
 
-## Development
+- C4 analysis
+  - [ ] context dependency analysis.
+  - [ ] container dependency analysis. (level: HTTP API)
+  - [x] component (module) dependency analysis.
+  - [x] code dependency analysis. (level: package, class, method)
 
-- [API List](http://localhost:8080/api/v3/api-docs)
+## Development
 
 todo:
 
@@ -29,8 +33,8 @@ todo:
 
 - 开发语言：Kotlin  
 - 开发框架：Spring Boot，JDBI  
-- 测试框架：Junit5，Spring Boot Test，Flyway， H2  
-- 构建工具：gradle  
+- 测试框架：Junit5，Spring Boot Test，Flyway，H2  
+- 构建工具：Gradle  
 - 数据库：MySQL, InfluxDB
 
 ### 本地构建
