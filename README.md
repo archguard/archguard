@@ -12,6 +12,8 @@ scan
     * [ ] Angular support
 * scan_mysql
     * [ ] TableName support
+* scan_test_badsmell
+    * [ ] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs) 
 
 todo:
 
