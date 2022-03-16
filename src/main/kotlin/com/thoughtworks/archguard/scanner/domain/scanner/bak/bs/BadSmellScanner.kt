@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.CocaTool
+import com.thoughtworks.archguard.scanner.domain.tools.TestBadsmellTool
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory
@@ -24,10 +24,7 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
     override fun scan(context: ScanContext) {
         log.info("start scan bad smell report")
-        var badSmell = getCocaBadSmell(context)
-        if (badSmell.isEmpty()) {
-            badSmell = getDesigniteJavaBadSmell(context)
-        }
+        val badSmell = getDesigniteJavaBadSmell(context)
         badSmellRepo.save(badSmell)
 
         log.info("finished scan bad smell report")
@@ -40,13 +37,6 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
             BadSmell(UUID.randomUUID().toString(), context.systemId, elements[1] + "." + elements[2],
                     0, elements[3], 0, elements[3])
         }
-    }
-
-    private fun getCocaBadSmell(context: ScanContext): List<BadSmell> {
-        val cocaTool = CocaTool(context.workspace)
-        val report = cocaTool.getBadSmellReport()
-        val cocaModels = mapper.readValue<CocaBadSmellModel>(report?.readText() ?: "{}")
-        return cocaModels.toBadSmell(context.systemId)
     }
 
     data class CocaBadSmellModel(val complexCondition: List<CocaBadSmellItem>?,
