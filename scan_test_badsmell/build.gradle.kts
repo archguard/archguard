@@ -23,13 +23,13 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.thoughtworks.archguard.scanner.tbs.RunnerKt")
+    mainClass.set("org.archguard.scanner.tbs.RunnerKt")
 }
 
 tasks{
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "com.thoughtworks.archguard.scanner.javasource.RunnerKt"))
+            attributes(Pair("Main-Class", "org.archguard.scanner.tbs.RunnerKt"))
         }
     }
 }
