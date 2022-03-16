@@ -61,6 +61,8 @@ run:
 
 ### Flyway
 
+create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
+
 #### 查看当前flyway状态
 
 1. ./gradlew clean compile
