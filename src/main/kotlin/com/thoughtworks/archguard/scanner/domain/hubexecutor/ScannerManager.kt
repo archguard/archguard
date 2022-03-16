@@ -20,8 +20,6 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
 
     fun execute(context: ScanContext) {
         val WORKER_THREAD_POOL = Executors.newFixedThreadPool(4)
-
-
         val callables: List<Callable<Unit>> = scanners.map { s ->
             Callable {
                 try {

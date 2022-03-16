@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.CocaTool
+import com.thoughtworks.archguard.scanner.domain.tools.TestBadsmellTool
 import com.thoughtworks.archguard.scanner.domain.tools.ShellTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
 
     override fun scan(context: ScanContext) {
         log.info("start scan test bad smell")
-        val coca = CocaTool(context.workspace)
+        val coca = TestBadsmellTool(context.workspace)
         val report = coca.getTestBadSmellReport()
         val model = mapper.readValue<List<CocaTestBadSmellModel>>(report?.readText() ?: "[]")
         val testBadSmells = model
