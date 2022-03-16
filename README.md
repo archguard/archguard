@@ -7,9 +7,15 @@ scan
 * scan_git - Git commit history scan
 * scan_jacoco - Jacoco scan
 * scan_javasource - Java source code level scan
+    * [ ] feed to database
 * scan_typescript - TypeScript source code level scan
+    * [ ] feed to database
     * [x] React support
     * [ ] Angular support
+    * [ ] Vue support
+    * [ ] HTTP API
+        * [x] axios
+        * [x] umi-request
 * scan_mysql
     * [ ] TableName support
 * scan_test_badsmell
