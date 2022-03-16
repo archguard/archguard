@@ -9,14 +9,15 @@ import chapi.domain.core.CodeFunction
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TestBadSmell(
-    var FileName: String = "",
-    var Type: String = "",
-    var Description: String = "",
-    var Line: Int = 0
+open class TestBadSmell(
+    var fileName: String = "",
+    var type: String = "",
+    var description: String = "",
+    var line: Int = 0
 )
 
-data class TbsResult(var results: Array<TestBadSmell>)
+@Serializable
+open class TbsResult(var results: Array<TestBadSmell>)
 
 class TbsAnalyser(
     private val config: ChapiConfig = ChapiConfig()
@@ -123,10 +124,10 @@ class TbsAnalyser(
 
         if (isDuplicateTest) {
             val testBadSmell = TestBadSmell(
-                FileName = node.FilePath,
-                Type = "DuplicateAssertTest",
-                Description = "",
-                Line = method.Position.StartLine
+                fileName = node.FilePath,
+                type = "DuplicateAssertTest",
+                description = "",
+                line = method.Position.StartLine
             )
 
             tbsResult.results += testBadSmell
@@ -135,10 +136,10 @@ class TbsAnalyser(
 
     private fun appendUnknownTest(filePath: String, method: CodeFunction, tbsResult: TbsResult) {
         val testBadSmell = TestBadSmell(
-            FileName = filePath,
-            Type = "UnknownTest",
-            Description = "",
-            Line = method.Position.StartLine
+            fileName = filePath,
+            type = "UnknownTest",
+            description = "",
+            line = method.Position.StartLine
         )
 
         tbsResult.results += testBadSmell
@@ -153,10 +154,10 @@ class TbsAnalyser(
         if (funcCall.Parameters.size == assertParametersSize) {
             if (funcCall.Parameters[0].TypeValue == funcCall.Parameters[1].TypeValue) {
                 val testBadSmell = TestBadSmell(
-                    FileName = filePath,
-                    Type = "RedundantAssertionTest",
-                    Description = "",
-                    Line = funcCall.Position.StartLine
+                    fileName = filePath,
+                    type = "RedundantAssertionTest",
+                    description = "",
+                    line = funcCall.Position.StartLine
                 )
 
                 tbsResult.results += testBadSmell
@@ -167,10 +168,10 @@ class TbsAnalyser(
     private fun checkSleepyTest(filePath: String, funcCall: CodeCall, tbsResult: TbsResult) {
         if (funcCall.isThreadSleep()) {
             val testBadSmell = TestBadSmell(
-                FileName = filePath,
-                Type = "SleepyTest",
-                Description = "",
-                Line = funcCall.Position.StartLine
+                fileName = filePath,
+                type = "SleepyTest",
+                description = "",
+                line = funcCall.Position.StartLine
             )
 
             tbsResult.results += testBadSmell
@@ -180,10 +181,10 @@ class TbsAnalyser(
     private fun checkRedundantPrintTest(filePath: String, funcCall: CodeCall, tbsResult: TbsResult) {
         if (funcCall.isSystemOutput()) {
             val testBadSmell = TestBadSmell(
-                FileName = filePath,
-                Type = "RedundantPrintTest",
-                Description = "",
-                Line = funcCall.Position.StartLine
+                fileName = filePath,
+                type = "RedundantPrintTest",
+                description = "",
+                line = funcCall.Position.StartLine
             )
 
             tbsResult.results += testBadSmell
@@ -198,10 +199,10 @@ class TbsAnalyser(
     ) {
         if (annotation.isIgnore()) {
             val testBadSmell = TestBadSmell(
-                FileName = filePath,
-                Type = "IgnoreTest",
-                Description = "",
-                Line = method.Position.StartLine
+                fileName = filePath,
+                type = "IgnoreTest",
+                description = "",
+                line = method.Position.StartLine
             )
 
             tbsResult.results += testBadSmell
@@ -219,10 +220,10 @@ class TbsAnalyser(
         if (isJavaTest || isGoTest) {
             if (method.FunctionCalls.size <= 1) {
                 val badSmell = TestBadSmell(
-                    FileName = filePath,
-                    Type = "EmptyTest",
-                    Description = "",
-                    Line = method.Position.StartLine
+                    fileName = filePath,
+                    type = "EmptyTest",
+                    description = "",
+                    line = method.Position.StartLine
                 )
 
                 tbsResult.results += badSmell

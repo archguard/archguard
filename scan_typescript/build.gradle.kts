@@ -1,4 +1,4 @@
-group = "com.thoughtworks.archguard.scanners"
+group = "com.thoughtworks.archguard.scanner"
 
 plugins {
     id("application")

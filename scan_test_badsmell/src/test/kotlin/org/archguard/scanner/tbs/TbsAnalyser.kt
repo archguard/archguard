@@ -16,9 +16,9 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/EmptyTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].FileName, "EmptyTest.java")
-        assertEquals(results[0].Line, 8)
-        assertEquals(results[0].Type, "EmptyTest")
+        assertEquals(results[0].fileName, "EmptyTest.java")
+        assertEquals(results[0].line, 8)
+        assertEquals(results[0].type, "EmptyTest")
     }
 
     @Test
@@ -26,8 +26,8 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/IgnoreTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 7)
-        assertEquals(results[0].Type, "IgnoreTest")
+        assertEquals(results[0].line, 7)
+        assertEquals(results[0].type, "IgnoreTest")
     }
 
     @Test
@@ -35,8 +35,8 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/RedundantPrintTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 9)
-        assertEquals(results[0].Type, "RedundantPrintTest")
+        assertEquals(results[0].line, 9)
+        assertEquals(results[0].type, "RedundantPrintTest")
     }
 
     @Test
@@ -44,8 +44,8 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/SleepyTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 8)
-        assertEquals(results[0].Type, "SleepyTest")
+        assertEquals(results[0].line, 8)
+        assertEquals(results[0].type, "SleepyTest")
     }
 
     @Test
@@ -53,8 +53,8 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/RedundantAssertionTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 14)
-        assertEquals(results[0].Type, "RedundantAssertionTest")
+        assertEquals(results[0].line, 14)
+        assertEquals(results[0].type, "RedundantAssertionTest")
     }
 
     @Test
@@ -62,10 +62,10 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/UnknownTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 7)
-        assertEquals(results[0].Type, "EmptyTest")
-        assertEquals(results[1].Line, 7)
-        assertEquals(results[1].Type, "UnknownTest")
+        assertEquals(results[0].line, 7)
+        assertEquals(results[0].type, "EmptyTest")
+        assertEquals(results[1].line, 7)
+        assertEquals(results[1].type, "UnknownTest")
     }
 
     @Test
@@ -73,8 +73,8 @@ internal class TbsAnalyserTest {
         val path = getAbsolutePath("tbs/usecases/DuplicateAssertTest.java")
         val results = TbsAnalyser().analysisByPath(path)
 
-        assertEquals(results[0].Line, 9)
-        assertEquals(results[0].Type, "DuplicateAssertTest")
+        assertEquals(results[0].line, 9)
+        assertEquals(results[0].type, "DuplicateAssertTest")
     }
 
     @Test
