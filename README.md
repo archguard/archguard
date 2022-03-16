@@ -41,6 +41,10 @@ todo:
     - [ ] Components = Module (props: name, path, repository...)
     - [ ] Code = Code dependence (props: name...)
 
+test projects:
+
+- [https://github.com/gradle/kotlin-dsl-samples](https://github.com/gradle/kotlin-dsl-samples)
+
 ### 技术选型
 
 - 开发语言：Kotlin
@@ -108,3 +112,8 @@ docker run --name mysql-archguard -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATAB
 ```
 brew install influxdb@1
 ```
+
+License
+---
+
+@2020~ Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.

@@ -4,13 +4,16 @@ import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import java.io.File
 import java.net.URL
 
 class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool) {
 
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
-    private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
+    private val version = "1.1.3"
+    private val SCAN_JACOCO_JAR = "scan_jacoco-$version-all.jar"
 
     fun execToSql(): File? {
         prepareTool()
@@ -37,21 +40,21 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"), File(workspace.absolutePath.toString() + "/scan_jacoco.jar"))
+        FileOperator.copyTo(File(SCAN_JACOCO_JAR), File(workspace.absolutePath.toString() + "/scan_jacoco.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
         chmod.directory(workspace)
         chmod.start().waitFor()
     }
 
     private fun checkIfExistInLocal(): Boolean {
-        return File("scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar").exists()
+        return File("scan_jacoco-$version-all.jar").exists()
     }
 
     private fun download() {
         if (File(workspace.absolutePath + "/scan_jacoco.jar").exists()) {
             return
         }
-        val jarLink = "http://$host/job/code-scanners/lastSuccessfulBuild/artifact/scan_jacoco/target/scan_jacoco-1.0-SNAPSHOT-jar-with-dependencies.jar"
+        val jarLink = "$host/$SCAN_JACOCO_JAR"
         FileOperator.download(URL(jarLink), File(workspace.absolutePath + "/scan_jacoco.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
         chmod.directory(workspace)

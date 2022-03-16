@@ -10,7 +10,8 @@ import java.nio.file.StandardCopyOption
 
 class DesigniteJavaTool(val systemRoot: File) {
     private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
-    private val host = "ec2-68-79-38-105.cn-northwest-1.compute.amazonaws.com.cn:8080"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
+    private val SCAN_DESIGNITE_JAR = "DesigniteJava.jar"
 
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
         prepareTool()
@@ -28,32 +29,32 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun process(currentScannedDirection: String) {
-        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/DesigniteJava.jar", "-i", currentScannedDirection, "-o", "$currentScannedDirection/DesigniteReport"))
+        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/$SCAN_DESIGNITE_JAR", "-i", currentScannedDirection, "-o", "$currentScannedDirection/DesigniteReport"))
     }
 
     private fun prepareTool() {
-        val file = File(systemRoot.toString() + "/DesigniteJava.jar")
+        val file = File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR")
         when {
             file.exists() -> {
                 log.info("DesigniteJava.jar already exists in systemRoot")
                 Files.copy(file.toPath(),
-                        File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
+                        File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR").toPath(),
                         StandardCopyOption.REPLACE_EXISTING)
             }
             checkIfExistInLocal() -> {
                 log.info("DesigniteJava.jar exists in local")
                 Files.copy(File("DesigniteJava.jar").toPath(),
-                        File(systemRoot.toString() + "/DesigniteJava.jar").toPath(),
+                        File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR").toPath(),
                         StandardCopyOption.REPLACE_EXISTING)
             }
             else -> {
                 log.info("Download DesigniteJava.jar from remote")
-                val downloadUrl = "http://$host/job/DesigniteJava/lastSuccessfulBuild/artifact/target/DesigniteJava.jar"
-                FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/DesigniteJava.jar"))
+                val downloadUrl = "$host/$SCAN_DESIGNITE_JAR"
+                FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR"))
             }
         }
 
-        val chmod = ProcessBuilder("chmod", "+x", "DesigniteJava.jar")
+        val chmod = ProcessBuilder("chmod", "+x", SCAN_DESIGNITE_JAR)
         chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
