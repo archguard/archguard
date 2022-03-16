@@ -16,10 +16,10 @@ class DesigniteJavaTool(val systemRoot: File) {
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {
         prepareTool()
         return getTargetScannedDirections(systemRoot)
-                .map { generateReport(designiteJavaReportType, it)?.readLines() }
-                .filterNotNull()
-                .flatten()
-                .filter { !it.contains("Project Name") }
+            .map { generateReport(designiteJavaReportType, it)?.readLines() }
+            .filterNotNull()
+            .flatten()
+            .filter { !it.contains("Project Name") }
     }
 
     private fun generateReport(type: DesigniteJavaReportType, currentScannedDirection: String): File? {
@@ -29,28 +29,43 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun process(currentScannedDirection: String) {
-        scan(listOf("java", "-jar", "-Xmx1G", "${systemRoot.absolutePath}/$SCAN_DESIGNITE_JAR", "-i", currentScannedDirection, "-o", "$currentScannedDirection/DesigniteReport"))
+        scan(
+            listOf(
+                "java",
+                "-jar",
+                "-Xmx1G",
+                "${systemRoot.absolutePath}/$SCAN_DESIGNITE_JAR",
+                "-i",
+                currentScannedDirection,
+                "-o",
+                "$currentScannedDirection/DesigniteReport"
+            )
+        )
     }
 
     private fun prepareTool() {
-        val file = File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR")
+        val file = File("$systemRoot/$SCAN_DESIGNITE_JAR")
         when {
             file.exists() -> {
                 log.info("DesigniteJava.jar already exists in systemRoot")
-                Files.copy(file.toPath(),
-                        File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR").toPath(),
-                        StandardCopyOption.REPLACE_EXISTING)
+                Files.copy(
+                    file.toPath(),
+                    File("$systemRoot/$SCAN_DESIGNITE_JAR").toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                )
             }
             checkIfExistInLocal() -> {
                 log.info("DesigniteJava.jar exists in local")
-                Files.copy(File("DesigniteJava.jar").toPath(),
-                        File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR").toPath(),
-                        StandardCopyOption.REPLACE_EXISTING)
+                Files.copy(
+                    File("DesigniteJava.jar").toPath(),
+                    File("$systemRoot/$SCAN_DESIGNITE_JAR").toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                )
             }
             else -> {
                 log.info("Download DesigniteJava.jar from remote")
                 val downloadUrl = "$host/$SCAN_DESIGNITE_JAR"
-                FileOperator.download(URL(downloadUrl), File(systemRoot.toString() + "/$SCAN_DESIGNITE_JAR"))
+                FileOperator.download(URL(downloadUrl), File("$systemRoot/$SCAN_DESIGNITE_JAR"))
             }
         }
 
@@ -69,10 +84,10 @@ class DesigniteJavaTool(val systemRoot: File) {
 
     private fun getTargetScannedDirections(workspace: File): List<String> {
         val target = workspace.walkTopDown()
-                .filter { f -> checkIsSubModulePath(f) }
-                .map { f -> f.absolutePath }
-                .distinct()
-                .toList()
+            .filter { f -> checkIsSubModulePath(f) }
+            .map { f -> f.absolutePath }
+            .distinct()
+            .toList()
         return if (target.size > 1) {
             target.filter { it != workspace.absolutePath }
         } else {
