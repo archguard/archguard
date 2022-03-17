@@ -43,8 +43,8 @@ todo:
 
 test projects:
 
-- [https://github.com/Creditas/kotlin-ddd-sample](https://github.com/Creditas/kotlin-ddd-sample)
-- [https://github.com/gradle/kotlin-dsl-samples](https://github.com/gradle/kotlin-dsl-samples)
+- [https://github.com/domain-driven-design/ddd-lite-example](https://github.com/domain-driven-design/ddd-lite-example)
+- [https://github.com/domain-driven-design/ddd-monolithic-code-sample](https://github.com/domain-driven-design/ddd-monolithic-code-sample)
 
 ### 技术选型
 
