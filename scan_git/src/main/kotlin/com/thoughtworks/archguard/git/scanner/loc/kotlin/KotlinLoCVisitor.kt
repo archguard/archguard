@@ -16,7 +16,11 @@ class KotlinLoCVisitor(private var locs: ArrayList<JClassLoC>, private val modul
     }
 
     override fun visitPackageHeader(ctx: KotlinParser.PackageHeaderContext): Any? {
-        currentPkg = ctx.identifier().text
+        currentPkg = if (ctx.identifier() != null) {
+            ctx.identifier().text
+        } else {
+            ctx.text
+        }
         return super.visitPackageHeader(ctx)
     }
 

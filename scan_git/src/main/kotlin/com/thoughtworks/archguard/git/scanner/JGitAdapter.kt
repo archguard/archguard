@@ -76,13 +76,14 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
                 val objectId = treeWalk.getObjectId(0)
                 val code = String(repository.newObjectReader().open(objectId).bytes, StandardCharsets.UTF_8)
                 val cplx = cognitiveComplexityParser.processCode(code)
-                return cplx.sumBy { it.complexity }
+                return cplx.sumOf { it.complexity }
             }
         } catch (ex: Exception) {
             logger.error("Fail to read file from DiffEntry {} / {}, {}, RevCommit from {} @ {} throw exception {}",
                     diffEntry.oldPath, diffEntry.newPath, diffEntry.changeType.name,
                     revCommit.authorIdent.name, revCommit.authorIdent.getWhen(), ex)
         }
+
         return 0
     }
 
