@@ -16,7 +16,7 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
     override fun getSystemInfo(id: Long): SystemInfo? =
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
-                        " username username, password password, repo_type repoType from system_info where id = :id")
+                        " username username, language language, password password, repo_type repoType from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
                         .firstOrNull()
@@ -32,6 +32,7 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
                     "password = :password, " +
                     "repo_type = :repoType, " +
                     "scanned = :scanned, " +
+                    "language = :language, " +
                     "updated_time = NOW() " +
                     "where id = :id")
                     .bindBean(systemInfo)

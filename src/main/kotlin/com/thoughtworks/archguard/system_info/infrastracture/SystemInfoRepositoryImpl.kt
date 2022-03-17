@@ -16,7 +16,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType, scanned scanned," +
-                        " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime," +
+                        " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language, " +
                         " threshold_suite_id badSmellThresholdSuiteId, branch from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
@@ -27,7 +27,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<List<SystemInfo>, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, " +
                         "password password, scanned scanned, quality_gate_profile_id qualityGateProfileId," +
-                        "repo_type repoType, updated_time updatedTime," +
+                        "repo_type repoType, updated_time updatedTime, language language, " +
                         "threshold_suite_id badSmellThresholdSuiteId, branch from system_info")
                         .mapTo<SystemInfo>()
                         .list()
@@ -44,7 +44,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "repo_type = :repoType, " +
                     "quality_gate_profile_id = :qualityGateProfileId, " +
                     "threshold_suite_id = :badSmellThresholdSuiteId, " +
-                    "branch = :branch " +
+                    "branch = :branch, " +
+                    "language = :language " +
                     "where id = :id")
                     .bindBean(systemInfo)
                     .execute()
@@ -55,7 +56,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate("insert into system_info" +
                     "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
-                    " threshold_suite_id, branch) " +
+                    " language, threshold_suite_id, branch) " +
                     "values (:id, :systemName, " +
                     ":repo, " +
                     ":sql, " +
@@ -64,6 +65,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     ":repoType, " +
                     ":scanned, " +
                     ":qualityGateProfileId, " +
+                    ":language, " +
                     ":badSmellThresholdSuiteId, " +
                     ":branch)")
                     .bindBean(systemInfo)

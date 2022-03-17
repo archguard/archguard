@@ -43,7 +43,7 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
             val systemInfo = getSystemInfo(systemId)
             try {
                 startScanSystem(systemInfo)
-                analyse(systemId)
+                analyse(systemId, systemInfo.language)
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
@@ -52,9 +52,9 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         }
     }
 
-    fun analyse(systemId: Long) {
+    fun analyse(systemId: Long, language: String) {
         log.info("************************************")
-        log.info(" Start scan java analysis")
+        log.info(" Start scan analysis")
         log.info("************************************")
         val url = dbUrl.replace("://", "://$username:$password@")
 

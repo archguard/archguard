@@ -13,5 +13,6 @@ data class SystemInfo(var id: Long? = null,
                       val repoType: String = "GIT",
                       val updatedTime: Timestamp? = null,
                       val badSmellThresholdSuiteId: Long? = null,
-                      val branch: String? = "master"
+                      val branch: String? = "master",
+                      val language: String? = "jvm"
 )
