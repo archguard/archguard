@@ -9,8 +9,8 @@ import java.net.URL
 class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Long, val repo: String) : GitReport {
 
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
-    private val version = "1.1.3"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.5"
+    private val version = "1.1.5"
 
     override fun getGitReport(): File? {
         prepareTool()
@@ -33,7 +33,7 @@ class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Lo
         return if (report.exists()) {
             report
         } else {
-            log.info("failed to get output.sql")
+            log.info("failed to get loc_output.sql")
             null
         }
     }

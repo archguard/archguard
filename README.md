@@ -19,6 +19,10 @@ Features
         - [x] Test Badsmell by Coca (Java only)
     - [ ] TypeScript with Chapi
     - [ ] Kotlin with Chapi
+- Metrics
+    - [ ] Git Hot File 
+- System Info
+    - [ ] Custom build command  
 
 ## Development
 
