@@ -49,7 +49,7 @@ class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Lo
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_git-$version-all.jar"), File(systemRoot.toString() + "/scan_git.jar"))
+        FileOperator.copyTo(File("scan_git-$version-all.jar"), File("$systemRoot/scan_git.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

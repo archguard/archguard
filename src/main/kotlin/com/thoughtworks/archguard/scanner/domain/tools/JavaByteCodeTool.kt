@@ -9,8 +9,8 @@ import java.net.URL
 class JavaByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
 
     private val log = LoggerFactory.getLogger(JavaByteCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
-    private val version = "1.1.3"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.4"
+    private val version = "1.1.4"
     private val SCAN_JAVA_BYTECODE_JAR = "scan_java_bytecode-$version-all.jar"
 
     fun analyse() {
@@ -29,7 +29,7 @@ class JavaByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Lo
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File(SCAN_JAVA_BYTECODE_JAR), File(systemRoot.toString() + "/scan_java_bytecode.jar"))
+        FileOperator.copyTo(File(SCAN_JAVA_BYTECODE_JAR), File("$systemRoot/scan_java_bytecode.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()
