@@ -16,12 +16,9 @@ class PackageVO(val packageName: String, val module: String) {
             if (startIndex == -1) {
                 return PackageVO("", fullName)
             }
-            var moduleName = fullName.substring(0, startIndex)
-            val name = fullName.substring(startIndex + 1)
-            if (moduleName == "root") {
-                moduleName = "."
-            }
 
+            val moduleName = fullName.substring(0, startIndex)
+            val name = fullName.substring(startIndex + 1)
             return PackageVO(name, moduleName)
         }
     }

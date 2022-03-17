@@ -11,12 +11,7 @@ class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val
                    val classInvokeService: ClassInvokeService) {
 
     fun getDependencies(systemId: Long, module: String, name: String, deep: Int): JClass {
-        var moduleName = module
-        if (module == "root") {
-            moduleName = "."
-        }
-
-        val target = getTargetClass(systemId, moduleName, name)
+        val target = getTargetClass(systemId, module, name)
         classDependenceesService.findDependencees(systemId, target, deep)
         classDependencerService.findDependencers(systemId, target, deep)
         return target

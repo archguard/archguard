@@ -43,12 +43,7 @@ open class JClass(val id: String, val name: String, val module: String?) {
     }
 
     fun getFullName(): String {
-        var moduleName = module
-        if (module == ".") {
-            moduleName = "root"
-        }
-
-        return "$moduleName.$name"
+        return "$module.$name"
     }
 
     fun toVO(): JClassVO {

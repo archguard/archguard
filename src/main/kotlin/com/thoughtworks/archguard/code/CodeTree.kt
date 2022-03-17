@@ -5,7 +5,11 @@ class CodeTree {
 
     fun addClass(nodeName: String) {
         val split = nodeName.split(".")
-        val classTopPackage = split[0]
+        var classTopPackage = split[0]
+        if (classTopPackage == "") {
+            classTopPackage = "."
+        }
+
         if (split.size == 1) {
             trees.add(Node(classTopPackage, TypeEnum.FILE))
             return
