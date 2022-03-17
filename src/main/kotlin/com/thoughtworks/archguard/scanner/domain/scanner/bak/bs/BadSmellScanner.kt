@@ -22,6 +22,10 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
         return "BadSmell"
     }
 
+    override fun canScan(context: ScanContext): Boolean {
+        return context.language == "jvm"
+    }
+
     override fun scan(context: ScanContext) {
         log.info("start scan bad smell report")
         val badSmell = getDesigniteJavaBadSmell(context)

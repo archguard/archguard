@@ -35,6 +35,10 @@ class StyleScanner : Scanner {
         return result
     }
 
+    override fun canScan(context: ScanContext): Boolean {
+        return context.language == "jvm"
+    }
+
     override fun scan(context: ScanContext) {
         if (context.config.find { it.type == "CheckStyle" }?.configs?.get("available") == "true") {
             val styleReport = CheckStyleTool(context).getStyleReport()

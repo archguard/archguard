@@ -18,7 +18,15 @@ import java.io.File
 internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_get_jacoco_report() {
-        jacocoScanner.scan(ScanContext(1, "", BuildTool.MAVEN, File(javaClass.classLoader.getResource("TestJacoco").toURI()), "",ArrayList()))
+        jacocoScanner.scan(ScanContext(
+            1,
+            "",
+            BuildTool.MAVEN,
+            File(javaClass.classLoader.getResource("TestJacoco").toURI()),
+            "",
+            ArrayList(),
+            "jvm"
+        ))
         val bundle = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
             handle.createQuery("select count(*) from bundle")
                     .mapTo(Int::class.java).one()

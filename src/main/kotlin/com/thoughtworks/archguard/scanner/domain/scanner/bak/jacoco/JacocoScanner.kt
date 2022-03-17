@@ -19,6 +19,10 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
         return "Jacoco"
     }
 
+    override fun canScan(context: ScanContext): Boolean {
+        return context.language == "jvm"
+    }
+
     override fun scan(context: ScanContext) {
         log.info("start scan jacoco exec file")
         sqlScriptRunner.run(DELETE_BUNDLE)

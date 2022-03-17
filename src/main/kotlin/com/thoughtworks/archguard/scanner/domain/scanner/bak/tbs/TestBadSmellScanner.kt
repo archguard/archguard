@@ -21,6 +21,10 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
         return "TestBadSmell"
     }
 
+    override fun canScan(context: ScanContext): Boolean {
+        return context.language == "jvm"
+    }
+
     override fun scan(context: ScanContext) {
         log.info("start scan test bad smell")
         val coca = TestBadsmellTool(context.workspace)

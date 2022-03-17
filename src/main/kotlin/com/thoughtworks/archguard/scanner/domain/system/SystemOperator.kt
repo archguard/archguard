@@ -39,7 +39,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql, systemInfo.language)
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -52,7 +52,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
         val buildTool = getBuildTool(repoWorkSpace)
         buildSource(repoWorkSpace, buildTool)
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.systemInfo.sql)
+        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.systemInfo.sql, systemInfo.language)
     }
 
     private fun getSource(workspace: File, repo: String): Int {
