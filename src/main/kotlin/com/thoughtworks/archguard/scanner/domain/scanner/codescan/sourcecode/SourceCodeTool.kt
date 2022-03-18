@@ -6,16 +6,15 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: String) {
+class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: String, val dbUrl: String) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.7"
-    private val version = "1.1.7"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.8"
+    private val version = "1.1.8"
     private val SCAN_SOURCECODE_JAR = "scan_sourcecode-$version-all.jar"
 
     fun analyse() {
         prepareTool()
-        val language =
-        scan(listOf("java", "-jar", "scan_sourcecode.jar", "--path=.", "--system-id=$systemId", "--language=$language"))
+        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=.", "--system-id=$systemId", "--language=$language"))
     }
 
     private fun prepareTool() {
@@ -40,7 +39,7 @@ class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: Str
     }
 
     private fun download() {
-        log.info("download TypeScript tool")
+        log.info("download SourceCodeTool")
         val downloadUrl = "$host/$SCAN_SOURCECODE_JAR"
         FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_sourcecode.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")

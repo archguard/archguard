@@ -11,11 +11,11 @@ class SourceCodeScanner: Scanner {
     }
 
     override fun canScan(context: ScanContext): Boolean {
-        return context.language == "TypeScript"
+        return context.language.lowercase() != "jvm"
     }
 
     override fun scan(context: ScanContext) {
-        val coca = SourceCodeTool(context.workspace, context.systemId, context.language)
+        val coca = SourceCodeTool(context.workspace, context.systemId, context.language, context.dbUrl)
         coca.analyse()
     }
 }
