@@ -39,14 +39,17 @@ todo:
     - [ ] api lint
     - [ ] kotlin lint
 - [ ] scanner
-    - [ ] download from github by config
+    - [x] download from github by config
     - [ ] enable scanner failure
-    - [ ] config scanner by optional
+    - [x] config scanner by optional
 - [ ] System landscape by C4
     - [ ] Context = System (props: name, aliasName...)
     - [ ] Containers = Repository or repository with modules (props: name, path, repository...)
     - [ ] Components = Module (props: name, path, repository...)
     - [ ] Code = Code dependence (props: name...)
+- [ ] User Experience Improve
+    - [ ] custom build command for SystemInfo
+    - [ ] download scanner to local
 
 test projects:
 

@@ -97,4 +97,9 @@ class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: Stri
         systemInfoRepository.updateSystemInfo(systemInfo)
         this.runningSystemIdSet.remove(systemInfo.id)
     }
+
+    fun cancelAnalyse(systemId: Long) {
+        val systemInfo = getSystemInfo(systemId)
+        this.stopScanSystem(systemInfo, ScannedType.FAILED)
+    }
 }

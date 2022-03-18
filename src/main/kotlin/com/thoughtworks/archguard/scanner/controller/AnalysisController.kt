@@ -20,4 +20,14 @@ class AnalysisController(@Autowired val dependencyAnalysis: JavaDependencyAnalys
             ResponseEntity.badRequest().body(e.message)
         }
     }
+
+    @PostMapping("/dependency-analyses/cancel")
+    fun cancelAnalyseDependency(@PathVariable("systemId") systemId: Long): ResponseEntity<String> {
+        return try {
+            dependencyAnalysis.cancelAnalyse(systemId)
+            ResponseEntity.ok("")
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(e.message)
+        }
+    }
 }
