@@ -18,7 +18,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("ch.qos.logback:logback-core:1.2.3")
 
-    implementation("org.jdbi:jdbi:2.78")
+    implementation("com.zaxxer:HikariCP:3.4.5")
+//    implementation("org.jdbi:jdbi:3.8.2")
+    implementation("org.jdbi:jdbi3-core:3.8.2")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
