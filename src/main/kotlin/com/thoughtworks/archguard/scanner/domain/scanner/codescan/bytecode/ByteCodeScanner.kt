@@ -18,7 +18,7 @@ class ByteCodeScanner(@Autowired val byteCodeScanRepo: ByteCodeScanRepo) : Scann
     }
 
     override fun canScan(context: ScanContext): Boolean {
-        return context.language == "jvm"
+        return context.language.lowercase() == "jvm"
     }
 
     override val toolList: List<ToolConfigure>
