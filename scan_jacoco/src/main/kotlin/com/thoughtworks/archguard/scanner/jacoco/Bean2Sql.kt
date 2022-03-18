@@ -1,6 +1,5 @@
-package com.thoghtworks.archguard.scan_jacoco.helper
+package com.thoughtworks.archguard.scanner.jacoco
 
-import com.thoghtworks.archguard.scan_jacoco.Sql
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 

@@ -1,6 +1,5 @@
-package com.thoghtworks.archguard.scan_jacoco
+package com.thoughtworks.archguard.scanner.jacoco
 
-import com.thoghtworks.archguard.scan_jacoco.helper.Bean2Sql
 import org.jacoco.core.analysis.Analyzer
 import org.jacoco.core.analysis.CoverageBuilder
 import org.jacoco.core.analysis.IBundleCoverage

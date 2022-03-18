@@ -1,4 +1,4 @@
-package com.thoghtworks.archguard.scan_jacoco
+package com.thoughtworks.archguard.scanner.jacoco
 
 
 open class Coverage(

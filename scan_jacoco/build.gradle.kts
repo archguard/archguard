@@ -19,7 +19,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.thoughtworks.archguard.scan_jacoco.RunnerKt")
+    mainClass.set("com.thoughtworks.archguard.scanner.jacoco.RunnerKt")
 }
 
 tasks{
