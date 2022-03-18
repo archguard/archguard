@@ -9,7 +9,7 @@ rootProject.name = "ArchGuard Scanner"
 include(":common")
 include(":scan_git")
 include(":scan_jacoco")
-include(":scan_javasource")
+include(":scan_sourcecode")
 include(":scan_typescript")
 include(":scan_mysql")
 include(":scan_test_badsmell")

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.javasource
+package com.thoughtworks.archguard.scanner.sourcecode
 
 import chapi.domain.core.*
 import infrastructure.SourceBatch
