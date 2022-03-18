@@ -1,5 +1,8 @@
 # ArchGuard backend
 
+[![codecov](https://codecov.io/gh/archguard/archguard-backend/branch/master/graph/badge.svg?token=QS5H866CWH)](https://codecov.io/gh/archguard/archguard-backend)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/archguard-backend)
+
 Features
 
 - C4 analysis

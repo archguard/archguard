@@ -23,9 +23,3 @@ jobs:
 
       - name: Execute Gradle Coverage
         run: bash <(curl -s https://codecov.io/bash)
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: build/jacoco/test.exec
