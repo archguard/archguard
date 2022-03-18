@@ -18,6 +18,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
             "java" -> {
                 dataStructs = JavaAnalyserApp().analysisNodeByPath(path)
             }
+            "kotlin" -> {
+                dataStructs = KotlinAnalyserApp().analysisNodeByPath(path)
+            }
             "typescript", "ts", "js", "javascript" -> {
                 dataStructs = TypeScriptAnalyserApp().analysisNodeByPath(path)
             }
