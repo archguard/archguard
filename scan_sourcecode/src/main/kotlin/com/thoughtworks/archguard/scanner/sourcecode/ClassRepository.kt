@@ -89,9 +89,15 @@ class ClassRepository(systemId: String) {
             val time: String = currentTime
             val values: MutableMap<String, String> = HashMap()
 
+            // for TypeScript
+            var name = field.TypeValue
+            if(field.TypeValue.contains("'")) {
+                name = field.TypeValue.replace("'", "''")
+            }
+
             values["id"] = id
             values["system_id"] = systemId
-            values["name"] = field.TypeValue
+            values["name"] = name
             values["clzname"] = clzName
             values["type"] = field.TypeType
             values["updatedAt"] = time

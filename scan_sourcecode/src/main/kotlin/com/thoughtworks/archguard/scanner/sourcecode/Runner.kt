@@ -19,7 +19,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val store = DBIStore.getInstance()
 
     private val path: String by option(help = "local path").default(".")
-    private val systemId: String by option(help = "system id").default("3")
+    private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
         "Java"
     )

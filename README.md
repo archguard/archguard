@@ -67,6 +67,12 @@ tech debt
 
 运行：`./gradlew :scan_jacoco:run --args="--target-project=."`
 
+## scan_sourcecode
+
+```
+java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin
+```
+
 License
 ---
 
