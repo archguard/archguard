@@ -29,7 +29,7 @@ class ClassRepository(systemId: String) {
     }
 
     private fun saveOrGetDependentClass(name: String): String? {
-        val idOpt = findClass(name, null, null)
+        val idOpt = findClass(name, "root", null)
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
         val className: String = if (index < 0) name else name.substring(index + 1)
@@ -145,7 +145,7 @@ class ClassRepository(systemId: String) {
             values["access"] = "public"
         }
 
-        values["module"] = pkgName
+        values["module"] = "root"
         values["package_name"] = pkgName
         values["class_name"] = clzName
         values["updatedAt"] = time
@@ -191,12 +191,12 @@ class ClassRepository(systemId: String) {
         val values: MutableMap<String, String> = HashMap()
         values["id"] = clzId
         values["system_id"] = systemId
-        values["name"] = clz.NodeName
+        values["name"] = clz.Package + "." + clz.NodeName
         values["is_thirdparty"] = "false"
         values["is_test"] = "false"
         values["updatedAt"] = time
         values["createdAt"] = time
-        values["module"] = clz.Package
+        values["module"] = "root"
         values["package_name"] = clz.Package
         values["class_name"] = clz.NodeName
         values["access"] = "todo"
