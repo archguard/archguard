@@ -17,26 +17,54 @@ class ClassRepository(systemId: String) {
         val clzId = saveClass(clz)
         saveClassDependencies(clzId, clz.Imports)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
+        saveClassParent(clzId, "root", clz.Imports, clz.Extend)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+    }
+
+    private fun saveClassParent(
+        clzId: String,
+        module: String,
+        imports: Array<CodeImport>,
+        extend: String
+    ) {
+        val imp = imports.filter { it.Source.split(".").last() == extend }
+        var moduleName = module
+        if(imp.isNotEmpty()) {
+            moduleName = imp[0].Source
+        }
+
+        val parentId = saveOrGetDependentClass(extend, moduleName)
+        if (parentId != null) {
+            doSaveClassParent(clzId, parentId)
+        }
+    }
+
+    private fun doSaveClassParent(clzId: String, parentClzId: String) {
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = generateId()
+        values["system_id"] = systemId
+        values["a"] = clzId
+        values["b"] = parentClzId
+        batch.add("_ClassParent", values)
     }
 
     private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>) {
         for (clz in imports) {
             val name = clz.Source
-            val clzDependenceId = saveOrGetDependentClass(name)
+            val clzDependenceId = saveOrGetDependentClass(name, "root")
             doSaveClassDependence(clzId, clzDependenceId)
         }
     }
 
-    private fun saveOrGetDependentClass(name: String): String? {
-        val idOpt = findClass(name, "root", null)
+    private fun saveOrGetDependentClass(name: String, moduleName: String = "root"): String? {
+        val idOpt = findClass(name, moduleName, null)
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
         val className: String = if (index < 0) name else name.substring(index + 1)
         val clzDependenceId = idOpt!!.orElseGet {
             doSaveClass(
                 name,
-                "root",
+                moduleName,
                 "",
                 thirdparty = true,
                 isTest = false,
@@ -94,11 +122,21 @@ class ClassRepository(systemId: String) {
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
         for (method in functions) {
             val methodId = doSaveMethod(clzName, method, pkgName)
+            doSaveClassMethodRelations(clzId, methodId)
 
             method.Annotations.forEach {
                 doSaveAnnotation(it, methodId)
             }
         }
+    }
+
+    private fun doSaveClassMethodRelations(clzId: String, mId: String) {
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = generateId()
+        values["system_id"] = systemId
+        values["a"] = clzId
+        values["b"] = mId
+        batch.add("_ClassMethods", values)
     }
 
     private fun doSaveAnnotation(annotation: CodeAnnotation, methodId: String) {
