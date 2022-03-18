@@ -8,8 +8,8 @@ import java.net.URL
 
 class TypeScriptTool(val systemRoot: File, val systemId: Long) {
     private val log = LoggerFactory.getLogger(TypeScriptTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.5"
-    private val version = "1.1.5"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.6"
+    private val version = "1.1.6"
     private val SCAN_TYPESCRIPT_JAR = "scan_typescript-$version-all.jar"
 
     fun analyse() {
@@ -27,7 +27,7 @@ class TypeScriptTool(val systemRoot: File, val systemId: Long) {
     }
 
     private fun copyIntoSystemRoot() {
-        log.info("copy jar tool from local")
+        log.info("copy TypeScript jar tool from local")
         FileOperator.copyTo(File(SCAN_TYPESCRIPT_JAR), File("$systemRoot/scan_typescript.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_typescript.jar")
         chmod.directory(systemRoot)
@@ -39,7 +39,7 @@ class TypeScriptTool(val systemRoot: File, val systemId: Long) {
     }
 
     private fun download() {
-        log.info("download jar tool")
+        log.info("download TypeScript tool")
         val downloadUrl = "$host/$SCAN_TYPESCRIPT_JAR"
         FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_typescript.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_typescript.jar")
