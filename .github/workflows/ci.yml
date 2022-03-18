@@ -18,6 +18,12 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
+      - name: Execute Gradle Coverage
+        run: ./gradlew check
+
+      - name: Execute Gradle Coverage
+        run: bash <(curl -s https://codecov.io/bash)
+
       - name: Upload coverage
         uses: codecov/codecov-action@v2
         with:
