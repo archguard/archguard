@@ -27,7 +27,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
             "python" -> {
                 dataStructs = PythonAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
             }
-            "Go" -> {
+            "go" -> {
                 dataStructs = GoAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
             }
         }
