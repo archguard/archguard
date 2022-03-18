@@ -80,7 +80,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         repo.close()
     }
 
-    fun storeDatabase(tables: Array<String>, systemId: String) {
+    private fun storeDatabase(tables: Array<String>, systemId: String) {
         store.disableForeignCheck()
         store.initConnectionPool()
         logger.info("========================================================")
@@ -111,7 +111,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         for (table in tables) {
             val sStart = System.currentTimeMillis()
             val sqls: List<String> = Files.readAllLines(Path("$table.sql"))
-            if (!sqls.isEmpty()) {
+            if (sqls.isNotEmpty()) {
                 store.save(sqls, table, phaser)
                 val sEnd = System.currentTimeMillis()
                 logger.info(
@@ -141,7 +141,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
     }
 
-    fun cleanSqlFile(tables: Array<String>) {
+    private fun cleanSqlFile(tables: Array<String>) {
         cleanInsertSqlFile(tables)
         cleanUpdateSqlFile(tables)
     }
