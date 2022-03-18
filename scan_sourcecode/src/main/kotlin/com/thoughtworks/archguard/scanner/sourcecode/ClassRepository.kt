@@ -15,36 +15,36 @@ class ClassRepository(systemId: String) {
 
     fun saveClassElement(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
-        saveClassDependencies(clzId, clz.NodeName, clz.Imports)
+        saveClassDependencies(clzId, clz.Imports)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
     }
 
-    private fun saveClassDependencies(clzId: String, nodeName: String, imports: Array<CodeImport>) {
+    private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>) {
         for (clz in imports) {
-//            val clzDependenceId: String = saveOrGetDependentClass(clz, module, moduleDependencies)/**/
-            //save _ClassDependence
-
-            //third-party
             val name = clz.Source
-            val idOpt = findClass(name, null, null)
-            val index: Int = name.lastIndexOf(".")
-            val packageName: String? = if (index < 0) null else name.substring(0, index)
-            val className: String = if (index < 0) name else name.substring(index + 1)
-            val clzDependenceId = idOpt!!.orElseGet {
-                doSaveClass(
-                    name,
-                    "",
-                    "",
-                    thirdparty = true,
-                    isTest = false,
-                    packageName = packageName,
-                    className = className
-                )
-            }
-
+            val clzDependenceId = saveOrGetDependentClass(name)
             doSaveClassDependence(clzId, clzDependenceId)
         }
+    }
+
+    private fun saveOrGetDependentClass(name: String): String? {
+        val idOpt = findClass(name, null, null)
+        val index: Int = name.lastIndexOf(".")
+        val packageName: String? = if (index < 0) null else name.substring(0, index)
+        val className: String = if (index < 0) name else name.substring(index + 1)
+        val clzDependenceId = idOpt!!.orElseGet {
+            doSaveClass(
+                name,
+                "root",
+                "",
+                thirdparty = true,
+                isTest = false,
+                packageName = packageName,
+                className = className
+            )
+        }
+        return clzDependenceId
     }
 
     private fun doSaveClassDependence(clzId: String, clzDependenceId: String?) {
