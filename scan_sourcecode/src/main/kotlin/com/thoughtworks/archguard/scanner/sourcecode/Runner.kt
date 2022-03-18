@@ -7,12 +7,14 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import infrastructure.DBIStore
+import infrastructure.task.SqlExecuteThreadPool
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.Phaser
 import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 class Runner : CliktCommand(help = "scan git to sql") {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -69,6 +71,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         storeDatabase(TABLES, systemId)
         val sqlEnd = System.currentTimeMillis()
         logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
+        SqlExecuteThreadPool.close()
     }
 
     private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String) {
@@ -110,7 +113,12 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private fun saveByTables(tables: Array<String>, phaser: Phaser) {
         for (table in tables) {
             val sStart = System.currentTimeMillis()
-            val sqls: List<String> = Files.readAllLines(Path("$table.sql"))
+            val sqlPath = Path("$table.sql")
+            if (!sqlPath.exists()) {
+                continue
+            }
+
+            val sqls: List<String> = Files.readAllLines(sqlPath)
             if (sqls.isNotEmpty()) {
                 store.save(sqls, table, phaser)
                 val sEnd = System.currentTimeMillis()
@@ -127,7 +135,12 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private fun updateByTables(tables: Array<String>, phaser: Phaser) {
         for (table in tables) {
             val sStart = System.currentTimeMillis()
-            val sqls: List<String> = Files.readAllLines(Path("$table.update.sql"))
+            val sqlPath = Path("$table.update.sql")
+            if (!sqlPath.exists()) {
+                continue
+            }
+
+            val sqls: List<String> = Files.readAllLines(sqlPath)
             if (sqls.isNotEmpty()) {
                 store.save(sqls, table, phaser)
                 val sEnd = System.currentTimeMillis()
