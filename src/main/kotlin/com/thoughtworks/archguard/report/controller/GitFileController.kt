@@ -25,10 +25,10 @@ class GitFileController(val gitFileService: GitFileService) {
 }
 
 class GitChangeCount(private val gitHotFile: GitHotFile) {
-    val path: String
-        get() = gitHotFile.path
+    val name: String
+        get() = "root/" + gitHotFile.path
 
-    val modifiedCount: Int
+    val value: Int
         get() = gitHotFile.modifiedCount
 }
 
