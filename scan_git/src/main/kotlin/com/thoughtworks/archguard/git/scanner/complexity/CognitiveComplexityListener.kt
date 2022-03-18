@@ -137,7 +137,7 @@ class CognitiveComplexityListener(val methods: MutableList<MethodCognitiveComple
 
     override fun enterExpression(ctx: JavaParser.ExpressionContext?) {
         val bop = ctx!!.bop
-        if (bop != null && ("&&".equals(bop.text) || "||".equals(bop.text))) {
+        if (bop != null && ("&&" == bop.text || "||".equals(bop.text))) {
             increaseComplexityByOne(ctx)
         }
         super.enterExpression(ctx)

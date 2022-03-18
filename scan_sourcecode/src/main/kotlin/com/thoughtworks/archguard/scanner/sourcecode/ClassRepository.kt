@@ -124,10 +124,36 @@ class ClassRepository(systemId: String) {
             val methodId = doSaveMethod(clzName, method, pkgName)
             doSaveClassMethodRelations(clzId, methodId)
 
+            for (localVariable in method.LocalVariables) {
+                saveMethodField(methodId, localVariable, clzName)
+            }
+
             method.Annotations.forEach {
                 doSaveAnnotation(it, methodId)
             }
         }
+    }
+
+    private fun saveMethodField(methodId: String, localVariable: CodeProperty, clzName: String) {
+        val fieldIdOpt = findFieldId(localVariable, clzName)
+        if (!fieldIdOpt!!.isPresent) {
+            return
+        }
+
+        val fieldId = fieldIdOpt.get()
+        val methodFields: MutableMap<String, String> = HashMap()
+        methodFields["id"] = generateId()
+        methodFields["system_id"] = systemId
+        methodFields["a"] = methodId
+        methodFields["b"] = fieldId
+        batch.add("_MethodFields", methodFields)
+    }
+
+    private fun findFieldId(field: CodeProperty, clzName: String): Optional<String?>? {
+        val keys: MutableMap<String, String> = HashMap()
+        keys["clzname"] = clzName
+        keys["name"] = field.TypeValue
+        return batch.findId("JField", keys)
     }
 
     private fun doSaveClassMethodRelations(clzId: String, mId: String) {
