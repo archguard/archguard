@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.thoughtworks.archguard"
-version = "1.1.8"
+version = "1.1.9"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {

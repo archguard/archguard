@@ -1,8 +1,32 @@
-# [](https://github.com/archguard/scanner/compare/v1.1.7...v) (2022-03-18)
+# [](https://github.com/archguard/scanner/compare/v1.1.8...v) (2022-03-18)
+
+
+### Bug Fixes
+
+* fix file not generate issue ([69500c3](https://github.com/archguard/scanner/commit/69500c343ffbca4e4841fb9cfbb0f5582bdeba55))
+* fix value contains \n issue ([1643b78](https://github.com/archguard/scanner/commit/1643b7814ccfd16ad5ada814410fcd01049d1218))
+* **jacoco:** fix default path issue ([78af229](https://github.com/archguard/scanner/commit/78af2291a5792e098cc3d88be8d11b46f1b1fee0))
 
 
 
-## [1.1.7](https://github.com/archguard/scanner/compare/v1.1.6...v1.1.7) (2022-03-18)
+## [1.1.8](https://github.com/archguard/scanner/compare/v1.1.6...v1.1.8) (2022-03-18)
+
+
+### Bug Fixes
+
+* add lost kotlin ([7f9724a](https://github.com/archguard/scanner/commit/7f9724a26472a66d9ed7f82e256261ce670b573d))
+* fix class name & module name issue ([4c51d09](https://github.com/archguard/scanner/commit/4c51d095b32d095a4fe6016cb530ffdad9c1be34))
+* fix typo ([404ccda](https://github.com/archguard/scanner/commit/404ccda542c001cf1cd68648972b89dbc81fe129))
+* set default module to root for test ([8368c8f](https://github.com/archguard/scanner/commit/8368c8f16b4c1cc75dc2c86e91ea6ca9ed7ea817))
+* try to fix versions issues ([cc291a1](https://github.com/archguard/scanner/commit/cc291a19a9af448a48dc874cdb0878095eb62a84))
+
+
+### Features
+
+* add clz dep ([8455024](https://github.com/archguard/scanner/commit/8455024279b73147d036c2943bc7fa02e1551be6))
+* enable source code to data ([1f05712](https://github.com/archguard/scanner/commit/1f0571226e32444eff7104e2454625441b50a277))
+* enable TypeScript parse ([154c5d9](https://github.com/archguard/scanner/commit/154c5d99e53737a8e64d4b2e5ff7c280b44735ea))
+* **source:** add methodfield support ([62d3f0a](https://github.com/archguard/scanner/commit/62d3f0ad368a7cd36433568339c6197b461d3278))
 
 
 
