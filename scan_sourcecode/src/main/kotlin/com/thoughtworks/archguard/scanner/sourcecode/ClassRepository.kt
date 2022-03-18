@@ -215,7 +215,7 @@ class ClassRepository(systemId: String) {
         values["updatedAt"] = time
         values["createdAt"] = time
         values["is_test"] = if (m.isJUnitTest()) "true" else "false"
-        values["loc"] = (m.Position.StopLinePosition - m.Position.StartLinePosition).toString()
+        values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
         batch.add("JMethod", values)
         return mId
     }
