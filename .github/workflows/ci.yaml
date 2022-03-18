@@ -18,6 +18,8 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: ls builds
-        run: |
-          ls -alh scan_git/build/libs
+      - name: Execute Gradle Coverage
+        run: ./gradlew check
+
+      - name: Execute Gradle Coverage
+        run: bash <(curl -s https://codecov.io/bash)
