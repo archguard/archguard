@@ -15,8 +15,80 @@ class ClassRepository(systemId: String) {
 
     fun saveClassElement(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
+        saveClassDependencies(clzId, clz.NodeName, clz.Imports)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+    }
+
+    private fun saveClassDependencies(clzId: String, nodeName: String, imports: Array<CodeImport>) {
+        for (clz in imports) {
+//            val clzDependenceId: String = saveOrGetDependentClass(clz, module, moduleDependencies)/**/
+            //save _ClassDependence
+
+            //third-party
+            val name = clz.Source
+            val idOpt = findClass(name, null, null)
+            val index: Int = name.lastIndexOf(".")
+            val packageName: String? = if (index < 0) null else name.substring(0, index)
+            val className: String = if (index < 0) name else name.substring(index + 1)
+            val clzDependenceId = idOpt!!.orElseGet {
+                doSaveClass(
+                    name,
+                    "",
+                    "",
+                    thirdparty = true,
+                    isTest = false,
+                    packageName = packageName,
+                    className = className
+                )
+            }
+
+            doSaveClassDependence(clzId, clzDependenceId)
+        }
+    }
+
+    private fun doSaveClassDependence(clzId: String, clzDependenceId: String?) {
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = generateId()
+        values["system_id"] = systemId
+        values["a"] = clzId
+        values["b"] = clzDependenceId.orEmpty()
+        batch.add("_ClassDependences", values)
+    }
+
+    private fun doSaveClass(
+        name: String, module: String, access: String, thirdparty: Boolean, isTest: Boolean,
+        packageName: String?, className: String
+    ): String {
+        val time: String = currentTime
+        val clzId = generateId()
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = clzId
+        values["system_id"] = systemId
+        values["name"] = name
+        values["is_thirdparty"] = if (thirdparty) "true" else "false"
+        values["is_test"] = if (isTest) "true" else "false"
+        values["updatedAt"] = time
+        values["createdAt"] = time
+        values["module"] = module
+        values["package_name"] = packageName.orEmpty()
+        values["class_name"] = className
+        values["access"] = access
+        batch.add("JClass", values)
+        return clzId
+    }
+
+    private fun findClass(name: String, module: String?, access: String?): Optional<String?>? {
+        val keys: MutableMap<String, String> = HashMap()
+        keys["name"] = name
+        if (module != null) {
+            keys["module"] = module
+        }
+        if (access != null) {
+            keys["access"] = access
+        }
+
+        return batch.findId("JClass", keys)
     }
 
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
