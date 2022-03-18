@@ -1,13 +1,13 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.codescan.typescript
+package com.thoughtworks.archguard.scanner.domain.scanner.codescan.sourcecode
 
 import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import org.springframework.stereotype.Service
 
 @Service
-class TypeScriptScanner: Scanner {
+class SourceCodeScanner: Scanner {
     override fun getScannerName(): String {
-        return "TypeScriptScanner"
+        return "SourceCodeScanner"
     }
 
     override fun canScan(context: ScanContext): Boolean {
@@ -15,7 +15,7 @@ class TypeScriptScanner: Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        val coca = TypeScriptTool(context.workspace, context.systemId)
+        val coca = SourceCodeTool(context.workspace, context.systemId, context.language)
         coca.analyse()
     }
 }

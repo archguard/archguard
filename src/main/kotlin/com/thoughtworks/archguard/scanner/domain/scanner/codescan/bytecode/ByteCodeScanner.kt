@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.codescan
+package com.thoughtworks.archguard.scanner.domain.scanner.codescan.bytecode
 
 import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ByteCodeScanner(@Autowired val sourceCodeScanRepo: SourceCodeScanRepo) : Scanner {
+class ByteCodeScanner(@Autowired val byteCodeScanRepo: ByteCodeScanRepo) : Scanner {
     private val log = LoggerFactory.getLogger(ByteCodeScanner::class.java)
 
     override fun getScannerName(): String {
@@ -40,7 +40,7 @@ class ByteCodeScanner(@Autowired val sourceCodeScanRepo: SourceCodeScanRepo) : S
         val gitScannerTool = GitScannerTool(context.workspace, null, context.systemId, context.repo)
         val locReport = gitScannerTool.getLocReport()
         if (locReport != null) {
-            sourceCodeScanRepo.updateJClassLoc(locReport)
+            byteCodeScanRepo.updateJClassLoc(locReport)
             log.info("finished scan loc source")
         } else {
             log.warn("failed to scan loc")
