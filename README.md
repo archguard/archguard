@@ -1,6 +1,9 @@
 # Arch Scanner
 
 [![CI](https://github.com/archguard/scanner/actions/workflows/ci.yaml/badge.svg)](https://github.com/archguard/scanner/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/archguard/scanner/branch/master/graph/badge.svg?token=RSAOWTRFMT)](https://codecov.io/gh/archguard/scanner)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/scanner)
+
 
 scan
 
