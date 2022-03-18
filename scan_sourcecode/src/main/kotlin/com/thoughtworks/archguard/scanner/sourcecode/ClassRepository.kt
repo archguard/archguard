@@ -231,6 +231,10 @@ class ClassRepository(systemId: String) {
             if(field.TypeValue.contains("'")) {
                 name = field.TypeValue.replace("'", "''")
             }
+            if(field.TypeValue.contains("\n")) {
+                println("contains \n will give up: --------------\n-------------")
+                name = ""
+            }
 
             values["id"] = id
             values["system_id"] = systemId
