@@ -56,7 +56,6 @@ dependencies {
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sourcecode"))
-    jacocoAggregation(project(":scan_typescript"))
     jacocoAggregation(project(":scan_mysql"))
     jacocoAggregation(project(":scan_test_badsmell"))
 }
