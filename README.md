@@ -56,23 +56,25 @@ tech debt
 
 ## Usage
 
-### scan_git 工具
+### scan_git
 
-说明：`程序会扫描指定的 GIT 仓库， 并在命令当前目录下生成SQL文件 output.sql`
+introduction：`程序会扫描指定的 GIT 仓库， 并在命令当前目录下生成SQL文件 output.sql`
 
-运行：`./gradlew :scan_git:run --args="--path=.."`
+cmd：`./gradlew :scan_git:run --args="--path=.."`
 
-### scan_jacoco 工具
+### scan_jacoco
 
-说明：`扫描目标项目下的 jacoco.exec 文件， 将目标项目的覆盖率数据生成 SQL 文件 output.sql`
+introduction：`扫描目标项目下的 jacoco.exec 文件， 将目标项目的覆盖率数据生成 SQL 文件 output.sql`
 
-运行：`./gradlew :scan_jacoco:run --args="--target-project=."`
+cmd：`./gradlew :scan_jacoco:run --args="--target-project=."`
 
 ## scan_sourcecode
 
-```
-java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin
-```
+introduction: scan source code with [Chapi](https://github.com/modernizing/chapi)
+
+cmd: `java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin`
+
+## scan_mysql
 
 License
 ---
