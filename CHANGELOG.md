@@ -1,4 +1,24 @@
-# [](https://github.com/archguard/scanner/compare/v1.1.8...v) (2022-03-18)
+#  (2022-03-19)
+
+
+
+## [1.1.10](https://github.com/archguard/scanner/compare/v1.1.9...1.1.10) (2022-03-19)
+
+
+### Bug Fixes
+
+* fix empty issue ([812fdf6](https://github.com/archguard/scanner/commit/812fdf611f81b836dae2963b7510407824efafc8))
+* fix loc position issues ([7a74f8d](https://github.com/archguard/scanner/commit/7a74f8d7448f81d5d5218cbfc90ccea66af69206))
+
+
+### Features
+
+* init basic method callees ([c789603](https://github.com/archguard/scanner/commit/c789603e3a72a1851fc54aa2ca1e71338f5e769e))
+* **sourcecode:** add soruce target for package ([8a9a544](https://github.com/archguard/scanner/commit/8a9a544d9b99d84223ec122184a6b383b4d9172c))
+
+
+
+## [1.1.9](https://github.com/archguard/scanner/compare/v1.1.8...v1.1.9) (2022-03-18)
 
 
 ### Bug Fixes
