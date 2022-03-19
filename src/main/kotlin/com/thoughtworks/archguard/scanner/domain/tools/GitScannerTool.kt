@@ -9,8 +9,8 @@ import java.net.URL
 class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Long, val repo: String) : GitReport {
 
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.9"
-    private val version = "1.1.9"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.10"
+    private val version = "1.1.10"
 
     override fun getGitReport(): File? {
         prepareTool()
