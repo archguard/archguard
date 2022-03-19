@@ -34,10 +34,10 @@ internal class PackageServiceTest {
         val dependencies1 = listOf(PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
                 "org.test.ThrowablePB\$ThrowableProto"))
         val dependencies2 = listOf<PackageDependenceDTO>()
-        every { packageRepository.getPackageDependenceByModule(systemId, "com.module1") } returns dependencies1
-        every { packageRepository.getPackageDependenceByModule(systemId, "com.module2") } returns dependencies2
+        every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module1") } returns dependencies1
+        every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module2") } returns dependencies2
         //when
-        val packageDependencies = packageService.getPackageDependencies(systemId)
+        val packageDependencies = packageService.getPackageDependencies(systemId, "jvm")
         //then
         assertThat(packageDependencies.size).isEqualTo(2)
         assertThat(packageDependencies[0].packageGraph.nodes.size).isEqualTo(3)

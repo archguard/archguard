@@ -13,7 +13,7 @@ class PackageRepositoryImpl : PackageRepository {
     @Autowired
     lateinit var jdbi: Jdbi
 
-    override fun getPackageDependenceByModule(systemId: Long, module: String): List<PackageDependenceDTO> {
+    override fun getPackageDependenceByModuleFull(systemId: Long, module: String): List<PackageDependenceDTO> {
         return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
             handle
@@ -21,6 +21,16 @@ class PackageRepositoryImpl : PackageRepository {
                             "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.system_id='$systemId' and b.system_id='$systemId' and mc.system_id='$systemId'")
                     .mapTo(PackageDependenceDTO::class.java)
                     .list()
+        }
+    }
+
+    override fun getPackageDependenceByClass(systemId: Long, module: String): List<PackageDependenceDTO> {
+        return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
+            handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
+            handle
+                .createQuery("select source as aClz, target as bClz from _ClassDependences where system_id='$systemId'")
+                .mapTo(PackageDependenceDTO::class.java)
+                .list()
         }
     }
 }

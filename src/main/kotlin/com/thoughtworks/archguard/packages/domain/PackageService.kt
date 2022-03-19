@@ -13,10 +13,19 @@ class PackageService {
     @Autowired
     lateinit var moduleRepository: LogicModuleRepository
 
-    fun getPackageDependencies(systemId: Long): List<ModulePackage> {
+    fun getPackageDependencies(systemId: Long, language: String): List<ModulePackage> {
         return moduleRepository.getAllSubModule(systemId).map { it.name }.map {
-            val dependencies = packageRepository.getPackageDependenceByModule(systemId, it)
-            ModulePackage(it, getPackageGraph(dependencies))
+            when(language.lowercase()) {
+                "kotlin", "java", "typescript", "csharp", "c#" -> {
+                    val dependencies = packageRepository.getPackageDependenceByClass(systemId, it)
+                    ModulePackage(it, getPackageGraph(dependencies))
+                }
+                // when jvm
+                else -> {
+                    val dependencies = packageRepository.getPackageDependenceByModuleFull(systemId, it)
+                    ModulePackage(it, getPackageGraph(dependencies))
+                }
+            }
         }
     }
 
