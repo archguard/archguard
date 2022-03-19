@@ -32,7 +32,10 @@ class ClassRepository(systemId: String) {
         clzName: String
     ) {
         for (function in functions) {
-            val mId: String = findMethodIdByClzName(function, clzName, function.Name)?.get().orEmpty()
+            val mId: String? = findMethodIdByClzName(function, clzName, function.Name)?.get()
+            if (mId.isNullOrEmpty()) {
+                continue
+            }
             for (call in function.FunctionCalls) {
                 saveMethodCall(mId, call, moduleName, clzName)
             }
@@ -87,7 +90,12 @@ class ClassRepository(systemId: String) {
         return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName)
     }
 
-    private fun findMethodId(moduleName: String, clzName: String, parameters: Array<CodeProperty>, callNodeName: String): Optional<String?>? {
+    private fun findMethodId(
+        moduleName: String,
+        clzName: String,
+        parameters: Array<CodeProperty>,
+        callNodeName: String
+    ): Optional<String?>? {
         val keys: MutableMap<String, String> = HashMap()
         keys["clzname"] = clzName
         keys["name"] = callNodeName
@@ -105,7 +113,7 @@ class ClassRepository(systemId: String) {
     ) {
         val imp = imports.filter { it.Source.split(".").last() == extend }
         var moduleName = module
-        if(imp.isNotEmpty()) {
+        if (imp.isNotEmpty()) {
             moduleName = imp[0].Source
         }
 
@@ -279,7 +287,7 @@ class ClassRepository(systemId: String) {
         values["returntype"] = m.ReturnType
         values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString(",")
 
-        if(m.Modifiers.isNotEmpty()){
+        if (m.Modifiers.isNotEmpty()) {
             values["access"] = m.Modifiers[0]
         } else {
             values["access"] = "public"
@@ -304,10 +312,10 @@ class ClassRepository(systemId: String) {
 
             // for TypeScript
             var name = field.TypeValue
-            if(field.TypeValue.contains("'")) {
+            if (field.TypeValue.contains("'")) {
                 name = field.TypeValue.replace("'", "''")
             }
-            if(field.TypeValue.contains("\n")) {
+            if (field.TypeValue.contains("\n")) {
                 println("contains \n will give up: --------------\n-------------")
                 name = ""
             }
