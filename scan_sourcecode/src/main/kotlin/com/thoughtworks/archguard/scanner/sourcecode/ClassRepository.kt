@@ -19,7 +19,7 @@ class ClassRepository(systemId: String) {
 
     fun saveClassElement(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
-        saveClassDependencies(clzId, clz.Imports)
+        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
@@ -132,11 +132,11 @@ class ClassRepository(systemId: String) {
         batch.add("_ClassParent", values)
     }
 
-    private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>) {
+    private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>, packageName: String, clzName: String) {
         for (clz in imports) {
             val name = clz.Source
             val clzDependenceId = saveOrGetDependentClass(name, DEFAULT_MODULE_NAME)
-            doSaveClassDependence(clzId, clzDependenceId)
+            doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", name)
         }
     }
 
@@ -159,12 +159,14 @@ class ClassRepository(systemId: String) {
         return clzDependenceId
     }
 
-    private fun doSaveClassDependence(clzId: String, clzDependenceId: String?) {
+    private fun doSaveClassDependence(clzId: String, clzDependenceId: String?, sourceName: String, name: String) {
         val values: MutableMap<String, String> = HashMap()
         values["id"] = generateId()
         values["system_id"] = systemId
         values["a"] = clzId
         values["b"] = clzDependenceId.orEmpty()
+        values["source"] = sourceName
+        values["target"] = name
         batch.add("_ClassDependences", values)
     }
 
