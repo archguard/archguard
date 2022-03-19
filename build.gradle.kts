@@ -1,7 +1,11 @@
 val ktlint by configurations.creating
 
 plugins {
-    id("org.springframework.boot") version "2.2.4.RELEASE"
+    // springfox not support spring boot 2.6, see in https://github.com/springfox/springfox/issues/3462
+    id("org.springframework.boot") version "2.5.10"
+
+    // flyway 7.0 require spring .boot > 2.4
+    id("org.flywaydb.flyway").version("7.15.0")
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
 
     kotlin("jvm") version "1.6.10"
@@ -10,7 +14,6 @@ plugins {
 
     jacoco
     antlr
-    id("org.flywaydb.flyway").version("7.15.0")
 }
 
 group = "com.thoughtworks.archguard"
@@ -58,6 +61,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("com.alibaba:druid-spring-boot-starter:1.2.8")
