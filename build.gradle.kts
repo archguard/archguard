@@ -10,7 +10,7 @@ plugins {
 
     jacoco
     antlr
-    id("org.flywaydb.flyway").version("6.5.7")
+    id("org.flywaydb.flyway").version("7.15.0")
 }
 
 group = "com.thoughtworks.archguard"
@@ -69,7 +69,7 @@ dependencies {
 
     runtimeOnly("mysql:mysql-connector-java")
 
-    implementation("org.flywaydb:flyway-core:6.5.7")
+    implementation("org.flywaydb:flyway-core:7.15.0")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("com.github.database-rider:rider-spring:1.16.1")
     testImplementation("com.h2database:h2:1.4.200")
