@@ -16,7 +16,7 @@ public abstract class DefaultBatchImpl implements IBatch {
     protected final Map<String, List<Map<String, String>>> insertStore = new ConcurrentHashMap<>();
     protected final Map<String, List<UpdateRecord>> updateStore = new ConcurrentHashMap<>();
     protected final UpdateRecordSet updateRecordSet = new UpdateRecordSet();
-    protected final Set<String> moduleSet = new ConcurrentSet<>();
+    protected final Set<String> moduleSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     @Override
     public Set<String> getModuleSet() {
