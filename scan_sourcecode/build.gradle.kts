@@ -13,6 +13,8 @@ dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation(kotlin("stdlib"))
 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
     implementation("com.phodal.chapi:chapi-application:1.2.1")
     implementation("com.phodal.chapi:chapi-domain:1.2.1")
 

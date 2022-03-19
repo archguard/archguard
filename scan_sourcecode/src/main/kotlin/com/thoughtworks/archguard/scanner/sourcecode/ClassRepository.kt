@@ -2,8 +2,12 @@ package com.thoughtworks.archguard.scanner.sourcecode
 
 import chapi.domain.core.*
 import infrastructure.SourceBatch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.*
+
+private const val DEFAULT_MODULE_NAME = "root"
 
 class ClassRepository(systemId: String) {
     private val batch: SourceBatch = SourceBatch()
@@ -17,9 +21,81 @@ class ClassRepository(systemId: String) {
         val clzId = saveClass(clz)
         saveClassDependencies(clzId, clz.Imports)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
-        saveClassParent(clzId, "root", clz.Imports, clz.Extend)
+        saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
+        saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
     }
+
+    private fun saveClassCallees(
+        functions: Array<CodeFunction>,
+        moduleName: String,
+        clzName: String
+    ) {
+        for (function in functions) {
+            val mId: String = findMethodIdByClzName(function, clzName, function.Name)?.get().orEmpty()
+            for (call in function.FunctionCalls) {
+                saveMethodCall(mId, call, moduleName, clzName)
+            }
+        }
+    }
+
+    private fun saveMethodCall(callerId: String, callee: CodeCall, moduleName: String, clzName: String) {
+        val calleeId: String? = saveOrGetCalleeMethod(callee, moduleName, clzName)
+        val callees: MutableMap<String, String> = HashMap()
+        callees["id"] = generateId()
+        callees["system_id"] = systemId
+        callees["a"] = callerId
+        callees["b"] = calleeId.orEmpty()
+        batch.add("_MethodCallees", callees)
+    }
+
+    private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String): String? {
+        val methodId: Optional<String?>? = findMethodId(module, clzName, callee.Parameters, callee.FunctionName)
+        return methodId?.orElseGet { saveCalleeMethod(callee) }
+    }
+
+    private fun saveCalleeMethod(m: CodeCall): String? {
+        //find if exists
+        val mId: String = doSaveCalleeMethod(m)
+        return mId
+    }
+
+    private fun doSaveCalleeMethod(m: CodeCall): String {
+        val mId = generateId()
+        val time: String = currentTime
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = mId
+        values["system_id"] = systemId
+        values["clzname"] = m.NodeName
+        values["name"] = m.FunctionName
+        values["returntype"] = ""
+        values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString(",")
+        values["access"] = "public"
+        values["module"] = DEFAULT_MODULE_NAME
+        values["package_name"] = m.Package
+        values["class_name"] = m.NodeName
+        values["updatedAt"] = time
+        values["createdAt"] = time
+        values["is_test"] = "false"
+        values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
+        batch.add("JMethod", values)
+        return mId
+    }
+
+
+    private fun findMethodIdByClzName(m: CodeFunction, clzName: String, funcName: String): Optional<String?>? {
+        return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName)
+    }
+
+    private fun findMethodId(moduleName: String, clzName: String, parameters: Array<CodeProperty>, callNodeName: String): Optional<String?>? {
+        val keys: MutableMap<String, String> = HashMap()
+        keys["clzname"] = clzName
+        keys["name"] = callNodeName
+        keys["module"] = moduleName
+        keys["argumenttypes"] = Json.encodeToString(parameters)
+        return batch.findId("JMethod", keys)
+    }
+
 
     private fun saveClassParent(
         clzId: String,
@@ -51,12 +127,12 @@ class ClassRepository(systemId: String) {
     private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>) {
         for (clz in imports) {
             val name = clz.Source
-            val clzDependenceId = saveOrGetDependentClass(name, "root")
+            val clzDependenceId = saveOrGetDependentClass(name, DEFAULT_MODULE_NAME)
             doSaveClassDependence(clzId, clzDependenceId)
         }
     }
 
-    private fun saveOrGetDependentClass(name: String, moduleName: String = "root"): String? {
+    private fun saveOrGetDependentClass(name: String, moduleName: String = DEFAULT_MODULE_NAME): String? {
         val idOpt = findClass(name, moduleName, null)
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
@@ -209,7 +285,7 @@ class ClassRepository(systemId: String) {
             values["access"] = "public"
         }
 
-        values["module"] = "root"
+        values["module"] = DEFAULT_MODULE_NAME
         values["package_name"] = pkgName
         values["class_name"] = clzName
         values["updatedAt"] = time
@@ -265,7 +341,7 @@ class ClassRepository(systemId: String) {
         values["is_test"] = "false"
         values["updatedAt"] = time
         values["createdAt"] = time
-        values["module"] = "root"
+        values["module"] = DEFAULT_MODULE_NAME
         values["package_name"] = clz.Package
         values["class_name"] = clz.NodeName
         values["access"] = "todo"
