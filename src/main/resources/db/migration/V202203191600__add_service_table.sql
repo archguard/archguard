@@ -1,4 +1,5 @@
-CREATE TABLE `service`
+# container fan in and fan out
+CREATE TABLE `container_service`
 (
     `id`          VARCHAR(36)  NOT NULL PRIMARY KEY,
     `name`        VARCHAR(255) NOT NULL,
@@ -9,7 +10,7 @@ CREATE TABLE `service`
     `updated_at`  TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP (3)
 );
 
-CREATE TABLE `demand`
+CREATE TABLE `container_demand`
 (
     `id`                 VARCHAR(36)  NOT NULL PRIMARY KEY,
     `service_id`         VARCHAR(36)  NOT NULL,
@@ -21,7 +22,7 @@ CREATE TABLE `demand`
     INDEX                `i_service_id` (`service_id`)
 );
 
-CREATE TABLE `resource`
+CREATE TABLE `container_resource`
 (
     `id`                 VARCHAR(36)  NOT NULL PRIMARY KEY,
     `service_id`         VARCHAR(36)  NOT NULL,
