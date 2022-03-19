@@ -32,12 +32,12 @@ class ClassRepository(systemId: String) {
         clzName: String
     ) {
         for (function in functions) {
-            val mId: String? = findMethodIdByClzName(function, clzName, function.Name)?.get()
-            if (mId.isNullOrEmpty()) {
+            val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("")
+            if (mId == null) {
                 continue
             }
             for (call in function.FunctionCalls) {
-                saveMethodCall(mId, call, moduleName, clzName)
+                    saveMethodCall(mId, call, moduleName, clzName)
             }
         }
     }
