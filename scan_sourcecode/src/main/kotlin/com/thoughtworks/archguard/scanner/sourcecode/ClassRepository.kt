@@ -45,7 +45,7 @@ class ClassRepository(systemId: String) {
         callees["system_id"] = systemId
         callees["a"] = callerId
         callees["b"] = calleeId.orEmpty()
-        batch.add("code_ref_class_callees", callees)
+        batch.add("code_ref_method_callees", callees)
     }
 
     private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String): String? {

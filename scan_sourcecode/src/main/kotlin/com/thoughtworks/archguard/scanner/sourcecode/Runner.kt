@@ -36,7 +36,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         "code_ref_class_methods",
         "code_ref_class_parent",
         "code_ref_class_fields",
-        "code_ref_class_callees",
+        "code_ref_method_callees",
         "code_ref_class_dependencies",
         "code_annotation",
         "code_annotation_value"
