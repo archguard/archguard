@@ -29,15 +29,11 @@ class ClassRepository(systemId: String) {
     private fun saveClassCallees(
         functions: Array<CodeFunction>,
         moduleName: String,
-        clzName: String
-    ) {
+        clzName: String) {
         for (function in functions) {
-            val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("")
-            if (mId == null) {
-                continue
-            }
+            val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
-                    saveMethodCall(mId, call, moduleName, clzName)
+                saveMethodCall(mId, call, moduleName, clzName)
             }
         }
     }
@@ -57,10 +53,8 @@ class ClassRepository(systemId: String) {
         return methodId?.orElseGet { saveCalleeMethod(callee) }
     }
 
-    private fun saveCalleeMethod(m: CodeCall): String? {
-        //find if exists
-        val mId: String = doSaveCalleeMethod(m)
-        return mId
+    private fun saveCalleeMethod(m: CodeCall): String {
+        return doSaveCalleeMethod(m)
     }
 
     private fun doSaveCalleeMethod(m: CodeCall): String {

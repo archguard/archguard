@@ -5,6 +5,7 @@ import chapi.app.analyser.config.ChapiConfig
 import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import infrastructure.DBIStore
 import infrastructure.task.SqlExecuteThreadPool
@@ -22,6 +23,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
     private val path: String by option(help = "local path").default(".")
     private val systemId: String by option(help = "system id").default("0")
+    private val withApi: Boolean by option(help = "with container service api").flag()
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
         "Java"
     )
@@ -44,14 +46,15 @@ class Runner : CliktCommand(help = "scan git to sql") {
         cleanSqlFile(TABLES)
 
         var dataStructs: Array<CodeDataStruct> = arrayOf()
-        when (language.lowercase()) {
+        val lowercase = language.lowercase()
+        when (lowercase) {
             "java" -> {
                 dataStructs = JavaAnalyserApp().analysisNodeByPath(path)
             }
             "kotlin" -> {
                 dataStructs = KotlinAnalyserApp().analysisNodeByPath(path)
             }
-            "typescript", "ts", "js", "javascript" -> {
+            "typescript", "javascript" -> {
                 dataStructs = TypeScriptAnalyserApp().analysisNodeByPath(path)
             }
             "csharp", "c#" -> {
@@ -64,7 +67,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 dataStructs = GoAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
             }
         }
-        toSql(dataStructs, systemId)
+        toSql(dataStructs, systemId, path)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -74,8 +77,16 @@ class Runner : CliktCommand(help = "scan git to sql") {
         SqlExecuteThreadPool.close()
     }
 
-    private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String) {
+    private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, path: String) {
         val repo = ClassRepository(systemId)
+
+        if (withApi) {
+            when(language.lowercase()) {
+                "typescript", "javascript" -> {
+
+                }
+            }
+        }
 
         dataStructs.forEach { data ->
             repo.saveClassElement(data)
