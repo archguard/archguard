@@ -18,7 +18,7 @@ internal class MysqlIdentAppTest {
                 "where a.id = mc.a and b.id = mc.b and a.module=demo and b.module=bmodule and a.system_id=3 and b.system_id=4 and mc.system_id=5")
 
         assertEquals(2, table.tableNames.size)
-        assertEquals("JMethod", table.tableNames[0])
-        assertEquals("_MethodCallees", table.tableNames[1])
+        assertEquals("code_method", table.tableNames[0])
+        assertEquals("code_ref_class_callees", table.tableNames[1])
     }
 }

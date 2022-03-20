@@ -29,17 +29,17 @@ class Runner : CliktCommand(help = "scan git to sql") {
     )
 
     val TABLES = arrayOf(
-        "JClass",
-        "JField",
-        "JMethod",
-        "_ClassFields",
-        "_ClassMethods",
-        "_ClassParent",
-        "_MethodFields",
-        "_MethodCallees",
-        "_ClassDependences",
-        "JAnnotation",
-        "JAnnotationValue"
+        "code_class",
+        "code_field",
+        "code_method",
+        "code_ref_class_fields",
+        "code_ref_class_methods",
+        "code_ref_class_parent",
+        "code_ref_class_fields",
+        "code_ref_class_callees",
+        "code_ref_class_dependencies",
+        "code_annotation",
+        "code_annotation_value"
     )
 
     override fun run() {

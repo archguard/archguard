@@ -45,7 +45,7 @@ class ClassRepository(systemId: String) {
         callees["system_id"] = systemId
         callees["a"] = callerId
         callees["b"] = calleeId.orEmpty()
-        batch.add("_MethodCallees", callees)
+        batch.add("code_ref_class_callees", callees)
     }
 
     private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String): String? {
@@ -75,7 +75,7 @@ class ClassRepository(systemId: String) {
         values["createdAt"] = time
         values["is_test"] = "false"
         values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
-        batch.add("JMethod", values)
+        batch.add("code_method", values)
         return mId
     }
 
@@ -95,7 +95,7 @@ class ClassRepository(systemId: String) {
         keys["name"] = callNodeName
         keys["module"] = moduleName
         keys["argumenttypes"] = Json.encodeToString(parameters)
-        return batch.findId("JMethod", keys)
+        return batch.findId("code_method", keys)
     }
 
 
@@ -123,7 +123,7 @@ class ClassRepository(systemId: String) {
         values["system_id"] = systemId
         values["a"] = clzId
         values["b"] = parentClzId
-        batch.add("_ClassParent", values)
+        batch.add("code_ref_class_parent", values)
     }
 
     private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>, packageName: String, clzName: String) {
@@ -161,7 +161,7 @@ class ClassRepository(systemId: String) {
         values["b"] = clzDependenceId.orEmpty()
         values["source"] = sourceName
         values["target"] = name
-        batch.add("_ClassDependences", values)
+        batch.add("code_ref_class_dependencies", values)
     }
 
     private fun doSaveClass(
@@ -182,7 +182,7 @@ class ClassRepository(systemId: String) {
         values["package_name"] = packageName.orEmpty()
         values["class_name"] = className
         values["access"] = access
-        batch.add("JClass", values)
+        batch.add("code_class", values)
         return clzId
     }
 
@@ -196,7 +196,7 @@ class ClassRepository(systemId: String) {
             keys["access"] = access
         }
 
-        return batch.findId("JClass", keys)
+        return batch.findId("code_class", keys)
     }
 
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
@@ -226,14 +226,14 @@ class ClassRepository(systemId: String) {
         methodFields["system_id"] = systemId
         methodFields["a"] = methodId
         methodFields["b"] = fieldId
-        batch.add("_MethodFields", methodFields)
+        batch.add("code_ref_class_fields", methodFields)
     }
 
     private fun findFieldId(field: CodeProperty, clzName: String): Optional<String?>? {
         val keys: MutableMap<String, String> = HashMap()
         keys["clzname"] = clzName
         keys["name"] = field.TypeValue
-        return batch.findId("JField", keys)
+        return batch.findId("code_field", keys)
     }
 
     private fun doSaveClassMethodRelations(clzId: String, mId: String) {
@@ -242,7 +242,7 @@ class ClassRepository(systemId: String) {
         values["system_id"] = systemId
         values["a"] = clzId
         values["b"] = mId
-        batch.add("_ClassMethods", values)
+        batch.add("code_ref_class_methods", values)
     }
 
     private fun doSaveAnnotation(annotation: CodeAnnotation, methodId: String) {
@@ -253,7 +253,7 @@ class ClassRepository(systemId: String) {
         values["targetType"] = "todo"
         values["targetId"] = methodId
         values["name"] = annotation.Name
-        batch.add("JAnnotation", values)
+        batch.add("code_annotation", values)
 
 
         for (keyValue in annotation.KeyValues) {
@@ -269,7 +269,7 @@ class ClassRepository(systemId: String) {
         values["annotationId"] = annotationId
         values["key"] = map.Key
         values["value"] = map.Value
-        batch.add("JAnnotationValue", values)
+        batch.add("code_annotation_value", values)
     }
 
     private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String): String {
@@ -296,7 +296,7 @@ class ClassRepository(systemId: String) {
         values["createdAt"] = time
         values["is_test"] = if (m.isJUnitTest()) "true" else "false"
         values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
-        batch.add("JMethod", values)
+        batch.add("code_method", values)
         return mId
     }
 
@@ -323,14 +323,14 @@ class ClassRepository(systemId: String) {
             values["type"] = field.TypeType
             values["updatedAt"] = time
             values["createdAt"] = time
-            batch.add("JField", values)
+            batch.add("code_field", values)
 
             val relation: MutableMap<String, String> = HashMap()
             relation["id"] = generateId()
             relation["system_id"] = systemId
             relation["a"] = clzId
             relation["b"] = id
-            batch.add("_ClassFields", relation)
+            batch.add("code_ref_class_fields", relation)
         }
     }
 
@@ -349,7 +349,7 @@ class ClassRepository(systemId: String) {
         values["package_name"] = clz.Package
         values["class_name"] = clz.NodeName
         values["access"] = "todo"
-        batch.add("JClass", values)
+        batch.add("code_class", values)
 
         return clzId
     }
