@@ -11,7 +11,7 @@ alter table `code_field` change `project_id` `system_id` bigint not null;
 alter table `code_method` change `project_id` `system_id` bigint not null;
 alter table `code_ref_class_dependencies` change `project_id` `system_id` bigint not null;
 alter table `code_ref_class_fields` change `project_id` `system_id` bigint not null;
-alter table `code_refs_class_methods` change `project_id` `system_id` bigint not null;
+alter table `code_ref_class_methods` change `project_id` `system_id` bigint not null;
 alter table `code_ref_class_parent` change `project_id` `system_id` bigint not null;
 alter table `code_ref_method_callees` change `project_id` `system_id` bigint not null;
 alter table `code_ref_method_fields` change `project_id` `system_id` bigint not null;

@@ -31,7 +31,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun findClassParents(systemId: Long, module: String, name: String): List<JClass> {
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
-                "           FROM `code_class`` c,`code_ref_class_parent` cp, `code_class`` p" +
+                "           FROM code_class c,code_ref_class_parent cp, code_class p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           And c.system_id = $systemId" +
                 "           AND c.name = '$name' AND c.module = '$module'"
@@ -111,7 +111,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findDependencers(id: String): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select a from code_ref_class_dependencies where b='${id}' and b <> a)"
+        val sql = "select id, name, module, loc, access from code_class where id in (select a from code_ref_class_dependencies where b='${id}' and b <> a)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -121,7 +121,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findDependencees(id: String): List<JClass> {
-        val sql = "select id, name, module, loc, access from JClass where id in (select b from code_ref_class_dependencies where a='${id}' and b <> a)"
+        val sql = "select id, name, module, loc, access from code_class where id in (select b from code_ref_class_dependencies where a='${id}' and b <> a)"
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -131,7 +131,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getJClassById(id: String): JClass? {
-        val sql = "select id, name, module, loc, access from JClass where id='$id'"
+        val sql = "select id, name, module, loc, access from code_class where id='$id'"
         return jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
             it.createQuery(sql)
@@ -142,7 +142,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
 
     override fun getAllBySystemId(systemId: Long): List<JClass> {
         // todo: origin conditions is with ` and loc is not null`, when loc failure will not get results, so change it without loc.
-        val sql = "SELECT id, name, module, loc, access FROM JClass where system_id = :systemId and is_test = false " +
+        val sql = "SELECT id, name, module, loc, access FROM code_class where system_id = :systemId and is_test = false " +
                 "and is_thirdparty = false"
 
         return jdbi.withHandle<List<JClassDto>, Nothing> {

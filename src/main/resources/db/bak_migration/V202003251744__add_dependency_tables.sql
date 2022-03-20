@@ -232,30 +232,30 @@ create index B
 alter table code_ref_class_fields
 	add primary key (id);
 
-drop table if exists code_refs_class_methods;
-create table if not exists code_refs_class_methods
+drop table if exists code_ref_class_methods;
+create table if not exists code_ref_class_methods
 (
 	id char(36) not null,
 	a char(36) null,
 	b char(36) null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint code_refs_class_methods_ibfk_1
+	constraint code_ref_class_methods_ibfk_1
 		foreign key (a) references code_class (id)
 			on delete cascade,
-	constraint code_refs_class_methods_ibfk_2
+	constraint code_ref_class_methods_ibfk_2
 		foreign key (b) references code_method (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on code_refs_class_methods (a);
+	on code_ref_class_methods (a);
 
 create index B
-	on code_refs_class_methods (b);
+	on code_ref_class_methods (b);
 
-alter table code_refs_class_methods
+alter table code_ref_class_methods
 	add primary key (id);
 
 drop table if exists code_ref_class_parent;

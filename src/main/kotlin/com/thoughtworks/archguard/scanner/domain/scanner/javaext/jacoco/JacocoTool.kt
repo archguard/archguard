@@ -10,7 +10,7 @@ import java.net.URL
 class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool) {
 
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.03"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.0"
     private val version = "1.2.0"
     private val SCAN_JACOCO_JAR = "scan_jacoco-$version-all.jar"
 
@@ -19,7 +19,7 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
         call(listOf("java", "-jar", "scan_jacoco.jar", "--target-project=${systemRoot.absolutePath}",
                 "--bin=${buildTool.target}/classes",
                 "--exec=${buildTool.target}/jacoco.exec"))
-        val sqlFile = File("${workspace.absolutePath}/jacoco.sql")
+        val sqlFile = File("$workspace/jacoco.sql")
         return if (sqlFile.exists()) {
             sqlFile
         } else {
@@ -39,7 +39,7 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File(SCAN_JACOCO_JAR), File(workspace.absolutePath.toString() + "/scan_jacoco.jar"))
+        FileOperator.copyTo(File(SCAN_JACOCO_JAR), File("$workspace/scan_jacoco.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
         chmod.directory(workspace)
         chmod.start().waitFor()

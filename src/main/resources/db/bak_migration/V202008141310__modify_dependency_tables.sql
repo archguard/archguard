@@ -22,7 +22,7 @@ ALTER TABLE `code_ref_class_fields`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `code_refs_class_methods`
+ALTER TABLE `code_ref_class_methods`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 

@@ -223,7 +223,7 @@ create index B
 create index idx_project_id
     on code_ref_class_fields (system_id);
 
-create table code_refs_class_methods
+create table code_ref_class_methods
 (
     id          char(36)                            not null
         primary key,
@@ -234,23 +234,23 @@ create table code_refs_class_methods
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint code_refs_class_methods_ibfk_1
+    constraint code_ref_class_methods_ibfk_1
         foreign key (a) references code_class (id)
             on delete cascade,
-    constraint code_refs_class_methods_ibfk_2
+    constraint code_ref_class_methods_ibfk_2
         foreign key (b) references code_method (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on code_refs_class_methods (a);
+    on code_ref_class_methods (a);
 
 create index B
-    on code_refs_class_methods (b);
+    on code_ref_class_methods (b);
 
 create index idx_project_id
-    on code_refs_class_methods (system_id);
+    on code_ref_class_methods (system_id);
 
 create table code_ref_class_parent
 (
@@ -385,7 +385,7 @@ create table scm_change_entry
 (
     old_path             varchar(500)                        null,
     new_path             varchar(500)                        null,
-    metric_cognitive_complexity int                                 null,
+    cognitive_complexity int                                 null,
     change_mode          varchar(10)                         null,
     commit_id            varchar(50)                         null,
     system_id            int                                 null,

@@ -13,7 +13,7 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
     lateinit var jdbi: Jdbi
 
     override fun getMethodIdsByClassId(classId: String): List<String> {
-        val sql = "select b from code_refs_class_methods where a='$classId'"
+        val sql = "select b from code_ref_class_methods where a='$classId'"
         return jdbi.withHandle<List<String>, Nothing> {
             it.createQuery(sql)
                     .mapTo(String::class.java)

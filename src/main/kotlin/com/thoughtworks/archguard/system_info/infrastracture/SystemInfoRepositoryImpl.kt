@@ -94,7 +94,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun deleteSystemInfoRelated() {
         val sqls = mutableListOf<String>()
         val tables = listOf(
-                "code_ref_class_dependencies", "code_ref_class_fields", "code_refs_class_methods", "code_ref_class_parent", "code_ref_method_callees",
+                "code_ref_class_dependencies", "code_ref_class_fields", "code_ref_class_methods", "code_ref_class_parent", "code_ref_method_callees",
                 "code_ref_method_fields", "metric_code_bad_smell", "metric_checkstyle", "metric_class_coupling", "metric_class", "Configure",
                 "code_framework_dubbo_bean", "code_framework_dubbo_module", "code_framework_dubbo_reference_config", "code_framework_dubbo_service_config", "code_annotation",
                 "code_annotation_value", "code_class", "code_field", "code_method", "logic_module", "testBadSmell", "violation",

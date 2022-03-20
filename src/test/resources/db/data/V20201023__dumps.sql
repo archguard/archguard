@@ -354,13 +354,13 @@ CREATE TABLE `code_ref_class_fields` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_refs_class_methods`
+-- Table structure for table `code_ref_class_methods`
 --
 
-DROP TABLE IF EXISTS `code_refs_class_methods`;
+DROP TABLE IF EXISTS `code_ref_class_methods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_refs_class_methods` (
+CREATE TABLE `code_ref_class_methods` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -370,8 +370,8 @@ CREATE TABLE `code_refs_class_methods` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_refs_class_methods_ibfk_1` FOREIGN KEY (`a`) REFERENCES `code_class` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_refs_class_methods_ibfk_2` FOREIGN KEY (`b`) REFERENCES `code_method` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_class_methods_ibfk_1` FOREIGN KEY (`a`) REFERENCES `code_class` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_class_methods_ibfk_2` FOREIGN KEY (`b`) REFERENCES `code_method` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

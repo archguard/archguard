@@ -59,12 +59,12 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun findMethodImplements(id: String, name: String): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  " +
-                "FROM JMethod " +
+                "FROM code_method " +
                 "WHERE id IN (SELECT DISTINCT cm.b " +
                 "             FROM code_class c, " +
-                "                  code_refs_class_methods cm, " +
+                "                  code_ref_class_methods cm, " +
                 "                  code_class p, " +
-                "                  code_refs_class_methods pm, " +
+                "                  code_ref_class_methods pm, " +
                 "                  code_ref_class_parent cp " +
                 "             WHERE pm.b = '$id' " +
                 "               AND p.id = pm.a " +

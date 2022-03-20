@@ -21,7 +21,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
             jdbi.withHandle<List<ConfigureDTO>, Nothing> { handle ->
                 handle.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
                 handle
-                        .createQuery("select id, `type`, `key`, `value` from ScannerConfigure")
+                        .createQuery("select id, `type`, `key`, `value` from system_scanner_configure")
                         .mapTo(ConfigureDTO::class.java)
                         .list()
             }

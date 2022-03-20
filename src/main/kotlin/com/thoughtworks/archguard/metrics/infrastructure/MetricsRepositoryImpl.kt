@@ -19,7 +19,7 @@ class MetricsRepositoryImpl(
     override fun insertAllClassCouplings(systemId: Long, classCouplings: List<ClassCoupling>) {
         classCouplingWriteDao.deleteBy(systemId)
         classCouplings.forEach {
-            classCouplingWriteDao.insert(ClassCouplingWritePO.fromClassCoupling(systemId, it))
+            classCouplingWriteDao.insert(MetricClassCouplingWritePO.fromClassCoupling(systemId, it))
         }
         influxDBClient.save(ClassCouplingListInfluxDTO(systemId, classCouplings).toRequestBody())
     }
