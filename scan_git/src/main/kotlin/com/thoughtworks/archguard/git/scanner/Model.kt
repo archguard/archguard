@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.git.scanner
 
 
 /*为了生成SQL，和DB 表同结构*/
-@Sql("commit_log")
+@Sql("scm_commit_log")
 data class CommitLog(
         @Sql("id") val id: String,
         @Sql("commit_time") val commitTime: Long,
@@ -13,7 +13,7 @@ data class CommitLog(
         @Sql("system_id") val systemId: Long
 )
 
-@Sql("change_entry")
+@Sql("scm_change_entry")
 data class ChangeEntry(
         @Sql("old_path") val oldPath: String,
         @Sql("new_path") val newPath: String,
