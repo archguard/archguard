@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.Phaser;
 
 public class DBIStore {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultBatchImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DBIStore.class);
 
     private static final String JDBC_URL = System.getProperty("dburl");
     private static final DBIStore INSTANCE = new DBIStore(JDBC_URL);
