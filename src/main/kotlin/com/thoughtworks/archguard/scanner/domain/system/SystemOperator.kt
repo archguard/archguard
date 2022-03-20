@@ -18,7 +18,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
                 .forEach { repo ->
-                    if (systemInfo.isNecessaryBuild() && systemInfo.language == "jvm") {
+                    if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
                         cloneAndBuildSingleRepo(repo)
                     } else {
                         cloneSingleRepo(repo)

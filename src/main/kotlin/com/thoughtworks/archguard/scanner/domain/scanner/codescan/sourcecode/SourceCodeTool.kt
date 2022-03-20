@@ -27,7 +27,7 @@ class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: Str
     }
 
     private fun copyIntoSystemRoot() {
-        log.info("copy TypeScript jar tool from local")
+        log.info("copy SourceCode jar tool from local")
         FileOperator.copyTo(File(SCAN_SOURCECODE_JAR), File("$systemRoot/scan_sourcecode.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
         chmod.directory(systemRoot)

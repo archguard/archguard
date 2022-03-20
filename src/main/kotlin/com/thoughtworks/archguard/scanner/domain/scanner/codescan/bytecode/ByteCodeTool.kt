@@ -49,6 +49,7 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) 
     }
 
     private fun scan(cmd: List<String>) {
+        log.info("execute cmd: + $cmd")
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
     }
 

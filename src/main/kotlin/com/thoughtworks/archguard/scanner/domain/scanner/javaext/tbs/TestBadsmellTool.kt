@@ -12,7 +12,7 @@ class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
     private val host = "https://github.com/archguard/scanner/releases/download/v1.2.1"
     private val version = "1.2.1"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
-    private val SCAN_TEST_BADSMELL_JAR = "scan_git-$version-all.jar"
+    private val SCAN_TEST_BADSMELL_JAR = "scan_test_badsmell-$version-all.jar"
 
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
