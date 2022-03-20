@@ -1,4 +1,4 @@
-create table circular_dependency_metrics
+create table metric_circular_dependency
 (
     id                  bigint auto_increment
         primary key,
@@ -9,4 +9,4 @@ create table circular_dependency_metrics
     collate = utf8mb4_unicode_ci;
 
 create index idx_circular_dependency_metrics_project_id
-    on circular_dependency_metrics (project_id);
+    on metric_circular_dependency (project_id);

@@ -99,7 +99,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "dubbo_bean", "dubbo_module", "dubbo_reference_config", "dubbo_service_config", "JAnnotation",
                 "JAnnotationValue", "JClass", "JField", "JMethod", "logic_module", "testBadSmell", "violation",
                 "scm_commit_log", "scm_change_entry", "code_class_access", "method_access", "scm_git_hot_file",
-                "circular_dependency_metrics", "metric_cognitive_complexity", "bad_smell_dataclass",
+                "metric_circular_dependency", "metric_cognitive_complexity", "bad_smell_dataclass",
                 "method_metrics", "metric_module", "metric_package"
         )
 

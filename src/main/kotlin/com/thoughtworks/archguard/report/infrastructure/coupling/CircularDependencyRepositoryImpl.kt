@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepository {
     override fun getCircularDependency(systemId: Long, type: CircularDependencyType, limit: Long, offset: Long): List<String> {
-        val sql = "select circular_dependency from circular_dependency_metrics where system_id=:system_id and type=:type order by circular_dependency LIMIT :limit OFFSET :offset"
+        val sql = "select circular_dependency from metric_circular_dependency where system_id=:system_id and type=:type order by circular_dependency LIMIT :limit OFFSET :offset"
         return jdbi.withHandle<List<String>, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -22,7 +22,7 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
     }
 
     override fun getCircularDependencyCount(systemId: Long, type: CircularDependencyType): Long {
-        val sql = "select count(1) from circular_dependency_metrics where system_id=:system_id and type=:type"
+        val sql = "select count(1) from metric_circular_dependency where system_id=:system_id and type=:type"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -40,7 +40,7 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
                        (CASE when c.cd > :level3Start then c.cd else 0 end)                        AS 'level3'
                 from (
                          select count(1) cd
-                         from circular_dependency_metrics
+                         from metric_circular_dependency
                          where system_id = :systemId
                            and type = :type
                      ) as c

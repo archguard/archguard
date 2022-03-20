@@ -42,7 +42,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : ScannerCircularDe
 
     fun saveCircularDependency(systemId: Long, circularDependency: String, type: CircularDependencyType) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into circular_dependency_metrics (system_id, circular_dependency, type) values (:system_id, :circular_dependency, :type)")
+            it.createUpdate("insert into metric_circular_dependency (system_id, circular_dependency, type) values (:system_id, :circular_dependency, :type)")
                     .bind("system_id", systemId)
                     .bind("circular_dependency", circularDependency)
                     .bind("type", type)
@@ -52,7 +52,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : ScannerCircularDe
 
     fun deleteCircularDependency(systemId: Long, type: CircularDependencyType) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("delete from circular_dependency_metrics where system_id=:system_id and type=:type")
+            it.createUpdate("delete from metric_circular_dependency where system_id=:system_id and type=:type")
                     .bind("system_id", systemId)
                     .bind("type", type)
                     .execute()

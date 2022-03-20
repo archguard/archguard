@@ -1,4 +1,4 @@
-bad_smell_threshold_suite:
+metric_bad_smell_threshold_suite:
   - id: 1
     suite_name: '架构评估一级指标'
     is_default: 1

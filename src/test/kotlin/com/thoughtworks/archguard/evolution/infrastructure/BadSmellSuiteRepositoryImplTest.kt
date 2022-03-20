@@ -16,7 +16,7 @@ internal class BadSmellSuiteRepositoryImplTest {
     lateinit var repository: BadSmellSuiteRepository
 
     @Test
-    @DataSet("expect/bad_smell_threshold_suite.yml")
+    @DataSet("expect/metric_bad_smell_threshold_suite.yml")
     fun getAllBadSmellThresholdSuites() {
         val result = repository.getAllBadSmellThresholdSuites()
         assertEquals(1, result.size)

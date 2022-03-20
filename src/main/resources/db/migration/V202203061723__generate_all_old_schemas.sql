@@ -351,7 +351,7 @@ create table metric_code_bad_smell
     type        varchar(100) not null
 );
 
-create table bad_smell_threshold_suite
+create table metric_bad_smell_threshold_suite
 (
     id           bigint auto_increment
         primary key,
@@ -394,7 +394,7 @@ create table scm_change_entry
     update_time          timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table circular_dependency_metrics
+create table metric_circular_dependency
 (
     id                  bigint auto_increment
         primary key,
@@ -407,7 +407,7 @@ create table circular_dependency_metrics
     collate = utf8mb4_unicode_ci;
 
 create index idx_circular_dependency_metrics_project_id
-    on circular_dependency_metrics (system_id);
+    on metric_circular_dependency (system_id);
 
 create table code_class_access
 (

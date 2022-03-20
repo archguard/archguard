@@ -560,10 +560,10 @@ CREATE TABLE `metric_code_bad_smell` (
 -- Table structure for table `bad_smell_threashold_suite`
 --
 
-DROP TABLE IF EXISTS `bad_smell_threshold_suite`;
+DROP TABLE IF EXISTS `metric_bad_smell_threshold_suite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `bad_smell_threshold_suite` (
+CREATE TABLE `metric_bad_smell_threshold_suite` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `suite_name` varchar(255)  NOT NULL,
   `is_default` tinyint(1) DEFAULT NULL,
@@ -620,13 +620,13 @@ CREATE TABLE `scm_change_entry` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `circular_dependency_metrics`
+-- Table structure for table `metric_circular_dependency`
 --
 
-DROP TABLE IF EXISTS `circular_dependency_metrics`;
+DROP TABLE IF EXISTS `metric_circular_dependency`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `circular_dependency_metrics` (
+CREATE TABLE `metric_circular_dependency` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `circular_dependency` varchar(3000)  NOT NULL,
