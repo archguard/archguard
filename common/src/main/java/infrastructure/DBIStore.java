@@ -67,11 +67,11 @@ public class DBIStore {
     public void fix() {
         SqlExecuteRunnable p = new SqlExecuteRunnable("FIX",
                 () -> jdbi.withHandle(handle -> {
-                    String sql = "update JMethod, JClass, _ClassMethods\n" +
-                            "set JMethod.module = JClass.module\n" +
-                            "where JMethod.id = _ClassMethods.b\n" +
-                            "  and JClass.id = _ClassMethods.a\n" +
-                            "  and JClass.module != JMethod.module";
+                    String sql = "update code_method, code_class, code_ref_class_methods\n" +
+                            "set code_method.module = code_class.module\n" +
+                            "where code_method.id = _code_ref_class_methods.b\n" +
+                            "  and code_class.id = _code_ref_class_methods.a\n" +
+                            "  and code_class.module != code_method.module";
                     return handle.execute(sql);
                 }));
         SqlExecuteThreadPool.execute(p);
