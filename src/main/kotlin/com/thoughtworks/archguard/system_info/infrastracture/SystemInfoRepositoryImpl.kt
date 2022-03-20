@@ -99,7 +99,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "code_framework_dubbo_bean", "code_framework_dubbo_module", "code_framework_dubbo_reference_config", "code_framework_dubbo_service_config", "code_annotation",
                 "code_annotation_value", "code_class", "code_field", "code_method", "logic_module", "testBadSmell", "violation",
                 "scm_commit_log", "scm_change_entry", "code_class_access", "method_access", "scm_git_hot_file",
-                "metric_circular_dependency", "metric_cognitive_complexity", "bad_smell_dataclass",
+                "metric_circular_dependency", "metric_cognitive_complexity", "metric_dataclass",
                 "method_metrics", "metric_module", "metric_package"
         )
 

@@ -1,5 +1,5 @@
-drop table if exists bad_smell_dataclass;
-create table bad_smell_dataclass
+drop table if exists metric_dataclass;
+create table metric_dataclass
 (
     id        bigint auto_increment
         primary key,
@@ -12,8 +12,8 @@ create table bad_smell_dataclass
     collate = utf8mb4_unicode_ci;
 
 create index idx_class_id
-    on bad_smell_dataclass (class_id);
+    on metric_dataclass (class_id);
 
 create index idx_system_id
-    on bad_smell_dataclass (system_id);
+    on metric_dataclass (system_id);
 

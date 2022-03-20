@@ -742,13 +742,13 @@ CREATE TABLE `scm_commit_log` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `bad_smell_dataclass`
+-- Table structure for table `metric_dataclass`
 --
 
-DROP TABLE IF EXISTS `bad_smell_dataclass`;
+DROP TABLE IF EXISTS `metric_dataclass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `bad_smell_dataclass` (
+CREATE TABLE `metric_dataclass` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `class_id` char(36)  NOT NULL,
   `field_id` char(36)  NOT NULL,

@@ -487,7 +487,7 @@ create table scm_commit_log
     update_time     timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table bad_smell_dataclass
+create table metric_dataclass
 (
     id          bigint auto_increment
         primary key,
@@ -502,10 +502,10 @@ create table bad_smell_dataclass
     collate = utf8mb4_unicode_ci;
 
 create index idx_class_id
-    on bad_smell_dataclass (class_id);
+    on metric_dataclass (class_id);
 
 create index idx_system_id
-    on bad_smell_dataclass (system_id);
+    on metric_dataclass (system_id);
 
 create table code_framework_dubbo_bean
 (
