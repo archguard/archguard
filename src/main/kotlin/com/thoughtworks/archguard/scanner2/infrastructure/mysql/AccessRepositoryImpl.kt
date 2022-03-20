@@ -11,7 +11,7 @@ import java.util.*
 class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {
     override fun saveOrUpdateAllClass(systemId: Long, classAccesses: List<ClassAccess>) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("delete from class_access where system_id=:system_id")
+            it.createUpdate("delete from code_class_access where system_id=:system_id")
                     .bind("system_id", systemId)
                     .execute()
         }
@@ -33,7 +33,7 @@ class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {
 
     private fun save(clazz: ClassAccess, systemId: Long) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into class_access (id, class_id, is_abstract, is_interface, system_id) " +
+            it.createUpdate("insert into code_class_access (id, class_id, is_abstract, is_interface, system_id) " +
                     "values (:id, :class_id, :is_abstract, :is_interface, :system_id)")
                     .bind("id", UUID.randomUUID().toString())
                     .bind("class_id", clazz.id)

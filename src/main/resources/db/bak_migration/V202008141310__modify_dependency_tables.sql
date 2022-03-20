@@ -18,22 +18,22 @@ ALTER TABLE `JAnnotationValue`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `code_class_fields`
+ALTER TABLE `code_ref_class_fields`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `_ClassMethods`
+ALTER TABLE `code_refs_class_methods`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `code_class_parent`
+ALTER TABLE `code_ref_class_parent`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `code_method_callees`
+ALTER TABLE `code_ref_method_callees`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `code_class_dependencies`
+ALTER TABLE `code_ref_class_dependencies`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;

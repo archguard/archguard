@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository
 class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun findMethodFields(id: String): List<JField> {
-        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from code_method_fields where a='$id')"
+        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from code_ref_method_fields where a='$id')"
         return jdbi.withHandle<List<JField>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
             it.createQuery(sql)
@@ -26,7 +26,7 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
-        val sql = "select a as caller, b as callee from code_method_callees where system_id = :systemId " +
+        val sql = "select a as caller, b as callee from code_ref_method_callees where system_id = :systemId " +
                 "and a in (select id from JMethod where JMethod.system_id = :systemId and is_test = 0 and module is not NULL) " +
                 "and b in (select id from JMethod where JMethod.system_id = :systemId and is_test = 0 and module is not NULL) " +
                 "and a!=b"
@@ -80,7 +80,7 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodCallees(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE id IN (SELECT b FROM code_method_callees WHERE a='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE id IN (SELECT b FROM code_ref_method_callees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)

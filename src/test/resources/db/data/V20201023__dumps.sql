@@ -310,13 +310,13 @@ CREATE TABLE `SqlConditionValue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_class_dependencies`
+-- Table structure for table `code_ref_class_dependencies`
 --
 
-DROP TABLE IF EXISTS `code_class_dependencies`;
+DROP TABLE IF EXISTS `code_ref_class_dependencies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_class_dependencies` (
+CREATE TABLE `code_ref_class_dependencies` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -326,19 +326,19 @@ CREATE TABLE `code_class_dependencies` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_class_dependencies_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_class_dependencies_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JClass` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_class_dependencies_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_class_dependencies_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JClass` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_class_fields`
+-- Table structure for table `code_ref_class_fields`
 --
 
-DROP TABLE IF EXISTS `code_class_fields`;
+DROP TABLE IF EXISTS `code_ref_class_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_class_fields` (
+CREATE TABLE `code_ref_class_fields` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -348,19 +348,19 @@ CREATE TABLE `code_class_fields` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_class_fields_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_class_fields_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JField` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_class_fields_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_class_fields_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JField` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `_ClassMethods`
+-- Table structure for table `code_refs_class_methods`
 --
 
-DROP TABLE IF EXISTS `_ClassMethods`;
+DROP TABLE IF EXISTS `code_refs_class_methods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `_ClassMethods` (
+CREATE TABLE `code_refs_class_methods` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -370,19 +370,19 @@ CREATE TABLE `_ClassMethods` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `_ClassMethods_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_ClassMethods_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_refs_class_methods_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_refs_class_methods_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_class_parent`
+-- Table structure for table `code_ref_class_parent`
 --
 
-DROP TABLE IF EXISTS `code_class_parent`;
+DROP TABLE IF EXISTS `code_ref_class_parent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_class_parent` (
+CREATE TABLE `code_ref_class_parent` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -392,19 +392,19 @@ CREATE TABLE `code_class_parent` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_class_parent_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_class_parent_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JClass` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_class_parent_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JClass` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_class_parent_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JClass` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_method_callees`
+-- Table structure for table `code_ref_method_callees`
 --
 
-DROP TABLE IF EXISTS `code_method_callees`;
+DROP TABLE IF EXISTS `code_ref_method_callees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_method_callees` (
+CREATE TABLE `code_ref_method_callees` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
@@ -414,19 +414,19 @@ CREATE TABLE `code_method_callees` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_method_callees_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_method_callees_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_method_callees_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_method_callees_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `code_method_fields`
+-- Table structure for table `code_ref_method_fields`
 --
 
-DROP TABLE IF EXISTS `code_method_fields`;
+DROP TABLE IF EXISTS `code_ref_method_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `code_method_fields` (
+CREATE TABLE `code_ref_method_fields` (
   `id` char(36)  NOT NULL,
   `a` char(36)  DEFAULT NULL,
   `b` char(36)  DEFAULT NULL,
@@ -436,8 +436,8 @@ CREATE TABLE `code_method_fields` (
   PRIMARY KEY (`id`),
 --  KEY `A` (`a`),
 --  KEY `B` (`b`),
-  CONSTRAINT `code_method_fields_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `code_method_fields_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JField` (`id`) ON DELETE CASCADE
+  CONSTRAINT `code_ref_method_fields_ibfk_1` FOREIGN KEY (`a`) REFERENCES `JMethod` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `code_ref_method_fields_ibfk_2` FOREIGN KEY (`b`) REFERENCES `JField` (`id`) ON DELETE CASCADE
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -638,13 +638,13 @@ CREATE TABLE `circular_dependency_metrics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `class_access`
+-- Table structure for table `code_class_access`
 --
 
-DROP TABLE IF EXISTS `class_access`;
+DROP TABLE IF EXISTS `code_class_access`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `class_access` (
+CREATE TABLE `code_class_access` (
   `id` varchar(50)  NOT NULL,
   `class_id` char(36)  DEFAULT NULL,
   `is_abstract` tinyint(1) DEFAULT NULL,
@@ -658,13 +658,13 @@ CREATE TABLE `class_access` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `class_coupling`
+-- Table structure for table `metric_class_coupling`
 --
 
-DROP TABLE IF EXISTS `class_coupling`;
+DROP TABLE IF EXISTS `metric_class_coupling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `class_coupling` (
+CREATE TABLE `metric_class_coupling` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `class_id` varchar(255)  NOT NULL,
@@ -681,13 +681,13 @@ CREATE TABLE `class_coupling` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `class_metrics`
+-- Table structure for table `metrics_class`
 --
 
-DROP TABLE IF EXISTS `class_metrics`;
+DROP TABLE IF EXISTS `metrics_class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `class_metrics` (
+CREATE TABLE `metrics_class` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `class_id` varchar(255)  NOT NULL,

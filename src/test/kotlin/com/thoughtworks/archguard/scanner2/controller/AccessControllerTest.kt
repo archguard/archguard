@@ -24,10 +24,10 @@ internal class AccessControllerTest(@Autowired val accessController: AccessContr
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_class_dependencies.sql")
-    fun should_save_class_access() {
+    fun should_save_code_class_access() {
         accessController.persist(8)
         val classResult = jdbi.withHandle<List<ClassAccess>, RuntimeException> { handle: Handle ->
-            handle.createQuery("select class_id as id, is_interface, is_abstract, is_synthetic from class_access order by class_id")
+            handle.createQuery("select class_id as id, is_interface, is_abstract, is_synthetic from code_class_access order by class_id")
                     .mapTo(ClassAccess::class.java).list()
         }.toList()
         assertEquals(2, classResult.size)

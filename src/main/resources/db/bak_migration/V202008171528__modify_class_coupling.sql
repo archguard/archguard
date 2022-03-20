@@ -1,5 +1,5 @@
-DROP TABLE `class_coupling`;
-CREATE TABLE `class_coupling`  (
+DROP TABLE `metric_class_coupling`;
+CREATE TABLE `metric_class_coupling`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `project_id` BIGINT      NOT NULL,
   `class_id` varchar(255) NOT NULL,

@@ -1,5 +1,5 @@
-drop table if exists class_access;
-create table class_access(
+drop table if exists code_class_access;
+create table code_class_access(
     id           varchar(50) primary key,
     class_id     char(36),
     is_abstract boolean,

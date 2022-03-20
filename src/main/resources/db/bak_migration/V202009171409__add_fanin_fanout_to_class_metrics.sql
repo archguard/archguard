@@ -1,5 +1,5 @@
-drop table if exists class_metrics;
-create table class_metrics
+drop table if exists metrics_class;
+create table metrics_class
 (
     id        bigint auto_increment
         primary key,
@@ -14,7 +14,7 @@ create table class_metrics
 )
     collate = utf8mb4_unicode_ci;
 
-create index idx_project_id on class_metrics (system_id);
+create index idx_project_id on metrics_class (system_id);
 create index idx_class_id on JClass (id);
 
 

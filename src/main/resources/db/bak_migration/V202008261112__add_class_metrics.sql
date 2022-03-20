@@ -1,4 +1,4 @@
-create table class_metrics
+create table metrics_class
 (
     id            bigint auto_increment
         primary key,
@@ -12,5 +12,5 @@ create table class_metrics
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on class_metrics (project_id);
+    on metrics_class (project_id);
 

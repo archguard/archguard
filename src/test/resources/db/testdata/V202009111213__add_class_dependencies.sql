@@ -1,4 +1,4 @@
-create table code_class_dependencies
+create table code_ref_class_dependencies
 (
     id        char(36) not null,
     system_id bigint   not null,

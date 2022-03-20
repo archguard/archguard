@@ -12,11 +12,11 @@ values ('c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d9', 1, 'org.apache.dubbo.demo.TestSe
         '2020-06-29 22:03:48', 'test-demo-interface', null, 'null', 0);
 
 delete
-from class_metrics
+from metrics_class
 where id is not null;
-insert into class_metrics (system_id, class_id, lcom4, dit)
+insert into metrics_class (system_id, class_id, lcom4, dit)
 values (1, 'c1983476-7bd8-4e52-a523-71c4f3f5098e', 1, 1);
-insert into class_metrics (system_id, class_id, lcom4, dit)
+insert into metrics_class (system_id, class_id, lcom4, dit)
 values (1, 'c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d8', 3, 3);
-insert into class_metrics (system_id, class_id, lcom4, dit)
+insert into metrics_class (system_id, class_id, lcom4, dit)
 values (1, 'c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d9', 2, 2);

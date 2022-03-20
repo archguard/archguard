@@ -17,7 +17,7 @@ class PackageRepositoryImpl : PackageRepository {
         return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
             handle
-                    .createQuery("select a.clzname aClz, b.clzname bClz from JMethod a, JMethod b, code_method_callees mc " +
+                    .createQuery("select a.clzname aClz, b.clzname bClz from JMethod a, JMethod b, code_ref_method_callees mc " +
                             "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.system_id='$systemId' and b.system_id='$systemId' and mc.system_id='$systemId'")
                     .mapTo(PackageDependenceDTO::class.java)
                     .list()
@@ -28,7 +28,7 @@ class PackageRepositoryImpl : PackageRepository {
         return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
             handle
-                .createQuery("select source as aClz, target as bClz from code_class_dependencies where system_id='$systemId'")
+                .createQuery("select source as aClz, target as bClz from code_ref_class_dependencies where system_id='$systemId'")
                 .mapTo(PackageDependenceDTO::class.java)
                 .list()
         }
