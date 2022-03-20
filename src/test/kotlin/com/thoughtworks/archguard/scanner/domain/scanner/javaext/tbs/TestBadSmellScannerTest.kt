@@ -31,7 +31,7 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
         testBadSmellScanner.scan(scanContext)
 
         val testBadSmells = jdbi.withHandle<List<TestBadSmell>, RuntimeException> { handle: Handle ->
-            handle.createQuery("select * from testBadSmell")
+            handle.createQuery("select * from metric_test_bad_smell")
                     .mapTo(TestBadSmell::class.java).list()
         }
         assertEquals(12, testBadSmells.size)

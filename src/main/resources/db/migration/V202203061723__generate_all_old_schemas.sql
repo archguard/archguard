@@ -443,7 +443,7 @@ create table metric_class_coupling
 create index idx_project_id
     on metric_class_coupling (system_id);
 
-create table metrics_class
+create table metric_class
 (
     id        bigint auto_increment
         primary key,
@@ -459,7 +459,7 @@ create table metrics_class
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on metrics_class (system_id);
+    on metric_class (system_id);
 
 create table metric_cognitive_complexity
 (
@@ -731,7 +731,7 @@ create table system_info
 )
     collate = utf8mb4_unicode_ci;
 
-create table testBadSmell
+create table metric_test_bad_smell
 (
     id          varchar(100) not null
         primary key,

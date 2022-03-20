@@ -13,7 +13,7 @@ class TestBadSmellRepo(@Autowired private val jdbi: Jdbi) {
     fun getTestBadSmellCount(): List<TestBadSmellCount> {
         return jdbi.withHandle<List<TestBadSmellCountDBO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(TestBadSmellCountDBO::class.java))
-            handle.createQuery("select type, count(id) as size from testBadSmell group by type")
+            handle.createQuery("select type, count(id) as size from metric_test_bad_smell group by type")
                     .mapTo(TestBadSmellCountDBO::class.java)
                     .list()
         }
@@ -30,7 +30,7 @@ class TestBadSmellRepo(@Autowired private val jdbi: Jdbi) {
     fun getTestBadSmellByTest(fileNames: List<String>): List<TestBadSmellCount> {
         return jdbi.withHandle<List<TestBadSmellCountDBO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(TestBadSmellCountDBO::class.java))
-            handle.createQuery("select type, count(id) as size from testBadSmell " +
+            handle.createQuery("select type, count(id) as size from metric_test_bad_smell " +
                     "where file_name in ( ${fileNames.joinToString("','", "'", "'")} )" +
                     "group by type ")
                     .mapTo(TestBadSmellCountDBO::class.java)

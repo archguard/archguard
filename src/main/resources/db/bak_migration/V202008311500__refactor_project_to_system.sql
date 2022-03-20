@@ -16,7 +16,7 @@ alter table `code_ref_class_parent` change `project_id` `system_id` bigint not n
 alter table `code_ref_method_callees` change `project_id` `system_id` bigint not null;
 alter table `code_ref_method_fields` change `project_id` `system_id` bigint not null;
 alter table `metric_class_coupling` change `project_id` `system_id` bigint not null;
-alter table `metrics_class` change `project_id` `system_id` bigint not null;
+alter table `metric_class` change `project_id` `system_id` bigint not null;
 
 alter table `code_annotation_value` change `project_id` `system_id` bigint not null;
 alter table `logic_module` change `project_id` `system_id` bigint not null;

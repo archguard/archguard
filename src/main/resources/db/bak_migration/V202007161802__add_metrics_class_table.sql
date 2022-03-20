@@ -1,5 +1,5 @@
-drop table if exists metrics_class;
-CREATE TABLE `metrics_class`  (
+drop table if exists metric_class;
+CREATE TABLE `metric_class`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `package_id` bigint(20) NOT NULL,
   `class_name` varchar(255) NOT NULL,

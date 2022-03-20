@@ -9,11 +9,11 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 @RegisterBeanMapper(ClassMetricPO::class)
 interface ClassMetricsDao {
     @GetGeneratedKeys
-    @SqlUpdate("insert into metrics_class (" +
+    @SqlUpdate("insert into metric_class (" +
             "class_id, system_id, noc, dit, lcom4, fanin, fanout) " +
             "values <values>")
     fun insert(@BindBeanList(value = "values", propertyNames = ["classId", "systemId", "noc", "dit", "lcom4", "fanIn", "fanOut"]) classMetricPOs: List<ClassMetricPO>): Long
 
-    @SqlUpdate("DELETE FROM metrics_class where system_id = :systemId")
+    @SqlUpdate("DELETE FROM metric_class where system_id = :systemId")
     fun deleteBy(@Bind("systemId") systemId: Long)
 }

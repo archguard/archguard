@@ -681,13 +681,13 @@ CREATE TABLE `metric_class_coupling` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `metrics_class`
+-- Table structure for table `metric_class`
 --
 
-DROP TABLE IF EXISTS `metrics_class`;
+DROP TABLE IF EXISTS `metric_class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `metrics_class` (
+CREATE TABLE `metric_class` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `class_id` varchar(255)  NOT NULL,
@@ -1049,13 +1049,13 @@ CREATE TABLE `system_info` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `testBadSmell`
+-- Table structure for table `metric_test_bad_smell`
 --
 
-DROP TABLE IF EXISTS `testBadSmell`;
+DROP TABLE IF EXISTS `metric_test_bad_smell`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `testBadSmell` (
+CREATE TABLE `metric_test_bad_smell` (
   `id` varchar(100) NOT NULL,
   `system_id` varchar(36) NOT NULL,
   `line` int DEFAULT NULL,

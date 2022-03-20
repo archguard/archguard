@@ -1,4 +1,4 @@
-create table testBadSmell
+create table metric_test_bad_smell
 (
     id varchar(100) primary key ,
     line integer,
