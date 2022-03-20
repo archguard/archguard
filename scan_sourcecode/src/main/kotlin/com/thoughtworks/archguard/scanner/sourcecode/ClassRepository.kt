@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DEFAULT_MODULE_NAME = "root"
+private const val THIRD_PARTY = "3rd-party"
 
 class ClassRepository(systemId: String) {
     private val batch: SourceBatch = SourceBatch()
@@ -26,11 +27,7 @@ class ClassRepository(systemId: String) {
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
     }
 
-    private fun saveClassCallees(
-        functions: Array<CodeFunction>,
-        moduleName: String,
-        clzName: String
-    ) {
+    private fun saveClassCallees(functions: Array<CodeFunction>, moduleName: String, clzName: String) {
         for (function in functions) {
             val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
@@ -50,7 +47,7 @@ class ClassRepository(systemId: String) {
     }
 
     private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String): String? {
-        val methodId: Optional<String?>? = findMethodId(module, clzName, callee.Parameters, callee.FunctionName)
+        val methodId: Optional<String?>? = findCalleeMethodId(module, clzName, callee.Parameters, callee.FunctionName)
         return methodId?.orElseGet { saveCalleeMethod(callee) }
     }
 
@@ -85,6 +82,19 @@ class ClassRepository(systemId: String) {
         return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName)
     }
 
+    private fun findCalleeMethodId(
+        module: String,
+        clzName: String,
+        parameters: Array<CodeProperty>,
+        functionName: String,
+    ): Optional<String?>? {
+        if (module.isNotEmpty()) {
+            return findMethodId(module, clzName, parameters, functionName)
+        }
+
+        return findMethodId(THIRD_PARTY, clzName, parameters, functionName)
+    }
+
     private fun findMethodId(
         moduleName: String,
         clzName: String,
@@ -99,13 +109,7 @@ class ClassRepository(systemId: String) {
         return batch.findId("code_method", keys)
     }
 
-
-    private fun saveClassParent(
-        clzId: String,
-        module: String,
-        imports: Array<CodeImport>,
-        extend: String
-    ) {
+    private fun saveClassParent(clzId: String, module: String, imports: Array<CodeImport>, extend: String) {
         val imp = imports.filter { it.Source.split(".").last() == extend }
         var moduleName = module
         if (imp.isNotEmpty()) {
@@ -142,11 +146,8 @@ class ClassRepository(systemId: String) {
             return idOpt.get()
         }
 
-        //other-module
-        // todo, after add module support for Chapi
-
         //third-party
-        idOpt = findClass(name, null, null)
+        idOpt = findClass(name, THIRD_PARTY, null)
         if (idOpt.isPresent) {
             return idOpt.get()
         }
@@ -154,10 +155,15 @@ class ClassRepository(systemId: String) {
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
         val className: String = if (index < 0) name else name.substring(index + 1)
+
+        if (name.isEmpty() && className.isEmpty() && packageName.isNullOrEmpty()) {
+            return null
+        }
+
         // module name empty for third-part deps
         return doSaveClass(
             name,
-            "",
+            THIRD_PARTY,
             "",
             thirdparty = true,
             isTest = false,
@@ -175,28 +181,6 @@ class ClassRepository(systemId: String) {
         values["source"] = sourceName
         values["target"] = name
         batch.add("code_ref_class_dependencies", values)
-    }
-
-    private fun doSaveClass(
-        name: String, module: String, access: String, thirdparty: Boolean, isTest: Boolean,
-        packageName: String?, className: String
-    ): String {
-        val time: String = currentTime
-        val clzId = generateId()
-        val values: MutableMap<String, String> = HashMap()
-        values["id"] = clzId
-        values["system_id"] = systemId
-        values["name"] = name
-        values["is_thirdparty"] = if (thirdparty) "true" else "false"
-        values["is_test"] = if (isTest) "true" else "false"
-        values["updatedAt"] = time
-        values["createdAt"] = time
-        values["module"] = module
-        values["package_name"] = packageName.orEmpty()
-        values["class_name"] = className
-        values["access"] = access
-        batch.add("code_class", values)
-        return clzId
     }
 
     private fun findClass(name: String, module: String?, access: String?): Optional<String?> {
@@ -350,6 +334,29 @@ class ClassRepository(systemId: String) {
             relation["b"] = id
             batch.add("code_ref_class_fields", relation)
         }
+    }
+
+    private fun doSaveClass(
+        name: String, module: String, access: String, thirdparty: Boolean, isTest: Boolean,
+        packageName: String?, className: String
+    ): String {
+        val time: String = currentTime
+        val clzId = generateId()
+        val values: MutableMap<String, String> = HashMap()
+        values["id"] = clzId
+        values["system_id"] = systemId
+        values["name"] = name
+        values["is_thirdparty"] = if (thirdparty) "true" else "false"
+        values["is_test"] = if (isTest) "true" else "false"
+        values["updatedAt"] = time
+        values["createdAt"] = time
+        values["module"] = module
+        values["package_name"] = packageName.orEmpty()
+        values["class_name"] = className
+        values["access"] = access
+
+        batch.add("code_class", values)
+        return clzId
     }
 
     private fun saveClass(clz: CodeDataStruct): String {
