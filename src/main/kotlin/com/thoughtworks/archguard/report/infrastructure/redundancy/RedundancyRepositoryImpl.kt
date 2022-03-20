@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
     private val table = "select sum(1) sum, m.clzname as name, m.module as module " +
-            "from JMethod m, JClass c, method_access ma, code_class_access ca " +
+            "from code_method m, code_class c, method_access ma, code_class_access ca " +
             "where ca.class_id=c.id  and ca.is_interface = false and ca.is_abstract = false " +
             "and ma.method_id = m.id and m.name not like '%$%'" +
             "and m.name != '<clinit>' and m.name != 'main' and m.name != '<init>'" +

@@ -13,7 +13,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getStaticMethodCount(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(m.id) from method_access m inner join JMethod c where m.method_id = c.id  
+                select count(m.id) from method_access m inner join code_method c where m.method_id = c.id  
                 and m.system_id = :systemId and m.is_static=1 and m.is_private=0 
                 and c.name not in ('<clinit>', 'main') and c.name not like '%$%'
             """.trimIndent()
@@ -28,7 +28,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "select c.id, c.system_id as systemId, c.module as module, c.class_name as className,  " +
                     "c.package_name as packageName, c.name as name from method_access m " +
-                    "inner join JMethod c where m.method_id = c.id and m.system_id=:systemId " +
+                    "inner join code_method c where m.method_id = c.id and m.system_id=:systemId " +
                     "and m.is_static=1 and m.is_private=0 " +
                     "and c.name not in ('<clinit>', 'main') and c.name not like '%$%' " +
                     "limit :limit offset :offset"
@@ -43,9 +43,9 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getSleepTestMethodCount(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(id) from JMethod where system_id=:systemId and is_test=1 
+                select count(id) from code_method where system_id=:systemId and is_test=1 
                 and id in (select mc.a from code_ref_method_callees mc 
-                where mc.b in (select m.id from JMethod m where name in ('sleep')))
+                where mc.b in (select m.id from code_method m where name in ('sleep')))
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -57,9 +57,9 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getSleepTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "select id, system_id as systemId, module, class_name, package_name, " +
-                    "name FROM JMethod where system_id=:systemId and is_test=1 " +
+                    "name FROM code_method where system_id=:systemId and is_test=1 " +
                     "and id in (select mc.a from code_ref_method_callees mc " +
-                    "where mc.b in (select id from JMethod  where name in ('sleep'))) " +
+                    "where mc.b in (select id from code_method  where name in ('sleep'))) " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -72,8 +72,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getEmptyTestMethodCount(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                SELECT count(JMethod.id) FROM JMethod LEFT JOIN code_ref_method_callees ON JMethod.id=code_ref_method_callees.a 
-                WHERE code_ref_method_callees.a IS NULL and JMethod.system_id=:systemId and JMethod.is_test=1
+                SELECT count(code_method.id) FROM code_method LEFT JOIN code_ref_method_callees ON code_method.id=code_ref_method_callees.a 
+                WHERE code_ref_method_callees.a IS NULL and code_method.system_id=:systemId and code_method.is_test=1
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -102,7 +102,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
                 select count(id) from JMethod 
-                where id in (select targetId from JAnnotation 
+                where id in (select targetId from code_annotation 
                 where system_id=:systemId and name in (<listOfAnnotation>))
             """.trimIndent()
             it.createQuery(sql)
@@ -118,7 +118,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "SELECT m.id, m.system_id as systemId, m.module, m.class_name, m.package_name, " +
                     "m.name FROM JMethod m " +
-                    "where id in (select targetId from JAnnotation " +
+                    "where id in (select targetId from code_annotation " +
                     "where system_id=:systemId and name in (<listOfAnnotation>)) " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
@@ -156,7 +156,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
                      select m.id from JMethod m join 
-                    (select j.id, j.targetId, j.name, jv.value from JAnnotation j join JAnnotationValue jv on j.id = jv.annotationId 
+                    (select j.id, j.targetId, j.name, jv.value from code_annotation j join code_annotation_value jv on j.id = jv.annotationId 
                     where jv.system_id=:systemId and jv.key='expected') as t1 on m.id = t1.targetId where m.is_test=1
                 """.trimIndent()
             it.createQuery(sql)

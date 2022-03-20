@@ -12,7 +12,7 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
 
     override fun getDitAboveThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(c.id) from JClass c inner join metrics_class m on m.class_id = c.id " +
+            val sql = "select count(c.id) from code_class c inner join metrics_class m on m.class_id = c.id " +
                     "where c.system_id =:system_id and m.dit > :dit"
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -30,7 +30,7 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
                        sum(CASE when c.dit > :level3Start then 1 else 0 end)                         AS 'level3'
                 from (
                          select dit
-                         from JClass c
+                         from code_class c
                                   inner join metrics_class m on m.class_id = c.id
                          where c.system_id = :systemId) as c
             """.trimIndent()
@@ -47,7 +47,7 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
     }
 
     override fun getDitAboveThresholdList(systemId: Long, threshold: Int, limit: Long, offset: Long): List<DeepInheritance> {
-        val sql = "select c.id, c.system_id, c.name, c.module, m.dit from JClass c " +
+        val sql = "select c.id, c.system_id, c.name, c.module, m.dit from code_class c " +
                 "inner join metrics_class m on m.class_id = c.id " +
                 "where c.system_id =:system_id and m.dit > :dit " +
                 "order by m.dit desc LIMIT :limit OFFSET :offset"

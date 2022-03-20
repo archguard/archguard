@@ -1,4 +1,4 @@
-create table JMethod
+create table code_method
 (
 	id char(36) not null,
 	access mediumtext not null,

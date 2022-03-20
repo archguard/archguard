@@ -15,6 +15,6 @@ create table metrics_class
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id on metrics_class (system_id);
-create index idx_class_id on JClass (id);
+create index idx_class_id on code_class (id);
 
 

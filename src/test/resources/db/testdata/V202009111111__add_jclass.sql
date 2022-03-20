@@ -1,4 +1,4 @@
-create table JClass
+create table code_class
 (
     id            char(36)    not null,
     system_id     bigint      not null,

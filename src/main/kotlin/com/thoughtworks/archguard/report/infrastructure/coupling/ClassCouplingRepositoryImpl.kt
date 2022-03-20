@@ -15,7 +15,7 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
         }
         return jdbi.withHandle<List<ClassCoupling>, Exception> {
             val sql = "select jc.id as id, jc.module as moduleName, jc.name as classFullName, " +
-                    "cm.fanin as fanIn, cm.fanout as fanOut from metrics_class cm JOIN JClass jc " +
+                    "cm.fanin as fanIn, cm.fanout as fanOut from metrics_class cm JOIN code_class jc " +
                     "on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId and " +
                     "(cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold) " +
                     orderSqlPiece + ", moduleName, classFullName limit :limit offset :offset"
@@ -33,7 +33,7 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1)" +
                     "from metrics_class cm " +
-                    "JOIN JClass jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
+                    "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
                     "and (cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold)"
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -81,7 +81,7 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
             val sql = "select jc.id as id, jc.module as moduleName, jc.name as classFullName, " +
                     "cm.fanin as fanIn, cm.fanout as fanOut " +
                     "from metrics_class cm " +
-                    "JOIN JClass jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
+                    "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
                     "order by fanIn desc, fanOut desc, moduleName, classFullName"
             it.createQuery(sql)
                     .bind("systemId", systemId)

@@ -21,7 +21,7 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
     override fun getSystemModuleCountBySystemId(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select count(distinct module) from JClass where system_id=:systemId and module is not null
+                select count(distinct module) from code_class where system_id=:systemId and module is not null
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -33,7 +33,7 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
     override fun getSystemLineCountBySystemId(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                select sum(loc) from JClass where system_id=:systemId
+                select sum(loc) from code_class where system_id=:systemId
                 """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)

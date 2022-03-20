@@ -1,20 +1,20 @@
-ALTER TABLE `JClass`
+ALTER TABLE `code_class`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `JField`
+ALTER TABLE `code_field`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `JMethod`
+ALTER TABLE `code_method`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `JAnnotation`
+ALTER TABLE `code_annotation`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 
-ALTER TABLE `JAnnotationValue`
+ALTER TABLE `code_annotation_value`
     ADD COLUMN `project_id` bigint(20) NOT NULL AFTER `id`,
     ADD INDEX `idx_project_id`(`project_id`) USING BTREE;
 

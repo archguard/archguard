@@ -1,1 +1,1 @@
-alter table JMethod add column `argumenttypes` mediumtext;
+alter table code_method add column `argumenttypes` mediumtext;

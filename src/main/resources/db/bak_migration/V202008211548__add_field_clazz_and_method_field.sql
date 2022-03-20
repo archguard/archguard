@@ -1,4 +1,4 @@
-alter table JField add column `clzname` mediumtext;
+alter table code_field add column `clzname` mediumtext;
 drop table if exists code_ref_method_fields;
 create table if not exists code_ref_method_fields
 (
@@ -9,10 +9,10 @@ create table if not exists code_ref_method_fields
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_ref_method_fields_ibfk_1
-		foreign key (a) references JMethod (id)
+		foreign key (a) references code_method (id)
 			on delete cascade,
 	constraint code_ref_method_fields_ibfk_2
-		foreign key (b) references JField (id)
+		foreign key (b) references code_field (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;

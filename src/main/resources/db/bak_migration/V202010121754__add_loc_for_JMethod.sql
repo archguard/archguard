@@ -1,1 +1,1 @@
-alter table JMethod add column `loc` int
+alter table code_method add column `loc` int

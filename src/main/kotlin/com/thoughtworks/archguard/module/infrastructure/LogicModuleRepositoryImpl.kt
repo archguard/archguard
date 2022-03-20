@@ -93,7 +93,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
     override fun getAllSubModule(systemId: Long): List<SubModule> {
         val subModulesFromJClasses = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
-            handle.createQuery("select distinct module from JClass where system_id = :systemId")
+            handle.createQuery("select distinct module from code_class where system_id = :systemId")
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()
@@ -101,7 +101,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
                     .map { SubModule(it) }
         }
         val subModulesFromJMethods = jdbi.withHandle<List<SubModule>, Nothing> { handle ->
-            handle.createQuery("select distinct module from JMethod where system_id = :systemId")
+            handle.createQuery("select distinct module from code_method where system_id = :systemId")
                     .bind("systemId", systemId)
                     .mapTo(String::class.java)
                     .list()
@@ -130,7 +130,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 }
 
 fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): String {
-    var tableTemplate = "select * from JMethod where ("
+    var tableTemplate = "select * from code_method where ("
     val filterConditions = ArrayList<String>()
     members.forEach { s ->
         if (s.getType() == ModuleMemberType.SUBMODULE) {

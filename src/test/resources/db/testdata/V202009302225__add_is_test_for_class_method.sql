@@ -1,2 +1,2 @@
-alter table `JMethod` ADD COLUMN `is_test` boolean;
-alter table `JClass` ADD COLUMN `is_test` boolean;
+alter table `code_method` ADD COLUMN `is_test` boolean;
+alter table `code_class` ADD COLUMN `is_test` boolean;

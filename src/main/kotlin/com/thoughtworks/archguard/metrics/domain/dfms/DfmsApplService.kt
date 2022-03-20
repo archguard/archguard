@@ -40,7 +40,7 @@ class DfmsApplService(
 
     private fun getClassAbstractMetric(systemId: Long, jClassVO: JClassVO): ClassAbstractRatio {
         val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
-                ?: throw ClassNotFountException("Not Found JClass with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
+                ?: throw ClassNotFountException("Not Found code_class with Module ${jClassVO.module} and ClassName ${jClassVO.name}")
         val methods = jMethodRepository.findMethodsByModuleAndClass(systemId, jClass.module, jClass.name)
         jClass.methods = methods
         return ClassAbstractRatio.fromJClass(jClass)

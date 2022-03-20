@@ -30,7 +30,7 @@ create table system_configure
 create index idx_project_id
     on system_configure (system_id);
 
-create table JAnnotation
+create table code_annotation
 (
     id          varchar(36)                         not null
         primary key,
@@ -44,9 +44,9 @@ create table JAnnotation
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on JAnnotation (system_id);
+    on code_annotation (system_id);
 
-create table JAnnotationValue
+create table code_annotation_value
 (
     id           varchar(36)                         not null
         primary key,
@@ -57,15 +57,15 @@ create table JAnnotationValue
     create_time  timestamp default CURRENT_TIMESTAMP null comment '创建时间',
     update_time  timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint JAnnotationValue_ibfk_1
-        foreign key (annotationId) references JAnnotation (id)
+        foreign key (annotationId) references code_annotation (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on JAnnotationValue (system_id);
+    on code_annotation_value (system_id);
 
-create table JClass
+create table code_class
 (
     id            char(36)    not null
         primary key,
@@ -86,15 +86,15 @@ create table JClass
     collate = utf8mb4_unicode_ci;
 
 create index idx_JClass_name
-    on JClass (name);
+    on code_class (name);
 
 create index idx_class_id
-    on JClass (id);
+    on code_class (id);
 
 create index idx_project_id
-    on JClass (system_id);
+    on code_class (system_id);
 
-create table JField
+create table code_field
 (
     id        char(36)    not null
         primary key,
@@ -110,9 +110,9 @@ create table JField
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on JField (system_id);
+    on code_field (system_id);
 
-create table JMethod
+create table code_method
 (
     id            char(36)    not null
         primary key,
@@ -135,13 +135,13 @@ create table JMethod
     collate = utf8mb4_unicode_ci;
 
 create index JMethod_clzname_name_index
-    on JMethod (clzname(255), name(255));
+    on code_method (clzname(255), name(255));
 
 create index JMethod_module_index
-    on JMethod (module(255));
+    on code_method (module(255));
 
 create index idx_project_id
-    on JMethod (system_id);
+    on code_method (system_id);
 
 create table system_overview
 (
@@ -177,10 +177,10 @@ create table code_ref_class_dependencies
     constraint id_UNIQUE
         unique (id),
     constraint code_ref_class_dependencies_ibfk_1
-        foreign key (a) references JClass (id)
+        foreign key (a) references code_class (id)
             on delete cascade,
     constraint code_ref_class_dependencies_ibfk_2
-        foreign key (b) references JClass (id)
+        foreign key (b) references code_class (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
@@ -206,10 +206,10 @@ create table code_ref_class_fields
     constraint id_UNIQUE
         unique (id),
     constraint code_ref_class_fields_ibfk_1
-        foreign key (a) references JClass (id)
+        foreign key (a) references code_class (id)
             on delete cascade,
     constraint code_ref_class_fields_ibfk_2
-        foreign key (b) references JField (id)
+        foreign key (b) references code_field (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
@@ -235,10 +235,10 @@ create table code_refs_class_methods
     constraint id_UNIQUE
         unique (id),
     constraint code_refs_class_methods_ibfk_1
-        foreign key (a) references JClass (id)
+        foreign key (a) references code_class (id)
             on delete cascade,
     constraint code_refs_class_methods_ibfk_2
-        foreign key (b) references JMethod (id)
+        foreign key (b) references code_method (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
@@ -264,10 +264,10 @@ create table code_ref_class_parent
     constraint id_UNIQUE
         unique (id),
     constraint code_ref_class_parent_ibfk_1
-        foreign key (a) references JClass (id)
+        foreign key (a) references code_class (id)
             on delete cascade,
     constraint code_ref_class_parent_ibfk_2
-        foreign key (b) references JClass (id)
+        foreign key (b) references code_class (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
@@ -293,10 +293,10 @@ create table code_ref_method_callees
     constraint id_UNIQUE
         unique (id),
     constraint code_ref_method_callees_ibfk_1
-        foreign key (a) references JMethod (id)
+        foreign key (a) references code_method (id)
             on delete cascade,
     constraint code_ref_method_callees_ibfk_2
-        foreign key (b) references JMethod (id)
+        foreign key (b) references code_method (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
@@ -325,10 +325,10 @@ create table code_ref_method_fields
     constraint id_UNIQUE
         unique (id),
     constraint code_ref_method_fields_ibfk_1
-        foreign key (a) references JMethod (id)
+        foreign key (a) references code_method (id)
             on delete cascade,
     constraint code_ref_method_fields_ibfk_2
-        foreign key (b) references JField (id)
+        foreign key (b) references code_field (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;

@@ -22,7 +22,7 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
     }
 
     override fun getServiceNameByMethodId(methodId: String): String {
-        val sql = "select module from JMethod where id = '$methodId'"
+        val sql = "select module from code_method where id = '$methodId'"
         return jdbi.withHandle<String, Nothing> {
             it.createQuery(sql)
                     .mapTo(String::class.java)
@@ -32,7 +32,7 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
 
     // FIXME: 由于JMethodVO修改，这块已经不可用
     override fun getMethodById(methodId: String): JMethodVO {
-        val sql = "select module as moduleName, clzname as className, name from JMethod where id = '$methodId'"
+        val sql = "select module as moduleName, clzname as className, name from code_method where id = '$methodId'"
 
         return jdbi.withHandle<JMethodVO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodVO::class.java))

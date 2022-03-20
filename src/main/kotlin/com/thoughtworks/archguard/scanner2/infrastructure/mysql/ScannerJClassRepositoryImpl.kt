@@ -50,7 +50,7 @@ class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findFields(id: String): List<JField> {
-        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from code_ref_class_fields where a='$id')"
+        val sql = "SELECT id, name, type FROM code_field WHERE id in (select b from code_ref_class_fields where a='$id')"
         return jdbi.withHandle<List<JField>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
             it.createQuery(sql)

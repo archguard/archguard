@@ -15,7 +15,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
 
     override fun findMethodFields(id: String): List<JField> {
-        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from code_ref_method_fields where a='$id')"
+        val sql = "SELECT id, name, type FROM code_field WHERE id in (select b from code_ref_method_fields where a='$id')"
         return jdbi.withHandle<List<JField>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
             it.createQuery(sql)
@@ -25,7 +25,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE clzname='$name' AND system_id='$systemId' AND module <=>'$module'"
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM code_method WHERE clzname='$name' AND system_id='$systemId' AND module <=>'$module'"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -36,7 +36,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodCallers(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM JMethod WHERE id IN (SELECT a FROM code_ref_method_callees WHERE b='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM code_method WHERE id IN (SELECT a FROM code_ref_method_callees WHERE b='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -47,7 +47,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodCallees(id: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM JMethod WHERE id IN (SELECT b FROM code_ref_method_callees WHERE a='$id') "
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  FROM code_method WHERE id IN (SELECT b FROM code_ref_method_callees WHERE a='$id') "
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
@@ -61,9 +61,9 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access  " +
                 "FROM JMethod " +
                 "WHERE id IN (SELECT DISTINCT cm.b " +
-                "             FROM JClass c, " +
+                "             FROM code_class c, " +
                 "                  code_refs_class_methods cm, " +
-                "                  JClass p, " +
+                "                  code_class p, " +
                 "                  code_refs_class_methods pm, " +
                 "                  code_ref_class_parent cp " +
                 "             WHERE pm.b = '$id' " +
@@ -82,7 +82,7 @@ class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
     }
 
     override fun findMethodByModuleAndClazzAndName(systemId: Long, moduleName: String?, clazzName: String, methodName: String): List<JMethod> {
-        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM JMethod WHERE " +
+        val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM code_method WHERE " +
                 "system_id=:systemId AND name=:methodName AND clzname=:clazzName AND module <=> :moduleName"
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))

@@ -15,7 +15,7 @@ class MethodCouplingRepositoryImpl(val jdbi: Jdbi) : MethodCouplingRepository {
         }
         return jdbi.withHandle<List<MethodCoupling>, Exception> {
             val sql = "select jm.id as id, jm.module as moduleName, jm.clzname as classFullName, jm.name as methodName, jm.argumenttypes as args, " +
-                    "mm.fanin as fanIn, mm.fanout as fanOut from method_metrics mm JOIN JMethod jm " +
+                    "mm.fanin as fanIn, mm.fanout as fanOut from method_metrics mm JOIN code_method jm " +
                     "on mm.system_id = jm.system_id and mm.method_id = jm.id where mm.system_id=:systemId and " +
                     "(mm.fanin > :methodFanInThreshold or mm.fanout > :methodFanOutThreshold) " +
                     orderSqlPiece + ", moduleName, classFullName limit :limit offset :offset"
@@ -31,7 +31,7 @@ class MethodCouplingRepositoryImpl(val jdbi: Jdbi) : MethodCouplingRepository {
 
     override fun getCouplingAboveThresholdCount(systemId: Long, methodFanInThreshold: Int, methodFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from method_metrics mm JOIN JMethod jm " +
+            val sql = "select count(1) from method_metrics mm JOIN code_method jm " +
                     "on mm.system_id = jm.system_id and mm.method_id = jm.id where mm.system_id=:systemId and " +
                     "(mm.fanin > :methodFanInThreshold or mm.fanout > :methodFanOutThreshold)"
             it.createQuery(sql)
@@ -79,7 +79,7 @@ class MethodCouplingRepositoryImpl(val jdbi: Jdbi) : MethodCouplingRepository {
     override fun getAllCoupling(systemId: Long): List<MethodCoupling> {
         return jdbi.withHandle<List<MethodCoupling>, Exception> {
             val sql = "select jm.id as id, jm.module as moduleName, jm.clzname as classFullName, jm.name as methodName, jm.argumenttypes as args, " +
-                    "mm.fanin as fanIn, mm.fanout as fanOut from method_metrics mm JOIN JMethod jm " +
+                    "mm.fanin as fanIn, mm.fanout as fanOut from method_metrics mm JOIN code_method jm " +
                     "on mm.system_id = jm.system_id and mm.method_id = jm.id where mm.system_id=:systemId and " +
                     "order by fanIn desc, fanOut desc, moduleName, classFullName"
             it.createQuery(sql)

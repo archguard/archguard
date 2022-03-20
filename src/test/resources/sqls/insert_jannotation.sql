@@ -1,4 +1,4 @@
-INSERT INTO `JAnnotation`(`name`, `system_id`, `targetType`, `id`, `targetId`)
+INSERT INTO `code_annotation`(`name`, `system_id`, `targetType`, `id`, `targetId`)
 VALUES ('org.junit.Test', 1, 'METHOD', '72f2711f-75a6-4eca-81b6-b01d84af7940', 'ffd83872-e365-46c3-8944-74dda1d91c66'),
        ('org.junit.runner.RunWith', 1, 'TYPE', '5ee38dd4-1910-499c-9a57-53c9aee01357',
         '822127fe-5331-4da8-9e3e-7c9f32550205'),
@@ -43,7 +43,7 @@ VALUES ('org.junit.Test', 1, 'METHOD', '72f2711f-75a6-4eca-81b6-b01d84af7940', '
         '9fb54b92-a6dd-4864-80f7-a0251ab6a254'),
        ('org.springframework.cloud.netflix.feign.FeignClient', 1, 'TYPE', '3b32c105-137c-4f1b-a064-a209250f729b',
         'a72fd1cd-6ca0-4585-b87c-d5e8b47e33ef');
-INSERT INTO `JAnnotationValue`(`id`, `system_id`, `annotationId`, `value`, `key`)
+INSERT INTO `code_annotation_value`(`id`, `system_id`, `annotationId`, `value`, `key`)
 VALUES ('b3369842-cd84-4848-8f53-06becd80b0b1', 1, '5ee38dd4-1910-499c-9a57-53c9aee01357',
         'Lorg/springframework/test/context/junit4/SpringRunner;', 'value'),
        ('76696b4b-2a30-4ae4-894b-f03b199c9e21', 1, 'bbef0b92-103a-47dd-b762-5b8a9bf59dea', '["/hello"]', 'value'),

@@ -12,7 +12,7 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
 
     override fun getLCOM4AboveThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(c.id) from JClass c inner join metrics_class m on m.class_id = c.id " +
+            val sql = "select count(c.id) from code_class c inner join metrics_class m on m.class_id = c.id " +
                     "where c.system_id =:system_id and m.lcom4 > :lcom4"
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -30,7 +30,7 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
                        sum(CASE when c.lcom4 > :level3Start then 1 else 0 end)                           AS 'level3'
                 from (
                          select lcom4
-                         from JClass c
+                         from code_class c
                                   inner join metrics_class m on m.class_id = c.id
                          where c.system_id = :systemId
                      ) as c
@@ -48,7 +48,7 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
     }
 
     override fun getLCOM4AboveThresholdList(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassDataClump> {
-        val sql = "select c.id, c.system_id, c.name, c.module, m.lcom4 from JClass c " +
+        val sql = "select c.id, c.system_id, c.name, c.module, m.lcom4 from code_class c " +
                 "inner join metrics_class m on m.class_id = c.id " +
                 "where c.system_id =:system_id and m.lcom4 > :lcom4 " +
                 "order by m.lcom4 desc LIMIT :limit OFFSET :offset"

@@ -16,7 +16,7 @@ class JAnnotationRepositoryImpl : JAnnotationRepository {
     lateinit var jdbi: Jdbi
 
     override fun getJAnnotationByName(name: String): List<JAnnotation> {
-        val sql = "select * from JAnnotation where name like '%$name%'"
+        val sql = "select * from code_annotation where name like '%$name%'"
         return jdbi.withHandle<List<JAnnotation>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JAnnotation::class.java))
             it.createQuery(sql)
@@ -27,7 +27,7 @@ class JAnnotationRepositoryImpl : JAnnotationRepository {
 
 
     override fun getJAnnotationValues(annotationId: String): Map<String, String> {
-        val sql = "select * from JAnnotationValue where annotationId = '$annotationId'"
+        val sql = "select * from code_annotation_value where annotationId = '$annotationId'"
         val list = jdbi.withHandle<List<JAnnotationValueDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JAnnotationValueDto::class.java))
             it.createQuery(sql)

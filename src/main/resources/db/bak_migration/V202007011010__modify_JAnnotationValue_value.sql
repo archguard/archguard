@@ -1,1 +1,1 @@
-alter table JAnnotationValue modify column `value` text;
+alter table code_annotation_value modify column `value` text;

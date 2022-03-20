@@ -1,1 +1,1 @@
-alter table JClass add column `access` mediumtext;
+alter table code_class add column `access` mediumtext;

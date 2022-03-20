@@ -16,8 +16,8 @@ collate=utf8mb4_unicode_ci;
 alter table system_configure
 	add primary key (id);
 
-drop table if exists JClass;
-create table if not exists JClass
+drop table if exists code_class;
+create table if not exists code_class
 (
 	id char(36) not null,
 	name char(255) null,
@@ -31,13 +31,13 @@ create table if not exists JClass
 collate=utf8mb4_unicode_ci;
 
 create index idx_JClass_name
-	on JClass (name);
+	on code_class (name);
 
-alter table JClass
+alter table code_class
 	add primary key (id);
 
-drop table if exists JField;
-create table if not exists JField
+drop table if exists code_field;
+create table if not exists code_field
 (
 	id char(36) not null,
 	name mediumtext not null,
@@ -49,11 +49,11 @@ create table if not exists JField
 )
 collate=utf8mb4_unicode_ci;
 
-alter table JField
+alter table code_field
 	add primary key (id);
 
-drop table if exists JMethod;
-create table if not exists JMethod
+drop table if exists code_method;
+create table if not exists code_method
 (
 	id char(36) not null,
 	access mediumtext not null,
@@ -69,12 +69,12 @@ create table if not exists JMethod
 collate=utf8mb4_unicode_ci;
 
 create index JMethod_clzname_name_index
-	on JMethod (clzname(255), name(255));
+	on code_method (clzname(255), name(255));
 
 create index JMethod_module_index
-	on JMethod (module(255));
+	on code_method (module(255));
 
-alter table JMethod
+alter table code_method
 	add primary key (id);
 
 drop table if exists JMethodPLProcedure;
@@ -189,10 +189,10 @@ create table if not exists code_ref_class_dependencies
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_ref_class_dependencies_ibfk_1
-		foreign key (a) references JClass (id)
+		foreign key (a) references code_class (id)
 			on delete cascade,
 	constraint code_ref_class_dependencies_ibfk_2
-		foreign key (b) references JClass (id)
+		foreign key (b) references code_class (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
@@ -215,10 +215,10 @@ create table if not exists code_ref_class_fields
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_ref_class_fields_ibfk_1
-		foreign key (a) references JClass (id)
+		foreign key (a) references code_class (id)
 			on delete cascade,
 	constraint code_ref_class_fields_ibfk_2
-		foreign key (b) references JField (id)
+		foreign key (b) references code_field (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
@@ -241,10 +241,10 @@ create table if not exists code_refs_class_methods
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_refs_class_methods_ibfk_1
-		foreign key (a) references JClass (id)
+		foreign key (a) references code_class (id)
 			on delete cascade,
 	constraint code_refs_class_methods_ibfk_2
-		foreign key (b) references JMethod (id)
+		foreign key (b) references code_method (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
@@ -267,10 +267,10 @@ create table if not exists code_ref_class_parent
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_ref_class_parent_ibfk_1
-		foreign key (a) references JClass (id)
+		foreign key (a) references code_class (id)
 			on delete cascade,
 	constraint code_ref_class_parent_ibfk_2
-		foreign key (b) references JClass (id)
+		foreign key (b) references code_class (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
@@ -293,10 +293,10 @@ create table if not exists code_ref_method_callees
 	constraint id_UNIQUE
 		unique (id),
 	constraint code_ref_method_callees_ibfk_1
-		foreign key (a) references JMethod (id)
+		foreign key (a) references code_method (id)
 			on delete cascade,
 	constraint code_ref_method_callees_ibfk_2
-		foreign key (b) references JMethod (id)
+		foreign key (b) references code_method (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
