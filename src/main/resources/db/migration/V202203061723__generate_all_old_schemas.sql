@@ -153,7 +153,7 @@ create table system_overview
     update_time    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table ScannerConfigure
+create table system_scanner_configure
 (
     id        char(36)    not null,
     type      mediumtext  not null,
@@ -339,7 +339,7 @@ create index A
 create index B
     on code_ref_method_fields (b);
 
-create table badSmell
+create table metric_code_bad_smell
 (
     id          varchar(100) not null
         primary key,
@@ -701,7 +701,7 @@ create table metric_package
 create index idx_project_id
     on metric_package (system_id);
 
-create table quality_gate_profile
+create table system_quality_gate_profile
 (
     id         int auto_increment comment '唯一索引'
         primary key,

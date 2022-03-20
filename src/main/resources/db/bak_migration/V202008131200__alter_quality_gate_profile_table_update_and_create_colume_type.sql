@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS quality_gate_profile;
-CREATE TABLE quality_gate_profile
+DROP TABLE IF EXISTS system_quality_gate_profile;
+CREATE TABLE system_quality_gate_profile
 (
     id         INT(11) AUTO_INCREMENT COMMENT '唯一索引',
     name       VARCHAR(256) NOT NULL COMMENT '名称',

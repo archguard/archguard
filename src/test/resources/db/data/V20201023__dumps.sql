@@ -241,13 +241,13 @@ CREATE TABLE `PLProcedureSqlTable` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ScannerConfigure`
+-- Table structure for table `system_scanner_configure`
 --
 
-DROP TABLE IF EXISTS `ScannerConfigure`;
+DROP TABLE IF EXISTS `system_scanner_configure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `ScannerConfigure` (
+CREATE TABLE `system_scanner_configure` (
   `id` char(36) NOT NULL,
   `type` mediumtext NOT NULL,
   `key` mediumtext NOT NULL,
@@ -538,13 +538,13 @@ CREATE TABLE `_SqlRightConditionValue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `badSmell`
+-- Table structure for table `metric_code_bad_smell`
 --
 
-DROP TABLE IF EXISTS `badSmell`;
+DROP TABLE IF EXISTS `metric_code_bad_smell`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `badSmell` (
+CREATE TABLE `metric_code_bad_smell` (
   `id` varchar(100) NOT NULL,
   `system_id` varchar(36) NOT NULL,
   `entity_name` varchar(200) NOT NULL,
@@ -1007,13 +1007,13 @@ CREATE TABLE `metric_package` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `quality_gate_profile`
+-- Table structure for table `system_quality_gate_profile`
 --
 
-DROP TABLE IF EXISTS `quality_gate_profile`;
+DROP TABLE IF EXISTS `system_quality_gate_profile`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `quality_gate_profile` (
+CREATE TABLE `system_quality_gate_profile` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '唯一索引',
   `name` varchar(256)  NOT NULL COMMENT '名称',
   `config` mediumtext  NOT NULL COMMENT '质量阈配置',

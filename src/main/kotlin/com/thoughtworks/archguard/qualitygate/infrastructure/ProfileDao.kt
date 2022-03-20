@@ -11,23 +11,23 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 @RegisterBeanMapper(QualityGateProfileDTO::class)
 interface ProfileDao {
-    @SqlUpdate("INSERT INTO quality_gate_profile (name, config) VALUES (:name, :config)")
+    @SqlUpdate("INSERT INTO system_quality_gate_profile (name, config) VALUES (:name, :config)")
     fun insert(@BindBean profile: QualityGateProfile)
 
-    @SqlQuery("SELECT * FROM quality_gate_profile WHERE name=:name")
+    @SqlQuery("SELECT * FROM system_quality_gate_profile WHERE name=:name")
     @RegisterColumnMapper(DateMapper::class)
     fun findByName(@Bind("name") name: String): QualityGateProfile?
 
-    @SqlQuery("SELECT count(1) FROM quality_gate_profile WHERE name=:name")
+    @SqlQuery("SELECT count(1) FROM system_quality_gate_profile WHERE name=:name")
     fun countByName(@Bind("name") name: String): Int
 
-    @SqlQuery("SELECT * FROM quality_gate_profile")
+    @SqlQuery("SELECT * FROM system_quality_gate_profile")
     @RegisterColumnMapper(DateMapper::class)
     fun findAll(): List<QualityGateProfile>
 
-    @SqlUpdate("UPDATE quality_gate_profile SET name=:name, config=:config WHERE id=:id")
+    @SqlUpdate("UPDATE system_quality_gate_profile SET name=:name, config=:config WHERE id=:id")
     fun update(@BindBean profile: QualityGateProfile)
 
-    @SqlUpdate("DELETE FROM quality_gate_profile WHERE id=:id")
+    @SqlUpdate("DELETE FROM system_quality_gate_profile WHERE id=:id")
     fun delete(@Bind("id") id: Long)
 }

@@ -11,7 +11,7 @@ class BadSmellRepo(@Autowired private val jdbi: Jdbi) {
     fun getBadSmellCount(): List<BadSmellCountDBO> {
         return jdbi.withHandle<List<BadSmellCountDBO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(BadSmellCountDBO::class.java))
-            handle.createQuery("select type, count(id) as size from badSmell group by type")
+            handle.createQuery("select type, count(id) as size from metric_code_bad_smell group by type")
                     .mapTo(BadSmellCountDBO::class.java)
                     .list()
         }

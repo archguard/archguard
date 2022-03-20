@@ -37,7 +37,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
 
     override fun updateConfigure(id: String, value: String): Int =
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.createUpdate("update ScannerConfigure set `value` = :value, `updatedAt` = NOW() where `id` = :id")
+                handle.createUpdate("update system_scanner_configure set `value` = :value, `updatedAt` = NOW() where `id` = :id")
                         .bind("id", id)
                         .bind("value", value)
                         .execute()
@@ -54,7 +54,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
         configs.forEach {
             val typeAndKey = it.split('-')
             jdbi.withHandle<Int, Nothing> { handle ->
-                handle.execute("DELETE FROM ScannerConfigure where `type` = ? and `key` = ?;", typeAndKey[0], typeAndKey[1])
+                handle.execute("DELETE FROM system_scanner_configure where `type` = ? and `key` = ?;", typeAndKey[0], typeAndKey[1])
             }
         }
     }
@@ -62,7 +62,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
     override fun getRegistered(): List<String> =
             jdbi.withHandle<List<String>, Nothing> { handle ->
                 handle
-                        .createQuery("select `type` from ScannerConfigure where `key` = 'available' and `value` = 'true'")
+                        .createQuery("select `type` from system_scanner_configure where `key` = 'available' and `value` = 'true'")
                         .mapTo(String::class.java)
                         .list()
             }
@@ -70,7 +70,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
     override fun ifAvailable(type: String): Boolean =
             jdbi.withHandle<Boolean, Nothing> { handle ->
                 handle
-                        .createQuery("select `value` from ScannerConfigure where `key` = 'available' and `type` = :type")
+                        .createQuery("select `value` from system_scanner_configure where `key` = 'available' and `type` = :type")
                         .bind("type", type)
                         .mapTo(Boolean::class.java)
                         .findFirst()
