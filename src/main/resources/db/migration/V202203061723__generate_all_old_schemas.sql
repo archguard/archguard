@@ -507,7 +507,7 @@ create index idx_class_id
 create index idx_system_id
     on bad_smell_dataclass (system_id);
 
-create table dubbo_bean
+create table code_framework_dubbo_bean
 (
     id          varchar(36)                         not null
         primary key,
@@ -521,9 +521,9 @@ create table dubbo_bean
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on dubbo_bean (system_id);
+    on code_framework_dubbo_bean (system_id);
 
-create table dubbo_module
+create table code_framework_dubbo_module
 (
     id          varchar(36)                         not null
         primary key,
@@ -536,9 +536,9 @@ create table dubbo_module
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on dubbo_module (system_id);
+    on code_framework_dubbo_module (system_id);
 
-create table dubbo_reference_config
+create table code_framework_dubbo_reference_config
 (
     id          varchar(36)                         not null
         primary key,
@@ -554,9 +554,9 @@ create table dubbo_reference_config
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on dubbo_reference_config (system_id);
+    on code_framework_dubbo_reference_config (system_id);
 
-create table dubbo_service_config
+create table code_framework_dubbo_service_config
 (
     id          varchar(36)                         not null
         primary key,
@@ -572,7 +572,7 @@ create table dubbo_service_config
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on dubbo_service_config (system_id);
+    on code_framework_dubbo_service_config (system_id);
 
 create table report_evaluation
 (

@@ -1,4 +1,4 @@
-create table dubbo_module
+create table code_framework_dubbo_module
 (
     `id`   varchar(36) primary key,
     `name` varchar(128) not null,
@@ -6,7 +6,7 @@ create table dubbo_module
 )
     collate = utf8mb4_unicode_ci;
 
-create table dubbo_reference_config
+create table code_framework_dubbo_reference_config
 (
     `id`            varchar(36) primary key,
     `referenceId`   varchar(128) not null,
@@ -16,7 +16,7 @@ create table dubbo_reference_config
 )
     collate = utf8mb4_unicode_ci;
 
-create table dubbo_service_config
+create table code_framework_dubbo_service_config
 (
     `id`            varchar(36) primary key,
     `interfaceName` varchar(128) not null,
@@ -26,7 +26,7 @@ create table dubbo_service_config
 )
     collate = utf8mb4_unicode_ci;
 
-create table dubbo_bean
+create table code_framework_dubbo_bean
 (
     `id`        varchar(36) primary key,
     `beanId`    varchar(128),

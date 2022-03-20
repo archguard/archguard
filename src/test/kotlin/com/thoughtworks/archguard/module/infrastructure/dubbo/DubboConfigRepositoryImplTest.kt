@@ -20,7 +20,7 @@ internal class DubboConfigRepositoryImplTest {
     lateinit var dubboConfigRepository: DubboConfigRepository
 
     @Test
-    @Sql("classpath:sqls/dubbo_reference_config.sql")
+    @Sql("classpath:sqls/code_framework_dubbo_reference_config.sql")
     internal fun should_get_reference_config_by_interface_name_and_submodule() {
         val systemId: Long = 1
         val referenceConfig = dubboConfigRepository.getReferenceConfigBy(systemId,
@@ -37,7 +37,7 @@ internal class DubboConfigRepositoryImplTest {
     }
 
     @Test
-    @Sql("classpath:sqls/dubbo_service_config.sql")
+    @Sql("classpath:sqls/code_framework_dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_single_group() {
         val systemId: Long = 1
         val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
@@ -49,7 +49,7 @@ internal class DubboConfigRepositoryImplTest {
     }
 
     @Test
-    @Sql("classpath:sqls/dubbo_service_config.sql")
+    @Sql("classpath:sqls/code_framework_dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_all_group() {
         val systemId: Long = 1
         val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",
@@ -71,7 +71,7 @@ internal class DubboConfigRepositoryImplTest {
     }
 
     @Test
-    @Sql("classpath:sqls/dubbo_service_config.sql")
+    @Sql("classpath:sqls/code_framework_dubbo_service_config.sql")
     internal fun should_get_service_config_by_reference_config_when_multi_group() {
         val systemId: Long = 1
         val serviceConfigs = dubboConfigRepository.getServiceConfigBy(systemId, ReferenceConfig("id", "id1", "org.apache.dubbo.samples.group.api.GroupService",

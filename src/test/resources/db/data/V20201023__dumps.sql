@@ -761,13 +761,13 @@ CREATE TABLE `bad_smell_dataclass` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `dubbo_bean`
+-- Table structure for table `code_framework_dubbo_bean`
 --
 
-DROP TABLE IF EXISTS `dubbo_bean`;
+DROP TABLE IF EXISTS `code_framework_dubbo_bean`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `dubbo_bean` (
+CREATE TABLE `code_framework_dubbo_bean` (
   `id` varchar(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `beanId` varchar(128)  DEFAULT NULL,
@@ -780,13 +780,13 @@ CREATE TABLE `dubbo_bean` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `dubbo_module`
+-- Table structure for table `code_framework_dubbo_module`
 --
 
-DROP TABLE IF EXISTS `dubbo_module`;
+DROP TABLE IF EXISTS `code_framework_dubbo_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `dubbo_module` (
+CREATE TABLE `code_framework_dubbo_module` (
   `id` varchar(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `name` varchar(128)  NOT NULL,
@@ -798,13 +798,13 @@ CREATE TABLE `dubbo_module` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `dubbo_reference_config`
+-- Table structure for table `code_framework_dubbo_reference_config`
 --
 
-DROP TABLE IF EXISTS `dubbo_reference_config`;
+DROP TABLE IF EXISTS `code_framework_dubbo_reference_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `dubbo_reference_config` (
+CREATE TABLE `code_framework_dubbo_reference_config` (
   `id` varchar(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `referenceId` varchar(128)  NOT NULL,
@@ -819,13 +819,13 @@ CREATE TABLE `dubbo_reference_config` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `dubbo_service_config`
+-- Table structure for table `code_framework_dubbo_service_config`
 --
 
-DROP TABLE IF EXISTS `dubbo_service_config`;
+DROP TABLE IF EXISTS `code_framework_dubbo_service_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `dubbo_service_config` (
+CREATE TABLE `code_framework_dubbo_service_config` (
   `id` varchar(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `interface` varchar(128)  NOT NULL,
