@@ -154,9 +154,10 @@ class ClassRepository(systemId: String) {
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
         val className: String = if (index < 0) name else name.substring(index + 1)
+        // module name empty for third-part deps
         return doSaveClass(
             name,
-            moduleName,
+            "",
             "",
             thirdparty = true,
             isTest = false,
