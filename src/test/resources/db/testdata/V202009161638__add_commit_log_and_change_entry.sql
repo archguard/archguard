@@ -2,8 +2,8 @@
 
 drop table if exists git_rep;
 
-drop table if exists commit_log;
-create table commit_log(
+drop table if exists scm_commit_log;
+create table scm_commit_log(
     id              varchar(50) primary key,
     commit_time     bigint,
     short_msg       varchar(200),

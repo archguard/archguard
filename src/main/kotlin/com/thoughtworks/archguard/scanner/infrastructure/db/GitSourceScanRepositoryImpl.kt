@@ -16,10 +16,10 @@ class GitSourceScanRepositoryImpl(@Autowired val sqlScriptRunner: SqlScriptRunne
     lateinit var jdbi: Jdbi
 
     override fun cleanupCommitLog(systemId: Long) {
-        log.info("clean up commit_log for system {}", systemId)
+        log.info("clean up scm_commit_log for system {}", systemId)
         jdbi.withHandle<Any, RuntimeException> { handle: Handle ->
             handle.execute(
-                    "delete from commit_log where system_id = ?", systemId)
+                    "delete from scm_commit_log where system_id = ?", systemId)
         }
     }
 

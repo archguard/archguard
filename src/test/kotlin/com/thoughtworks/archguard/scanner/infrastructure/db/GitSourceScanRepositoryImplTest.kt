@@ -31,7 +31,7 @@ internal class GitSourceScanRepositoryImplTest {
 
     private fun checkCommitLogTableCount(count: Int) {
         val afterCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from commit_log where system_id=1")
+            handle.createQuery("select count(*) from scm_commit_log where system_id=1")
                     .mapTo(Int::class.java).one()
         }
         assertEquals(count, afterCount)

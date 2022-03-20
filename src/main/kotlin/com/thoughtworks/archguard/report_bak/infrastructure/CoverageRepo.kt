@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class CoverageRepo(val jdbi: Jdbi) {
-
     fun analyzeExecFile(): Bundle {
         return jdbi.withHandle<Bundle, Exception> {
             val queryCoverage = """
@@ -20,7 +19,7 @@ class CoverageRepo(val jdbi: Jdbi) {
                     method_missed ,method_covered , 
                     class_missed , class_covered , 
                     bundle_name, scan_time
-|               from bundle 
+|               from test_coverage_bundle 
 |               order by scan_time desc
 |               limit 1
 |               """.trimMargin()
@@ -44,7 +43,7 @@ class CoverageRepo(val jdbi: Jdbi) {
                     method_missed ,method_covered , 
                     class_missed , class_covered , 
                     bundle_name, scan_time
-|               from bundle 
+|               from test_coverage_bundle 
 |               """.trimMargin()
 
 
@@ -59,7 +58,7 @@ class CoverageRepo(val jdbi: Jdbi) {
     fun countRateBetween(dmsType: Dimension, left: Float, right: Float): Int {
         return jdbi.withHandle<Int, Exception> {
             val rate = dmsType.rateSnippet()
-            val sql = "select count(*) from item where $rate>=:left and $rate<:right and item_type='FILE'"
+            val sql = "select count(*) from test_coverage_item where $rate>=:left and $rate<:right and item_type='FILE'"
             it.createQuery(sql)
                     .bind("left", left)
                     .bind("right", right)
@@ -72,7 +71,7 @@ class CoverageRepo(val jdbi: Jdbi) {
         return jdbi.withHandle<List<TopItem>, Exception> {
             val sql = """
                 select item_name, ${dmsType.rateSnippet()} coverageRate 
-                from item where item_type='FILE'
+                from test_coverage_item where item_type='FILE'
                 order by coverageRate desc limit :n """.trimIndent()
             it.createQuery(sql)
                     .bind("n", n)
@@ -84,7 +83,7 @@ class CoverageRepo(val jdbi: Jdbi) {
         return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
                 select item_name, bundle_name, class_missed, class_covered 
-                from item where item_name in (${files.joinToString("','", "'", "'")})
+                from test_coverage_item where item_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)
                     .mapToBean(Bundle::class.java)
@@ -96,7 +95,7 @@ class CoverageRepo(val jdbi: Jdbi) {
         return jdbi.withHandle<List<Bundle>, Exception> {
             val sql = """
                 select item_name, bundle_name, class_missed, class_covered 
-                from item where item_type='PACKAGE' and bundle_name in (${files.joinToString("','", "'", "'")})
+                from test_coverage_item where item_type='PACKAGE' and bundle_name in (${files.joinToString("','", "'", "'")})
                 """.trimIndent()
             it.createQuery(sql)
                     .mapToBean(Bundle::class.java)

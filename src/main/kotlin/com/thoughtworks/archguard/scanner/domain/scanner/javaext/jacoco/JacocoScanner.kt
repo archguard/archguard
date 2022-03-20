@@ -10,8 +10,8 @@ import java.io.File
 
 @Component
 class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
-    private val DELETE_BUNDLE = "delete from bundle where 1=1"
-    private val DELETE_ITEM = "delete from item where 1=1"
+    private val DELETE_BUNDLE = "delete from test_coverage_bundle where 1=1"
+    private val DELETE_ITEM = "delete from test_coverage_item where 1=1"
 
     private val log = LoggerFactory.getLogger(JacocoScanner::class.java)
     override fun getScannerName(): String {

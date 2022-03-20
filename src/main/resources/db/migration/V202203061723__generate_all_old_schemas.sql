@@ -362,7 +362,7 @@ create table bad_smell_threshold_suite
 )
     collate = utf8mb4_unicode_ci;
 
-create table bundle
+create table test_coverage_bundle
 (
     instruction_missed  int          null,
     instruction_covered int          null,
@@ -473,7 +473,7 @@ create table cognitive_complexity
     update_time                  timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table commit_log
+create table scm_commit_log
 (
     id              varchar(50)                         not null
         primary key,
@@ -586,7 +586,7 @@ create table evaluationReport
     detail       longtext    null
 );
 
-create table git_hot_file
+create table scm_git_hot_file
 (
     system_id      bigint                              not null,
     repo           varchar(256)                        null,
@@ -599,7 +599,7 @@ create table git_hot_file
     update_time    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table item
+create table test_coverage_item
 (
     instruction_missed  int                                 null,
     instruction_covered int                                 null,

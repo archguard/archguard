@@ -577,10 +577,10 @@ CREATE TABLE `bad_smell_threshold_suite` (
 -- Table structure for table `bundle`
 --
 
-DROP TABLE IF EXISTS `bundle`;
+DROP TABLE IF EXISTS `test_coverage_bundle`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `bundle` (
+CREATE TABLE `test_coverage_bundle` (
   `instruction_missed` int DEFAULT NULL,
   `instruction_covered` int DEFAULT NULL,
   `line_missed` int DEFAULT NULL,
@@ -721,13 +721,13 @@ CREATE TABLE `cognitive_complexity` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `commit_log`
+-- Table structure for table `scm_commit_log`
 --
 
-DROP TABLE IF EXISTS `commit_log`;
+DROP TABLE IF EXISTS `scm_commit_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `commit_log` (
+CREATE TABLE `scm_commit_log` (
   `id` varchar(50) NOT NULL,
   `commit_time` bigint DEFAULT NULL,
   `short_msg` varchar(200) DEFAULT NULL,
@@ -860,13 +860,13 @@ CREATE TABLE `evaluationReport` (
 
 
 --
--- Table structure for table `git_hot_file`
+-- Table structure for table `scm_git_hot_file`
 --
 
-DROP TABLE IF EXISTS `git_hot_file`;
+DROP TABLE IF EXISTS `scm_git_hot_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `git_hot_file` (
+CREATE TABLE `scm_git_hot_file` (
   `system_id` bigint NOT NULL,
   `repo` varchar(256) DEFAULT NULL,
   `path` mediumtext NOT NULL,
@@ -880,13 +880,13 @@ CREATE TABLE `git_hot_file` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `item`
+-- Table structure for table `test_coverage_item`
 --
 
-DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `test_coverage_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `item` (
+CREATE TABLE `test_coverage_item` (
   `instruction_missed` int DEFAULT NULL,
   `instruction_covered` int DEFAULT NULL,
   `line_missed` int DEFAULT NULL,

@@ -1,7 +1,7 @@
 -- for mysql
 
-drop  table if exists bundle;
-create table bundle(
+drop  table if exists test_coverage_bundle;
+create table test_coverage_bundle(
         instruction_missed  int,
         instruction_covered int,
         line_missed int,

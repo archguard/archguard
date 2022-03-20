@@ -12,7 +12,7 @@ class OverviewRepo(@Autowired val jdbi: Jdbi, @Autowired val classStatisticRepo:
             jdbi.withHandle<List<GitCommitDBO>, Nothing> {
                 it.registerRowMapper(ConstructorMapper.factory(GitCommitDBO::class.java))
                 it
-                        .createQuery("select id, cmttr_email from commit_log where 1 = 1")
+                        .createQuery("select id, cmttr_email from scm_commit_log where 1 = 1")
                         .mapTo(GitCommitDBO::class.java)
                         .list()
             }

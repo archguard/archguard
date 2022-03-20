@@ -27,7 +27,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
         return jdbi.withHandle<List<CommitLog>, Exception> {
             val sql = """
 |                   select id, commit_time, short_msg, cmttr_name, rep_id , chgd_entry_cnt
-|                   from commit_log
+|                   from scm_commit_log
 |                   where chgd_entry_cnt>=:chgd_entry_cnt and commit_time>:time
 |                   order by commit_time desc
 |                   """.trimMargin()
@@ -43,7 +43,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
         return jdbi.withHandle<List<CommitLog>, Exception> {
             val sql = """
 |                   select id, commit_time, short_msg, cmttr_name, rep_id , chgd_entry_cnt
-|                   from commit_log
+|                   from scm_commit_log
 |                   where commit_time>:time
 |                   order by commit_time desc
 |                   """.trimMargin()
@@ -57,7 +57,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
     fun appendChangedEntriesQuantityToCommitLog(): Int {
         var count = 0
         jdbi.useHandle<Exception> {
-            val commitLogOfNeedUpdate = "select id,commit_time from commit_log where chgd_entry_cnt is null"
+            val commitLogOfNeedUpdate = "select id,commit_time from scm_commit_log where chgd_entry_cnt is null"
             it.createQuery(commitLogOfNeedUpdate)
                     .mapToMap()
                     .onEach { commit ->
@@ -74,7 +74,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
     private fun inlineCountToCommit(commit: Map<String, Any>) {
         jdbi.useHandle<Exception> {
             val count = "select count(*) from change_entry where cgntv_cmplxty<>prvs_cgn_cmplxty and cmt_id=:cmt_id"
-            val update = "update commit_log set chgd_entry_cnt=($count) where id=:cmt_id"
+            val update = "update scm_commit_log set chgd_entry_cnt=($count) where id=:cmt_id"
             it.createUpdate(update)
                     .bind("cmt_id", commit["id"])
                     .execute()
@@ -105,7 +105,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
             return jdbi.withHandle<Map<String, Any>, Exception> {
                 val prvsData = """
                         select prvs.cmt_id, prvs.cgntv_cmplxty
-                        from change_entry prvs join commit_log c on prvs.cmt_id=c.id 
+                        from change_entry prvs join scm_commit_log c on prvs.cmt_id=c.id 
                         where prvs.new_path=:new_path and c.commit_time<=:commit_time and prvs.cmt_id<>:cmt_id
                         order by c.commit_time desc
                         limit 1 

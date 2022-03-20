@@ -46,7 +46,7 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
                 select count(distinct committer_name)
-                    from commit_log 
+                    from scm_commit_log 
                     WHERE system_id = :systemId
             """.trimIndent()
             it.createQuery(sql)

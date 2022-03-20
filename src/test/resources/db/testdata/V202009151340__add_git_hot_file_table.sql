@@ -1,4 +1,4 @@
-create table git_hot_file
+create table scm_git_hot_file
 (
     system_id              bigint      not null,
     repo                   char(50)    null,
