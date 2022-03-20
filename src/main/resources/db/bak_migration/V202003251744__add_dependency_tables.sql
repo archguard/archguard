@@ -180,56 +180,56 @@ collate=utf8mb4_unicode_ci;
 alter table SqlConditionValue
 	add primary key (id);
 
-drop table if exists _ClassDependences;
-create table if not exists _ClassDependences
+drop table if exists code_class_dependencies;
+create table if not exists code_class_dependencies
 (
 	id char(36) not null,
 	a char(36) null,
 	b char(36) null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint _ClassDependences_ibfk_1
+	constraint code_class_dependencies_ibfk_1
 		foreign key (a) references JClass (id)
 			on delete cascade,
-	constraint _ClassDependences_ibfk_2
+	constraint code_class_dependencies_ibfk_2
 		foreign key (b) references JClass (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on _ClassDependences (a);
+	on code_class_dependencies (a);
 
 create index B
-	on _ClassDependences (b);
+	on code_class_dependencies (b);
 
-alter table _ClassDependences
+alter table code_class_dependencies
 	add primary key (id);
 
-drop table if exists _ClassFields;
-create table if not exists _ClassFields
+drop table if exists code_class_fields;
+create table if not exists code_class_fields
 (
 	id char(36) not null,
 	a char(36) null,
 	b char(36) null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint _ClassFields_ibfk_1
+	constraint code_class_fields_ibfk_1
 		foreign key (a) references JClass (id)
 			on delete cascade,
-	constraint _ClassFields_ibfk_2
+	constraint code_class_fields_ibfk_2
 		foreign key (b) references JField (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on _ClassFields (a);
+	on code_class_fields (a);
 
 create index B
-	on _ClassFields (b);
+	on code_class_fields (b);
 
-alter table _ClassFields
+alter table code_class_fields
 	add primary key (id);
 
 drop table if exists _ClassMethods;
@@ -258,59 +258,59 @@ create index B
 alter table _ClassMethods
 	add primary key (id);
 
-drop table if exists _ClassParent;
-create table if not exists _ClassParent
+drop table if exists code_class_parent;
+create table if not exists code_class_parent
 (
 	id char(36) not null,
 	a char(36) null,
 	b char(36) null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint _ClassParent_ibfk_1
+	constraint code_class_parent_ibfk_1
 		foreign key (a) references JClass (id)
 			on delete cascade,
-	constraint _ClassParent_ibfk_2
+	constraint code_class_parent_ibfk_2
 		foreign key (b) references JClass (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on _ClassParent (a);
+	on code_class_parent (a);
 
 create index B
-	on _ClassParent (b);
+	on code_class_parent (b);
 
-alter table _ClassParent
+alter table code_class_parent
 	add primary key (id);
 
-drop table if exists _MethodCallees;
-create table if not exists _MethodCallees
+drop table if exists code_method_callees;
+create table if not exists code_method_callees
 (
 	id char(36) not null,
 	a char(36) null,
 	b char(36) null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint _MethodCallees_ibfk_1
+	constraint code_method_callees_ibfk_1
 		foreign key (a) references JMethod (id)
 			on delete cascade,
-	constraint _MethodCallees_ibfk_2
+	constraint code_method_callees_ibfk_2
 		foreign key (b) references JMethod (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on _MethodCallees (a);
+	on code_method_callees (a);
 
 create index B
-	on _MethodCallees (b);
+	on code_method_callees (b);
 
-create index _MethodCallees_B_A_index
-	on _MethodCallees (b, a);
+create index code_method_callees_B_A_index
+	on code_method_callees (b, a);
 
-alter table _MethodCallees
+alter table code_method_callees
 	add primary key (id);
 
 drop table if exists _PLProcedureCallees;

@@ -250,7 +250,7 @@ create table SqlConditionValue
 )
     collate = utf8mb4_unicode_ci;
 
-create table _ClassDependences
+create table code_class_dependencies
 (
     id          char(36)                            not null
         primary key,
@@ -261,25 +261,25 @@ create table _ClassDependences
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint _ClassDependences_ibfk_1
+    constraint code_class_dependencies_ibfk_1
         foreign key (a) references JClass (id)
             on delete cascade,
-    constraint _ClassDependences_ibfk_2
+    constraint code_class_dependencies_ibfk_2
         foreign key (b) references JClass (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on _ClassDependences (a);
+    on code_class_dependencies (a);
 
 create index B
-    on _ClassDependences (b);
+    on code_class_dependencies (b);
 
 create index idx_project_id
-    on _ClassDependences (system_id);
+    on code_class_dependencies (system_id);
 
-create table _ClassFields
+create table code_class_fields
 (
     id          char(36)                            not null
         primary key,
@@ -290,23 +290,23 @@ create table _ClassFields
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint _ClassFields_ibfk_1
+    constraint code_class_fields_ibfk_1
         foreign key (a) references JClass (id)
             on delete cascade,
-    constraint _ClassFields_ibfk_2
+    constraint code_class_fields_ibfk_2
         foreign key (b) references JField (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on _ClassFields (a);
+    on code_class_fields (a);
 
 create index B
-    on _ClassFields (b);
+    on code_class_fields (b);
 
 create index idx_project_id
-    on _ClassFields (system_id);
+    on code_class_fields (system_id);
 
 create table _ClassMethods
 (
@@ -337,7 +337,7 @@ create index B
 create index idx_project_id
     on _ClassMethods (system_id);
 
-create table _ClassParent
+create table code_class_parent
 (
     id          char(36)                            not null
         primary key,
@@ -348,25 +348,25 @@ create table _ClassParent
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint _ClassParent_ibfk_1
+    constraint code_class_parent_ibfk_1
         foreign key (a) references JClass (id)
             on delete cascade,
-    constraint _ClassParent_ibfk_2
+    constraint code_class_parent_ibfk_2
         foreign key (b) references JClass (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on _ClassParent (a);
+    on code_class_parent (a);
 
 create index B
-    on _ClassParent (b);
+    on code_class_parent (b);
 
 create index idx_project_id
-    on _ClassParent (system_id);
+    on code_class_parent (system_id);
 
-create table _MethodCallees
+create table code_method_callees
 (
     id          char(36)                            not null
         primary key,
@@ -377,28 +377,28 @@ create table _MethodCallees
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint _MethodCallees_ibfk_1
+    constraint code_method_callees_ibfk_1
         foreign key (a) references JMethod (id)
             on delete cascade,
-    constraint _MethodCallees_ibfk_2
+    constraint code_method_callees_ibfk_2
         foreign key (b) references JMethod (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on _MethodCallees (a);
+    on code_method_callees (a);
 
 create index B
-    on _MethodCallees (b);
+    on code_method_callees (b);
 
-create index _MethodCallees_B_A_index
-    on _MethodCallees (b, a);
+create index code_method_callees_B_A_index
+    on code_method_callees (b, a);
 
 create index idx_project_id
-    on _MethodCallees (system_id);
+    on code_method_callees (system_id);
 
-create table _MethodFields
+create table code_method_fields
 (
     id          char(36)                            not null
         primary key,
@@ -409,20 +409,20 @@ create table _MethodFields
     update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
     constraint id_UNIQUE
         unique (id),
-    constraint _MethodFields_ibfk_1
+    constraint code_method_fields_ibfk_1
         foreign key (a) references JMethod (id)
             on delete cascade,
-    constraint _MethodFields_ibfk_2
+    constraint code_method_fields_ibfk_2
         foreign key (b) references JField (id)
             on delete cascade
 )
     collate = utf8mb4_unicode_ci;
 
 create index A
-    on _MethodFields (a);
+    on code_method_fields (a);
 
 create index B
-    on _MethodFields (b);
+    on code_method_fields (b);
 
 create table _PLProcedureCallees
 (

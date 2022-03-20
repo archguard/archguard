@@ -18,7 +18,7 @@ class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
             "and c.module='$module'"
         }
         val sql = "SELECT DISTINCT p.id as id, p.name as name, p.module as module, p.loc as loc, p.access as access " +
-                "           FROM JClass c,`_ClassParent` cp,JClass p" +
+                "           FROM JClass c,`code_class_parent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           And c.system_id = $systemId" +
                 "           AND c.name = '$name' $moduleFilter"
@@ -37,7 +37,7 @@ class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
             "and p.module='$module'"
         }
         val sql = "SELECT DISTINCT c.id as id, c.name as name, c.module as module, c.loc as loc, c.access as access " +
-                "           FROM JClass c,`_ClassParent` cp,JClass p" +
+                "           FROM JClass c,`code_class_parent` cp,JClass p" +
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           AND c.system_id = $systemId" +
                 "           AND p.name = '$name' $moduleFilter"
@@ -50,7 +50,7 @@ class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun findFields(id: String): List<JField> {
-        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from _ClassFields where a='$id')"
+        val sql = "SELECT id, name, type FROM JField WHERE id in (select b from code_class_fields where a='$id')"
         return jdbi.withHandle<List<JField>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
             it.createQuery(sql)
@@ -64,7 +64,7 @@ class ScannerJClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 
     override fun getAllClassDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
-        val sql = "select a as caller, b as callee from _ClassDependences  where system_id = :systemId " +
+        val sql = "select a as caller, b as callee from code_class_dependencies  where system_id = :systemId " +
                 "and a in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0 and is_test = 0) " +
                 "and b in (select id from JClass where JClass.system_id = :systemId and is_thirdparty = 0 and is_test = 0) " +
                 "and a!=b"

@@ -44,7 +44,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
                 select count(id) from JMethod where system_id=:systemId and is_test=1 
-                and id in (select mc.a from _MethodCallees mc 
+                and id in (select mc.a from code_method_callees mc 
                 where mc.b in (select m.id from JMethod m where name in ('sleep')))
             """.trimIndent()
             it.createQuery(sql)
@@ -58,7 +58,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "select id, system_id as systemId, module, class_name, package_name, " +
                     "name FROM JMethod where system_id=:systemId and is_test=1 " +
-                    "and id in (select mc.a from _MethodCallees mc " +
+                    "and id in (select mc.a from code_method_callees mc " +
                     "where mc.b in (select id from JMethod  where name in ('sleep'))) " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
@@ -72,8 +72,8 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     override fun getEmptyTestMethodCount(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
-                SELECT count(JMethod.id) FROM JMethod LEFT JOIN _MethodCallees ON JMethod.id=_MethodCallees.a 
-                WHERE _MethodCallees.a IS NULL and JMethod.system_id=:systemId and JMethod.is_test=1
+                SELECT count(JMethod.id) FROM JMethod LEFT JOIN code_method_callees ON JMethod.id=code_method_callees.a 
+                WHERE code_method_callees.a IS NULL and JMethod.system_id=:systemId and JMethod.is_test=1
             """.trimIndent()
             it.createQuery(sql)
                     .bind("systemId", systemId)
@@ -86,7 +86,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "SELECT m.id, m.system_id as systemId, m.module, m.class_name, m.package_name, " +
                     "m.name FROM JMethod m " +
-                    "LEFT JOIN _MethodCallees mc ON m.id=mc.a " +
+                    "LEFT JOIN code_method_callees mc ON m.id=mc.a " +
                     "WHERE mc.a IS NULL and m.system_id=:systemId and m.is_test=1 " +
                     "limit :limit offset :offset"
             it.createQuery(sql)
@@ -140,7 +140,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
                     select m1.id from JMethod m1 join 
-                    (select  mc.a as callee_id, GROUP_CONCAT(clzname SEPARATOR ', ') as callers from _MethodCallees mc 
+                    (select  mc.a as callee_id, GROUP_CONCAT(clzname SEPARATOR ', ') as callers from code_method_callees mc 
                     join JMethod m on mc.b = m.id where mc.a in (select id from JMethod where system_id=:systemId and is_test=1) 
                     group by mc.a) as t1 on m1.id = t1.callee_id 
                     where callers not like '%Assert%' and callers not like '%Matchers%' and callers not like '%archunit%Should%'
@@ -183,7 +183,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
                     select m1.id from JMethod m1 join 
-                    (select  mc.a as callee_id, count(*) as assert_count from _MethodCallees mc 
+                    (select  mc.a as callee_id, count(*) as assert_count from code_method_callees mc 
                     join JMethod m on mc.b = m.id where clzname like '%Assert%' and mc.a in 
                     (select id from JMethod where system_id=:systemId and is_test=1)  group by mc.a) as t1
                     on m1.id = t1.callee_id and t1.assert_count>:threshold order by t1.assert_count
@@ -201,7 +201,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
                     select m1.id from JMethod m1 join 
-                    (select  mc.a as callee_id, count(*) as print_count from _MethodCallees mc 
+                    (select  mc.a as callee_id, count(*) as print_count from code_method_callees mc 
                     join JMethod m on mc.b = m.id where clzname in (<clzNames>) and mc.a in 
                     (select id from JMethod where system_id=:systemId and is_test=1)  group by mc.a) as t1
                     on m1.id = t1.callee_id and print_count>:threshold order by print_count

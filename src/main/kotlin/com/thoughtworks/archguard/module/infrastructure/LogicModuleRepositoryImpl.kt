@@ -119,7 +119,7 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
 
 
     override fun getParentClassId(id: String): List<String> {
-        val sql = "select b from _ClassParent where a = '$id'"
+        val sql = "select b from code_class_parent where a = '$id'"
         return jdbi.withHandle<List<String>, Nothing> {
             it.createQuery(sql)
                     .mapTo(String::class.java)

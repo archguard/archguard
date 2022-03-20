@@ -1,10 +1,10 @@
-insert into _ClassDependences (id, system_id, a, b)
+insert into code_class_dependencies (id, system_id, a, b)
 values ('1', 8, '000d417d-9482-4fe4-9411-6df3816d8828', '000d417d-9482-4fe4-9411-6df3816d8828');
-insert into _ClassDependences (id, system_id, a, b)
+insert into code_class_dependencies (id, system_id, a, b)
 values ('2', 8, '000d417d-9482-4fe4-9411-6df3816d8828', '0b463b79-a8dd-4df7-8dc9-3eee8737c1ad');
-insert into _ClassDependences (id, system_id, a, b)
+insert into code_class_dependencies (id, system_id, a, b)
 values ('3', 8, '000d417d-9482-4fe4-9411-6df3816d8828', '0b463b79-a8dd-4df7-8dc9-3eee8737c1ad');
-insert into _ClassDependences (id, system_id, a, b)
+insert into code_class_dependencies (id, system_id, a, b)
 values ('4', 8, '000d417d-9482-4fe4-9411-6df3816d8828', '23d7905b-7abe-486b-b968-1a8fbca64e9d');
 
 insert into JClass (id, system_id, name, updatedAt, createdAt, module, loc, access, is_thirdparty, is_test)

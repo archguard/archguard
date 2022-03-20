@@ -1,6 +1,6 @@
 alter table JField add column `clzname` mediumtext;
-drop table if exists _MethodFields;
-create table if not exists _MethodFields
+drop table if exists code_method_fields;
+create table if not exists code_method_fields
 (
 	id char(36) not null,
 	a char(36) null,
@@ -8,20 +8,20 @@ create table if not exists _MethodFields
 	project_id bigint   not null,
 	constraint id_UNIQUE
 		unique (id),
-	constraint _MethodFields_ibfk_1
+	constraint code_method_fields_ibfk_1
 		foreign key (a) references JMethod (id)
 			on delete cascade,
-	constraint _MethodFields_ibfk_2
+	constraint code_method_fields_ibfk_2
 		foreign key (b) references JField (id)
 			on delete cascade
 )
 collate=utf8mb4_unicode_ci;
 
 create index A
-	on _MethodFields (a);
+	on code_method_fields (a);
 
 create index B
-	on _MethodFields (b);
+	on code_method_fields (b);
 
-alter table _MethodFields
+alter table code_method_fields
 	add primary key (id);
