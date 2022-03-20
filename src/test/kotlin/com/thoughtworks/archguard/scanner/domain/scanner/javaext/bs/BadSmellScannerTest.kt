@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.bs
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs
 
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle

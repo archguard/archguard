@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.tbs
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs
 
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
 import java.io.File

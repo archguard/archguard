@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.jacoco
 
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator

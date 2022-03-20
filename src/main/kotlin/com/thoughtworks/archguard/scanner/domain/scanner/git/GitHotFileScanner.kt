@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import org.slf4j.LoggerFactory

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import java.util.*
 

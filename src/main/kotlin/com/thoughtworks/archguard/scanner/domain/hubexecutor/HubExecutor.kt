@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.hubexecutor
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 
 class HubExecutor(private val context: ScanContext, private val manager: ScannerManager) : HubLifecycle {

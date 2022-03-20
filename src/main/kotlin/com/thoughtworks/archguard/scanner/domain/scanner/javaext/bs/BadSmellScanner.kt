@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.bs
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

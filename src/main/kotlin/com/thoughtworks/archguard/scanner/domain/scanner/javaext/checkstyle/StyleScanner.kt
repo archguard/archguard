@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.checkstyle
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.JavaDependencyAnalysis
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner

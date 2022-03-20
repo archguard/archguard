@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.pmd
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.pmd
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.infrastructure.db.PmdRepository
 import com.thoughtworks.archguard.scanner.infrastructure.db.Violation

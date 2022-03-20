@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle.Style
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle.StyleRepo
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.checkstyle.Style
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.checkstyle.StyleRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 

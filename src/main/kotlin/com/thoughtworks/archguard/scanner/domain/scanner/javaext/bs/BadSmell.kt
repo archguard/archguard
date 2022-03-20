@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.bs
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs
 
 data class BadSmell(
         val id: String,

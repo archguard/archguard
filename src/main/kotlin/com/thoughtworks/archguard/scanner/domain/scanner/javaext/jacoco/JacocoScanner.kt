@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.jacoco
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory

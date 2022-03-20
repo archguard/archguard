@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.checkstyle
 
 interface StyleRepo {
     fun save(style: List<Style>)
