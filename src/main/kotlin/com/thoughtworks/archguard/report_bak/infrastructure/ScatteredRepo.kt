@@ -73,7 +73,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
     /*将复杂度变化的文件数量保存到 commit 记录中*/
     private fun inlineCountToCommit(commit: Map<String, Any>) {
         jdbi.useHandle<Exception> {
-            val count = "select count(*) from change_entry where cgntv_cmplxty<>prvs_cgn_cmplxty and cmt_id=:cmt_id"
+            val count = "select count(*) from scm_change_entry where cgntv_cmplxty<>prvs_cgn_cmplxty and cmt_id=:cmt_id"
             val update = "update scm_commit_log set chgd_entry_cnt=($count) where id=:cmt_id"
             it.createUpdate(update)
                     .bind("cmt_id", commit["id"])
@@ -85,7 +85,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
     /*遍历当前提交的所有 change entry */
     private fun inlinePrvsStateOfEachEntryIn(commit: Map<String, Any>) {
         fun entriesInCurrrentCommit(commit: Map<String, Any>, handle: Handle): ResultIterable<MutableMap<String, Any>> {
-            val modifiedJavaEntry = "select new_path,cmt_id from change_entry where cmt_id=:cmt_id and new_path like '%.java' and chng_mode='MODIFY'"
+            val modifiedJavaEntry = "select new_path,cmt_id from scm_change_entry where cmt_id=:cmt_id and new_path like '%.java' and chng_mode='MODIFY'"
             return handle.createQuery(modifiedJavaEntry)
                     .bind("cmt_id", commit["id"])
                     .mapToMap()
@@ -105,7 +105,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
             return jdbi.withHandle<Map<String, Any>, Exception> {
                 val prvsData = """
                         select prvs.cmt_id, prvs.cgntv_cmplxty
-                        from change_entry prvs join scm_commit_log c on prvs.cmt_id=c.id 
+                        from scm_change_entry prvs join scm_commit_log c on prvs.cmt_id=c.id 
                         where prvs.new_path=:new_path and c.commit_time<=:commit_time and prvs.cmt_id<>:cmt_id
                         order by c.commit_time desc
                         limit 1 
@@ -127,7 +127,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
     private fun inlinePrvsData(prvs: Map<String, Any>, entry: Map<String, Any>) {
         jdbi.useHandle<Exception> {
             val sql = """
-                update change_entry 
+                update scm_change_entry 
                 set prvs_cmt_id=:prvs_cmt_id, prvs_cgn_cmplxty=:prvs_cgn_cmplxty
                 where new_path=:new_path and cmt_id=:cmt_id
                 """.trimIndent()
@@ -156,7 +156,7 @@ class ScatteredRepo(@Autowired private val jdbi: Jdbi) {
 
             val changedEntry = """
                     select new_path , cgntv_cmplxty, chng_mode, prvs_cmt_id, prvs_cgn_cmplxty 
-                    from change_entry 
+                    from scm_change_entry 
                     where cmt_id = ? and cgntv_cmplxty<>prvs_cgn_cmplxty  and prvs_cgn_cmplxty<>-1
                     """.trimIndent()
             it.createQuery(changedEntry)

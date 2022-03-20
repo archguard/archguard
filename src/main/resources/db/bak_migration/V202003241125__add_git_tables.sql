@@ -20,8 +20,8 @@ create table scm_commit_log(
 
 
 
-drop table if exists change_entry;
-create table change_entry(
+drop table if exists scm_change_entry;
+create table scm_change_entry(
     old_path            varchar(200),
     new_path            varchar(200),
     cgntv_cmplxty       int,

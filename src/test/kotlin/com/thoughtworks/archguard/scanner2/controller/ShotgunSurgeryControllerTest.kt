@@ -22,7 +22,7 @@ internal class ShotgunSurgeryControllerTest(@Autowired val shotgunSurgeryControl
     fun should_save_cognitive_complexity() {
         shotgunSurgeryController.persist(0)
         val result = jdbi.withHandle<List<CognitiveComplexity>, RuntimeException> { handle: Handle ->
-            handle.createQuery("select * from cognitive_complexity")
+            handle.createQuery("select * from metric_cognitive_complexity")
                     .mapTo(CognitiveComplexity::class.java).list()
         }
         val arrayList = ArrayList(result)

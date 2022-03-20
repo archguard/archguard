@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ChangeEntryRepositoryImpl(val jdbi: Jdbi) : ChangeEntryRepository {
     override fun getAllChangeEntry(systemId: Long): List<ChangeEntry> {
-        val sql = "SELECT * from change_entry WHERE system_id = $systemId"
+        val sql = "SELECT * from scm_change_entry WHERE system_id = $systemId"
         return jdbi.withHandle<List<ChangeEntryPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ChangeEntryPO::class.java))
             it.createQuery(sql)

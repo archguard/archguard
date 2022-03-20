@@ -14,7 +14,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
             orderSqlPiece = "order by fanOut desc, fanIn desc "
         }
         return jdbi.withHandle<List<PackageCoupling>, Exception> {
-            val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from package_metrics where system_id = :systemId and " +
+            val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from metric_package where system_id = :systemId and " +
                     "(fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) " +
                     orderSqlPiece + ", moduleName limit :limit offset :offset"
             it.createQuery(sql)
@@ -30,7 +30,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
 
     override fun getCouplingAboveThresholdCount(systemId: Long, packageFanInThreshold: Int, packageFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
-            val sql = "select count(1) from package_metrics where system_id = :systemId and (fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) "
+            val sql = "select count(1) from metric_package where system_id = :systemId and (fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) "
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .bind("packageFanInThreshold", packageFanInThreshold)
@@ -56,7 +56,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
                                    then 1
                                else 0 end) AS 'level3'
                 from (
-                         select fanin, fanout from package_metrics where system_id = :systemId
+                         select fanin, fanout from metric_package where system_id = :systemId
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
@@ -74,7 +74,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
 
     override fun getAllCoupling(systemId: Long): List<PackageCoupling> {
         return jdbi.withHandle<List<PackageCoupling>, Exception> {
-            val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from package_metrics where system_id = :systemId order by fanIn desc, fanOut desc, moduleName"
+            val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from metric_package where system_id = :systemId order by fanIn desc, fanOut desc, moduleName"
             it.createQuery(sql)
                     .bind("systemId", systemId)
                     .mapTo(PackageCouplingPO::class.java).list().map { it.toPackageCoupling() }

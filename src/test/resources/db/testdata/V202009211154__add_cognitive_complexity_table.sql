@@ -1,4 +1,4 @@
-create table cognitive_complexity(
+create table metric_cognitive_complexity(
     id              varchar(50) primary key,
     commit_id     varchar(50),
     changed_cognitive_complexity int,

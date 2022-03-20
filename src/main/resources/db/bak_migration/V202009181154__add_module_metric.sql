@@ -1,5 +1,5 @@
-drop table if exists module_metrics;
-create table module_metrics
+drop table if exists metric_module;
+create table metric_module
 (
     id           bigint auto_increment
         primary key,
@@ -10,5 +10,5 @@ create table module_metrics
 )
     collate = utf8mb4_unicode_ci;
 
-create index idx_project_id on module_metrics (system_id);
+create index idx_project_id on metric_module (system_id);
 

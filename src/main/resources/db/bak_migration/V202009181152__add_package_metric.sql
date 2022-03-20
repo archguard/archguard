@@ -1,5 +1,5 @@
-drop table if exists package_metrics;
-create table package_metrics
+drop table if exists metric_package;
+create table metric_package
 (
     id           bigint auto_increment
         primary key,
@@ -11,5 +11,5 @@ create table package_metrics
 )
     collate = utf8mb4_unicode_ci;
 
-create index idx_project_id on package_metrics (system_id);
+create index idx_project_id on metric_package (system_id);
 

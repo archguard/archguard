@@ -600,16 +600,16 @@ CREATE TABLE `test_coverage_bundle` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `change_entry`
+-- Table structure for table `scm_change_entry`
 --
 
-DROP TABLE IF EXISTS `change_entry`;
+DROP TABLE IF EXISTS `scm_change_entry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `change_entry` (
+CREATE TABLE `scm_change_entry` (
   `old_path` varchar(500) DEFAULT NULL,
   `new_path` varchar(500) DEFAULT NULL,
-  `cognitive_complexity` int DEFAULT NULL,
+  `metric_cognitive_complexity` int DEFAULT NULL,
   `change_mode` varchar(10) DEFAULT NULL,
   `commit_id` varchar(50) DEFAULT NULL,
   `system_id` int DEFAULT NULL,
@@ -702,13 +702,13 @@ CREATE TABLE `metrics_class` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `cognitive_complexity`
+-- Table structure for table `metric_cognitive_complexity`
 --
 
-DROP TABLE IF EXISTS `cognitive_complexity`;
+DROP TABLE IF EXISTS `metric_cognitive_complexity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `cognitive_complexity` (
+CREATE TABLE `metric_cognitive_complexity` (
   `id` varchar(50) NOT NULL,
   `commit_id` varchar(50) DEFAULT NULL,
   `changed_cognitive_complexity` int DEFAULT NULL,
@@ -968,13 +968,13 @@ CREATE TABLE `method_metrics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `module_metrics`
+-- Table structure for table `metric_module`
 --
 
-DROP TABLE IF EXISTS `module_metrics`;
+DROP TABLE IF EXISTS `metric_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `module_metrics` (
+CREATE TABLE `metric_module` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `module_name` varchar(255)  NOT NULL,
@@ -987,13 +987,13 @@ CREATE TABLE `module_metrics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `package_metrics`
+-- Table structure for table `metric_package`
 --
 
-DROP TABLE IF EXISTS `package_metrics`;
+DROP TABLE IF EXISTS `metric_package`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `package_metrics` (
+CREATE TABLE `metric_package` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `system_id` bigint NOT NULL,
   `module_name` varchar(255)  NOT NULL,

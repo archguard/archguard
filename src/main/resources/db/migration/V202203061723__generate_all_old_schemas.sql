@@ -381,11 +381,11 @@ create table test_coverage_bundle
     primary key (bundle_name, scan_time)
 );
 
-create table change_entry
+create table scm_change_entry
 (
     old_path             varchar(500)                        null,
     new_path             varchar(500)                        null,
-    cognitive_complexity int                                 null,
+    metric_cognitive_complexity int                                 null,
     change_mode          varchar(10)                         null,
     commit_id            varchar(50)                         null,
     system_id            int                                 null,
@@ -461,7 +461,7 @@ create table metrics_class
 create index idx_project_id
     on metrics_class (system_id);
 
-create table cognitive_complexity
+create table metric_cognitive_complexity
 (
     id                           varchar(50)                         not null
         primary key,
@@ -668,7 +668,7 @@ create table method_metrics
 create index idx_project_id
     on method_metrics (system_id);
 
-create table module_metrics
+create table metric_module
 (
     id          bigint auto_increment
         primary key,
@@ -682,9 +682,9 @@ create table module_metrics
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on module_metrics (system_id);
+    on metric_module (system_id);
 
-create table package_metrics
+create table metric_package
 (
     id           bigint auto_increment
         primary key,
@@ -699,7 +699,7 @@ create table package_metrics
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on package_metrics (system_id);
+    on metric_package (system_id);
 
 create table quality_gate_profile
 (

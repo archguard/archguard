@@ -10,11 +10,11 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 @RegisterBeanMapper(PackageMetric::class)
 interface PackageMetricsDao {
     @GetGeneratedKeys
-    @SqlUpdate("insert into package_metrics (" +
+    @SqlUpdate("insert into metric_package (" +
             "module_name, package_name, system_id, fanin, fanout) " +
             "values <values>")
     fun insert(@BindBeanList(value = "values", propertyNames = ["moduleName", "packageName", "systemId", "fanIn", "fanOut"]) packageMetrics: List<PackageMetric>): Long
 
-    @SqlUpdate("DELETE FROM package_metrics where system_id = :systemId")
+    @SqlUpdate("DELETE FROM metric_package where system_id = :systemId")
     fun deleteBy(@Bind("systemId") systemId: Long)
 }

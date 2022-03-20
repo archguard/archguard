@@ -11,7 +11,7 @@ class HotSpotRepo(@Autowired private val jdbi: Jdbi) {
         return jdbi.withHandle<List<Pair<String, Int>>, Exception> {
             val sql = """
                 select count(new_path) as n,new_path 
-                from change_entry 
+                from scm_change_entry 
                 where chng_mode<>'DELETE' 
                 group by new_path  
                 having n>1
@@ -27,13 +27,13 @@ class HotSpotRepo(@Autowired private val jdbi: Jdbi) {
     fun queryLatestHotSpotPath(number: Int): List<String> {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
-                select change_entry.new_path as new_path,
+                select scm_change_entry.new_path as new_path,
                 scm_commit_log.commit_time as commit_time
-                from scm_commit_log, change_entry 
-                where change_entry.cmt_id = scm_commit_log.id 
+                from scm_commit_log, scm_change_entry 
+                where scm_change_entry.cmt_id = scm_commit_log.id 
                     and (new_path like '%.java' or new_path like '%.kt')
                     and new_path not like '%test%'
-                    and change_entry.chng_mode <> 'DELETE'
+                    and scm_change_entry.chng_mode <> 'DELETE'
                 order by commit_time
                 """.trimIndent()
             it.createQuery(sql).setMaxRows(number)
@@ -46,13 +46,13 @@ class HotSpotRepo(@Autowired private val jdbi: Jdbi) {
     fun queryLatestHotSpotTest(number: Int): List<String> {
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
-                select change_entry.new_path as new_path,
+                select scm_change_entry.new_path as new_path,
                 scm_commit_log.commit_time as commit_time
-                from scm_commit_log, change_entry 
-                where change_entry.cmt_id = scm_commit_log.id 
+                from scm_commit_log, scm_change_entry 
+                where scm_change_entry.cmt_id = scm_commit_log.id 
                     and (new_path like '%.java' or new_path like '%.kotlin')
                     and new_path like '%test%'
-                    and change_entry.chng_mode <> 'DELETE'
+                    and scm_change_entry.chng_mode <> 'DELETE'
                 order by commit_time
                 """.trimIndent()
             it.createQuery(sql).setMaxRows(number)
