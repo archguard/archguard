@@ -29,7 +29,8 @@ class ClassRepository(systemId: String) {
     private fun saveClassCallees(
         functions: Array<CodeFunction>,
         moduleName: String,
-        clzName: String) {
+        clzName: String
+    ) {
         for (function in functions) {
             val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
@@ -268,7 +269,12 @@ class ClassRepository(systemId: String) {
         values["system_id"] = systemId
         values["annotationId"] = annotationId
         values["key"] = map.Key
-        values["value"] = map.Value
+        var value = map.Value
+        if (value.contains("'")) {
+            value = value.replace("'", "''")
+        }
+        values["value"] = value
+
         batch.add("code_annotation_value", values)
     }
 
