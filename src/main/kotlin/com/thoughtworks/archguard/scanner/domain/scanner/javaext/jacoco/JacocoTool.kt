@@ -10,8 +10,8 @@ import java.net.URL
 class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool) {
 
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
-    private val version = "1.1.3"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.03"
+    private val version = "1.2.0"
     private val SCAN_JACOCO_JAR = "scan_jacoco-$version-all.jar"
 
     fun execToSql(): File? {

@@ -9,8 +9,8 @@ import java.net.URL
 class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
 
     private val log = LoggerFactory.getLogger(ByteCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.4"
-    private val version = "1.1.4"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.0"
+    private val version = "1.2.0"
     private val SCAN_JAVA_BYTECODE_JAR = "scan_java_bytecode-$version-all.jar"
 
     fun analyse() {
