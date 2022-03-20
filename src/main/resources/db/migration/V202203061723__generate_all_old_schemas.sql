@@ -143,21 +143,6 @@ create index JMethod_module_index
 create index idx_project_id
     on JMethod (system_id);
 
-create table JMethodPLProcedure
-(
-    id          char(36) charset utf8 not null
-        primary key,
-    clz         mediumtext            not null,
-    method      mediumtext            not null,
-    pkg         mediumtext            not null,
-    `procedure` mediumtext            not null,
-    updatedAt   datetime(3)           not null,
-    createdAt   datetime(3)           not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
-
 create table Overview
 (
     id             char(36)                            not null
@@ -167,36 +152,6 @@ create table Overview
     create_time    timestamp default CURRENT_TIMESTAMP null comment '创建时间',
     update_time    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
-
-create table PLProcedure
-(
-    id        char(36)    not null
-        primary key,
-    name      mediumtext  not null,
-    pkg       mediumtext  null,
-    module    mediumtext  null,
-    updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
-
-create table PLProcedureSqlTable
-(
-    id        char(36)    not null
-        primary key,
-    clz       mediumtext  not null,
-    method    mediumtext  not null,
-    `table`   mediumtext  not null,
-    operate   mediumtext  not null,
-    module    mediumtext  null,
-    updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
 
 create table ScannerConfigure
 (
@@ -209,46 +164,6 @@ create table ScannerConfigure
     constraint id_UNIQUE
         unique (id)
 );
-
-create table SqlAction
-(
-    id        char(36)    not null
-        primary key,
-    clz       mediumtext  not null,
-    method    mediumtext  not null,
-    action    mediumtext  not null,
-    updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
-
-create table SqlCondition
-(
-    id        char(36)    not null
-        primary key,
-    op        mediumtext  not null,
-    updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
-
-create table SqlConditionValue
-(
-    id        char(36)    not null
-        primary key,
-    `table`   mediumtext  null,
-    `column`  mediumtext  null,
-    value     mediumtext  null,
-    updatedAt datetime(3) not null,
-    createdAt datetime(3) not null,
-    constraint id_UNIQUE
-        unique (id)
-)
-    collate = utf8mb4_unicode_ci;
 
 create table code_class_dependencies
 (
@@ -423,118 +338,6 @@ create index A
 
 create index B
     on code_method_fields (b);
-
-create table _PLProcedureCallees
-(
-    id char(36) not null
-        primary key,
-    a  char(36) null,
-    b  char(36) null,
-    constraint id_UNIQUE
-        unique (id),
-    constraint _PLProcedureCallees_ibfk_1
-        foreign key (a) references PLProcedure (id)
-            on delete cascade,
-    constraint _PLProcedureCallees_ibfk_2
-        foreign key (b) references PLProcedure (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index A
-    on _PLProcedureCallees (a);
-
-create index B
-    on _PLProcedureCallees (b);
-
-create table _PLProcedureSqlAction
-(
-    id char(36) not null
-        primary key,
-    a  char(36) null,
-    b  char(36) null,
-    constraint id_UNIQUE
-        unique (id),
-    constraint fk__SqlAction
-        foreign key (b) references SqlAction (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create table _SqlActionConditions
-(
-    id char(36) not null
-        primary key,
-    a  char(36) null,
-    b  char(36) null,
-    constraint AB_unique
-        unique (a, b),
-    constraint id_UNIQUE
-        unique (id),
-    constraint _SqlActionConditions_ibfk_1
-        foreign key (a) references SqlAction (id)
-            on delete cascade,
-    constraint _SqlActionConditions_ibfk_2
-        foreign key (b) references SqlCondition (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index A
-    on _SqlActionConditions (a);
-
-create index B
-    on _SqlActionConditions (b);
-
-create table _SqlLeftConditionValue
-(
-    id char(36) not null
-        primary key,
-    a  char(36) null,
-    b  char(36) null,
-    constraint AB_unique
-        unique (a, b),
-    constraint id_UNIQUE
-        unique (id),
-    constraint _SqlLeftConditionValue_ibfk_1
-        foreign key (a) references SqlCondition (id)
-            on delete cascade,
-    constraint _SqlLeftConditionValue_ibfk_2
-        foreign key (b) references SqlConditionValue (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index A
-    on _SqlLeftConditionValue (a);
-
-create index B
-    on _SqlLeftConditionValue (b);
-
-create table _SqlRightConditionValue
-(
-    id char(36) not null
-        primary key,
-    a  char(36) null,
-    b  char(36) null,
-    constraint AB_unique
-        unique (a, b),
-    constraint id_UNIQUE
-        unique (id),
-    constraint _SqlRightConditionValue_ibfk_1
-        foreign key (a) references SqlCondition (id)
-            on delete cascade,
-    constraint _SqlRightConditionValue_ibfk_2
-        foreign key (b) references SqlConditionValue (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index A
-    on _SqlRightConditionValue (a);
-
-create index B
-    on _SqlRightConditionValue (b);
 
 create table badSmell
 (
