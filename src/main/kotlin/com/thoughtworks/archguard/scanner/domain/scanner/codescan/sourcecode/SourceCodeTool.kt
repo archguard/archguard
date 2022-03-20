@@ -8,8 +8,8 @@ import java.net.URL
 
 class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: String, val dbUrl: String) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.1"
-    private val version = "1.2.1"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.2"
+    private val version = "1.2.2"
     private val SCAN_SOURCECODE_JAR = "scan_sourcecode-$version-all.jar"
 
     fun analyse() {

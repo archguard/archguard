@@ -91,7 +91,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val moduleCouplings = mutableListOf<ModuleCoupling>()
-        var classDependency = mutableListOf<Dependency<JClassVO>>()
+        val classDependency = mutableListOf<Dependency<JClassVO>>()
         logicModules.parallelStream().forEach { logicModule ->
             val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
             val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
