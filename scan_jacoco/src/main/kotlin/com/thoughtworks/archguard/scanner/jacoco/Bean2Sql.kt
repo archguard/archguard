@@ -23,6 +23,6 @@ class Bean2Sql {
             } else it.toString()
         }
 
-        return "insert into $table(${columns.joinToString()}) values($valueString);"
+        return "insert into test_coverage_$table(${columns.joinToString()}) values($valueString);"
     }
 }

@@ -30,7 +30,7 @@ class Service(val bean2Sql: Bean2Sql) {
                     bundleName = config.projectPath.split(File.separator).last(),
                     scanTime = System.currentTimeMillis()
             )
-            writer.println(bean2Sql.bean2Sql(bundle))
+            bean2Sql.bean2Sql(bundle)
 
             bundleCoverage.packages.forEach { pcg ->
                 val packageItem = Item(
@@ -51,7 +51,7 @@ class Service(val bean2Sql: Bean2Sql) {
                         bundleName = bundle.bundleName,
                         scanTime = bundle.scanTime
                 )
-                writer.println(bean2Sql.bean2Sql(packageItem))
+                bean2Sql.bean2Sql(packageItem)
 
                 pcg.sourceFiles.forEach { file ->
                     val fileItem = Item(
