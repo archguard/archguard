@@ -1,5 +1,5 @@
-drop table if exists Configure;
-create table if not exists Configure
+drop table if exists system_configure;
+create table if not exists system_configure
 (
 	id char(36) not null,
 	type mediumtext not null,
@@ -13,7 +13,7 @@ create table if not exists Configure
 )
 collate=utf8mb4_unicode_ci;
 
-alter table Configure
+alter table system_configure
 	add primary key (id);
 
 drop table if exists JClass;

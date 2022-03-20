@@ -15,7 +15,7 @@ class ScannerDataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
 
     fun deleteDataClass(systemId: Long) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("delete from data_class where system_id=:system_id")
+            it.createUpdate("delete from bad_smell_dataclass where system_id=:system_id")
                     .bind("system_id", systemId)
                     .execute()
         }
@@ -23,7 +23,7 @@ class ScannerDataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
 
     fun saveDataClass(dataClassPO: DataClassPO) {
         jdbi.useHandle<Exception> {
-            it.createUpdate("insert into data_class (system_id, class_id, field_id) values (:system_id, :class_id, :field_id)")
+            it.createUpdate("insert into bad_smell_dataclass (system_id, class_id, field_id) values (:system_id, :class_id, :field_id)")
                     .bind("system_id", dataClassPO.systemId)
                     .bind("class_id", dataClassPO.classId)
                     .bind("field_id", dataClassPO.fieldId)

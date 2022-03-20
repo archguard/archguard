@@ -1,4 +1,4 @@
-create table data_class
+create table bad_smell_dataclass
 (
     id        varchar(50) primary key,
     class_id  varchar(50) not null,
@@ -11,7 +11,7 @@ create table data_class
 );
 
 create index idx_system_id
-    on data_class (system_id);
+    on bad_smell_dataclass (system_id);
 
 create index idx_class_id
-    on data_class (class_id);
+    on bad_smell_dataclass (class_id);

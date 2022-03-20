@@ -1,4 +1,4 @@
-create table CheckStyle
+create table metric_checkstyle
 (
     id        char(36)    not null
         primary key,
@@ -11,7 +11,7 @@ create table CheckStyle
     severity  mediumtext  not null
 );
 
-create table Configure
+create table system_configure
 (
     id        char(36)                            not null
         primary key,
@@ -28,7 +28,7 @@ create table Configure
     collate = utf8mb4_unicode_ci;
 
 create index idx_project_id
-    on Configure (system_id);
+    on system_configure (system_id);
 
 create table JAnnotation
 (
@@ -143,7 +143,7 @@ create index JMethod_module_index
 create index idx_project_id
     on JMethod (system_id);
 
-create table Overview
+create table system_overview
 (
     id             char(36)                            not null
         primary key,
@@ -487,7 +487,7 @@ create table scm_commit_log
     update_time     timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
 );
 
-create table data_class
+create table bad_smell_dataclass
 (
     id          bigint auto_increment
         primary key,
@@ -502,10 +502,10 @@ create table data_class
     collate = utf8mb4_unicode_ci;
 
 create index idx_class_id
-    on data_class (class_id);
+    on bad_smell_dataclass (class_id);
 
 create index idx_system_id
-    on data_class (system_id);
+    on bad_smell_dataclass (system_id);
 
 create table dubbo_bean
 (
@@ -574,7 +574,7 @@ create table dubbo_service_config
 create index idx_project_id
     on dubbo_service_config (system_id);
 
-create table evaluationReport
+create table report_evaluation
 (
     id           varchar(50) not null
         primary key,

@@ -4,7 +4,7 @@ alter table `dubbo_service_config` change `project_id` `system_id` bigint not nu
 alter table `dubbo_reference_config` change `project_id` `system_id` bigint not null;
 alter table `dubbo_module` change `project_id` `system_id` bigint not null;
 alter table `dubbo_bean` change `project_id` `system_id` bigint not null;
-alter table `Configure` change `project_id` `system_id` bigint not null;
+alter table `system_configure` change `project_id` `system_id` bigint not null;
 alter table `JAnnotation` change `project_id` `system_id` bigint not null;
 alter table `JClass` change `project_id` `system_id` bigint not null;
 alter table `JField` change `project_id` `system_id` bigint not null;

@@ -1,5 +1,5 @@
 -- for mysql
-create table evaluationReport(
+create table report_evaluation(
         id varchar(50) not null primary key,
         name varchar(20),
         dimensions TEXT ,

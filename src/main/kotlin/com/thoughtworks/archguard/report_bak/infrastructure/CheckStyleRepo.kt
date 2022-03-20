@@ -13,7 +13,7 @@ class CheckStyleRepo : CheckStyleRepository {
 
     override fun getCheckStyleOverview(): List<String> =
             jdbi.withHandle<List<String>, Nothing> {
-                it.createQuery("select message from CheckStyle")
+                it.createQuery("select message from metric_checkstyle")
                         .mapTo(String::class.java)
                         .list()
             }

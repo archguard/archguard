@@ -1,2 +1,2 @@
 -- for mysql
-ALTER TABLE evaluationReport MODIFY COLUMN detail LONGTEXT;
+ALTER TABLE report_evaluation MODIFY COLUMN detail LONGTEXT;

@@ -1,5 +1,5 @@
-drop table if exists CheckStyle;
-create table CheckStyle
+drop table if exists metric_checkstyle;
+create table metric_checkstyle
 (
 	id char(36) not null,
 	file mediumtext not null,

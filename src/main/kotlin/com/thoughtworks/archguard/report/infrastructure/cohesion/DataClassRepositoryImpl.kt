@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     override fun getAllDataClassCount(systemId: Long): Long {
-        val sql = "select count(distinct class_id) from data_class where system_id = :system_id"
+        val sql = "select count(distinct class_id) from bad_smell_dataclass where system_id = :system_id"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -20,7 +20,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     }
 
     override fun getAllDataClassWithOnlyOneFieldCount(systemId: Long): Long {
-        val sql = "select count(1) from (select class_id from data_class where system_id = :system_id group by class_id having count(field_id) = 1 ) as dc"
+        val sql = "select count(1) from (select class_id from bad_smell_dataclass where system_id = :system_id group by class_id having count(field_id) = 1 ) as dc"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -30,7 +30,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     }
 
     override fun getAllDataClass(systemId: Long, limit: Long, offset: Long): List<DataClass> {
-        val sql = "select distinct class_id as classId, module, name as className from data_class join JClass JC on data_class.class_id = JC.id and JC.system_id=:system_id and data_class.system_id=:system_id order by module, name limit :limit offset :offset"
+        val sql = "select distinct class_id as classId, module, name as className from bad_smell_dataclass join JClass JC on bad_smell_dataclass.class_id = JC.id and JC.system_id=:system_id and bad_smell_dataclass.system_id=:system_id order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -39,7 +39,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
                     .mapTo(DataClassPO::class.java)
                     .list()
         }
-        val fieldSql = "select name, type from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
+        val fieldSql = "select name, type from bad_smell_dataclass join JField JF on bad_smell_dataclass.field_id = JF.id and bad_smell_dataclass.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
             val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->
@@ -55,7 +55,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     }
 
     override fun getAllDataClassWithOnlyOneField(systemId: Long, limit: Long, offset: Long): List<DataClass> {
-        val sql = "select distinct class_id as classId, module, name as className from data_class join JClass JC on data_class.class_id = JC.id and JC.system_id=:system_id and data_class.system_id=:system_id group by class_id, module, name having count(1)=1 order by module, name limit :limit offset :offset"
+        val sql = "select distinct class_id as classId, module, name as className from bad_smell_dataclass join JClass JC on bad_smell_dataclass.class_id = JC.id and JC.system_id=:system_id and bad_smell_dataclass.system_id=:system_id group by class_id, module, name having count(1)=1 order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
                     .bind("system_id", systemId)
@@ -64,7 +64,7 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
                     .mapTo(DataClassPO::class.java)
                     .list()
         }
-        val fieldSql = "select name, type from data_class join JField JF on data_class.field_id = JF.id and data_class.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
+        val fieldSql = "select name, type from bad_smell_dataclass join JField JF on bad_smell_dataclass.field_id = JF.id and bad_smell_dataclass.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
             val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->

@@ -21,7 +21,7 @@ class MetricController(val metricPersistService: MetricPersistApplService) {
         return metricPersistService.persistCircularDependencyMetrics(systemId)
     }
 
-    @PostMapping("/data_class/persist")
+    @PostMapping("/bad_smell_dataclass/persist")
     fun persistDataClasses(@PathVariable("systemId") systemId: Long) {
         return metricPersistService.persistDataClass(systemId)
     }

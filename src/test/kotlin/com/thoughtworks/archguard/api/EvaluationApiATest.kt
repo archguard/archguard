@@ -43,7 +43,7 @@ class EvaluationApiATest {
         val content = result.response.contentAsString
 
         val idSaved = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
-            handle.createQuery("select id from evaluationReport")
+            handle.createQuery("select id from report_evaluation")
                     .mapTo(String::class.java).one()
         }
         assertEquals(idSaved, content)
@@ -69,7 +69,7 @@ class EvaluationApiATest {
     @Order(3)
     fun should_get_evaluation_by_id() {
         val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
-            handle.createQuery("select id from evaluationReport")
+            handle.createQuery("select id from report_evaluation")
                     .mapTo(String::class.java).one()
         }
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluations/$id")
@@ -86,7 +86,7 @@ class EvaluationApiATest {
     @Order(4)
     fun should_get_evaluation_detail_by_id() {
         val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
-            handle.createQuery("select id from evaluationReport")
+            handle.createQuery("select id from report_evaluation")
                     .mapTo(String::class.java).one()
         }
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluation-details/$id")

@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `CheckStyle`
+-- Table structure for table `metric_checkstyle`
 --
 
-DROP TABLE IF EXISTS `CheckStyle`;
+DROP TABLE IF EXISTS `metric_checkstyle`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `CheckStyle` (
+CREATE TABLE `metric_checkstyle` (
   `id` char(36) NOT NULL,
   `system_id` varchar(36) NOT NULL,
   `file` mediumtext NOT NULL,
@@ -36,13 +36,13 @@ CREATE TABLE `CheckStyle` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Configure`
+-- Table structure for table `system_configure`
 --
 
-DROP TABLE IF EXISTS `Configure`;
+DROP TABLE IF EXISTS `system_configure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `Configure` (
+CREATE TABLE `system_configure` (
   `id` char(36)  NOT NULL,
   `system_id` bigint NOT NULL,
   `type` mediumtext  NOT NULL,
@@ -186,13 +186,13 @@ CREATE TABLE `JMethodPLProcedure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Overview`
+-- Table structure for table `system_overview`
 --
 
-DROP TABLE IF EXISTS `Overview`;
+DROP TABLE IF EXISTS `system_overview`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `Overview` (
+CREATE TABLE `system_overview` (
   `id` char(36) NOT NULL,
   `overview_type` varchar(20) NOT NULL,
   `overview_value` text NOT NULL,
@@ -742,13 +742,13 @@ CREATE TABLE `scm_commit_log` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `data_class`
+-- Table structure for table `bad_smell_dataclass`
 --
 
-DROP TABLE IF EXISTS `data_class`;
+DROP TABLE IF EXISTS `bad_smell_dataclass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `data_class` (
+CREATE TABLE `bad_smell_dataclass` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `class_id` char(36)  NOT NULL,
   `field_id` char(36)  NOT NULL,
@@ -840,13 +840,13 @@ CREATE TABLE `dubbo_service_config` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `evaluationReport`
+-- Table structure for table `report_evaluation`
 --
 
-DROP TABLE IF EXISTS `evaluationReport`;
+DROP TABLE IF EXISTS `report_evaluation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 
-CREATE TABLE `evaluationReport` (
+CREATE TABLE `report_evaluation` (
   `id` varchar(50) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `dimensions` text,

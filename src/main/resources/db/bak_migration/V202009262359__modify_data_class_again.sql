@@ -1,5 +1,5 @@
-drop table if exists data_class;
-create table data_class
+drop table if exists bad_smell_dataclass;
+create table bad_smell_dataclass
 (
     id        bigint auto_increment
         primary key,
@@ -12,8 +12,8 @@ create table data_class
     collate = utf8mb4_unicode_ci;
 
 create index idx_class_id
-    on data_class (class_id);
+    on bad_smell_dataclass (class_id);
 
 create index idx_system_id
-    on data_class (system_id);
+    on bad_smell_dataclass (system_id);
 

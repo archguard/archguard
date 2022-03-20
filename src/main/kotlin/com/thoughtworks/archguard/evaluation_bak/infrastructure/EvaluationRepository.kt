@@ -24,7 +24,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
                 .replace("\\\"", "\\\\\"")
         val uuid = UUID.randomUUID().toString()
         jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("insert into evaluationReport(id, name, dimensions, comment, improvements, detail, createdDate) " +
+            it.createUpdate("insert into report_evaluation(id, name, dimensions, comment, improvements, detail, createdDate) " +
                     "values ('${uuid}', '${evaluationReport.name}', '${dimensions}', " +
                     "'${evaluationReport.comment}', '${evaluationReport.improvements.joinToString(",")}', " +
                     "'${detail}', " +
@@ -37,7 +37,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
     fun findAll(): List<EvaluationReport> {
         return jdbi.withHandle<List<EvaluationReport>, Nothing> {
             it
-                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport order by createdDate desc")
+                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from report_evaluation order by createdDate desc")
                     .map { rs, _ ->
                         EvaluationReport(rs.getString("id"),
                                 rs.getObject("createdDate", LocalDateTime::class.java),
@@ -53,7 +53,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
     fun findById(id: String): EvaluationReport? {
         return jdbi.withHandle<EvaluationReport?, Nothing> {
             it
-                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from evaluationReport where id='${id}'")
+                    .createQuery("select id, name, dimensions, comment, improvements, createdDate from report_evaluation where id='${id}'")
                     .map { rs, _ ->
                         EvaluationReport(rs.getString("id"),
                                 rs.getObject("createdDate", LocalDateTime::class.java),
@@ -68,7 +68,7 @@ class EvaluationRepository(@Autowired private val jdbi: Jdbi) {
     fun findDetailById(id: String): EvaluationReportDetail? {
         return jdbi.withHandle<EvaluationReportDetail?, Nothing> {
             it
-                    .createQuery("select detail from evaluationReport where id='${id}'")
+                    .createQuery("select detail from report_evaluation where id='${id}'")
                     .map { rs, _ ->
                         mapper.readValue(rs.getString("detail") ?: "{}", EvaluationReportDetail::class.java)
                     }.firstOrNull()

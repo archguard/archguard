@@ -95,11 +95,11 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         val sqls = mutableListOf<String>()
         val tables = listOf(
                 "code_ref_class_dependencies", "code_ref_class_fields", "code_refs_class_methods", "code_ref_class_parent", "code_ref_method_callees",
-                "code_ref_method_fields", "badSmell", "CheckStyle", "metric_class_coupling", "metrics_class", "Configure",
+                "code_ref_method_fields", "badSmell", "metric_checkstyle", "metric_class_coupling", "metrics_class", "Configure",
                 "dubbo_bean", "dubbo_module", "dubbo_reference_config", "dubbo_service_config", "JAnnotation",
                 "JAnnotationValue", "JClass", "JField", "JMethod", "logic_module", "testBadSmell", "violation",
                 "scm_commit_log", "scm_change_entry", "code_class_access", "method_access", "scm_git_hot_file",
-                "circular_dependency_metrics", "metric_cognitive_complexity", "data_class",
+                "circular_dependency_metrics", "metric_cognitive_complexity", "bad_smell_dataclass",
                 "method_metrics", "metric_module", "metric_package"
         )
 
