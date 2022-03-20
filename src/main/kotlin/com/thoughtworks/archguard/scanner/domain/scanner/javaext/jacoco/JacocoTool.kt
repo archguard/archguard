@@ -46,15 +46,15 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
     }
 
     private fun checkIfExistInLocal(): Boolean {
-        return File("scan_jacoco-$version-all.jar").exists()
+        return File(SCAN_JACOCO_JAR).exists()
     }
 
     private fun download() {
-        if (File(workspace.absolutePath + "/scan_jacoco.jar").exists()) {
+        if (File(SCAN_JACOCO_JAR).exists()) {
             return
         }
         val jarLink = "$host/$SCAN_JACOCO_JAR"
-        FileOperator.download(URL(jarLink), File(workspace.absolutePath + "/scan_jacoco.jar"))
+        FileOperator.download(URL(jarLink), File(SCAN_JACOCO_JAR))
         val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
         chmod.directory(workspace)
         chmod.start().waitFor()

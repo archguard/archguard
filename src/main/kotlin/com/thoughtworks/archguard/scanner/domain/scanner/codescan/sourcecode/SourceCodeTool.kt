@@ -41,7 +41,7 @@ class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: Str
     private fun download() {
         log.info("download SourceCodeTool")
         val downloadUrl = "$host/$SCAN_SOURCECODE_JAR"
-        FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_sourcecode.jar"))
+        FileOperator.download(URL(downloadUrl), File(SCAN_SOURCECODE_JAR))
         val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

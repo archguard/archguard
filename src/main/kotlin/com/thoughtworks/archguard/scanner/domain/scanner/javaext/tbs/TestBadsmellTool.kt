@@ -9,9 +9,10 @@ import java.net.URL
 
 class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
 
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.4"
-    private val version = "1.1.4"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.2.1"
+    private val version = "1.2.1"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
+    private val SCAN_TEST_BADSMELL_JAR = "scan_git-$version-all.jar"
 
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
@@ -41,19 +42,20 @@ class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_test_badsmell-$version-all.jar"), File("$systemRoot/scan_scan_test_badsmell.jar"))
+        FileOperator.copyTo(File(SCAN_TEST_BADSMELL_JAR), File("$systemRoot/scan_scan_test_badsmell.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
+
     private fun checkIfExistInLocal(): Boolean {
-        return File("scan_git-$version-all.jar").exists()
+        return File(SCAN_TEST_BADSMELL_JAR).exists()
     }
 
     private fun download() {
         val downloadUrl = "$host/scan_test_badsmell-$version-all.jar"
-        FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_test_badsmell.jar"))
+        FileOperator.download(URL(downloadUrl), File(SCAN_TEST_BADSMELL_JAR))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

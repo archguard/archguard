@@ -12,6 +12,7 @@ class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Lo
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.2.0"
     private val version = "1.2.0"
+    private val SCAN_GIT_JAR = "scan_git-$version-all.jar"
 
     override fun getGitReport(): File? {
         prepareTool()
@@ -50,19 +51,19 @@ class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Lo
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File("scan_git-$version-all.jar"), File("$systemRoot/scan_git.jar"))
+        FileOperator.copyTo(File(SCAN_GIT_JAR), File("$systemRoot/scan_git.jar"))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()
     }
 
     private fun checkIfExistInLocal(): Boolean {
-        return File("scan_git-$version-all.jar").exists()
+        return File(SCAN_GIT_JAR).exists()
     }
 
     private fun download() {
         val downloadUrl = "$host/scan_git-$version-all.jar"
-        FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_git.jar"))
+        FileOperator.download(URL(downloadUrl), File(SCAN_GIT_JAR))
         val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

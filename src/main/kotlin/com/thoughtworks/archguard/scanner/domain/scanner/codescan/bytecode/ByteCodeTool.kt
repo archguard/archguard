@@ -42,7 +42,7 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) 
     private fun download() {
         log.info("download jar tool")
         val downloadUrl = "$host/$SCAN_JAVA_BYTECODE_JAR"
-        FileOperator.download(URL(downloadUrl), File("$systemRoot/scan_java_bytecode.jar"))
+        FileOperator.download(URL(downloadUrl), File(SCAN_JAVA_BYTECODE_JAR))
         val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
         chmod.directory(systemRoot)
         chmod.start().waitFor()

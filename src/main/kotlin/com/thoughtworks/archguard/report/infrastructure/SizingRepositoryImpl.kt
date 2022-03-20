@@ -488,7 +488,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val table = "select count(name) as count from code_class where system_id = :systemId and is_test=false and loc is not NULL " +
-                    "group by clzname " +
+                    "group by class_name " +
                     "having count>:threshold "
             val sql = "select count(1) from ($table) as c"
             it.createQuery(sql)
@@ -547,7 +547,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long {
         return jdbi.withHandle<Long, Exception> {
-            val table = "select count(name) as count from code_class" +
+            val table = "select count(name) as count from code_class " +
                     "where system_id = :systemId " +
                     "and ( module like '%${filter.module}%' " +
                     "and class_name like '%${filter.className}%' " +
@@ -555,7 +555,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
                     "and is_test=false " +
                     "and loc is not NULL  " +
-                    "group by clzname " +
+                    "group by class_name " +
                     "having count>:threshold "
             val sql = "select count(1) from ($table) as c"
             it.createQuery(sql)

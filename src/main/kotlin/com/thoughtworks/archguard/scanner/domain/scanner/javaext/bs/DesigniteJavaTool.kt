@@ -44,7 +44,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun prepareTool() {
-        val file = File("$systemRoot/$SCAN_DESIGNITE_JAR")
+        val file = File(SCAN_DESIGNITE_JAR)
         when {
             file.exists() -> {
                 log.info("DesigniteJava.jar already exists in systemRoot")
@@ -65,7 +65,7 @@ class DesigniteJavaTool(val systemRoot: File) {
             else -> {
                 log.info("Download DesigniteJava.jar from remote")
                 val downloadUrl = "$host/$SCAN_DESIGNITE_JAR"
-                FileOperator.download(URL(downloadUrl), File("$systemRoot/$SCAN_DESIGNITE_JAR"))
+                FileOperator.download(URL(downloadUrl), File(SCAN_DESIGNITE_JAR))
             }
         }
 
