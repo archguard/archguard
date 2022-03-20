@@ -136,22 +136,33 @@ class ClassRepository(systemId: String) {
     }
 
     private fun saveOrGetDependentClass(name: String, moduleName: String = DEFAULT_MODULE_NAME): String? {
-        val idOpt = findClass(name, moduleName, null)
+        // own module
+        var idOpt = findClass(name, moduleName, null)
+        if (idOpt.isPresent) {
+            return idOpt.get()
+        }
+
+        //other-module
+        // todo, after add module support for Chapi
+
+        //third-party
+        idOpt = findClass(name, null, null)
+        if (idOpt.isPresent) {
+            return idOpt.get()
+        }
+
         val index: Int = name.lastIndexOf(".")
         val packageName: String? = if (index < 0) null else name.substring(0, index)
         val className: String = if (index < 0) name else name.substring(index + 1)
-        val clzDependenceId = idOpt!!.orElseGet {
-            doSaveClass(
-                name,
-                moduleName,
-                "",
-                thirdparty = true,
-                isTest = false,
-                packageName = packageName,
-                className = className
-            )
-        }
-        return clzDependenceId
+        return doSaveClass(
+            name,
+            moduleName,
+            "",
+            thirdparty = true,
+            isTest = false,
+            packageName = packageName,
+            className = className
+        )
     }
 
     private fun doSaveClassDependence(clzId: String, clzDependenceId: String?, sourceName: String, name: String) {
@@ -187,7 +198,7 @@ class ClassRepository(systemId: String) {
         return clzId
     }
 
-    private fun findClass(name: String, module: String?, access: String?): Optional<String?>? {
+    private fun findClass(name: String, module: String?, access: String?): Optional<String?> {
         val keys: MutableMap<String, String> = HashMap()
         keys["name"] = name
         if (module != null) {
