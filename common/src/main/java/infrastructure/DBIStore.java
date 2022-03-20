@@ -6,12 +6,16 @@ import infrastructure.task.SqlExecuteThreadPool;
 import io.netty.util.internal.StringUtil;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Batch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Phaser;
 
 public class DBIStore {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultBatchImpl.class);
 
     private static final String JDBC_URL = System.getProperty("dburl");
     private static final DBIStore INSTANCE = new DBIStore(JDBC_URL);
@@ -58,7 +62,13 @@ public class DBIStore {
                     for (String sql : sqls) {
                         batch.add(sql);
                     }
-                    return batch.execute();
+
+                    try {
+                        batch.execute();
+                    } catch (Exception e) {
+                        logger.info(String.valueOf(e));
+                    }
+                    return new ArrayList<Integer>();
                 }));
 
         SqlExecuteThreadPool.execute(p);
