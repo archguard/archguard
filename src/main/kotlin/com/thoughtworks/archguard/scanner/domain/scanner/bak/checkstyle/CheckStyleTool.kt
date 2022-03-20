@@ -1,6 +1,7 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
+import com.thoughtworks.archguard.scanner.domain.tools.StyleReport
 import java.io.File
 
 class CheckStyleTool(private val context: ScanContext) : StyleReport {

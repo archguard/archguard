@@ -2,10 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.scanner.bak.bs
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.thoughtworks.archguard.scanner.domain.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.TestBadsmellTool
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory

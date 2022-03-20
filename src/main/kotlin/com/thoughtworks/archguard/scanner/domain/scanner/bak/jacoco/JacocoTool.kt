@@ -1,10 +1,9 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
 
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import java.io.File
 import java.net.URL
 

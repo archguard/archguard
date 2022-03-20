@@ -1,8 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.JacocoTool
 import com.thoughtworks.archguard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.bak.tbs
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi

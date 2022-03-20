@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
-import com.thoughtworks.archguard.scanner.domain.scanner.bak.style.Style
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle.Style
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch
 import org.jdbi.v3.sqlobject.statement.SqlUpdate

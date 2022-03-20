@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.pmd
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import java.io.File
 
 class PmdTool(private val context: ScanContext) {

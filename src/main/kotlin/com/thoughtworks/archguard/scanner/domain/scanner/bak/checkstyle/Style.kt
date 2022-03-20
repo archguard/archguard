@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.style
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle
 
 data class Style(val id: String, val systemId: Long, val file: String,
                  val source: String, val message: String,

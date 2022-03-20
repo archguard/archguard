@@ -1,10 +1,9 @@
-package com.thoughtworks.archguard.scanner.domain.scanner.bak.style
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.checkstyle
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.JavaDependencyAnalysis
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.CheckStyleTool
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import org.slf4j.LoggerFactory

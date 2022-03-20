@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.tools
 
+import com.thoughtworks.archguard.scanner.domain.scanner.git.GitHotFileScannerTool
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

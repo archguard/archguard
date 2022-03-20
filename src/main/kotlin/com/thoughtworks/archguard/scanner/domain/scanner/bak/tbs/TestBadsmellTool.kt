@@ -1,5 +1,6 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.tbs
 
+import com.thoughtworks.archguard.scanner.domain.tools.TestBadSmellReport
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory

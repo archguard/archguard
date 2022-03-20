@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain
+package com.thoughtworks.archguard.scanner.domain.scanner.bak.bs
 
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool

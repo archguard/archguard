@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.codescan.bytecode
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JavaByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
+class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
 
-    private val log = LoggerFactory.getLogger(JavaByteCodeTool::class.java)
+    private val log = LoggerFactory.getLogger(ByteCodeTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.1.4"
     private val version = "1.1.4"
     private val SCAN_JAVA_BYTECODE_JAR = "scan_java_bytecode-$version-all.jar"

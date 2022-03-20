@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.domain.tools
+package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import com.thoughtworks.archguard.scanner.infrastructure.Processor
 import org.slf4j.LoggerFactory

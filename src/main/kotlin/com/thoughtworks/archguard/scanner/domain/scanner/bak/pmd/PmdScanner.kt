@@ -1,8 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.bak.pmd
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.PmdTool
 import com.thoughtworks.archguard.scanner.infrastructure.db.PmdRepository
 import com.thoughtworks.archguard.scanner.infrastructure.db.Violation
 import org.dom4j.Element

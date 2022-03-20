@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.bak.jacoco
 
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
@@ -18,7 +18,8 @@ import java.io.File
 internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @Autowired val jdbi: Jdbi) {
     @Test
     fun should_get_jacoco_report() {
-        jacocoScanner.scan(ScanContext(
+        jacocoScanner.scan(
+            ScanContext(
             1,
             "",
             BuildTool.MAVEN,
@@ -26,7 +27,8 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
             "",
             ArrayList(),
             "jvm"
-        ))
+        )
+        )
         val bundle = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
             handle.createQuery("select count(*) from bundle")
                     .mapTo(Int::class.java).one()

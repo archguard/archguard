@@ -3,10 +3,8 @@ package com.thoughtworks.archguard.scanner.domain.scanner.bak.tbs
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.thoughtworks.archguard.scanner.domain.ScanContext
+import com.thoughtworks.archguard.scanner.domain.scanner.bak.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
-import com.thoughtworks.archguard.scanner.domain.tools.TestBadsmellTool
-import com.thoughtworks.archguard.scanner.domain.tools.ShellTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
