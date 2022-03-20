@@ -1,4 +1,38 @@
-#  (2022-03-19)
+# [](https://github.com/archguard/scanner/compare/v1.2.2...v) (2022-03-20)
+
+
+
+## [1.2.2](https://github.com/archguard/scanner/compare/v1.2.1...v1.2.2) (2022-03-20)
+
+
+### Bug Fixes
+
+* add check for same class already in system ([8fd5759](https://github.com/archguard/scanner/commit/8fd5759d0c3f8ce4fe522bddad5e0799e469883c))
+* fix db sql config issue ([d8de8a1](https://github.com/archguard/scanner/commit/d8de8a1d503a2ecafaf48323c63be71df9dab35d))
+* fix some typos ([3629e5c](https://github.com/archguard/scanner/commit/3629e5c8423235b9ee6cd9660fe04fc82c0f8153))
+* fix typo ([5f6f908](https://github.com/archguard/scanner/commit/5f6f908fa28a9d006110297fff9931d2949eaf96))
+
+
+### Features
+
+* add catch for duplicated key issue ([f343f7c](https://github.com/archguard/scanner/commit/f343f7c6d3734a680db16380312489c743498348))
+
+
+
+## [1.2.1](https://github.com/archguard/scanner/compare/v1.2.0...v1.2.1) (2022-03-20)
+
+
+
+# [1.2.0](https://github.com/archguard/scanner/compare/v1.1.10...v1.2.0) (2022-03-20)
+
+
+### Features
+
+* **container:** init api analyser flag ([19caf3b](https://github.com/archguard/scanner/commit/19caf3bdc24c5e519e373eb8c226b3db66f579ea))
+
+
+
+## [1.1.10](https://github.com/archguard/scanner/compare/1.1.10...v1.1.10) (2022-03-19)
 
 
 
