@@ -17,7 +17,7 @@ open class JClass(val id: String, val name: String, val module: String?) {
     var callers: List<ClassRelation> = ArrayList()
     var parents: List<JClass> = ArrayList()
     var implements: List<JClass> = ArrayList()
-    var dependencees: List<JClass> = ArrayList()
+    var dependencies: List<JClass> = ArrayList()
     var dependencers: List<JClass> = ArrayList()
     var fields: List<JField> = ArrayList()
     private val classType: MutableList<ClazzType> = mutableListOf()
@@ -39,7 +39,7 @@ open class JClass(val id: String, val name: String, val module: String?) {
 
 
     override fun toString(): String {
-        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencees, dependencers=$dependencers, id=$id, classType=$classType)"
+        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencies, dependencers=$dependencers, id=$id, classType=$classType)"
     }
 
     fun getFullName(): String {

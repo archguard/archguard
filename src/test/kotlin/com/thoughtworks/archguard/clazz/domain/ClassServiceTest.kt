@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.clazz.domain.service.ClassDependenceesService
+import com.thoughtworks.archguard.clazz.domain.service.ClassDependenciesService
 import com.thoughtworks.archguard.clazz.domain.service.ClassDependencerService
 import com.thoughtworks.archguard.clazz.domain.service.ClassInvokeService
 import com.thoughtworks.archguard.clazz.domain.service.ClassMethodCalleesService
@@ -20,7 +20,7 @@ class ClassServiceTest {
     private lateinit var classInvokeService: ClassInvokeService
 
     @MockK
-    lateinit var classDependenceesService: ClassDependenceesService
+    lateinit var classDependenciesService: ClassDependenciesService
 
     @MockK
     lateinit var classDependencerService: ClassDependencerService
@@ -34,7 +34,7 @@ class ClassServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassService(classMethodCalleesService, classDependenceesService, classDependencerService, jClassRepository, classInvokeService)
+        service = ClassService(classMethodCalleesService, classDependenciesService, classDependencerService, jClassRepository, classInvokeService)
     }
 
     @Test
@@ -45,19 +45,19 @@ class ClassServiceTest {
         val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
         val dependencer = JClass("id2", "com.thoughtworks.archguard.domain.dependencer", "archguard")
         val expected = JClass("1", targetName, "module")
-        (expected.dependencees as MutableList).add(dependencee)
+        (expected.dependencies as MutableList).add(dependencee)
         (expected.dependencers as MutableList).add(dependencer)
         //when
         every { jClassRepository.getJClassBy(any(), any(), any()) } returns expected
-        every { classDependenceesService.findDependencees(systemId, any(), any()) } returns expected
+        every { classDependenciesService.findDependencies(systemId, any(), any()) } returns expected
         every { classDependencerService.findDependencers(systemId, any(), any()) } returns expected
 
         val result = service.getDependencies(systemId, "module", targetName, 1)
         //then
         assertThat(result.dependencers.size).isEqualTo(1)
-        assertThat(result.dependencees.size).isEqualTo(1)
+        assertThat(result.dependencies.size).isEqualTo(1)
         assertThat(result.dependencers[0]).isEqualToComparingFieldByField(dependencer)
-        assertThat(result.dependencees[0]).isEqualToComparingFieldByField(dependencee)
+        assertThat(result.dependencies[0]).isEqualToComparingFieldByField(dependencee)
     }
 
     @Test

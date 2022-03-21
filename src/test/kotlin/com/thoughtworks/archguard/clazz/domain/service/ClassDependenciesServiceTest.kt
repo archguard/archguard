@@ -10,9 +10,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ClassDependenceesServiceTest {
+internal class ClassDependenciesServiceTest {
 
-    private lateinit var service: ClassDependenceesService
+    private lateinit var service: ClassDependenciesService
 
     @MockK
     private lateinit var repo: JClassRepository
@@ -26,7 +26,7 @@ internal class ClassDependenceesServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassDependenceesService(repo, configureService, classConfigService)
+        service = ClassDependenciesService(repo, configureService, classConfigService)
         every { configureService.isDisplayNode(any(), any()) } returns true
         every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
     }
@@ -45,12 +45,12 @@ internal class ClassDependenceesServiceTest {
         every { repo.findDependencees(callee1.id) } returns listOf(callee2)
 
 
-        val result = service.findDependencees(systemId, target, 2)
+        val result = service.findDependencies(systemId, target, 2)
         //then
-        assertThat(result.dependencees.size).isEqualTo(1)
-        assertThat(result.dependencees[0].name).isEqualTo("callee1")
-        assertThat(result.dependencees[0].dependencees.size).isEqualTo(1)
-        assertThat(result.dependencees[0].dependencees[0].name).isEqualTo("callee2")
+        assertThat(result.dependencies.size).isEqualTo(1)
+        assertThat(result.dependencies[0].name).isEqualTo("callee1")
+        assertThat(result.dependencies[0].dependencies.size).isEqualTo(1)
+        assertThat(result.dependencies[0].dependencies[0].name).isEqualTo("callee2")
     }
 
     @Test
@@ -67,12 +67,12 @@ internal class ClassDependenceesServiceTest {
         every { repo.findDependencees(dependencee1.id) } returns listOf(dependencee2)
         every { repo.findDependencees(dependencee2.id) } returns listOf()
 
-        val result = service.findDependencees(systemId, target, 4)
+        val result = service.findDependencies(systemId, target, 4)
         //then
-        assertThat(result.dependencees.size).isEqualTo(1)
-        assertThat(result.dependencees[0].name).isEqualTo("dependencee1")
-        assertThat(result.dependencees[0].dependencees.size).isEqualTo(1)
-        assertThat(result.dependencees[0].dependencees[0].name).isEqualTo("dependencee2")
-        assertThat(result.dependencees[0].dependencees[0].dependencees).isEmpty()
+        assertThat(result.dependencies.size).isEqualTo(1)
+        assertThat(result.dependencies[0].name).isEqualTo("dependencee1")
+        assertThat(result.dependencies[0].dependencies.size).isEqualTo(1)
+        assertThat(result.dependencies[0].dependencies[0].name).isEqualTo("dependencee2")
+        assertThat(result.dependencies[0].dependencies[0].dependencies).isEmpty()
     }
 }
