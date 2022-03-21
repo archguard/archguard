@@ -1,15 +1,17 @@
 package com.thoughtworks.archguard.scanner.sourcecode
 
 import chapi.app.frontend.path.ecmaImportConvert
+import chapi.app.frontend.path.importConvert
 import chapi.domain.core.*
 import infrastructure.SourceBatch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val DEFAULT_MODULE_NAME = "root"
-private const val THIRD_PARTY = "3rd-party"
+private const val THIRD_PARTY = "root"
 
 class ClassRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
@@ -149,14 +151,17 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         filePath: String
     ) {
         for (clz in imports) {
-            var name = clz.Source
+            var importSource = clz.Source
             if (isJs()) {
-                name = ecmaImportConvert(workspace, filePath, name)
-                name = name.replace("/", ".")
+                importSource = importConvert(filePath, importSource)
+                if(importSource.startsWith("src/")) {
+                    importSource = importSource.replaceFirst("src/", "@/")
+                }
+                importSource = importSource.replace("/", ".")
             }
 
-            val clzDependenceId = saveOrGetDependentClass(name, DEFAULT_MODULE_NAME)
-            doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", name)
+            val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+            doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
         }
     }
 
