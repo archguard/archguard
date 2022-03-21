@@ -9,7 +9,10 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import infrastructure.DBIStore
 import infrastructure.task.SqlExecuteThreadPool
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -67,6 +70,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 dataStructs = GoAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
             }
         }
+
+        File("structs.json").writeText(Json.encodeToString(dataStructs))
         toSql(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
