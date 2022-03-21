@@ -19,12 +19,13 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         val sql = "select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module"
         val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
-            it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("name", name)
-                    .bind("module", module)
-                    .mapTo(JClassDto::class.java)
-                    .findOne().orElse(null)
+            val jClassDtos = it.createQuery(sql)
+                .bind("systemId", systemId)
+                .bind("name", name)
+                .bind("module", module)
+                .mapTo(JClassDto::class.java)
+
+            jClassDtos.findFirst().orElse(null)
         }
         return jClassDto?.toJClass()
     }
