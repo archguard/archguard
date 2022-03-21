@@ -1,12 +1,10 @@
 package com.thoughtworks.archguard.scanner.sourcecode
 
-import chapi.app.frontend.path.ecmaImportConvert
 import chapi.app.frontend.path.importConvert
 import chapi.domain.core.*
 import infrastructure.SourceBatch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -153,16 +151,25 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         for (clz in imports) {
             var importSource = clz.Source
             if (isJs()) {
-                importSource = importConvert(filePath, importSource)
-                if(importSource.startsWith("src/")) {
-                    importSource = importSource.replaceFirst("src/", "@/")
-                }
-                importSource = importSource.replace("/", ".")
+                importSource = convertTypeScriptImport(importSource, filePath)
             }
 
             val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
             doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
         }
+    }
+
+    private fun convertTypeScriptImport(importSource: String, filePath: String): String {
+        var imp = importSource
+        if (!imp.startsWith("@")) {
+            imp = importConvert(filePath, imp)
+            if (imp.startsWith("src/")) {
+                imp = imp.replaceFirst("src/", "@/")
+            }
+        }
+
+        imp = imp.replace("/", ".")
+        return imp
     }
 
     private fun isJs() = language == "typescript" || language == "javascript"
