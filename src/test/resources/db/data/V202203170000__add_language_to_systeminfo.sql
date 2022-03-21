@@ -1,1 +1,0 @@
-alter table system_info add column `language` varchar(50) not null default 'jvm';

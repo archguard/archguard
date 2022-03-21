@@ -321,6 +321,8 @@ CREATE TABLE `code_ref_class_dependencies` (
   `system_id` bigint NOT NULL,
   `a` char(36)  DEFAULT NULL,
   `b` char(36)  DEFAULT NULL,
+  `source` char(200)  DEFAULT '',
+  `target` char(200)  DEFAULT '',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -1044,6 +1046,9 @@ CREATE TABLE `system_info` (
   `created_time` datetime DEFAULT NULL,
   `threshold_suite_id` bigint DEFAULT NULL,
   `branch` varchar(50)  DEFAULT NULL,
+  `language` varchar(50)  DEFAULT 'jvm',
+  `code_path` varchar(50)  DEFAULT NULL,
+  `build_command` varchar(50)  DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
