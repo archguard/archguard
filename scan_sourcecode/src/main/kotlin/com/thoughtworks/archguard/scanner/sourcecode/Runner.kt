@@ -46,8 +46,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
         cleanSqlFile(TABLES)
 
         var dataStructs: Array<CodeDataStruct> = arrayOf()
-        val lowercase = language.lowercase()
-        when (lowercase) {
+        val lang = language.lowercase()
+        when (lang) {
             "java" -> {
                 dataStructs = JavaAnalyserApp().analysisNodeByPath(path)
             }
@@ -67,7 +67,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 dataStructs = GoAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
             }
         }
-        toSql(dataStructs, systemId, path)
+        toSql(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -77,8 +77,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
         SqlExecuteThreadPool.close()
     }
 
-    private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, path: String) {
-        val repo = ClassRepository(systemId)
+    private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
+        val repo = ClassRepository(systemId, language)
 
         if (withApi) {
             when(language.lowercase()) {

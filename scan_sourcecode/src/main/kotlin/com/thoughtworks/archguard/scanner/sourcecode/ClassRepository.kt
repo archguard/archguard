@@ -10,12 +10,14 @@ import java.util.*
 private const val DEFAULT_MODULE_NAME = "root"
 private const val THIRD_PARTY = "3rd-party"
 
-class ClassRepository(systemId: String) {
+class ClassRepository(systemId: String, language: String) {
     private val batch: SourceBatch = SourceBatch()
     private val systemId: String
+    private val language: String
 
     init {
         this.systemId = systemId
+        this.language = language
     }
 
     fun saveClassElement(clz: CodeDataStruct) {
@@ -110,7 +112,12 @@ class ClassRepository(systemId: String) {
     }
 
     private fun saveClassParent(clzId: String, module: String, imports: Array<CodeImport>, extend: String) {
-        val imp = imports.filter { it.Source.split(".").last() == extend }
+        var delimiters = "."
+        if(isJs()) {
+            delimiters = "/"
+        }
+
+        val imp = imports.filter { it.Source.split(delimiters).last() == extend }
         var moduleName = module
         if (imp.isNotEmpty()) {
             moduleName = imp[0].Source
@@ -133,11 +140,17 @@ class ClassRepository(systemId: String) {
 
     private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>, packageName: String, clzName: String) {
         for (clz in imports) {
-            val name = clz.Source
+            var name = clz.Source
+            if (isJs()) {
+                name = name.replace("/", ".")
+            }
+
             val clzDependenceId = saveOrGetDependentClass(name, DEFAULT_MODULE_NAME)
             doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", name)
         }
     }
+
+    private fun isJs() = language == "typescript" || language == "javascript"
 
     private fun saveOrGetDependentClass(name: String, moduleName: String = DEFAULT_MODULE_NAME): String? {
         // own module
