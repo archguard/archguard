@@ -14,5 +14,6 @@ data class SystemInfo(var id: Long? = null,
                       val updatedTime: Timestamp? = null,
                       val badSmellThresholdSuiteId: Long? = null,
                       val branch: String? = "master",
-                      val language: String? = "jvm"
+                      val language: String? = "jvm",
+                      val codePath: String? = ""
 )

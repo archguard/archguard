@@ -9,6 +9,7 @@ class SystemInfo(var id: Long? = null,
                  val username: String = "",
                  val password: String = "",
                  val language: String = "jvm",
+                 val codePath: String = "",
                  var scanned: ScannedType = ScannedType.NONE,
                  val repoType: String = "GIT") {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)

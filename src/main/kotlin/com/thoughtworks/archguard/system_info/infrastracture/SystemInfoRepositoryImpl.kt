@@ -16,7 +16,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType, scanned scanned," +
-                        " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language, " +
+                        " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language," +
+                        "code_path codePath, " +
                         " threshold_suite_id badSmellThresholdSuiteId, branch from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
@@ -27,7 +28,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<List<SystemInfo>, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, " +
                         "password password, scanned scanned, quality_gate_profile_id qualityGateProfileId," +
-                        "repo_type repoType, updated_time updatedTime, language language, " +
+                        "repo_type repoType, updated_time updatedTime, language language, code_path codePath, " +
                         "threshold_suite_id badSmellThresholdSuiteId, branch from system_info")
                         .mapTo<SystemInfo>()
                         .list()
@@ -45,7 +46,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "quality_gate_profile_id = :qualityGateProfileId, " +
                     "threshold_suite_id = :badSmellThresholdSuiteId, " +
                     "branch = :branch, " +
-                    "language = :language " +
+                    "language = :language, " +
+                    "code_path = :codePath " +
                     "where id = :id")
                     .bindBean(systemInfo)
                     .execute()
@@ -56,7 +58,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate("insert into system_info" +
                     "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
-                    " language, threshold_suite_id, branch) " +
+                    " language, code_path, threshold_suite_id, branch) " +
                     "values (:id, :systemName, " +
                     ":repo, " +
                     ":sql, " +
@@ -66,6 +68,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     ":scanned, " +
                     ":qualityGateProfileId, " +
                     ":language, " +
+                    ":codePath, " +
                     ":badSmellThresholdSuiteId, " +
                     ":branch)")
                     .bindBean(systemInfo)
@@ -95,9 +98,9 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         val sqls = mutableListOf<String>()
         val tables = listOf(
                 "code_ref_class_dependencies", "code_ref_class_fields", "code_ref_class_methods", "code_ref_class_parent", "code_ref_method_callees",
-                "code_ref_method_fields", "metric_code_bad_smell", "metric_checkstyle", "metric_class_coupling", "metric_class", "Configure",
+                "code_ref_method_fields", "metric_code_bad_smell", "metric_checkstyle", "metric_class_coupling", "metric_class", "system_configure",
                 "code_framework_dubbo_bean", "code_framework_dubbo_module", "code_framework_dubbo_reference_config", "code_framework_dubbo_service_config", "code_annotation",
-                "code_annotation_value", "code_class", "code_field", "code_method", "logic_module", "testBadSmell", "violation",
+                "code_annotation_value", "code_class", "code_field", "code_method", "logic_module", "metric_test_bad_smell", "violation",
                 "scm_commit_log", "scm_change_entry", "code_class_access", "method_access", "scm_git_hot_file",
                 "metric_circular_dependency", "metric_cognitive_complexity", "metric_dataclass",
                 "method_metrics", "metric_module", "metric_package"

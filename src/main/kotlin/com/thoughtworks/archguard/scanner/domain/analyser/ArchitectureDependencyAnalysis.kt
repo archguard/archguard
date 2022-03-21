@@ -16,15 +16,15 @@ import java.util.concurrent.Executors
 import javax.annotation.PostConstruct
 
 @Service
-class JavaDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
-                             @Value("\${spring.datasource.username}") val username: String,
-                             @Value("\${spring.datasource.password}") val password: String,
-                             @Value("\${init.scan.status}") val updateScanStatus: Boolean,
-                             val hubService: HubExecutorService,
-                             val systemInfoRepository: SystemInfoRepository,
-                             val analysisModuleClient: AnalysisModuleClient,
-                             val scanner2Client: Scanner2Client) {
-    private val log = LoggerFactory.getLogger(JavaDependencyAnalysis::class.java)
+class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
+                                     @Value("\${spring.datasource.username}") val username: String,
+                                     @Value("\${spring.datasource.password}") val password: String,
+                                     @Value("\${init.scan.status}") val updateScanStatus: Boolean,
+                                     val hubService: HubExecutorService,
+                                     val systemInfoRepository: SystemInfoRepository,
+                                     val analysisModuleClient: AnalysisModuleClient,
+                                     val scanner2Client: Scanner2Client) {
+    private val log = LoggerFactory.getLogger(ArchitectureDependencyAnalysis::class.java)
     private val runningSystemIdSet = CopyOnWriteArraySet<Long>()
     private val executor = Executors.newFixedThreadPool(5)
 

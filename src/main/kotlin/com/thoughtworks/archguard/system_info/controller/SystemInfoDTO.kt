@@ -15,4 +15,5 @@ data class SystemInfoDTO(var id: Long? = null,
                          val badSmellThresholdSuiteId: Long? = null,
                          val branch: String? = "master",
                          val language: String? = "jvm",
+                         val codePath: String? = "",
 )
