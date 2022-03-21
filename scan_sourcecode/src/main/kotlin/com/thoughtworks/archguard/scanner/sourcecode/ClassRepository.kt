@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner.sourcecode
 
+import chapi.app.frontend.path.ecmaImportConvert
 import chapi.domain.core.*
 import infrastructure.SourceBatch
 import kotlinx.serialization.encodeToString
@@ -10,19 +11,21 @@ import java.util.*
 private const val DEFAULT_MODULE_NAME = "root"
 private const val THIRD_PARTY = "3rd-party"
 
-class ClassRepository(systemId: String, language: String) {
+class ClassRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
     private val systemId: String
     private val language: String
+    private val workspace: String
 
     init {
         this.systemId = systemId
         this.language = language
+        this.workspace = workspace
     }
 
     fun saveClassElement(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
-        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName)
+        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
@@ -113,7 +116,7 @@ class ClassRepository(systemId: String, language: String) {
 
     private fun saveClassParent(clzId: String, module: String, imports: Array<CodeImport>, extend: String) {
         var delimiters = "."
-        if(isJs()) {
+        if (isJs()) {
             delimiters = "/"
         }
 
@@ -138,10 +141,17 @@ class ClassRepository(systemId: String, language: String) {
         batch.add("code_ref_class_parent", values)
     }
 
-    private fun saveClassDependencies(clzId: String, imports: Array<CodeImport>, packageName: String, clzName: String) {
+    private fun saveClassDependencies(
+        clzId: String,
+        imports: Array<CodeImport>,
+        packageName: String,
+        clzName: String,
+        filePath: String
+    ) {
         for (clz in imports) {
             var name = clz.Source
             if (isJs()) {
+                name = ecmaImportConvert(workspace, filePath, name)
                 name = name.replace("/", ".")
             }
 
@@ -335,7 +345,12 @@ class ClassRepository(systemId: String, language: String) {
             values["system_id"] = systemId
             values["name"] = name
             values["clzname"] = clzName
-            values["type"] = field.TypeType
+            var valueType = field.TypeType
+            if (valueType.contains("'")) {
+                valueType = valueType.replace("'", "''")
+            }
+            values["type"] = valueType
+
             values["updatedAt"] = time
             values["createdAt"] = time
             batch.add("code_field", values)

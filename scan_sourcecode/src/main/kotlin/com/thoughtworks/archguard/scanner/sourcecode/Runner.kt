@@ -78,7 +78,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     }
 
     private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
-        val repo = ClassRepository(systemId, language)
+        val repo = ClassRepository(systemId, language, path)
 
         if (withApi) {
             when(language.lowercase()) {
