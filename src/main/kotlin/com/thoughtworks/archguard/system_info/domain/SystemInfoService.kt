@@ -47,6 +47,9 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
     fun deleteSystemInfo(id: Long) {
         systemInfoRepository.deleteSystemInfo(id)
 
+        // todo: temp clean for tests
+        systemInfoRepository.deleteSystemInfoRelated()
+
     }
 
     fun cleanupSystemInfo() {
