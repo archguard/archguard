@@ -326,7 +326,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["clzname"] = clzName
         values["name"] = m.Name
         values["returntype"] = m.ReturnType
-        values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString(",")
+        var arguments = m.Parameters.map { it.TypeType }.joinToString(",")
+        if (arguments.contains("'")) {
+            arguments = arguments.replace("'", "''")
+        }
+        values["argumenttypes"] = arguments
 
         if (m.Modifiers.isNotEmpty()) {
             values["access"] = m.Modifiers[0]
