@@ -15,7 +15,14 @@ class SourceCodeScanner: Scanner {
     }
 
     override fun scan(context: ScanContext) {
-        val coca = SourceCodeTool(context.workspace, context.systemId, context.language, context.dbUrl)
-        coca.analyse()
+        SourceCodeTool(
+            context.workspace,
+            context.systemId,
+            context.language,
+            context.dbUrl,
+            context.codePath
+        ).also {
+            it.analyse()
+        }
     }
 }

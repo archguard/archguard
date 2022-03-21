@@ -26,7 +26,8 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
             File(javaClass.classLoader.getResource("TestBadSmell").toURI()),
             "",
             ArrayList(),
-            "jvm"
+            "jvm",
+            ""
         )
         testBadSmellScanner.scan(scanContext)
 
@@ -38,7 +39,7 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
         assertEquals(1, testBadSmells[0].systemId)
 
         val testCount = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select overview_value from overview where overview_type='test'")
+            handle.createQuery("select overview_value from system_overview where overview_type='test'")
                     .mapTo(Int::class.java).one()
         }
 

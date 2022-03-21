@@ -20,22 +20,23 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
     fun should_get_jacoco_report() {
         jacocoScanner.scan(
             ScanContext(
-            1,
-            "",
-            BuildTool.MAVEN,
-            File(javaClass.classLoader.getResource("TestJacoco").toURI()),
-            "",
-            ArrayList(),
-            "jvm"
-        )
+                1,
+                "",
+                BuildTool.MAVEN,
+                File(javaClass.classLoader.getResource("TestJacoco").toURI()),
+                "",
+                ArrayList(),
+                "jvm",
+                ""
+            )
         )
         val bundle = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from bundle")
+            handle.createQuery("select count(*) from test_coverage_bundle")
                     .mapTo(Int::class.java).one()
         }
         assertEquals(2, bundle)
         val item = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->
-            handle.createQuery("select count(*) from item")
+            handle.createQuery("select count(*) from test_coverage_item")
                     .mapTo(Int::class.java).one()
         }
         assertEquals(87, item)

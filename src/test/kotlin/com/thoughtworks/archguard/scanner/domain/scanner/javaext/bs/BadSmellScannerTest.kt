@@ -24,12 +24,13 @@ internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScann
             File(javaClass.classLoader.getResource("TestProject").toURI()),
             "",
             ArrayList(),
-            "jvm"
+            "jvm",
+            ""
         )
         badSmellScanner.scan(scanContext)
 
         val badSmells = jdbi.withHandle<List<BadSmell>, RuntimeException> { handle: Handle ->
-            handle.createQuery("select * from badSmell")
+            handle.createQuery("select * from metric_code_bad_smell")
                     .mapTo(BadSmell::class.java).list()
         }
         Assertions.assertEquals(badSmells.size, 2)

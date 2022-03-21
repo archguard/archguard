@@ -6,7 +6,13 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: String, val dbUrl: String) {
+class SourceCodeTool(
+    val systemRoot: File,
+    val systemId: Long,
+    val language: String,
+    val dbUrl: String,
+    val codePath: String
+) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.2.2"
     private val version = "1.2.2"
@@ -14,7 +20,7 @@ class SourceCodeTool(val systemRoot: File, val systemId: Long, val language: Str
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=.", "--system-id=$systemId", "--language=$language"))
+        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=$codePath", "--system-id=$systemId", "--language=$language"))
     }
 
     private fun prepareTool() {

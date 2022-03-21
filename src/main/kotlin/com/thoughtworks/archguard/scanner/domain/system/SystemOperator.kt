@@ -10,7 +10,7 @@ import java.nio.file.Paths
 
 class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
-    val compiledProjectMap = mutableMapOf<String, CompiledProject>()
+    val scanProjectMap = mutableMapOf<String, ScanProject>()
     val workspace: File = createTempDir()
     val sql: String by lazy { systemInfo.sql }
 
@@ -39,7 +39,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql, systemInfo.language)
+        scanProjectMap[repo] = ScanProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql, systemInfo.language, systemInfo.codePath)
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -52,7 +52,14 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
         val buildTool = getBuildTool(repoWorkSpace)
         buildSource(repoWorkSpace, buildTool)
-        compiledProjectMap[repo] = CompiledProject(repo, repoWorkSpace, buildTool, this.systemInfo.sql, systemInfo.language)
+        scanProjectMap[repo] = ScanProject(
+            repo,
+            repoWorkSpace,
+            buildTool,
+            this.systemInfo.sql,
+            systemInfo.language,
+            systemInfo.codePath
+        )
     }
 
     private fun getSource(workspace: File, repo: String): Int {

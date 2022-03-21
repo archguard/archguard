@@ -11,6 +11,7 @@ data class ScanContext(
     val workspace: File,
     val dbUrl: String,
     val config: List<ToolConfigure>,
-    val language: String
+    val language: String,
+    val codePath: String
 ) {
 }
