@@ -19,9 +19,9 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
     }
 
     fun saveContainerServices(services: Array<ContainerService>) {
-        val serviceId = saveMainServices()
-        services.forEach { service ->
-            service.demands.map { saveDemand(it, serviceId) }.toTypedArray()
+        services.forEach { caller ->
+            val serviceId = saveMainServices()
+            caller.demands.map { saveDemand(it, serviceId, caller.name) }.toTypedArray()
         }
     }
 
@@ -40,7 +40,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return serviceId
     }
 
-    private fun saveDemand(demand: ContainerDemand, serviceId: String): String {
+    private fun saveDemand(demand: ContainerDemand, serviceId: String, name: String): String {
         val time: String = ClassRepository.currentTime
         val demandId = ClassRepository.generateId()
         val values: MutableMap<String, String> = HashMap()
@@ -49,7 +49,15 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
 
         values["target_http_method"] = demand.target_http_method
         values["target_url"] = demand.target_url
-        values["source_method"] = demand.source_caller
+        val split = name.split("::")
+
+        if (split.size == 2) {
+            values["source_package"] = split[0]
+            values["source_method"] = split[1]
+        } else {
+            values["source_method"] = name
+        }
+
         values["service_id"] = serviceId
         values["system_id"] = systemId
         values["updated_at"] = time
