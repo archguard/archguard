@@ -44,7 +44,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
     }
 
     var members: List<LogicComponent> = emptyList()
-    var logicMembers: List<LogicComponent> = emptyList()
+    private var logicMembers: List<LogicComponent> = emptyList()
     var status = LogicModuleStatus.NORMAL
 
     fun hide() {
@@ -97,15 +97,15 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
         return members
     }
 
-    fun getSubJClassComponent(): List<LogicComponent> {
+    private fun getSubJClassComponent(): List<LogicComponent> {
         return members.filter { it.getType() == ModuleMemberType.CLASS }
     }
 
-    fun getSubSubModuleComponent(): List<LogicComponent> {
+    private fun getSubSubModuleComponent(): List<LogicComponent> {
         return members.filter { it.getType() == ModuleMemberType.SUBMODULE }
     }
 
-    fun getSubLogicModuleComponent(): List<LogicComponent> {
+    private fun getSubLogicModuleComponent(): List<LogicComponent> {
         return members.filter { it.getType() == ModuleMemberType.LOGIC_MODULE }
     }
 
@@ -117,7 +117,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
         return (getSubJClassComponent().isNotEmpty() || getSubSubModuleComponent().isNotEmpty()) && getSubLogicModuleComponent().isEmpty()
     }
 
-    fun isMixture(): Boolean {
+    private fun isMixture(): Boolean {
         return (getSubJClassComponent().isNotEmpty() || getSubSubModuleComponent().isNotEmpty()) && getSubLogicModuleComponent().isNotEmpty()
     }
 
