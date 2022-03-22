@@ -241,6 +241,10 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
         for (method in functions) {
+            if (clzName.isEmpty() && pkgName.isNullOrEmpty()) {
+                continue
+            }
+
             val methodId = doSaveMethod(clzName, method, pkgName)
             doSaveClassMethodRelations(clzId, methodId)
 
