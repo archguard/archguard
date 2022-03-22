@@ -24,7 +24,36 @@ public class SourceBatch extends DefaultBatchImpl {
 
     @Override
     public Optional<String> getKey(String table, Map<String, String> values) {
-        return Optional.empty();
+        if ("code_method".equalsIgnoreCase(table)) {
+            String key = methodStoreKey(values);
+            return Optional.of(key);
+        } else if ("code_class".equalsIgnoreCase(table)) {
+            String key = classStoreKey(values);
+            return Optional.of(key);
+        } else if ("code_field".equalsIgnoreCase(table)) {
+            String key = fieldStoreKey(values);
+            return Optional.of(key);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private String fieldStoreKey(Map<String, String> values) {
+        return values.get("name") + values.get("clzname");
+    }
+
+    private String classStoreKey(Map<String, String> values) {
+        if (values.get("module") == null) {
+            return values.get("name");
+        }
+        return values.get("name") + values.get("module");
+    }
+
+    private String methodStoreKey(Map<String, String> values) {
+        if (values.get("module") == null) {
+            return values.get("clzname") + values.get("name") + values.get("argumenttypes");
+        }
+        return values.get("clzname") + values.get("name") + values.get("module") + values.get("argumenttypes");
     }
 
     @Override

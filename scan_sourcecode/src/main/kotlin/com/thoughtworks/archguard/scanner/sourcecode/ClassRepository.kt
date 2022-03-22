@@ -7,12 +7,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
 private const val DEFAULT_MODULE_NAME = "root"
 private const val THIRD_PARTY = "root"
 
 class ClassRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
+    private val count = AtomicInteger(0)
+    private val batchStep = 100
     private val systemId: String
     private val language: String
     private val workspace: String
@@ -27,7 +30,12 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val clzId = saveClass(clz)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
-        saveClassAnnotation(clzId, clz.Annotations)
+
+        count.incrementAndGet()
+        if (count.get() == batchStep) {
+            flush()
+            count.compareAndSet(batchStep, 0)
+        }
     }
 
     fun saveClassBody(clz: CodeDataStruct) {
@@ -35,11 +43,14 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
+        saveClassAnnotation(clzId, clz.Annotations)
     }
 
     private fun saveOrGetClzId(clz: CodeDataStruct): String? {
-        return findClass(clz.NodeName, DEFAULT_MODULE_NAME).orElse(saveClass(clz))
+        val idOrOpt = findClass("${clz.Package}.${clz.NodeName}", DEFAULT_MODULE_NAME)
+        return idOrOpt.orElse(saveClass(clz))
     }
+
     private fun saveClassAnnotation(clzId: String, annotations: Array<CodeAnnotation>) {
         annotations.forEach {
             doSaveAnnotation(it, clzId)
@@ -235,7 +246,6 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     private fun findClass(name: String, module: String?): Optional<String?> {
         val keys: MutableMap<String, String> = HashMap()
         keys["name"] = name
-        keys["name"] = name
         if (module != null) {
             keys["module"] = module
         }
@@ -426,7 +436,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         var pkgName = clz.Package
         var clzName = clz.NodeName
 
-        if(isJs()) {
+        if (isJs()) {
             val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
             if (mayBeAComponent) {
                 val functions = clz.Functions.filter { it.IsReturnHtml }
@@ -467,6 +477,13 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             }
     }
 
+    fun findId(table: String, keys: Map<String, String>): Optional<String>? {
+        return batch.findId(table, keys)
+    }
+
+    private fun flush() {
+        batch.execute()
+    }
     fun close() {
         batch.execute()
         batch.close()
