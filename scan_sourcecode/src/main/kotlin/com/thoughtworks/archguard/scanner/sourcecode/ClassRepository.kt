@@ -176,10 +176,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         filePath: String,
         clzFunctions: Array<CodeFunction>
     ) {
-        var sourceName = "${packageName}.${clzName}"
-        for (clz in imports) {
-            var importSource = clz.Source
+        for (import in imports) {
             if (isJs()) {
+                var sourceName = "$packageName"
+
+                var importSource = import.Source
                 importSource = convertTypeScriptImport(importSource, filePath)
 
                 val mayBeAComponent = packageName.endsWith(".index") && clzName == "default"
@@ -187,14 +188,19 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                     val functions = clzFunctions.filter { it.IsReturnHtml }
                     val isAComponent = functions.isNotEmpty()
                     if (isAComponent) {
-                        sourceName = packageName.removeSuffix(".index") + "." + functions[0].Name
+                        sourceName = packageName.removeSuffix(".index")
                     }
                 }
 
-            }
+                val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+                doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+            } else {
+                val sourceName = "${packageName}.${clzName}"
 
-            val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
-            doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+                val importSource = import.Source
+                val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+                doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+            }
         }
     }
 
