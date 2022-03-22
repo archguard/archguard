@@ -184,13 +184,13 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun saveOrGetDependentClass(name: String, moduleName: String = DEFAULT_MODULE_NAME): String? {
         // own module
-        var idOpt = findClass(name, moduleName, null)
+        var idOpt = findClass(name, moduleName)
         if (idOpt.isPresent) {
             return idOpt.get()
         }
 
         //third-party
-        idOpt = findClass(name, THIRD_PARTY, null)
+        idOpt = findClass(name, THIRD_PARTY)
         if (idOpt.isPresent) {
             return idOpt.get()
         }
@@ -226,14 +226,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_ref_class_dependencies", values)
     }
 
-    private fun findClass(name: String, module: String?, access: String?): Optional<String?> {
+    private fun findClass(name: String, module: String?): Optional<String?> {
         val keys: MutableMap<String, String> = HashMap()
         keys["name"] = name
         if (module != null) {
             keys["module"] = module
-        }
-        if (access != null) {
-            keys["access"] = access
         }
 
         return batch.findId("code_class", keys)
@@ -241,7 +238,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
         for (method in functions) {
-            if (clzName.isEmpty() && pkgName.isNullOrEmpty()) {
+            if (clzName.isEmpty() && pkgName.isEmpty()) {
                 continue
             }
 
