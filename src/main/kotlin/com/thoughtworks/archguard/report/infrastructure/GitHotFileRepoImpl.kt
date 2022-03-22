@@ -12,7 +12,7 @@ class GitHotFileRepoImpl(val gitHotFileDao: GitHotFileDao) : GitHotFileRepo {
         return gitHotFileDao.findBySystemId(systemId)
     }
 
-    override fun findCountBySytemId(systemId: Long): List<GitPathChangeCount> {
+    override fun findCountBySystemId(systemId: Long): List<GitPathChangeCount> {
         return gitHotFileDao.findCountBySystemId(systemId)
     }
 }

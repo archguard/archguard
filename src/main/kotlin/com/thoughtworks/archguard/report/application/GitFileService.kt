@@ -18,6 +18,6 @@ class GitFileService(val gitHotFileRepo: GitHotFileRepo, @Value("\${scm_git_hot_
     }
 
     fun getPathChangeCount(systemId: Long) : List<GitPathChangeCount> {
-        return gitHotFileRepo.findCountBySytemId(systemId)
+        return gitHotFileRepo.findCountBySystemId(systemId)
     }
 }

@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard
 
+import com.thoughtworks.archguard.report.infrastructure.ContainerServiceDao
 import com.thoughtworks.archguard.scanner.infrastructure.db.*
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ClassMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.MethodMetricsDao
@@ -37,6 +38,11 @@ class Application {
     @Bean
     fun gitHotFileDao(jdbi: Jdbi): GitHotFileDao {
         return jdbi.onDemand(GitHotFileDao::class.java)
+    }
+
+    @Bean
+    fun containerDemandDao(jdbi: Jdbi): ContainerServiceDao {
+        return jdbi.onDemand(ContainerServiceDao::class.java)
     }
 
     @Bean
