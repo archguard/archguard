@@ -31,6 +31,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = serviceId
+        values["system_id"] = systemId
+
         values["updated_at"] = time
         values["created_at"] = time
 
@@ -49,6 +51,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["target_url"] = demand.target_url
         values["source_method"] = demand.source_caller
         values["service_id"] = serviceId
+        values["system_id"] = systemId
         values["updated_at"] = time
         values["created_at"] = time
 

@@ -114,8 +114,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
         val containerRepository = ContainerRepository(systemId, language, path)
         val apiCalls = feApiAnalysis.toContainerServices()
-        containerRepository.saveContainerServices(apiCalls)
 
+        File("apis.json").writeText(Json.encodeToString(apiCalls))
+        containerRepository.saveContainerServices(apiCalls)
         containerRepository.close()
 
         repo.close()

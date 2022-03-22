@@ -7,7 +7,6 @@ import chapi.app.frontend.path.relativeRoot
 import chapi.domain.core.*
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class ApiCodeCall(val ApiType: String = "") : CodeCall() {
     companion object {
@@ -94,7 +93,7 @@ class FrontendApiAnalyser {
         }
     }
 
-    public fun toContainerServices(): Array<ContainerService> {
+    fun toContainerServices(): Array<ContainerService> {
         var componentCalls: Array<ContainerService> = arrayOf()
         componentInbounds.forEach { map ->
             val componentRef = ContainerService(name = map.key)
