@@ -39,7 +39,7 @@ internal class LogicModuleRepositoryImplTest {
         val lg1 = LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
         val lg2 = LogicModule("id2", "dubbo-consumer", listOf(LogicComponent.createLeaf("dubbo-consumer")))
         lg2.hide()
-        val lg3 = LogicModule.createWithOnlyLogicModuleMembers("id3", "dubbo-all", listOf(lg2, lg1))
+        val lg3 = LogicModule.create("id3", "dubbo-all", emptyList(), listOf(lg2, lg1))
         lg3.hide()
         val lg4 = LogicModule.create("id4", "dubbo-top", listOf(JClassVO.create("dubbo-api.DemoService")), listOf(lg3))
         lg4.hide()

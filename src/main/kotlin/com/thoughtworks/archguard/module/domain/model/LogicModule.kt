@@ -25,12 +25,6 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
             return LogicModule(id, name, leafMembers)
         }
 
-        fun createWithOnlyLogicModuleMembers(id: String, name: String, logicMembers: List<LogicComponent>): LogicModule {
-            val logicModule = LogicModule(id, name, emptyList(), logicMembers)
-            logicModule.type = LogicModuleType.SERVICE
-            return logicModule
-        }
-
         fun create(id: String, name: String, leafMembers: List<LogicComponent>, logicMembers: List<LogicComponent>): LogicModule {
             val logicModule = LogicModule(id, name, leafMembers, logicMembers)
             when {
