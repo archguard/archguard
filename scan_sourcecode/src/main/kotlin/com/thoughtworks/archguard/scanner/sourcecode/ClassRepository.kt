@@ -48,7 +48,9 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun saveOrGetClzId(clz: CodeDataStruct): String? {
         val idOrOpt = findClass("${clz.Package}.${clz.NodeName}", DEFAULT_MODULE_NAME)
-        return idOrOpt.orElse(saveClass(clz))
+        return idOrOpt.orElseGet {
+            saveClass(clz)
+        }
     }
 
     private fun saveClassAnnotation(clzId: String, annotations: Array<CodeAnnotation>) {
