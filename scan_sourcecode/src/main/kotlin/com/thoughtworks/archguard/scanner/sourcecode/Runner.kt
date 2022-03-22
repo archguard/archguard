@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.thoughtworks.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import infrastructure.DBIStore
 import infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
@@ -42,7 +43,12 @@ class Runner : CliktCommand(help = "scan git to sql") {
         "code_ref_method_callees",
         "code_ref_class_dependencies",
         "code_annotation",
-        "code_annotation_value"
+        "code_annotation_value",
+
+        // for c4 level in api call
+        "container_demand",
+        "container_resource",
+        "container_service"
     )
 
     override fun run() {
@@ -86,22 +92,31 @@ class Runner : CliktCommand(help = "scan git to sql") {
         val repo = ClassRepository(systemId, language, path)
 
         if (withApi) {
-            when(language.lowercase()) {
+            when (language.lowercase()) {
                 "typescript", "javascript" -> {
 
                 }
             }
         }
 
+
+        val feApiAnalysis = FrontendApiAnalyser()
         // save class first, and can query dependencies for later
         dataStructs.forEach { data ->
             repo.saveClassItem(data)
+            feApiAnalysis.analysisByNode(data, path)
         }
 
         // save class imports, callees and parent
         dataStructs.forEach { data ->
             repo.saveClassBody(data)
         }
+
+        val containerRepository = ContainerRepository(systemId, language, path)
+        val apiCalls = feApiAnalysis.toContainerServices()
+        containerRepository.saveContainerServices(apiCalls)
+
+        containerRepository.close()
 
         repo.close()
     }

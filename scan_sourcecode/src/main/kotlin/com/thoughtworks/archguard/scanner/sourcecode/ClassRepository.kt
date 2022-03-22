@@ -504,6 +504,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     private fun flush() {
         batch.execute()
     }
+
     fun close() {
         batch.execute()
         batch.close()

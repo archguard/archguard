@@ -46,7 +46,7 @@ class FrontendApiAnalyser {
         return toContainerServices()
     }
 
-    private fun analysisByNode(node: CodeDataStruct, workspace: String) {
+    fun analysisByNode(node: CodeDataStruct, workspace: String) {
         var isComponent: Boolean
         val isComponentExt = node.fileExt() == "tsx" || node.fileExt() == "jsx"
         val isNotInterface = node.Type != DataStructType.INTERFACE
@@ -94,7 +94,7 @@ class FrontendApiAnalyser {
         }
     }
 
-    private fun toContainerServices(): Array<ContainerService> {
+    public fun toContainerServices(): Array<ContainerService> {
         var componentCalls: Array<ContainerService> = arrayOf()
         componentInbounds.forEach { map ->
             val componentRef = ContainerService(name = map.key)
