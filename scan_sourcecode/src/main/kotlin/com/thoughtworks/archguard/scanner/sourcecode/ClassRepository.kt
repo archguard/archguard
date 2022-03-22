@@ -40,7 +40,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     fun saveClassBody(clz: CodeDataStruct) {
         val clzId = saveOrGetClzId(clz)!!
-        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath)
+        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath, clz.Functions)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassAnnotation(clzId, clz.Annotations)
@@ -173,16 +173,28 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         imports: Array<CodeImport>,
         packageName: String,
         clzName: String,
-        filePath: String
+        filePath: String,
+        clzFunctions: Array<CodeFunction>
     ) {
+        var sourceName = "${packageName}.${clzName}"
         for (clz in imports) {
             var importSource = clz.Source
             if (isJs()) {
                 importSource = convertTypeScriptImport(importSource, filePath)
+
+                val mayBeAComponent = packageName.endsWith(".index") && clzName == "default"
+                if (mayBeAComponent) {
+                    val functions = clzFunctions.filter { it.IsReturnHtml }
+                    val isAComponent = functions.isNotEmpty()
+                    if (isAComponent) {
+                        sourceName = packageName.removeSuffix(".index") + "." + functions[0].Name
+                    }
+                }
+
             }
 
             val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
-            doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
+            doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
         }
     }
 
