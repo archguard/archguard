@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.controller
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.report.application.GitFileService
 import com.thoughtworks.archguard.report.domain.githotfile.GitHotFile
+import com.thoughtworks.archguard.report.domain.githotfile.GitPathChangeCount
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,6 +23,20 @@ class GitFileController(val gitFileService: GitFileService) {
     fun getAllChanges(@PathVariable("systemId") systemId: Long) : List<GitChangeCount> {
         return gitFileService.getGitFileChanges(systemId).map { GitChangeCount(it) }
     }
+
+    // todo: rename to restful
+    @GetMapping("/path-change-count")
+    fun getChangeCountByPath(@PathVariable("systemId") systemId: Long) : List<GitPathCount> {
+        return gitFileService.getPathChangeCount(systemId).map { GitPathCount(it) }
+    }
+}
+
+class GitPathCount(private val gitHotFile: GitPathChangeCount) {
+    val name: String
+        get() = "root/" + gitHotFile.path
+
+    val value: Int
+        get() = gitHotFile.changes
 }
 
 class GitChangeCount(private val gitHotFile: GitHotFile) {
