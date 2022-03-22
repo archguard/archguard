@@ -419,16 +419,31 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val time = currentTime
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
+        var pkgName = clz.Package
+        var clzName = clz.NodeName
+
+        if(isJs()) {
+            val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
+            if (mayBeAComponent) {
+                val functions = clz.Functions.filter { it.IsReturnHtml }
+                val isAComponent = functions.isNotEmpty()
+                if (isAComponent) {
+                    pkgName = pkgName.removeSuffix(".index")
+                    clzName = functions[0].Name
+                }
+            }
+        }
+
         values["id"] = clzId
         values["system_id"] = systemId
-        values["name"] = clz.Package + "." + clz.NodeName
+        values["name"] = "$pkgName.$clzName"
         values["is_thirdparty"] = "false"
         values["is_test"] = "false"
         values["updatedAt"] = time
         values["createdAt"] = time
         values["module"] = DEFAULT_MODULE_NAME
-        values["package_name"] = clz.Package
-        values["class_name"] = clz.NodeName
+        values["package_name"] = pkgName
+        values["class_name"] = clzName
         values["access"] = "todo"
         batch.add("code_class", values)
 
