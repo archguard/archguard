@@ -12,7 +12,7 @@ internal class JGitAdapterTest {
     @Test
     internal fun should_calculate_self() {
         val jGitAdapter = JGitAdapter(CognitiveComplexityParser())
-        val (commitLogs, changeEntries) = jGitAdapter.scan("../", repoId = "balbal", systemId = 1)
+        val (commitLogs, changeEntries) = jGitAdapter.scan("../", repoId = "0", systemId = 1)
 
         changeEntries.forEach {
 
