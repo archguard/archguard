@@ -24,17 +24,23 @@ public class SourceBatch extends DefaultBatchImpl {
 
     @Override
     public Optional<String> getKey(String table, Map<String, String> values) {
-        if ("code_method".equalsIgnoreCase(table)) {
-            String key = methodStoreKey(values);
-            return Optional.of(key);
-        } else if ("code_class".equalsIgnoreCase(table)) {
-            String key = classStoreKey(values);
-            return Optional.of(key);
-        } else if ("code_field".equalsIgnoreCase(table)) {
-            String key = fieldStoreKey(values);
-            return Optional.of(key);
-        } else {
-            return Optional.empty();
+        table = table.toLowerCase();
+
+        switch (table) {
+            case "code_method": {
+                String key = methodStoreKey(values);
+                return Optional.of(key);
+            }
+            case "code_class": {
+                String key = classStoreKey(values);
+                return Optional.of(key);
+            }
+            case "code_field": {
+                String key = fieldStoreKey(values);
+                return Optional.of(key);
+            }
+            default:
+                return Optional.empty();
         }
     }
 
