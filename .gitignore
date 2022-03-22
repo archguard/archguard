@@ -42,4 +42,6 @@ gradle-app.setting
 .classpath
 *.sql
 **/bs.json
-
+api.json
+nodes.json
+**/out
