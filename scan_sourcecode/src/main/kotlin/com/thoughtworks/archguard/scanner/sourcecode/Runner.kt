@@ -93,10 +93,16 @@ class Runner : CliktCommand(help = "scan git to sql") {
             }
         }
 
+        // save class first, and can query dependencies for later
         dataStructs.forEach { data ->
             repo.saveClassItem(data)
+        }
+
+        // save class imports, callees and parent
+        dataStructs.forEach { data ->
             repo.saveClassBody(data)
         }
+
         repo.close()
     }
 

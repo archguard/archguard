@@ -27,6 +27,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val clzId = saveClass(clz)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+        saveClassAnnotation(clzId, clz.Annotations)
     }
 
     fun saveClassBody(clz: CodeDataStruct) {
@@ -34,7 +35,6 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
-        saveClassAnnotation(clzId, clz.Annotations)
     }
 
     private fun saveOrGetClzId(clz: CodeDataStruct): String? {
