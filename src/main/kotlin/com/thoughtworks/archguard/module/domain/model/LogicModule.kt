@@ -16,8 +16,8 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
         this.type = LogicModuleType.LOGIC_MODULE
     }
 
-    private constructor(id: String, name: String, members: List<LogicComponent>, lgMembers: List<LogicComponent>) : this(id, name, members) {
-        this.lgMembers = lgMembers
+    private constructor(id: String, name: String, members: List<LogicComponent>, logicMembers: List<LogicComponent>) : this(id, name, members) {
+        this.logicMembers = logicMembers
     }
 
     companion object {
@@ -25,14 +25,14 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
             return LogicModule(id, name, leafMembers)
         }
 
-        fun createWithOnlyLogicModuleMembers(id: String, name: String, lgMembers: List<LogicComponent>): LogicModule {
-            val logicModule = LogicModule(id, name, emptyList(), lgMembers)
+        fun createWithOnlyLogicModuleMembers(id: String, name: String, logicMembers: List<LogicComponent>): LogicModule {
+            val logicModule = LogicModule(id, name, emptyList(), logicMembers)
             logicModule.type = LogicModuleType.SERVICE
             return logicModule
         }
 
-        fun create(id: String, name: String, leafMembers: List<LogicComponent>, lgMembers: List<LogicComponent>): LogicModule {
-            val logicModule = LogicModule(id, name, leafMembers, lgMembers)
+        fun create(id: String, name: String, leafMembers: List<LogicComponent>, logicMembers: List<LogicComponent>): LogicModule {
+            val logicModule = LogicModule(id, name, leafMembers, logicMembers)
             when {
                 logicModule.isService() -> {
                     logicModule.type = LogicModuleType.SERVICE
@@ -50,7 +50,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
     }
 
     var members: List<LogicComponent> = emptyList()
-    var lgMembers: List<LogicComponent> = emptyList()
+    var logicMembers: List<LogicComponent> = emptyList()
     var status = LogicModuleStatus.NORMAL
 
     fun hide() {
@@ -145,10 +145,10 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
         if (logicComponent in members) {
             return true
         }
-        if (logicComponent in lgMembers) {
+        if (logicComponent in logicMembers) {
             return true
         }
-        return members.map { it.containsOrEquals(logicComponent) }.contains(true) || lgMembers.map { it.containsOrEquals(logicComponent) }.contains(true)
+        return members.map { it.containsOrEquals(logicComponent) }.contains(true) || logicMembers.map { it.containsOrEquals(logicComponent) }.contains(true)
     }
 
     override fun getFullName(): String {
@@ -179,7 +179,7 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
     }
 
     override fun toString(): String {
-        return "LogicModule(id='$id', name='$name', members=$members, lgMembers=$lgMembers, status=$status)"
+        return "LogicModule(id='$id', name='$name', members=$members, logicMembers=$logicMembers, status=$status)"
     }
 }
 
