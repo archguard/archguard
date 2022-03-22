@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import infrastructure.DBIStore
+import infrastructure.SourceBatch.TABLES
 import infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -30,25 +31,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val withApi: Boolean by option(help = "with container service api").flag()
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
         "Java"
-    )
-
-    val TABLES = arrayOf(
-        "code_class",
-        "code_field",
-        "code_method",
-        "code_ref_class_fields",
-        "code_ref_class_methods",
-        "code_ref_class_parent",
-        "code_ref_class_fields",
-        "code_ref_method_callees",
-        "code_ref_class_dependencies",
-        "code_annotation",
-        "code_annotation_value",
-
-        // for c4 level in api call
-        "container_demand",
-        "container_resource",
-        "container_service"
     )
 
     override fun run() {

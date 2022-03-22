@@ -18,9 +18,25 @@ import static infrastructure.utils.SqlGenerator.generateBatchInsertSql;
 
 public class SourceBatch extends DefaultBatchImpl {
     private static final Logger logger = LoggerFactory.getLogger(SourceBatch.class);
-    public static final String[] TABLES = new String[]{"code_class", "code_field", "code_method",
-            "code_ref_class_fields", "code_ref_class_methods", "code_ref_class_parent", "code_ref_class_fields",
-            "code_ref_class_callees", "code_ref_class_dependencies", "code_annotation", "code_annotation_value"};
+    public static final String[] TABLES = new String[]{
+            "code_class",
+            "code_field",
+            "code_method",
+            "code_annotation",
+            "code_annotation_value",
+
+            "code_ref_class_fields",
+            "code_ref_class_methods",
+            "code_ref_class_parent",
+            "code_ref_class_fields",
+            "code_ref_class_callees",
+            "code_ref_class_dependencies",
+
+            // for c4 level in api call
+            "container_demand",
+            "container_resource",
+            "container_service"
+    };
 
     @Override
     public Optional<String> getKey(String table, Map<String, String> values) {

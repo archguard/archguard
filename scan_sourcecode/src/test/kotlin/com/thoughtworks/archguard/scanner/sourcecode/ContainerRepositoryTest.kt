@@ -20,7 +20,6 @@ internal class ContainerRepositoryTest {
         val path = Paths.get(resource.toURI()).toFile().absolutePath
 
         val ds = TypeScriptAnalyserApp().analysisNodeByPath(path)
-        File("ds.json").writeText(Json.encodeToString(ds))
 
         val clzRepo = ContainerRepository("1", "typescript", "archguard")
 
