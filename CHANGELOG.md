@@ -1,4 +1,38 @@
-# [](https://github.com/archguard/scanner/compare/v1.2.2...v) (2022-03-20)
+# [](https://github.com/archguard/scanner/compare/v1.2.3...v) (2022-03-22)
+
+
+
+## [1.2.3](https://github.com/archguard/scanner/compare/v1.2.2...v1.2.3) (2022-03-22)
+
+
+### Bug Fixes
+
+* add lost for save class anotations ([e5a2c22](https://github.com/archguard/scanner/commit/e5a2c22df460e9ff7fdd9f780a18e98dcd378bd2))
+* align path convert ([bbfe6f3](https://github.com/archguard/scanner/commit/bbfe6f383da44258a335269cef38d9661db2c991))
+* fix arguments types issues ([821609c](https://github.com/archguard/scanner/commit/821609cb4fc6da5763684ff918dd8c5e70c0b234))
+* fix container api error issues ([914f870](https://github.com/archguard/scanner/commit/914f870bda6603053db28ee725aec37b5a04a609))
+* fix some fields lost issues ([97aadf7](https://github.com/archguard/scanner/commit/97aadf78ddb27f1e9736084cb499306f5c5c11d1))
+* fix table not convert issues ([e177adc](https://github.com/archguard/scanner/commit/e177adc81ffc4c0c32f48cb0db1736ec02dd7278))
+* fix tests ([99abb0b](https://github.com/archguard/scanner/commit/99abb0bd0ccae43397e768f8f5b944bf13321945))
+* fix typescript import issue ([c4574dc](https://github.com/archguard/scanner/commit/c4574dc9d98a1285165b48e0f7710cfb35ee2911))
+* fix typos ([0157b14](https://github.com/archguard/scanner/commit/0157b143bd5fd8a761325f42901d6d32fd7c0ebd))
+* remove typos for baseUrl ([7b133d5](https://github.com/archguard/scanner/commit/7b133d5b192f03d36c0cae4425abc5f551b71bb3))
+* **ts:** set default export to file name ([1b6dc91](https://github.com/archguard/scanner/commit/1b6dc9199bc4b047dfb1b0a1c40a5a888e28acdd))
+
+
+### Features
+
+* add basic url for frontent api desing ([8cb1254](https://github.com/archguard/scanner/commit/8cb1254e67316a6430b6b396d41f9ca8afc9b98f))
+* add convert for import ([c584b98](https://github.com/archguard/scanner/commit/c584b988013cffea1dcfe8e66355d62afeee596e))
+* add handle for class deps rehandle ([f8d7f4b](https://github.com/archguard/scanner/commit/f8d7f4ba2f8bbeb7d95a28aab81b2a7454b837d6))
+* add intergration for frontent api analyser ([8301f81](https://github.com/archguard/scanner/commit/8301f811f79af620e4c6c7ef9ad65339d3b7a16a))
+* add lost system id to system ([d105d9b](https://github.com/archguard/scanner/commit/d105d9bdce8fe30a41579836a7cead2fab6b8ccc))
+* add simple fix for system ([13b8ed0](https://github.com/archguard/scanner/commit/13b8ed091288f636872927e73a4ae081838ff4d6))
+* fix source method & package issue ([8914b76](https://github.com/archguard/scanner/commit/8914b76c6cb39a35b5507731a4e7ddb97010bf9d))
+* import api scanner for frontend ([97c4f77](https://github.com/archguard/scanner/commit/97c4f77c1e496607a15a0f62319f32fde2d80c7e))
+* save class in components ([ba1aa00](https://github.com/archguard/scanner/commit/ba1aa00c8b89ec712c2cd49f3c88c95caca79afa))
+* **sourcecode:** add javascript import support ([fc44a3e](https://github.com/archguard/scanner/commit/fc44a3ea809952f21db6a2e092a5037669842a06))
+* **ts:** enable class name and method name empty ([cf45599](https://github.com/archguard/scanner/commit/cf45599715eca2f4f100ffffe2c5f76e3a10b795))
 
 
 
