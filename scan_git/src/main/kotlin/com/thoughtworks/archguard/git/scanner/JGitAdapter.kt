@@ -125,6 +125,36 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         checkout().setName(branch).call()
         return this
     }
+
+    fun countChangesByPath(changeEntries: List<ChangeEntry>): HashMap<String, Int> {
+        val changeCounts: HashMap<String, Int> = hashMapOf()
+        changeEntries.reversed().forEach {
+            when (it.changeMode) {
+                "ADD" -> {
+                    changeCounts[it.newPath] = 1
+                }
+                "RENAME" -> {
+                    if (changeCounts[it.oldPath] == null) {
+                        changeCounts[it.oldPath] = 1
+                    }
+
+                    changeCounts[it.newPath] = changeCounts[it.oldPath]!!
+                    changeCounts.remove(it.oldPath)
+                }
+                "DELETE" -> {
+                    changeCounts.remove(it.oldPath)
+                }
+                else -> {
+                    if (changeCounts[it.newPath] == null) {
+                        changeCounts[it.newPath] = 1
+                    }
+                    changeCounts[it.newPath] = changeCounts[it.newPath]!! + 1
+                }
+            }
+        }
+
+        return changeCounts
+    }
 }
 
 
