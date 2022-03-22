@@ -56,7 +56,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["id"] = demandId
 
         values["target_http_method"] = demand.target_http_method
-        values["target_url"] = demand.target_url
+        values["target_url"] = "${demand.base}/${demand.target_url}"
         val split = name.split("::")
 
         values["source_package"] = ""
