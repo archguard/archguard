@@ -23,5 +23,12 @@ data class ChangeEntry(
         @Sql("change_mode") val changeMode: String,
         @Sql("commit_id") val commitId: String)
 
+@Sql("scm_path_change_count")
+data class PathChangeCount(
+        @Sql("id") val id: String,
+        @Sql("path") val path: String,
+        @Sql("changes") val changes: Int,
+        @Sql("system_id") val systemId: Long)
+
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Sql(val value: String)
