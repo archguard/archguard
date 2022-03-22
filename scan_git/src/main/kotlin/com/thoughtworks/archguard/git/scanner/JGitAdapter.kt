@@ -28,9 +28,10 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         val repository = FileRepositoryBuilder().findGitDir(repPath).build()
         val git = Git(repository).specifyBranch(branch)
         val revCommitSequence = git.log().call().asSequence().takeWhile { it.commitTime * 1000L > after.toLong() }.toList()
+
         val commitLog = revCommitSequence.map { toCommitLog(it, repoId, systemId) }.toList()
         val changeEntry = revCommitSequence.map { toChangeEntry(repository, it, systemId) }.flatten().toList()
-        return (commitLog to changeEntry)
+        return Pair(commitLog, changeEntry)
     }
 
     private fun toCommitLog(revCommit: RevCommit, repoId: String, systemId: Long): CommitLog {
@@ -48,7 +49,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
     private fun toChangeEntry(repository: Repository, revCommit: RevCommit, systemId: Long): List<ChangeEntry> {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         return diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
-                .map { d -> doCovertToChangeEntry(d, repository, revCommit, systemId) }
+                .map { d -> doConvertToChangeEntry(d, repository, revCommit, systemId) }
     }
 
     private fun getParent(revCommit: RevCommit): RevCommit? {
@@ -58,7 +59,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
             revCommit.getParent(0)
     }
 
-    private fun doCovertToChangeEntry(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit, systemId: Long): ChangeEntry {
+    private fun doConvertToChangeEntry(diffEntry: DiffEntry, repository: Repository, revCommit: RevCommit, systemId: Long): ChangeEntry {
         val classComplexity: Int = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
         return ChangeEntry(oldPath = diffEntry.oldPath,
                 newPath = diffEntry.newPath,

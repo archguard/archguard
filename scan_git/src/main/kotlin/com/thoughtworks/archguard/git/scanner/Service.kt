@@ -16,6 +16,7 @@ class ScannerService(private val gitAdapter: JGitAdapter,
         if (file.exists()) {
             file.delete()
         }
+
         file.appendText(result.first.joinToString("\n") { bean2Sql.bean2Sql(it) })
         file.appendText(result.second.joinToString("\n") { bean2Sql.bean2Sql(it) })
     }
