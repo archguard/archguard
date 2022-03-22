@@ -94,7 +94,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         dataStructs.forEach { data ->
-            repo.saveClassElement(data)
+            repo.saveClassItem(data)
+            repo.saveClassBody(data)
         }
         repo.close()
     }

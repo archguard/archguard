@@ -23,17 +23,23 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         this.workspace = workspace
     }
 
-    fun saveClassElement(clz: CodeDataStruct) {
+    fun saveClassItem(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
         saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+    }
 
+    fun saveClassBody(clz: CodeDataStruct) {
+        val clzId = saveOrGetClzId(clz)!!
         saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassAnnotation(clzId, clz.Annotations)
     }
 
+    private fun saveOrGetClzId(clz: CodeDataStruct): String? {
+        return findClass(clz.NodeName, DEFAULT_MODULE_NAME).orElse(saveClass(clz))
+    }
     private fun saveClassAnnotation(clzId: String, annotations: Array<CodeAnnotation>) {
         annotations.forEach {
             doSaveAnnotation(it, clzId)
@@ -228,6 +234,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun findClass(name: String, module: String?): Optional<String?> {
         val keys: MutableMap<String, String> = HashMap()
+        keys["name"] = name
         keys["name"] = name
         if (module != null) {
             keys["module"] = module
