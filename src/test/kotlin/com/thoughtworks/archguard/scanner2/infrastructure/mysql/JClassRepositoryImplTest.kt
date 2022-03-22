@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 internal class JClassRepositoryImplTest {
 
     @Autowired
-    lateinit var jClassRepositoryImpl: ScannerJClassRepositoryImpl
+    lateinit var jClassRepositoryImpl: ScannerClassRepositoryImpl
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_class_dependencies.sql")
