@@ -7,7 +7,6 @@ import java.util.HashMap
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
-    private val batchStep = 100
     private val systemId: String
     private val language: String
     private val workspace: String

@@ -45,3 +45,4 @@ gradle-app.setting
 api.json
 nodes.json
 **/out
+component.inbounds.json

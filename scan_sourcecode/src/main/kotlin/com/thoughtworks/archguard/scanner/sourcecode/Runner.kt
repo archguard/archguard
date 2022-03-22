@@ -90,21 +90,20 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
     private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         val repo = ClassRepository(systemId, language, path)
+//
+//        if (withApi) {
+//            when (language.lowercase()) {
+//                "typescript", "javascript" -> {
+//
+//                }
+//            }
+//        }
 
-        if (withApi) {
-            when (language.lowercase()) {
-                "typescript", "javascript" -> {
-
-                }
-            }
-        }
-
-
-        val feApiAnalysis = FrontendApiAnalyser()
+        val feApiAnalyser = FrontendApiAnalyser()
         // save class first, and can query dependencies for later
         dataStructs.forEach { data ->
             repo.saveClassItem(data)
-            feApiAnalysis.analysisByNode(data, path)
+            feApiAnalyser.analysisByNode(data, path)
         }
 
         // save class imports, callees and parent
@@ -112,12 +111,15 @@ class Runner : CliktCommand(help = "scan git to sql") {
             repo.saveClassBody(data)
         }
 
+        logger.info("========================================================")
+        logger.info("start analysis frontend api")
+        val apiCalls = feApiAnalyser.toContainerServices()
         val containerRepository = ContainerRepository(systemId, language, path)
-        val apiCalls = feApiAnalysis.toContainerServices()
-
         File("apis.json").writeText(Json.encodeToString(apiCalls))
+
         containerRepository.saveContainerServices(apiCalls)
         containerRepository.close()
+        logger.info("========================================================")
 
         repo.close()
     }
