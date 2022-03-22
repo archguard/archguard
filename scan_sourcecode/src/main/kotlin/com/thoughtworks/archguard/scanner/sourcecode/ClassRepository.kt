@@ -157,13 +157,23 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         filePath: String
     ) {
         for (clz in imports) {
-            var importSource = clz.Source
             if (isJs()) {
-                importSource = convertTypeScriptImport(importSource, filePath)
-            }
+                var importSource = clz.Source
 
-            val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
-            doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
+                importSource = convertTypeScriptImport(importSource, filePath)
+
+                val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+                if (clzName == "default") {
+                    doSaveClassDependence(clzId, clzDependenceId, packageName, importSource)
+                } else {
+                    doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
+                }
+            } else {
+                val importSource = clz.Source
+
+                val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+                doSaveClassDependence(clzId, clzDependenceId, "${packageName}.${clzName}", importSource)
+            }
         }
     }
 
