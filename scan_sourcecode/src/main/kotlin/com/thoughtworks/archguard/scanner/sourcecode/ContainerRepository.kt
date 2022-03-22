@@ -18,8 +18,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
     }
 
     fun saveContainerServices(services: Array<ContainerService>) {
+        val serviceId = saveMainServices()
         services.forEach { caller ->
-            val serviceId = saveMainServices()
             caller.demands.map { saveDemand(it, serviceId, caller.name) }.toTypedArray()
         }
     }
@@ -31,6 +31,15 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
 
         values["id"] = serviceId
         values["system_id"] = systemId
+        values["name"] = ""
+        if(this.language.lowercase() == "typescript" || this.language.lowercase() == "javascript") {
+            values["container_type"] = "Frontend"
+        } else {
+            values["container_type"] = "Backend"
+        }
+
+        values["scm_address"] = ""
+        values["created_by"] = "scanner"
 
         values["updated_at"] = time
         values["created_at"] = time
@@ -50,6 +59,9 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["target_url"] = demand.target_url
         val split = name.split("::")
 
+        values["source_package"] = ""
+        values["source_class"] = ""
+        values["source_method"] = ""
         if (split.size == 2) {
             values["source_package"] = split[0]
             values["source_method"] = split[1]
@@ -61,6 +73,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["system_id"] = systemId
         values["updated_at"] = time
         values["created_at"] = time
+        values["created_by"] = "scanner"
 
         batch.add("container_demand", values)
         return demandId

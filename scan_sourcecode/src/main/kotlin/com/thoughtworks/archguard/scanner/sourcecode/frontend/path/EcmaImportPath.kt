@@ -8,6 +8,7 @@ fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): 
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
+        return pathname
     }
 
     var relativePath = pathname
@@ -55,17 +56,18 @@ fun importConvert(filepath: String, importPath: String): String {
     return importPath
 }
 
-fun relativeRoot(filepath: String, importPath: String): String {
+fun relativeRoot(workspace: String, importPath: String): String {
     var pathname = importPath
     val isResolvePath = pathname.startsWith("@/")
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
+        return pathname
     }
 
     var relativePath = pathname
     try {
-        relativePath = File(pathname).relativeTo(File(filepath)).toString()
+        relativePath = File(pathname).relativeTo(File(workspace)).toString()
     } catch (e: IllegalArgumentException) {
         println(e)
     }

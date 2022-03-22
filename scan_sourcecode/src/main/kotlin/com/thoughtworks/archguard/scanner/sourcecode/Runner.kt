@@ -83,9 +83,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
         val feApiAnalyser = FrontendApiAnalyser()
         // save class first, and can query dependencies for later
+        val absPath = File(path).absolutePath
         dataStructs.forEach { data ->
             repo.saveClassItem(data)
-            feApiAnalyser.analysisByNode(data, path)
+            feApiAnalyser.analysisByNode(data, absPath)
         }
 
         // save class imports, callees and parent
