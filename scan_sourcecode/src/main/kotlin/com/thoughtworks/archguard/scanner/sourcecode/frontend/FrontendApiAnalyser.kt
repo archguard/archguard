@@ -6,6 +6,9 @@ import chapi.app.frontend.path.ecmaImportConvert
 import chapi.app.frontend.path.relativeRoot
 import chapi.domain.core.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
 
 @Serializable
 data class ApiCodeCall(val ApiType: String = "") : CodeCall() {
@@ -94,6 +97,7 @@ class FrontendApiAnalyser {
     }
 
     fun toContainerServices(): Array<ContainerService> {
+        File("component.inbounds.json").writeText(Json.encodeToString(componentInbounds))
         var componentCalls: Array<ContainerService> = arrayOf()
         componentInbounds.forEach { map ->
             val componentRef = ContainerService(name = map.key)

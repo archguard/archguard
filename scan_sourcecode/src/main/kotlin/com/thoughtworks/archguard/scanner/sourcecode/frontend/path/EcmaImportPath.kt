@@ -7,6 +7,7 @@ fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): 
     val isResolvePath = pathname.startsWith("@/")
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
+        pathname = "src/$pathname"
     }
 
     var relativePath = pathname
@@ -31,7 +32,9 @@ fun importConvert(filepath: String, importPath: String): String {
     // import "@/src/component/Hello.js"
     val isResolvePath = importPath.startsWith("@/")
     if(isResolvePath) {
-        return importPath.removeRange(0, 2)
+        var pathname = importPath.removeRange(0, 2)
+        pathname = "src/$pathname"
+        return pathname
     }
 
     if(importPath.startsWith("./") || importPath.startsWith("../")) {
@@ -57,6 +60,7 @@ fun relativeRoot(filepath: String, importPath: String): String {
     val isResolvePath = pathname.startsWith("@/")
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
+        pathname = "src/$pathname"
     }
 
     var relativePath = pathname

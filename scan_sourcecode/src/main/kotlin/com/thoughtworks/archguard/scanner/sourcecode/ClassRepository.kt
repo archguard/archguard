@@ -178,7 +178,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     ) {
         for (import in imports) {
             if (isJs()) {
-                var sourceName = "$packageName"
+                var sourceName = packageName
 
                 var importSource = import.Source
                 importSource = convertTypeScriptImport(importSource, filePath)
