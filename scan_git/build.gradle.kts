@@ -54,13 +54,6 @@ tasks.withType<AntlrTask> {
 
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-    }
-}
-
 tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {

@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.git.scanner
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import java.nio.file.Paths
 
 internal class JGitAdapterTest {
 
@@ -15,5 +16,13 @@ internal class JGitAdapterTest {
 
         val changeCounts = jGitAdapter.countChangesByPath(changeEntries)
         assert(changeCounts[".github/workflows/cd.yaml"]!! >= 4)
+    }
+
+    @Test
+    internal fun line_counts() {
+        val resource = this.javaClass.classLoader.getResource("lines/hello.go")!!
+        val path = Paths.get(resource.toURI()).toFile().absolutePath
+
+        assert(LineCounter.byPath(path).toInt() == 7)
     }
 }
