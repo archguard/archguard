@@ -1,4 +1,24 @@
-# [](https://github.com/archguard/scanner/compare/v1.2.3...v) (2022-03-22)
+# [](https://github.com/archguard/scanner/compare/v1.2.4...v) (2022-03-23)
+
+
+
+## [1.2.4](https://github.com/archguard/scanner/compare/v1.2.3...v1.2.4) (2022-03-23)
+
+
+### Bug Fixes
+
+* fix jgit crash issues ([3ceb62f](https://github.com/archguard/scanner/commit/3ceb62fc67ec64c67b3b3fb86dbaa6527a62d350))
+
+
+### Features
+
+* add append to files for content ([3def653](https://github.com/archguard/scanner/commit/3def653a251e92bbb3db5516c0d6a6c171f1b45c))
+* add languages resoruces ([4606c64](https://github.com/archguard/scanner/commit/4606c647b2ea56862d28e793d4c1d40b094e8e81))
+* add line count to file git changes ([de053c4](https://github.com/archguard/scanner/commit/de053c4cdcdbfa5849f6e66740875cbc20869513))
+* add lost test languages ([435e95c](https://github.com/archguard/scanner/commit/435e95c535756e303b508b977956e20112560042))
+* add recoginize language support ([013468a](https://github.com/archguard/scanner/commit/013468a1f85f20d0fcdab50874e05a1d7b3363d9))
+* add simple line counts ([0f98cb8](https://github.com/archguard/scanner/commit/0f98cb8f06c1512097fc637af977110c50cd502d))
+* try to fix file type issues ([96f6648](https://github.com/archguard/scanner/commit/96f6648adf919bf97287305768e80923241a8099))
 
 
 
