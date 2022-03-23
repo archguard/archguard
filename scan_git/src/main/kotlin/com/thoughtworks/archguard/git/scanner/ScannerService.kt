@@ -14,15 +14,7 @@ class ScannerService(private val gitAdapter: JGitAdapter,
     var extToLanguage: MutableMap<String, String> = mutableMapOf()
 
     fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: Long) {
-        val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
-
-        val languages = Json.decodeFromString<Array<Language>>(fileContent)
-
-        languages.forEach { entry ->
-            entry.extensions.forEach {
-                extToLanguage[it] = entry.name
-            }
-        }
+        setupLanguagesMap()
 
         val (commitLogs, changeEntries) = gitAdapter.scan(gitPath, branch, after, repoId, systemId)
         val file = File("output.sql")
@@ -30,16 +22,28 @@ class ScannerService(private val gitAdapter: JGitAdapter,
             file.delete()
         }
 
+        val pathChanges: MutableList<PathChangeCount> = countFileChanges(changeEntries, gitPath, systemId)
+
+        file.appendText(commitLogs.joinToString("\n") { bean2Sql.bean2Sql(it) })
+        file.appendText(changeEntries.joinToString("\n") { bean2Sql.bean2Sql(it) })
+        file.appendText(pathChanges.joinToString("\n") { bean2Sql.bean2Sql(it) })
+    }
+
+    private fun countFileChanges(
+        changeEntries: List<ChangeEntry>,
+        workspace: String,
+        systemId: Long
+    ): MutableList<PathChangeCount> {
         val counts = gitAdapter.countChangesByPath(changeEntries)
         val pathChanges: MutableList<PathChangeCount> = mutableListOf()
-        val gitPath = File(gitPath)
+        val gitPath = File(workspace)
         counts.forEach {
             var lang = ""
             var lineCounts: Long = 0
             val filepath = arrayOf(gitPath.absolutePath, it.key).joinToString(File.separator)
 
             val countFile = File(filepath)
-            if(countFile.isFile) {
+            if (countFile.isFile) {
                 val optLang = extToLanguage[countFile.extension]
                 if (optLang != null) {
                     lineCounts = LineCounter.byPath(filepath)
@@ -56,9 +60,16 @@ class ScannerService(private val gitAdapter: JGitAdapter,
                 systemId
             )
         }
+        return pathChanges
+    }
 
-        file.appendText(commitLogs.joinToString("\n") { bean2Sql.bean2Sql(it) })
-        file.appendText(changeEntries.joinToString("\n") { bean2Sql.bean2Sql(it) })
-        file.appendText(pathChanges.joinToString("\n") { bean2Sql.bean2Sql(it) })
+    private fun setupLanguagesMap() {
+        val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
+        val languages = Json.decodeFromString<Array<Language>>(fileContent)
+        languages.forEach { entry ->
+            entry.extensions.forEach {
+                extToLanguage[it] = entry.name
+            }
+        }
     }
 }
