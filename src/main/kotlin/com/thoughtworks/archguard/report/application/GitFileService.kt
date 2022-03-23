@@ -20,4 +20,8 @@ class GitFileService(val gitHotFileRepo: GitHotFileRepo, @Value("\${scm_git_hot_
     fun getPathChangeCount(systemId: Long) : List<GitPathChangeCount> {
         return gitHotFileRepo.findCountBySystemId(systemId)
     }
+
+    fun getUnstableFile(systemId: Long): List<GitPathChangeCount> {
+        return gitHotFileRepo.findUnstableFile(systemId)
+    }
 }

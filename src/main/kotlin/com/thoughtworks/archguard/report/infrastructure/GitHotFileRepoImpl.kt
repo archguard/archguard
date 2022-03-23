@@ -15,4 +15,12 @@ class GitHotFileRepoImpl(val gitHotFileDao: GitHotFileDao) : GitHotFileRepo {
     override fun findCountBySystemId(systemId: Long): List<GitPathChangeCount> {
         return gitHotFileDao.findCountBySystemId(systemId)
     }
+
+    override fun findUnstableFile(systemId: Long): List<GitPathChangeCount> {
+        val topLines = gitHotFileDao.getTopLinesFile(systemId)
+        val topChanges = gitHotFileDao.getTopChangesFile(systemId)
+
+        val intersect = topLines.intersect(topChanges.toSet())
+        return intersect.toList()
+    }
 }

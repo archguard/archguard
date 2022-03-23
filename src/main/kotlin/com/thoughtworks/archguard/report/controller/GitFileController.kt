@@ -24,10 +24,14 @@ class GitFileController(val gitFileService: GitFileService) {
         return gitFileService.getGitFileChanges(systemId).map { GitChangeCount(it) }
     }
 
-    // todo: rename to restful
     @GetMapping("/path-change-count")
     fun getChangeCountByPath(@PathVariable("systemId") systemId: Long) : List<GitPathCount> {
         return gitFileService.getPathChangeCount(systemId).map { GitPathCount(it) }
+    }
+
+    @GetMapping("/unstable-file")
+    fun getHighFrequencyChangeAndLongLines(@PathVariable("systemId") systemId: Long): List<GitPathChangeCount> {
+        return gitFileService.getUnstableFile(systemId)
     }
 }
 

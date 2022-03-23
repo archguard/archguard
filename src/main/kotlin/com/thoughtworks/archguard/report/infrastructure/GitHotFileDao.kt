@@ -11,4 +11,12 @@ interface GitHotFileDao {
     @SqlQuery("select system_id as systemId, line_count as lineCount, path, changes" +
             " from scm_path_change_count where system_id = :systemId")
     fun findCountBySystemId(systemId: Long) : List<GitPathChangeCount>
+
+    @SqlQuery("select system_id as systemId, line_count as lineCount, path, changes from scm_path_change_count where system_id = :systemId" +
+            " order by line_count desc limit 50 ")
+    fun getTopLinesFile(systemId: Long) : List<GitPathChangeCount>
+
+    @SqlQuery("select system_id as systemId, line_count as lineCount, path, changes from scm_path_change_count where system_id = :systemId" +
+            " order by changes desc limit 50 ")
+    fun getTopChangesFile(systemId: Long) : List<GitPathChangeCount>
 }
