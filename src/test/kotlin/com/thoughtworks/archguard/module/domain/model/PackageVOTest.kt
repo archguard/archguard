@@ -30,4 +30,11 @@ internal class PackageVOTest {
         assertThat(packageVOWithEmptyPackage.packageName).isEqualTo("")
         assertThat(packageVOWithEmptyPackage.module).isEqualTo("p1")
     }
+
+    @Test
+    internal fun `should identify for dot dot`() {
+        val packageVO = PackageVO.fromFullName("..")
+        assertThat(packageVO.packageName).isEqualTo("")
+        assertThat(packageVO.module).isEqualTo(".")
+    }
 }

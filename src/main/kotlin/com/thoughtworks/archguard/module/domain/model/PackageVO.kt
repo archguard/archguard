@@ -12,6 +12,10 @@ class PackageVO(val packageName: String, val module: String) {
 
     companion object {
         fun fromFullName(fullName: String): PackageVO {
+            if(fullName == "..") {
+                return PackageVO("", ".")
+            }
+
             val startIndex = fullName.indexOfFirst { it == '.' }
             if (startIndex == -1) {
                 return PackageVO("", fullName)
