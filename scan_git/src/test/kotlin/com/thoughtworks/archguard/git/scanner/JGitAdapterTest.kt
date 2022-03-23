@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.git.scanner
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.nio.file.Paths
 
 internal class JGitAdapterTest {
