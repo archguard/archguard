@@ -37,6 +37,9 @@ class GitPathCount(private val gitHotFile: GitPathChangeCount) {
 
     val value: Int
         get() = gitHotFile.changes
+
+    val lines: Int
+        get() = gitHotFile.lineCount
 }
 
 class GitChangeCount(private val gitHotFile: GitHotFile) {
