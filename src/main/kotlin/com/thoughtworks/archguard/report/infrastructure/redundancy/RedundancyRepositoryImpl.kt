@@ -32,7 +32,7 @@ class RedundancyRepositoryImpl(val jdbi: Jdbi) : RedundancyRepository {
                     .bind("system_id", systemId)
                     .bind("limit", limit)
                     .bind("offset", offset)
-                    .mapTo<ClassPO>(ClassPO::class.java).list()
+                    .mapTo(ClassPO::class.java).list()
                     .map { p -> ClassVO.create(p.name, p.module) }
         }
     }

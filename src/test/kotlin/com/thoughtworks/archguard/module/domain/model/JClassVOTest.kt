@@ -21,4 +21,13 @@ internal class JClassVOTest {
 
         assertEquals("", packageName)
     }
+
+    @Test
+    internal fun shouldHandleBytecodeDollarSymbol() {
+        val jClassVO = JClassVO("buildSrc", "Com_thougthworks_archguard_java_conventions_gradle\$2\$inlined\$sam\$i\$org_gradle_api_Action\$0")
+
+        val packageName = jClassVO.getPackageName()
+
+        assertEquals("", packageName)
+    }
 }
