@@ -12,7 +12,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
     fun getSystemOverview(systemId: Long): SystemOverview {
         val repoCount = getRepoCount(systemId)
         val moduleCount = getModuleCount(systemId)
-        val lineCount = getLineCount(systemId)
+        val lineCount = getLineCountWithLanguage(systemId)
         val contributorCount = getContributorCount(systemId)
         return SystemOverview(repoCount, moduleCount, lineCount, contributorCount)
     }
@@ -37,7 +37,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
         return systemOverviewRepository.getSystemModuleCountBySystemId(systemId)
     }
 
-    private fun getLineCount(systemId: Long): Long {
-        return systemOverviewRepository.getSystemLineCountBySystemId(systemId)
+    private fun getLineCountWithLanguage(systemId: Long): List<SystemLanguage> {
+        return systemOverviewRepository.getLineCountBySystemIdWithLanguage(systemId)
     }
 }

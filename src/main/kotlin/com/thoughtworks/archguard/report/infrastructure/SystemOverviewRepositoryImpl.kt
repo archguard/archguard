@@ -34,8 +34,10 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
     override fun getLineCountBySystemIdWithLanguage(systemId: Long): List<SystemLanguage> {
         return jdbi.withHandle<List<SystemLanguage>, Exception> {
             val sql = """
-                select language, sum(line_count) as count from scm_path_change_count where 1 group by language
+                select language, sum(line_count) as lineCount from scm_path_change_count where system_id=:systemId
+                 group by language order by lineCount desc
                 """.trimIndent()
+
             it.createQuery(sql)
                 .bind("systemId", systemId)
                 .mapTo(SystemLanguage::class.java)
