@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.git.scanner
 
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
+import com.thoughtworks.archguard.git.scanner.model.LineCounter
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File

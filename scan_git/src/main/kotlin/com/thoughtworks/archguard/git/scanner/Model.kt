@@ -29,6 +29,7 @@ data class PathChangeCount(
         @Sql("path") val path: String,
         @Sql("changes") val changes: Int,
         @Sql("line_count") val lineCount: Long,
+        @Sql("language") val language: String,
         @Sql("system_id") val systemId: Long)
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)

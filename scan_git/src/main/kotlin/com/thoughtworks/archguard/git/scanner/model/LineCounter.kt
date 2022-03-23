@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.git.scanner
+package com.thoughtworks.archguard.git.scanner.model
 
 import java.io.File
 import java.nio.file.Files
