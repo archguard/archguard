@@ -7,3 +7,8 @@ class SystemOverview(val repoCount: Int,
                      val qualityLevel: String = "C") {
 
 }
+
+class SystemLanguage (
+    val language: String,
+    val lineCount: Long,
+)

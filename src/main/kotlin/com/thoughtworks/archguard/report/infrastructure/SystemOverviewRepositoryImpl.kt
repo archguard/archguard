@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure
 
+import com.thoughtworks.archguard.report.domain.overview.SystemLanguage
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
@@ -30,6 +31,17 @@ class SystemOverviewRepositoryImpl(val jdbi: Jdbi) : SystemOverviewRepository {
         }
     }
 
+    override fun getLineCountBySystemIdWithLanguage(systemId: Long): List<SystemLanguage> {
+        return jdbi.withHandle<List<SystemLanguage>, Exception> {
+            val sql = """
+                select language, sum(line_count) as count from scm_path_change_count where 1 group by language
+                """.trimIndent()
+            it.createQuery(sql)
+                .bind("systemId", systemId)
+                .mapTo(SystemLanguage::class.java)
+                .list()
+        }
+    }
     override fun getSystemLineCountBySystemId(systemId: Long): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = """
