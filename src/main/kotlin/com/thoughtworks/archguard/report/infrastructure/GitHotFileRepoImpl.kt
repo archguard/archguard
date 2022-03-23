@@ -20,7 +20,10 @@ class GitHotFileRepoImpl(val gitHotFileDao: GitHotFileDao) : GitHotFileRepo {
         val topLines = gitHotFileDao.getTopLinesFile(systemId)
         val topChanges = gitHotFileDao.getTopChangesFile(systemId)
 
-        val intersect = topLines.intersect(topChanges.toSet())
-        return intersect.toList()
+        return topLines.filter { line ->
+            topChanges.filter {
+                it.path == line.path
+            }.isNotEmpty()
+        }.toList()
     }
 }
