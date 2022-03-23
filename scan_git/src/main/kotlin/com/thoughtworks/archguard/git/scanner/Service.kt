@@ -21,10 +21,12 @@ class ScannerService(private val gitAdapter: JGitAdapter,
         val counts = gitAdapter.countChangesByPath(changeEntries)
         val pathChanges: MutableList<PathChangeCount> = mutableListOf()
         counts.forEach {
+            val lineCounts = LineCounter.byPath(it.key)
             pathChanges += PathChangeCount(
                 UUID.randomUUID().toString(),
                 it.key,
                 it.value,
+                lineCounts,
                 systemId
             )
         }
