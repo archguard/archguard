@@ -10,6 +10,7 @@ import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import com.thoughtworks.archguard.module.domain.model.PackageVO
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -87,6 +88,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         return ModuleCoupling.of(logicModule, classCouplings)
     }
 
+//    @Cacheable("allModuleCoupling")
     override fun calculateAllModuleCoupling(systemId: Long): List<ModuleCoupling> {
         val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
