@@ -16,11 +16,12 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val path: String by option(help = "local path").default(".")
     private val repoId: String by option(help = "repo id").default("0")
     private val systemId: String by option(help = "system id").default("0")
+    private val language: String by option(help = "language").default("java")
     private val loc: String? by option(help = "scan loc")
 
     override fun run() {
         if (loc == null) {
-            val service = ScannerService(JGitAdapter(CognitiveComplexityParser()), Bean2Sql())
+            val service = ScannerService(JGitAdapter(CognitiveComplexityParser(), language), Bean2Sql())
             service.git2SqlFile(path, branch, after, repoId, systemId.toLong())
         } else {
             val loCRepository = LoCRepository()

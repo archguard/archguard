@@ -21,7 +21,9 @@ data class ChangeEntry(
         @Sql("system_id") val systemId: Long,
         @Sql("cognitive_complexity") val cognitiveComplexity: Int,
         @Sql("change_mode") val changeMode: String,
-        @Sql("commit_id") val commitId: String)
+        @Sql("commit_id") val commitId: String,
+        @Sql("committer") val committer: String
+)
 
 @Sql("scm_path_change_count")
 data class PathChangeCount(

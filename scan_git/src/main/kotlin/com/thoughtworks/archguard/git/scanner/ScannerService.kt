@@ -8,13 +8,9 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 
-class ScannerService(
-    private val gitAdapter: JGitAdapter,
-    private val bean2Sql: Bean2Sql
-) {
-
-    var extToLanguage: MutableMap<String, String> = mutableMapOf()
-    var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
+class ScannerService(private val gitAdapter: JGitAdapter, private val bean2Sql: Bean2Sql) {
+    private var extToLanguage: MutableMap<String, String> = mutableMapOf()
+    private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
 
     fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: Long) {
         setupLanguagesMap()

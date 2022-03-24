@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets
  * @param branch  branch name, default is master
  */
 
-class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser) {
+class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityParser, val language: String) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long):
@@ -71,7 +71,10 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         systemId: Long
     ): ChangeEntry {
         try {
-            val classComplexity: Int = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
+            var classComplexity: Int = 0
+            if(this.language == "java") {
+                classComplexity = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
+            }
             return ChangeEntry(
                 oldPath = diffEntry.oldPath,
                 newPath = diffEntry.newPath,
@@ -79,7 +82,9 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
                 cognitiveComplexity = classComplexity,
                 changeMode = diffEntry.changeType.name,
                 systemId = systemId,
-                commitId = revCommit.name
+                commitId = revCommit.name,
+                // for knowledge map
+                committer = revCommit.authorIdent.name
             )
         } catch (ex: Exception) {
             throw ex

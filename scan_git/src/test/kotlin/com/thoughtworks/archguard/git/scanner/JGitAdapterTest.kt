@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityPars
 import com.thoughtworks.archguard.git.scanner.model.LineCounter
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.nio.file.Paths
 
 internal class JGitAdapterTest {
@@ -13,7 +12,7 @@ internal class JGitAdapterTest {
     @Test
     @Disabled
     internal fun should_calculate_self() {
-        val jGitAdapter = JGitAdapter(CognitiveComplexityParser())
+        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), language)
         val (_, changeEntries) = jGitAdapter.scan("../", repoId = "0", systemId = 1)
 
         val changeCounts = jGitAdapter.countChangesByPath(changeEntries)

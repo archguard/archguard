@@ -11,17 +11,16 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker
 import java.io.IOException
 import java.nio.file.Paths
 
-class CognitiveComplexityParser {
-
+class CognitiveComplexityParser : ICognitiveComplexityParser {
     @Throws(IOException::class)
-    fun processFile(file: String): List<MethodCognitiveComplexity> {
+    override fun processFile(file: String): List<MethodCognitiveComplexity> {
         val path = Paths.get(file)
         val stream = CharStreams.fromPath(path)
         val tree = parse(stream)
         return walk(tree)
     }
 
-    fun processCode(code: String): List<MethodCognitiveComplexity> {
+    override fun processCode(code: String): List<MethodCognitiveComplexity> {
         val _code = StringBuilder()
         if (!code.trim().startsWith("class")) {
             _code.append("class A {")
