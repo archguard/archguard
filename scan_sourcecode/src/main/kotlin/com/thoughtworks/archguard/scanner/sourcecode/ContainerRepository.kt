@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.scanner.sourcecode
 
 import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerDemand
+import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerResource
 import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerService
 import infrastructure.SourceBatch
 import java.util.HashMap
@@ -21,6 +22,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         val serviceId = saveMainServices()
         services.forEach { caller ->
             caller.demands.map { saveDemand(it, serviceId, caller.name) }.toTypedArray()
+            caller.resources.map { saveResource(it, serviceId, caller.name) }.toTypedArray()
         }
     }
 
@@ -47,6 +49,31 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         batch.add("container_service", values)
         return serviceId
     }
+
+
+    private fun saveResource(it: ContainerResource, serviceId: String, name: String): String {
+        val time: String = ClassRepository.currentTime
+        val resourceId = ClassRepository.generateId()
+        val values: MutableMap<String, String> = HashMap()
+
+        values["id"] = resourceId
+        values["serviceId"] = serviceId
+
+        values["source_url"] = it.sourceUrl
+        values["source_http_method"] = it.sourceHttpMethod
+
+        values["package_name"] = it.packageName
+        values["class_name"] = it.className
+        values["method_name"] = it.methodName
+
+        values["updated_at"] = time
+        values["created_at"] = time
+        values["created_by"] = "scanner"
+
+        batch.add("container_resource", values)
+        return resourceId
+    }
+
 
     private fun saveDemand(demand: ContainerDemand, serviceId: String, name: String): String {
         val time: String = ClassRepository.currentTime
