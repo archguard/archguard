@@ -37,7 +37,7 @@ class ScannerService(private val gitAdapter: JGitAdapter, private val bean2Sql: 
 
             val countFile = File(filepath)
             if (countFile.isFile) {
-                lang = languageService.detectLanguage(countFile.name)
+                lang = languageService.detectLanguage(countFile.name)[0]
                 if (lang.isNotEmpty()) {
                     lineCounts = LineCounter.byPath(filepath)
                 }

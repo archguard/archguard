@@ -11,7 +11,7 @@ import java.io.File
 class LanguageService {
     private val extensionCache: HashMap<String, String> = hashMapOf()
     private val SHE_BANG: String = "#!"
-    private var extToLanguage: MutableMap<String, String> = mutableMapOf()
+    private var extToLanguages: MutableMap<String, List<String>> = mutableMapOf()
     private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
 
     init {
@@ -19,7 +19,11 @@ class LanguageService {
         val languages = Json.decodeFromString<Array<Language>>(fileContent)
         languages.forEach { entry ->
             entry.extensions.forEach {
-                extToLanguage[it] = entry.name
+                if (extToLanguages[it] == null) {
+                    extToLanguages[it] = listOf()
+                }
+
+                extToLanguages[it] = extToLanguages[it]!!.plus(entry.name)
             }
             entry.fileNames?.forEach {
                 filenameToLanguage[it] = entry.name
@@ -27,8 +31,9 @@ class LanguageService {
         }
     }
 
-    fun detectLanguage(name: String): String {
-        var language = ""
+    fun detectLanguage(name: String): List<String> {
+        var language: List<String> = listOf()
+
         val dotCount = name.count { it == '.' }
 
         // such as `.gitignore` file
@@ -38,31 +43,31 @@ class LanguageService {
         if (ifNeedToCheckFullName) {
             val optFilenameLang = filenameToLanguage[name.lowercase()]
             if (optFilenameLang != null) {
-                return optFilenameLang.toString()
+                return listOf(optFilenameLang)
             }
 
             // make others file a shebang
-            language = SHE_BANG
+            language = listOf(SHE_BANG)
         }
 
         // Lookup in case the full name matches
-        val fullNameExt = extToLanguage[name.lowercase()]
+        val fullNameExt = extToLanguages[name.lowercase()]
         if (fullNameExt != null) {
             return fullNameExt
         }
 
         val ext = this.getExtension(name)
-        val optLang = extToLanguage[ext.lowercase()]
+        val optLang = extToLanguages[ext.lowercase()]
         if (optLang != null) {
-            return optLang.toString()
+            return optLang
         }
 
         // if multiple extension file is lost, fallback
 
         val secondExt = this.getExtension(ext)
-        val fallbackLang = extToLanguage[secondExt.lowercase()]
+        val fallbackLang = extToLanguages[secondExt.lowercase()]
         if (fallbackLang != null) {
-            return fallbackLang.toString()
+            return fallbackLang
         }
 
         return language
