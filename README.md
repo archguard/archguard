@@ -29,7 +29,11 @@ Features
 
 ### Code
 
-### Changes
+### Logic Unstable（逻辑不稳定）
+
+- FanInFanOut
+
+### Physical Unstable（物理不稳定）
 
 - UnstableFile/Class, long lines and high changes(from git)
 - KnowledgeMap, author changes in package
@@ -38,6 +42,18 @@ in Chinese
 
 - 不稳定文件/类，高频变更 + 文件行数长
 - 知识地图，文件修改资料 + 作者
+
+### Readable（可读性）
+
+- By length, tooShort or tooLong
+- one thing, `And`
+
+Types:
+
+- Class Name
+- Method name
+- Field name
+- API name ?
 
 ## Development
 
