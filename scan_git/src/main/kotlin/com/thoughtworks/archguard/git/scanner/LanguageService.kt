@@ -45,11 +45,26 @@ class LanguageService {
             language = SHE_BANG
         }
 
+        // Lookup in case the full name matches
+        val fullNameExt = extToLanguage[name.lowercase()]
+        if (fullNameExt != null) {
+            return fullNameExt
+        }
+
         val ext = this.getExtension(name)
         val optLang = extToLanguage[ext.lowercase()]
         if (optLang != null) {
             return optLang.toString()
         }
+
+        // if multiple extension file is lost, fallback
+
+        val secondExt = this.getExtension(ext)
+        val fallbackLang = extToLanguage[secondExt.lowercase()]
+        if (fallbackLang != null) {
+            return fallbackLang.toString()
+        }
+
         return language
     }
 
@@ -69,7 +84,7 @@ class LanguageService {
             // If there are multiple extensions, it is the value of subExt,
             // otherwise subExt is an empty string.
             val subExt = File(name.removeSuffix(".$ext")).extension
-            extension = "$subExt.$ext"
+            extension = "$subExt.$ext".removePrefix(".")
         }
 
         extensionCache[name] = extension

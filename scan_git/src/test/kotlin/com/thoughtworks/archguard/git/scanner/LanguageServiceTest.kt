@@ -23,4 +23,16 @@ internal class LanguageServiceTest {
         val lang = LanguageService()
         assertEquals("TypeScript Typings", lang.detectLanguage("types.d.ts"))
     }
+
+    @Test
+    fun should_test_get_extension_no_extension() {
+        val lang = LanguageService()
+        assertEquals("CloudFormation (YAML)", lang.detectLanguage(".travis.yml"))
+    }
+
+    @Test
+    fun should_return_ext_name() {
+        val lang = LanguageService()
+        assertEquals("d.ts", lang.getExtension("types.d.ts"))
+    }
 }
