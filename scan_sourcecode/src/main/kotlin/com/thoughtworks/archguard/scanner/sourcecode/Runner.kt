@@ -104,7 +104,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 containerRepository.close()
             }
             "c#", "csharp" -> {
-                logger.info("start analysis backend api")
+                logger.info("start analysis backend api ---- CSharp")
 
                 val csharpApiAnalyser = CSharpApiAnalyser()
                 dataStructs.forEach { data ->
