@@ -29,7 +29,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
     private val path: String by option(help = "local path").default(".")
     private val systemId: String by option(help = "system id").default("0")
-    private val withApi: Boolean by option(help = "with container service api").flag()
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
         "Java"
     )
@@ -85,43 +84,42 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
 
         logger.info("========================================================")
-        if (withApi) {
-            when (language.lowercase()) {
-                "typescript", "javascript" -> {
-                    logger.info("start analysis frontend api")
+        when (language.lowercase()) {
+            "typescript", "javascript" -> {
+                logger.info("start analysis frontend api")
 
-                    val feApiAnalyser = FrontendApiAnalyser()
-                    // save class first, and can query dependencies for later
-                    val absPath = File(path).absolutePath
+                val feApiAnalyser = FrontendApiAnalyser()
+                // save class first, and can query dependencies for later
+                val absPath = File(path).absolutePath
 
-                    dataStructs.forEach { data ->
-                        feApiAnalyser.analysisByNode(data, absPath)
-                    }
-
-                    val apiCalls = feApiAnalyser.toContainerServices()
-                    val containerRepository = ContainerRepository(systemId, language, path)
-                    File("apis.json").writeText(Json.encodeToString(apiCalls))
-
-                    containerRepository.saveContainerServices(apiCalls)
-                    containerRepository.close()
+                dataStructs.forEach { data ->
+                    feApiAnalyser.analysisByNode(data, absPath)
                 }
-                "c#", "csharp" -> {
-                    logger.info("start analysis backend api")
 
-                    val csharpApiAnalyser = CSharpApiAnalyser()
-                    dataStructs.forEach { data ->
-                        csharpApiAnalyser.analysisByNode(data, "")
-                    }
+                val apiCalls = feApiAnalyser.toContainerServices()
+                val containerRepository = ContainerRepository(systemId, language, path)
+                File("apis.json").writeText(Json.encodeToString(apiCalls))
 
-                    val apiCalls = csharpApiAnalyser.toContainerServices()
+                containerRepository.saveContainerServices(apiCalls)
+                containerRepository.close()
+            }
+            "c#", "csharp" -> {
+                logger.info("start analysis backend api")
 
-                    val containerRepository = ContainerRepository(systemId, language, path)
-                    File("apis.json").writeText(Json.encodeToString(apiCalls))
-                    containerRepository.saveContainerServices(apiCalls)
-                    containerRepository.close()
+                val csharpApiAnalyser = CSharpApiAnalyser()
+                dataStructs.forEach { data ->
+                    csharpApiAnalyser.analysisByNode(data, "")
                 }
+
+                val apiCalls = csharpApiAnalyser.toContainerServices()
+
+                val containerRepository = ContainerRepository(systemId, language, path)
+                File("apis.json").writeText(Json.encodeToString(apiCalls))
+                containerRepository.saveContainerServices(apiCalls)
+                containerRepository.close()
             }
         }
+
         logger.info("========================================================")
         repo.close()
     }
