@@ -18,9 +18,9 @@ internal class LanguageServiceTest {
         assertEquals("gitignore", lang.detectLanguage(".gitignore"))
     }
 
-//    @Test
-//    fun should_return_typescript_define_file() {
-//        val lang = LanguageService()
-//        assertEquals("TypeScript Typings", lang.detectLanguage("d.ts"))
-//    }
+    @Test
+    fun should_return_typescript_define_file() {
+        val lang = LanguageService()
+        assertEquals("TypeScript Typings", lang.detectLanguage("types.d.ts"))
+    }
 }
