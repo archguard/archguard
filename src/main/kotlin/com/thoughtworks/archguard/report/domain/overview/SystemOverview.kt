@@ -11,4 +11,5 @@ class SystemOverview(val repoCount: Int,
 class SystemLanguage (
     val language: String,
     val lineCount: Long,
+    val fileCount: Long,
 )
