@@ -25,6 +25,20 @@ Features
 - System Info
     - [ ] Custom build command  
 
+## Metrics
+
+### Code
+
+### Changes
+
+- UnstableFile/Class, long lines and high changes(from git)
+- KnowledgeMap, author changes in package
+
+in Chinese
+
+- 不稳定文件/类，高频变更 + 文件行数长
+- 知识地图，文件修改资料 + 作者
+
 ## Development
 
 todo:
