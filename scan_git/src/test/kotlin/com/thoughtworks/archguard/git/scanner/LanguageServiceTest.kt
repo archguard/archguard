@@ -35,4 +35,16 @@ internal class LanguageServiceTest {
         val lang = LanguageService()
         assertEquals("d.ts", lang.getExtension("types.d.ts"))
     }
+
+    @Test
+    fun should_return_json_for_file() {
+        val lang = LanguageService()
+        assertEquals("JSON", lang.determineLanguage("api.json"))
+    }
+
+    @Test
+    fun should_return_empty_for_not_a_language_file() {
+        val lang = LanguageService()
+        assertEquals("", lang.determineLanguage("logo.png"))
+    }
 }

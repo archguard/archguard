@@ -39,9 +39,9 @@ class LanguageService {
             return langs[0]
         }
 
-        var primaryLanguage = langs[0]
+        var primaryLanguage = ""
         langs.forEach {
-            if (languageMap[it]!!.keywords.isNullOrEmpty()) {
+            if (languageMap[it]?.keywords.isNullOrEmpty()) {
                 primaryLanguage = it
             }
         }
@@ -50,7 +50,7 @@ class LanguageService {
     }
 
     fun detectLanguages(name: String): List<String> {
-        var language: List<String> = listOf()
+        val language: MutableList<String> = mutableListOf()
 
         val dotCount = name.count { it == '.' }
 
@@ -65,7 +65,7 @@ class LanguageService {
             }
 
             // make others file a shebang
-            language = listOf(SHE_BANG)
+            language += SHE_BANG
         }
 
         // Lookup in case the full name matches
