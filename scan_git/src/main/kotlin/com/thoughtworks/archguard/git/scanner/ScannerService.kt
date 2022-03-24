@@ -66,7 +66,7 @@ class ScannerService(
     }
 
     private fun languageByFile(countFile: File): String {
-        var language = ""
+        val language = ""
         val optFilenameLang = filenameToLanguage[countFile.name.lowercase()]
         if (optFilenameLang != null) {
             return optFilenameLang.toString()
