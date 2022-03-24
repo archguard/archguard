@@ -31,7 +31,16 @@ class LanguageService {
         }
     }
 
-    fun detectLanguage(name: String): List<String> {
+    fun determineLanguage(name: String): String {
+        val langs = this.detectLanguages(name)
+        if (langs.size == 1) {
+            return langs[0]
+        }
+
+        return langs[0]
+    }
+
+    fun detectLanguages(name: String): List<String> {
         var language: List<String> = listOf()
 
         val dotCount = name.count { it == '.' }
