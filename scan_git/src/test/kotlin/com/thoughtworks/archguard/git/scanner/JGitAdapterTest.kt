@@ -10,7 +10,6 @@ internal class JGitAdapterTest {
 
     // this test would not pass in CI
     @Test
-    @Disabled
     internal fun should_calculate_self() {
         val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
         val (_, changeEntries) = jGitAdapter.scan("../", repoId = "0", systemId = 1)

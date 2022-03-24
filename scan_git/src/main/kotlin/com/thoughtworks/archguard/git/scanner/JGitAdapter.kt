@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets
 
+
 /**
  * @param path  repository location
  * @param branch  branch name, default is master
@@ -54,7 +55,7 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
     private fun toChangeEntry(repository: Repository, revCommit: RevCommit, systemId: Long): List<ChangeEntry> {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         return diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
-            .map { d -> doConvertToChangeEntry(d, repository, revCommit, systemId) }
+            .map { d -> doConvertToChangeEntry(d, repository, revCommit, systemId, diffFormatter) }
     }
 
     private fun getParent(revCommit: RevCommit): RevCommit? {
@@ -68,11 +69,19 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
         diffEntry: DiffEntry,
         repository: Repository,
         revCommit: RevCommit,
-        systemId: Long
+        systemId: Long,
+        df: DiffFormatter
     ): ChangeEntry {
         try {
+            var linesDeleted = 0;
+            var linesAdded = 0;
+            for (edit in df.toFileHeader(diffEntry).toEditList()) {
+                linesDeleted += edit.endA - edit.beginA
+                linesAdded += edit.endB - edit.beginB
+            }
+
             var classComplexity: Int = 0
-            if(this.language == "java") {
+            if (this.language == "java") {
                 classComplexity = cognitiveComplexityForJavaFile(diffEntry, repository, revCommit)
             }
             return ChangeEntry(
@@ -84,7 +93,10 @@ class JGitAdapter(private val cognitiveComplexityParser: CognitiveComplexityPars
                 systemId = systemId,
                 commitId = revCommit.name,
                 // for knowledge map
-                committer = revCommit.authorIdent.name
+                committer = revCommit.authorIdent.name,
+                lineAdded = linesAdded,
+                lineDeleted = linesDeleted,
+
             )
         } catch (ex: Exception) {
             throw ex
