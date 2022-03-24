@@ -8,10 +8,13 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 
-class ScannerService(private val gitAdapter: JGitAdapter,
-                     private val bean2Sql: Bean2Sql) {
+class ScannerService(
+    private val gitAdapter: JGitAdapter,
+    private val bean2Sql: Bean2Sql
+) {
 
     var extToLanguage: MutableMap<String, String> = mutableMapOf()
+    var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
 
     fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: Long) {
         setupLanguagesMap()
@@ -44,10 +47,9 @@ class ScannerService(private val gitAdapter: JGitAdapter,
 
             val countFile = File(filepath)
             if (countFile.isFile) {
-                val optLang = extToLanguage[countFile.extension]
-                if (optLang != null) {
+                lang = languageByFile(countFile, lang)
+                if (lang.isNotEmpty()) {
                     lineCounts = LineCounter.byPath(filepath)
-                    lang = optLang.toString()
                 }
             }
 
@@ -63,12 +65,27 @@ class ScannerService(private val gitAdapter: JGitAdapter,
         return pathChanges
     }
 
+    private fun languageByFile(countFile: File, lang: String): String {
+        var lang1 = lang
+        val optLang = extToLanguage[countFile.extension]
+        val optFilenameLang = filenameToLanguage[countFile.name.lowercase()]
+        if (optFilenameLang != null) {
+            lang1 = optFilenameLang.toString()
+        } else if (optLang != null) {
+            lang1 = optLang.toString()
+        }
+        return lang1
+    }
+
     private fun setupLanguagesMap() {
         val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
         val languages = Json.decodeFromString<Array<Language>>(fileContent)
         languages.forEach { entry ->
             entry.extensions.forEach {
                 extToLanguage[it] = entry.name
+            }
+            entry.fileNames?.forEach {
+                filenameToLanguage[it] = entry.name
             }
         }
     }
