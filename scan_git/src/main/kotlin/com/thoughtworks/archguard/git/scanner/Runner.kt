@@ -16,7 +16,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val path: String by option(help = "local path").default(".")
     private val repoId: String by option(help = "repo id").default("0")
     private val systemId: String by option(help = "system id").default("0")
-    private val language: String by option(help = "language").default("java")
+    private val language: String by option(help = "language").default("")
     private val loc: String? by option(help = "scan loc")
 
     override fun run() {
