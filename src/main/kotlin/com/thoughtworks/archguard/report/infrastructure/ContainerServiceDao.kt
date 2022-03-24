@@ -1,11 +1,17 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.thoughtworks.archguard.report.domain.container.ContainerDemand
+import com.thoughtworks.archguard.report.domain.container.ContainerResource
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 
 interface ContainerServiceDao {
     @SqlQuery("select source_package as sourcePackage, source_class as sourceClass, source_method as sourceMethod," +
             " target_url as targetUrl, target_http_method as targetHttpMethod" +
             " from container_demand where system_id = :systemId")
-    fun findBySystemId(systemId: Long) : List<ContainerDemand>
+    fun findDemandBySystemId(systemId: Long) : List<ContainerDemand>
+
+    @SqlQuery("select package_name as packageName, class_name as className, method_name as methodName," +
+            " source_url as sourceUrl, source_http_method as sourceHttpMethod" +
+            " from container_resource where system_id = :systemId")
+    fun findResourceBySystemId(systemId: Long): List<ContainerResource>
 }

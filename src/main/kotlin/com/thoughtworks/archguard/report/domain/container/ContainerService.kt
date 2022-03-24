@@ -1,9 +1,8 @@
 package com.thoughtworks.archguard.report.domain.container
 
 class ContainerService(
-    val name: String,
-    val containerType: String,
-    val scmAddress: String,
+    val demands: List<ContainerDemand>,
+    val resources: List<ContainerResource>,
 )
 
 class ContainerDemand(
