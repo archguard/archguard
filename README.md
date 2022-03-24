@@ -10,20 +10,18 @@ Features
     - [ ] container dependency analysis. (level: HTTP API)
     - [x] component (module) dependency analysis.
     - [x] code dependency analysis. (level: package, class, method)
-    - [ ] API analysis
 - Scanner integration
     - [x] PMD
     - [x] Git with jGit
         - [x] HotFile
-    - [ ] Java/Jvm only
-        - [ ] JVM Bytecode
-        - [ ] CheckStyle
+    - [x] Java/Jvm only
+        - [ ] JVM Bytecode (need to rewrite with License issue)
+        - [x] CheckStyle
         - [x] Badsmell by DesigniteJava
         - [x] Test Badsmell by Coca (Java only)
-    - [ ] TypeScript with Chapi
-    - [ ] Kotlin with Chapi
-- Metrics
-    - [ ] Git Hot File 
+    - [x] TypeScript with Chapi
+    - [x] Kotlin with Chapi
+    - [x] Git Hot File 
 - System Info
     - [ ] Custom build command  
 
@@ -39,7 +37,7 @@ todo:
     - [ ] api lint
     - [ ] kotlin lint
 - [ ] scanner
-    - [x] download from github by config
+    - [x] download from GitHub by config
     - [ ] enable scanner failure
     - [x] config scanner by optional
 - [ ] System landscape by C4
@@ -66,17 +64,9 @@ test projects:
 
 ### 本地构建
 
-build:
+1. create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
 
-`./gradlew build`
-
-run:
-
-`./gradlew bootrun`
-
-### Flyway
-
-create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
+2run: `./gradlew bootrun`
 
 #### 查看当前flyway状态
 
@@ -100,9 +90,9 @@ create database: `create database archguard default character set utf8mb4 collat
 
 **如果想要迁移local环境的数据库，将flyway.conf改为flyway-local.conf**
 
-### macOS setup
+### Docker
 
-#### 使用docker-compose启动前后端+数据库
+#### user `docker-compose`
 
 ```
 docker-compose up
@@ -127,4 +117,4 @@ brew install influxdb@1
 License
 ---
 
-@2020~ Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
+@2020~2022 Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
