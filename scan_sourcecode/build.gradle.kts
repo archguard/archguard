@@ -17,8 +17,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    implementation("com.phodal.chapi:chapi-application:1.2.3")
-    implementation("com.phodal.chapi:chapi-domain:1.2.3")
+    implementation("com.phodal.chapi:chapi-application:1.2.5")
+    implementation("com.phodal.chapi:chapi-domain:1.2.5")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
