@@ -17,19 +17,30 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
-                .forEach { repo ->
+            .forEach { repo ->
+                if (systemInfo.repoType == "LOCAL") {
+                    scanProjectMap[repo] = ScanProject(
+                        repo,
+                        File(repo),
+                        BuildTool.NONE,
+                        systemInfo.sql,
+                        systemInfo.language,
+                        repo
+                    )
+                } else {
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
                         cloneAndBuildSingleRepo(repo)
                     } else {
                         cloneSingleRepo(repo)
                     }
                 }
+            }
     }
 
     fun cloneAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
-                .forEach(this::cloneSingleRepo)
+            .forEach(this::cloneSingleRepo)
     }
 
     private fun cloneSingleRepo(repo: String) {
@@ -39,7 +50,14 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        scanProjectMap[repo] = ScanProject(repo, repoWorkSpace, BuildTool.NONE, this.systemInfo.sql, systemInfo.language, systemInfo.codePath)
+        scanProjectMap[repo] = ScanProject(
+            repo,
+            repoWorkSpace,
+            BuildTool.NONE,
+            this.systemInfo.sql,
+            systemInfo.language,
+            systemInfo.codePath
+        )
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -117,13 +135,17 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
 
     private fun cloneBySvn(workspace: File, repo: String): Int {
         val cmdList = if (systemInfo.hasAuthInfo()) {
-            listOf("svn", "checkout",
-                    repo, Paths.get("./").normalize().toString(),
-                    "--username", systemInfo.username,
-                    "--password", systemInfo.getDeCryptPassword())
+            listOf(
+                "svn", "checkout",
+                repo, Paths.get("./").normalize().toString(),
+                "--username", systemInfo.username,
+                "--password", systemInfo.getDeCryptPassword()
+            )
         } else {
-            listOf("svn", "checkout",
-                    repo, Paths.get("./").normalize().toString())
+            listOf(
+                "svn", "checkout",
+                repo, Paths.get("./").normalize().toString()
+            )
         }
         log.debug("command to be executed: {}", cmdList)
 
