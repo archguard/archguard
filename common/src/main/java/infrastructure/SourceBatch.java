@@ -22,14 +22,16 @@ public class SourceBatch extends DefaultBatchImpl {
             "code_class",
             "code_field",
             "code_method",
+            "code_annotation",
+            "code_annotation_value",
+
+            // code relation refs
             "code_ref_class_fields",
             "code_ref_class_methods",
             "code_ref_class_parent",
             "code_ref_class_fields",
             "code_ref_method_callees",
             "code_ref_class_dependencies",
-            "code_annotation",
-            "code_annotation_value",
 
             // for c4 level in api call
             "container_demand",

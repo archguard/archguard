@@ -5,20 +5,18 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/scanner)
 
 
-scan
+Scanner:
 
 * scan_git - Git commit history scan
 * scan_jacoco - Jacoco scan
 * scan_sourcecode - Java source code level scan
-    * [ ] TypeScript
-        * [x] React support
-        * [ ] Angular support
-        * [ ] Vue support
-        * [ ] HTTP API
-            * [x] axios
-            * [x] umi-request
-* scan_mysql
-    * [ ] TableName support
+    * [x] TypeScript/JavaScript (not full test)
+    * [x] React support
+    * [ ] Angular support
+    * [ ] Vue support
+    * [ ] HTTP API
+        * [x] axios
+        * [x] umi-request
 * scan_test_badsmell
     * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
 
@@ -36,6 +34,45 @@ todo:
         - [x] axios
         - [x] umi-request
 
+## Features
+
+### Scan git
+
+1. scan Git history to count file changes
+2. count `line_count` (lines of count) with `language` of Git Files
+   1. if file size > 10 MB will be ignored
+3. with `-loc` flag will count Method & Class LoC
+4. with `cognitive_complexity` for Java or other languages
+
+### Scan source code
+
+1. analysis code
+2. create code basic info:
+    - "code_class",
+    - "code_field",
+    - "code_method",
+    - "code_annotation",
+    - "code_annotation_value",
+3. create code relations:
+    - "code_ref_class_fields",
+    - "code_ref_class_methods",
+    - "code_ref_class_parent",
+    - "code_ref_class_fields",
+    - "code_ref_method_callees",
+    - "code_ref_class_dependencies",
+4. create container (HTTP API) level info:
+    - "container_demand"    for used HTTP API
+    - "container_resource"  for provide HTTP API
+    - "container_service"   container info                         
+
+### Scan Test Badsmell (Java)
+
+1. scan test code issue
+
+### Scan jacoco (Java)
+
+1. need to refactor
+
 ## Todo
 
 tech debt
@@ -50,8 +87,8 @@ tech debt
     - [x] GitHub workflow
     - [x] git tag publish to GitHub
 - [ ] data pipeline
-    - data feeder to database/json/others
-    - data transform function
+    - [ ] data feeder to database/json/others
+    - [ ] data transform function
 - [ ] cloc scanner
 - [ ] code change counts
 
@@ -75,9 +112,7 @@ introduction: scan source code with [Chapi](https://github.com/modernizing/chapi
 
 cmd: `java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin`
 
-## scan_mysql
-
 License
 ---
 
-@2020~ Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
+@2020~2022 Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
