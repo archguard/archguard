@@ -10,7 +10,7 @@ class CSharpApiAnalyser {
 
     fun analysisByNode(node: CodeDataStruct, workspace: String) {
         val routeAnnotation = node.filterAnnotations("RoutePrefix", "Route")
-        if (routeAnnotation.isNotEmpty()) {
+        if (routeAnnotation.isNotEmpty() || node.NodeName.endsWith("Controller")) {
             val baseUrl = routeAnnotation[0].KeyValues[0].Value
             node.Functions.forEach { createResource(it, baseUrl, node) }
         }
