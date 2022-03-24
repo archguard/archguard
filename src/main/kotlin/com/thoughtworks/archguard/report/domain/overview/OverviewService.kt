@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
-
-    @Cacheable("overviewCache")
     fun getSystemOverview(systemId: Long): SystemOverview {
         val repoCount = getRepoCount(systemId)
         val moduleCount = getModuleCount(systemId)
