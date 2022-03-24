@@ -12,8 +12,8 @@ internal class ScannerServiceTest {
     @Test
     @Disabled
     fun should_generate_sql_file_from_git() {
-        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), language)
-        val scannerService = ScannerService(jGitAdapter, Bean2Sql(), language)
+        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
+        val scannerService = ScannerService(jGitAdapter, Bean2Sql())
         scannerService.git2SqlFile("..", "master", "0", "0", 1)
     }
 }

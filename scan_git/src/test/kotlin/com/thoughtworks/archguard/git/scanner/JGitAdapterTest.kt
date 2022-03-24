@@ -12,7 +12,7 @@ internal class JGitAdapterTest {
     @Test
     @Disabled
     internal fun should_calculate_self() {
-        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), language)
+        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
         val (_, changeEntries) = jGitAdapter.scan("../", repoId = "0", systemId = 1)
 
         val changeCounts = jGitAdapter.countChangesByPath(changeEntries)
