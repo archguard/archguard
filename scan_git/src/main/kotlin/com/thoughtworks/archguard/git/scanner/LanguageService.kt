@@ -13,11 +13,13 @@ class LanguageService {
     private val SHE_BANG: String = "#!"
     private var extToLanguages: MutableMap<String, List<String>> = mutableMapOf()
     private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
+    private var languageMap: MutableMap<String, Language> = mutableMapOf()
 
     init {
         val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
         val languages = Json.decodeFromString<Array<Language>>(fileContent)
         languages.forEach { entry ->
+            languageMap[entry.name] = entry
             entry.extensions.forEach {
                 if (extToLanguages[it] == null) {
                     extToLanguages[it] = listOf()
@@ -37,7 +39,14 @@ class LanguageService {
             return langs[0]
         }
 
-        return langs[0]
+        var primaryLanguage = langs[0]
+        langs.forEach {
+            if (languageMap[it]!!.keywords.isNullOrEmpty()) {
+                primaryLanguage = it
+            }
+        }
+
+        return primaryLanguage
     }
 
     fun detectLanguages(name: String): List<String> {
