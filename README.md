@@ -54,41 +54,19 @@ test projects:
 - [https://github.com/domain-driven-design/ddd-lite-example](https://github.com/domain-driven-design/ddd-lite-example)
 - [https://github.com/domain-driven-design/ddd-monolithic-code-sample](https://github.com/domain-driven-design/ddd-monolithic-code-sample)
 
-### 技术选型
+### Tech decision (framework)
 
-- 开发语言：Kotlin
-- 开发框架：Spring Boot，JDBI
-- 测试框架：Junit5，Spring Boot Test，Flyway，H2
-- 构建工具：Gradle
-- 数据库：MySQL, InfluxDB
+- languages：Kotlin
+- frameworks：Spring Boot，JDBI
+- test frameworks：Junit5，Spring Boot Test，Flyway，H2
+- build tool：Gradle
+- data storage：MySQL, InfluxDB
 
-### 本地构建
+### setup 
 
 1. create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
 
-2run: `./gradlew bootrun`
-
-#### 查看当前flyway状态
-
-1. ./gradlew clean compile
-2. ./gradlew -Dflyway.configFiles=flyway.conf flywayInfo
-
-#### 校验当前flyway状态
-
-1. ./gradlew clean compile
-2. ./gradlew -Dflyway.configFiles=flyway.conf flywayValidate
-
-#### 迁移flyway
-
-1. ./gradlew clean compile
-2. ./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate
-
-#### 修复flyway
-
-1. ./gradlew clean compile
-2. ./gradlew -Dflyway.configFiles=flyway.conf flywayRepair
-
-**如果想要迁移local环境的数据库，将flyway.conf改为flyway-local.conf**
+2. run: `./gradlew bootrun`
 
 ### Docker
 
@@ -98,15 +76,15 @@ test projects:
 docker-compose up
 ```
 
-#### 仅启动后端
+#### only Backend
 
-1. 启动本地数据库
+1. start backend database 
 
 ```
 docker run --name mysql-archguard -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=archguard -p 3306:3306 -d mysql:8
 ```
 
-2. 指定`application-local.properties`启动Application
+2. 指定`application-local.properties` 启动 Application
 
 ### InfluxDB
 
