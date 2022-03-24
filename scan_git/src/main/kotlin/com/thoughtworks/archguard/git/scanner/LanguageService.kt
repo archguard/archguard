@@ -21,17 +21,22 @@ class LanguageService {
         }
     }
 
-    fun detectLanguage(countFile: String): String {
+    fun detectLanguage(name: String): String {
         val language = ""
-        val dotCount = countFile.count { it == '.' }
-        if (dotCount == 0) {
-            val optFilenameLang = filenameToLanguage[countFile.lowercase()]
+        val dotCount = name.count { it == '.' }
+
+        // such as `.gitignore` file
+        val isDotFile = name[0] == '.' && dotCount == 1
+        val notExtensionName = dotCount == 0
+        val ifNeedToCheckFullName = notExtensionName || isDotFile
+        if (ifNeedToCheckFullName) {
+            val optFilenameLang = filenameToLanguage[name.lowercase()]
             if (optFilenameLang != null) {
                 return optFilenameLang.toString()
             }
         }
 
-        val dotSplit = countFile.split(".")
+        val dotSplit = name.split(".")
         val firstExt = dotSplit.last()
         val optLang = extToLanguage[firstExt.lowercase()]
         if (optLang != null) {
