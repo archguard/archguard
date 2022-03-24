@@ -47,7 +47,7 @@ class ScannerService(
 
             val countFile = File(filepath)
             if (countFile.isFile) {
-                lang = languageByFile(countFile, lang)
+                lang = languageByFile(countFile)
                 if (lang.isNotEmpty()) {
                     lineCounts = LineCounter.byPath(filepath)
                 }
@@ -65,16 +65,18 @@ class ScannerService(
         return pathChanges
     }
 
-    private fun languageByFile(countFile: File, lang: String): String {
-        var lang1 = lang
-        val optLang = extToLanguage[countFile.extension]
+    private fun languageByFile(countFile: File): String {
+        var language = ""
         val optFilenameLang = filenameToLanguage[countFile.name.lowercase()]
         if (optFilenameLang != null) {
-            lang1 = optFilenameLang.toString()
-        } else if (optLang != null) {
-            lang1 = optLang.toString()
+            return optFilenameLang.toString()
         }
-        return lang1
+
+        val optLang = extToLanguage[countFile.extension.lowercase()]
+        if (optLang != null) {
+            return optLang.toString()
+        }
+        return language
     }
 
     private fun setupLanguagesMap() {
