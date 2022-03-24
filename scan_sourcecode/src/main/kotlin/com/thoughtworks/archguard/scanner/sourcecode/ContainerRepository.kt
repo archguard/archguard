@@ -57,7 +57,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = resourceId
-        values["serviceId"] = serviceId
+        values["service_id"] = serviceId
+        values["system_id"] = systemId
 
         values["source_url"] = it.sourceUrl
         values["source_http_method"] = it.sourceHttpMethod
