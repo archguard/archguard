@@ -68,28 +68,19 @@ test projects:
 
 2. run: `./gradlew bootrun`
 
+
+#### setup InfluxDB
+
+```
+brew install influxdb@1
+```
+
 ### Docker
 
 #### user `docker-compose`
 
 ```
 docker-compose up
-```
-
-#### only Backend
-
-1. start backend database 
-
-```
-docker run --name mysql-archguard -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=archguard -p 3306:3306 -d mysql:8
-```
-
-2. 指定`application-local.properties` 启动 Application
-
-### InfluxDB
-
-```
-brew install influxdb@1
 ```
 
 License
