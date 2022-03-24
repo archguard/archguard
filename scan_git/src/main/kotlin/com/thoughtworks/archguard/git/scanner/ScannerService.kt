@@ -1,20 +1,14 @@
 package com.thoughtworks.archguard.git.scanner
 
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
-import com.thoughtworks.archguard.git.scanner.model.Language
 import com.thoughtworks.archguard.git.scanner.model.LineCounter
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 
 class ScannerService(private val gitAdapter: JGitAdapter, private val bean2Sql: Bean2Sql) {
-    private var extToLanguage: MutableMap<String, String> = mutableMapOf()
-    private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
+    private val languageService: LanguageService = LanguageService()
 
     fun git2SqlFile(gitPath: String, branch: String, after: String, repoId: String, systemId: Long) {
-        setupLanguagesMap()
-
         val (commitLogs, changeEntries) = gitAdapter.scan(gitPath, branch, after, repoId, systemId)
         val file = File("output.sql")
         if (file.exists()) {
@@ -43,7 +37,7 @@ class ScannerService(private val gitAdapter: JGitAdapter, private val bean2Sql: 
 
             val countFile = File(filepath)
             if (countFile.isFile) {
-                lang = languageByFile(countFile)
+                lang = languageService.detectLanguage(countFile.name)
                 if (lang.isNotEmpty()) {
                     lineCounts = LineCounter.byPath(filepath)
                 }
@@ -59,32 +53,5 @@ class ScannerService(private val gitAdapter: JGitAdapter, private val bean2Sql: 
             )
         }
         return pathChanges
-    }
-
-    private fun languageByFile(countFile: File): String {
-        val language = ""
-        val optFilenameLang = filenameToLanguage[countFile.name.lowercase()]
-        if (optFilenameLang != null) {
-            return optFilenameLang.toString()
-        }
-
-        val optLang = extToLanguage[countFile.extension.lowercase()]
-        if (optLang != null) {
-            return optLang.toString()
-        }
-        return language
-    }
-
-    private fun setupLanguagesMap() {
-        val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
-        val languages = Json.decodeFromString<Array<Language>>(fileContent)
-        languages.forEach { entry ->
-            entry.extensions.forEach {
-                extToLanguage[it] = entry.name
-            }
-            entry.fileNames?.forEach {
-                filenameToLanguage[it] = entry.name
-            }
-        }
     }
 }
