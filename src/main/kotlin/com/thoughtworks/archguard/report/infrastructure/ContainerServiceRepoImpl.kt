@@ -14,4 +14,12 @@ class ContainerServiceRepoImpl(val dao: ContainerServiceDao) : ContainerServiceR
     override fun findResourceBySystemId(systemId: Long): List<ContainerResource> {
         return dao.findResourceBySystemId(systemId)
     }
+
+    override fun getAllDemands(): List<ContainerDemand> {
+        return dao.findAllDemands()
+    }
+
+    override fun getAllResources(): List<ContainerResource> {
+        return dao.findAllResources()
+    }
 }
