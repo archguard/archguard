@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/coverage")
+@RequestMapping("/api/coverage")
 class CoverageController(@Autowired val coverageRepo: CoverageRepo) {
 
     /**获得整个项目的覆盖率信息，数据包含六个维度，按 covered/missed 分成12项*/

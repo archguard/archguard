@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}")
+@RequestMapping("/api/systems/{systemId}")
 class BaseModuleController(val logicModuleRepository: LogicModuleRepository) {
 
     @GetMapping("/base-modules")

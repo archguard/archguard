@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/sizing")
+@RequestMapping("/api/systems/{systemId}/sizing")
 @Validated
 class SizingController(val sizingService: SizingService) {
 

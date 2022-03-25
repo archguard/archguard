@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/scanner/systems/{systemId}/metric")
+@RequestMapping("/api/scanner/systems/{systemId}/metric")
 class MetricController(val metricPersistService: MetricPersistApplService) {
 
     @PostMapping("/basic/persist")

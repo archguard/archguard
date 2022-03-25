@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/test-bad-smell")
+@RequestMapping("/api/systems/{systemId}/test-bad-smell")
 class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
 
     @PostMapping("/static-methods")

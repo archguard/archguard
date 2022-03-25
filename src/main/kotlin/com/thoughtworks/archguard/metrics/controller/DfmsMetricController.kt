@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/metric/dfms")
+@RequestMapping("/api/systems/{systemId}/metric/dfms")
 class DfmsMetricController(val dfmsApplService: DfmsApplService) {
     @GetMapping("/class")
     fun getClassAbstractMetric(@PathVariable("systemId") systemId: Long,

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/systems/{systemId}/overview")
+@RequestMapping("/api/systems/{systemId}/overview")
 class OverviewController(val overviewService: OverviewService) {
     @GetMapping
     fun overview(@PathVariable("systemId") systemId: Long): ResponseEntity<BadSmellOverviewDto> {

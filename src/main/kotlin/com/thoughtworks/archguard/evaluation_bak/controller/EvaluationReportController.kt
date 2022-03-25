@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/evaluations", produces = ["application/json;charset=utf8"])
+@RequestMapping("/api/evaluations", produces = ["application/json;charset=utf8"])
 class EvaluationReportController(@Autowired val evaluationService: EvaluationService) {
 
     @GetMapping("/{id}")

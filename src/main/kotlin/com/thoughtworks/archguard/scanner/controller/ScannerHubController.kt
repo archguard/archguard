@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/scanner")
+@RequestMapping("/api/scanner")
 class ScannerHubController(@Value("\${spring.datasource.url}") val dbUrl: String,
                            @Value("\${spring.datasource.username}") val username: String,
                            @Value("\${spring.datasource.password}") val password: String) {

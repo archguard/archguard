@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/quality-gate-profile")
+@RequestMapping("/api/quality-gate-profile")
 class ProfileController(val service: ProfileService) {
 
     @GetMapping("/{name}")

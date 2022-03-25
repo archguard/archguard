@@ -3,11 +3,13 @@ package com.thoughtworks.archguard.common
 import com.alibaba.druid.stat.DruidStatManagerFacade
 
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
+@RequestMapping("/api")
 class DruidStatController {
     @GetMapping("/druid/stat")
     fun druidStat(): Any {

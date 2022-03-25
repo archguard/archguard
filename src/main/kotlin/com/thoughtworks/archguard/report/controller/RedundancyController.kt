@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/redundancy")
+@RequestMapping("/api/systems/{systemId}/redundancy")
 class RedundancyController(val redundancyService: RedundancyService,
                            val overGeneralizationService: OverGeneralizationService) {
 

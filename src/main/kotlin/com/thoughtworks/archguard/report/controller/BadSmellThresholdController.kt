@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/bad-smell-threshold")
+@RequestMapping("/api/bad-smell-threshold")
 class BadSmellThresholdController(val thresholdSuiteService: ThresholdSuiteService) {
 
     @PostMapping("/reload")

@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.packages.domain.PackageService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/systems/{systemId}/package")
+@RequestMapping("/api/systems/{systemId}/package")
 class PackageController(val packageService: PackageService) {
 
     @GetMapping("dependencies")

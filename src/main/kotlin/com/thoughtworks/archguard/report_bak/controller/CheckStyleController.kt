@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/checkstyle")
+@RequestMapping("/api/checkstyle")
 class CheckStyleController {
 
     @Autowired

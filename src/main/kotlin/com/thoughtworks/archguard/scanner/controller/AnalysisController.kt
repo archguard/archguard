@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/scanner/systems/{systemId}")
+@RequestMapping("/api/scanner/systems/{systemId}")
 class AnalysisController(@Autowired val dependencyAnalysis: ArchitectureDependencyAnalysis) {
     @PostMapping("/dependency-analyses")
     fun analyseDependency(@PathVariable("systemId") systemId: Long): ResponseEntity<String> {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/quality-evaluations")
+@RequestMapping("/api/quality-evaluations")
 class QualityEvaluationController(@Autowired val qualityEvaluationService: QualityEvaluationService) {
 
     @PostMapping

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/coupling")
+@RequestMapping("/api/systems/{systemId}/coupling")
 class CouplingController(val dataClumpsService: DataClumpsService,
                          val deepInheritanceService: DeepInheritanceService,
                          val classCouplingRepository: ClassCouplingRepository,

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/hub")
+@RequestMapping("/api/systems/{systemId}/hub")
 class HubController(val hubService: HubService) {
 
     @PostMapping("/classes/above-threshold")

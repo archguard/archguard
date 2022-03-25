@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/systems/{systemId}/logic-modules")
+@RequestMapping("/api/systems/{systemId}/logic-modules")
 class LogicModuleController(val logicModuleService: LogicModuleService,
                             val dependencyService: DependencyService,
                             val graphService: GraphService) {

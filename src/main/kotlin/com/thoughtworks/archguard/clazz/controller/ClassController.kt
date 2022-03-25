@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/classes")
+@RequestMapping("/api/systems/{systemId}/classes")
 class ClassController(val service: ClassService) {
 
     @GetMapping("/{name}/dependencies")

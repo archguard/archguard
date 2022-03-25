@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/methods")
+@RequestMapping("/api/systems/{systemId}/methods")
 class MethodController(val methodService: MethodService) {
 
     @GetMapping("/callees")

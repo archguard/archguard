@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/configures")
+@RequestMapping("/api/systems/{systemId}/configures")
 class ConfigController(val configureService: ConfigureService) {
 
     @GetMapping

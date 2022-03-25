@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/systems/{systemId}/cohesion")
+@RequestMapping("/api/systems/{systemId}/cohesion")
 class CohesionController(val shotgunSurgeryService: ShotgunSurgeryService, val dataClassService: DataClassService) {
 
     @PostMapping("/shotgun-surgery")

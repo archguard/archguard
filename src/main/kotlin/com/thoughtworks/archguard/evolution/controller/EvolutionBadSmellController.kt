@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/evolution")
+@RequestMapping("/api/evolution")
 class EvolutionBadSmellController(val badSmellThresholdService: BadSmellThresholdService) {
 
     @GetMapping("/badsmell-thresholds")

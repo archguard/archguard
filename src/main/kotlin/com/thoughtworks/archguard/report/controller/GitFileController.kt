@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/systems/{systemId}/git")
+@RequestMapping("/api/systems/{systemId}/git")
 class GitFileController(val gitFileService: GitFileService) {
 
     @GetMapping("/hot-files")

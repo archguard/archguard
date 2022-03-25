@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Deprecated("Migrated to code-addition ")
 @RestController
-@RequestMapping("/systems/{systemId}/")
+@RequestMapping("/api/systems/{systemId}/")
 class ReportBadSmellController() {
 
     @GetMapping("badsmell-thresholds")
