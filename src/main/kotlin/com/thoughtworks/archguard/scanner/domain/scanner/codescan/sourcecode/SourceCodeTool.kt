@@ -25,7 +25,7 @@ class SourceCodeTool(
             path = "."
         }
 
-        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=$path", "--system-id=$systemId", "--language=$language"))
+        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=$path", "--system-id=$systemId", "--language=${language.lowercase()}"))
     }
 
     private fun prepareTool() {

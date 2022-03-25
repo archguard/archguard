@@ -50,4 +50,26 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
                     .execute()
         }
     }
+
+    private val TABLES = listOf(
+        "scm_commit_log",
+        "scm_change_entry",
+        "scm_git_hot_file",
+        "scm_path_change_count",
+    )
+
+    override fun removeNotClearRelatedData(id: Long) {
+        val sqls = mutableListOf<String>()
+        val tables = TABLES
+
+        tables.forEach { sqls.add("delete from $it where system_id = $id") }
+
+        jdbi.withHandle<IntArray, Nothing> {
+            val batch = it.createBatch()
+            for (sql in sqls) {
+                batch.add(sql)
+            }
+            batch.execute()
+        }
+    }
 }

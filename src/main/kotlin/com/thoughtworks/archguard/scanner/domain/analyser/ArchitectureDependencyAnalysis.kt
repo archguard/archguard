@@ -39,6 +39,8 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         if (runningSystemIdSet.contains(systemId)) {
             throw AnalysisException("this system is scanning: $systemId")
         }
+
+        systemInfoRepository.removeNotClearRelatedData(systemId)
         executor.execute {
             val systemInfo = getSystemInfo(systemId)
             try {
