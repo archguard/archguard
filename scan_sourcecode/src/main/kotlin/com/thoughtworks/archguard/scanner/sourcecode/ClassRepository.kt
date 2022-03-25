@@ -471,6 +471,9 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["id"] = clzId
         values["system_id"] = systemId
         values["name"] = "$pkgName.$clzName"
+
+        values["loc"] = (clz.Position.StopLine - clz.Position.StartLine).toString()
+
         values["is_thirdparty"] = "false"
         values["is_test"] = "false"
         values["updatedAt"] = time
