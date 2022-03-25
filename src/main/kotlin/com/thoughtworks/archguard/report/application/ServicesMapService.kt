@@ -35,6 +35,6 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
     }
 
     fun updateUrl(targetUrl: String): String {
-        return targetUrl.replace("\\$\\{[a-zA-Z]+\\}".toRegex(), "@uri@")
+        return targetUrl.replace("\\{[a-zA-Z]+\\}".toRegex(), "@uri@")
     }
 }

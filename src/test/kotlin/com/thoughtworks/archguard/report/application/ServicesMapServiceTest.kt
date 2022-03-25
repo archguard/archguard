@@ -21,13 +21,13 @@ internal class ServicesMapServiceTest {
 
     @Test
     fun replaceDefaultParameterUrl() {
-        val url = service.updateUrl("/api/systems/\${systemId}/code-tree/")
+        val url = service.updateUrl("/api/systems/{systemId}/code-tree/")
         assertEquals("/api/systems/@uri@/code-tree/", url)
     }
 
     @Test
     fun replaceTwoParametersUrl() {
-        val url = service.updateUrl("/api/systems/\${systemId}/code-tree/\${id}")
+        val url = service.updateUrl("/api/systems/{systemId}/code-tree/{id}")
         assertEquals("/api/systems/@uri@/code-tree/@uri@", url)
     }
 }
