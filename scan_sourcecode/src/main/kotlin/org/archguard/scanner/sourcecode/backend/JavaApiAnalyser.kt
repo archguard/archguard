@@ -44,6 +44,8 @@ class JavaApiAnalyser {
                     route = pureUrl
                 }
             }
+
+            httpMethod = ""
         }
 
         if (httpMethod.isNotEmpty()) {
