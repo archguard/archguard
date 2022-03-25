@@ -1,4 +1,43 @@
-# [](https://github.com/archguard/scanner/compare/v1.2.4...v) (2022-03-23)
+# [](https://github.com/archguard/scanner/compare/v1.3.1...v) (2022-03-25)
+
+
+
+## [1.3.1](https://github.com/archguard/scanner/compare/v1.2.4...v1.3.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* empty default language to skip complex ([e3b84f8](https://github.com/archguard/scanner/commit/e3b84f81f47b3ba582c189230b21f4577ce22502))
+* fix // issues in api ([274271f](https://github.com/archguard/scanner/commit/274271f1b6bc02e1812973904cf041d13beadfcb))
+* fix api define issues ([be834fa](https://github.com/archguard/scanner/commit/be834fa87839b1046524ff410f41f0c795726a06))
+* fix build name issues ([c0023c4](https://github.com/archguard/scanner/commit/c0023c472d23ffdf334b47107ce0791931962f9c))
+* fix ci ([76b5bc9](https://github.com/archguard/scanner/commit/76b5bc93d28fc0aca339db870e7b0c0395f30d62))
+* fix claname isuses ([c4155b4](https://github.com/archguard/scanner/commit/c4155b4497377b3426d5da90cbb887a5582c77b2))
+* fix ext to languages not a list issues ([81bb0c2](https://github.com/archguard/scanner/commit/81bb0c25fa6fcc06433e68dbe7065802ca539462))
+* fix json file with keywords issues ([e198995](https://github.com/archguard/scanner/commit/e198995c003cc0e5745bb37fc6d069ef19727fba))
+* fix lost repo for resoruce issue ([40e88b8](https://github.com/archguard/scanner/commit/40e88b8ce867bc1178221285def1b4252fdfa09b))
+* fix open image files issues ([fb31740](https://github.com/archguard/scanner/commit/fb31740062566d0e9510fa5dda1c796b074660fa))
+* fix route issues ([521ef20](https://github.com/archguard/scanner/commit/521ef20ce28dbd1453912206632fa244bd468dd3))
+* fix some controller not annotation issue ([548f155](https://github.com/archguard/scanner/commit/548f155324d621037e0b49a5eac82ac4a570e318))
+* fix typos ([3a29f5f](https://github.com/archguard/scanner/commit/3a29f5f63aa1c6d31edfbefd0e20e2560b4a109d))
+* remove unused with api flags ([0acd089](https://github.com/archguard/scanner/commit/0acd0894c8b84530ff5a3df7028c64658a3229e8))
+
+
+### Features
+
+* add basic second ext for try ([54de4fc](https://github.com/archguard/scanner/commit/54de4fc5e4515dca9b9267e2cffb5c1b5dd87aa2))
+* add check for .dot file ([75d3a80](https://github.com/archguard/scanner/commit/75d3a80985612d5b3f978a9225b0ebb8c13c3484))
+* add java api scan support ([482ba8e](https://github.com/archguard/scanner/commit/482ba8e1a80dbe736105b4465f0564829ac0ec20))
+* add line added and line deleted support ([75c9696](https://github.com/archguard/scanner/commit/75c96963fad04045ef99c615deea8e66adaa3314))
+* add pure filename support ([75d9f7f](https://github.com/archguard/scanner/commit/75d9f7f06e779b3682e34ca337442d814d8a6846))
+* add test for license file ([d443ec3](https://github.com/archguard/scanner/commit/d443ec311257ea519c748adffb573dde8b73a6b9))
+* **c#:** add loc for class support ([2cab6ea](https://github.com/archguard/scanner/commit/2cab6ea215d565e16ee99101faac00636ae4d89b))
+* **collector:** init ci ([0882295](https://github.com/archguard/scanner/commit/08822951924fb12cfc6bae4d3988730b284298e6))
+* init c# api parser ([a45736c](https://github.com/archguard/scanner/commit/a45736c1c704f2f88fcaed9ca436e7b085e92c3b))
+* **java:** add sub url issue ([8ba6f23](https://github.com/archguard/scanner/commit/8ba6f23b11f1ae8ebbdd8efc7dce2132bc4b6d22))
+* make classComplexity only for java langauge ([cca5307](https://github.com/archguard/scanner/commit/cca5307c05a228ce783861424d1aad631427c68c))
+* **sourcecode:** add api only flags ([ef72630](https://github.com/archguard/scanner/commit/ef72630487d8143a15cc087ef3d27c2e58e81e03))
+* **sourcecode:** add for gbk count lines support ([42005b8](https://github.com/archguard/scanner/commit/42005b8d7a20de8df9ff5fa9db30eb78bd5b0b77))
 
 
 
@@ -8,6 +47,7 @@
 ### Bug Fixes
 
 * fix jgit crash issues ([3ceb62f](https://github.com/archguard/scanner/commit/3ceb62fc67ec64c67b3b3fb86dbaa6527a62d350))
+* fix tests ([cba9f90](https://github.com/archguard/scanner/commit/cba9f902a3c9968ce4b9dfc641692e3ba420601d))
 
 
 ### Features
