@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/systems/{systemId}/code-tree")
 class CodeTreeController(val codeTreeService: InitCodeTreeService) {
-    @GetMapping("/")
+    @GetMapping
     fun getCodeTree(@PathVariable("systemId") systemId: Long): ResponseEntity<CodeTree> {
         val codeTree = codeTreeService.initCodeTree(systemId)
         return ResponseEntity.ok(codeTree)

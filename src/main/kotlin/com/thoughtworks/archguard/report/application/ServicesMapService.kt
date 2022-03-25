@@ -34,8 +34,9 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         }.toList()
     }
 
+    // todo: without query in url like: ?language=@uri@
     fun updateUrl(targetUrl: String): String {
-        return targetUrl.replace("\\$\\{[a-zA-Z]+\\}".toRegex(), "@uri@")
-            .replace("\\{[a-zA-Z]+\\}".toRegex(), "@uri@")
+        return targetUrl.replace("\\$\\{[a-zA-Z.]+\\}".toRegex(), "@uri@")
+            .replace("\\{[a-zA-Z.]+\\}".toRegex(), "@uri@")
     }
 }
