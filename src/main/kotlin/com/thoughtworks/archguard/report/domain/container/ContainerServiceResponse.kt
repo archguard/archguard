@@ -17,13 +17,13 @@ class ContainerDemand(
     val sourcePackage: String,
     val sourceClass: String,
     val sourceMethod: String,
-    val targetUrl: String,
+    var targetUrl: String,
     val targetHttpMethod: String,
 )
 
 class ContainerResource(
     val systemId: String,
-    val sourceUrl: String,
+    var sourceUrl: String,
     val sourceHttpMethod: String,
     val packageName: String,
     val className: String,

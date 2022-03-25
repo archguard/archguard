@@ -16,13 +16,25 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
 
     fun allContainerServices(): List<ContainerServiceResponse> {
         val allSystems = repo.findAllSystemIdName()
-        return allSystems.map {
+        return allSystems.map { system ->
+            val demands = repo.findDemandBySystemId(system.id).map {
+                it.targetUrl = updateUrl(it.targetUrl)
+                it
+            }.toList()
+            val resources = repo.findResourceBySystemId(system.id).map {
+                it.sourceUrl = updateUrl(it.sourceUrl)
+                it
+            }.toList()
             ContainerServiceResponse(
-                id = it.id,
-                name = it.systemName,
-                demands = repo.findDemandBySystemId(it.id),
-                resources = repo.findResourceBySystemId(it.id)
+                id = system.id,
+                name = system.systemName,
+                demands = demands,
+                resources = resources
             )
         }.toList()
+    }
+
+    fun updateUrl(targetUrl: String): String {
+        return targetUrl.replace("\\$\\{[a-zA-Z]+\\}".toRegex(), "@uri@")
     }
 }
