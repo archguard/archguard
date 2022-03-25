@@ -20,7 +20,12 @@ class SourceCodeTool(
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=$codePath", "--system-id=$systemId", "--language=$language"))
+        var path = codePath
+        if(codePath.isEmpty()) {
+            path = "."
+        }
+
+        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_sourcecode.jar", "--path=$path", "--system-id=$systemId", "--language=$language"))
     }
 
     private fun prepareTool() {

@@ -47,5 +47,8 @@ fun checkIsDataClass(jClass: JClass): Boolean {
 
 
 fun capitalize(line: String): String {
+    if (line.isEmpty()) {
+        return line
+    }
     return Character.toUpperCase(line[0]).toString() + line.substring(1)
 }
