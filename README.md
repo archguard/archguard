@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/archguard/archguard-backend/branch/master/graph/badge.svg?token=QS5H866CWH)](https://codecov.io/gh/archguard/archguard-backend)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/archguard-backend)
 
-Features
+Features: 
 
 - C4 analysis
     - [ ] context dependency analysis.
@@ -24,6 +24,15 @@ Features
     - [x] Git Hot File 
 - System Info
     - [ ] Custom build command  
+
+
+| Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
+|---------------------|------|--------|-----|--------|------------|-----|-----|-------|-----|
+| http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | 🆕  | 🆕    | 🆕  |
+| syntax parse        | ✅    | ✅      | ✅   | 🆕     | ✅          | 🆕  | 🆕  | ✅     | 🆕  |
+| function call       | ✅    | 🆕     |     | 🆕     | ✅          |     |     |       |     |
+| arch/package        | ✅    |        |     |        | ✅          |     |     | ✅     |     |
+| real world validate | ✅    |        |     |        | ✅          |     |     |       |     |
 
 ## Metrics
 
