@@ -39,7 +39,7 @@ class JavaApiAnalyser {
                 val pureUrl = subUrl.removePrefix("\"").removeSuffix("\"")
 
                 if (baseUrl.isNotEmpty()) {
-                    route = "$baseUrl/$pureUrl"
+                    route = "$baseUrl$pureUrl"
                 } else {
                     route = pureUrl
                 }
@@ -50,6 +50,8 @@ class JavaApiAnalyser {
             if (!route.startsWith("/")) {
                 route = "/${route}"
             }
+
+            route.replace("//", "/")
 
             resources = resources + ContainerResource(
                 sourceUrl = route,
