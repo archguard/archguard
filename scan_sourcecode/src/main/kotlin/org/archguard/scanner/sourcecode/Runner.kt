@@ -5,15 +5,16 @@ import chapi.app.analyser.config.ChapiConfig
 import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import org.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
-import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import infrastructure.DBIStore
-import infrastructure.SourceBatch.TABLES
+import infrastructure.SourceBatch.ALL_TABLES
 import infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
 import org.archguard.scanner.sourcecode.backend.JavaApiAnalyser
+import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
@@ -28,13 +29,24 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val store = DBIStore.getInstance()
 
     private val path: String by option(help = "local path").default(".")
+    private val apiOnly: Boolean by option(help = "only scan api").flag()
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
         "Java"
     )
 
+    val API_TABLES = arrayOf(
+        "container_demand",
+        "container_resource",
+        "container_service"
+    )
+
     override fun run() {
-        cleanSqlFile(TABLES)
+        if (!apiOnly) {
+            cleanSqlFile(API_TABLES)
+        } else {
+            cleanSqlFile(ALL_TABLES)
+        }
 
         var dataStructs: Array<CodeDataStruct> = arrayOf()
         val lang = language.lowercase()
@@ -60,17 +72,28 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         File("structs.json").writeText(Json.encodeToString(dataStructs))
-        toSql(dataStructs, systemId, lang)
+
+        if(!apiOnly) {
+            saveDataStructs(dataStructs, systemId, lang)
+        }
+
+        saveApi(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
-        storeDatabase(TABLES, systemId)
+
+        if(!apiOnly) {
+            storeDatabase(ALL_TABLES, systemId)
+        } else {
+            storeDatabase(API_TABLES, systemId)
+        }
+
         val sqlEnd = System.currentTimeMillis()
         logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
         SqlExecuteThreadPool.close()
     }
 
-    private fun toSql(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
+    private fun saveDataStructs(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         val repo = ClassRepository(systemId, language, path)
 
         dataStructs.forEach { data ->
@@ -82,6 +105,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
             repo.saveClassBody(data)
         }
 
+        repo.close()
+    }
+
+    private fun saveApi(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         logger.info("========================================================")
         when (language.lowercase()) {
             "typescript", "javascript" -> {
@@ -133,9 +160,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 containerRepository.close()
             }
         }
-
-        logger.info("========================================================")
-        repo.close()
     }
 
     private fun storeDatabase(tables: Array<String>, systemId: String) {

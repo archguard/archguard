@@ -18,7 +18,7 @@ import static infrastructure.utils.SqlGenerator.generateBatchInsertSql;
 
 public class SourceBatch extends DefaultBatchImpl {
     private static final Logger logger = LoggerFactory.getLogger(SourceBatch.class);
-    public static final String[] TABLES = new String[]{
+    public static final String[] ALL_TABLES = new String[]{
             "code_class",
             "code_field",
             "code_method",
@@ -83,7 +83,7 @@ public class SourceBatch extends DefaultBatchImpl {
     public void execute() {
         long start = System.currentTimeMillis();
         int totalInsert = 0;
-        for (String table : TABLES) {
+        for (String table : ALL_TABLES) {
             List<Map<String, String>> values = insertStore.get(table);
             if (values != null && !values.isEmpty()) {
                 totalInsert = totalInsert + values.size();
