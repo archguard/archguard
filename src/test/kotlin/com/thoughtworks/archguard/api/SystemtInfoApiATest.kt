@@ -77,7 +77,7 @@ class SystemtInfoApiATest {
     @Test
     @DataSet("expect/system_info_api_atest.yml")
     fun should_delete_system_info_success_when_get_by_id() {
-        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/system-info/1")
+        val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
                 .andExpect(status().isOk)
                 .andReturn()

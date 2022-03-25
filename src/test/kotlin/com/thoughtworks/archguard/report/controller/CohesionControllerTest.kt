@@ -25,7 +25,7 @@ internal class CohesionControllerTest(@LocalServerPort val port: Int) {
             Sql("classpath:sqls/delete_commit_log_and_change_log.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD))
     fun should_get_shotgun() {
         val sizingDto = FilterSizingDto(1, 5, "", "", "", "");
-        val entity = restTemplate.postForEntity("http://localhost:$port/systems/0/cohesion/shotgun-surgery",
+        val entity = restTemplate.postForEntity("http://localhost:$port/api/systems/0/cohesion/shotgun-surgery",
             sizingDto, ShotgunSurgeryListDto::class.java)
 
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
