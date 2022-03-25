@@ -16,7 +16,7 @@ class ContainerServiceController(val service: ServicesMapService) {
     }
 
     @GetMapping("flare/")
-    fun getAllContainer() {
-        service.allContainer()
+    fun getAllContainerServices(): List<ContainerServiceResponse> {
+        return service.allContainerServices()
     }
 }

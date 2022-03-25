@@ -1,7 +1,12 @@
 package com.thoughtworks.archguard.report.domain.container
 
+class ContainerServiceDO(
+    val id: Long,
+    val systemName: String,
+)
+
 class ContainerServiceResponse(
-    val id: String = "",
+    val id: Long = 0,
     val name: String = "",
     val demands: List<ContainerDemand>,
     val resources: List<ContainerResource>,

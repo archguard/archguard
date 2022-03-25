@@ -8,16 +8,21 @@ import org.springframework.stereotype.Service
 class ServicesMapService(val repo: ContainerServiceRepo) {
     fun findBySystemId(systemId: Long) : ContainerServiceResponse {
         return ContainerServiceResponse(
+            id = systemId,
             demands = repo.findDemandBySystemId(systemId),
             resources = repo.findResourceBySystemId(systemId)
         )
     }
 
-    fun allContainer(): ContainerServiceResponse {
-        val containerServiceResponse = ContainerServiceResponse(
-            demands = repo.findDemandBySystemId(1),
-            resources = repo.findResourceBySystemId(1)
-        )
-        return containerServiceResponse
+    fun allContainerServices(): List<ContainerServiceResponse> {
+        val allSystems = repo.findAllSystemIdName()
+        return allSystems.map {
+            ContainerServiceResponse(
+                id = it.id,
+                name = it.systemName,
+                demands = repo.findDemandBySystemId(it.id),
+                resources = repo.findResourceBySystemId(it.id)
+            )
+        }.toList()
     }
 }
