@@ -36,6 +36,10 @@ class CSharpApiAnalyser {
         }
 
         if (route.isNotEmpty() && httpMethod.isNotEmpty()) {
+            if (!route.startsWith("/")) {
+                route = "/${route}"
+            }
+
             resources = resources + ContainerResource(
                 sourceUrl = route,
                 sourceHttpMethod = httpMethod,
