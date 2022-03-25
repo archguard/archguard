@@ -8,7 +8,7 @@ import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerService
 class CSharpApiAnalyser {
     var resources: List<ContainerResource> = listOf()
 
-    fun analysisByNode(node: CodeDataStruct, workspace: String) {
+    fun analysisByNode(node: CodeDataStruct, _workspace: String) {
         val routeAnnotation = node.filterAnnotations("RoutePrefix", "Route")
         if (routeAnnotation.isNotEmpty() || node.NodeName.endsWith("Controller")) {
             var baseUrl = ""

@@ -5,7 +5,6 @@ import chapi.app.analyser.config.ChapiConfig
 import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
 import com.thoughtworks.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
