@@ -41,7 +41,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     fun saveClassBody(clz: CodeDataStruct) {
         val clzId = saveOrGetClzId(clz)!!
         saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath, clz.Functions)
-        saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName)
+        saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName, clz.Package)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassAnnotation(clzId, clz.Annotations)
     }
@@ -59,17 +59,17 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         }
     }
 
-    private fun saveClassCallees(functions: Array<CodeFunction>, moduleName: String, clzName: String) {
+    private fun saveClassCallees(functions: Array<CodeFunction>, moduleName: String, clzName: String, pkgName: String) {
         for (function in functions) {
-            val mId = findMethodIdByClzName(function, clzName, function.Name)?.orElse("") ?: continue
+            val mId = findMethodIdByClzName(function, clzName, function.Name, pkgName)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
-                saveMethodCall(mId, call, moduleName, clzName)
+                saveMethodCall(mId, call, moduleName, clzName, call.Package)
             }
         }
     }
 
-    private fun saveMethodCall(callerId: String, callee: CodeCall, moduleName: String, clzName: String) {
-        val calleeId: String? = saveOrGetCalleeMethod(callee, moduleName, clzName)
+    private fun saveMethodCall(callerId: String, callee: CodeCall, moduleName: String, clzName: String, pkgName: String) {
+        val calleeId: String? = saveOrGetCalleeMethod(callee, moduleName, clzName, pkgName)
         val callees: MutableMap<String, String> = HashMap()
         callees["id"] = generateId()
         callees["system_id"] = systemId
@@ -78,8 +78,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_ref_method_callees", callees)
     }
 
-    private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String): String? {
-        val methodId: Optional<String?>? = findCalleeMethodId(module, clzName, callee.Parameters, callee.FunctionName)
+    private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String, pkgName: String): String? {
+        val methodId: Optional<String?>? = findCalleeMethodId(module, clzName, callee.Parameters, callee.FunctionName, pkgName)
         return methodId?.orElseGet { saveCalleeMethod(callee) }
     }
 
@@ -93,7 +93,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val values: MutableMap<String, String> = HashMap()
         values["id"] = mId
         values["system_id"] = systemId
-        values["clzname"] = m.NodeName
+        values["clzname"] = "${m.Package}.${m.NodeName}"
         values["name"] = m.FunctionName
         values["returntype"] = ""
         values["argumenttypes"] = m.Parameters.map { it.TypeType }.joinToString(",")
@@ -110,8 +110,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
 
-    private fun findMethodIdByClzName(m: CodeFunction, clzName: String, funcName: String): Optional<String?>? {
-        return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName)
+    private fun findMethodIdByClzName(m: CodeFunction, clzName: String, funcName: String, pkgName: String): Optional<String?>? {
+        return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName, pkgName)
     }
 
     private fun findCalleeMethodId(
@@ -119,22 +119,24 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         clzName: String,
         parameters: Array<CodeProperty>,
         functionName: String,
+        pkgName: String,
     ): Optional<String?>? {
         if (module.isNotEmpty()) {
-            return findMethodId(module, clzName, parameters, functionName)
+            return findMethodId(module, clzName, parameters, functionName, pkgName)
         }
 
-        return findMethodId(THIRD_PARTY, clzName, parameters, functionName)
+        return findMethodId(THIRD_PARTY, clzName, parameters, functionName, pkgName)
     }
 
     private fun findMethodId(
         moduleName: String,
         clzName: String,
         parameters: Array<CodeProperty>,
-        callNodeName: String
+        callNodeName: String,
+        pkgName: String
     ): Optional<String?>? {
         val keys: MutableMap<String, String> = HashMap()
-        keys["clzname"] = clzName
+        keys["clzname"] = "$pkgName.$clzName"
         keys["name"] = callNodeName
         keys["module"] = moduleName
         keys["argumenttypes"] = Json.encodeToString(parameters)
@@ -361,7 +363,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val values: MutableMap<String, String> = HashMap()
         values["id"] = mId
         values["system_id"] = systemId
-        values["clzname"] = clzName
+        values["clzname"] = "$pkgName.$clzName"
         values["name"] = m.Name
         values["returntype"] = m.ReturnType
         var arguments = m.Parameters.map { it.TypeType }.joinToString(",")
