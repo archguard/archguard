@@ -25,7 +25,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
                         BuildTool.NONE,
                         systemInfo.sql,
                         systemInfo.language,
-                        repo
+                        repo,
+                        systemInfo.branch
                     )
                 } else {
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
@@ -56,7 +57,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
             BuildTool.NONE,
             this.systemInfo.sql,
             systemInfo.language,
-            systemInfo.codePath
+            systemInfo.codePath,
+            systemInfo.branch
         )
     }
 
@@ -76,7 +78,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
             buildTool,
             this.systemInfo.sql,
             systemInfo.language,
-            systemInfo.codePath
+            systemInfo.codePath,
+            systemInfo.branch
         )
     }
 

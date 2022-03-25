@@ -25,6 +25,7 @@ internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScann
             "",
             ArrayList(),
             "jvm",
+            "",
             ""
         )
         badSmellScanner.scan(scanContext)

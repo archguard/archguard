@@ -27,6 +27,7 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
                 "",
                 ArrayList(),
                 "jvm",
+                "",
                 ""
             )
         )

@@ -2,16 +2,19 @@ package com.thoughtworks.archguard.scanner.domain.system
 
 import com.thoughtworks.archguard.scanner.infrastructure.AESCrypt
 
-class SystemInfo(var id: Long? = null,
-                 val systemName: String = "",
-                 val repo: String = "",
-                 val sql: String = "",
-                 val username: String = "",
-                 val password: String = "",
-                 val language: String = "jvm",
-                 val codePath: String = "",
-                 var scanned: ScannedType = ScannedType.NONE,
-                 val repoType: String = "GIT") {
+class SystemInfo(
+    var id: Long? = null,
+    val systemName: String = "",
+    val repo: String = "",
+    val sql: String = "",
+    val username: String = "",
+    val password: String = "",
+    val language: String = "jvm",
+    val codePath: String = "",
+    var scanned: ScannedType = ScannedType.NONE,
+    val repoType: String = "GIT",
+    val branch: String
+) {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
 
     fun hasAuthInfo(): Boolean {

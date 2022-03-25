@@ -37,7 +37,7 @@ class GitHotFileScanner(val gitHotFileRepo: ScannerGitHotFileRepo, val jClassRep
     }
 
     fun getHotFileReport(context: ScanContext) : List<GitHotFileVO> {
-        val gitHotFileScannerTool = GitHotFileScannerTool(context.workspace, "master")
+        val gitHotFileScannerTool = GitHotFileScannerTool(context.workspace, context.branch)
         val gitHotFileModifiedCountMap = gitHotFileScannerTool.getGitHotFileModifiedCountMap()
         return gitHotFileModifiedCountMap.entries.map { GitHotFileVO(it.key, it.value) }
     }

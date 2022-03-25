@@ -12,6 +12,7 @@ data class ScanContext(
     val dbUrl: String,
     val config: List<ToolConfigure>,
     val language: String,
-    val codePath: String
+    val codePath: String,
+    val branch: String
 ) {
 }

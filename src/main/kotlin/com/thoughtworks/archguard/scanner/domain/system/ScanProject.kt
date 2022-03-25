@@ -8,5 +8,6 @@ data class ScanProject(
     var buildTool: BuildTool,
     val sql: String?,
     val language: String,
-    val codePath: String
+    val codePath: String,
+    val branch: String
 )

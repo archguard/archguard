@@ -71,7 +71,8 @@ class HubExecutorService {
                 dbUrl,
                 config,
                 compiledProject.language,
-                compiledProject.codePath
+                compiledProject.codePath,
+                compiledProject.branch
             )
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
