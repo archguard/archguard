@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/systems/{systemId}/package")
 class PackageController(val packageService: PackageService) {
 
-    @GetMapping("dependencies")
+    @GetMapping("/dependencies")
     fun getPackageDependencies(
         @PathVariable("systemId") systemId: Long,
         @RequestParam(value = "language", required = false, defaultValue = "jvm") language: String,
