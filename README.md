@@ -7,9 +7,13 @@ Features:
 
 - C4 analysis
     - [ ] context dependency analysis.
-    - [ ] container dependency analysis. (level: HTTP API)
+    - [x] container dependency analysis. (level: HTTP API)
+      - [x] basic fe/be call
+      - [ ] FeignClient for backend to backend
+      - [ ] GraphQL
+      - [ ] Kong Gateway
     - [x] component (module) dependency analysis.
-    - [x] code dependency analysis. (level: package, class, method)
+    - [x] code dependency analysis. (level: pa``ckage, class, method)
 - Scanner integration
     - [x] PMD
     - [x] Git with jGit
