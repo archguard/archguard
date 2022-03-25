@@ -23,18 +23,20 @@ class JavaApiAnalyser {
     }
 
     private fun createResource(func: CodeFunction, baseUrl: String, node: CodeDataStruct) {
-        var httpMethod = "";
+        var httpMethod = ""
         var route = baseUrl
         for (annotation in func.Annotations) {
+            var isHttpAnnotation = true
             when (annotation.Name) {
                 "GetMapping" -> httpMethod = "Get"
                 "PostMapping" -> httpMethod = "Post"
                 "DeleteMapping" -> httpMethod = "Delete"
                 "PutMapping" -> httpMethod = "Put"
+                else -> isHttpAnnotation = false
             }
 
             val hasSubUrlMapping = annotation.KeyValues.isNotEmpty()
-            if(httpMethod.isNotEmpty() && hasSubUrlMapping) {
+            if(isHttpAnnotation && httpMethod.isNotEmpty() && hasSubUrlMapping) {
                 val subUrl = annotation.KeyValues[0].Value
                 val pureUrl = subUrl.removePrefix("\"").removeSuffix("\"")
 
@@ -44,8 +46,6 @@ class JavaApiAnalyser {
                     route = pureUrl
                 }
             }
-
-            httpMethod = ""
         }
 
         if (httpMethod.isNotEmpty()) {
