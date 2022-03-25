@@ -14,15 +14,17 @@ class JavaApiAnalyser {
             var baseUrl = ""
             val mappingAnnotation = node.filterAnnotations("RequestMapping")
             if (mappingAnnotation.isNotEmpty()) {
-                baseUrl = mappingAnnotation[0].KeyValues[0].Value
+                val url = mappingAnnotation[0].KeyValues[0].Value
+                baseUrl = url.removePrefix("\"").removeSuffix("\"")
             }
+
             node.Functions.forEach { createResource(it, baseUrl, node) }
         }
     }
 
     private fun createResource(func: CodeFunction, baseUrl: String, node: CodeDataStruct) {
         var httpMethod = "";
-        var route = "";
+        var route = baseUrl
         for (annotation in func.Annotations) {
             when (annotation.Name) {
                 "GetMapping" -> httpMethod = "Get"
@@ -31,7 +33,8 @@ class JavaApiAnalyser {
                 "PutMapping" -> httpMethod = "Put"
             }
 
-            if(httpMethod.isNotEmpty()) {
+            val hasSubUrlMapping = annotation.KeyValues.isNotEmpty()
+            if(httpMethod.isNotEmpty() && hasSubUrlMapping) {
                 val subUrl = annotation.KeyValues[0].Value
                 val pureUrl = subUrl.removePrefix("\"").removeSuffix("\"")
 
@@ -43,7 +46,7 @@ class JavaApiAnalyser {
             }
         }
 
-        if (route.isNotEmpty() && httpMethod.isNotEmpty()) {
+        if (httpMethod.isNotEmpty()) {
             if (!route.startsWith("/")) {
                 route = "/${route}"
             }

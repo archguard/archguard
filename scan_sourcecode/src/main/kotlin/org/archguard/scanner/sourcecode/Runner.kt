@@ -13,6 +13,7 @@ import infrastructure.SourceBatch.TABLES
 import infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.archguard.scanner.sourcecode.backend.JavaApiAnalyser
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
@@ -81,7 +82,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
             repo.saveClassBody(data)
         }
 
-
         logger.info("========================================================")
         when (language.lowercase()) {
             "typescript", "javascript" -> {
@@ -111,6 +111,21 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 }
 
                 val apiCalls = csharpApiAnalyser.toContainerServices()
+
+                val containerRepository = ContainerRepository(systemId, language, path)
+                File("apis.json").writeText(Json.encodeToString(apiCalls))
+                containerRepository.saveContainerServices(apiCalls)
+                containerRepository.close()
+            }
+            "java", "kotlin" -> {
+                logger.info("start analysis backend api ---- ${language.lowercase()}")
+
+                val apiAnalyser = JavaApiAnalyser()
+                dataStructs.forEach { data ->
+                    apiAnalyser.analysisByNode(data, "")
+                }
+
+                val apiCalls = apiAnalyser.toContainerServices()
 
                 val containerRepository = ContainerRepository(systemId, language, path)
                 File("apis.json").writeText(Json.encodeToString(apiCalls))
