@@ -1,10 +1,10 @@
-group = "com.thougthworks.archguard.scanners"
+group = "com.thoughtworks.archguard.scanners"
 description = "scan_jacoco"
 
 plugins {
     id("antlr")
     id("application")
-    id("com.thougthworks.archguard.java-conventions")
+    id("com.thoughtworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }

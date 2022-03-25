@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "com.thougthworks.archguard.ident"
+group = "com.thoughtworks.archguard.ident"
 
 plugins {
-    id("com.thougthworks.archguard.java-conventions")
+    id("com.thoughtworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
