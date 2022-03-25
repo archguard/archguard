@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/systems/{systemId}/container-service")
+@RequestMapping("/api/container-service")
 class ContainerServiceController(val service: ServicesMapService) {
-    @GetMapping
+    @GetMapping("{systemId}/")
     fun getServicesMap(@PathVariable("systemId") systemId: Long) : ContainerService {
         return service.findBySystemId(systemId)
     }
