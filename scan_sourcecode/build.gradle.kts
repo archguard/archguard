@@ -9,6 +9,10 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10"
 }
 
+repositories {
+    mavenLocal()
+}
+
 dependencies {
     api(project(":common"))
 
@@ -16,6 +20,10 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+    // run `./gradlew publishToMavenLocal` to publish Chapi in local version
+//    implementation("com.phodal.chapi:chapi-application:1.3.0-SNAPSHOT")
+//    implementation("com.phodal.chapi:chapi-domain:1.3.0-SNAPSHOT")
 
     implementation("com.phodal.chapi:chapi-application:1.2.5")
     implementation("com.phodal.chapi:chapi-domain:1.2.5")
