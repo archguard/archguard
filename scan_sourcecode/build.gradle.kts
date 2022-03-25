@@ -1,4 +1,4 @@
-group = "com.thoughtworks.archguard.scanner"
+group = "org.archguard.scanner"
 
 plugins {
     id("application")
@@ -37,13 +37,13 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.thoughtworks.archguard.scanner.sourcecode.RunnerKt")
+    mainClass.set("org.archguard.scanner.sourcecode.RunnerKt")
 }
 
 tasks{
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "com.thoughtworks.archguard.scanner.sourcecode.RunnerKt"))
+            attributes(Pair("Main-Class", "org.archguard.scanner.sourcecode.RunnerKt"))
         }
     }
 }

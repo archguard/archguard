@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner.sourcecode.frontend.identify
+package org.archguard.scanner.sourcecode.frontend.identify
 
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerDemand
+import org.archguard.scanner.sourcecode.frontend.ContainerDemand
 import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeImport
 

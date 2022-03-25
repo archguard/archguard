@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.scanner.sourcecode
+package org.archguard.scanner.sourcecode
 
 import chapi.app.analyser.TypeScriptAnalyserApp
 import chapi.domain.core.CodeDataStruct
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerService
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
+import org.archguard.scanner.sourcecode.frontend.ContainerService
+import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions

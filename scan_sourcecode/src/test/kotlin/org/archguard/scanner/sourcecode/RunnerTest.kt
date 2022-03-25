@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.sourcecode
+package org.archguard.scanner.sourcecode
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

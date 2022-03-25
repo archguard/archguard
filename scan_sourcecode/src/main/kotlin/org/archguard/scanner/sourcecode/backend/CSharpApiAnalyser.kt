@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.scanner.sourcecode.backend
+package org.archguard.scanner.sourcecode.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerResource
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerService
+import org.archguard.scanner.sourcecode.frontend.ContainerResource
+import org.archguard.scanner.sourcecode.frontend.ContainerService
 
 class CSharpApiAnalyser {
     var resources: List<ContainerResource> = listOf()

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.sourcecode
+package org.archguard.scanner.sourcecode
 
 import chapi.app.analyser.*
 import chapi.app.analyser.config.ChapiConfig
@@ -6,8 +6,8 @@ import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import com.thoughtworks.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
+import org.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
+import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import infrastructure.DBIStore
 import infrastructure.SourceBatch.TABLES
 import infrastructure.task.SqlExecuteThreadPool

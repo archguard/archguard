@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.scanner.sourcecode
+package org.archguard.scanner.sourcecode
 
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerDemand
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerResource
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.ContainerService
+import org.archguard.scanner.sourcecode.frontend.ContainerDemand
+import org.archguard.scanner.sourcecode.frontend.ContainerResource
+import org.archguard.scanner.sourcecode.frontend.ContainerService
 import infrastructure.SourceBatch
 import java.util.HashMap
 

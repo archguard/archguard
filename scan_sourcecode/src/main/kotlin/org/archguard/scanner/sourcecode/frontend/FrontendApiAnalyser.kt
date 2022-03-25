@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.scanner.sourcecode.frontend
+package org.archguard.scanner.sourcecode.frontend
 
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.identify.AxiosHttpIdentify
-import com.thoughtworks.archguard.scanner.sourcecode.frontend.identify.UmiHttpIdentify
+import org.archguard.scanner.sourcecode.frontend.identify.AxiosHttpIdentify
+import org.archguard.scanner.sourcecode.frontend.identify.UmiHttpIdentify
 import chapi.app.frontend.path.ecmaImportConvert
 import chapi.app.frontend.path.relativeRoot
 import chapi.domain.core.*

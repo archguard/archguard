@@ -1,4 +1,4 @@
-group = "com.thoughtworks.archguard.scanners"
+group = "org.archguard.scanners"
 description = "collector_ci"
 
 plugins {

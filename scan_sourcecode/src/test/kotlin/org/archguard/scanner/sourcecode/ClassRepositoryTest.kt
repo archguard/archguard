@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.sourcecode
+package org.archguard.scanner.sourcecode
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
