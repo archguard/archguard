@@ -102,7 +102,7 @@ class JMethodDto(val id: String, val name: String, val clazz: String, val module
     fun toJMethod(): JMethod {
         val argumentTypeList = if (argumentTypes.isNullOrBlank()) emptyList() else argumentTypes.split(",")
         val jMethod = JMethod(id, name, clazz, module, returnType, argumentTypeList)
-        TypeMap.getMethodType(access.toInt()).forEach { jMethod.addType(it) }
+//        TypeMap.getMethodType(access.toInt()).forEach { jMethod.addType(it) }
         return jMethod
     }
 

@@ -49,7 +49,7 @@ class MethodController(val methodService: MethodService) {
         return ResponseEntity.ok(jMethod)
     }
 
-    @GetMapping("")
+    @GetMapping
     fun getMethodsBelongToClass(@PathVariable("systemId") systemId: Long,
                                 @RequestParam(value = "clazz") clazzName: String,
                                 @RequestParam(value = "submodule") submoduleName: String): ResponseEntity<List<JMethod>> {
