@@ -99,10 +99,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestCoverageVerification)
-}
+//
+//tasks.test {
+//    finalizedBy(tasks.jacocoTestCoverageVerification)
+//}
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
