@@ -17,6 +17,8 @@ internal class CasingCheckerTest {
     @Test
     fun checkMultipleNamingStyle() {
         val url = "/api/demo-api/MACRO".split("/")
-        assertEquals(4, CasingChecker().checkNaming(url).size)
+        val namings = CasingChecker().checkNaming(url)
+        assertEquals(2, namings.size)
+        assertEquals("macro, kebab", namings.keys.joinToString(", "))
     }
 }

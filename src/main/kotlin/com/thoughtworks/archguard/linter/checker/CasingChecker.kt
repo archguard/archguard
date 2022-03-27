@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.linter.checker
 
 
 class CasingChecker {
-    // may be unneed
     val FLAT_CASING = Regex("[a-z][a-z0-9]*")
     val CAMEL_CASING = Regex("[a-z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
     val PASCAL_CASING = Regex("[A-Z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
@@ -14,7 +13,8 @@ class CasingChecker {
     fun checkNaming(list: List<String>): MutableMap<String, MutableList<String>> {
         val multipleNaming: MutableMap<String, MutableList<String>> = hashMapOf()
         list.forEach {
-            if (it.isNotEmpty()) {
+            val isNeedToFlag = it.isNotEmpty() && !this.isflat(it)
+            if (isNeedToFlag) {
                 if (this.IsPacal(it)) {
                     addCasingType(multipleNaming, "pascal", it)
                 }
@@ -47,6 +47,11 @@ class CasingChecker {
         val camel = multipleNaming.getOrDefault(key, mutableListOf())
         camel.add(it)
         multipleNaming[key] = camel
+    }
+
+    // flat
+    fun isflat(s: String): Boolean {
+        return FLAT_CASING.matches(s)
     }
 
     // PascalNaming
