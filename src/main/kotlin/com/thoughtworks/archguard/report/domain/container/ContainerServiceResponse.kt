@@ -18,12 +18,14 @@ class ContainerDemand(
     val sourceClass: String,
     val sourceMethod: String,
     var targetUrl: String,
+    var originUrl: String = "",
     val targetHttpMethod: String,
 )
 
 class ContainerResource(
     val systemId: String,
     var sourceUrl: String,
+    var originUrl: String = "",
     val sourceHttpMethod: String,
     val packageName: String,
     val className: String,

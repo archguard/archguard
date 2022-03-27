@@ -18,10 +18,12 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         val allSystems = repo.findAllSystemIdName()
         return allSystems.map { system ->
             val demands = repo.findDemandBySystemId(system.id).map {
+                it.originUrl= it.targetUrl
                 it.targetUrl = updateUrl(it.targetUrl)
                 it
             }.toList()
             val resources = repo.findResourceBySystemId(system.id).map {
+                it.originUrl = it.sourceUrl
                 it.sourceUrl = updateUrl(it.sourceUrl)
                 it
             }.toList()
