@@ -13,7 +13,6 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10"
 
     jacoco
-    antlr
 }
 
 group = "com.thoughtworks.archguard"
