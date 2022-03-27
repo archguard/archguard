@@ -14,5 +14,4 @@ data class ScanContext(
     val language: String,
     val codePath: String,
     val branch: String
-) {
-}
+)

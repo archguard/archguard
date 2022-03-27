@@ -17,7 +17,7 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
     }
 
     fun isAbstract(): Boolean {
-        return methodTypes.contains(MethodType.ABSTRACT_METHOD);
+        return methodTypes.contains(MethodType.ABSTRACT_METHOD)
     }
 
     fun isSynthetic(): Boolean {

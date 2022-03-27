@@ -10,7 +10,7 @@ class ScannerShotgunSurgeryService(val changeEntryRepository: ChangeEntryReposit
                                    val cognitiveComplexityRepository: CognitiveComplexityRepository) {
 
     fun persist(systemId: Long) {
-        val entryList = changeEntryRepository.getAllChangeEntry(systemId);
+        val entryList = changeEntryRepository.getAllChangeEntry(systemId)
 
         val cognitiveComplexityList = ArrayList<CognitiveComplexity>()
         entryList.groupBy { if (it.newPath.equals("/dev/null")) it.oldPath else it.newPath }.forEach { (k, v) ->

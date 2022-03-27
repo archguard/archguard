@@ -4,7 +4,7 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
-class AESCrypt() {
+class AESCrypt {
     companion object {
         const val key: String = "thoughtworks.com"
         fun encrypt(msg: String): String {
@@ -14,7 +14,7 @@ class AESCrypt() {
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(key.toByteArray(), "AES")
             cipher.init(Cipher.ENCRYPT_MODE, keySpec)
-            val encrypt = cipher.doFinal(msg.toByteArray());
+            val encrypt = cipher.doFinal(msg.toByteArray())
             return Base64.getEncoder().encodeToString(encrypt)
         }
 

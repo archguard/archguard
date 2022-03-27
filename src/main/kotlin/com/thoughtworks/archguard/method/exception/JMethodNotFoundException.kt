@@ -1,4 +1,3 @@
 package com.thoughtworks.archguard.method.exception
 
-class JMethodNotFoundException(message: String) : Exception(message) {
-}
+class JMethodNotFoundException(message: String) : Exception(message)

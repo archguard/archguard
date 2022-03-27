@@ -31,7 +31,7 @@ class DashboardService(val sizingService: SizingService,
                        val testBadSmellService: TestBadSmellService,
                        val influxDBClient: InfluxDBClient) {
 
-    private val TIME: String = "1d";
+    private val TIME: String = "1d"
     private val SIZNG_REPORT: String = "sizing_report"
     private val COUPLING_REPORT: String = "coupling_report"
     private val REDUNDANCY_REPORT: String = "redundancy_report"

@@ -18,7 +18,7 @@ class ScannerConfigureService {
     }
 
     fun updateConfigure(configs: List<UpdateDTO>): UpdateMessageDTO {
-        val result = configs.map { configureRepository.updateConfigure(it.id, it.value) }.sumBy { it }
+        val result = configs.map { configureRepository.updateConfigure(it.id, it.value) }.sumOf { it }
         return if (result > 0) {
             UpdateMessageDTO(true, "Update config success")
         } else {

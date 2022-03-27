@@ -31,7 +31,7 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
     @PostConstruct
     fun postConstruct() {
         if (updateScanStatus) {
-            systemInfoRepository.updateScanningSystemToScanFail();
+            systemInfoRepository.updateScanningSystemToScanFail()
         }
     }
 
@@ -60,7 +60,7 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         log.info("************************************")
         val url = dbUrl.replace("://", "://$username:$password@")
 
-        hubService.doScanIfNotRunning(systemId, url);
+        hubService.doScanIfNotRunning(systemId, url)
         log.info("************************************")
         log.info(" Finished level 1 scanners")
         log.info("************************************")

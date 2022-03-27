@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.common;
+package com.thoughtworks.archguard.common
 
 import java.io.File
 

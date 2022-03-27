@@ -6,7 +6,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 @Component
-class AESCrypt() {
+class AESCrypt {
     companion object {
         const val key = "thoughtworks.com"
 
@@ -17,7 +17,7 @@ class AESCrypt() {
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(key.toByteArray(), "AES")
             cipher.init(Cipher.ENCRYPT_MODE, keySpec)
-            val encrypt = cipher.doFinal(msg.toByteArray());
+            val encrypt = cipher.doFinal(msg.toByteArray())
             return Base64.getEncoder().encodeToString(encrypt)
         }
 

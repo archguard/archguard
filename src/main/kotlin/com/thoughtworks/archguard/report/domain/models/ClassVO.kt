@@ -38,7 +38,7 @@ data class ClassVO(val moduleName: String, val packageName: String, val classNam
                 val className = classFullName.substring(0, classFullName.indexOfLast { it == '.' })
                 return ClassVO(moduleName, packageName, className)
             }
-            return null;
+            return null
         }
     }
 }

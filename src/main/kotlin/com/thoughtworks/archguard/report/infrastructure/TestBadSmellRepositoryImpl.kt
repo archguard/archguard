@@ -98,7 +98,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     }
 
     override fun getIgnoreTestMethodCount(systemId: Long): Long {
-        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore");
+        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore")
         return jdbi.withHandle<Long, Exception> {
             val sql = """
                 select count(id) from code_method 
@@ -114,7 +114,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     }
 
     override fun getIgnoreTestMethods(systemId: Long, limit: Long, offset: Long): List<MethodInfo> {
-        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore");
+        val ignoreAnnotations = listOf("org.junit.jupiter.api.Disabled", "org.junit.Ignore")
         return jdbi.withHandle<List<MethodInfo>, Exception> {
             val sql = "SELECT m.id, m.system_id as systemId, m.module, m.class_name, m.package_name, " +
                     "m.name FROM code_method m " +
@@ -197,7 +197,7 @@ class TestBadSmellRepositoryImpl(val jdbi: Jdbi) : TestBadSmellRepository {
     }
 
     override fun getRedundantPrintAboveThresholdIds(systemId: Long, redundantPrintThreshold: Int): List<String> {
-        val clzNames = listOf("java.io.PrintStream");
+        val clzNames = listOf("java.io.PrintStream")
         return jdbi.withHandle<List<String>, Exception> {
             val sql = """
                     select m1.id from code_method m1 join 
