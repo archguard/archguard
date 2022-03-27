@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.report.application
 
+import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceResponse
 import com.thoughtworks.archguard.report.domain.githotfile.ContainerServiceRepo
 import org.springframework.stereotype.Service
@@ -14,11 +15,21 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         )
     }
 
+    fun findAllServiceByIds(ids: List<String>): List<ContainerServiceResponse> {
+        val allSystems = repo.findSystems(ids)
+        return calculateServiceByIds(allSystems)
+    }
+
+
     fun allContainerServices(): List<ContainerServiceResponse> {
         val allSystems = repo.findAllSystemIdName()
+        return calculateServiceByIds(allSystems)
+    }
+
+    private fun calculateServiceByIds(allSystems: List<ContainerServiceDO>): List<ContainerServiceResponse> {
         return allSystems.map { system ->
             val demands = repo.findDemandBySystemId(system.id).map {
-                it.originUrl= it.targetUrl
+                it.originUrl = it.targetUrl
                 it.targetUrl = updateUrl(it.targetUrl)
                 it
             }.toList()

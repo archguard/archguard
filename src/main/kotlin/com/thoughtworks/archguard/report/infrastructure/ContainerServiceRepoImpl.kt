@@ -19,4 +19,8 @@ class ContainerServiceRepoImpl(val dao: ContainerServiceDao) : ContainerServiceR
     override fun findAllSystemIdName(): List<ContainerServiceDO> {
         return dao.findAllSystemIdName()
     }
+
+    override fun findSystems(ids: List<String>): List<ContainerServiceDO> {
+        return dao.findSystems(ids)
+    }
 }

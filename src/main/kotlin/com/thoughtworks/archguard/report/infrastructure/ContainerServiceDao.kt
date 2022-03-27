@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.infrastructure
 import com.thoughtworks.archguard.report.domain.container.ContainerDemand
 import com.thoughtworks.archguard.report.domain.container.ContainerResource
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
+import org.jdbi.v3.sqlobject.customizer.BindList
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 
 interface ContainerServiceDao {
@@ -18,4 +19,7 @@ interface ContainerServiceDao {
 
     @SqlQuery("select id,system_name as systemName from system_info")
     fun findAllSystemIdName(): List<ContainerServiceDO>
+
+    @SqlQuery("select id, system_name as systemName from system_info where id in (<ids>)")
+    fun findSystems(@BindList("ids") ids: List<String>): List<ContainerServiceDO>
 }
