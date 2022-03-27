@@ -16,45 +16,37 @@ class CasingChecker {
         list.forEach {
             if (it.isNotEmpty()) {
                 if (this.IsPacal(it)) {
-                    val key = "pascal"
-                    val pascal = multipleNaming.getOrDefault(key, mutableListOf())
-                    pascal.add(it)
-                    multipleNaming[key] = pascal
+                    addCasingType(multipleNaming, "pascal", it)
                 }
                 if (this.`is-kebab`(it)) {
-                    val key = "kebab"
-                    val kebab = multipleNaming.getOrDefault(key, mutableListOf())
-                    kebab.add(it)
-                    multipleNaming[key] = kebab
+                    addCasingType(multipleNaming, "kebab", it)
                 }
                 if (this.`IS-COBOL`(it)) {
-                    val key = "cobol"
-                    val cobol = multipleNaming.getOrDefault(key, mutableListOf())
-                    cobol.add(it)
-                    multipleNaming[key] = cobol
+                    addCasingType(multipleNaming, "cobol", it)
                 }
                 if (this.is_nake(it)) {
-                    val key = "snake"
-                    val snake = multipleNaming.getOrDefault(key, mutableListOf())
-                    snake.add(it)
-                    multipleNaming[key] = snake
+                    addCasingType(multipleNaming, "snake", it)
                 }
                 if (this.IS_MACRO(it)) {
-                    val key = "macro"
-                    val macro = multipleNaming.getOrDefault(key, mutableListOf())
-                    macro.add(it)
-                    multipleNaming[key] = macro
+                    addCasingType(multipleNaming, "macro", it)
                 }
                 if (this.isCamel(it)) {
-                    val key = "camel"
-                    val camel = multipleNaming.getOrDefault(key, mutableListOf())
-                    camel.add(it)
-                    multipleNaming[key] = camel
+                    addCasingType(multipleNaming, "camel", it)
                 }
             }
         }
 
         return multipleNaming
+    }
+
+    private fun addCasingType(
+        multipleNaming: MutableMap<String, MutableList<String>>,
+        key: String,
+        it: String
+    ) {
+        val camel = multipleNaming.getOrDefault(key, mutableListOf())
+        camel.add(it)
+        multipleNaming[key] = camel
     }
 
     // PascalNaming
