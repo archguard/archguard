@@ -47,7 +47,7 @@ class ByteCodeParser {
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
         logger.debug("ByteCodeParser parser: {}", file)
-        return createClass(getDataStructure(file))
+        return createDataStruct(getDataStructure(file))
     }
 
     @Throws(IOException::class)
@@ -84,31 +84,32 @@ class ByteCodeParser {
         return modifiers
     }
 
-    private fun createClass(classNode: ClassNode): CodeDataStruct {
+    private fun createDataStruct(node: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
-        ds.NodeName = getDataStructureName(classNode.name)
+        ds.NodeName = getDataStructureName(node.name)
 
-        val isInterface = CodeConstants.ACC_INTERFACE == classNode.access
+
+        val isInterface = CodeConstants.ACC_INTERFACE == node.access
 
         ds.Type = if (isInterface) DataStructType.INTERFACE else DataStructType.CLASS;
 
         // todo: add modifiers to Chapi
-        createModifiers(classNode.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
+        createModifiers(node.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
 
-        classNode.methods.forEach {
+        node.methods.forEach {
             ds.Functions += this.createMethod(it)
         }
 
-        ds.Extend = getDataStructureName(classNode.superName)
-        ds.Implements = classNode.interfaces?.map {
+        ds.Extend = getDataStructureName(node.superName)
+        ds.Implements = node.interfaces?.map {
             getDataStructureName(it)
         }?.toTypedArray() ?: arrayOf()
 
-        ds.Annotations = classNode.visibleAnnotations?.map {
+        ds.Annotations = node.visibleAnnotations?.map {
             createAnnotation(it)
         }?.toTypedArray() ?: arrayOf()
 
-        ds.Fields = classNode.fields?.map {
+        ds.Fields = node.fields?.map {
             createField(it)
         }?.toTypedArray() ?: arrayOf()
 
