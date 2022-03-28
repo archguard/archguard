@@ -115,6 +115,8 @@ cmd: `java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&us
 License
 ---
 
+scan_bytecode inspired by [https://github.com/fesh0r/fernflower](https://github.com/fesh0r/fernflower)
+
 `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 
 @2020~2022 Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
