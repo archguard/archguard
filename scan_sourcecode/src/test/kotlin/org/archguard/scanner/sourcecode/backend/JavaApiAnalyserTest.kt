@@ -67,4 +67,19 @@ internal class JavaApiAnalyserTest {
         assertEquals("/api/sub/overview", resources[0].sourceUrl)
         assertEquals("Get", resources[0].sourceHttpMethod)
     }
+
+    @Test
+    fun identRestTemplateCall() {
+        val resource = this.javaClass.classLoader.getResource("resttemplate/")!!
+        val path = Paths.get(resource.toURI()).toFile().absolutePath
+
+        val nodes = JavaAnalyserApp().analysisNodeByPath(path)
+        val javaApiAnalyser = JavaApiAnalyser()
+        nodes.forEach {
+            javaApiAnalyser.analysisByNode(it, "")
+        }
+
+        val services = javaApiAnalyser.toContainerServices()
+        assertEquals(1, services[0].demands.size)
+    }
 }

@@ -2,10 +2,12 @@ package org.archguard.scanner.sourcecode.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.scanner.sourcecode.frontend.ContainerDemand
 import org.archguard.scanner.sourcecode.frontend.ContainerResource
 import org.archguard.scanner.sourcecode.frontend.ContainerService
 
 class JavaApiAnalyser {
+    var demands: List<ContainerDemand> = listOf()
     var resources: List<ContainerResource> = listOf()
 
     fun analysisByNode(node: CodeDataStruct, _workspace: String) {
@@ -19,6 +21,39 @@ class JavaApiAnalyser {
             }
 
             node.Functions.forEach { createResource(it, baseUrl, node) }
+        }
+
+        val useRestTemplate = node.Imports.filter { it.Source.endsWith(".RestTemplate") }
+        if (useRestTemplate.isNotEmpty()) {
+            node.Functions.forEach {
+                it.FunctionCalls.forEach { call ->
+                    if (call.NodeName == "RestTemplate") {
+                        val url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
+                        var method = ""
+                        val functionName = call.FunctionName
+                        when {
+                            functionName.startsWith("Get") -> {
+                                method = "Get"
+                            }
+                            functionName.startsWith("Post") -> {
+                                method = "Post"
+                            }
+                            functionName.startsWith("Delete") -> {
+                                method = "Delete"
+                            }
+                            functionName.startsWith("Put") -> {
+                                method = "Put"
+                            }
+                        }
+
+                        demands = demands + ContainerDemand(
+                            source_caller = node.NodeName,
+                            target_url = url,
+                            target_http_method = method
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -70,6 +105,7 @@ class JavaApiAnalyser {
 
         val componentRef = ContainerService(name = "")
         componentRef.resources = this.resources
+        componentRef.demands = this.demands
 
         componentCalls += componentRef
         return componentCalls
