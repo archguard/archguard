@@ -66,7 +66,12 @@ class ByteCodeParser {
         return classNode
     }
 
-    private fun createModifiers(classAccess: Int, allowField: Int, isInterface: Boolean, fieldExcluded: Int): Array<String> {
+    private fun createModifiers(
+        classAccess: Int,
+        allowField: Int,
+        isInterface: Boolean,
+        fieldExcluded: Int
+    ): Array<String> {
         var flags = classAccess
         var excluded = fieldExcluded
         flags = flags and allowField
@@ -88,7 +93,7 @@ class ByteCodeParser {
 
         val isInterface = CodeConstants.ACC_INTERFACE == classNode.access
 
-        ds.Type = if(isInterface)  DataStructType.INTERFACE else DataStructType.CLASS;
+        ds.Type = if (isInterface) DataStructType.INTERFACE else DataStructType.CLASS;
 
         // todo: add modifiers to Chapi
         createModifiers(classNode.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
@@ -128,6 +133,10 @@ class ByteCodeParser {
     private fun createMethod(methodNode: MethodNode): CodeFunction {
         val codeFunction = CodeFunction(Name = methodNode.name)
 
+        if (methodNode.name == CodeConstants.INIT_NAME) {
+            codeFunction.IsConstructor = true
+        }
+
         val isInterface: Boolean = CodeConstants.ACC_INTERFACE == methodNode.access
         codeFunction.Modifiers = createModifiers(methodNode.access, METHOD_ALLOWED, isInterface, METHOD_EXCLUDED)
         codeFunction.ReturnType = getReturnTypeFromDesc(methodNode.desc).orEmpty()
@@ -135,6 +144,10 @@ class ByteCodeParser {
         if (methodNode.parameters != null) {
             codeFunction.Parameters = getParamsFromDesc(methodNode.desc, methodNode.parameters)
         }
+
+        codeFunction.Annotations = methodNode.visibleAnnotations?.map {
+            createAnnotation(it)
+        }?.toTypedArray() ?: arrayOf()
 
         return codeFunction
     }

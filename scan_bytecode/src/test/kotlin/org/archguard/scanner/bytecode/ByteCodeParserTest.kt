@@ -14,6 +14,7 @@ internal class ByteCodeParserTest {
         assertEquals("org.archguard.demo.HelloWorld", ds.NodeName)
         assertEquals(2, ds.Functions.size)
         assertEquals("<init>", ds.Functions[0].Name)
+        assert(ds.Functions[0].IsConstructor)
         assertEquals("main", ds.Functions[1].Name)
         assertEquals("void", ds.Functions[1].ReturnType)
     }
@@ -69,7 +70,7 @@ internal class ByteCodeParserTest {
         val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
         val path = Paths.get(resource.toURI()).toFile()
 
-        val ds = ByteCodeParser().parseClassFile(path)
+g        val ds = ByteCodeParser().parseClassFile(path)
         assertEquals(2, ds.Functions.size)
         assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
         assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
