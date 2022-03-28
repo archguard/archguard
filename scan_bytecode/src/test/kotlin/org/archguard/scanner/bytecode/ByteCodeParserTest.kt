@@ -75,4 +75,15 @@ internal class ByteCodeParserTest {
         assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
         assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
     }
+
+    @Test
+    fun should_ident_field() {
+        val resource = this.javaClass.classLoader.getResource("inheritance/Child.class")
+        val path = Paths.get(resource.toURI()).toFile()
+
+        val ds = ByteCodeParser().parseClassFile(path)
+        assertEquals(1, ds.Fields.size)
+        assertEquals("hello", ds.Fields[0].TypeValue)
+        assertEquals("com.example.demo.Hello", ds.Fields[0].TypeType)
+    }
 }

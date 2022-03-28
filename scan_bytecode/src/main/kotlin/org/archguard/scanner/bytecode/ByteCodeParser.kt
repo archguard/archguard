@@ -4,10 +4,7 @@ package org.archguard.scanner.bytecode
 import chapi.domain.core.*
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
-import org.objectweb.asm.tree.AnnotationNode
-import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.MethodNode
-import org.objectweb.asm.tree.ParameterNode
+import org.objectweb.asm.tree.*
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
@@ -111,7 +108,18 @@ class ByteCodeParser {
             createAnnotation(it)
         }?.toTypedArray() ?: arrayOf()
 
+        ds.Fields = classNode.fields?.map {
+            createField(it)
+        }?.toTypedArray() ?: arrayOf()
+
         return ds
+    }
+
+    private fun createField(field: FieldNode): CodeField {
+        return CodeField(
+            TypeType = Type.getType(field.desc).className,
+            TypeValue = field.name
+        )
     }
 
     private fun createAnnotation(annotation: AnnotationNode): CodeAnnotation {
