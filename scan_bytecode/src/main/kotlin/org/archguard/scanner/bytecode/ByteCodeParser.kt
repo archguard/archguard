@@ -44,6 +44,8 @@ class ByteCodeParser {
     private val ACCESSIBILITY_FLAGS =
         CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE
 
+    private val mapSimpleNames: Map<String, String> = mutableMapOf()
+
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
         logger.debug("ByteCodeParser parser: {}", file)
@@ -86,8 +88,7 @@ class ByteCodeParser {
 
     private fun createDataStruct(node: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
-        ds.NodeName = getDataStructureName(node.name)
-
+        ds.NodeName = Type.getObjectType(node.name).className
 
         val isInterface = CodeConstants.ACC_INTERFACE == node.access
 
@@ -100,9 +101,9 @@ class ByteCodeParser {
             ds.Functions += this.createFunction(it)
         }
 
-        ds.Extend = getDataStructureName(node.superName)
+        ds.Extend = Type.getObjectType(node.superName).className
         ds.Implements = node.interfaces?.map {
-            getDataStructureName(it)
+            Type.getObjectType(it).className
         }?.toTypedArray() ?: arrayOf()
 
         ds.Annotations = node.visibleAnnotations?.map {
@@ -156,7 +157,7 @@ class ByteCodeParser {
 
         val isInterface: Boolean = CodeConstants.ACC_INTERFACE == methodNode.access
         codeFunction.Modifiers = createModifiers(methodNode.access, METHOD_ALLOWED, isInterface, METHOD_EXCLUDED)
-        codeFunction.ReturnType = getReturnTypeFromDesc(methodNode.desc).orEmpty()
+        codeFunction.ReturnType = Type.getType(methodNode.desc).returnType.className.orEmpty()
 
         if (methodNode.parameters != null) {
             codeFunction.Parameters = getParamsFromDesc(methodNode.desc, methodNode.parameters)
@@ -179,11 +180,4 @@ class ByteCodeParser {
         }.toTypedArray()
     }
 
-    private fun getReturnTypeFromDesc(desc: String): String? {
-        return Type.getType(desc).returnType.className
-    }
-
-    private fun getDataStructureName(internalName: String): String {
-        return Type.getObjectType(internalName).className
-    }
 }
