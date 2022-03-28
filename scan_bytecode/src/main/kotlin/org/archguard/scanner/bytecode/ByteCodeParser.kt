@@ -44,7 +44,7 @@ class ByteCodeParser {
     private val ACCESSIBILITY_FLAGS =
         CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE
 
-    private val mapSimpleNames: Map<String, String> = mutableMapOf()
+    private var mapSimpleNames: MutableMap<String, String> = mutableMapOf()
 
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
@@ -180,4 +180,12 @@ class ByteCodeParser {
         }.toTypedArray()
     }
 
+    private fun processNestedName(fullName: String): String {
+        mapSimpleNames[fullName] = fullName
+        return ""
+    }
+
+    private fun packImports():List<String> {
+        return arrayListOf()
+    }
 }
