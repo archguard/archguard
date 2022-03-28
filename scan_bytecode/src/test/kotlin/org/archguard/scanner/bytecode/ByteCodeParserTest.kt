@@ -46,5 +46,6 @@ internal class ByteCodeParserTest {
 
         val ds = ByteCodeParser().parseClassFile(path)
         assertEquals(1, ds.Annotations.size)
+        assertEquals("org.springframework.boot.autoconfigure.SpringBootApplication", ds.Annotations[0].Name)
     }
 }
