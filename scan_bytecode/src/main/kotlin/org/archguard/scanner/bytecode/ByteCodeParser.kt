@@ -1,9 +1,11 @@
 package org.archguard.scanner.bytecode
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeFunction
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.MethodNode
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
@@ -34,7 +36,16 @@ class ByteCodeParser {
         val ds = CodeDataStruct()
         ds.NodeName = getClassName(classNode.name).toString()
 
+        classNode.methods.forEach {
+            ds.Functions += this.createMethod(it, ds.NodeName, classNode)
+        }
+
         return ds
+    }
+
+    private fun createMethod(methodNode: MethodNode, nodeName: String, classNode: ClassNode): CodeFunction {
+        val codeFunction = CodeFunction(Name = methodNode.name)
+        return codeFunction
     }
 
 

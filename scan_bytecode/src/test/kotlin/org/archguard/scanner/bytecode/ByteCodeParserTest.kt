@@ -12,5 +12,8 @@ internal class ByteCodeParserTest {
 
         val ds = ByteCodeParser().parseClassFile(path)
         assertEquals("org.archguard.demo.HelloWorld", ds.NodeName)
+        assertEquals(2, ds.Functions.size)
+        assertEquals("<init>", ds.Functions[0].Name)
+        assertEquals("main", ds.Functions[1].Name)
     }
 }
