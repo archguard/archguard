@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class EvaluationReportClient(@Value("\${evaluation.client.host}") val baseUrl: String) {
+class EvaluationReportClient(@Value("\${client.host}") val baseUrl: String) {
 
     fun generate(type: String) {
         when (EvaluationType.valueOf(type)) {
-            EvaluationType.QUALITY -> RestTemplate().postForObject("$baseUrl/quality-evaluations", null, String::class.java)
+            EvaluationType.QUALITY -> RestTemplate().postForObject("$baseUrl/api/quality-evaluations", null, String::class.java)
         }
     }
 

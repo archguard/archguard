@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard
 
 import com.thoughtworks.archguard.report.infrastructure.ContainerServiceDao
+import com.thoughtworks.archguard.report.infrastructure.GitHotFileDao
 import com.thoughtworks.archguard.scanner.infrastructure.db.*
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ClassMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.MethodMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ModuleMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.PackageMetricsDao
-import com.thoughtworks.archguard.report.infrastructure.GitHotFileDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.spi.JdbiPlugin
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
-import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import springfox.documentation.oas.annotations.EnableOpenApi
@@ -28,7 +27,6 @@ import javax.sql.DataSource
 @SpringBootApplication
 @EnableOpenApi
 @EnableCaching
-@EnableFeignClients
 class Application {
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {

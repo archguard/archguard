@@ -8,7 +8,7 @@ import java.util.*
 
 
 @Component
-class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
+class AnalysisModuleClient(@Value("\${client.host}") val url: String) {
 
     private val log = LoggerFactory.getLogger(AnalysisModuleClient::class.java)
 
@@ -16,7 +16,7 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
         try {
-            RestTemplate().postForLocation("$url/systems/{systemId}/logic-modules/auto-define", null, params)
+            RestTemplate().postForLocation("$url/api/systems/{systemId}/logic-modules/auto-define", null, params)
             log.info("Auto-define request to module-analysis for system {}", systemId)
         } catch (ex: Exception) {
             log.error("HTTP exception when trigger auto-define logic module. {}", ex)
@@ -28,7 +28,7 @@ class AnalysisModuleClient(@Value("\${module.client.host}") val url: String) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
         try {
-            RestTemplate().postForLocation("$url/systems/{systemId}/dashboard", null, params)
+            RestTemplate().postForLocation("$url/api/systems/{systemId}/dashboard", null, params)
             log.info("BadSmellDashboard saved for system {}", systemId)
         } catch (ex: Exception) {
             log.error("HTTP exception when saving bad-smell dashboard. {}", ex)
