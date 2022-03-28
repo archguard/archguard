@@ -66,25 +66,6 @@ Scanner:
 
 1. need to refactor
 
-## Todo
-
-tech debt
-
-- [ ] tech debt
-    - [ ] better README.md
-    - [x] maven to gradle
-    - [ ] tests
-- [x] Code scanner
-    - add Chapi parser for Java, TypeScript, Kotli
-- [x] continuous delivery
-    - [x] GitHub workflow
-    - [x] git tag publish to GitHub
-- [ ] data pipeline
-    - [ ] data feeder to database/json/others
-    - [ ] data transform function
-- [ ] cloc scanner
-- [ ] code change counts
-
 ## Usage
 
 ### scan_git
