@@ -38,4 +38,13 @@ internal class ByteCodeParserTest {
         assertEquals("com.example.demo.Parent", ds.Extend)
         assertEquals("com.example.demo.Interface", ds.Implements[0])
     }
+
+    @Test
+    fun should_support_annotation() {
+        val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
+        val path = Paths.get(resource.toURI()).toFile()
+
+        val ds = ByteCodeParser().parseClassFile(path)
+        assertEquals(1, ds.Annotations.size)
+    }
 }

@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
+import org.objectweb.asm.tree.AnnotationNode
 import org.objectweb.asm.tree.ClassNode
 import org.objectweb.asm.tree.MethodNode
 import org.slf4j.LoggerFactory
@@ -41,11 +42,19 @@ class ByteCodeParser {
         }
 
         ds.Extend = getDataStructureName(classNode.superName)
-        ds.Implements = classNode.interfaces.map {
+        ds.Implements = classNode.interfaces?.map {
             getDataStructureName(it)
-        }.toTypedArray()
+        }?.toTypedArray() ?: arrayOf()
+
+        classNode.visibleAnnotations?.map {
+            createAnnotation(it)
+        }
 
         return ds
+    }
+
+    private fun createAnnotation(annotation: AnnotationNode) {
+        println(annotation.desc)
     }
 
     private fun createMethod(methodNode: MethodNode, nodeName: String, classNode: ClassNode): CodeFunction {
