@@ -40,6 +40,7 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
             }.toList()
             ContainerServiceResponse(
                 id = system.id,
+                language = system.language,
                 name = system.systemName,
                 demands = demands,
                 resources = resources

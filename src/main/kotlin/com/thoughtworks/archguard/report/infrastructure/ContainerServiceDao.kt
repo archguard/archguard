@@ -17,9 +17,9 @@ interface ContainerServiceDao {
             " from container_resource where system_id = :systemId")
     fun findResourceBySystemId(systemId: Long): List<ContainerResource>
 
-    @SqlQuery("select id,system_name as systemName from system_info")
+    @SqlQuery("select id, system_name as systemName, language from system_info")
     fun findAllSystemIdName(): List<ContainerServiceDO>
 
-    @SqlQuery("select id, system_name as systemName from system_info where id in (<ids>)")
+    @SqlQuery("select id, system_name as systemName, language from system_info where id in (<ids>)")
     fun findSystems(@BindList("ids") ids: List<String>): List<ContainerServiceDO>
 }
