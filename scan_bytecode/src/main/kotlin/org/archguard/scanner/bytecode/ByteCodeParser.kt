@@ -97,7 +97,7 @@ class ByteCodeParser {
         createModifiers(node.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
 
         node.methods.forEach {
-            ds.Functions += this.createMethod(it)
+            ds.Functions += this.createFunction(it)
         }
 
         ds.Extend = getDataStructureName(node.superName)
@@ -147,7 +147,7 @@ class ByteCodeParser {
         return codeAnnotation
     }
 
-    private fun createMethod(methodNode: MethodNode): CodeFunction {
+    private fun createFunction(methodNode: MethodNode): CodeFunction {
         val codeFunction = CodeFunction(Name = methodNode.name)
 
         if (methodNode.name == CodeConstants.INIT_NAME) {
