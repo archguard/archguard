@@ -58,6 +58,7 @@ dependencies {
     jacocoAggregation(project(":scan_sourcecode"))
     jacocoAggregation(project(":scan_mysql"))
     jacocoAggregation(project(":scan_test_badsmell"))
+    jacocoAggregation(project(":scan_bytecode"))
 }
 
 reporting {
