@@ -19,6 +19,21 @@ internal class ByteCodeParserTest {
     }
 
     @Test
+    fun should_support_for_modifiers() {
+        val resource = this.javaClass.classLoader.getResource("classes/HelloWorld.class")
+        val path = Paths.get(resource.toURI()).toFile()
+
+        val ds = ByteCodeParser().parseClassFile(path)
+        assertEquals("org.archguard.demo.HelloWorld", ds.NodeName)
+        assertEquals(2, ds.Functions.size)
+
+        val modifiers = ds.Functions[1].Modifiers
+        assertEquals(2, modifiers.size)
+        assertEquals("public", modifiers[0])
+        assertEquals("static", modifiers[1])
+    }
+
+    @Test
     fun scala_hello_world() {
         val resource = this.javaClass.classLoader.getResource("scala/Hello.class")
         val path = Paths.get(resource.toURI()).toFile()

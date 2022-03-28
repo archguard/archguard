@@ -1,3 +1,4 @@
+// Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package org.archguard.scanner.bytecode
 
 import chapi.domain.core.*
@@ -13,10 +14,6 @@ import java.io.IOException
 
 class ByteCodeParser {
     private val logger = LoggerFactory.getLogger(ByteCodeParser::class.java)
-    private val FIELD_ALLOWED = CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE or CodeConstants.ACC_STATIC or
-                CodeConstants.ACC_FINAL or CodeConstants.ACC_TRANSIENT or CodeConstants.ACC_VOLATILE
-    private val FIELD_EXCLUDED = CodeConstants.ACC_PUBLIC or CodeConstants.ACC_STATIC or CodeConstants.ACC_FINAL
-
     private var MODIFIERS: MutableMap<Int, String> = mutableMapOf(
         CodeConstants.ACC_PUBLIC to "public",
         CodeConstants.ACC_PROTECTED to "protected",
@@ -31,6 +28,23 @@ class ByteCodeParser {
         CodeConstants.ACC_NATIVE to "native",
     )
 
+    private val CLASS_ALLOWED =
+        CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE or CodeConstants.ACC_ABSTRACT or
+                CodeConstants.ACC_STATIC or CodeConstants.ACC_FINAL or CodeConstants.ACC_STRICT
+    private val FIELD_ALLOWED =
+        CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE or CodeConstants.ACC_STATIC or
+                CodeConstants.ACC_FINAL or CodeConstants.ACC_TRANSIENT or CodeConstants.ACC_VOLATILE
+    private val METHOD_ALLOWED =
+        CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE or CodeConstants.ACC_ABSTRACT or
+                CodeConstants.ACC_STATIC or CodeConstants.ACC_FINAL or CodeConstants.ACC_SYNCHRONIZED or CodeConstants.ACC_NATIVE or
+                CodeConstants.ACC_STRICT
+
+    private val CLASS_EXCLUDED = CodeConstants.ACC_ABSTRACT or CodeConstants.ACC_STATIC
+    private val FIELD_EXCLUDED = CodeConstants.ACC_PUBLIC or CodeConstants.ACC_STATIC or CodeConstants.ACC_FINAL
+    private val METHOD_EXCLUDED = CodeConstants.ACC_PUBLIC or CodeConstants.ACC_ABSTRACT
+
+    private val ACCESSIBILITY_FLAGS =
+        CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE
 
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
@@ -52,16 +66,20 @@ class ByteCodeParser {
         return classNode
     }
 
-    private fun appendModifiers(classAccess: Int, allowField: Int, isInterface: Boolean, fieldExcluded: Int) {
+    private fun createModifiers(classAccess: Int, allowField: Int, isInterface: Boolean, fieldExcluded: Int): Array<String> {
         var flags = classAccess
         var excluded = fieldExcluded
         flags = flags and allowField
         if (!isInterface) excluded = 0
+
+        var modifiers: Array<String> = arrayOf()
         for (modifier in MODIFIERS.keys) {
             if (flags and modifier == modifier && modifier and excluded == 0) {
-                println(MODIFIERS[modifier])
+                modifiers = modifiers.plus(MODIFIERS[modifier].toString())
             }
         }
+
+        return modifiers
     }
 
     private fun createClass(classNode: ClassNode): CodeDataStruct {
@@ -73,7 +91,7 @@ class ByteCodeParser {
         ds.Type = if(isInterface)  DataStructType.INTERFACE else DataStructType.CLASS;
 
         // todo: add modifiers to Chapi
-        appendModifiers(classNode.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
+        createModifiers(classNode.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
 
         classNode.methods.forEach {
             ds.Functions += this.createMethod(it)
@@ -109,6 +127,10 @@ class ByteCodeParser {
 
     private fun createMethod(methodNode: MethodNode): CodeFunction {
         val codeFunction = CodeFunction(Name = methodNode.name)
+
+        val isInterface: Boolean = CodeConstants.ACC_INTERFACE == methodNode.access
+        codeFunction.Modifiers = createModifiers(methodNode.access, METHOD_ALLOWED, isInterface, METHOD_EXCLUDED)
+
         return codeFunction
     }
 
