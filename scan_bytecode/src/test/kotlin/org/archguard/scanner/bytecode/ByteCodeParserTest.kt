@@ -1,12 +1,13 @@
 package org.archguard.scanner.bytecode
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import kotlin.test.assertEquals
 
 internal class ByteCodeParserTest {
     @Test
-    fun parseHelloWorldJava() {
+    fun java_hello_world() {
         val resource = this.javaClass.classLoader.getResource("classes/HelloWorld.class")
         val path = Paths.get(resource.toURI()).toFile()
 
@@ -18,7 +19,7 @@ internal class ByteCodeParserTest {
     }
 
     @Test
-    fun parseHelloWorld() {
+    fun scala_hello_world() {
         val resource = this.javaClass.classLoader.getResource("scala/Hello.class")
         val path = Paths.get(resource.toURI()).toFile()
 
@@ -26,5 +27,15 @@ internal class ByteCodeParserTest {
         assertEquals("Hello", ds.NodeName)
         assertEquals(1, ds.Functions.size)
         assertEquals("main", ds.Functions[0].Name)
+    }
+
+    @Test
+    fun should_get_parent() {
+        val resource = this.javaClass.classLoader.getResource("inheritance/Child.class")
+        val path = Paths.get(resource.toURI()).toFile()
+
+        val ds = ByteCodeParser().parseClassFile(path)
+        assertEquals("com.example.demo.Parent", ds.Extend)
+        assertEquals("com.example.demo.Interface", ds.Implements[0])
     }
 }

@@ -34,11 +34,16 @@ class ByteCodeParser {
 
     private fun createClass(classNode: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
-        ds.NodeName = getClassName(classNode.name).toString()
+        ds.NodeName = getDataStructureName(classNode.name).toString()
 
         classNode.methods.forEach {
             ds.Functions += this.createMethod(it, ds.NodeName, classNode)
         }
+
+        ds.Extend = getDataStructureName(classNode.superName)
+        ds.Implements = classNode.interfaces.map {
+            getDataStructureName(it)
+        }.toTypedArray()
 
         return ds
     }
@@ -49,7 +54,7 @@ class ByteCodeParser {
     }
 
 
-    private fun getClassName(internalName: String): String? {
+    private fun getDataStructureName(internalName: String): String {
         return Type.getObjectType(internalName).className
     }
 }
