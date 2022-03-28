@@ -70,7 +70,7 @@ internal class ByteCodeParserTest {
         val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
         val path = Paths.get(resource.toURI()).toFile()
 
-g        val ds = ByteCodeParser().parseClassFile(path)
+        val ds = ByteCodeParser().parseClassFile(path)
         assertEquals(2, ds.Functions.size)
         assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
         assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
