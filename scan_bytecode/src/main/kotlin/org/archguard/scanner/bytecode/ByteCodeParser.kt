@@ -130,10 +130,14 @@ class ByteCodeParser {
 
         val isInterface: Boolean = CodeConstants.ACC_INTERFACE == methodNode.access
         codeFunction.Modifiers = createModifiers(methodNode.access, METHOD_ALLOWED, isInterface, METHOD_EXCLUDED)
+        codeFunction.ReturnType = getReturnTypeFromDesc(methodNode.desc).orEmpty()
 
         return codeFunction
     }
 
+    private fun getReturnTypeFromDesc(desc: String): String? {
+        return Type.getType(desc).returnType.className
+    }
 
     private fun getDataStructureName(internalName: String): String {
         return Type.getObjectType(internalName).className

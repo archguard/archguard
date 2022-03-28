@@ -16,6 +16,7 @@ internal class ByteCodeParserTest {
         assertEquals(2, ds.Functions.size)
         assertEquals("<init>", ds.Functions[0].Name)
         assertEquals("main", ds.Functions[1].Name)
+        assertEquals("void", ds.Functions[1].ReturnType)
     }
 
     @Test
