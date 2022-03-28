@@ -85,5 +85,6 @@ internal class ByteCodeParserTest {
         assertEquals(1, ds.Fields.size)
         assertEquals("hello", ds.Fields[0].TypeValue)
         assertEquals("com.example.demo.Hello", ds.Fields[0].TypeType)
+        assertEquals("private", ds.Fields[0].Modifiers[0])
     }
 }

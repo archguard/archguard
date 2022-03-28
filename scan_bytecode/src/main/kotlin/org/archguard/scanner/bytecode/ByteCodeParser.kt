@@ -116,9 +116,12 @@ class ByteCodeParser {
     }
 
     private fun createField(field: FieldNode): CodeField {
+        val isInterface = CodeConstants.ACC_INTERFACE == field.access
+
         return CodeField(
             TypeType = Type.getType(field.desc).className,
-            TypeValue = field.name
+            TypeValue = field.name,
+            Modifiers = createModifiers(field.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
         )
     }
 
