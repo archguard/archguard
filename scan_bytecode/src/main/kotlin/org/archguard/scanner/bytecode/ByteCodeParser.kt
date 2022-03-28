@@ -7,6 +7,7 @@ import org.objectweb.asm.Type
 import org.objectweb.asm.tree.AnnotationNode
 import org.objectweb.asm.tree.ClassNode
 import org.objectweb.asm.tree.MethodNode
+import org.objectweb.asm.tree.ParameterNode
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
@@ -48,9 +49,8 @@ class ByteCodeParser {
 
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
-        logger.debug("ClassParser visitClass: {}", file)
-        val classNode = getDataStructure(file)
-        return createClass(classNode)
+        logger.debug("ByteCodeParser parser: {}", file)
+        return createClass(getDataStructure(file))
     }
 
     @Throws(IOException::class)
@@ -132,7 +132,21 @@ class ByteCodeParser {
         codeFunction.Modifiers = createModifiers(methodNode.access, METHOD_ALLOWED, isInterface, METHOD_EXCLUDED)
         codeFunction.ReturnType = getReturnTypeFromDesc(methodNode.desc).orEmpty()
 
+        if (methodNode.parameters != null) {
+            codeFunction.Parameters = getParamsFromDesc(methodNode.desc, methodNode.parameters)
+        }
+
         return codeFunction
+    }
+
+    private fun getParamsFromDesc(desc: String, parameters: MutableList<ParameterNode>): Array<CodeProperty> {
+        Type.getType(desc).argumentsAndReturnSizes
+        return Type.getType(desc).argumentTypes.mapIndexed { index, it ->
+            CodeProperty(
+                TypeType = it.className,
+                TypeValue = parameters[index].name
+            )
+        }.toTypedArray()
     }
 
     private fun getReturnTypeFromDesc(desc: String): String? {

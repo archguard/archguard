@@ -1,6 +1,5 @@
 package org.archguard.scanner.bytecode
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import kotlin.test.assertEquals
@@ -63,5 +62,16 @@ internal class ByteCodeParserTest {
         val ds = ByteCodeParser().parseClassFile(path)
         assertEquals(1, ds.Annotations.size)
         assertEquals("org.springframework.boot.autoconfigure.SpringBootApplication", ds.Annotations[0].Name)
+    }
+
+    @Test
+    fun should_ident_function_parameter() {
+        val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
+        val path = Paths.get(resource.toURI()).toFile()
+
+        val ds = ByteCodeParser().parseClassFile(path)
+        assertEquals(2, ds.Functions.size)
+        assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
+        assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
     }
 }

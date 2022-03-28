@@ -46,3 +46,4 @@ api.json
 nodes.json
 **/out
 component.inbounds.json
+scan_bytecode/src/main/java/org/archguard/scanner/bytecode/generics/*
