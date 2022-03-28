@@ -9,30 +9,23 @@ Scanner:
 
 * scan_git - Git commit history scan
 * scan_jacoco - Jacoco scan
-* scan_sourcecode - Java source code level scan
-    * [x] TypeScript/JavaScript (not full test)
-    * [x] React support
-    * [ ] Angular support
-    * [ ] Vue support
-    * [ ] HTTP API
+* scan_bytecode - for JVM languages
+* scan_test_badsmell
+   * [x] Java  
+      * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
+* scan_sourcecode
+  * [x] Java
+  * [-] Kotlin
+     * [x] Annotation support
+  * [-] C#
+     * [x] Annotation support
+  * [x] TypeScript/JavaScript (not full test)
+     * [x] React support
+     * [ ] Angular support
+     * [ ] Vue support
+     * [ ] HTTP API
         * [x] axios
         * [x] umi-request
-* scan_test_badsmell
-    * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
-
-todo:
-
-- [x] source code with chapi
-    - [x] Java
-    - [x] TypeScript
-    - [ ] PackageCallee
-- [ ] bytecode scan
-- [x] api scan
-    - [ ] Kotlin Spring
-    - [ ] Java Spring
-    - [ ] Frontend
-        - [x] axios
-        - [x] umi-request
 
 ## Features
 
