@@ -4,6 +4,18 @@ class ImportCollector {
     private val JAVA_LANG_PACKAGE = "java."
     private val KOTLIN_LANG_PACKAGE = "kotlin."
 
+    private val DEFAULT_TYPE_NAMES = arrayOf(
+        "byte",
+        "char",
+        "double",
+        "float",
+        "int",
+        "long",
+        "short",
+        "boolean"
+    )
+
+
     private var mapSimpleNames: MutableMap<String, String> = mutableMapOf()
 
     fun splitPackageAndClassName(fullName: String): Pair<String, String> {
@@ -25,6 +37,10 @@ class ImportCollector {
     fun addImport(className: String) {
         if (className.startsWith(JAVA_LANG_PACKAGE) || className.startsWith(KOTLIN_LANG_PACKAGE)) {
             return
+        }
+
+        if (DEFAULT_TYPE_NAMES.contains(className)) {
+            return;
         }
 
         val names = splitPackageAndClassName(className)
