@@ -122,7 +122,6 @@ internal class ByteCodeParserTest {
         assertEquals(1, ds.Annotations.size)
     }
 
-
     @Test
     fun should_ident_kotlin() {
         val resource = this.javaClass.classLoader.getResource("kotlin/QualityGateClientImpl.class")

@@ -226,31 +226,36 @@ class ByteCodeParser {
                     }
                 }
                 is MethodInsnNode -> {
-                    val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
+                    val isInitMethod = it.name == CodeConstants.INIT_NAME || it.name == CodeConstants.CLINIT_NAME
+                    val isJavaOrKotlin = it.name.startsWith("java.") || it.name.startsWith("kotlin.")
 
-                    val names = importCollector.splitPackageAndClassName(qualifiedName)
-                    importCollector.processClassName(qualifiedName)
+                    if (!(isInitMethod && isJavaOrKotlin)) {
+                        val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
 
-                    if (qualifiedName == "org.springframework.web.client.RestTemplate") {
-                        println(it.opcode)
-                        when(it.opcode) {
-                            CodeConstants.opc_invokevirtual -> {
+                        val names = importCollector.splitPackageAndClassName(qualifiedName)
+                        importCollector.processClassName(qualifiedName)
 
-                            }
-                            CodeConstants.opc_invokespecial -> {
+//                    if (qualifiedName == "org.springframework.web.client.RestTemplate") {
+//                        println(it.opcode)
+//                        when(it.opcode) {
+//                            CodeConstants.opc_invokevirtual -> {
+//
+//                            }
+//                            CodeConstants.opc_invokespecial -> {
+//
+//                            }
+//                        }
+//                    }
 
-                            }
-                        }
+                        calls += CodeCall(
+                            Package = names.first,
+                            NodeName = names.second,
+                            FunctionName = it.name,
+                            Parameters = getArgsFromDesc(it.desc),
+                            // todo: add return type for code call
+                            // Type = Type.getType(it.desc).returnType.className
+                        )
                     }
-
-                    calls += CodeCall(
-                        Package = names.first,
-                        NodeName = names.second,
-                        FunctionName = it.name,
-                        Parameters = getArgsFromDesc(it.desc),
-                        // todo: add return type for code call
-                        // Type = Type.getType(it.desc).returnType.className
-                    )
                 }
                 else -> {
                 }
