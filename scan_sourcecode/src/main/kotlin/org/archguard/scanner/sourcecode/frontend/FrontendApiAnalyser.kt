@@ -8,6 +8,8 @@ import chapi.domain.core.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.archguard.scanner.sourcecode.container.ContainerDemand
+import org.archguard.scanner.sourcecode.container.ContainerService
 import java.io.File
 
 @Serializable

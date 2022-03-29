@@ -1,8 +1,8 @@
 package org.archguard.scanner.sourcecode
 
-import org.archguard.scanner.sourcecode.frontend.ContainerDemand
-import org.archguard.scanner.sourcecode.frontend.ContainerResource
-import org.archguard.scanner.sourcecode.frontend.ContainerService
+import org.archguard.scanner.sourcecode.container.ContainerDemand
+import org.archguard.scanner.sourcecode.container.ContainerResource
+import org.archguard.scanner.sourcecode.container.ContainerService
 import infrastructure.SourceBatch
 import java.util.HashMap
 

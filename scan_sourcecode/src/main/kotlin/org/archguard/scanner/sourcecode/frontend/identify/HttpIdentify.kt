@@ -1,6 +1,6 @@
 package org.archguard.scanner.sourcecode.frontend.identify
 
-import org.archguard.scanner.sourcecode.frontend.ContainerDemand
+import org.archguard.scanner.sourcecode.container.ContainerDemand
 import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeImport
 
