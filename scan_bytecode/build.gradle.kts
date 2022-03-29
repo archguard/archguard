@@ -35,13 +35,13 @@ dependencies {
 }
 
 application {
-    mainClass.set("org.archguard.scanner.sourcecode.RunnerKt")
+    mainClass.set("org.archguard.scanner.bytecode.RunnerKt")
 }
 
 tasks{
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "org.archguard.scanner.sourcecode.RunnerKt"))
+            attributes(Pair("Main-Class", "org.archguard.scanner.bytecode.RunnerKt"))
         }
     }
 }
