@@ -5,17 +5,6 @@ class ImportCollector {
     private val KOTLIN_LANG_PACKAGE = "kotlin."
 
     private var mapSimpleNames: MutableMap<String, String> = mutableMapOf()
-    private val setNotImportedNames: Set<String> = HashSet()
-
-    // set of field names in this class and all its predecessors.
-    private val setFieldNames: Set<String> = HashSet()
-    private val setInnerClassNames: Set<String> = HashSet()
-    private val currentPackageSlash: String? = null
-    private val currentPackagePoint: String? = null
-
-    fun ImportCollector() {
-
-    }
 
     fun splitPackageAndClassName(fullName: String): Pair<String, String> {
         val lastDot = fullName.lastIndexOf('.')
@@ -29,22 +18,16 @@ class ImportCollector {
         return Pair(packageName, className)
     }
 
-    private fun processNestedName(fullName: String): String {
-        mapSimpleNames[fullName] = fullName
-        return ""
-    }
-
     fun packImports(): MutableMap<String, String> {
         return mapSimpleNames
     }
 
-    fun processClassName(className: String) {
+    fun addImport(className: String) {
         if (className.startsWith(JAVA_LANG_PACKAGE) || className.startsWith(KOTLIN_LANG_PACKAGE)) {
             return
         }
 
         val names = splitPackageAndClassName(className)
-
         this.mapSimpleNames[className] = names.second
     }
 }

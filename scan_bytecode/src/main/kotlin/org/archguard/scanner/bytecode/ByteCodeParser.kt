@@ -5,8 +5,6 @@ import chapi.domain.core.*
 import org.archguard.scanner.bytecode.module.CodeModule
 import org.archguard.scanner.bytecode.module.ModuleUtil.getModule
 import org.objectweb.asm.ClassReader
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.*
 import org.slf4j.LoggerFactory
@@ -146,7 +144,7 @@ class ByteCodeParser {
 
         val className = Type.getType(field.desc).className
 
-        importCollector.processClassName(className)
+        importCollector.addImport(className)
 
         return CodeField(
             TypeType = className,
@@ -163,9 +161,10 @@ class ByteCodeParser {
             return null
         }
 
-        val codeAnnotation = CodeAnnotation(Name = className)
+        val clzName = importCollector.splitPackageAndClassName(className).second
+        val codeAnnotation = CodeAnnotation(Name = clzName)
 
-        importCollector.processClassName(className)
+        importCollector.addImport(className)
 
         if (annotation.values != null) {
             val values: List<Any> = annotation.values
@@ -206,10 +205,6 @@ class ByteCodeParser {
         return codeFunction
     }
 
-    class SimpleMethodVisitor() : MethodVisitor(Opcodes.ASM9) {
-
-    }
-
     private fun createFunctionCalls(methodNode: MethodNode, node: ClassNode): Array<CodeCall> {
         var calls: Array<CodeCall> = arrayOf()
 
@@ -233,19 +228,7 @@ class ByteCodeParser {
                         val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
 
                         val names = importCollector.splitPackageAndClassName(qualifiedName)
-                        importCollector.processClassName(qualifiedName)
-
-//                    if (qualifiedName == "org.springframework.web.client.RestTemplate") {
-//                        println(it.opcode)
-//                        when(it.opcode) {
-//                            CodeConstants.opc_invokevirtual -> {
-//
-//                            }
-//                            CodeConstants.opc_invokespecial -> {
-//
-//                            }
-//                        }
-//                    }
+                        importCollector.addImport(qualifiedName)
 
                         calls += CodeCall(
                             Package = names.first,
@@ -282,7 +265,7 @@ class ByteCodeParser {
     private fun classNameFromType(superName: String, isImport: Boolean): String {
         val className = Type.getObjectType(superName).className
         if (isImport) {
-            importCollector.processClassName(className)
+            importCollector.addImport(className)
         }
 
         return className
@@ -290,7 +273,7 @@ class ByteCodeParser {
 
     private fun getParamsFromDesc(desc: String, parameters: MutableList<ParameterNode>): Array<CodeProperty> {
         return Type.getType(desc).argumentTypes.mapIndexed { index, it ->
-            importCollector.processClassName(it.className)
+            importCollector.addImport(it.className)
 
             CodeProperty(
                 TypeType = it.className,
@@ -301,7 +284,7 @@ class ByteCodeParser {
 
     private fun getArgsFromDesc(desc: String): Array<CodeProperty> {
         return Type.getType(desc).argumentTypes.map {
-            importCollector.processClassName(it.className)
+            importCollector.addImport(it.className)
 
             CodeProperty(
                 TypeType = it.className,
