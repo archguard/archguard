@@ -34,7 +34,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["id"] = serviceId
         values["system_id"] = systemId
         values["name"] = ""
-        if(this.language.lowercase() == "typescript" || this.language.lowercase() == "javascript") {
+        if (this.language.lowercase() == "typescript" || this.language.lowercase() == "javascript") {
             values["container_type"] = "Frontend"
         } else {
             values["container_type"] = "Backend"
@@ -85,17 +85,18 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
 
         values["target_http_method"] = demand.target_http_method
         values["target_url"] = "${demand.base}${demand.target_url}"
-        val split = name.split("::")
 
-        values["source_package"] = ""
-        values["source_class"] = ""
-        values["source_method"] = ""
-        if (split.size == 2) {
-            values["source_package"] = split[0]
-            values["source_method"] = split[1]
+        if (language == "javascript" || language == "typescript") {
+            val split = name.split("::")
+            if (split.size == 2) {
+                values["source_method"] = split[1]
+            } else {
+                values["source_method"] = name
+            }
         } else {
-            values["source_method"] = name
+            values["source_method"] = demand.source_caller
         }
+
 
         values["service_id"] = serviceId
         values["system_id"] = systemId
