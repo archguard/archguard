@@ -42,10 +42,8 @@ class Runner : CliktCommand(help = "scan bytecode to sql") {
     fun byDir(dir: String): List<CodeDataStruct> {
         return File(dir)
             .walk(FileWalkDirection.BOTTOM_UP)
-            .filter {
-                it.isFile && it.name.endsWith(".class")
+            .filter { it.isFile && it.name.endsWith(".class") && !it.name.contains("$")
             }
-
             .map {
                 ByteCodeParser().parseClassFile(it)
             }
