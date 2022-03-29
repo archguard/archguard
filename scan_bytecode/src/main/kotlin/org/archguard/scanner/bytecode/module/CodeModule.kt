@@ -1,5 +1,5 @@
 package org.archguard.scanner.bytecode.module
 
-class CodeModule(private var name: String?, private var path: String?, private var moduleDependencies: Set<String>?) {
+class CodeModule(var name: String?, var path: String?, var moduleDependencies: Set<String>?) {
 
 }
