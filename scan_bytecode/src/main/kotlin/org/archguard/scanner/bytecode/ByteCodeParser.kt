@@ -2,6 +2,7 @@
 package org.archguard.scanner.bytecode
 
 import chapi.domain.core.*
+import chapi.infra.Stack
 import org.archguard.scanner.bytecode.module.CodeModule
 import org.archguard.scanner.bytecode.module.ModuleUtil.getModule
 import org.objectweb.asm.ClassReader
@@ -174,13 +175,12 @@ class ByteCodeParser {
 
                 var valueStr = ""
                 val value = values[i + 1]
-                println(value.javaClass.simpleName)
 
                 valueStr = value.toString()
 
-                when(value.javaClass.simpleName) {
+                when (value.javaClass.simpleName) {
                     "ArrayList" -> {
-                       valueStr = (value as ArrayList<*>).joinToString()
+                        valueStr = (value as ArrayList<*>).joinToString()
                     }
                 }
 
@@ -221,8 +221,16 @@ class ByteCodeParser {
 
         var isStart = false
         val position = CodePosition()
-        methodNode.instructions.map {
+        val simpleConstantsPool: Stack<String> = Stack()
+
+        methodNode.instructions.forEach {
+            println(it.javaClass.simpleName + "  ")
+
             when (it) {
+                is LdcInsnNode -> {
+                    val item = it.cst.toString()
+                    simpleConstantsPool.push(item)
+                }
                 is LineNumberNode -> {
                     if (!isStart) {
                         position.StartLine = it.line
@@ -233,13 +241,19 @@ class ByteCodeParser {
                 }
                 is MethodInsnNode -> {
                     val isInitMethod = it.name == CodeConstants.INIT_NAME || it.name == CodeConstants.CLINIT_NAME
-                    val isJavaOrKotlin = it.owner.startsWith("java.") || it.owner.startsWith("kotlin.")
-
                     val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
+                    val isJavaOrKotlin = qualifiedName.startsWith("java.lang") || qualifiedName.startsWith("kotlin.jvm")
+
                     val names = importCollector.splitPackageAndClassName(qualifiedName)
                     importCollector.addImport(qualifiedName)
 
                     if (!(isInitMethod || isJavaOrKotlin)) {
+                        println(it.owner)
+//                        val pools = Type.getType(it.desc).argumentTypes.map {
+//                            simpleConstantsPool.pop()
+//                        }.toList()
+                        println(simpleConstantsPool.elements.joinToString(", "))
+
                         calls += CodeCall(
                             Package = names.first,
                             NodeName = names.second,
