@@ -114,11 +114,20 @@ internal class ByteCodeParserTest {
     }
 
     @Test
-    fun should_ident_kotlin() {
+    fun should_ignore_kotlin_metadata_annotaion() {
         val resource = this.javaClass.classLoader.getResource("kotlin/QualityGateClientImpl.class")
         val path = Paths.get(resource.toURI()).toFile()
         val ds = ByteCodeParser().parseClassFile(path)
 
+        assertEquals(1, ds.Annotations.size)
+    }
+
+
+    @Test
+    fun should_ident_kotlin() {
+        val resource = this.javaClass.classLoader.getResource("kotlin/QualityGateClientImpl.class")
+        val path = Paths.get(resource.toURI()).toFile()
+        val ds = ByteCodeParser().parseClassFile(path)
 
         assertEquals(5, ds.Imports.size)
 
@@ -130,11 +139,17 @@ internal class ByteCodeParserTest {
 
             ds.Imports.joinToString(",") { it.Source })
 
+
+        // source code will become:
+        // ```java
+        // new RestTemplate().getForObject(getBaseUrl() + "/api/quality-gate-profile/" + qualityGateName, CouplingQualityGate.class, new Object[0]);
+        //
         var hasRestTemplateCall = false
         ds.Functions.forEach { function ->
             function.FunctionCalls.forEach {
                 if (it.NodeName == "RestTemplate" && it.FunctionName == "getForObject") {
                     hasRestTemplateCall = true
+                    println(it.Parameters)
                 }
             }
         }

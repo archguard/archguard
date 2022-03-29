@@ -122,7 +122,7 @@ class ByteCodeParser {
             className
         }?.toTypedArray() ?: arrayOf()
 
-        ds.Annotations = node.visibleAnnotations?.map {
+        ds.Annotations = node.visibleAnnotations?.mapNotNull {
             createAnnotation(it)
         }?.toTypedArray() ?: arrayOf()
 
@@ -152,8 +152,14 @@ class ByteCodeParser {
         )
     }
 
-    private fun createAnnotation(annotation: AnnotationNode): CodeAnnotation {
+    private fun createAnnotation(annotation: AnnotationNode): CodeAnnotation? {
         val className: String = Type.getType(annotation.desc).className
+        val isKotlinInjectAnnotation = className == "kotlin.Metadata"
+
+        if (isKotlinInjectAnnotation) {
+            return null
+        }
+
         val codeAnnotation = CodeAnnotation(Name = className)
 
         importCollector.processClassName(className)
@@ -188,7 +194,7 @@ class ByteCodeParser {
             codeFunction.Parameters = getParamsFromDesc(methodNode.desc, methodNode.parameters)
         }
 
-        codeFunction.Annotations = methodNode.visibleAnnotations?.map {
+        codeFunction.Annotations = methodNode.visibleAnnotations?.mapNotNull {
             createAnnotation(it)
         }?.toTypedArray() ?: arrayOf()
 
@@ -199,7 +205,7 @@ class ByteCodeParser {
 
     private fun createFunctionCalls(methodNode: MethodNode, node: ClassNode): Array<CodeCall> {
         var calls: Array<CodeCall> = arrayOf()
-        methodNode.instructions.map {
+        methodNode.instructions.map { it ->
             when (it) {
                 is MethodInsnNode -> {
                     val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
@@ -207,12 +213,24 @@ class ByteCodeParser {
                     val names = importCollector.splitPackageAndClassName(qualifiedName)
                     importCollector.processClassName(qualifiedName)
 
+//                    val previous = it.previous
+//                    println("${it.name}: ${it.previous.type}")
+//
+//                    var value = ""
+//                    when (previous) {
+//                        is LdcInsnNode -> {
+//                            value = previous.cst.toString()
+//                        }
+//                        is TypeInsnNode -> {
+//                            previous.desc
+//                        }
+//                    }
+
                     calls += CodeCall(
                         Package = names.first,
                         NodeName = names.second,
                         FunctionName = it.name,
                         Parameters = getArgsFromDesc(it.desc),
-
                         // todo: add return type for code call
                         // Type = Type.getType(it.desc).returnType.className
                     )
