@@ -5,6 +5,8 @@ import chapi.domain.core.*
 import org.archguard.scanner.bytecode.module.CodeModule
 import org.archguard.scanner.bytecode.module.ModuleUtil.getModule
 import org.objectweb.asm.ClassReader
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.*
 import org.slf4j.LoggerFactory
@@ -204,28 +206,42 @@ class ByteCodeParser {
         return codeFunction
     }
 
+    class SimpleMethodVisitor() : MethodVisitor(Opcodes.ASM9) {
+
+    }
+
     private fun createFunctionCalls(methodNode: MethodNode, node: ClassNode): Array<CodeCall> {
         var calls: Array<CodeCall> = arrayOf()
-        methodNode.instructions.map { it ->
+
+        var isStart = false
+        val position = CodePosition()
+        methodNode.instructions.map {
             when (it) {
+                is LineNumberNode -> {
+                    if (!isStart) {
+                        position.StartLine = it.line
+                        isStart = true
+                    } else {
+                        position.StartLine = it.line
+                    }
+                }
                 is MethodInsnNode -> {
                     val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
 
                     val names = importCollector.splitPackageAndClassName(qualifiedName)
                     importCollector.processClassName(qualifiedName)
 
-//                    val previous = it.previous
-//                    println("${it.name}: ${it.previous.type}")
-//
-//                    var value = ""
-//                    when (previous) {
-//                        is LdcInsnNode -> {
-//                            value = previous.cst.toString()
-//                        }
-//                        is TypeInsnNode -> {
-//                            previous.desc
-//                        }
-//                    }
+                    if (qualifiedName == "org.springframework.web.client.RestTemplate") {
+                        println(it.opcode)
+                        when(it.opcode) {
+                            CodeConstants.opc_invokevirtual -> {
+
+                            }
+                            CodeConstants.opc_invokespecial -> {
+
+                            }
+                        }
+                    }
 
                     calls += CodeCall(
                         Package = names.first,
@@ -236,10 +252,12 @@ class ByteCodeParser {
                         // Type = Type.getType(it.desc).returnType.className
                     )
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
 
+        // todo: convert position
         return calls
     }
 
