@@ -2,6 +2,8 @@
 package org.archguard.scanner.bytecode
 
 import chapi.domain.core.*
+import org.archguard.scanner.bytecode.module.CodeModule
+import org.archguard.scanner.bytecode.module.ModuleUtil.getModule
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.Type
 import org.objectweb.asm.tree.*
@@ -49,11 +51,13 @@ class ByteCodeParser {
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
         logger.debug("ByteCodeParser parser: {}", file)
-        return createDataStruct(getDataStructure(file))
+        val classNode = getAsmClasNode(file)
+        val module = getModule(file.toPath())
+        return createDataStruct(classNode, module)
     }
 
     @Throws(IOException::class)
-    private fun getDataStructure(file: File): ClassNode {
+    private fun getAsmClasNode(file: File): ClassNode {
         val fileInputStream = FileInputStream(file)
         val classNode = ClassNode()
 
@@ -86,7 +90,7 @@ class ByteCodeParser {
         return modifiers
     }
 
-    private fun createDataStruct(node: ClassNode): CodeDataStruct {
+    private fun createDataStruct(node: ClassNode, module: CodeModule): CodeDataStruct {
         val ds = CodeDataStruct()
         val names = importCollector.splitClassAndPackageName(Type.getObjectType(node.name).className)
         ds.Package = names.first
