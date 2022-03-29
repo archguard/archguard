@@ -89,10 +89,11 @@ class ByteCodeParser {
     private fun createDataStruct(node: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
         ds.NodeName = Type.getObjectType(node.name).className
+        ds.Package = getPackageName(ds.NodeName)
 
         val isInterface = CodeConstants.ACC_INTERFACE == node.access
 
-        ds.Type = if (isInterface) DataStructType.INTERFACE else DataStructType.CLASS;
+        ds.Type = if (isInterface) DataStructType.INTERFACE else DataStructType.CLASS
 
         // todo: add modifiers to Chapi
         createModifiers(node.access, CLASS_ALLOWED, isInterface, CLASS_EXCLUDED)
@@ -180,12 +181,21 @@ class ByteCodeParser {
         }.toTypedArray()
     }
 
+    private fun getPackageName(fullName: String): String {
+        val lastDot = fullName.lastIndexOf('.')
+        if (lastDot > 0) {
+            return fullName.substring(0, lastDot)
+        }
+
+        return fullName
+    }
+
     private fun processNestedName(fullName: String): String {
         mapSimpleNames[fullName] = fullName
         return ""
     }
 
-    private fun packImports():List<String> {
+    private fun packImports(): List<String> {
         return arrayListOf()
     }
 }
