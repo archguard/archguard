@@ -6,7 +6,7 @@
 
 rootProject.name = "ArchGuard Scanner"
 
-include(":common")
+include(":source_repository")
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_sourcecode")

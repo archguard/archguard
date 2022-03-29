@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":common"))
+    api(project(":source_repository"))
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation(kotlin("stdlib"))
