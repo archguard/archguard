@@ -25,38 +25,40 @@ class JavaApiAnalyser {
 
         val useRestTemplate = node.Imports.filter { it.Source.endsWith(".RestTemplate") }
         if (useRestTemplate.isNotEmpty()) {
-            node.Functions.forEach {
-                it.FunctionCalls.forEach { call ->
-                    if (call.NodeName == "RestTemplate" && call.FunctionName != "<init>") {
-                        var method = ""
-                        val functionName = call.FunctionName
-                        when {
-                            functionName.startsWith("Get") -> {
-                                method = "Get"
-                            }
-                            functionName.startsWith("Post") -> {
-                                method = "Post"
-                            }
-                            functionName.startsWith("Delete") -> {
-                                method = "Delete"
-                            }
-                            functionName.startsWith("Put") -> {
-                                method = "Put"
-                            }
-                        }
+            node.Functions.forEach { createDemand(it, node) }
+        }
+    }
 
-                        var url = ""
-                        if (call.Parameters.isNotEmpty() && call.Parameters[0].TypeValue.isNotEmpty()) {
-                            url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
-                        }
-
-                        demands = demands + ContainerDemand(
-                            source_caller = node.NodeName,
-                            target_url = url,
-                            target_http_method = method
-                        )
+    private fun createDemand(it: CodeFunction, node: CodeDataStruct) {
+        it.FunctionCalls.forEach { call ->
+            if (call.NodeName == "RestTemplate" && call.FunctionName != "<init>") {
+                var method = ""
+                val functionName = call.FunctionName
+                when {
+                    functionName.startsWith("Get") -> {
+                        method = "Get"
+                    }
+                    functionName.startsWith("Post") -> {
+                        method = "Post"
+                    }
+                    functionName.startsWith("Delete") -> {
+                        method = "Delete"
+                    }
+                    functionName.startsWith("Put") -> {
+                        method = "Put"
                     }
                 }
+
+                var url = ""
+                if (call.Parameters.isNotEmpty() && call.Parameters[0].TypeValue.isNotEmpty()) {
+                    url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
+                }
+
+                demands = demands + ContainerDemand(
+                    source_caller = node.NodeName,
+                    target_url = url,
+                    target_http_method = method
+                )
             }
         }
     }
@@ -75,7 +77,7 @@ class JavaApiAnalyser {
             }
 
             val hasSubUrlMapping = annotation.KeyValues.isNotEmpty()
-            if(isHttpAnnotation && httpMethod.isNotEmpty() && hasSubUrlMapping) {
+            if (isHttpAnnotation && httpMethod.isNotEmpty() && hasSubUrlMapping) {
                 val subUrl = annotation.KeyValues[0].Value
                 val pureUrl = subUrl.removePrefix("\"").removeSuffix("\"")
 
