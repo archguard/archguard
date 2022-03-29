@@ -15,7 +15,6 @@ class ImportCollector {
         "boolean"
     )
 
-
     private var mapSimpleNames: MutableMap<String, String> = mutableMapOf()
 
     fun splitPackageAndClassName(fullName: String): Pair<String, String> {
@@ -40,7 +39,7 @@ class ImportCollector {
         }
 
         if (DEFAULT_TYPE_NAMES.contains(className)) {
-            return;
+            return
         }
 
         val names = splitPackageAndClassName(className)
