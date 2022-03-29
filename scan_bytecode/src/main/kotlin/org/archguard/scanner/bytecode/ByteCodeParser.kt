@@ -95,7 +95,7 @@ class ByteCodeParser {
         ds.Type = if (isInterface) DataStructType.INTERFACE else DataStructType.CLASS;
 
         // todo: add modifiers to Chapi
-        createModifiers(node.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
+        createModifiers(node.access, CLASS_ALLOWED, isInterface, CLASS_EXCLUDED)
 
         node.methods.forEach {
             ds.Functions += this.createFunction(it)
