@@ -22,22 +22,34 @@ import java.util.concurrent.Phaser
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 
-class Runner : CliktCommand(help = "scan git to sql") {
+class Runner : CliktCommand(help = "scan bytecode to sql") {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val store = DBIStore.getInstance()
 
     private val path: String by option(help = "local path").default(".")
-    private val apiOnly: Boolean by option(help = "only scan api").flag()
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default("Jvm")
-
 
     override fun run() {
         cleanSqlFile(ALL_TABLES)
 
-        var dataStructs: Array<CodeDataStruct> = arrayOf()
-
+        val dataStructs: Array<CodeDataStruct> = byDir(path).toTypedArray()
+        File("nodes.json").writeText(Json.encodeToString(dataStructs))
         storage(dataStructs)
+    }
+
+    @Throws(IOException::class)
+    fun byDir(dir: String): List<CodeDataStruct> {
+        return File(dir)
+            .walk(FileWalkDirection.BOTTOM_UP)
+            .filter {
+                it.isFile && it.name.endsWith(".class")
+            }
+
+            .map {
+                ByteCodeParser().parseClassFile(it)
+            }
+            .toList()
     }
 
     private fun storage(dataStructs: Array<CodeDataStruct>) {
@@ -74,7 +86,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private fun saveApi(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         logger.info("========================================================")
         when (language.lowercase()) {
-            "java", "kotlin" -> {
+            "jvm", "java", "kotlin" -> {
                 logger.info("start analysis backend api ---- ${language.lowercase()}")
 
                 val apiAnalyser = JavaApiAnalyser()

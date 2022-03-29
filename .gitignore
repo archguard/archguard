@@ -42,7 +42,7 @@ gradle-app.setting
 .classpath
 *.sql
 **/bs.json
-api.json
+apis.json
 nodes.json
 **/out
 component.inbounds.json
