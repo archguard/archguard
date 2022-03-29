@@ -16,5 +16,6 @@ class ApiParserTest {
         javaApiAnalyser.analysisByNode(ds, "")
         val services = javaApiAnalyser.toContainerServices()
         assertEquals(1, services[0].demands.size)
+        assertEquals("QualityGateClientImpl", services[0].demands[0].source_caller)
     }
 }
