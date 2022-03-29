@@ -28,7 +28,6 @@ class JavaApiAnalyser {
             node.Functions.forEach {
                 it.FunctionCalls.forEach { call ->
                     if (call.NodeName == "RestTemplate") {
-                        val url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
                         var method = ""
                         val functionName = call.FunctionName
                         when {
@@ -44,6 +43,11 @@ class JavaApiAnalyser {
                             functionName.startsWith("Put") -> {
                                 method = "Put"
                             }
+                        }
+
+                        var url = ""
+                        if (call.Parameters.isNotEmpty() && call.Parameters[0].TypeValue.isNotEmpty()) {
+                            url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
                         }
 
                         demands = demands + ContainerDemand(
