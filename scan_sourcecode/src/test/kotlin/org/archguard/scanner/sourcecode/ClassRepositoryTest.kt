@@ -3,10 +3,10 @@ package org.archguard.scanner.sourcecode
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
+import org.archguard.scanner.common.ClassRepository
 import org.junit.jupiter.api.Test
 import java.util.HashMap
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 internal class ClassRepositoryTest {
     @Test

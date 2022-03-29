@@ -1,4 +1,4 @@
-package org.archguard.scanner.sourcecode.container
+package org.archguard.scanner.common.container
 
 import chapi.domain.core.CodeDataStruct
 

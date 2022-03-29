@@ -1,4 +1,4 @@
-package org.archguard.scanner.sourcecode
+package org.archguard.scanner.common
 
 import chapi.app.frontend.path.importConvert
 import chapi.domain.core.*

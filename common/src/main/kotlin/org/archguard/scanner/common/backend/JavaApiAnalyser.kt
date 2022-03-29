@@ -1,10 +1,10 @@
-package org.archguard.scanner.sourcecode.backend
+package org.archguard.scanner.common.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import org.archguard.scanner.sourcecode.container.ContainerDemand
-import org.archguard.scanner.sourcecode.container.ContainerResource
-import org.archguard.scanner.sourcecode.container.ContainerService
+import org.archguard.scanner.common.container.ContainerDemand
+import org.archguard.scanner.common.container.ContainerResource
+import org.archguard.scanner.common.container.ContainerService
 
 class JavaApiAnalyser {
     var demands: List<ContainerDemand> = listOf()

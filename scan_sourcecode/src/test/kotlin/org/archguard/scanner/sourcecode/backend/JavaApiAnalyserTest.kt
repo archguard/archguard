@@ -1,12 +1,9 @@
 package org.archguard.scanner.sourcecode.backend
 
 import chapi.app.analyser.JavaAnalyserApp
-import chapi.app.analyser.KotlinAnalyserApp
-import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
-import kotlinx.serialization.encodeToString
+import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.junit.jupiter.api.Assertions.*
-import java.io.File
 import java.nio.file.Paths
 
 internal class JavaApiAnalyserTest {

@@ -12,8 +12,10 @@ import infrastructure.SourceBatch.ALL_TABLES
 import infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.sourcecode.backend.CSharpApiAnalyser
-import org.archguard.scanner.sourcecode.backend.JavaApiAnalyser
+import org.archguard.scanner.common.ClassRepository
+import org.archguard.scanner.common.ContainerRepository
+import org.archguard.scanner.common.backend.CSharpApiAnalyser
+import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.slf4j.LoggerFactory
 import java.io.File

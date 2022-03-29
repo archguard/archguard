@@ -1,6 +1,7 @@
 package org.archguard.scanner.sourcecode
 
 import chapi.app.analyser.TypeScriptAnalyserApp
+import org.archguard.scanner.common.ContainerRepository
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths

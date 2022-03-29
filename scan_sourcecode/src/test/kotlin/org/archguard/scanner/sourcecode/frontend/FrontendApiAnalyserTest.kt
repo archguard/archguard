@@ -3,7 +3,7 @@ package org.archguard.scanner.sourcecode.frontend
 import chapi.app.analyser.TypeScriptAnalyserApp
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.sourcecode.container.ContainerService
+import org.archguard.scanner.common.container.ContainerService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
