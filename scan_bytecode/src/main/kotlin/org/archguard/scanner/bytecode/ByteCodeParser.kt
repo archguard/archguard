@@ -142,7 +142,10 @@ class ByteCodeParser {
             val values: List<Any> = annotation.values
             var i = 0
             while (i < values.size) {
-                codeAnnotation.KeyValues += AnnotationKeyValue(values[i].toString(), values[i + 1].toString())
+                val key = values[i].toString()
+                val value = values[i + 1].toString()
+
+                codeAnnotation.KeyValues += AnnotationKeyValue(key, value)
                 i += 2
             }
         }
