@@ -48,6 +48,7 @@ class ByteCodeParser {
         CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE
 
     private val importCollector: ImportCollector = ImportCollector()
+    private lateinit var cr: ClassReader
 
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
@@ -68,8 +69,8 @@ class ByteCodeParser {
         val fileInputStream = FileInputStream(file)
         val classNode = ClassNode()
 
-        val cr = ClassReader(fileInputStream)
-        cr.accept(classNode, 0)
+        this.cr = ClassReader(fileInputStream)
+        this.cr.accept(classNode, 0)
 
         fileInputStream.close()
 
