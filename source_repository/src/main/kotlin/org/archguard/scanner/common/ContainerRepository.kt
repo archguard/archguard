@@ -86,8 +86,13 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         values["target_http_method"] = demand.target_http_method
         values["target_url"] = "${demand.base}${demand.target_url}"
 
+        values["source_package"] = demand.source_caller
+        values["source_class"] = demand.source_caller
+        values["source_method"] = demand.source_caller
+
         if (language == "javascript" || language == "typescript") {
             val split = name.split("::")
+
             if (split.size == 2) {
                 values["source_method"] = split[1]
             } else {
