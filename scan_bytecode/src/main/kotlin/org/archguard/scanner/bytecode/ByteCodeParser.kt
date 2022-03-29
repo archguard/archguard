@@ -221,15 +221,22 @@ class ByteCodeParser {
 
         var isStart = false
         val position = CodePosition()
-        val simpleConstantsPool: Stack<String> = Stack()
+        var simpleConstantsPool: Stack<String> = Stack()
 
         methodNode.instructions.forEach {
-            println(it.javaClass.simpleName + "  ")
-
             when (it) {
                 is LdcInsnNode -> {
                     val item = it.cst.toString()
-                    simpleConstantsPool.push(item)
+                    when(it.cst) {
+                        is Type -> {
+                            println("Type -> cst: ${it.cst}")
+                            val cst = it.cst
+                            println(Type.getType(cst.toString()).className)
+                        }
+                        else -> {
+                            simpleConstantsPool.push(item)
+                        }
+                    }
                 }
                 is LineNumberNode -> {
                     if (!isStart) {
@@ -242,29 +249,40 @@ class ByteCodeParser {
                 is MethodInsnNode -> {
                     val isInitMethod = it.name == CodeConstants.INIT_NAME || it.name == CodeConstants.CLINIT_NAME
                     val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
-                    val isJavaOrKotlin = qualifiedName.startsWith("java.lang") || qualifiedName.startsWith("kotlin.jvm")
+                    val isJavaOrKotlin = qualifiedName.startsWith("java.lang")
 
                     val names = importCollector.splitPackageAndClassName(qualifiedName)
                     importCollector.addImport(qualifiedName)
 
                     if (!(isInitMethod || isJavaOrKotlin)) {
-                        println(it.owner)
-//                        val pools = Type.getType(it.desc).argumentTypes.map {
-//                            simpleConstantsPool.pop()
-//                        }.toList()
-                        println(simpleConstantsPool.elements.joinToString(", "))
+                        val pools = Type.getType(it.desc).argumentTypes.map {
+                            simpleConstantsPool.pop()
+                        }.toList()
 
                         calls += CodeCall(
                             Package = names.first,
                             NodeName = names.second,
                             FunctionName = it.name,
-                            Parameters = getArgsFromDesc(it.desc),
+                            Parameters = getArgsFromDesc(it.desc, pools),
                             // todo: add return type for code call
                             // Type = Type.getType(it.desc).returnType.className
                         )
                     }
                 }
+                is LabelNode -> {}
+                is InsnNode -> {}
+                is JumpInsnNode -> {}
+                is VarInsnNode -> {
+//                    println("VarInsnNode: ${it.opcode}")
+                }
+                is TypeInsnNode -> {
+//                    println("TypeInsnNode: ${it.desc}")
+                }
+                is FieldInsnNode -> {
+//                    println("FieldInsnNode: ${it.name}")
+                }
                 else -> {
+//                    println(it.javaClass.simpleName + "  ")
                 }
             }
         }
@@ -306,13 +324,18 @@ class ByteCodeParser {
         }.toTypedArray()
     }
 
-    private fun getArgsFromDesc(desc: String): Array<CodeProperty> {
-        return Type.getType(desc).argumentTypes.map {
+    private fun getArgsFromDesc(desc: String, pools: List<String?>): Array<CodeProperty> {
+        return Type.getType(desc).argumentTypes.mapIndexed { index, it ->
             importCollector.addImport(it.className)
 
             CodeProperty(
                 TypeType = it.className,
-                TypeValue = it.internalName
+                TypeValue = (if (pools[index] != null) {
+                    pools[index]
+                } else {
+                    it.internalName
+                }).toString()
+
             )
         }.toTypedArray()
     }
