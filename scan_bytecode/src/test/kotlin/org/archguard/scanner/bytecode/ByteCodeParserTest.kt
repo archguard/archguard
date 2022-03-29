@@ -129,6 +129,8 @@ internal class ByteCodeParserTest {
         val ds = ByteCodeParser().parseClassFile(path)
 
         assertEquals(2, ds.Annotations.size)
+        assertEquals("RequestMapping", ds.Annotations[1].Name)
+        assertEquals("/api/systems/{systemId}/code-tree", ds.Annotations[1].KeyValues[0].Value)
     }
 
     @Test

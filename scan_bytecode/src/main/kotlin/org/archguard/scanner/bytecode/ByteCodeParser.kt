@@ -171,9 +171,20 @@ class ByteCodeParser {
             var i = 0
             while (i < values.size) {
                 val key = values[i].toString()
-                val value = values[i + 1].toString()
 
-                codeAnnotation.KeyValues += AnnotationKeyValue(key, value)
+                var valueStr = ""
+                val value = values[i + 1]
+                println(value.javaClass.simpleName)
+
+                valueStr = value.toString()
+
+                when(value.javaClass.simpleName) {
+                    "ArrayList" -> {
+                       valueStr = (value as ArrayList<*>).joinToString()
+                    }
+                }
+
+                codeAnnotation.KeyValues += AnnotationKeyValue(key, valueStr)
                 i += 2
             }
         }
