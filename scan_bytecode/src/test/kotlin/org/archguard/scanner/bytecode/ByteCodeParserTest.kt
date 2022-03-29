@@ -72,6 +72,8 @@ internal class ByteCodeParserTest {
         assertEquals(2, ds.Functions.size)
         assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
         assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
+
+//        assertEquals(2, ds.Imports.size)
     }
 
     @Test

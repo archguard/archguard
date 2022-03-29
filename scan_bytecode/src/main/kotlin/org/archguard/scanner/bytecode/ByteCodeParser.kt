@@ -53,7 +53,13 @@ class ByteCodeParser {
         logger.debug("ByteCodeParser parser: {}", file)
         val classNode = getAsmClasNode(file)
         val module = getModule(file.toPath())
-        return createDataStruct(classNode, module)
+        val ds = createDataStruct(classNode, module)
+
+        ds.Imports = importCollector.packImports().map {
+            CodeImport(Source = it.key, AsName = it.value)
+        }.toTypedArray()
+
+        return ds
     }
 
     @Throws(IOException::class)
@@ -92,7 +98,7 @@ class ByteCodeParser {
 
     private fun createDataStruct(node: ClassNode, module: CodeModule): CodeDataStruct {
         val ds = CodeDataStruct()
-        val names = importCollector.splitClassAndPackageName(Type.getObjectType(node.name).className)
+        val names = importCollector.splitPackageAndClassName(Type.getObjectType(node.name).className)
         ds.Package = names.first
         ds.NodeName = names.second
 
@@ -131,16 +137,22 @@ class ByteCodeParser {
 //            createAnnotation(it)
 //        }?.toTypedArray() ?: arrayOf()
 
+        val className = Type.getType(field.desc).className
+
+        importCollector.processClassName(className)
+
         return CodeField(
-            TypeType = Type.getType(field.desc).className,
+            TypeType = className,
             TypeValue = field.name,
             Modifiers = createModifiers(field.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
         )
     }
 
     private fun createAnnotation(annotation: AnnotationNode): CodeAnnotation {
-        val name: String = Type.getType(annotation.desc).className
-        val codeAnnotation = CodeAnnotation(Name = name)
+        val className: String = Type.getType(annotation.desc).className
+        val codeAnnotation = CodeAnnotation(Name = className)
+
+        importCollector.processClassName(className)
 
         if (annotation.values != null) {
             val values: List<Any> = annotation.values
@@ -180,8 +192,9 @@ class ByteCodeParser {
     }
 
     private fun getParamsFromDesc(desc: String, parameters: MutableList<ParameterNode>): Array<CodeProperty> {
-        Type.getType(desc).argumentsAndReturnSizes
         return Type.getType(desc).argumentTypes.mapIndexed { index, it ->
+            importCollector.processClassName(it.className)
+
             CodeProperty(
                 TypeType = it.className,
                 TypeValue = parameters[index].name

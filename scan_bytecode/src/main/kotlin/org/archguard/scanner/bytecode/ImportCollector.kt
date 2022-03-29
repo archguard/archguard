@@ -16,7 +16,7 @@ class ImportCollector {
 
     }
 
-    fun splitClassAndPackageName(fullName: String): Pair<String, String> {
+    fun splitPackageAndClassName(fullName: String): Pair<String, String> {
         val lastDot = fullName.lastIndexOf('.')
         var packageName = fullName
         var className = fullName
@@ -33,7 +33,17 @@ class ImportCollector {
         return ""
     }
 
-    private fun packImports(): List<String> {
-        return arrayListOf()
+    fun packImports(): MutableMap<String, String> {
+        return mapSimpleNames
+    }
+
+    fun processClassName(className: String) {
+        if (className.startsWith(JAVA_LANG_PACKAGE)) {
+            return
+        }
+
+        val names = splitPackageAndClassName(className)
+
+        this.mapSimpleNames[className] = names.second
     }
 }
