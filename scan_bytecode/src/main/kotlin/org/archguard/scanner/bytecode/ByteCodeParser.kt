@@ -44,6 +44,8 @@ class ByteCodeParser {
     private val ACCESSIBILITY_FLAGS =
         CodeConstants.ACC_PUBLIC or CodeConstants.ACC_PROTECTED or CodeConstants.ACC_PRIVATE
 
+    private val importCollector: ImportCollector = ImportCollector()
+
     @Throws(Exception::class, IOException::class)
     fun parseClassFile(file: File): CodeDataStruct {
         logger.debug("ByteCodeParser parser: {}", file)
@@ -86,7 +88,7 @@ class ByteCodeParser {
 
     private fun createDataStruct(node: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
-        val names = splitClassAndPackageName(Type.getObjectType(node.name).className)
+        val names = importCollector.splitClassAndPackageName(Type.getObjectType(node.name).className)
         ds.Package = names.first
         ds.NodeName = names.second
 
@@ -181,17 +183,5 @@ class ByteCodeParser {
                 TypeValue = parameters[index].name
             )
         }.toTypedArray()
-    }
-
-    private fun splitClassAndPackageName(fullName: String): Pair<String, String> {
-        val lastDot = fullName.lastIndexOf('.')
-        var packageName = fullName
-        var className = fullName
-        if (lastDot > 0) {
-            packageName = fullName.substring(0, lastDot)
-            className = fullName.substring(lastDot + 1, fullName.length)
-        }
-
-        return Pair(packageName, className)
     }
 }

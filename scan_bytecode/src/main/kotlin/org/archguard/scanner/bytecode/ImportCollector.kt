@@ -12,9 +12,20 @@ class ImportCollector {
     private val currentPackageSlash: String? = null
     private val currentPackagePoint: String? = null
 
+    fun ImportCollector() {
 
-    public fun ImportCollector() {
+    }
 
+    fun splitClassAndPackageName(fullName: String): Pair<String, String> {
+        val lastDot = fullName.lastIndexOf('.')
+        var packageName = fullName
+        var className = fullName
+        if (lastDot > 0) {
+            packageName = fullName.substring(0, lastDot)
+            className = fullName.substring(lastDot + 1, fullName.length)
+        }
+
+        return Pair(packageName, className)
     }
 
     private fun processNestedName(fullName: String): String {
