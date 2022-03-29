@@ -112,4 +112,22 @@ internal class ByteCodeParserTest {
 
         assertEquals(1, calls.size)
     }
+
+    @Test
+    fun should_ident_kotlin() {
+        val resource = this.javaClass.classLoader.getResource("kotlin/QualityGateClientImpl.class")
+        val path = Paths.get(resource.toURI()).toFile()
+        val ds = ByteCodeParser().parseClassFile(path)
+
+        var hasRestTemplateCall = false
+        ds.Functions.forEach { function ->
+            function.FunctionCalls.forEach {
+                if (it.NodeName == "RestTemplate" && it.FunctionName == "getForObject") {
+                    hasRestTemplateCall = true
+                }
+            }
+        }
+
+        assert(hasRestTemplateCall)
+    }
 }
