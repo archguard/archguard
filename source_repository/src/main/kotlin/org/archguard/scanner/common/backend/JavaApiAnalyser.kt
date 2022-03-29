@@ -27,7 +27,7 @@ class JavaApiAnalyser {
         if (useRestTemplate.isNotEmpty()) {
             node.Functions.forEach {
                 it.FunctionCalls.forEach { call ->
-                    if (call.NodeName == "RestTemplate") {
+                    if (call.NodeName == "RestTemplate" && call.FunctionName != "<init>") {
                         var method = ""
                         val functionName = call.FunctionName
                         when {
