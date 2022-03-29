@@ -88,8 +88,9 @@ class ByteCodeParser {
 
     private fun createDataStruct(node: ClassNode): CodeDataStruct {
         val ds = CodeDataStruct()
-        ds.NodeName = Type.getObjectType(node.name).className
-        ds.Package = getPackageName(ds.NodeName)
+        val names = splitClassAndPackageName(Type.getObjectType(node.name).className)
+        ds.Package = names.first
+        ds.NodeName = names.second
 
         val isInterface = CodeConstants.ACC_INTERFACE == node.access
 
@@ -181,13 +182,16 @@ class ByteCodeParser {
         }.toTypedArray()
     }
 
-    private fun getPackageName(fullName: String): String {
+    private fun splitClassAndPackageName(fullName: String): Pair<String, String> {
         val lastDot = fullName.lastIndexOf('.')
+        var packageName = fullName
+        var className = fullName
         if (lastDot > 0) {
-            return fullName.substring(0, lastDot)
+            packageName = fullName.substring(0, lastDot)
+            className = fullName.substring(lastDot + 1, fullName.length)
         }
 
-        return fullName
+        return Pair(packageName, className)
     }
 
     private fun processNestedName(fullName: String): String {

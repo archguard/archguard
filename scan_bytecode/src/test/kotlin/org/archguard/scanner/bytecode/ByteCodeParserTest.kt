@@ -11,7 +11,7 @@ internal class ByteCodeParserTest {
         val path = Paths.get(resource.toURI()).toFile()
 
         val ds = ByteCodeParser().parseClassFile(path)
-        assertEquals("org.archguard.demo.HelloWorld", ds.NodeName)
+        assertEquals("HelloWorld", ds.NodeName)
         assertEquals("org.archguard.demo", ds.Package)
         assertEquals(2, ds.Functions.size)
         assertEquals("<init>", ds.Functions[0].Name)
@@ -26,9 +26,6 @@ internal class ByteCodeParserTest {
         val path = Paths.get(resource.toURI()).toFile()
 
         val ds = ByteCodeParser().parseClassFile(path)
-        assertEquals("org.archguard.demo.HelloWorld", ds.NodeName)
-        assertEquals(2, ds.Functions.size)
-
         val modifiers = ds.Functions[1].Modifiers
         assertEquals(2, modifiers.size)
         assertEquals("public", modifiers[0])
