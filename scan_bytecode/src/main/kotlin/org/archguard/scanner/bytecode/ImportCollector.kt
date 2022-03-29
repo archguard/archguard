@@ -1,7 +1,8 @@
 package org.archguard.scanner.bytecode
 
 class ImportCollector {
-    private val JAVA_LANG_PACKAGE = "java.lang"
+    private val JAVA_LANG_PACKAGE = "java."
+    private val KOTLIN_LANG_PACKAGE = "kotlin."
 
     private var mapSimpleNames: MutableMap<String, String> = mutableMapOf()
     private val setNotImportedNames: Set<String> = HashSet()
@@ -38,7 +39,7 @@ class ImportCollector {
     }
 
     fun processClassName(className: String) {
-        if (className.startsWith(JAVA_LANG_PACKAGE)) {
+        if (className.startsWith(JAVA_LANG_PACKAGE) || className.startsWith(KOTLIN_LANG_PACKAGE)) {
             return
         }
 

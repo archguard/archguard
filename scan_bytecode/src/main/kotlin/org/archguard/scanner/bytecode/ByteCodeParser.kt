@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.util.*
 import java.util.stream.Collectors
 
 class ByteCodeParser {
@@ -100,7 +99,7 @@ class ByteCodeParser {
 
     private fun createDataStruct(node: ClassNode, module: CodeModule): CodeDataStruct {
         val ds = CodeDataStruct()
-        val names = importCollector.splitPackageAndClassName(Type.getObjectType(node.name).className)
+        val names = importCollector.splitPackageAndClassName(classNameFromType(node.name, false))
         ds.Package = names.first
         ds.NodeName = names.second
 
@@ -115,9 +114,12 @@ class ByteCodeParser {
             ds.Functions += this.createFunction(it, node)
         }
 
-        ds.Extend = Type.getObjectType(node.superName).className
+        val superName = node.superName
+        ds.Extend = classNameFromType(superName, true)
+
         ds.Implements = node.interfaces?.map {
-            Type.getObjectType(it).className
+            val className = classNameFromType(it, true)
+            className
         }?.toTypedArray() ?: arrayOf()
 
         ds.Annotations = node.visibleAnnotations?.map {
@@ -232,7 +234,16 @@ class ByteCodeParser {
             }
         }
 
-        return Type.getObjectType(ownerName).className
+        return classNameFromType(ownerName!!, true)
+    }
+
+    private fun classNameFromType(superName: String, isImport: Boolean): String {
+        val className = Type.getObjectType(superName).className
+        if (isImport) {
+            importCollector.processClassName(className)
+        }
+
+        return className
     }
 
     private fun getParamsFromDesc(desc: String, parameters: MutableList<ParameterNode>): Array<CodeProperty> {

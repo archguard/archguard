@@ -119,6 +119,17 @@ internal class ByteCodeParserTest {
         val path = Paths.get(resource.toURI()).toFile()
         val ds = ByteCodeParser().parseClassFile(path)
 
+
+        assertEquals(5, ds.Imports.size)
+
+        assertEquals("org.springframework.web.client.RestTemplate," +
+                "com.thoughtworks.archguard.report.infrastructure.QualityGateClientImpl," +
+                "com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate," +
+                "com.thoughtworks.archguard.report.domain.qualitygate.QualityGateClient," +
+                "org.springframework.stereotype.Component",
+
+            ds.Imports.joinToString(",") { it.Source })
+
         var hasRestTemplateCall = false
         ds.Functions.forEach { function ->
             function.FunctionCalls.forEach {
