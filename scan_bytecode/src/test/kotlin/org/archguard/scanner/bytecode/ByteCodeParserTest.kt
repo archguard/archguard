@@ -72,8 +72,6 @@ internal class ByteCodeParserTest {
         assertEquals(2, ds.Functions.size)
         assertEquals("args", ds.Functions[1].Parameters[0].TypeValue)
         assertEquals("java.lang.String[]", ds.Functions[1].Parameters[0].TypeType)
-
-//        assertEquals(2, ds.Imports.size)
     }
 
     @Test
@@ -86,5 +84,32 @@ internal class ByteCodeParserTest {
         assertEquals("hello", ds.Fields[0].TypeValue)
         assertEquals("com.example.demo.Hello", ds.Fields[0].TypeType)
         assertEquals("private", ds.Fields[0].Modifiers[0])
+    }
+
+    @Test
+    fun should_ident_import() {
+        val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
+        val path = Paths.get(resource.toURI()).toFile()
+        val ds = ByteCodeParser().parseClassFile(path)
+
+        val imports = ds.Imports
+        assertEquals(2, imports.size)
+
+        val firstImport = imports[0]
+        assertEquals("org.springframework.boot.SpringApplication", firstImport.Source)
+
+        val secondImport = imports[1]
+        assertEquals("org.springframework.boot.autoconfigure.SpringBootApplication", secondImport.Source)
+    }
+
+    @Test
+    fun should_ident_call() {
+        val resource = this.javaClass.classLoader.getResource("annotation/DemoApplication.class")
+        val path = Paths.get(resource.toURI()).toFile()
+        val ds = ByteCodeParser().parseClassFile(path)
+
+        val calls = ds.Functions[1].FunctionCalls
+
+        assertEquals(1, calls.size)
     }
 }

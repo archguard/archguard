@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.util.*
+import java.util.stream.Collectors
 
 class ByteCodeParser {
     private val logger = LoggerFactory.getLogger(ByteCodeParser::class.java)
@@ -110,7 +112,7 @@ class ByteCodeParser {
         createModifiers(node.access, CLASS_ALLOWED, isInterface, CLASS_EXCLUDED)
 
         node.methods.forEach {
-            ds.Functions += this.createFunction(it)
+            ds.Functions += this.createFunction(it, node)
         }
 
         ds.Extend = Type.getObjectType(node.superName).className
@@ -169,7 +171,7 @@ class ByteCodeParser {
         return codeAnnotation
     }
 
-    private fun createFunction(methodNode: MethodNode): CodeFunction {
+    private fun createFunction(methodNode: MethodNode, node: ClassNode): CodeFunction {
         val codeFunction = CodeFunction(Name = methodNode.name)
 
         if (methodNode.name == CodeConstants.INIT_NAME) {
@@ -188,7 +190,49 @@ class ByteCodeParser {
             createAnnotation(it)
         }?.toTypedArray() ?: arrayOf()
 
+        codeFunction.FunctionCalls = createFunctionCalls(methodNode, node)
+
         return codeFunction
+    }
+
+    private fun createFunctionCalls(methodNode: MethodNode, node: ClassNode): Array<CodeCall> {
+        var calls: Array<CodeCall> = arrayOf()
+        methodNode.instructions.map {
+            when (it) {
+                is MethodInsnNode -> {
+                    val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
+
+                    val names = importCollector.splitPackageAndClassName(qualifiedName)
+                    importCollector.processClassName(qualifiedName)
+
+                    calls += CodeCall(
+                        Package = names.first,
+                        NodeName = names.second,
+                        FunctionName = it.name,
+                        Parameters = getArgsFromDesc(it.desc),
+
+                        // todo: add return type for code call
+                        // Type = Type.getType(it.desc).returnType.className
+                    )
+                }
+                else -> {}
+            }
+        }
+
+        return calls
+    }
+
+    private fun refineMethodOwner(method: String, owner: String, classNode: ClassNode): String? {
+        var ownerName: String? = owner
+        if (classNode.name.equals(owner, ignoreCase = true)) {
+            val methodNameList = classNode.methods.stream().map { v: MethodNode -> v.name }
+                .collect(Collectors.toList())
+            if (!methodNameList.contains(method)) {
+                ownerName = classNode.superName
+            }
+        }
+
+        return Type.getObjectType(ownerName).className
     }
 
     private fun getParamsFromDesc(desc: String, parameters: MutableList<ParameterNode>): Array<CodeProperty> {
@@ -198,6 +242,17 @@ class ByteCodeParser {
             CodeProperty(
                 TypeType = it.className,
                 TypeValue = parameters[index].name
+            )
+        }.toTypedArray()
+    }
+
+    private fun getArgsFromDesc(desc: String): Array<CodeProperty> {
+        return Type.getType(desc).argumentTypes.map {
+            importCollector.processClassName(it.className)
+
+            CodeProperty(
+                TypeType = it.className,
+                TypeValue = it.internalName
             )
         }.toTypedArray()
     }
