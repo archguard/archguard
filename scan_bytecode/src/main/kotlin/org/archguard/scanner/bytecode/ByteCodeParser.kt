@@ -233,14 +233,13 @@ class ByteCodeParser {
                 }
                 is MethodInsnNode -> {
                     val isInitMethod = it.name == CodeConstants.INIT_NAME || it.name == CodeConstants.CLINIT_NAME
-                    val isJavaOrKotlin = it.name.startsWith("java.") || it.name.startsWith("kotlin.")
+                    val isJavaOrKotlin = it.owner.startsWith("java.") || it.owner.startsWith("kotlin.")
 
-                    if (!(isInitMethod && isJavaOrKotlin)) {
-                        val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
+                    val qualifiedName = refineMethodOwner(it.name, it.owner, node).orEmpty()
+                    val names = importCollector.splitPackageAndClassName(qualifiedName)
+                    importCollector.addImport(qualifiedName)
 
-                        val names = importCollector.splitPackageAndClassName(qualifiedName)
-                        importCollector.addImport(qualifiedName)
-
+                    if (!(isInitMethod || isJavaOrKotlin)) {
                         calls += CodeCall(
                             Package = names.first,
                             NodeName = names.second,
