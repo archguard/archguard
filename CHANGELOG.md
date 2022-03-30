@@ -1,4 +1,72 @@
-# [](https://github.com/archguard/scanner/compare/v1.3.1...v) (2022-03-25)
+# [](https://github.com/archguard/scanner/compare/v1.4.0...v) (2022-03-30)
+
+
+
+# [1.4.0](https://github.com/archguard/scanner/compare/v1.3.2...v1.4.0) (2022-03-30)
+
+
+### Bug Fixes
+
+* add lost assert for source caller ([2317f21](https://github.com/archguard/scanner/commit/2317f21fbf44f7624fed92f8b361da8a9486dae2))
+* add lost source caller ([cd40461](https://github.com/archguard/scanner/commit/cd40461e0d45e1a69b763b56380f29e8c44721c9))
+* **api:** fix <init> function issue ([fc5ea89](https://github.com/archguard/scanner/commit/fc5ea892b77790bf9f8ee1274524646ac0cef6b2))
+* **bytecode:** exclude init method to call, but add to import ([8b0bbb7](https://github.com/archguard/scanner/commit/8b0bbb720cbbc50bc3ec667e147054a1a7d2fb26))
+* **bytecode:** fix api empty issues ([b6e70de](https://github.com/archguard/scanner/commit/b6e70de5969042809a9bc88f0d076c84dd545b87))
+* **bytecode:** fix for interfaces empty issue ([23d6882](https://github.com/archguard/scanner/commit/23d6882b056db84efc70de6a1310429509da7d72))
+* **bytecode:** fix import issues ([3dae498](https://github.com/archguard/scanner/commit/3dae498dff0aada456a0bba17e6ebbf0272fe5fa))
+* **bytecode:** fix typos ([e3e296c](https://github.com/archguard/scanner/commit/e3e296c0e5ed7e76f811e89e2189245055c95ba4))
+* **bytecode:** fix typos ([b4d7a81](https://github.com/archguard/scanner/commit/b4d7a81e0e32c8807ebe4fbefd9d23d57ce6ae2d))
+* **bytecode:** remove default types from imports ([f1b8541](https://github.com/archguard/scanner/commit/f1b854127af131f10531bed626428715acae0dab))
+* **bytecode:** remove unused $ ([6d12335](https://github.com/archguard/scanner/commit/6d12335f243d9f794e35b81a6a2791732de6948b))
+* fix kotlin.Metadata annotation issues ([ceb792f](https://github.com/archguard/scanner/commit/ceb792f75ebde59cd96f0a0a350d68d1d5c0ee44))
+* fix lints ([497291d](https://github.com/archguard/scanner/commit/497291d4d7b023721e987f2871e5b0b6ad864e9e))
+* fix lowercase issue for function name ([d31422b](https://github.com/archguard/scanner/commit/d31422bdb35ce4248a33b968f0ecfa9691c5160e))
+* fix typos ([a46658e](https://github.com/archguard/scanner/commit/a46658e501d38e7821b20f2aa9bc70a377b7c771))
+
+
+### Features
+
+* add basic call support for java ([d8c9295](https://github.com/archguard/scanner/commit/d8c92957428bf90976c5dbaa51b10866f93d2dd6))
+* add code sample for data ([1f67d84](https://github.com/archguard/scanner/commit/1f67d8492b810804d4841e27606fe1eaa29b4127))
+* add line position for method node ([e66a8f6](https://github.com/archguard/scanner/commit/e66a8f6e190567a4ad738e1c8b2836a927cd1343))
+* add test functions for java ([fecf421](https://github.com/archguard/scanner/commit/fecf421353e85de9ce560f73fc76517966d370bc))
+* **bytecode:** add annotation support ([11e0f50](https://github.com/archguard/scanner/commit/11e0f50ba6915df0180ac4c11967bd723fabcaa6))
+* **bytecode:** add class modifier parser ([26ae47c](https://github.com/archguard/scanner/commit/26ae47cefe572b27a6c5f82add5dabd916ecfb73))
+* **bytecode:** add constuctor check ([af8f13a](https://github.com/archguard/scanner/commit/af8f13a0be1bae023d0304889b2ef5610dcd7272))
+* **bytecode:** add field support ([bdd75e4](https://github.com/archguard/scanner/commit/bdd75e48c69852b28108bafea52b3fd89c260935))
+* **bytecode:** add for rest template ([2bf2c04](https://github.com/archguard/scanner/commit/2bf2c0419cecffef71923675963fd77a281d00e5))
+* **bytecode:** add get classes support ([82fb58a](https://github.com/archguard/scanner/commit/82fb58ac748d8df9edacc5f351f3480057802738))
+* **bytecode:** add method modifier support ([0d36706](https://github.com/archguard/scanner/commit/0d3670638831edf5d043b679738ae203165ea1aa))
+* **bytecode:** add modifier support ([7bd03bc](https://github.com/archguard/scanner/commit/7bd03bc46d66fe199b0dbd76f09eee72821a3c01))
+* **bytecode:** add parameters type support ([c55b649](https://github.com/archguard/scanner/commit/c55b6490a82a2e3105c170835bffd452aa4559ca))
+* **bytecode:** add return type support ([270970a](https://github.com/archguard/scanner/commit/270970a7a2b693bd4d4dfddb6ad912dc82aec999))
+* **bytecode:** add simple constant pool ([eecafb3](https://github.com/archguard/scanner/commit/eecafb35c55594658b13305835d241c1a884fd43))
+* **bytecode:** add simple constant to TypeValue ([19e13e4](https://github.com/archguard/scanner/commit/19e13e422f2b8b528f501577ab66bb533b628b6b))
+* **bytecode:** add test for module util ([6dbf54f](https://github.com/archguard/scanner/commit/6dbf54f4b410f1ad337c1c72d1c4b49d62cc24ec))
+* **bytecode:** add url in array for annotaion support ([0e9bcc5](https://github.com/archguard/scanner/commit/0e9bcc515d814e691ba9103c4392c632230ae673))
+* **bytecode:** change annotation to end with import collector ([3a86b78](https://github.com/archguard/scanner/commit/3a86b7819e9729bc7d4668bb7f6f573a7526b7bb))
+* **bytecode:** feat class package identify support ([69e2a8f](https://github.com/archguard/scanner/commit/69e2a8f935c22a935b955f552f5e63622e69746b))
+* **bytecode:** feat split class name and package name support ([8f7014b](https://github.com/archguard/scanner/commit/8f7014bd651aa67446caf6d652c77dce3d4a9cbb))
+* **bytecode:** ignore init methods for java & kotlin ([22cae37](https://github.com/archguard/scanner/commit/22cae37522bd6e4b6c70a35351036e5c6df134e6))
+* **bytecode:** import runner ([f2f985b](https://github.com/archguard/scanner/commit/f2f985bb03b57d3cb560bc527fb806b337b1769e))
+* **bytecode:** init for scala samples ([87d55a5](https://github.com/archguard/scanner/commit/87d55a51e9212b5f1718eaef6483f81d3a0b5eea))
+* **bytecode:** init import calls ([79720f2](https://github.com/archguard/scanner/commit/79720f2aa4e6bee6187cebe9a668bb3dfc01fee4))
+* **bytecode:** make first sample for workdirs ([0076205](https://github.com/archguard/scanner/commit/0076205ba1a36167f1dd89104e1790de733a66a9))
+* **bytecode:** reinit module parser ([0e5a244](https://github.com/archguard/scanner/commit/0e5a244c8656b85d16c8dce0fe66fe14963fbce8))
+* **bytecode:** split imports ([53676c9](https://github.com/archguard/scanner/commit/53676c9ee14dcfec10d414eb383dee583be0f7fe))
+* **bytecode:** try to add nested name ([0ec64aa](https://github.com/archguard/scanner/commit/0ec64aa746072801ba0ed495fabcd9ff54345114))
+* init first bytecode samples ([9082f2d](https://github.com/archguard/scanner/commit/9082f2d1c826802d6db44260ccb0c65dbd961ae9))
+
+
+
+## [1.3.2](https://github.com/archguard/scanner/compare/v1.3.1...v1.3.2) (2022-03-25)
+
+
+### Bug Fixes
+
+* empty http method for match more than one ([53045de](https://github.com/archguard/scanner/commit/53045de57b058009d162f9c0f200e67dfa64107d))
+* fix empty http method issue ([deb1f6c](https://github.com/archguard/scanner/commit/deb1f6cc431820c9d2d103879e35460b5ee2ecc2))
+* update tbs chapi versions ([ed5f8f2](https://github.com/archguard/scanner/commit/ed5f8f229d60c90675a39718d11523a6ffe05737))
 
 
 
