@@ -1,8 +1,8 @@
 group = "org.archguard.scanner"
 
 plugins {
+    java
     id("application")
-    id("com.thoughtworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 
@@ -15,6 +15,9 @@ repositories {
 
 dependencies {
     api(project(":source_repository"))
+
+    implementation("org.slf4j:slf4j-api:1.7.20")
+    implementation("io.netty:netty-all:4.1.42.Final")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation(kotlin("stdlib"))

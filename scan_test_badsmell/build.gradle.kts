@@ -1,8 +1,8 @@
 group = "com.thoughtworks.archguard.scanner"
 
 plugins {
+    java
     id("application")
-    id("com.thoughtworks.archguard.java-conventions")
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 

@@ -4,9 +4,6 @@ plugins {
     java
 }
 
-group = "com.thoughtworks.archguard"
-version = "unspecified"
-
 repositories {
     mavenCentral()
 }

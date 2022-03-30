@@ -4,6 +4,10 @@ plugins {
     id("jacoco-report-aggregation")
 }
 
+group = "com.thoughtworks.archguard"
+version = "1.3.2"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
 allprojects {
     group = "com.thoughtworks.archguard"
 
