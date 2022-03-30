@@ -80,11 +80,27 @@ introduction：`扫描目标项目下的 jacoco.exec 文件， 将目标项目�
 
 cmd：`./gradlew :scan_jacoco:run --args="--target-project=."`
 
-## scan_sourcecode
+### scan_sourcecode
 
 introduction: scan source code with [Chapi](https://github.com/modernizing/chapi)
 
 cmd: `java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin`
+
+API
+
+RESTTemplate call
+
+```
+@Component
+class QualityGateClientImpl(@Value("\${client.host}") val baseUrl: String) : QualityGateClient {
+    override fun getQualityGate(qualityGateName: String): CouplingQualityGate {
+        val couplingQualityGate = RestTemplate().getForObject("$baseUrl/api/quality-gate-profile/$qualityGateName", CouplingQualityGate::class.java)
+        return couplingQualityGate ?: CouplingQualityGate(null, qualityGateName, emptyList(), null, null)
+    }
+}
+```
+
+`$baseUrl/api/quality-gate-profile/$qualityGateName` -> `@uri@/api/quality-gate-profile/@uri@`
 
 License
 ---
