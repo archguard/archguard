@@ -4,23 +4,28 @@
 [![codecov](https://codecov.io/gh/archguard/archguard-backend/branch/master/graph/badge.svg?token=QS5H866CWH)](https://codecov.io/gh/archguard/archguard-backend)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/archguard-backend)
 
+Components:
+
+- [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
+- [ArchGuard Scanner](https://github.com/archguard/scanner)
+
 Features: 
 
 - C4 analysis
-    - [ ] context dependency analysis.
     - [x] container dependency analysis. (level: HTTP API)
       - [x] basic fe/be call
-      - [ ] FeignClient for backend to backend
+      - [x] RestTemplate for backend to backend
       - [ ] GraphQL
       - [ ] Kong Gateway
     - [x] component (module) dependency analysis.
     - [x] code dependency analysis. (level: pa``ckage, class, method)
+    - [ ] database dependency analysis
 - Scanner integration
     - [x] PMD
     - [x] Git with jGit
         - [x] HotFile
     - [x] Java/Jvm only
-        - [ ] JVM Bytecode (need to rewrite with License issue)
+        - [x] JVM Bytecode (need to rewrite with License issue)
         - [x] CheckStyle
         - [x] Badsmell by DesigniteJava
         - [x] Test Badsmell by Coca (Java only)
