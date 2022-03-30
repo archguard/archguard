@@ -54,7 +54,6 @@ Features:
 - System Info
     - [ ] Custom build command  
 
-
 | Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
 |---------------------|------|--------|-----|--------|------------|-----|-----|-------|-----|
 | http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | 🆕  | 🆕    | 🆕  |
@@ -62,65 +61,6 @@ Features:
 | function call       | ✅    | 🆕     |     | 🆕     | ✅          |     |     |       |     |
 | arch/package        | ✅    |        |     |        | ✅          |     |     | ✅     |     |
 | real world validate | ✅    |        |     |        | ✅          |     |     |       |     |
-
-## Metrics
-
-### Code
-
-### Logic Unstable（逻辑不稳定）
-
-- FanInFanOut
-
-### Physical Unstable（物理不稳定）
-
-- UnstableFile/Class, long lines and high changes(from git)
-- KnowledgeMap, author changes in package
-
-in Chinese
-
-- 不稳定文件/类，高频变更 + 文件行数长
-- 知识地图，文件修改资料 + 作者
-
-### Readable（可读性）
-
-- By length, tooShort or tooLong
-- one thing, `And`
-
-Types:
-
-- Class Name
-- Method name
-- Field name
-- API name ?
-
-## Development
-
-todo:
-
-- [ ] tech debt
-    - [ ] tech stack upgrading
-    - [ ] InfluxDB to 2.0
-    - [ ] clean unused code
-    - [ ] database lint/checkstyle
-    - [ ] api lint
-    - [ ] kotlin lint
-- [ ] scanner
-    - [x] download from GitHub by config
-    - [ ] enable scanner failure
-    - [x] config scanner by optional
-- [ ] System landscape by C4
-    - [ ] Context = System (props: name, aliasName...)
-    - [ ] Containers = Repository or repository with modules (props: name, path, repository...)
-    - [ ] Components = Module (props: name, path, repository...)
-    - [ ] Code = Code dependence (props: name...)
-- [ ] User Experience Improve
-    - [ ] custom build command for SystemInfo
-    - [ ] download scanner to local
-
-test projects:
-
-- [https://github.com/domain-driven-design/ddd-lite-example](https://github.com/domain-driven-design/ddd-lite-example)
-- [https://github.com/domain-driven-design/ddd-monolithic-code-sample](https://github.com/domain-driven-design/ddd-monolithic-code-sample)
 
 ### Tech decision (framework)
 
@@ -135,13 +75,6 @@ test projects:
 1. create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
 
 2. run: `./gradlew bootrun`
-
-
-#### setup InfluxDB
-
-```
-brew install influxdb@1
-```
 
 ### Docker
 
