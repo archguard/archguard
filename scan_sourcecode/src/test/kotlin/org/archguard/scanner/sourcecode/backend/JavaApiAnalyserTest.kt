@@ -1,6 +1,7 @@
 package org.archguard.scanner.sourcecode.backend
 
 import chapi.app.analyser.JavaAnalyserApp
+import chapi.app.analyser.KotlinAnalyserApp
 import org.junit.jupiter.api.Test
 import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.junit.jupiter.api.Assertions.*
@@ -67,16 +68,16 @@ internal class JavaApiAnalyserTest {
 
     @Test
     fun identRestTemplateCall() {
-        val resource = this.javaClass.classLoader.getResource("resttemplate/")!!
+        val resource = this.javaClass.classLoader.getResource("kotlin/")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
 
-        val nodes = JavaAnalyserApp().analysisNodeByPath(path)
-        val javaApiAnalyser = JavaApiAnalyser()
+        val nodes = KotlinAnalyserApp().analysisNodeByPath(path)
+        val apiAnalyser = JavaApiAnalyser()
         nodes.forEach {
-            javaApiAnalyser.analysisByNode(it, "")
+            apiAnalyser.analysisByNode(it, "")
         }
 
-        val services = javaApiAnalyser.toContainerServices()
+        val services = apiAnalyser.toContainerServices()
         assertEquals(1, services[0].demands.size)
     }
 }
