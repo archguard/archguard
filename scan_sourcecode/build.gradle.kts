@@ -10,6 +10,7 @@ plugins {
 }
 
 repositories {
+    // for test chapi in Local
     mavenLocal()
 }
 
@@ -25,8 +26,8 @@ dependencies {
 //    implementation("com.phodal.chapi:chapi-application:1.3.0-SNAPSHOT")
 //    implementation("com.phodal.chapi:chapi-domain:1.3.0-SNAPSHOT")
 
-    implementation("com.phodal.chapi:chapi-application:1.3.1")
-    implementation("com.phodal.chapi:chapi-domain:1.3.1")
+    implementation("com.phodal.chapi:chapi-application:1.4.0")
+    implementation("com.phodal.chapi:chapi-domain:1.4.0")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
