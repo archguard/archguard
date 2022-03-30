@@ -48,9 +48,16 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         }.toList()
     }
 
+    private val FRONTEND_PARA = "\\$\\{[a-zA-Z.]+\\}".toRegex()
+    private val SPRING_PARA = "\\{[a-zA-Z.]+\\}".toRegex()
+    // such as: `$baseUrl/api/quality-gate-profile/$qualityGateName`
+    private val KOTLIN_LINE_STR_REF = "\\$[a-zA-Z]+".toRegex()
+
     // todo: without query in url like: ?language=@uri@
     fun updateUrl(targetUrl: String): String {
-        return targetUrl.replace("\\$\\{[a-zA-Z.]+\\}".toRegex(), "@uri@")
-            .replace("\\{[a-zA-Z.]+\\}".toRegex(), "@uri@")
+        return targetUrl
+            .replace(FRONTEND_PARA, "@uri@")
+            .replace(KOTLIN_LINE_STR_REF, "@uri@")
+            .replace(SPRING_PARA, "@uri@")
     }
 }

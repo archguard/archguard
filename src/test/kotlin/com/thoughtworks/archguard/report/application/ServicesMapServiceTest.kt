@@ -30,4 +30,10 @@ internal class ServicesMapServiceTest {
         val url = service.updateUrl("/api/systems/{systemId}/code-tree/{id}")
         assertEquals("/api/systems/@uri@/code-tree/@uri@", url)
     }
+
+    @Test
+    fun replaceKotlinLineStrRef() {
+        val url = service.updateUrl("${'$'}baseUrl/api/systems/{systemId}/code-tree/{id}")
+        assertEquals("@uri@/api/systems/@uri@/code-tree/@uri@", url)
+    }
 }
