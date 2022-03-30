@@ -38,17 +38,18 @@ class JavaApiAnalyser {
 
             if (call.NodeName == "RestTemplate" && call.FunctionName != "<init>") {
                 var method = ""
+                val lowercase = functionName.lowercase()
                 when {
-                    functionName.startsWith("Get") -> {
+                    lowercase.startsWith("get") -> {
                         method = "Get"
                     }
-                    functionName.startsWith("Post") -> {
+                    lowercase.startsWith("post") -> {
                         method = "Post"
                     }
-                    functionName.startsWith("Delete") -> {
+                    lowercase.startsWith("delete") -> {
                         method = "Delete"
                     }
-                    functionName.startsWith("Put") -> {
+                    lowercase.startsWith("put") -> {
                         method = "Put"
                     }
                 }
@@ -58,11 +59,13 @@ class JavaApiAnalyser {
                     url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
                 }
 
-                demands = demands + ContainerDemand(
-                    source_caller = node.NodeName,
-                    target_url = url,
-                    target_http_method = method
-                )
+                if (method.isNotEmpty()) {
+                    demands = demands + ContainerDemand(
+                        source_caller = node.NodeName,
+                        target_url = url,
+                        target_http_method = method
+                    )
+                }
             }
         }
     }
