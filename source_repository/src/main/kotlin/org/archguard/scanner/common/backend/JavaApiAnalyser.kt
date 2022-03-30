@@ -31,9 +31,13 @@ class JavaApiAnalyser {
 
     private fun createDemand(it: CodeFunction, node: CodeDataStruct) {
         it.FunctionCalls.forEach { call ->
+            var functionName = call.FunctionName
+            if (functionName.contains(".")) {
+                functionName = functionName.split(".").last()
+            }
+
             if (call.NodeName == "RestTemplate" && call.FunctionName != "<init>") {
                 var method = ""
-                val functionName = call.FunctionName
                 when {
                     functionName.startsWith("Get") -> {
                         method = "Get"
