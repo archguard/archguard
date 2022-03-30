@@ -4,29 +4,22 @@ plugins {
     id("jacoco-report-aggregation")
 }
 
-group = "com.thoughtworks.archguard"
-version = "1.3.2"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-
-allprojects {
-    group = "com.thoughtworks.archguard"
-
-    repositories {
-        mavenCentral()
-        mavenLocal()
-        maven {
-            url = uri("https://repo.maven.apache.org/maven2/")
-        }
-    }
-}
-
 jacoco {
     toolVersion = "0.8.7"
 }
 
-subprojects {
-    apply(plugin = "jacoco")
+allprojects {
     apply(plugin = "java")
+    apply(plugin = "jacoco")
+
+    group = "com.thoughtworks.archguard"
+    version = "1.4.0"
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
 
     tasks.test {
         finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
