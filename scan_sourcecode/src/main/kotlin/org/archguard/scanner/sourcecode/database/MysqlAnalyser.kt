@@ -72,6 +72,7 @@ class MysqlAnalyser {
     fun sqlify(value: String): String {
         var text = handleRawString(value)
         text = removeBeginEndQuotes(text)
+        text = removeVariableInLine(text)
         text = removeNextLine(text)
         text = removePlus(text)
         text = processIn(text)
@@ -79,7 +80,6 @@ class MysqlAnalyser {
     }
 
     private val RAW_STRING_REGEX = "\"\"\"(((.*?)|\n)+)\"\"\"".toRegex()
-
     private fun handleRawString(text: String): String {
         val rawString = RAW_STRING_REGEX.find(text)
         if(rawString != null) {
@@ -89,8 +89,18 @@ class MysqlAnalyser {
         return text
     }
 
-    private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z]+)>(\\s+)?\\)".toRegex()
+    // some text: "\"+orderSqlPiece+\""
+    private val VARIABLE_IN_LINE = "(\"\\\\\"\\+[a-zA-Z_]+\\+\"\\\\\")".toRegex()
+    private fun removeVariableInLine(text: String): String {
+        val find = VARIABLE_IN_LINE.find(text)
+        if (find != null) {
+            return text.replace(VARIABLE_IN_LINE, "*")
+        }
 
+        return text
+    }
+
+    private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z]+)>(\\s+)?\\)".toRegex()
     private fun processIn(text: String): String {
         val find = IN_REGEX.find(text)
         if (find != null) {

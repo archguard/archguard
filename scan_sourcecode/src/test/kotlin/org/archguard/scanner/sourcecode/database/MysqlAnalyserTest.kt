@@ -28,6 +28,15 @@ internal class MysqlAnalyserTest {
         assertEquals(false, sqlify.contains("\"\"\""))
     }
 
+
+    @Test
+    fun should_handle_variable_in_sql() {
+        val sqlify =
+            MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"\"")
+
+        assertEquals("select id, module_name from *", sqlify)
+    }
+
     @Test
     fun should_ident_jdbi_create_query_annotation() {
         val resource = this.javaClass.classLoader.getResource("jdbi/ContainerServiceDao.kt")!!
