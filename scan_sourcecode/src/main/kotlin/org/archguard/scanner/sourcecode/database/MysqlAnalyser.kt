@@ -2,8 +2,6 @@ package org.archguard.scanner.sourcecode.database
 
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Serializable
 data class MysqlLog(
