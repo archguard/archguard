@@ -46,15 +46,19 @@ internal class MysqlAnalyserTest {
     @Test
     fun should_kotlin_variable_in_sql_without_quote() {
         val sqlify = MysqlAnalyser().sqlify("select id, module_name from system and c.name = ${'$'}name")
+        assertEquals("select id, module_name from system and c.name = ''", sqlify)
+    }
 
+    @Test
+    fun should_handle_end_with_string_append() {
+        val sqlify = MysqlAnalyser().sqlify("select id, module_name from system and c.name = ${'$'}name\"+moduleFilter")
         assertEquals("select id, module_name from system and c.name = ''", sqlify)
     }
 
     @Test
     fun should_handle_kotlin_string_in_sql() {
-        val sqlify = MysqlAnalyser().sqlify("\"select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module\"")
-
-        assertEquals("select id, name, module, loc, access from code_class where system_id='' and name='' and module <=> ''", sqlify)
+        val sqlify = MysqlAnalyser().sqlify("SELECT id, name, module, loc, access FROM code_class where system_id = '' and name = '' '' limit ''")
+        assertEquals("SELECT id, name, module, loc, access FROM code_class where system_id = '' and name = '' limit 10", sqlify)
     }
 
     @Test

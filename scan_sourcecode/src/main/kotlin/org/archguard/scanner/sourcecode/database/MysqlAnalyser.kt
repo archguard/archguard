@@ -17,6 +17,7 @@ data class SqlRecord(
 class MysqlAnalyser {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    // todo: split by framework
     fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<SqlRecord> {
         val logs: MutableList<SqlRecord> = mutableListOf()
         // by annotation: identify
@@ -38,6 +39,7 @@ class MysqlAnalyser {
                 }
             }
 
+            // try to catch in function call
             function.FunctionCalls.forEach {
                 val callMethodName = it.FunctionName.split(".").last()
                 if (callMethodName == "createQuery" && it.Parameters.isNotEmpty()) {
@@ -72,12 +74,23 @@ class MysqlAnalyser {
     fun sqlify(value: String): String {
         var text = handleRawString(value)
         text = removeBeginEndQuotes(text)
+
+        // handle for variable
         text = removeVariableInLine(text)
         text = removeKotlinVariable(text)
-        text = removeNextLine(text)
         text = removeJdbiValueBind(text)
-        text = removePlus(text)
+        text = removeEndWithMultipleSingleQuote(text)
+
+        text = removeNextLine(text)
+        // " " + module
+        text = removePlusWithVariable(text)
+        // " " + " "
+        text = removePlusSymbol(text)
         text = processIn(text)
+
+        // sql fixed
+        text = fillLimitEmpty(text)
+        text = fillOffsetEmpty(text)
         return text
     }
 
@@ -142,6 +155,10 @@ class MysqlAnalyser {
     }
 
     private fun removeNextLine(text: String) = text.replace("\n", "")
-    private fun removePlus(text: String) = text.replace("\"+\"", "")
+    private fun removePlusSymbol(text: String) = text.replace("\"+\"", "")
+    private fun removePlusWithVariable(text: String) = text.replace("\"\\+([a-zA-Z_]+)".toRegex(), "")
+    private fun removeEndWithMultipleSingleQuote(text: String) = text.replace("\'\'\\s+\'\'".toRegex(), "''")
     private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
+    private fun fillLimitEmpty(value: String) = value.replace("offset ''", "offset 10")
+    private fun fillOffsetEmpty(value: String) = value.replace("limit ''", "limit 10")
 }
