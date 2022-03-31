@@ -58,12 +58,14 @@ class MysqlAnalyser {
         return logs
     }
 
-    private fun sqlify(value: String): String {
+    fun sqlify(value: String): String {
         var text = removeBeginEndQuotes(value)
         text = removePlus(text)
+        text = processIn(text)
         return text
     }
 
+    private fun processIn(text: String) = text.replace("in\\s+\\((\\s+)?<[a-zA-Z]+>(\\s+)?\\)".toRegex(), "in (:ids)")
     private fun removePlus(text: String) = text.replace("\"+\"", "")
     private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
 }

@@ -7,6 +7,14 @@ import kotlin.test.assertEquals
 
 internal class MysqlAnalyserTest {
     @Test
+    fun should_wrapper_in_list_in_values() {
+        val sqlify =
+            MysqlAnalyser().sqlify("select id, system_name as systemName, language from system_info where id in (<ids>)")
+
+        assertEquals("select id, system_name as systemName, language from system_info where id in (:ids)", sqlify)
+    }
+
+    @Test
     fun should_ident_jdbi_create_query_annotation() {
         val resource = this.javaClass.classLoader.getResource("jdbi/ContainerServiceDao.kt")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
