@@ -1,6 +1,5 @@
 package org.archguard.scanner.sourcecode.database
 
-import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -24,7 +23,7 @@ class MysqlAnalyser {
             function.Annotations.forEach {
                 if(it.Name == "SqlQuery") {
                     val value = it.KeyValues[0].Value
-                    sqls += value.removeSuffix("\"").removePrefix("\"")
+                    sqls += sqlify(value)
                 }
             }
 
@@ -42,4 +41,13 @@ class MysqlAnalyser {
 
         return logs
     }
+
+    private fun sqlify(value: String): String {
+        var text = removeBeginEndQuotes(value)
+        text = removePlus(text)
+        return text
+    }
+
+    private fun removePlus(text: String) = text.replace("\"+\"", "")
+    private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
 }

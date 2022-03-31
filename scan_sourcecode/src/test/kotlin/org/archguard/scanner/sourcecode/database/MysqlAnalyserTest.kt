@@ -19,6 +19,6 @@ internal class MysqlAnalyserTest {
         }
 
         assertEquals(4, logs.size)
-        assertEquals("select source_package as sourcePackage, source_class as sourceClass, source_method as sourceMethod,\"+\" target_url as targetUrl, target_http_method as targetHttpMethod, system_id as systemId\"+\" from container_demand where system_id = :systemId", logs[0].Sql[0])
+        assertEquals("select source_package as sourcePackage, source_class as sourceClass, source_method as sourceMethod, target_url as targetUrl, target_http_method as targetHttpMethod, system_id as systemId from container_demand where system_id = :systemId", logs[0].Sql[0])
     }
 }
