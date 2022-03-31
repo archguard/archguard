@@ -59,9 +59,22 @@ class MysqlAnalyser {
     }
 
     fun sqlify(value: String): String {
-        var text = removeBeginEndQuotes(value)
+        var text = handleRawString(value)
+        text = removeBeginEndQuotes(text)
         text = removePlus(text)
         text = processIn(text)
+        return text
+    }
+
+    private val RAW_STRING_REGEX = "\"\"\"(((.*?)|\n)+)\"\"\"".toRegex()
+
+    private fun handleRawString(text: String): String {
+        val rawString = RAW_STRING_REGEX.find(text)
+        if(rawString != null) {
+            val replace = rawString.groups[1]!!.value
+            return replace
+        }
+
         return text
     }
 
