@@ -74,6 +74,7 @@ class MysqlAnalyser {
         text = removeBeginEndQuotes(text)
         text = removeVariableInLine(text)
         text = removeNextLine(text)
+        text = removeJdbiValueBind(text)
         text = removePlus(text)
         text = processIn(text)
         return text
@@ -82,7 +83,7 @@ class MysqlAnalyser {
     private val RAW_STRING_REGEX = "\"\"\"(((.*?)|\n)+)\"\"\"".toRegex()
     private fun handleRawString(text: String): String {
         val rawString = RAW_STRING_REGEX.find(text)
-        if(rawString != null) {
+        if (rawString != null) {
             return rawString.groups[1]!!.value
         }
 
@@ -105,6 +106,18 @@ class MysqlAnalyser {
         val find = IN_REGEX.find(text)
         if (find != null) {
             return text.replace(IN_REGEX, "in (:${find.groups[2]!!.value})")
+        }
+
+        return text
+    }
+
+
+    // example: `where system_id=:systemId ` => `where system_id=''`
+    private val JDBI_VALUE_BIND = ":([a-zA-Z_]+)".toRegex()
+    private fun removeJdbiValueBind(text: String): String {
+        val find = JDBI_VALUE_BIND.find(text)
+        if (find != null) {
+            return text.replace(JDBI_VALUE_BIND, "''")
         }
 
         return text

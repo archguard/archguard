@@ -28,13 +28,19 @@ internal class MysqlAnalyserTest {
         assertEquals(false, sqlify.contains("\"\"\""))
     }
 
-
     @Test
     fun should_handle_variable_in_sql() {
         val sqlify =
             MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"\"")
 
         assertEquals("select id, module_name from *", sqlify)
+    }
+
+    @Test
+    fun should_handle_kotlin_string_in_sql() {
+        val sqlify = MysqlAnalyser().sqlify("\"select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module\"")
+
+        assertEquals("select id, name, module, loc, access from code_class where system_id='' and name='' and module <=> ''", sqlify)
     }
 
     @Test
