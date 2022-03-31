@@ -22,9 +22,10 @@ class ShotgunSurgeryRepositoryImpl(val jdbi: Jdbi) : ShotgunSurgeryRepository {
     }
 
     override fun getShotgunSurgery(commitIds: List<String>, limit: Long, offset: Long): List<ShotgunSurgery> {
+        val ids = commitIds.joinToString("','", "'", "'")
         val list = jdbi.withHandle<List<String>, Exception> {
             it.createQuery("select id from scm_commit_log  " +
-                    "where id in (${commitIds.joinToString("','", "'", "'")}) " +
+                    "where id in ($ids) " +
                     "order by commit_time desc LIMIT :limit OFFSET :offset")
                     .bind("limit", limit)
                     .bind("offset", offset)
@@ -32,9 +33,10 @@ class ShotgunSurgeryRepositoryImpl(val jdbi: Jdbi) : ShotgunSurgeryRepository {
                     .list()
         }
 
+        val listInStr = list.joinToString("','", "'", "'")
         val sql = "select l.id as commitId, l.short_msg as commitMessage, e.old_path as oldPath, e.new_path as newPath " +
                 "from scm_change_entry e, scm_commit_log l " +
-                "where l.id = e.commit_id and e.commit_id in (${list.joinToString("','", "'", "'")}) "
+                "where l.id = e.commit_id and e.commit_id in ($listInStr) "
         val shotgunSurgeryPOList = jdbi.withHandle<List<ShotgunSurgeryPO>, Exception> {
             it.createQuery(sql)
                     .mapTo(ShotgunSurgeryPO::class.java)
