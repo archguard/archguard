@@ -31,7 +31,7 @@ class MysqlAnalyser {
                     if (MysqlIdentApp.analysis(pureValue) != null) {
                         tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
                     } else {
-                        logger.warn("error for ${node.NodeName}.${function.Name} origin: $originSql \n new: $pureValue")
+                        logger.warn("error for ${node.NodeName}.${function.Name} origin:$originSql \nnew:$pureValue")
                     }
 
                     sqls += pureValue
@@ -46,7 +46,7 @@ class MysqlAnalyser {
                     if (MysqlIdentApp.analysis(pureValue) != null) {
                         tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
                     } else {
-                        logger.warn("error for ${node.NodeName}.${function.Name} $originSql \n new: $pureValue")
+                        logger.warn("error for ${node.NodeName}.${function.Name} origin:$originSql\nnew:$pureValue")
                     }
 
                     sqls += pureValue
