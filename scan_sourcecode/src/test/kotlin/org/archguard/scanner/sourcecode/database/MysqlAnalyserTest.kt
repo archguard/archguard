@@ -46,4 +46,19 @@ internal class MysqlAnalyserTest {
         assertEquals("code_method,code_ref_method_callees", sqlRecord[0].Tables.joinToString(","))
         assertEquals("code_ref_class_dependencies", sqlRecord[1].Tables.joinToString(","))
     }
+
+    @Test
+    fun should_ident_in_variable() {
+        val resource = this.javaClass.classLoader.getResource("jdbi/TestBadSmellRepositoryImpl.kt")!!
+        val path = Paths.get(resource.toURI()).toFile().absolutePath
+
+        val nodes = KotlinAnalyserApp().analysisNodeByPath(path)
+        val mysqlAnalyser = MysqlAnalyser()
+
+        val sqlRecord: List<SqlRecord> = nodes.flatMap {
+            mysqlAnalyser.analysisByNode(it, "")
+        }
+
+        assertEquals(14, sqlRecord.size)
+    }
 }
