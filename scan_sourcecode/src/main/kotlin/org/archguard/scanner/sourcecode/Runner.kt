@@ -16,6 +16,7 @@ import org.archguard.scanner.common.ClassRepository
 import org.archguard.scanner.common.ContainerRepository
 import org.archguard.scanner.common.backend.CSharpApiAnalyser
 import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.sourcecode.database.MysqlAnalyser
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -80,6 +81,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         saveApi(dataStructs, systemId, lang)
+        saveDatabase(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -108,6 +110,21 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         repo.close()
+    }
+
+    private fun saveDatabase(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
+        when (language.lowercase()) {
+            "java", "kotlin" -> {
+                logger.info("start analysis backend api ---- ${language.lowercase()}")
+
+                val apiAnalyser = MysqlAnalyser()
+                val sqls = dataStructs.map { data ->
+                    apiAnalyser.analysisByNode(data, "")
+                }.toList()
+
+                File("database.json").writeText(Json.encodeToString(sqls))
+            }
+        }
     }
 
     private fun saveApi(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {

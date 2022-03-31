@@ -33,7 +33,7 @@ class MysqlAnalyser {
 
             function.FunctionCalls.forEach {
                 val callMethodName = it.FunctionName.split(".").last()
-                if (callMethodName == "createQuery") {
+                if (callMethodName == "createQuery" && it.Parameters.isNotEmpty()) {
                     val pureValue = sqlify(it.Parameters[0].TypeValue)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
                         println(it.FunctionName)
