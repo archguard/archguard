@@ -124,14 +124,21 @@ class MysqlAnalyser {
         return text
     }
 
+    private val KOTLIN_VARIABLE_WITH_QUOTE = "'\\\$([a-zA-Z_]+)'".toRegex()
     private val KOTLIN_VARIABLE = "\\\$([a-zA-Z_]+)".toRegex()
     private fun removeKotlinVariable(text: String): String {
-        val find = KOTLIN_VARIABLE.find(text)
+        var str = text
+        val find = KOTLIN_VARIABLE_WITH_QUOTE.find(str)
         if (find != null) {
-            return text.replace(KOTLIN_VARIABLE, "")
+            str = str.replace(KOTLIN_VARIABLE_WITH_QUOTE, "''")
         }
 
-        return text
+        val varFind = KOTLIN_VARIABLE.find(str)
+        if (varFind != null) {
+            str = str.replace(KOTLIN_VARIABLE, "''")
+        }
+
+        return str
     }
 
     private fun removeNextLine(text: String) = text.replace("\n", "")
