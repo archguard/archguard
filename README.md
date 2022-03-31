@@ -27,6 +27,22 @@ Screenshots:
   </tr>
 </table>
 
+特性（Features）：
+
+- 容器级别依赖分析（当前支持 HTTP API）。API 生产者支持语言：Java、Kotlin、C#，API 消费者支持语言：TypeScript/JavaScript、Kotlin、Java 等。
+   - HTTP API 使用清单、调用清单
+   - HTTP API 依赖可视化分析
+- 架构质量评估以及对应的指标分析。
+   - 体量维度
+   - 耦合维度
+   - 内聚维度
+   - 冗余维度
+   - 质量维度
+- 总览 
+   - 代码间依赖分析。支持级别模块、包、类、方法四个级别。
+   - 代码行数分析 + 不稳定性分析。
+- 数据库地图（进行中）
+- 精准测试/变化分析（进行中）
 
 Features: 
 
