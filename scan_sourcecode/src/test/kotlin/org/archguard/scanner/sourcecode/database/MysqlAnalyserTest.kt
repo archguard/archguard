@@ -84,7 +84,7 @@ internal class MysqlAnalyserTest {
     }
 
     @Test
-//    @Disabled
+    @Disabled
     fun should_ident_in_variable() {
         val resource = this.javaClass.classLoader.getResource("jdbi/TestBadSmellRepositoryImpl.kt")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
