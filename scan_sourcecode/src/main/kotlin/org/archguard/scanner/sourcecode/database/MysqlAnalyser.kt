@@ -22,7 +22,7 @@ class MysqlAnalyser {
             val tables: MutableList<String> = mutableListOf()
 
             function.Annotations.forEach {
-                if(it.Name == "SqlQuery") {
+                if (it.Name == "SqlQuery") {
                     val pureValue = sqlify(it.KeyValues[0].Value)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
                         tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
@@ -42,8 +42,8 @@ class MysqlAnalyser {
                 }
             }
 
-            if(sqls.size > 0) {
-                logs += SqlRecord (
+            if (sqls.size > 0) {
+                logs += SqlRecord(
                     Package = node.Package,
                     ClassName = node.NodeName,
                     FunctionName = function.Name,
@@ -65,7 +65,16 @@ class MysqlAnalyser {
         return text
     }
 
-    private fun processIn(text: String) = text.replace("in\\s+\\((\\s+)?<[a-zA-Z]+>(\\s+)?\\)".toRegex(), "in (:ids)")
+    private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z]+)>(\\s+)?\\)".toRegex()
+
+    private fun processIn(text: String): String {
+        val find = IN_REGEX.find(text)
+        if (find != null) {
+            return text.replace(IN_REGEX, "in (:${find.groups[2]!!.value})")
+        }
+        return text
+    }
+
     private fun removePlus(text: String) = text.replace("\"+\"", "")
     private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
 }
