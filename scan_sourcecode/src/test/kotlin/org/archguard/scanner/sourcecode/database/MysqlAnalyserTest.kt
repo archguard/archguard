@@ -14,7 +14,7 @@ internal class MysqlAnalyserTest {
         val nodes = KotlinAnalyserApp().analysisNodeByPath(path)
         val mysqlAnalyser = MysqlAnalyser()
 
-        val logs: List<MysqlLog> = nodes.flatMap {
+        val logs: List<SqlRecord> = nodes.flatMap {
             mysqlAnalyser.analysisByNode(it, "")
         }
 
@@ -30,10 +30,12 @@ internal class MysqlAnalyserTest {
         val nodes = KotlinAnalyserApp().analysisNodeByPath(path)
         val mysqlAnalyser = MysqlAnalyser()
 
-        val logs: List<MysqlLog> = nodes.flatMap {
+        val sqlRecord: List<SqlRecord> = nodes.flatMap {
             mysqlAnalyser.analysisByNode(it, "")
         }
 
-        assertEquals(2, logs.size)
+        assertEquals(2, sqlRecord.size)
+        assertEquals("code_method,code_ref_method_callees", sqlRecord[0].Tables.joinToString(","))
+        assertEquals("code_ref_class_dependencies", sqlRecord[1].Tables.joinToString(","))
     }
 }
