@@ -36,7 +36,6 @@ class MysqlAnalyser {
                 if (callMethodName == "createQuery" && it.Parameters.isNotEmpty()) {
                     val pureValue = sqlify(it.Parameters[0].TypeValue)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
-                        println(it.FunctionName)
                         val tableNames = MysqlIdentApp.analysis(pureValue)!!.tableNames
                         tables += tableNames
                     }
