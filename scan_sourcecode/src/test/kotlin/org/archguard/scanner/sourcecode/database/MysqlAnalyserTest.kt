@@ -30,7 +30,7 @@ internal class MysqlAnalyserTest {
 
     @Test
     fun should_handle_variable_in_sql() {
-        val sqlify = MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"\"")
+        val sqlify = MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"")
         assertEquals("select id, module_name from *", sqlify)
     }
 
