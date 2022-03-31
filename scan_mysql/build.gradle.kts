@@ -15,7 +15,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 
     implementation("org.slf4j:slf4j-jdk14:1.7.36")
-    implementation("org.slf4j:slf4j-api:1.7.20")
+//    implementation("org.slf4j:slf4j-api:1.7.20")
     implementation("io.netty:netty-all:4.1.42.Final")
 
 

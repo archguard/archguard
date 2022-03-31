@@ -30,8 +30,8 @@ dependencies {
 //    implementation("com.phodal.chapi:chapi-application:1.3.0-SNAPSHOT")
 //    implementation("com.phodal.chapi:chapi-domain:1.3.0-SNAPSHOT")
 
-    implementation("com.phodal.chapi:chapi-application:1.4.1")
-    implementation("com.phodal.chapi:chapi-domain:1.4.1")
+    implementation("com.phodal.chapi:chapi-application:1.4.2")
+    implementation("com.phodal.chapi:chapi-domain:1.4.2")
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
@@ -45,7 +45,7 @@ application {
     mainClass.set("org.archguard.scanner.sourcecode.RunnerKt")
 }
 
-tasks{
+tasks {
     shadowJar {
         manifest {
             attributes(Pair("Main-Class", "org.archguard.scanner.sourcecode.RunnerKt"))
