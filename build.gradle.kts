@@ -41,7 +41,7 @@ allprojects {
         afterEvaluate {
             classDirectories.setFrom(files(classDirectories.files.map {
                 fileTree(it).apply {
-                    exclude("chapi/ast/antlr")
+                    exclude("dev.evolution")
                 }
             }))
         }
