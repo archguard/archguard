@@ -76,7 +76,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
         File("structs.json").writeText(Json.encodeToString(dataStructs))
 
-        if(!apiOnly) {
+        if (!apiOnly) {
             saveDataStructs(dataStructs, systemId, lang)
         }
 
@@ -86,7 +86,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
 
-        if(!apiOnly) {
+        if (!apiOnly) {
             storeDatabase(ALL_TABLES, systemId)
         } else {
             storeDatabase(API_TABLES, systemId)
@@ -120,7 +120,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 val apiAnalyser = MysqlAnalyser()
                 val sqls = dataStructs.map { data ->
                     apiAnalyser.analysisByNode(data, "")
-                }.toList()
+                }
+                    .filter { it.isNotEmpty() }
+                    .toList()
 
                 File("database.json").writeText(Json.encodeToString(sqls))
             }
