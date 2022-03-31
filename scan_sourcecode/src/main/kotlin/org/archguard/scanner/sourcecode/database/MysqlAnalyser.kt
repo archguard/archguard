@@ -3,6 +3,7 @@ package org.archguard.scanner.sourcecode.database
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
 import org.archguard.ident.mysql.MysqlIdentApp
+import org.slf4j.LoggerFactory
 
 @Serializable
 data class SqlRecord(
@@ -14,6 +15,8 @@ data class SqlRecord(
 )
 
 class MysqlAnalyser {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<SqlRecord> {
         val logs: MutableList<SqlRecord> = mutableListOf()
         // by annotation: identify
@@ -22,11 +25,15 @@ class MysqlAnalyser {
             val tables: MutableSet<String> = mutableSetOf()
 
             function.Annotations.forEach {
-                if (it.Name == "SqlQuery") {
-                    val pureValue = sqlify(it.KeyValues[0].Value)
+                if (it.Name == "SqlQuery" && it.KeyValues.isNotEmpty()) {
+                    val originSql = it.KeyValues[0].Value
+                    val pureValue = sqlify(originSql)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
                         tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
+                    } else {
+                        logger.warn("error for ${node.NodeName}.${function.Name} origin: $originSql \n new: $pureValue")
                     }
+
                     sqls += pureValue
                 }
             }
@@ -34,11 +41,14 @@ class MysqlAnalyser {
             function.FunctionCalls.forEach {
                 val callMethodName = it.FunctionName.split(".").last()
                 if (callMethodName == "createQuery" && it.Parameters.isNotEmpty()) {
-                    val pureValue = sqlify(it.Parameters[0].TypeValue)
+                    val originSql = it.Parameters[0].TypeValue
+                    val pureValue = sqlify(originSql)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
-                        val tableNames = MysqlIdentApp.analysis(pureValue)!!.tableNames
-                        tables += tableNames
+                        tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
+                    } else {
+                        logger.warn("error for ${node.NodeName}.${function.Name} $originSql \n new: $pureValue")
                     }
+
                     sqls += pureValue
                 }
             }
