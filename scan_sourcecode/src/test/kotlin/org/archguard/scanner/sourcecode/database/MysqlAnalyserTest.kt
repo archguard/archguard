@@ -37,6 +37,13 @@ internal class MysqlAnalyserTest {
     }
 
     @Test
+    fun should_kotlin_variable_in_sql() {
+        val sqlify = MysqlAnalyser().sqlify("select id, module_name from system and c.name = '${'$'}name'")
+
+        assertEquals("select id, module_name from system and c.name = ''", sqlify)
+    }
+
+    @Test
     fun should_handle_kotlin_string_in_sql() {
         val sqlify = MysqlAnalyser().sqlify("\"select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module\"")
 
@@ -56,7 +63,7 @@ internal class MysqlAnalyserTest {
         }
 
         assertEquals(4, logs.size)
-        assertEquals("select source_package as sourcePackage, source_class as sourceClass, source_method as sourceMethod, target_url as targetUrl, target_http_method as targetHttpMethod, system_id as systemId from container_demand where system_id = :systemId", logs[0].Sql[0])
+        assertEquals("select source_package as sourcePackage, source_class as sourceClass, source_method as sourceMethod, target_url as targetUrl, target_http_method as targetHttpMethod, system_id as systemId from container_demand where system_id = ''", logs[0].Sql[0])
     }
 
     @Test
@@ -77,7 +84,7 @@ internal class MysqlAnalyserTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     fun should_ident_in_variable() {
         val resource = this.javaClass.classLoader.getResource("jdbi/TestBadSmellRepositoryImpl.kt")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath

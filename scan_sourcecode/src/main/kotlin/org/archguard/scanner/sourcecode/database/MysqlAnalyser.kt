@@ -73,6 +73,7 @@ class MysqlAnalyser {
         var text = handleRawString(value)
         text = removeBeginEndQuotes(text)
         text = removeVariableInLine(text)
+        text = removeKotlinVariable(text)
         text = removeNextLine(text)
         text = removeJdbiValueBind(text)
         text = removePlus(text)
@@ -118,6 +119,16 @@ class MysqlAnalyser {
         val find = JDBI_VALUE_BIND.find(text)
         if (find != null) {
             return text.replace(JDBI_VALUE_BIND, "''")
+        }
+
+        return text
+    }
+
+    private val KOTLIN_VARIABLE = "\\\$([a-zA-Z_]+)".toRegex()
+    private fun removeKotlinVariable(text: String): String {
+        val find = KOTLIN_VARIABLE.find(text)
+        if (find != null) {
+            return text.replace(KOTLIN_VARIABLE, "")
         }
 
         return text
