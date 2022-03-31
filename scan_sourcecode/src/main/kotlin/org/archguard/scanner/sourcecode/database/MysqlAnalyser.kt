@@ -17,9 +17,9 @@ class MysqlAnalyser {
     fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<SqlRecord> {
         val logs: MutableList<SqlRecord> = mutableListOf()
         // by annotation: identify
-        val sqls: MutableList<String> = mutableListOf()
         node.Functions.forEach { function ->
-            val tables: MutableList<String> = mutableListOf()
+            val sqls: MutableList<String> = mutableListOf()
+            val tables: MutableSet<String> = mutableSetOf()
 
             function.Annotations.forEach {
                 if (it.Name == "SqlQuery") {
@@ -36,7 +36,9 @@ class MysqlAnalyser {
                 if (callMethodName == "createQuery") {
                     val pureValue = sqlify(it.Parameters[0].TypeValue)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
-                        tables += MysqlIdentApp.analysis(pureValue)!!.tableNames
+                        println(it.FunctionName)
+                        val tableNames = MysqlIdentApp.analysis(pureValue)!!.tableNames
+                        tables += tableNames
                     }
                     sqls += pureValue
                 }
@@ -47,7 +49,7 @@ class MysqlAnalyser {
                     Package = node.Package,
                     ClassName = node.NodeName,
                     FunctionName = function.Name,
-                    Tables = tables,
+                    Tables = tables.toList(),
                     Sql = sqls
                 )
             }
@@ -61,6 +63,7 @@ class MysqlAnalyser {
     fun sqlify(value: String): String {
         var text = handleRawString(value)
         text = removeBeginEndQuotes(text)
+        text = removeNextLine(text)
         text = removePlus(text)
         text = processIn(text)
         return text
@@ -71,8 +74,7 @@ class MysqlAnalyser {
     private fun handleRawString(text: String): String {
         val rawString = RAW_STRING_REGEX.find(text)
         if(rawString != null) {
-            val replace = rawString.groups[1]!!.value
-            return replace
+            return rawString.groups[1]!!.value
         }
 
         return text
@@ -85,9 +87,11 @@ class MysqlAnalyser {
         if (find != null) {
             return text.replace(IN_REGEX, "in (:${find.groups[2]!!.value})")
         }
+
         return text
     }
 
+    private fun removeNextLine(text: String) = text.replace("\n", "")
     private fun removePlus(text: String) = text.replace("\"+\"", "")
     private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
 }

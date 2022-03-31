@@ -5,8 +5,11 @@ import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.select.Select
 import net.sf.jsqlparser.util.TablesNamesFinder
 import org.archguard.ident.mysql.model.SimpleRelation
+import org.slf4j.LoggerFactory
 
 object MysqlIdentApp {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     fun analysis(sql: String): SimpleRelation? {
         val table = SimpleRelation()
 
@@ -17,7 +20,8 @@ object MysqlIdentApp {
 
             table.tableNames = tablesNamesFinder.getTableList(selectStatement)
         } catch (e: Exception) {
-            println(e)
+            logger.warn(e.toString())
+            logger.info(sql)
             return null
         }
 
