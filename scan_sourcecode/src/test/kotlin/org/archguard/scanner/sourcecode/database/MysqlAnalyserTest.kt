@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 internal class MysqlAnalyserTest {
     @Test
-    fun shouldSupportIdentifyComponentApi() {
+    fun should_ident_jdbi_create_query_annotation() {
         val resource = this.javaClass.classLoader.getResource("jdbi/ContainerServiceDao.kt")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
 
