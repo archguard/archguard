@@ -11,4 +11,12 @@ internal class MysqlIdentAppTest {
 
         assertEquals("container_demand", relation.tableNames.joinToString(","))
     }
+
+    @Test
+    internal fun identForCreateQuery() {
+        val relation =
+            MysqlIdentApp().analysis("select a.clzname aClz, b.clzname bClz from code_method a, code_method b, code_ref_method_callees mc where a.id = mc.a and b.id = mc.b and a.module='${'$'}module' and b.module='${'$'}module' and a.system_id='${'$'}systemId' and b.system_id='${'$'}systemId' and mc.system_id='${'$'}systemId'")
+
+        assertEquals("code_method,code_ref_method_callees", relation.tableNames.joinToString(","))
+    }
 }

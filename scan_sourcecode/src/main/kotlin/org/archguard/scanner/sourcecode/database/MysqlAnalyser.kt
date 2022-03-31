@@ -19,11 +19,18 @@ class MysqlAnalyser {
         // by annotation: identify
         val sqls: MutableList<String> = mutableListOf()
         node.Functions.forEach { function ->
-            println(Json.encodeToString(function.Annotations))
             function.Annotations.forEach {
                 if(it.Name == "SqlQuery") {
                     val value = it.KeyValues[0].Value
                     sqls += sqlify(value)
+                }
+            }
+
+            function.FunctionCalls.forEach {
+                val callMethodName = it.FunctionName.split(".").last()
+                if (callMethodName == "createQuery") {
+                    val paramValue = it.Parameters[0].TypeValue
+                    sqls += sqlify(paramValue)
                 }
             }
 
