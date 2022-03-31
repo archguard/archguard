@@ -6,7 +6,7 @@ import net.sf.jsqlparser.statement.select.Select
 import net.sf.jsqlparser.util.TablesNamesFinder
 import org.archguard.ident.mysql.model.SimpleRelation
 
-class MysqlIdentApp {
+object MysqlIdentApp {
     fun analysis(sql: String): SimpleRelation? {
         val table = SimpleRelation()
 
