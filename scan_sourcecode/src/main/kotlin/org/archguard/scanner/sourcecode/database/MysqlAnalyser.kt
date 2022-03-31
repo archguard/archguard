@@ -105,7 +105,7 @@ class MysqlAnalyser {
     }
 
     // some text: "\"+orderSqlPiece+\""
-    private val VARIABLE_IN_LINE = "(\"\\\\\"\\+[a-zA-Z_]+\\+\"\\\\\")".toRegex()
+    private val VARIABLE_IN_LINE = "(\"\\\\\"\\+[a-zA-Z0-9_]+\\+\"\\\\\")".toRegex()
     private fun removeVariableInLine(text: String): String {
         val find = VARIABLE_IN_LINE.find(text)
         if (find != null) {
@@ -115,7 +115,7 @@ class MysqlAnalyser {
         return text
     }
 
-    private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z]+)>(\\s+)?\\)".toRegex()
+    private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z0-9_]+)>(\\s+)?\\)".toRegex()
     private fun processIn(text: String): String {
         val find = IN_REGEX.find(text)
         if (find != null) {
@@ -127,7 +127,7 @@ class MysqlAnalyser {
 
 
     // example: `where system_id=:systemId ` => `where system_id=''`
-    private val JDBI_VALUE_BIND = ":([a-zA-Z_]+)".toRegex()
+    private val JDBI_VALUE_BIND = ":([a-zA-Z0-9_]+)".toRegex()
     private fun removeJdbiValueBind(text: String): String {
         val find = JDBI_VALUE_BIND.find(text)
         if (find != null) {
@@ -137,8 +137,8 @@ class MysqlAnalyser {
         return text
     }
 
-    private val KOTLIN_VARIABLE_WITH_QUOTE = "'\\\$([a-zA-Z_]+)'".toRegex()
-    private val KOTLIN_VARIABLE = "\\\$([a-zA-Z_]+)".toRegex()
+    private val KOTLIN_VARIABLE_WITH_QUOTE = "'\\\$([a-zA-Z0-9_]+)'".toRegex()
+    private val KOTLIN_VARIABLE = "\\\$([a-zA-Z0-9_]+)".toRegex()
     private fun removeKotlinVariable(text: String): String {
         var str = text
         val find = KOTLIN_VARIABLE_WITH_QUOTE.find(str)
@@ -155,10 +155,24 @@ class MysqlAnalyser {
     }
 
     private fun removeNextLine(text: String) = text.replace("\n", "")
-    private fun removePlusSymbol(text: String) = text.replace("\"+\"", "")
-    private fun removePlusWithVariable(text: String) = text.replace("\"\\+([a-zA-Z_]+)".toRegex(), "")
+    private fun removePlusSymbol(text: String) = text
+        .replace("\"+\"", "")
+        .replace("+\"", "")
+
+    private fun removePlusWithVariable(text: String) = text.replace("\"\\+([a-zA-Z0-9_]+)".toRegex(), "")
     private fun removeEndWithMultipleSingleQuote(text: String) = text.replace("\'\'\\s+\'\'".toRegex(), "''")
-    private fun removeBeginEndQuotes(value: String) = value.removeSuffix("\"").removePrefix("\"")
-    private fun fillLimitEmpty(value: String) = value.replace("offset ''", "offset 10")
-    private fun fillOffsetEmpty(value: String) = value.replace("limit ''", "limit 10")
+    private fun removeBeginEndQuotes(value: String): String {
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.removeSuffix("\"").removePrefix("\"")
+        }
+        return value
+    }
+
+    private fun fillLimitEmpty(value: String) = value
+        .replace("offset ''", "offset 10")
+        .replace("OFFSET ''", "OFFSET 10")
+
+    private fun fillOffsetEmpty(value: String) = value
+        .replace("limit ''", "limit 10")
+        .replace("LIMIT ''", "LIMIT 10")
 }

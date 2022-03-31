@@ -30,16 +30,19 @@ internal class MysqlAnalyserTest {
 
     @Test
     fun should_handle_variable_in_sql() {
-        val sqlify =
-            MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"\"")
-
+        val sqlify = MysqlAnalyser().sqlify("select id, module_name from \"\\\"+orderSqlPiece+\"\\\"\"")
         assertEquals("select id, module_name from *", sqlify)
+    }
+
+    @Test
+    fun should_handle_plus_without_double_quote() {
+        val sqlify = MysqlAnalyser().sqlify("select id, system_name as systemName, language from system_info +\"")
+        assertEquals("select id, system_name as systemName, language from system_info ", sqlify)
     }
 
     @Test
     fun should_kotlin_variable_in_sql() {
         val sqlify = MysqlAnalyser().sqlify("select id, module_name from system and c.name = '${'$'}name'")
-
         assertEquals("select id, module_name from system and c.name = ''", sqlify)
     }
 
