@@ -1,25 +1,16 @@
 package org.archguard.scanner.sourcecode.database
 
 import chapi.domain.core.CodeDataStruct
-import kotlinx.serialization.Serializable
 import org.archguard.ident.mysql.MysqlIdentApp
+import org.archguard.scanner.common.database.CodeDatabaseRelation
 import org.slf4j.LoggerFactory
-
-@Serializable
-data class SqlRecord(
-    val Package: String = "",
-    val ClassName: String = "",
-    val FunctionName: String = "",
-    val Tables: List<String> = listOf(),
-    val Sql: List<String> = listOf()
-)
 
 class MysqlAnalyser {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     // todo: split by framework
-    fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<SqlRecord> {
-        val logs: MutableList<SqlRecord> = mutableListOf()
+    fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<CodeDatabaseRelation> {
+        val logs: MutableList<CodeDatabaseRelation> = mutableListOf()
         // by annotation: identify
         node.Functions.forEach { function ->
             val sqls: MutableList<String> = mutableListOf()
@@ -56,12 +47,12 @@ class MysqlAnalyser {
             }
 
             if (sqls.size > 0) {
-                logs += SqlRecord(
-                    Package = node.Package,
-                    ClassName = node.NodeName,
-                    FunctionName = function.Name,
-                    Tables = tables.toList(),
-                    Sql = sqls
+                logs += CodeDatabaseRelation(
+                    packageName = node.Package,
+                    className = node.NodeName,
+                    functionName = function.Name,
+                    tables = tables.toList(),
+                    sqls = sqls
                 )
             }
         }

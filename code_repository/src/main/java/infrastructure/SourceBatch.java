@@ -36,7 +36,9 @@ public class SourceBatch extends DefaultBatchImpl {
             // for c4 level in api call
             "container_demand",
             "container_resource",
-            "container_service"
+            "container_service",
+
+            "data_code_database_relation"
     };
 
     @Override

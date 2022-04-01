@@ -14,6 +14,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.common.ClassRepository
 import org.archguard.scanner.common.ContainerRepository
+import org.archguard.scanner.common.DatamapRepository
 import org.archguard.scanner.common.backend.CSharpApiAnalyser
 import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.archguard.scanner.sourcecode.database.MysqlAnalyser
@@ -118,13 +119,14 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 logger.info("start analysis backend api ---- ${language.lowercase()}")
 
                 val apiAnalyser = MysqlAnalyser()
-                val sqls = dataStructs.map { data ->
+                val records = dataStructs.flatMap { data ->
                     apiAnalyser.analysisByNode(data, "")
                 }
-                    .filter { it.isNotEmpty() }
                     .toList()
 
-                File("database.json").writeText(Json.encodeToString(sqls))
+
+                DatamapRepository(systemId, language, path).saveRelations(records)
+                File("database.json").writeText(Json.encodeToString(records))
             }
         }
     }
