@@ -17,7 +17,8 @@ class MysqlAnalyser {
             val tables: MutableSet<String> = mutableSetOf()
 
             function.Annotations.forEach {
-                if (it.Name == "SqlQuery" && it.KeyValues.isNotEmpty()) {
+                // jpa use `@Query`, jdbi use `SqlQuery`
+                if ((it.Name == "Query" || it.Name == "SqlQuery")&& it.KeyValues.isNotEmpty()) {
                     val originSql = it.KeyValues[0].Value
                     val pureValue = sqlify(originSql)
                     if (MysqlIdentApp.analysis(pureValue) != null) {
