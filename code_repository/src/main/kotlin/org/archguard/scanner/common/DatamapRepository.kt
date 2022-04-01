@@ -34,7 +34,7 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
         values["method_name"] = relation.functionName
 
         values["tables"] = relation.tables.joinToString(",")
-        values["sqls"] = relation.sqls.joinToString(",")
+        values["sqls"] = ""
 
         batch.add("data_code_database_relation", values)
         return id
