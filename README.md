@@ -10,10 +10,7 @@ Scanner:
 * scan_git - Git commit history scan
 * scan_jacoco - Jacoco scan
 * scan_bytecode - for JVM languages
-* scan_test_badsmell
-   * [x] Java  
-      * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
-* scan_sourcecode
+* scan_sourcecode - Code analysis
   * [x] Java
   * [-] Kotlin
      * [x] Annotation support
@@ -26,10 +23,13 @@ Scanner:
      * [ ] HTTP API
         * [x] axios
         * [x] umi-request
+* scan_test_badsmell - Test code badsmell
+    * [x] Java
+        * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
 * code_repository - share repository code for `scan_bytecode` and `scan_sourcecode`, can be for such as scan_llvm
   * [x] ContainerRepository
   * [x] CodeRepository
-
+* collector_ci [TBD] - collector CI/CD information
 
 ## Features
 
