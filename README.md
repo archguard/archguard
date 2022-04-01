@@ -10,6 +10,7 @@ Scanner:
 * scan_git - Git commit history scan
 * scan_jacoco - Jacoco scan
 * scan_bytecode - for JVM languages
+  * known issues: Bytecode not support for API analysis.
 * scan_sourcecode - Code analysis
   * [x] Java
   * [-] Kotlin
