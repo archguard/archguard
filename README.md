@@ -72,6 +72,8 @@ Features:
 - System Info
     - [ ] Custom build command  
 
+Languages parse by [Chapi](https://github.com/modernizing/chapi)
+
 | Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
 |---------------------|------|--------|-----|--------|------------|-----|-----|-------|-----|
 | http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | 🆕  | 🆕    | 🆕  |
