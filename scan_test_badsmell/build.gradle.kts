@@ -1,7 +1,6 @@
 group = "com.thoughtworks.archguard.scanner"
 
 plugins {
-    java
     id("application")
     kotlin("jvm") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
@@ -13,12 +12,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
-    implementation(kotlin("stdlib"))
 
     implementation("com.phodal.chapi:chapi-domain:1.3.1")
     implementation("com.phodal.chapi:chapi-application:1.3.1")
-
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 application {
@@ -32,12 +28,3 @@ tasks{
         }
     }
 }
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
-
-

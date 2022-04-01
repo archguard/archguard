@@ -21,6 +21,30 @@ allprojects {
         mavenLocal()
     }
 
+    dependencies {
+        implementation(kotlin("stdlib"))
+
+        // log
+        implementation("org.slf4j:slf4j-jdk14:1.7.36")
+
+        // test
+        implementation(kotlin("test"))
+        implementation(kotlin("test-junit"))
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    }
+
+    tasks.getByName<Test>("test") {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
     tasks.test {
         finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
     }
