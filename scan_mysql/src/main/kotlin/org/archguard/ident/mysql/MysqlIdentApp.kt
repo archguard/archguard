@@ -18,7 +18,14 @@ object MysqlIdentApp {
             val selectStatement: Select = statement as Select
             val tablesNamesFinder = TablesNamesFinder()
 
-            table.tableNames = tablesNamesFinder.getTableList(selectStatement)
+            table.tableNames = tablesNamesFinder.getTableList(selectStatement).map {
+                var tableName = it
+                if (it.startsWith("`") && it.endsWith("`")) {
+                     tableName = tableName.removeSuffix("`").removePrefix("`")
+                }
+
+                tableName
+            }
         } catch (e: Exception) {
             logger.warn(e.toString())
             logger.info(sql)

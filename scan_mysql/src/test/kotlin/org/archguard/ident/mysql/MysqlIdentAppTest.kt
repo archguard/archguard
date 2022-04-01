@@ -37,6 +37,14 @@ internal class MysqlIdentAppTest {
     }
 
     @Test
+    internal fun should_handle_table_name_in_backtick() {
+        val code = "select id, system_name as systemName,\"+\" language from `system_info` where id in (:ids)"
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("system_info", relation!!.tableNames.joinToString(","))
+    }
+
+    @Test
     internal fun should_handle_replaced_ids() {
         val code = "select id, system_name as systemName,\"+\" language from system_info where id in (:ids)"
         val relation = MysqlIdentApp.analysis(code)
