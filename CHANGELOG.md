@@ -1,4 +1,38 @@
-# [](https://github.com/archguard/scanner/compare/v1.4.0...v) (2022-03-30)
+# [](https://github.com/archguard/scanner/compare/v1.4.1...v) (2022-04-01)
+
+
+
+## [1.4.1](https://github.com/archguard/scanner/compare/v1.4.0...v1.4.1) (2022-03-31)
+
+
+### Bug Fixes
+
+* fix build ([4dc6bf5](https://github.com/archguard/scanner/commit/4dc6bf53367c9931f3e1b2268733eda935e28dad))
+* fix query issue for  without quote ([fb6bbfe](https://github.com/archguard/scanner/commit/fb6bbfe6070f94ab8cb148fc5dc48a32cc0e385f))
+* fix tests ([e67a8d3](https://github.com/archguard/scanner/commit/e67a8d3c420a231fecb029ecb804cebf9319d1d8))
+* remove unused codes ([d17a0f4](https://github.com/archguard/scanner/commit/d17a0f472ea2ede8f1a6d8d0b0c9a1afbb17dc0c))
+
+
+### Features
+
+* **database:** add first db analyser simple ([ce0b754](https://github.com/archguard/scanner/commit/ce0b7542823e00f7c478eaba18d499d233b81869))
+* **database:** add first query tests ([3b66265](https://github.com/archguard/scanner/commit/3b662651c933d0624559b26d325a47e92dec41a1))
+* **database:** add first query testsgst ([ba4917b](https://github.com/archguard/scanner/commit/ba4917bcf44007033da5ec0753689ac59b2cc36b))
+* **database:** add handle for exception ([c5e34ba](https://github.com/archguard/scanner/commit/c5e34ba6a1aba9b19f5e96bd326c932b516e4084))
+* **database:** add handle for raw string ([1c77596](https://github.com/archguard/scanner/commit/1c77596193199583514bcc30e7fa97b6c44dbd43))
+* **database:** add handle for raw string in sql ([dbbb57e](https://github.com/archguard/scanner/commit/dbbb57ec966f6b6ffb9a49dda62f3643d4a4ca7d))
+* **database:** add log to dbs ([bc21df2](https://github.com/archguard/scanner/commit/bc21df281b0d7dbf09208e5ba2b5283ce9a82239))
+* **database:** add logs for dbs ([4f66b14](https://github.com/archguard/scanner/commit/4f66b148cf2f39ad19920da3fe036941f464058f))
+* **database:** add parse for sql ([1fcb58d](https://github.com/archguard/scanner/commit/1fcb58dfdcebfc0372873b063d962a006ca3fce7))
+* **database:** add query for createQuery ([49446b7](https://github.com/archguard/scanner/commit/49446b7136bedc11ddb18381c09313342fc82a02))
+* **database:** add support for variable inline ([bfe4922](https://github.com/archguard/scanner/commit/bfe4922470a5bba0d7b3495d4eefc53b001309e4))
+* **database:** add to runnder ([1e6106c](https://github.com/archguard/scanner/commit/1e6106c7507ea969d5eaeffdc1f65b939d644695))
+* **database:** fix item empty ([3ea6161](https://github.com/archguard/scanner/commit/3ea61615bdfb888ff57c38881ee625440390846c))
+* **database:** fix kotlin in variable ([0d5e137](https://github.com/archguard/scanner/commit/0d5e13774479ff13ed680aa9476ef00c603a7261))
+* **database:** replace items in default ([2bf1d68](https://github.com/archguard/scanner/commit/2bf1d689964ebdd453bd1f0f75304e3db1ae7853))
+* **database:** support for jdbi binding ([4549046](https://github.com/archguard/scanner/commit/4549046f39767f125d390363c306b96fba2da1eb))
+* **kotlin:** fix end with +" issue ([52b8e0e](https://github.com/archguard/scanner/commit/52b8e0e8c1db0cc90a0f9c73bedf66b6faa5b8f0))
+* **kotlin:** fix offest & limit issues ([86d2b5f](https://github.com/archguard/scanner/commit/86d2b5f1cd2301ff0ed376aeb7387d8443905632))
 
 
 
