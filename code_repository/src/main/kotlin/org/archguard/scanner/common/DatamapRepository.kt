@@ -31,7 +31,7 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
 
         values["package_name"] = relation.packageName
         values["class_name"] = relation.className
-        values["method_name"] = relation.functionName
+        values["function_name"] = relation.functionName
 
         values["tables"] = relation.tables.joinToString(",")
         values["sqls"] = ""
