@@ -73,7 +73,7 @@ allprojects {
 }
 
 dependencies {
-    jacocoAggregation(project(":source_repository"))
+    jacocoAggregation(project(":code_repository"))
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sourcecode"))

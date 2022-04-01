@@ -26,6 +26,10 @@ Scanner:
      * [ ] HTTP API
         * [x] axios
         * [x] umi-request
+* code_repository - share repository code for `scan_bytecode` and `scan_sourcecode`, can be for such as scan_llvm
+  * [x] ContainerRepository
+  * [x] CodeRepository
+
 
 ## Features
 
