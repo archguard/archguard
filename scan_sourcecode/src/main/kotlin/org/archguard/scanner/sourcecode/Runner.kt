@@ -82,6 +82,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         saveApi(dataStructs, systemId, lang)
+
+
         saveDatabase(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
@@ -116,7 +118,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private fun saveDatabase(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         when (language.lowercase()) {
             "java", "kotlin" -> {
-                logger.info("start analysis backend api ---- ${language.lowercase()}")
+                logger.info("start analysis database api ---- ${language.lowercase()}")
 
                 val apiAnalyser = MysqlAnalyser()
                 val records = dataStructs.flatMap { data ->
@@ -125,7 +127,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
                     .toList()
 
 
-                DatamapRepository(systemId, language, path).saveRelations(records)
+                val datamapRepository = DatamapRepository(systemId, language, path)
+                datamapRepository.saveRelations(records)
+                datamapRepository.close()
                 File("database.json").writeText(Json.encodeToString(records))
             }
         }
