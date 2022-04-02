@@ -32,6 +32,7 @@ services:
   archguard_mysql:
     image: "mysql:8"
     container_name: archguard_mysql
+    platform: linux/amd64
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "13306:3306"
