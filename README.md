@@ -94,7 +94,9 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 1. create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
 
-2. run: `./gradlew bootrun`
+2. run migration: `./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate`
+
+3. run: `./gradlew bootrun`
 
 ### Docker
 
