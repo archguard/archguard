@@ -110,6 +110,12 @@ docker-compose up
 
 ![QRCODE](https://archguard.org/qrcode.jpg)
 
+## Q & A
+
+### why not APM
+
+APM is build in runtime, ArchGuard is focus on development and rules. In archguard, not follow rule will not show data, better for governance.
+
 License
 ---
 
