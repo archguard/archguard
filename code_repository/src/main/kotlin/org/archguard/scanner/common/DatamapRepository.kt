@@ -3,9 +3,13 @@ package org.archguard.scanner.common
 import infrastructure.SourceBatch
 import org.archguard.scanner.common.database.CodeDatabaseRelation
 import java.util.HashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 class DatamapRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
+    private val count = AtomicInteger(0)
+    private val batchStep = 100
+
     private val systemId: String
     private val language: String
     private val workspace: String
@@ -19,6 +23,13 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
     fun saveRelations(records: List<CodeDatabaseRelation>) {
         records.forEach {
             saveRecord(it)
+
+            count.incrementAndGet()
+            if (count.get() == batchStep) {
+                flush()
+                count.compareAndSet(batchStep, 0)
+            }
+
         }
     }
 
@@ -42,6 +53,10 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
 
         batch.add("data_code_database_relation", values)
         return id
+    }
+
+    private fun flush() {
+        batch.execute()
     }
 
     fun close() {

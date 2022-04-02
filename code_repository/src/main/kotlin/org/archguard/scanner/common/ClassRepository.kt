@@ -333,8 +333,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["targetType"] = "todo"
         values["targetId"] = methodId
         values["name"] = annotation.Name
-        batch.add("code_annotation", values)
 
+        batch.add("code_annotation", values)
 
         for (keyValue in annotation.KeyValues) {
             doSaveAnnotationValue(id, keyValue)

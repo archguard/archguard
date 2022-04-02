@@ -81,7 +81,6 @@ class LanguageService {
         }
 
         // if multiple extension file is lost, fallback
-
         val secondExt = this.getExtension(ext)
         val fallbackLang = extToLanguages[secondExt.lowercase()]
         if (fallbackLang != null) {

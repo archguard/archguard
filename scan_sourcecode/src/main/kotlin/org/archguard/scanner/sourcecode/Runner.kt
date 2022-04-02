@@ -82,8 +82,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         saveApi(dataStructs, systemId, lang)
-
-
         saveDatabase(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
@@ -125,9 +123,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
                     apiAnalyser.analysisByNode(data, "")
                 }.toList()
 
-                val datamapRepository = DatamapRepository(systemId, language, path)
-                datamapRepository.saveRelations(records)
-                datamapRepository.close()
+                val repo = DatamapRepository(systemId, language, path)
+                repo.saveRelations(records)
+                repo.close()
+
                 File("database.json").writeText(Json.encodeToString(records))
             }
         }
