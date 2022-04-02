@@ -104,6 +104,12 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 docker-compose up
 ```
 
+### Chat
+
+欢迎加入我们：
+
+![QRCODE](https://archguard.org/qrcode.jpg)
+
 License
 ---
 
