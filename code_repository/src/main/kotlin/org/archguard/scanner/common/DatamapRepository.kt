@@ -45,11 +45,11 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
         values["function_name"] = relation.functionName
 
         values["tables"] = relation.tables.joinToString(",")
-
         // `,` is a symbol in sql
-        values["sqls"] = relation.sqls.joinToString("\n::archguard::\n") {
-            it.replace("\'", "\'\'")
-        }
+//        values["sqls"] = relation.sqls.joinToString("\n::archguard::\n") {
+//            it.replace("\'", "\'\'")
+//        }
+        values["sqls"] = ""
 
         batch.add("data_code_database_relation", values)
         return id
