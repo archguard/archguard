@@ -29,7 +29,7 @@ application {
 tasks{
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "com.thoughtworks.archguard.scan_jacoco.RunnerKt"))
+            attributes(Pair("Main-Class", "com.thoughtworks.archguard.git.scanner.RunnerKt"))
         }
     }
 }
