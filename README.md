@@ -108,13 +108,15 @@ docker-compose up
 
 欢迎加入我们：
 
-![QRCODE](https://archguard.org/qrcode.jpg)
+<img src="https://archguard.org/qrcode.jpg" width="380" height="480">
 
 ## Q & A
 
-### why not APM
+### vs APM
 
-APM is build in runtime, ArchGuard is focus on development and rules. In archguard, not follow rule will not show data, better for governance.
+APM is awesome for developer. APM is build in runtime, ArchGuard is focus on development and rules. In archguard, not follow rule will not show data, better for governance.
+
+APM 是在运行态发现架构问题的，ArchGuard 是运行在开发态。两者之间存在一些 gap，ArchGuard 专注于代码，更适用于通过规范来治理架构 —— 没有规范，没有数据。
 
 License
 ---
