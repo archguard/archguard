@@ -401,9 +401,10 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                 name = field.TypeValue.replace("'", "''")
             }
             if (field.TypeValue.contains("\n")) {
-                println("contains \n will give up: --------------\n-------------")
+                name = field.TypeValue.replace("\n", "\\\n")
+
                 println(field.TypeValue)
-                name = ""
+                println("field: ${field.TypeValue} contains \\\n will translate to '\\\\\n': --------------\n$name\n-------------")
             }
 
             values["id"] = id
