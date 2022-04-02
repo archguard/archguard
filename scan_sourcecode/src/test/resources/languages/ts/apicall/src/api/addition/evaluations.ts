@@ -1,5 +1,7 @@
 import { baseURL } from './config';
+// @ts-ignore
 import { SystemEvaluationHistoryType } from "../../models/system-evaluation";
+// @ts-ignore
 import axios from "../axios";
 
 export function queryEvaluationList() {
