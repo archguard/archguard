@@ -44,7 +44,7 @@ services:
       - dependence_network
     volumes:
       - ./archguard_mysql:/var/lib/mysql:rw
-    user: mysql
+#    user: mysql
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
