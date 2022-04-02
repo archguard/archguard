@@ -100,7 +100,11 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 ### Docker
 
-#### user `docker-compose`
+```
+mkdir -p archguard_mysql
+chmod -R 777 archguard_mysql
+```
+
 
 ```
 docker-compose up
