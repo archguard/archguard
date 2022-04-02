@@ -112,6 +112,15 @@ docker-compose up
 
 ## Q & A
 
+### Scanner 没有数据
+
+```
+java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode.jar --system-id=6 --language=java --path=.
+```
+
+1. 运行目录 scanner 中的 .jar 是否完整。如果出错了，需要从 GitHub 重新下载。
+2. 查看是否生成对应的 sql 文件。如果没有的话，建议可以提交 issue，包含错误日志。
+
 ### vs APM
 
 APM is awesome for developer. APM is build in runtime, ArchGuard is focus on development and rules. In archguard, not follow rule will not show data, better for governance.
