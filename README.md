@@ -62,6 +62,8 @@ Scanner:
     - "container_demand"    for used HTTP API
     - "container_resource"  for provide HTTP API
     - "container_service"   container info                         
+5. create database from code to sql 
+    - "data_code_database_relation" for MySQL 
 
 ### Scan Test Badsmell (Java)
 
@@ -90,10 +92,6 @@ cmd：`./gradlew :scan_jacoco:run --args="--target-project=."`
 introduction: scan source code with [Chapi](https://github.com/modernizing/chapi)
 
 cmd: `java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode-1.1.7-all.jar --system-id=8 --path=scan_git --language=kotlin`
-
-API
-
-RESTTemplate call
 
 ```
 @Component
