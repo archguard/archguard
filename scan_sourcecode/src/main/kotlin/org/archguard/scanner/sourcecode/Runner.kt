@@ -123,9 +123,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 val apiAnalyser = MysqlAnalyser()
                 val records = dataStructs.flatMap { data ->
                     apiAnalyser.analysisByNode(data, "")
-                }
-                    .toList()
-
+                }.toList()
 
                 val datamapRepository = DatamapRepository(systemId, language, path)
                 datamapRepository.saveRelations(records)

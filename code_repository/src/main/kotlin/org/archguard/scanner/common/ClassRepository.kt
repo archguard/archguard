@@ -402,6 +402,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             }
             if (field.TypeValue.contains("\n")) {
                 println("contains \n will give up: --------------\n-------------")
+                println(field.TypeValue)
                 name = ""
             }
 
