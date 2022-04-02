@@ -137,7 +137,9 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
 
         "container_demand",
         "container_resource",
-        "container_service"
+        "container_service",
+
+        "data_code_database_relation"
     )
 
     override fun deleteSystemInfoRelated() {
