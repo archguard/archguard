@@ -5,6 +5,7 @@ services:
     container_name: archguard-frontend
     depends_on:
       - archguard-backend
+      - archguard_flyway
     ports:
       - "11080:80"
     networks:
@@ -14,8 +15,6 @@ services:
     image: "archguard/archguard-backend:latest"
     container_name: archguard-backend
     depends_on:
-      archguard_flyway:
-        condition: service_started
       archguard_mysql:
         condition: service_healthy
     environment:
@@ -54,7 +53,7 @@ services:
 
   flyway:
     container_name: archguard_flyway
-    image: "flyway/flyway:7.15.0"
+    image: flyway/flyway:7.15.0
     command:
       -locations=/flyway/sql -connectRetries=60 migrate
     environment:
