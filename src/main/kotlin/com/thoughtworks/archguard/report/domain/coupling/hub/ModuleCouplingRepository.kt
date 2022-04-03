@@ -1,4 +1,4 @@
-import com.thoughtworks.archguard.report.domain.coupling.hub.ModuleCoupling
+package com.thoughtworks.archguard.report.domain.coupling.hub
 
 import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
 

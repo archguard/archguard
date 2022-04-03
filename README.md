@@ -115,7 +115,7 @@ Known issues with Colima: `docker mysql exited 137 memory`
 The default VM created by Colima has 2 CPUs, 2GiB memory and 60GiB storage.  When run scanner in large projects, the default config will make MySQL exited, can to set more memory for ArchGuard:
 
 ```
-colima start --cpu 4 --memory 8``
+colima start --cpu 4 --memory 8
 ```
 
 ### Chat
