@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.change
+package com.thoughtworks.archguard.change.controller
 
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.change.application.GitChangeService
