@@ -11,13 +11,13 @@ dependencies {
 }
 
 application {
-    mainClass.set("org.archguard.collector.ci.RunnerKt")
+    mainClass.set("org.archguard.diff.changes.RunnerKt")
 }
 
 tasks{
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "org.archguard.collector.ci.RunnerKt"))
+            attributes(Pair("Main-Class", "org.archguard.diff.changes.RunnerKt"))
         }
     }
 }
