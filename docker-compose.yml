@@ -5,7 +5,6 @@ services:
     container_name: archguard-frontend
     depends_on:
       - archguard-backend
-      - archguard_flyway
     ports:
       - "11080:80"
     networks:
@@ -50,22 +49,6 @@ services:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
       retries: 5
-
-  flyway:
-    container_name: archguard_flyway
-    image: flyway/flyway:7.15.0
-    command:
-      -locations=/flyway/sql -connectRetries=60 migrate
-    environment:
-      - FLYWAY_USER=root
-      - FLYWAY_PASSWORD=prisma
-      - FLYWAY_URL=jdbc:mysql://archguard_mysql:3306/archguard
-    volumes:
-      - ./src/main/resources/db/migration:/flyway/sql
-    depends_on:
-      - archguard_mysql
-    networks:
-      - dependence_network
 
   archguard_influxdb:
     image: "influxdb:1.8"
