@@ -50,14 +50,13 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
     }
 
     private fun download() {
-        if (File(SCAN_JACOCO_JAR).exists()) {
-            return
-        }
+        if (File(SCAN_JACOCO_JAR).exists()) { return }
         val jarLink = "$host/$SCAN_JACOCO_JAR"
+
+        log.info("start download scan_jacoco tool")
         FileOperator.download(URL(jarLink), File(SCAN_JACOCO_JAR))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
-        chmod.directory(workspace)
-        chmod.start().waitFor()
+        log.info("downloaded scan_jacoco tool")
+        copyIntoSystemRoot()
     }
 
     private fun call(cmd: List<String>) {

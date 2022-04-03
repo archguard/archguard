@@ -40,12 +40,11 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) 
     }
 
     private fun download() {
-        log.info("download jar tool")
+        log.info("start download scan_bytecode tool")
         val downloadUrl = "$host/$SCAN_JAVA_BYTECODE_JAR"
         FileOperator.download(URL(downloadUrl), File(SCAN_JAVA_BYTECODE_JAR))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        log.info("downloaded scan_bytecode tool")
+        copyIntoSystemRoot()
     }
 
     private fun scan(cmd: List<String>) {

@@ -54,10 +54,10 @@ class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
     }
 
     private fun download() {
+        log.info("start download scan_test_badsmell tool")
         val downloadUrl = "$host/scan_test_badsmell-$version-all.jar"
         FileOperator.download(URL(downloadUrl), File(SCAN_TEST_BADSMELL_JAR))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        log.info("downloaded scan_test_badsmell tool")
+        copyIntoSystemRoot()
     }
 }

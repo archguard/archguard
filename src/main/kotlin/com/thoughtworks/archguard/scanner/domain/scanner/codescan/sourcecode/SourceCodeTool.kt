@@ -50,12 +50,11 @@ class SourceCodeTool(
     }
 
     private fun download() {
-        log.info("download SourceCodeTool")
+        log.info("start download scan_sourcecode Tool")
         val downloadUrl = "$host/$SCAN_SOURCECODE_JAR"
         FileOperator.download(URL(downloadUrl), File(SCAN_SOURCECODE_JAR))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        log.info("downloaded scan_sourcecode Tool")
+        copyIntoSystemRoot()
     }
 
     private fun scan(cmd: List<String>) {

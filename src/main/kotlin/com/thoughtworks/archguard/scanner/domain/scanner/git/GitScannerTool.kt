@@ -62,11 +62,11 @@ class GitScannerTool(val systemRoot: File, val branch: String?, val systemId: Lo
     }
 
     private fun download() {
+        log.info("start download scan_git tool")
         val downloadUrl = "$host/scan_git-$version-all.jar"
         FileOperator.download(URL(downloadUrl), File(SCAN_GIT_JAR))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        log.info("downloaded scan_git tool")
+        copyIntoSystemRoot()
     }
 
     private fun scan(cmd: List<String>) {
