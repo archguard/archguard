@@ -19,13 +19,13 @@ class GitChangeController(val gitChangeService: GitChangeService) {
         return gitChangeService.getGitHotFilesBySystemId(systemId).map { GitHotFileDTO(it) }
     }
 
-    @GetMapping("/")
+    @GetMapping("/commit-ids")
     fun getChangesInRange(
         @PathVariable("systemId") systemId: Long,
-        @RequestParam(value = "startTime", required = false, defaultValue = "") startTime: String,
-        @RequestParam(value = "endTime", required = false, defaultValue = "") endTime: String,
-    ): List<GitChangeCount> {
-        return gitChangeService.getGitFileChanges(systemId).map { GitChangeCount(it) }
+        @RequestParam(value = "startTime", required = true) startTime: String,
+        @RequestParam(value = "endTime", required = true) endTime: String,
+    ): List<String> {
+        return gitChangeService.getChangesByRange(systemId, startTime, endTime)
     }
 
     @GetMapping("/path-change-count")
