@@ -8,6 +8,8 @@ plugins {
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
+
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r")
 }
 
 application {
