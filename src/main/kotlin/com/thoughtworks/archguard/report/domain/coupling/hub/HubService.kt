@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.report.domain.coupling.hub
 
-import ModuleCouplingRepository
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey

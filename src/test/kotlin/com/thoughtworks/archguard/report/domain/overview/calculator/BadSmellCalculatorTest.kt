@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import ModuleCouplingRepository
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
@@ -10,6 +9,7 @@ import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRe
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceRepository
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
 import com.thoughtworks.archguard.report.domain.coupling.hub.MethodCouplingRepository
+import com.thoughtworks.archguard.report.domain.coupling.hub.ModuleCouplingRepository
 import com.thoughtworks.archguard.report.domain.coupling.hub.PackageCouplingRepository
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
