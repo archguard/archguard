@@ -7,25 +7,29 @@ import com.thoughtworks.archguard.change.domain.GitPathChangeCount
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/systems/{systemId}/git")
+@RequestMapping("/api/systems/{systemId}/change")
 class GitChangeController(val gitChangeService: GitChangeService) {
 
     @GetMapping("/hot-files")
-    fun getGitHotFilesBySystemId(@PathVariable("systemId") systemId: Long) : List<GitHotFileDTO> {
+    fun getGitHotFilesBySystemId(@PathVariable("systemId") systemId: Long): List<GitHotFileDTO> {
         return gitChangeService.getGitHotFilesBySystemId(systemId).map { GitHotFileDTO(it) }
     }
 
-    // todo: rename to restful
-    @GetMapping("/changes")
-    fun getAllChanges(@PathVariable("systemId") systemId: Long) : List<GitChangeCount> {
+    @GetMapping("/")
+    fun getChangesInRange(
+        @PathVariable("systemId") systemId: Long,
+        @RequestParam(value = "startTime", required = false, defaultValue = "") startTime: String,
+        @RequestParam(value = "endTime", required = false, defaultValue = "") endTime: String,
+    ): List<GitChangeCount> {
         return gitChangeService.getGitFileChanges(systemId).map { GitChangeCount(it) }
     }
 
     @GetMapping("/path-change-count")
-    fun getChangeCountByPath(@PathVariable("systemId") systemId: Long) : List<GitPathCount> {
+    fun getChangeCountByPath(@PathVariable("systemId") systemId: Long): List<GitPathCount> {
         return gitChangeService.getPathChangeCount(systemId).map { GitPathCount(it) }
     }
 
@@ -60,18 +64,18 @@ class GitHotFileDTO(private val gitHotFile: GitHotFile) {
 
     val systemId: Long
         get() = gitHotFile.systemId
-    
+
     val moduleName: String
         get() {
             return if (gitHotFile.moduleName != null) return gitHotFile.moduleName else ""
-        } 
-    
+        }
+
     val packageName: String
         get() = JClassVO(gitHotFile.className!!, moduleName).getPackageName()
 
     val typeName: String
         get() = JClassVO(gitHotFile.className!!, moduleName).getTypeName()
-    
+
     val modifiedCount: Int
         get() = gitHotFile.modifiedCount
 }
