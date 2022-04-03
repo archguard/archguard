@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.report.application.GitFileService
+import com.thoughtworks.archguard.report.application.GitChangeService
 import com.thoughtworks.archguard.report.domain.githotfile.GitHotFile
 import com.thoughtworks.archguard.report.domain.githotfile.GitPathChangeCount
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,27 +11,27 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/systems/{systemId}/git")
-class GitFileController(val gitFileService: GitFileService) {
+class GitChangeController(val gitChangeService: GitChangeService) {
 
     @GetMapping("/hot-files")
     fun getGitHotFilesBySystemId(@PathVariable("systemId") systemId: Long) : List<GitHotFileDTO> {
-        return gitFileService.getGitHotFilesBySystemId(systemId).map { GitHotFileDTO(it) }
+        return gitChangeService.getGitHotFilesBySystemId(systemId).map { GitHotFileDTO(it) }
     }
 
     // todo: rename to restful
     @GetMapping("/changes")
     fun getAllChanges(@PathVariable("systemId") systemId: Long) : List<GitChangeCount> {
-        return gitFileService.getGitFileChanges(systemId).map { GitChangeCount(it) }
+        return gitChangeService.getGitFileChanges(systemId).map { GitChangeCount(it) }
     }
 
     @GetMapping("/path-change-count")
     fun getChangeCountByPath(@PathVariable("systemId") systemId: Long) : List<GitPathCount> {
-        return gitFileService.getPathChangeCount(systemId).map { GitPathCount(it) }
+        return gitChangeService.getPathChangeCount(systemId).map { GitPathCount(it) }
     }
 
     @GetMapping("/unstable-file")
     fun getHighFrequencyChangeAndLongLines(@PathVariable("systemId") systemId: Long): List<GitPathChangeCount> {
-        return gitFileService.getUnstableFile(systemId)
+        return gitChangeService.getUnstableFile(systemId)
     }
 }
 
