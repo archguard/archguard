@@ -6,7 +6,8 @@
 
 rootProject.name = "ArchGuard Scanner"
 
-include(":code_repository")
+// common for share code repository
+include(":common_code_repository")
 
 include(":diff_changes")
 
@@ -16,4 +17,6 @@ include(":scan_sourcecode")
 include(":scan_mysql")
 include(":scan_test_badsmell")
 include(":scan_bytecode")
+
+// adapter for ci
 include(":collector_ci")

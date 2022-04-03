@@ -9,7 +9,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":code_repository"))
+    api(project(":common_code_repository"))
 
     implementation("io.netty:netty-all:4.1.42.Final")
 
