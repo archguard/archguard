@@ -351,6 +351,17 @@ create table metric_code_bad_smell
     type        varchar(100) not null
 );
 
+create table metric_bad_smell_threshold_suite
+(
+    id           bigint auto_increment
+        primary key,
+    suite_name   varchar(255)                        not null,
+    is_default   tinyint(1)                          null,
+    thresholds   longtext                            null,
+    updated_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
+)
+    collate = utf8mb4_unicode_ci;
+
 create table test_coverage_bundle
 (
     instruction_missed  int          null,
