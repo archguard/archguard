@@ -7,6 +7,10 @@ RUN apk add --no-cache tzdata && \
 
 RUN addgroup -S spring && adduser -S spring -G spring
 
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+
 USER spring:spring
 
 ARG JAR_FILE=./build/libs/*.jar
