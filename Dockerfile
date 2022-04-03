@@ -15,4 +15,6 @@ ARG JAR_FILE=./build/libs/*.jar
 
 COPY ${JAR_FILE} /home/spring/app.jar
 
+WORKDIR /home/spring
+
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
