@@ -7,9 +7,7 @@ RUN apk add --no-cache tzdata && \
 
 RUN addgroup -S spring && adduser -S spring -G spring
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
+RUN apk add --no-cache git
 
 USER spring:spring
 
