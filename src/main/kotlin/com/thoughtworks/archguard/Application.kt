@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard
 
 import com.thoughtworks.archguard.report.infrastructure.ContainerServiceDao
-import com.thoughtworks.archguard.report.infrastructure.GitHotFileDao
+import com.thoughtworks.archguard.change.infrastructure.GitHotFileDao
 import com.thoughtworks.archguard.scanner.infrastructure.db.*
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ClassMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.MethodMetricsDao

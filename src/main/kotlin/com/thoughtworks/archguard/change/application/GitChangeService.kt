@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.report.application
+package com.thoughtworks.archguard.change.application
 
-import com.thoughtworks.archguard.report.domain.githotfile.GitHotFile
-import com.thoughtworks.archguard.report.domain.githotfile.GitHotFileRepo
-import com.thoughtworks.archguard.report.domain.githotfile.GitPathChangeCount
+import com.thoughtworks.archguard.change.domain.GitHotFile
+import com.thoughtworks.archguard.change.domain.GitHotFileRepo
+import com.thoughtworks.archguard.change.domain.GitPathChangeCount
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 

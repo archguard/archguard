@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceResponse
-import com.thoughtworks.archguard.report.domain.githotfile.ContainerServiceRepo
+import com.thoughtworks.archguard.report.domain.container.ContainerServiceRepo
 import org.springframework.stereotype.Service
 
 @Service

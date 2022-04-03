@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.githotfile
+package com.thoughtworks.archguard.change.domain
 
 interface GitHotFileRepo {
     fun findBySystemId(systemId: Long) : List<GitHotFile>

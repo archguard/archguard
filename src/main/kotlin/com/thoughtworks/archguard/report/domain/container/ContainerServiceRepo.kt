@@ -1,8 +1,4 @@
-package com.thoughtworks.archguard.report.domain.githotfile
-
-import com.thoughtworks.archguard.report.domain.container.ContainerDemand
-import com.thoughtworks.archguard.report.domain.container.ContainerResource
-import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
+package com.thoughtworks.archguard.report.domain.container
 
 interface ContainerServiceRepo {
     fun findDemandBySystemId(systemId: Long): List<ContainerDemand>

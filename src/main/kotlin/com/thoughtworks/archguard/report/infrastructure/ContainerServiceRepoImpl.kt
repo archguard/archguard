@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.report.infrastructure
 import com.thoughtworks.archguard.report.domain.container.ContainerDemand
 import com.thoughtworks.archguard.report.domain.container.ContainerResource
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
-import com.thoughtworks.archguard.report.domain.githotfile.ContainerServiceRepo
+import com.thoughtworks.archguard.report.domain.container.ContainerServiceRepo
 import org.springframework.stereotype.Repository
 
 @Repository
