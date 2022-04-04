@@ -5,10 +5,17 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
 class Runner : CliktCommand() {
-    private val project: String by option(help = "the path of target project").default(".")
+    private val branch: String by option(help = "git repository branch").default("master")
+    private val since: String by option(help="since specific revision").default("0")
+    private val util: String by option(help="util specific revision").default("0")
+
+    private val path: String by option(help = "local path").default(".")
+
+    private val systemId: String by option(help = "system id").default("0")
+    private val language: String by option(help = "language").default("")
 
     override fun run() {
-        println(project)
+
     }
 }
 
