@@ -81,18 +81,14 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                     println("fields not equal")
                 }
 
-                // compare for function sizes
-                // todo: check for function sizes
-                if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
-                    println(ds.Functions)
+                if (ds.Functions.size != oldDataStructs[index].Functions.size) {
+                    // todo: find different functions
+                    println("function size not equal")
                 }
 
-                    // compare for functionCalls size and items
-                newDataStructs.forEachIndexed { index, ds ->
-                    // todo: check for function calls size and items
-                    if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
-                        println(ds.Functions)
-                    }
+                // compare for function sizes
+                if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
+                    // todo: find the changed functions
                 }
             }
 

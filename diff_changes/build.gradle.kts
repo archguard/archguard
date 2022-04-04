@@ -11,8 +11,8 @@ dependencies {
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r")
 
-    implementation("com.phodal.chapi:chapi-application:1.5.1")
-    implementation("com.phodal.chapi:chapi-domain:1.5.1")
+    implementation("com.phodal.chapi:chapi-application:1.5.2")
+    implementation("com.phodal.chapi:chapi-domain:1.5.2")
 }
 
 application {
