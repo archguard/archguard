@@ -15,6 +15,8 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -88,7 +90,10 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
 
                 // compare for function sizes
                 if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
-                    // todo: find the changed functions
+                    val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
+                    difference.forEach {
+                        println("changed functions:${it.Name}")
+                    }
                 }
             }
 
