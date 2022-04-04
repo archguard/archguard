@@ -18,3 +18,11 @@ Impl:
 1. create based version AST
 2. collect changed files to new AST node
 3. collection related classes and functions
+
+
+Diff Class
+
+1. if class is same do nothing
+2. compare for class body
+   1. if compare for functions by orders
+   2. compare field for changes

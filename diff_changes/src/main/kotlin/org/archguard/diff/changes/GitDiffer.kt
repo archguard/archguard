@@ -24,26 +24,28 @@ import org.eclipse.jgit.util.io.DisabledOutputStream
 class DifferFile(
     val path: String,
     val dataStructs: Array<CodeDataStruct>,
-//  val functionStrings: List<String>  // todo: maybe just compare function in string will be quickly?
 )
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
-    val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
+    private var baseLineDataTree: List<DifferFile> = listOf()
+    private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
+    private val changedDataStructs: MutableList<CodeDataStruct> = mutableListOf()
 
-    fun countInRange(sinceRev: String, untilRev: String) {
+    fun countInRange(sinceRev: String, untilRev: String): MutableList<CodeDataStruct> {
         val repository = FileRepositoryBuilder().findGitDir(File(path)).build()
         val git = Git(repository).specifyBranch(branch)
 
         val since: ObjectId = git.repository.resolve(sinceRev)
         val until: ObjectId = git.repository.resolve(untilRev)
 
-        val baseLineDataTree = createBaselineAst(repository, since)
-        val changedFunction: MutableList<CodeFunction> = mutableListOf()
+//        this.baseLineDataTree = createBaselineAst(repository, since)
         for (commit in git.log().addRange(since, until).call()) {
             // todo: add increment for path changes
             // first, we just got changed files.
             getChangedFiles(repository, commit)
         }
+
+        return changedDataStructs
     }
 
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {
@@ -63,10 +65,10 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             val pathString = treeWalk.pathString
 
             val blobId = treeWalk.getObjectId(0)
+
             val dataStructs = diffFileFromBlob(repository, blobId, pathString)
-
+            this.changedDataStructs += dataStructs
             // todo: diff function changes
-
         } catch (ex: Exception) {
             throw ex
         }
