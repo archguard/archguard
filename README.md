@@ -90,13 +90,17 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 - build tool：Gradle
 - data storage：MySQL, InfluxDB
 
-### setup 
+### Local setup
+#### database setup
+1. Local mysql, or docker created
+- `docker pull mysql:8`
+- `docker run --name=mysql -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql`
+2. Create archguard database
+- `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
+- `./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate` (probably not needed)
 
-1. create database: `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
-
-2. run migration: `./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate`
-
-3. run: `./gradlew bootrun`
+#### run
+`./gradlew bootrun`
 
 ### Docker
 
@@ -104,7 +108,6 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 mkdir -p archguard_mysql
 chmod -R 777 archguard_mysql
 ```
-
 
 ```
 docker-compose up
