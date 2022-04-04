@@ -23,8 +23,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    implementation("com.phodal.chapi:chapi-application:1.4.2")
-    implementation("com.phodal.chapi:chapi-domain:1.4.2")
+    implementation("com.phodal.chapi:chapi-application:1.5.0")
+    implementation("com.phodal.chapi:chapi-domain:1.5.0")
 }
 
 application {

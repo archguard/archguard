@@ -1,5 +1,7 @@
 package org.archguard.diff.changes
 
+import chapi.app.analyser.KotlinAnalyserApp
+import chapi.app.analyser.support.AbstractFile
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.dircache.DirCacheIterator
 import org.eclipse.jgit.lib.ObjectId
@@ -53,7 +55,8 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                 // to: Chapi::AbstractFile
 
                 if (pathString.endsWith(".kt")) {
-                    println(tw.pathString)
+                    val file = AbstractFile(File(pathString).name, pathString, true, pathString)
+                    KotlinAnalyserApp().analysisByFiles(arrayOf(file))
 
                     repository.newObjectReader().use { objectReader ->
                         val objectLoader: ObjectLoader = objectReader.open(blobId)

@@ -17,7 +17,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    implementation("com.phodal.chapi:chapi-domain:1.3.1")
+    implementation("com.phodal.chapi:chapi-domain:1.5.0")
 
     implementation("org.ow2.asm:asm:9.2")
     implementation("org.ow2.asm:asm-util:9.2")
