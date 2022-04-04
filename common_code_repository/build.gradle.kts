@@ -12,5 +12,5 @@ dependencies {
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("mysql:mysql-connector-java:8.0.28")
 
-    implementation("com.phodal.chapi:chapi-domain:1.5.0")
+    implementation("com.phodal.chapi:chapi-domain:1.5.1")
 }

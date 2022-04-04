@@ -14,11 +14,11 @@ import org.eclipse.jgit.treewalk.FileTreeIterator
 import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.nio.charset.StandardCharsets
+import chapi.domain.core.CodeDataStruct
 
 class DifferFile(
-    val content: String,
-    val hash: String,
     val path: String,
+    val dataStructs: Array<CodeDataStruct>
 )
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
@@ -29,14 +29,14 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         val since: ObjectId = git.repository.resolve(sinceRev)
         val until: ObjectId = git.repository.resolve(untilRev)
 
-        createBaselineAst(repository, since)
+        val baseLineDataTree = createBaselineAst(repository, since)
 
         for (commit in git.log().addRange(since, until).call()) {
             // todo: add increment for path changes
         }
     }
 
-    private fun createBaselineAst(repository: Repository, since: ObjectId) {
+    fun createBaselineAst(repository: Repository, since: ObjectId): List<DifferFile> {
         val rw = RevWalk(repository)
         val tw = TreeWalk(repository)
 
@@ -46,29 +46,32 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         tw.addTree(FileTreeIterator(repository))
 
         tw.isRecursive = true;
-        while (tw.next()) {
 
+        val files: MutableList<DifferFile> = mutableListOf()
+        while (tw.next()) {
             try {
                 val pathString = tw.pathString
                 val blobId: ObjectId = tw.getObjectId(0)
 
-                // to: Chapi::AbstractFile
-
                 if (pathString.endsWith(".kt")) {
-                    val file = AbstractFile(File(pathString).name, pathString, true, pathString)
-                    KotlinAnalyserApp().analysisByFiles(arrayOf(file))
-
-                    repository.newObjectReader().use { objectReader ->
+                    val content = repository.newObjectReader().use { objectReader ->
                         val objectLoader: ObjectLoader = objectReader.open(blobId)
                         val bytes: ByteArray = objectLoader.bytes
                         val content = String(bytes, StandardCharsets.UTF_8)
                         content
                     }
+
+                    val file = AbstractFile(File(pathString).name, pathString, true, pathString, content)
+                    val dataStructs = KotlinAnalyserApp().analysisByFiles(arrayOf(file))
+
+                    files += DifferFile(path = pathString, dataStructs = dataStructs)
                 }
             } catch (e: Exception) {
 
             }
         }
+
+        return files
     }
 
     private fun Git.specifyBranch(branch: String): Git {
