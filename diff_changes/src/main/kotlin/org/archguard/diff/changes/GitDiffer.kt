@@ -19,10 +19,9 @@ class DifferFile(
     val path: String,
 )
 
-object GitDiffer {
-    fun getRange(path: String, branch: String = "master", sinceRev: String, untilRev: String) {
-        val repPath = File(path)
-        val repository = FileRepositoryBuilder().findGitDir(repPath).build()
+class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
+    fun countInRange(sinceRev: String, untilRev: String) {
+        val repository = FileRepositoryBuilder().findGitDir(File(path)).build()
         val git = Git(repository).specifyBranch(branch)
 
         val since: ObjectId = git.repository.resolve(sinceRev)
@@ -51,6 +50,8 @@ object GitDiffer {
                 val pathString = tw.pathString
                 val blobId: ObjectId = tw.getObjectId(0)
 
+                // to: Chapi::AbstractFile
+
                 if (pathString.endsWith(".kt")) {
                     println(tw.pathString)
 
@@ -71,5 +72,6 @@ object GitDiffer {
         checkout().setName(branch).call()
         return this
     }
+
 
 }

@@ -6,6 +6,7 @@ internal class GitDifferTest {
 
     @Test
     fun should_get_range_for_local() {
-        GitDiffer.getRange("..", "master", "97d1ff56", "80fb1245")
+        GitDiffer("..", "master", "", "")
+            .countInRange("97d1ff56", "80fb1245")
     }
 }

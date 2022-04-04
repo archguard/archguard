@@ -15,7 +15,8 @@ class Runner : CliktCommand() {
     private val language: String by option(help = "language").default("")
 
     override fun run() {
-
+        val differ = GitDiffer(path, branch, systemId, language)
+        differ.countInRange(since, util)
     }
 }
 
