@@ -15,7 +15,6 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeFunction
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -38,7 +37,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         val since: ObjectId = git.repository.resolve(sinceRev)
         val until: ObjectId = git.repository.resolve(untilRev)
 
-//        this.baseLineDataTree = createBaselineAst(repository, since)
+        this.baseLineDataTree = createBaselineAst(repository, since)
         for (commit in git.log().addRange(since, until).call()) {
             // todo: add increment for path changes
             // first, we just got changed files.
@@ -66,9 +65,38 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
 
             val blobId = treeWalk.getObjectId(0)
 
-            val dataStructs = diffFileFromBlob(repository, blobId, pathString)
-            this.changedDataStructs += dataStructs
-            // todo: diff function changes
+            val newDataStructs = diffFileFromBlob(repository, blobId, pathString)
+            val oldDataStructs = this.differFileMap[pathString]!!.dataStructs
+
+            // compare for sized
+            if (newDataStructs.size != oldDataStructs.size) {
+                // todo: make changed node to ds and return
+                println("sized not equal")
+            }
+
+            // compare for field
+            newDataStructs.forEachIndexed { index, ds ->
+                // todo: check for fields change
+                if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
+                    println("fields not equal")
+                }
+
+                // compare for function sizes
+                // todo: check for function sizes
+                if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
+                    println(ds.Functions)
+                }
+
+                    // compare for functionCalls size and items
+                newDataStructs.forEachIndexed { index, ds ->
+                    // todo: check for function calls size and items
+                    if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
+                        println(ds.Functions)
+                    }
+                }
+            }
+
+            this.changedDataStructs += newDataStructs
         } catch (ex: Exception) {
             throw ex
         }
@@ -84,11 +112,12 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
     private fun getParent(revCommit: RevCommit): RevCommit? {
         return if (revCommit.parentCount == 0) {
             null
-        } else
+        } else {
             revCommit.getParent(0)
+        }
     }
 
-    fun createBaselineAst(repository: Repository, since: ObjectId): List<DifferFile> {
+    private fun createBaselineAst(repository: Repository, since: ObjectId): List<DifferFile> {
         val rw = RevWalk(repository)
         val tw = TreeWalk(repository)
 
@@ -107,8 +136,10 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
 
                 if (pathString.endsWith(".kt")) {
                     val dataStructs = diffFileFromBlob(repository, blobId, pathString)
+                    val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
 
-                    differFileMap[path] = DifferFile(path = pathString, dataStructs = dataStructs)
+                    differFileMap[pathString] = differFile
+                    files += differFile
                 }
             } catch (e: Exception) {
                 println(e)
@@ -131,8 +162,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         }
 
         val file = AbstractFile(File(pathString).name, pathString, true, pathString, content)
-        val dataStructs = KotlinAnalyserApp().analysisByFiles(arrayOf(file))
-        return dataStructs
+        return KotlinAnalyserApp().analysisByFiles(arrayOf(file))
     }
 
     private fun Git.specifyBranch(branch: String): Git {
