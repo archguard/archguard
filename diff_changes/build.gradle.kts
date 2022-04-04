@@ -10,6 +10,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r")
+
+    implementation("com.phodal.chapi:chapi-application:1.4.2")
 }
 
 application {
