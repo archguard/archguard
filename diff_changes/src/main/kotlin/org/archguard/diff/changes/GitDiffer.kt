@@ -15,8 +15,6 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -26,6 +24,13 @@ class DifferFile(
     val path: String,
     val dataStructs: Array<CodeDataStruct>,
 )
+
+class ChangedEntry (
+    val path: String,
+    val className: String,
+    val functionName: String
+)
+
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
     private var baseLineDataTree: List<DifferFile> = listOf()
@@ -39,13 +44,18 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         val since: ObjectId = git.repository.resolve(sinceRev)
         val until: ObjectId = git.repository.resolve(untilRev)
 
-        this.baseLineDataTree = createBaselineAst(repository, since)
+        // 1. create based ast model from since revision commit
+        this.baseLineDataTree = createBaselineAstTree(repository, since)
+
+        // 2. calculate changed files to utils file
         for (commit in git.log().addRange(since, until).call()) {
-            // todo: add increment for path changes
-            // first, we just got changed files.
             getChangedFiles(repository, commit)
         }
 
+        // 3. count changed items reverse-call functions
+
+
+        // 4. align to the latest file path (maybe), like: increment for path changes
         return changedDataStructs
     }
 
@@ -118,7 +128,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         }
     }
 
-    private fun createBaselineAst(repository: Repository, since: ObjectId): List<DifferFile> {
+    private fun createBaselineAstTree(repository: Repository, since: ObjectId): List<DifferFile> {
         val rw = RevWalk(repository)
         val tw = TreeWalk(repository)
 
