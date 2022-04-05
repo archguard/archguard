@@ -31,6 +31,15 @@ class ChangedEntry (
     val functionName: String
 )
 
+enum class ChangedLevel {
+    // if it had multiple class/structs changed, mark it as file level
+    File,
+    // if it had fields changed, make it as class changed.
+    Class,
+    // if it had parameter changed, function call changed, make it as Function level
+    Function
+}
+
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
     private var baseLineDataTree: List<DifferFile> = listOf()
@@ -54,6 +63,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
 
         // 3. count changed items reverse-call functions
 
+        // add path map to projects
 
         // 4. align to the latest file path (maybe), like: increment for path changes
         return changedDataStructs
@@ -83,19 +93,23 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             // compare for sized
             if (newDataStructs.size != oldDataStructs.size) {
                 // todo: make changed node to ds and return
-                println("sized not equal")
+                println("todo: class/struct sized not equal")
+                val difference = newDataStructs.filterNot { oldDataStructs.contains(it) }
+                difference.forEach {
+                    println("changed class:${it.NodeName}")
+                }
             }
 
             // compare for field
             newDataStructs.forEachIndexed { index, ds ->
                 // todo: check for fields change
                 if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
-                    println("fields not equal")
+                    println("todo: fields not equal")
                 }
 
                 if (ds.Functions.size != oldDataStructs[index].Functions.size) {
                     // todo: find different functions
-                    println("function size not equal")
+                    println("todo: function size not equal, need to calculate changed functions")
                 }
 
                 // compare for function sizes
