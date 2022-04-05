@@ -111,13 +111,6 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                     this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.NodeName)
                 }
 
-//                if (ds.Functions.size != oldDataStructs[index].Functions.size) {
-//                    val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
-//                    difference.forEach {
-//                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.NodeName, it.Name)
-//                    }
-//                }
-
                 // compare for function sizes
                 if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
                     val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
