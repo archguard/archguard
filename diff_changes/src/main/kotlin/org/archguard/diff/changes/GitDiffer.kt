@@ -28,6 +28,7 @@ class DifferFile(
 class ChangedEntry(
     val path: String,
     val file: String,
+    val `package`: String,
     val className: String,
     val functionName: String = ""
 )
@@ -64,7 +65,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             getChangedFiles(repository, commit)
         }
 
-        // 3. count changed items reverse-call functions
+        // 3. count changed items reverse-call function
 
         // add path map to projects
 
@@ -75,6 +76,49 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             changedFunctions.values.toList()
         )
     }
+
+    fun calculateChange() {
+        changedFunctions.forEach {
+            val callName = it.value.`package` + "." + it.value.className + "." + it.value.functionName
+            val calls = functionReverseCallMap[callName]
+            println(calls)
+        }
+    }
+
+    private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
+    fun generateProjectFunctionMap()  {
+        baseLineDataTree.forEach { file ->
+            file.dataStructs.forEach { node ->
+                node.Functions.forEach {
+                    functionMap[node.Package + "." + node.NodeName + "." + it.Name] = true
+                }
+            }
+        }
+    }
+
+    private val functionReverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+    fun generateFunctionCallMap()  {
+        baseLineDataTree.forEach { file ->
+            file.dataStructs.forEach { node ->
+                node.Functions.forEach {
+                    val caller = node.Package + "." + node.NodeName + "." + it.Name
+                    it.FunctionCalls.forEach { codeCall ->
+                        if(codeCall.NodeName.isNotEmpty()) {
+                            val callee = codeCall.buildFullMethodName()
+                            if(functionMap[callee] != null) {
+                                if(functionReverseCallMap[callee] == null) {
+                                    functionReverseCallMap[callee] = mutableListOf()
+                                }
+
+                                functionReverseCallMap[callee]!! += caller
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
@@ -100,7 +144,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             if (newDataStructs.size != oldDataStructs.size) {
                 val difference = newDataStructs.filterNot { oldDataStructs.contains(it) }
                 difference.forEach {
-                    this.changedFiles[filePath] = ChangedEntry(filePath, filePath, it.NodeName)
+                    this.changedFiles[filePath] = ChangedEntry(filePath, filePath, it.Package, it.NodeName)
                 }
             }
 
@@ -108,14 +152,14 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             newDataStructs.forEachIndexed { index, ds ->
                 // in first version, if field changed, just make data structure change will be simple
                 if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
-                    this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.NodeName)
+                    this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName)
                 }
 
                 // compare for function sizes
                 if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
                     val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
                     difference.forEach {
-                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.NodeName, it.Name)
+                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName, it.Name)
                     }
                 }
             }

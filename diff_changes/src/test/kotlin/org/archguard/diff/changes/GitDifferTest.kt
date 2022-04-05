@@ -7,7 +7,8 @@ internal class GitDifferTest {
 
     @Test
     fun should_get_range_for_local() {
-        val diffList = GitDiffer("..", "master", "", "")
+        val differ = GitDiffer("..", "master", "", "")
+        val diffList = differ
             .countInRange("97d1ff56", "80fb1245")
 
         val functions = diffList.functions
@@ -15,5 +16,10 @@ internal class GitDifferTest {
         assertEquals(1, functions.size)
 
         assertEquals("saveClassFields", functions[0].functionName)
+
+        differ.generateFunctionCallMap()
+        differ.generateProjectFunctionMap()
+
+        differ.calculateChange()
     }
 }
