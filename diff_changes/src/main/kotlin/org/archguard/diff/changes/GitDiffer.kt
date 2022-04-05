@@ -25,28 +25,31 @@ class DifferFile(
     val dataStructs: Array<CodeDataStruct>,
 )
 
-class ChangedEntry (
+class ChangedEntry(
     val path: String,
+    val file: String,
     val className: String,
-    val functionName: String
+    val functionName: String = ""
 )
 
-enum class ChangedLevel {
-    // if it had multiple class/structs changed, mark it as file level
-    File,
+class ChangedList(
     // if it had fields changed, make it as class changed.
-    Class,
+    val files: List<ChangedEntry> = arrayListOf(),
+    // if it had multiple class/structs changed, mark it as file level
+    val classes: List<ChangedEntry> = arrayListOf(),
     // if it had parameter changed, function call changed, make it as Function level
-    Function
-}
+    val functions: List<ChangedEntry> = arrayListOf(),
+)
 
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
     private var baseLineDataTree: List<DifferFile> = listOf()
     private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
-    private val changedDataStructs: MutableList<CodeDataStruct> = mutableListOf()
+    private val changedFiles: MutableMap<String, ChangedEntry> = mutableMapOf()
+    private val changedClasses: MutableMap<String, ChangedEntry> = mutableMapOf()
+    private val changedFunctions: MutableMap<String, ChangedEntry> = mutableMapOf()
 
-    fun countInRange(sinceRev: String, untilRev: String): MutableList<CodeDataStruct> {
+    fun countInRange(sinceRev: String, untilRev: String): ChangedList {
         val repository = FileRepositoryBuilder().findGitDir(File(path)).build()
         val git = Git(repository).specifyBranch(branch)
 
@@ -66,62 +69,63 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         // add path map to projects
 
         // 4. align to the latest file path (maybe), like: increment for path changes
-        return changedDataStructs
+        return ChangedList(
+            changedFiles.values.toList(),
+            changedClasses.values.toList(),
+            changedFunctions.values.toList()
+        )
     }
 
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
-            .map { d -> patchToDataStructs(d, repository, revCommit, diffFormatter) }
+            .map { d -> patchToDataStructs(d, repository, revCommit) }
     }
 
     private fun patchToDataStructs(
         diffEntry: DiffEntry,
         repository: Repository,
-        revCommit: RevCommit,
-        df: DiffFormatter
+        revCommit: RevCommit
     ) {
         try {
             val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
-            val pathString = treeWalk.pathString
+            val filePath = treeWalk.pathString
 
             val blobId = treeWalk.getObjectId(0)
 
-            val newDataStructs = diffFileFromBlob(repository, blobId, pathString)
-            val oldDataStructs = this.differFileMap[pathString]!!.dataStructs
+            val newDataStructs = diffFileFromBlob(repository, blobId, filePath)
+            val oldDataStructs = this.differFileMap[filePath]!!.dataStructs
 
             // compare for sized
             if (newDataStructs.size != oldDataStructs.size) {
-                // todo: make changed node to ds and return
-                println("todo: class/struct sized not equal")
                 val difference = newDataStructs.filterNot { oldDataStructs.contains(it) }
                 difference.forEach {
-                    println("changed class:${it.NodeName}")
+                    this.changedFiles[filePath] = ChangedEntry(filePath, filePath, it.NodeName)
                 }
             }
 
             // compare for field
             newDataStructs.forEachIndexed { index, ds ->
-                // todo: check for fields change
+                // in first version, if field changed, just make data structure change will be simple
                 if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
-                    println("todo: fields not equal")
+                    this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.NodeName)
                 }
 
-                if (ds.Functions.size != oldDataStructs[index].Functions.size) {
-                    // todo: find different functions
-                    println("todo: function size not equal, need to calculate changed functions")
-                }
+//                if (ds.Functions.size != oldDataStructs[index].Functions.size) {
+//                    val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
+//                    difference.forEach {
+//                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.NodeName, it.Name)
+//                    }
+//                }
 
                 // compare for function sizes
                 if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
                     val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
                     difference.forEach {
-                        println("changed functions:${it.Name}")
+                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.NodeName, it.Name)
                     }
                 }
             }
-
-            this.changedDataStructs += newDataStructs
         } catch (ex: Exception) {
             throw ex
         }
