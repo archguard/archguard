@@ -1,7 +1,9 @@
 package org.archguard.diff.changes
 
+import chapi.app.analyser.JavaAnalyserApp
 import chapi.app.analyser.KotlinAnalyserApp
 import chapi.app.analyser.support.AbstractFile
+import chapi.app.analyser.support.BaseAnalyser
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.dircache.DirCacheIterator
 import org.eclipse.jgit.lib.ObjectId
@@ -86,7 +88,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
     }
 
     private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
-    fun generateProjectFunctionMap()  {
+    fun generateProjectFunctionMap() {
         baseLineDataTree.forEach { file ->
             file.dataStructs.forEach { node ->
                 node.Functions.forEach {
@@ -97,16 +99,16 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
     }
 
     private val functionReverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
-    fun generateFunctionCallMap()  {
+    fun generateFunctionCallMap() {
         baseLineDataTree.forEach { file ->
             file.dataStructs.forEach { node ->
                 node.Functions.forEach {
                     val caller = node.Package + "." + node.NodeName + "." + it.Name
                     it.FunctionCalls.forEach { codeCall ->
-                        if(codeCall.NodeName.isNotEmpty()) {
+                        if (codeCall.NodeName.isNotEmpty()) {
                             val callee = codeCall.buildFullMethodName()
-                            if(functionMap[callee] != null) {
-                                if(functionReverseCallMap[callee] == null) {
+                            if (functionMap[callee] != null) {
+                                if (functionReverseCallMap[callee] == null) {
                                     functionReverseCallMap[callee] = mutableListOf()
                                 }
 
@@ -135,9 +137,18 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
             val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
             val filePath = treeWalk.pathString
 
+            println("changed file: $filePath")
+
             val blobId = treeWalk.getObjectId(0)
 
-            val newDataStructs = diffFileFromBlob(repository, blobId, filePath)
+            var newDataStructs: Array<CodeDataStruct> = arrayOf()
+            if (filePath.endsWith(".kt")) {
+                newDataStructs = diffFileFromBlob(repository, blobId, filePath, KotlinAnalyserApp())
+            }
+
+            if (filePath.endsWith(".java")) {
+                newDataStructs = diffFileFromBlob(repository, blobId, filePath, JavaAnalyserApp())
+            }
             val oldDataStructs = this.differFileMap[filePath]!!.dataStructs
 
             // compare for sized
@@ -159,7 +170,8 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                 if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
                     val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
                     difference.forEach {
-                        this.changedFunctions[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName, it.Name)
+                        this.changedFunctions[filePath] =
+                            ChangedEntry(filePath, filePath, ds.Package, ds.NodeName, it.Name)
                     }
                 }
             }
@@ -201,7 +213,15 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                 val blobId: ObjectId = tw.getObjectId(0)
 
                 if (pathString.endsWith(".kt")) {
-                    val dataStructs = diffFileFromBlob(repository, blobId, pathString)
+                    val dataStructs = diffFileFromBlob(repository, blobId, pathString, KotlinAnalyserApp())
+                    val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
+
+                    differFileMap[pathString] = differFile
+                    files += differFile
+                }
+
+                if (pathString.endsWith(".java")) {
+                    val dataStructs = diffFileFromBlob(repository, blobId, pathString, JavaAnalyserApp())
                     val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
 
                     differFileMap[pathString] = differFile
@@ -218,7 +238,8 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
     private fun diffFileFromBlob(
         repository: Repository,
         blobId: ObjectId,
-        pathString: String
+        pathString: String,
+        analyserApp: BaseAnalyser
     ): Array<CodeDataStruct> {
         val content = repository.newObjectReader().use { objectReader ->
             val objectLoader: ObjectLoader = objectReader.open(blobId)
@@ -228,7 +249,7 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         }
 
         val file = AbstractFile(File(pathString).name, pathString, true, pathString, content)
-        return KotlinAnalyserApp().analysisByFiles(arrayOf(file))
+        return analyserApp.analysisByFiles(arrayOf(file))
     }
 
     private fun Git.specifyBranch(branch: String): Git {
