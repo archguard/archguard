@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 internal class GitDifferTest {
 
     @Test
-    fun should_get_range_for_local() {
+    fun should_get_range_for_local_java() {
         val differ = GitDiffer("..", "master")
         val calculateChange = differ.countInRange("aa2b5379", "965be8c2")
 
@@ -16,5 +16,18 @@ internal class GitDifferTest {
         assertEquals(6, relations.size)
         assertEquals("infrastructure.SourceBatch.execute", relations.last().source)
         assertEquals("infrastructure.utils.SqlGenerator.generateBatchInsertSql", relations.last().target)
+    }
+
+    @Test
+    fun should_get_range_for_local_kotlin() {
+        val differ = GitDiffer("..", "master")
+        val calculateChange = differ.countInRange("92f1f59f", "d31422bd")
+
+        assertEquals(1, calculateChange.size)
+
+        val relations = calculateChange[0].relations
+        assertEquals(0, relations.size)
+//        assertEquals("infrastructure.SourceBatch.execute", relations.last().source)
+//        assertEquals("infrastructure.utils.SqlGenerator.generateBatchInsertSql", relations.last().target)
     }
 }
