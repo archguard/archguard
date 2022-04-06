@@ -30,9 +30,9 @@ public class SqlGenerator {
                 vBuf.append(",");
                 if (v == null) {
                     vBuf.append((String) null);
-                } else if (v.equals("true")) {
+                } else if ("true".equals(v)) {
                     vBuf.append(true);
-                } else if (v.equals("false")) {
+                } else if ("false".equals(v)) {
                     vBuf.append(false);
                 } else {
                     vBuf.append(String.format("'%s'", v));
