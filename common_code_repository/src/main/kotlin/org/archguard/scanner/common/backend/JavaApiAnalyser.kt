@@ -15,7 +15,7 @@ class JavaApiAnalyser {
         if (routeAnnotation.isNotEmpty()) {
             var baseUrl = ""
             val mappingAnnotation = node.filterAnnotations("RequestMapping")
-            if (mappingAnnotation.isNotEmpty()) {
+            if (mappingAnnotation.isNotEmpty() && mappingAnnotation[0].KeyValues.isNotEmpty()) {
                 val url = mappingAnnotation[0].KeyValues[0].Value
                 baseUrl = url.removePrefix("\"").removeSuffix("\"")
             }

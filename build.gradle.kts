@@ -13,7 +13,7 @@ allprojects {
     apply(plugin = "jacoco")
 
     group = "com.thoughtworks.archguard"
-    version = "1.4.2"
+    version = "1.4.3"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
