@@ -83,17 +83,44 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         )
     }
 
-    fun calculateChange() {
-        changedFunctions.forEach {
+    fun calculateChange(): List<String> {
+        return changedFunctions.map {
             val callName = it.value.`package` + "." + it.value.className + "." + it.value.functionName
-            val calls = reverseCallMap[callName]
-            println(calls)
+            calculateReverseCalls(callName)
+        }.toList()
+    }
+
+    private var loopCount: Int = 0
+    private var lastReverseCallChild: String = ""
+    private val LOOP_DEPTH = 7
+    private fun calculateReverseCalls(funName: String): String {
+        if (loopCount > LOOP_DEPTH) {
+            return "\n"
         }
+        loopCount++
+
+        val calls = reverseCallMap[funName]
+        var result = ""
+        calls?.forEach { child ->
+            if (child == lastReverseCallChild) {
+                return ""
+            }
+
+            if (reverseCallMap[child] != null) {
+                lastReverseCallChild = child
+                result += calculateReverseCalls(child)
+            }
+
+            if (child != funName) {
+                result += "$child -> $funName;\n"
+            }
+        }
+
+        return result
     }
 
     private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
     fun genFunctionMap() {
-        File("ast.json").writeText(Json.encodeToString(baseLineDataTree))
         baseLineDataTree.forEach { file ->
             file.dataStructs.forEach { node ->
                 node.Functions.forEach {
@@ -123,6 +150,9 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
                             }
 
                             reverseCallMap[callee]!! += caller
+                        }
+                        if (caller == "infrastructure.SourceBatch.execute") {
+//                            println(functionMap)
                         }
                     }
                 }
