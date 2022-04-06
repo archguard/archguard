@@ -14,11 +14,10 @@ internal class GitDifferTest {
         val functions = diffList.functions
 
         assertEquals(1, functions.size)
-
         assertEquals("generateBatchInsertSql", functions[0].functionName)
 
-        differ.generateProjectFunctionMap()
-        differ.generateFunctionCallMap()
+        differ.genFunctionMap()
+        differ.genFunctionCallMap()
 
         differ.calculateChange()
     }

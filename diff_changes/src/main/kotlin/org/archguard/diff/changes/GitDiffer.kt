@@ -17,11 +17,15 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
 import org.eclipse.jgit.util.io.DisabledOutputStream
 
+@Serializable
 class DifferFile(
     val path: String,
     val dataStructs: Array<CodeDataStruct>,
@@ -82,13 +86,14 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
     fun calculateChange() {
         changedFunctions.forEach {
             val callName = it.value.`package` + "." + it.value.className + "." + it.value.functionName
-            val calls = functionReverseCallMap[callName]
+            val calls = reverseCallMap[callName]
             println(calls)
         }
     }
 
     private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
-    fun generateProjectFunctionMap() {
+    fun genFunctionMap() {
+        File("ast.json").writeText(Json.encodeToString(baseLineDataTree))
         baseLineDataTree.forEach { file ->
             file.dataStructs.forEach { node ->
                 node.Functions.forEach {
@@ -98,22 +103,26 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         }
     }
 
-    private val functionReverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
-    fun generateFunctionCallMap() {
+    private val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+    fun genFunctionCallMap() {
         baseLineDataTree.forEach { file ->
             file.dataStructs.forEach { node ->
+                node.Fields.forEach {
+                    it.Calls.forEach {
+                        // todo: add support for field call
+                    }
+                }
+
                 node.Functions.forEach {
                     val caller = node.Package + "." + node.NodeName + "." + it.Name
                     it.FunctionCalls.forEach { codeCall ->
-                        if (codeCall.NodeName.isNotEmpty()) {
-                            val callee = codeCall.buildFullMethodName()
-                            if (functionMap[callee] != null) {
-                                if (functionReverseCallMap[callee] == null) {
-                                    functionReverseCallMap[callee] = mutableListOf()
-                                }
-
-                                functionReverseCallMap[callee]!! += caller
+                        val callee = codeCall.buildFullMethodName()
+                        if (functionMap[callee] != null) {
+                            if (reverseCallMap[callee] == null) {
+                                reverseCallMap[callee] = mutableListOf()
                             }
+
+                            reverseCallMap[callee]!! += caller
                         }
                     }
                 }
