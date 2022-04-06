@@ -47,18 +47,25 @@ class ChangedList(
 )
 
 class ChangedCall(
+    val path: String,
+    val packageName: String,
+    val className: String,
+    val relations: List<ChangeRelation>
+)
+
+class ChangeRelation(
     val source: String,
     val target: String
 )
 
-class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
+class GitDiffer(val path: String, val branch: String) {
     private var baseLineDataTree: List<DifferFile> = listOf()
     private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
     private val changedFiles: MutableMap<String, ChangedEntry> = mutableMapOf()
     private val changedClasses: MutableMap<String, ChangedEntry> = mutableMapOf()
     private val changedFunctions: MutableMap<String, ChangedEntry> = mutableMapOf()
 
-    fun countInRange(sinceRev: String, untilRev: String): ChangedList {
+    fun countInRange(sinceRev: String, untilRev: String): List<ChangedCall> {
         val repository = FileRepositoryBuilder().findGitDir(File(path)).build()
         val git = Git(repository).specifyBranch(branch)
 
@@ -74,33 +81,40 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         }
 
         // 3. count changed items reverse-call function
+        this.genFunctionMap()
+        this.genFunctionCallMap()
+        val changedCalls = this.calculateChange()
 
         // add path map to projects
 
         // 4. align to the latest file path (maybe), like: increment for path changes
-        return ChangedList(
-            changedFiles.values.toList(),
-            changedClasses.values.toList(),
-            changedFunctions.values.toList()
-        )
+        return changedCalls
     }
 
     fun calculateChange(): List<ChangedCall> {
-        changedFunctions.flatMap {
+        return changedFunctions.map {
             val callName = it.value.packageName + "." + it.value.className + "." + it.value.functionName
-            calculateReverseCalls(callName) ?: listOf()
-        }
+            val changeRelations: MutableList<ChangeRelation> = mutableListOf()
+            calculateReverseCalls(callName, changeRelations, LOOP_DEPTH) ?: listOf()
 
-
-        return this.changeCalls
+            ChangedCall(
+                path = it.value.path,
+                packageName = it.value.packageName,
+                className = it.value.className,
+                relations = changeRelations
+            )
+        }.toList()
     }
 
+    private val LOOP_DEPTH = 7
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
-    private val LOOP_DEPTH = 7
-    private val changeCalls: MutableList<ChangedCall> = mutableListOf()
-    private fun calculateReverseCalls(funName: String): List<ChangedCall>? {
-        if (loopCount > LOOP_DEPTH) {
+    private fun calculateReverseCalls(
+        funName: String,
+        changeRelations: MutableList<ChangeRelation>,
+        loopDepth: Int
+    ): List<ChangeRelation>? {
+        if (loopCount > loopDepth) {
             return null
         }
 
@@ -114,11 +128,14 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
 
             if (reverseCallMap[child] != null) {
                 lastReverseCallChild = child
-                calculateReverseCalls(child)
+                val optRelations = calculateReverseCalls(child, changeRelations, this.LOOP_DEPTH)
+                if (optRelations != null) {
+                    changeRelations += optRelations
+                }
             }
 
             if (child != funName) {
-                changeCalls += ChangedCall(child, funName)
+                changeRelations += ChangeRelation(child, funName)
             }
         }
 
