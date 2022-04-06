@@ -18,8 +18,6 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -34,7 +32,7 @@ class DifferFile(
 class ChangedEntry(
     val path: String,
     val file: String,
-    val `package`: String,
+    val packageName: String,
     val className: String,
     val functionName: String = ""
 )
@@ -48,6 +46,10 @@ class ChangedList(
     val functions: List<ChangedEntry> = arrayListOf(),
 )
 
+class ChangedCall(
+    val source: String,
+    val target: String
+)
 
 class GitDiffer(val path: String, val branch: String, val systemId: String, val language: String) {
     private var baseLineDataTree: List<DifferFile> = listOf()
@@ -83,40 +85,44 @@ class GitDiffer(val path: String, val branch: String, val systemId: String, val 
         )
     }
 
-    fun calculateChange(): List<String> {
-        return changedFunctions.map {
-            val callName = it.value.`package` + "." + it.value.className + "." + it.value.functionName
-            calculateReverseCalls(callName)
-        }.toList()
+    fun calculateChange(): List<ChangedCall> {
+        changedFunctions.flatMap {
+            val callName = it.value.packageName + "." + it.value.className + "." + it.value.functionName
+            calculateReverseCalls(callName) ?: listOf()
+        }
+
+
+        return this.changeCalls
     }
 
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
     private val LOOP_DEPTH = 7
-    private fun calculateReverseCalls(funName: String): String {
+    private val changeCalls: MutableList<ChangedCall> = mutableListOf()
+    private fun calculateReverseCalls(funName: String): List<ChangedCall>? {
         if (loopCount > LOOP_DEPTH) {
-            return "\n"
+            return null
         }
+
         loopCount++
 
         val calls = reverseCallMap[funName]
-        var result = ""
         calls?.forEach { child ->
             if (child == lastReverseCallChild) {
-                return ""
+                return null
             }
 
             if (reverseCallMap[child] != null) {
                 lastReverseCallChild = child
-                result += calculateReverseCalls(child)
+                calculateReverseCalls(child)
             }
 
             if (child != funName) {
-                result += "$child -> $funName;\n"
+                changeCalls += ChangedCall(child, funName)
             }
         }
 
-        return result
+        return null
     }
 
     private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
