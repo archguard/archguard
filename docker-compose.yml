@@ -43,7 +43,7 @@ services:
     networks:
       - dependence_network
     volumes:
-      - ./archguard_mysql:/var/lib/mysql:rw
+      - mysql:/var/lib/mysql:rw
 #    user: mysql
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
@@ -62,7 +62,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - ./archguard_influxdb:/var/lib/influxdb
+      - influxdb:/var/lib/influxdb
     environment:
       - INFLUXDB_DB=db0
       - INFLUXDB_ADMIN_USER=admin
@@ -70,3 +70,7 @@ services:
 
 networks:
   dependence_network:
+
+volumes:
+  mysql:
+  influxdb:
