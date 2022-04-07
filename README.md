@@ -140,6 +140,14 @@ APM is awesome for developer. APM is build in runtime, ArchGuard is focus on dev
 
 APM 是在运行态发现架构问题的，ArchGuard 是运行在开发态。两者之间存在一些 gap，ArchGuard 专注于代码，更适用于通过规范来治理架构 —— 没有规范，没有数据。
 
+### Git 源码配置
+
+ArchGuard 直接调用 `git clone` 去 clone 源码
+
+如果配置了用户名和秘密，则会执行 `repo.replace("//", "//${urlEncode(systemInfo.username)}:${urlEncode(systemInfo.getDeCryptPassword())}@")`，以生成一个带用户名和密码的 URL。
+
+
+
 License
 ---
 
