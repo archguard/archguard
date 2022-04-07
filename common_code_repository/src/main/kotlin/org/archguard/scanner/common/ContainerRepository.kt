@@ -4,6 +4,8 @@ import org.archguard.scanner.common.container.ContainerDemand
 import org.archguard.scanner.common.container.ContainerResource
 import org.archguard.scanner.common.container.ContainerService
 import infrastructure.SourceBatch
+import org.archguard.scanner.common.RepositoryHelper.currentTime
+import org.archguard.scanner.common.RepositoryHelper.generateId
 import java.util.HashMap
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
@@ -27,8 +29,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
     }
 
     private fun saveMainServices(): String {
-        val time: String = ClassRepository.currentTime
-        val serviceId = ClassRepository.generateId()
+        val time: String = currentTime
+        val serviceId = generateId()
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = serviceId
@@ -52,8 +54,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
 
 
     private fun saveResource(it: ContainerResource, serviceId: String, name: String): String {
-        val time: String = ClassRepository.currentTime
-        val resourceId = ClassRepository.generateId()
+        val time: String = currentTime
+        val resourceId = generateId()
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = resourceId
@@ -77,8 +79,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
 
 
     private fun saveDemand(demand: ContainerDemand, serviceId: String, name: String): String {
-        val time: String = ClassRepository.currentTime
-        val demandId = ClassRepository.generateId()
+        val time: String = currentTime
+        val demandId = generateId()
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = demandId

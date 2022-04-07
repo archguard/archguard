@@ -5,7 +5,8 @@ import chapi.domain.core.*
 import infrastructure.SourceBatch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.text.SimpleDateFormat
+import org.archguard.scanner.common.RepositoryHelper.currentTime
+import org.archguard.scanner.common.RepositoryHelper.generateId
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -489,19 +490,6 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_class", values)
 
         return clzId
-    }
-
-    companion object {
-        fun generateId(): String {
-            return UUID.randomUUID().toString()
-        }
-
-        val currentTime: String
-            get() {
-                val dt = Date()
-                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                return sdf.format(dt)
-            }
     }
 
     fun findId(table: String, keys: Map<String, String>): Optional<String>? {

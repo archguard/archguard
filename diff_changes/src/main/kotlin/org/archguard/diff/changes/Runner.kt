@@ -7,7 +7,7 @@ import com.github.ajalt.clikt.parameters.options.option
 class Runner : CliktCommand() {
     private val branch: String by option(help = "git repository branch").default("master")
     private val since: String by option(help="since specific revision").default("0")
-    private val util: String by option(help="util specific revision").default("0")
+    private val until: String by option(help="util specific revision").default("0")
 
     private val path: String by option(help = "local path").default(".")
 
@@ -17,7 +17,11 @@ class Runner : CliktCommand() {
     override fun run() {
         // todo: add multiple languages support
         val differ = GitDiffer(path, branch)
-        differ.countInRange(since, util)
+        val changedCalls = differ.countBetween(since, until)
+
+        val diffRepository = DiffRepository(systemId, language, since, until)
+        diffRepository.saveDiff(changedCalls)
+        diffRepository.close()
     }
 }
 

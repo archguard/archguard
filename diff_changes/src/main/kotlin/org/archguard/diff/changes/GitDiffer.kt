@@ -65,7 +65,7 @@ class GitDiffer(val path: String, val branch: String) {
     private val changedClasses: MutableMap<String, ChangedEntry> = mutableMapOf()
     private val changedFunctions: MutableMap<String, ChangedEntry> = mutableMapOf()
 
-    fun countInRange(sinceRev: String, untilRev: String): List<ChangedCall> {
+    fun countBetween(sinceRev: String, untilRev: String): List<ChangedCall> {
         val repository = FileRepositoryBuilder().findGitDir(File(path)).build()
         val git = Git(repository).specifyBranch(branch)
 

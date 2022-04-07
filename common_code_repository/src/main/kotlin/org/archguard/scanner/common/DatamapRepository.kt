@@ -1,6 +1,7 @@
 package org.archguard.scanner.common
 
 import infrastructure.SourceBatch
+import org.archguard.scanner.common.RepositoryHelper.generateId
 import org.archguard.scanner.common.database.CodeDatabaseRelation
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
@@ -34,7 +35,7 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveRecord(relation: CodeDatabaseRelation): String {
-        val id = ClassRepository.generateId()
+        val id = generateId()
         val values: MutableMap<String, String> = HashMap()
 
         values["id"] = id

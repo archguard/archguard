@@ -7,6 +7,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":common_code_repository"))
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
 
