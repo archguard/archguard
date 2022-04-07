@@ -1,9 +1,75 @@
-# [](https://github.com/archguard/archguard/compare/v1.4.0...v) (2022-04-01)
+# [](https://github.com/archguard/archguard/compare/v1.4.6...v) (2022-04-07)
+
+
+### Bug Fixes
+
+* default branch issue ([10a424c](https://github.com/archguard/archguard/commit/10a424c80a5cf5a8aa8979bafb057741ec751b66))
+* fix import issues ([5d5eb90](https://github.com/archguard/archguard/commit/5d5eb90b3a7e451dd4a42e371f338db33ddd628a))
+* fix mcr package error issues ([381f17a](https://github.com/archguard/archguard/commit/381f17ac898feaecce0c35583755bdd87bebfb54))
+* fix package path not change issue ([9aec403](https://github.com/archguard/archguard/commit/9aec40341ca8d9db4de8fe6787735a962a5572e2))
+* use named volumes instead of bind mounts ([4d2d476](https://github.com/archguard/archguard/commit/4d2d476a3f0716d3b3c9a847b4bb98b77c91ae42))
+
+
+### Features
+
+* **change:** init ranage api ([6222c89](https://github.com/archguard/archguard/commit/6222c89b622da4440725c6841b748299e64f785d))
+* install.sh ([37bdffb](https://github.com/archguard/archguard/commit/37bdffbcab2b4a05ff3297ecf10bba9061f4848d))
+
+
+
+## [1.4.5](https://github.com/archguard/archguard/compare/v1.4.4...v1.4.5) (2022-04-03)
+
+
+### Bug Fixes
+
+* fix workdir issues ([801ee5c](https://github.com/archguard/archguard/commit/801ee5c5ba222a09ddbc1d425bff6b78b600e945))
+
+
+
+## [1.4.4](https://github.com/archguard/archguard/compare/v1.4.3...v1.4.4) (2022-04-03)
+
+
+### Bug Fixes
+
+* fix prefix issue ([dfebe6b](https://github.com/archguard/archguard/commit/dfebe6b502600e024abe1f2af438473fd865500d))
+
+
+
+## [1.4.3](https://github.com/archguard/archguard/compare/v1.4.2...v1.4.3) (2022-04-03)
+
+
+### Bug Fixes
+
+* the ThresholdSuiteService must depends on flywayInitializer ([7344c4d](https://github.com/archguard/archguard/commit/7344c4d406acfa2b23a55ba8ef3bc4cc9c480b5e))
+
+
+### Reverts
+
+* Revert "build: move metrict bad for creat time" ([d826e34](https://github.com/archguard/archguard/commit/d826e34e85fa0ebcbbb31242f9ddea9487a5aa7d))
+* Revert "build: align flyway versions" ([6502582](https://github.com/archguard/archguard/commit/65025825a8ff29a6da524e92689a4b5b5d797c42))
+* Revert "build: try to add docker compose for flyway" ([1e6f5ac](https://github.com/archguard/archguard/commit/1e6f5acfdada9c3961f6c3dcb132a439927e3ebb))
+
+
+
+## [1.4.2](https://github.com/archguard/archguard/compare/v1.4.1...v1.4.2) (2022-04-02)
+
+
+
+## [1.4.1](https://github.com/archguard/archguard/compare/1.4.1...v1.4.1) (2022-04-02)
+
+
+### Bug Fixes
+
+* add platform for linux/amd64 and fixed [#3](https://github.com/archguard/archguard/issues/3) ([cf033df](https://github.com/archguard/archguard/commit/cf033dfe4894ecf5d1b1d29be70a6d6a5931aaeb))
+* **datamap:** fix id issues ([1454376](https://github.com/archguard/archguard/commit/1454376479955566aa7d305c4e056ebd5d5e8574))
+* fix removes ([1271633](https://github.com/archguard/archguard/commit/1271633fb47cb842c74768b432922c6ac3b80198))
+* fix sql ([398cc30](https://github.com/archguard/archguard/commit/398cc30b0bd1ecf5a6fd89a8823b2a20b2dbf7ad))
 
 
 ### Features
 
 * **data_ref:** add code to db ([2b70e0a](https://github.com/archguard/archguard/commit/2b70e0a087aa9e49a610dfc137467f37830a5ccf))
+* **datamap:** init datamap api ([e5810a7](https://github.com/archguard/archguard/commit/e5810a79763ef940ee58e86ce5ab75bc03d9583c))
 
 
 
