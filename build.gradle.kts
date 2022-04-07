@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "com.thoughtworks.archguard"
-version = "1.5.0"
+version = "1.5.1"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
