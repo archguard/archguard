@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.codescan.sourcecode
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
-import com.thoughtworks.archguard.scanner.infrastructure.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL

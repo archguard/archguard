@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.infrastructure
+package com.thoughtworks.archguard.scanner.infrastructure.command
 
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader

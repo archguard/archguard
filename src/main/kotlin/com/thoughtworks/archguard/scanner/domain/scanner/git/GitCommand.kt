@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
+import com.thoughtworks.archguard.scanner.infrastructure.command.CommandLine
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.lang.String.format

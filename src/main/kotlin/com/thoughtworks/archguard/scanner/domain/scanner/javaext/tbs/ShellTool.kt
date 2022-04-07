@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs
 
-import com.thoughtworks.archguard.scanner.infrastructure.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import java.io.File
 
 class ShellTool(private val workspace: File) {

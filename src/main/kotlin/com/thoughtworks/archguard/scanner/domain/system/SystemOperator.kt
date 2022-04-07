@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.system
 
 import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceException
 import com.thoughtworks.archguard.scanner.domain.exception.CompileException
-import com.thoughtworks.archguard.scanner.infrastructure.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
