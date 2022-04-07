@@ -23,6 +23,13 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
                         .firstOrNull()
             }
 
+    override fun setSystemWorkspace(id: Long, workdir: String) {
+        jdbi.withHandle<Unit, Nothing> {
+            it.createUpdate("update system_info set workdir = :workspace where id = :id ")
+                .execute()
+        }
+    }
+
     override fun updateSystemInfo(systemInfo: SystemInfo): Int {
         return jdbi.withHandle<Int, Nothing> {
             it.createUpdate("update system_info set " +

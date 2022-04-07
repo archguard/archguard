@@ -91,6 +91,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
             "SVN" -> return cloneBySvn(workspace, repo)
             "ZIP" -> return cloneByZip(workspace, repo)
         }
+
         return WRONG_REPO_TYPE
     }
 

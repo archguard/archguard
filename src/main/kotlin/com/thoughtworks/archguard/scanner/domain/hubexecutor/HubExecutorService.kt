@@ -60,6 +60,7 @@ class HubExecutorService {
 
     private fun doScan(id: Long, dbUrl: String) {
         val config = configureRepository.getToolConfigures()
+        // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id)
         systemOperator.cloneAndBuildAllRepo()
         systemOperator.scanProjectMap.forEach { (repo, compiledProject) ->

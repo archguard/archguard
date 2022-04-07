@@ -1,0 +1,1 @@
+alter table archguard.system_info add column `workdir` varchar(255) not null default '';
