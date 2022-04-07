@@ -1,10 +1,12 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 
-class GitHotFileScannerTool(val systemRoot: File, val branch: String) {
+class GitHotFileScannerTool(val systemRoot: File, val branch: String, val consumer: StreamConsumer) {
 
     private val log = LoggerFactory.getLogger(GitHotFileScannerTool::class.java)
 
@@ -37,6 +39,6 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String) {
     }
 
     private fun scan(cmd: List<String>, reportPath: String) {
-        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, reportPath)
+        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, reportPath, consumer)
     }
 }
