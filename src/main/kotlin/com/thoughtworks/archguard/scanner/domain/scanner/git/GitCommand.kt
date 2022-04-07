@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.lang.String.format
 
 // align to GoCD for better git clone
 // https://github.com/gocd/gocd/blob/master/domain/src/main/java/com/thoughtworks/go/domain/materials/git/GitCommand.java
@@ -22,12 +23,29 @@ class GitCommand(
             .`when`(depth < Int.MAX_VALUE) { git -> git.withArg(String.format("--depth=%s", depth)) }
             .withArg(url).withArg(workingDir.absolutePath)
 
-        gitClone.run()
+        run(gitClone)
+    }
+
+    private fun run(block: CommandLine): Int {
+        // todo: collection logs for frontend
+        return 1
     }
 
     private fun git(): CommandLine {
         val git: CommandLine = CommandLine.createCommandLine("git").withEncoding("UTF-8")
         return git.withNonArgSecrets(secrets)
+    }
+
+    private fun gitWd(): CommandLine {
+        return git().withWorkingDir(workingDir)
+    }
+
+    fun fetch() {
+        val gitFetch: CommandLine = gitWd().withArgs("fetch", "origin", "--prune", "--recurse-submodules=no")
+        val result: Int = run(gitFetch)
+        if (result != 0) {
+            throw RuntimeException(format("git fetch failed for [%s]", workingDir))
+        }
     }
 
     private fun git_C(): CommandLine {

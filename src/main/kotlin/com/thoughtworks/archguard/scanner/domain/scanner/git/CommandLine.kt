@@ -1,8 +1,10 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
+import java.io.File
 import java.util.function.Consumer
 
 class CommandLine(command: String) {
+    private var workingDir: File? = null
     private lateinit var encoding: String
     private var secrets: List<String> = listOf()
     private var arguments: MutableList<String> = mutableListOf()
@@ -43,13 +45,13 @@ class CommandLine(command: String) {
         return this
     }
 
-    fun withEncoding(encoding: String): CommandLine {
-        this.encoding = encoding
+    fun withWorkingDir(workingDir: File?): CommandLine {
+        this.workingDir = workingDir
         return this
     }
 
-    // todo: add safe output stream
-    fun run() {
-
+    fun withEncoding(encoding: String): CommandLine {
+        this.encoding = encoding
+        return this
     }
 }
