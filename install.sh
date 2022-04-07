@@ -11,4 +11,4 @@ if [ ! -f "./docker-compose.yaml" ];then
     exit 0
 fi
 
-docker-compose up -d
+sudo docker-compose up -d
