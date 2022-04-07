@@ -11,7 +11,7 @@
     <name>dubbo-provider</name>
 
     <properties>
-        <spring.version>5.2.0.RELEASE</spring.version>
+        <spring.version>[5.2.20,)</spring.version>
     </properties>
 
     <dependencies>
