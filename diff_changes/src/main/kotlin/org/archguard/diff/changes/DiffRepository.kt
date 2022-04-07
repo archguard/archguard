@@ -8,7 +8,13 @@ import org.archguard.scanner.common.RepositoryHelper.generateId
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
-class DiffRepository(val systemId: String, val language: String, val since: String, val until: String) {
+class DiffRepository(
+    val systemId: String,
+    val language: String,
+    val since: String,
+    val until: String,
+    val tableName: String
+) {
     private val batch: SourceBatch = SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100
@@ -45,11 +51,11 @@ class DiffRepository(val systemId: String, val language: String, val since: Stri
     }
 
     private fun flush() {
-        batch.execute()
+        batch.executeByTable(tableName)
     }
 
     fun close() {
-        batch.execute()
+        batch.executeByTable(tableName)
         batch.close()
     }
 }

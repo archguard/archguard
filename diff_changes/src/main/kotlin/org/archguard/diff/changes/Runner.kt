@@ -36,28 +36,32 @@ class Runner : CliktCommand() {
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
 
-        val diffRepository = DiffRepository(systemId, language, since, until)
-        diffRepository.saveDiff(changedCalls)
-        diffRepository.close()
+        val tableName = "scm_diff_change"
+        val repository = DiffRepository(systemId, language, since, until, tableName)
 
-        storeDatabase(systemId)
+        repository.saveDiff(changedCalls)
+        repository.close()
+
+        storeDatabase(systemId, tableName)
 
         val sqlEnd = System.currentTimeMillis()
         logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
         SqlExecuteThreadPool.close()
     }
 
-    private fun storeDatabase(systemId: String) {
+    private fun storeDatabase(systemId: String, tableName: String) {
         store.disableForeignCheck()
         store.initConnectionPool()
-        val tableName = "scm_diff_change"
+
         logger.info("--------------------------------------------------------")
         val phaser = Phaser(1)
         deleteByTable(tableName, phaser, systemId)
         phaser.arriveAndAwaitAdvance()
+
         logger.info("------------ system {} clean db is done --------------", systemId)
         saveByTables(arrayOf(tableName), phaser)
         phaser.arriveAndAwaitAdvance()
+
         logger.info("------------ system {} update db is done --------------", systemId)
         logger.info("--------------------------------------------------------")
         store.enableForeignCheck()

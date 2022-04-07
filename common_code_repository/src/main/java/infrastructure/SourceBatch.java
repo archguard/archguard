@@ -100,6 +100,24 @@ public class SourceBatch extends DefaultBatchImpl {
         logger.info("insert {} finished, spend: {}", totalInsert, (stop - start) / 1000);
     }
 
+    public void executeByTable(String table) {
+        long start = System.currentTimeMillis();
+        int totalInsert = 0;
+
+        List<Map<String, String>> values = insertStore.get(table);
+        if (values != null && !values.isEmpty()) {
+            totalInsert = totalInsert + values.size();
+            String sql = generateBatchInsertSql(table, values);
+            logger.debug(sql);
+            write(sql + ";", table + ".sql");
+        }
+
+        insertStore.clear();
+
+        long stop = System.currentTimeMillis();
+        logger.info("insert {} finished, spend: {}", totalInsert, (stop - start) / 1000);
+    }
+
     public static void write(String sql, String path) {
         List<String> ls = new ArrayList<>();
         ls.add(sql);
