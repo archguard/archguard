@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.createTempDirectory
 
 
 @RestController
@@ -20,7 +21,7 @@ class FileController {
             return "上传失败，请选择文件"
         }
 
-        val dir = createTempDir()
+        val dir = createTempDirectory().toFile()
         val fileName = file.originalFilename ?: "System-Info"
         val filePath = this.prepareZipFile(dir.absolutePath, fileName)
         file.transferTo(filePath.toFile())

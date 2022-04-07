@@ -7,11 +7,12 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
+import kotlin.io.path.createTempDirectory
 
 class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val scanProjectMap = mutableMapOf<String, ScanProject>()
-    val workspace: File = createTempDir()
+    val workspace: File = createTempDirectory("archguard").toFile()
     val sql: String by lazy { systemInfo.sql }
 
     fun cloneAndBuildAllRepo() {
@@ -29,6 +30,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
                         systemInfo.branch
                     )
                 } else {
+                    // for archguard 1.0, it need to build to create jvm
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
                         cloneAndBuildSingleRepo(repo)
                     } else {
@@ -45,15 +47,14 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     }
 
     private fun cloneSingleRepo(repo: String) {
-        val repoWorkSpace = createTempDir(directory = workspace)
-        log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
-        val exitCode = getSource(repoWorkSpace, repo)
+        log.info("workSpace is ${workspace.toPath()} repo is: $repo")
+        val exitCode = getSource(workspace, repo)
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
         scanProjectMap[repo] = ScanProject(
             repo,
-            repoWorkSpace,
+            workspace,
             BuildTool.NONE,
             this.systemInfo.sql,
             systemInfo.language,
@@ -63,18 +64,17 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
-        val repoWorkSpace = createTempDir(directory = workspace)
-        log.info("workSpace is ${repoWorkSpace.toPath()} repo is: $repo")
-        val exitCode = getSource(repoWorkSpace, repo)
+        log.info("workSpace is ${workspace.toPath()} repo is: $repo")
+        val exitCode = getSource(workspace, repo)
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
 
-        val buildTool = getBuildTool(repoWorkSpace)
-        buildSource(repoWorkSpace, buildTool)
+        val buildTool = getBuildTool(workspace)
+        buildSource(workspace, buildTool)
         scanProjectMap[repo] = ScanProject(
             repo,
-            repoWorkSpace,
+            workspace,
             buildTool,
             this.systemInfo.sql,
             systemInfo.language,
