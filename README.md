@@ -92,7 +92,11 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 - data storage：MySQL, InfluxDB
 
 ### Local setup
+
+requirements: JDK 12+
+
 #### database setup
+
 1. Local mysql, or docker created
 - `docker pull mysql:8`
 - `docker run --name=mysql -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql`
@@ -101,6 +105,7 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 - `./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate` (probably not needed)
 
 #### run
+
 `./gradlew bootrun`
 
 ### Docker
@@ -145,8 +150,6 @@ APM 是在运行态发现架构问题的，ArchGuard 是运行在开发态。两
 ArchGuard 直接调用 `git clone` 去 clone 源码
 
 如果配置了用户名和秘密，则会执行 `repo.replace("//", "//${urlEncode(systemInfo.username)}:${urlEncode(systemInfo.getDeCryptPassword())}@")`，以生成一个带用户名和密码的 URL。
-
-
 
 License
 ---
