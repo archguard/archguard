@@ -30,6 +30,7 @@ Scanner:
 * code_repository - share repository code for `scan_bytecode` and `scan_sourcecode`, can be for such as scan_llvm
   * [x] ContainerRepository
   * [x] CodeRepository
+* diff_change - diff change between commits
 * collector_ci [TBD] - collector CI/CD information
 
 ## Features
