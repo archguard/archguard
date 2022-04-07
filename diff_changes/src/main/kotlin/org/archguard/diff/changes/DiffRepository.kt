@@ -41,7 +41,7 @@ class DiffRepository(val systemId: String, val language: String, val since: Stri
         values["package_name"] = changedCall.packageName
         values["relations"] = Json.encodeToString(changedCall.relations)
 
-        batch.add("scm_diff_changes", values)
+        batch.add("scm_diff_change", values)
     }
 
     private fun flush() {

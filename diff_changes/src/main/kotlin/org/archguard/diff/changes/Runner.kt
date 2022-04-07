@@ -24,11 +24,15 @@ class Runner : CliktCommand() {
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "language").default("")
 
+
+    // todo: add multiple languages support
     override fun run() {
-        // todo: add multiple languages support
+        logger.info("diff from $since to $until on branch: $branch ")
+
         val differ = GitDiffer(path, branch)
         val changedCalls = differ.countBetween(since, until)
 
+        logger.info("found changes: ${changedCalls.size}")
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
 
@@ -46,17 +50,14 @@ class Runner : CliktCommand() {
     private fun storeDatabase(systemId: String) {
         store.disableForeignCheck()
         store.initConnectionPool()
-        val tableName = "diff_change"
-
+        val tableName = "scm_diff_change"
         logger.info("--------------------------------------------------------")
         val phaser = Phaser(1)
         deleteByTable(tableName, phaser, systemId)
-
         phaser.arriveAndAwaitAdvance()
         logger.info("------------ system {} clean db is done --------------", systemId)
         saveByTables(arrayOf(tableName), phaser)
         phaser.arriveAndAwaitAdvance()
-
         logger.info("------------ system {} update db is done --------------", systemId)
         logger.info("--------------------------------------------------------")
         store.enableForeignCheck()
