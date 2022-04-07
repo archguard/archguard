@@ -46,6 +46,7 @@ class ChangedList(
     val functions: List<ChangedEntry> = arrayListOf(),
 )
 
+@Serializable
 class ChangedCall(
     val path: String,
     val packageName: String,
@@ -53,6 +54,7 @@ class ChangedCall(
     val relations: List<ChangeRelation>
 )
 
+@Serializable
 class ChangeRelation(
     val source: String,
     val target: String
