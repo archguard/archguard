@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.regex.Pattern
 
 // align to GoCD for better git clone
 // https://github.com/gocd/gocd/blob/master/domain/src/main/java/com/thoughtworks/go/domain/materials/git/GitCommand.java
@@ -18,7 +17,7 @@ class GitCommand(
         return git().withArg("clone")
     }
 
-    fun clone(url: String, depth: Integer) {
+    fun clone(url: String, depth: Int) {
         val gitClone = cloneCommand()
             .`when`(depth < Int.MAX_VALUE) { git -> git.withArg(String.format("--depth=%s", depth)) }
             .withArg(url).withArg(workingDir.absolutePath)
