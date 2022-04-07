@@ -106,12 +106,7 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 ### Docker
 
 ```
-mkdir -p archguard_mysql
-chmod -R 777 archguard_mysql
-```
-
-```
-docker-compose up
+docker-compose -p ArchGuard -f ./docker-compose.yml up -d
 ```
 
 Known issues with Colima: `docker mysql exited 137 memory`
