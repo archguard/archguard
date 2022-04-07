@@ -1,0 +1,1 @@
+alter table scm_commit_log change column repo_id repo_id varchar(255);
