@@ -40,9 +40,13 @@ class SourceCodeTool(
     private fun copyIntoSystemRoot() {
         log.info("copy SourceCode jar tool from local")
         FileOperator.copyTo(File(SCAN_SOURCECODE_JAR), File("$systemRoot/scan_sourcecode.jar"))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        try {
+            val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
+            chmod.directory(systemRoot)
+            chmod.start().waitFor()
+        }catch (ex:Exception) {
+            log.warn("chmod +x scan_sourcecode.jar tool Exception")
+        }
     }
 
     private fun checkIfExistInLocal(): Boolean {

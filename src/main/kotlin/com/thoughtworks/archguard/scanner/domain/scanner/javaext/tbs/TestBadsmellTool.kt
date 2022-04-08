@@ -43,9 +43,13 @@ class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
         FileOperator.copyTo(File(SCAN_TEST_BADSMELL_JAR), File("$systemRoot/scan_scan_test_badsmell.jar"))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        try {
+            val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
+            chmod.directory(systemRoot)
+            chmod.start().waitFor()
+        }catch (ex:Exception) {
+            log.warn("chmod +x scan_git.jar tool Exception")
+        }
     }
 
 

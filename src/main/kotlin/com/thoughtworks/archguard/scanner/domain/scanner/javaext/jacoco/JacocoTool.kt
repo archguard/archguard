@@ -40,9 +40,13 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
         FileOperator.copyTo(File(SCAN_JACOCO_JAR), File("$workspace/scan_jacoco.jar"))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
-        chmod.directory(workspace)
-        chmod.start().waitFor()
+        try {
+            val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
+            chmod.directory(workspace)
+            chmod.start().waitFor()
+        }catch (ex:Exception) {
+            log.warn("chmod +x scan_jacoco.jar tool Exception")
+        }
     }
 
     private fun checkIfExistInLocal(): Boolean {

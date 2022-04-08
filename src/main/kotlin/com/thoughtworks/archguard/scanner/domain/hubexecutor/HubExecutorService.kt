@@ -5,14 +5,17 @@ import com.thoughtworks.archguard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.concurrent.thread
 
 @Service
-class HubExecutorService {
+class HubExecutorService : DisposableBean {
     private val log = LoggerFactory.getLogger(HubExecutorService::class.java)
+    private var systemRoot: String = ""
 
     @Autowired
     private lateinit var manager: ScannerManager
@@ -77,11 +80,26 @@ class HubExecutorService {
             )
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
+            systemRoot = context.workspace.parent
         }
     }
 
     fun getEvaluationStatus(type: String, id: Long): Boolean {
         return concurrentSet.contains(id)
+    }
+
+    /**
+     * 关闭服务清空临时目录
+     */
+    override fun destroy() {
+        if(systemRoot.isEmpty()){
+            return
+        }
+        var file = File(systemRoot)
+        if(file.exists()){
+            var del = file.deleteRecursively()
+            log.info("tempFile {}, clean tempFile result：{}", systemRoot, del);
+        }
     }
 
 }
