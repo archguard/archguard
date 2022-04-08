@@ -17,7 +17,7 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
             jdbi.withHandle<SystemInfo, Nothing> {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, language language, branch branch, code_path codePath," +
-                        " password password, repo_type repoType from system_info where id = :id")
+                        " password password, repo_type repoType, workdir workdir from system_info where id = :id")
                         .bind("id", id)
                         .mapTo<SystemInfo>()
                         .firstOrNull()
@@ -25,7 +25,9 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
 
     override fun setSystemWorkspace(id: Long, workdir: String) {
         jdbi.withHandle<Unit, Nothing> {
-            it.createUpdate("update system_info set workdir = :workspace where id = :id ")
+            it.createUpdate("update system_info set workdir = :workdir where id = :id ")
+                .bind("workdir", workdir)
+                .bind("id", id)
                 .execute()
         }
     }

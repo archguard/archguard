@@ -11,9 +11,13 @@ import com.thoughtworks.archguard.scanner.infrastructure.client.Scanner2Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.io.File
+import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.Executors
 import javax.annotation.PostConstruct
+import kotlin.io.path.createTempDirectory
+import kotlin.io.path.pathString
 
 @Service
 class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
@@ -44,6 +48,7 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         executor.execute {
             val systemInfo = getSystemInfo(systemId)
             try {
+                createWorkingDirectoryIfNotExist(systemInfo)
                 startScanSystem(systemInfo)
                 analyse(systemId, systemInfo.language)
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
@@ -52,6 +57,21 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
                 stopScanSystem(systemInfo, ScannedType.FAILED)
             }
         }
+    }
+
+    private fun createWorkingDirectoryIfNotExist(systemInfo: SystemInfo): Path {
+        val workdir: Path
+        if (systemInfo.workdir.isEmpty()) {
+            workdir = createTempDirectory("archguard")
+            systemInfoRepository.setSystemWorkspace(systemInfo.id!!, workdir.pathString)
+        } else if (!File(systemInfo.workdir).exists()) {
+            workdir = createTempDirectory("archguard")
+            systemInfoRepository.setSystemWorkspace(systemInfo.id!!, workdir.pathString)
+        } else {
+            workdir = File(systemInfo.workdir).toPath()
+        }
+
+        return workdir
     }
 
     fun analyse(systemId: Long, language: String) {

@@ -13,7 +13,8 @@ class SystemInfo(
     val codePath: String = "",
     var scanned: ScannedType = ScannedType.NONE,
     val repoType: String = "GIT",
-    val branch: String
+    val branch: String,
+    val workdir: String,
 ) {
     fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
 
