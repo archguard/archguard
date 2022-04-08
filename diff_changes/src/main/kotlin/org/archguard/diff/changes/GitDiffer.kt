@@ -201,8 +201,6 @@ class GitDiffer(val path: String, val branch: String) {
             val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
             val filePath = treeWalk.pathString
 
-            println("changed file: $filePath")
-
             val blobId = treeWalk.getObjectId(0)
 
             var newDataStructs: Array<CodeDataStruct> = arrayOf()
@@ -213,31 +211,38 @@ class GitDiffer(val path: String, val branch: String) {
             if (filePath.endsWith(".java")) {
                 newDataStructs = diffFileFromBlob(repository, blobId, filePath, JavaAnalyserApp())
             }
-            val oldDataStructs = this.differFileMap[filePath]!!.dataStructs
 
-            // compare for sized
-            if (newDataStructs.size != oldDataStructs.size) {
-                val difference = newDataStructs.filterNot { oldDataStructs.contains(it) }
-                difference.forEach {
-                    this.changedFiles[filePath] = ChangedEntry(filePath, filePath, it.Package, it.NodeName)
-                }
-            }
+            if (this.differFileMap[filePath] != null) {
 
-            // compare for field
-            newDataStructs.forEachIndexed { index, ds ->
-                // in first version, if field changed, just make data structure change will be simple
-                if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
-                    this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName)
-                }
+                val oldDataStructs = this.differFileMap[filePath]!!.dataStructs
 
-                // compare for function sizes
-                if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
-                    val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
+                // compare for sized
+                if (newDataStructs.size != oldDataStructs.size) {
+                    val difference = newDataStructs.filterNot { oldDataStructs.contains(it) }
                     difference.forEach {
-                        this.changedFunctions[filePath] =
-                            ChangedEntry(filePath, filePath, ds.Package, ds.NodeName, it.Name)
+                        this.changedFiles[filePath] = ChangedEntry(filePath, filePath, it.Package, it.NodeName)
+                    }
+                } else {
+                    // compare for field
+                    newDataStructs.forEachIndexed { index, ds ->
+                        // in first version, if field changed, just make data structure change will be simple
+                        if (ds.Fields.size != oldDataStructs[index].Fields.size) {
+                            this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName)
+                        } else if (!ds.Fields.contentEquals(oldDataStructs[index].Fields)) {
+                            this.changedClasses[filePath] = ChangedEntry(filePath, filePath, ds.Package, ds.NodeName)
+                        }
+
+                        // compare for function sizes
+                        if (!ds.Functions.contentEquals(oldDataStructs[index].Functions)) {
+                            val difference = ds.Functions.filterNot { oldDataStructs[index].Functions.contains(it) }
+                            difference.forEach {
+                                this.changedFunctions[filePath] =
+                                    ChangedEntry(filePath, filePath, ds.Package, ds.NodeName, it.Name)
+                            }
+                        }
                     }
                 }
+
             }
         } catch (ex: Exception) {
             throw ex
