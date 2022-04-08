@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/archguard/scanner/branch/master/graph/badge.svg?token=RSAOWTRFMT)](https://codecov.io/gh/archguard/scanner)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/scanner)
 
+Requirements: JDK 12
 
 Scanner:
 
