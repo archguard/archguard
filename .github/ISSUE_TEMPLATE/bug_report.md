@@ -10,18 +10,19 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Env (please complete the following information):**
+ - OS: [e.g. iOS]
+ - Env: Docker compose? Local dev?
+ - Browser [e.g. chrome, safari]
+ - Version [e.g. 22]
+
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Env: Docker compose? Local dev?
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
