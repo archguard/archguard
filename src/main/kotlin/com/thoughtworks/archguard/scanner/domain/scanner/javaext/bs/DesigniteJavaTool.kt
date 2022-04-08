@@ -68,10 +68,13 @@ class DesigniteJavaTool(val systemRoot: File) {
                 FileOperator.download(URL(downloadUrl), File(SCAN_DESIGNITE_JAR))
             }
         }
-
-        val chmod = ProcessBuilder("chmod", "+x", SCAN_DESIGNITE_JAR)
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        try {
+            val chmod = ProcessBuilder("chmod", "+x", SCAN_DESIGNITE_JAR)
+            chmod.directory(systemRoot)
+            chmod.start().waitFor()
+        }catch (ex:Exception) {
+            log.warn("chmod +x {} tool Exception", SCAN_DESIGNITE_JAR)
+        }
     }
 
     private fun checkIfExistInLocal(): Boolean {

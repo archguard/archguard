@@ -30,9 +30,13 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
         FileOperator.copyTo(File(SCAN_JAVA_BYTECODE_JAR), File("$systemRoot/scan_java_bytecode.jar"))
-        val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
-        chmod.directory(systemRoot)
-        chmod.start().waitFor()
+        try {
+            val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
+            chmod.directory(systemRoot)
+            chmod.start().waitFor()
+        }catch (ex:Exception) {
+            log.warn("chmod +x scan_java_bytecode.jar tool Exception")
+        }
     }
 
     private fun checkIfExistInLocal(): Boolean {
