@@ -48,9 +48,10 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         executor.execute {
             val systemInfo = getSystemInfo(systemId)
             try {
-                createWorkingDirectoryIfNotExist(systemInfo)
+                val workdir = createWorkingDirectoryIfNotExist(systemInfo)
+
                 startScanSystem(systemInfo)
-                analyse(systemId, systemInfo.language)
+                analyse(systemId, systemInfo.language, workdir)
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
@@ -74,7 +75,7 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         return workdir
     }
 
-    fun analyse(systemId: Long, language: String) {
+    fun analyse(systemId: Long, language: String, workdir: Path) {
         log.info("************************************")
         log.info(" Start scan analysis")
         log.info("************************************")

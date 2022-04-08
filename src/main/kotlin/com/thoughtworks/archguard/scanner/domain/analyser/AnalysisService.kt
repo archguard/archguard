@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.scanner.domain.system.SystemOperator
 import com.thoughtworks.archguard.scanner.domain.exception.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -16,7 +17,7 @@ class AnalysisService(@Autowired val systemInfoRepository: SystemInfoRepository)
         val systemInfo = systemInfoRepository.getSystemInfo(id)
                 ?: throw EntityNotFoundException(SystemInfo::class.java, id)
         checkAnalysable(systemInfo)
-        return SystemOperator(systemInfo, id)
+        return SystemOperator(systemInfo, id, File(systemInfo.workdir))
     }
 
     fun checkAnalysable(systemInfo: SystemInfo) {

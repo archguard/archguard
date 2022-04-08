@@ -7,12 +7,10 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
-import kotlin.io.path.createTempDirectory
 
-class SystemOperator(val systemInfo: SystemInfo, val id: Long) {
+class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: File) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val scanProjectMap = mutableMapOf<String, ScanProject>()
-    val workspace: File = createTempDirectory("archguard").toFile()
     val sql: String by lazy { systemInfo.sql }
 
     fun cloneAndBuildAllRepo() {
