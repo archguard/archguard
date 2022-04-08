@@ -121,7 +121,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
 
         return if (isGitRepository(workspace)) {
             log.debug("Going to fetch repo: ", workspace)
-            gitCommand.fetch()
+            gitCommand.fetchCode()
         } else {
             log.debug("Going to clone {}", repoCombineWithAuthInfo)
             gitCommand.clone(repoCombineWithAuthInfo, 2048)
@@ -132,6 +132,13 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         return File(workingFolder, ".git").isDirectory
     }
 
+    fun localBranch(): String {
+        return RefSpecHelper.localBranch(systemInfo.branch)
+    }
+
+    fun remoteBranch(): String {
+        return RefSpecHelper.remoteBranch(RefSpecHelper.expandRefSpec(systemInfo.branch))
+    }
 
     private fun processGitUrl(repo: String): String {
         return if (systemInfo.hasAuthInfo()) {
