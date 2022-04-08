@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
+import com.thoughtworks.archguard.common.constants.RELATED_TABLES
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfoRepository
 import org.jdbi.v3.core.Jdbi
@@ -60,16 +61,9 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
         }
     }
 
-    private val TABLES = listOf(
-        "scm_commit_log",
-        "scm_change_entry",
-        "scm_git_hot_file",
-        "scm_path_change_count",
-    )
-
     override fun removeNotClearRelatedData(id: Long) {
         val sqls = mutableListOf<String>()
-        val tables = TABLES
+        val tables = RELATED_TABLES
 
         tables.forEach { sqls.add("delete from $it where system_id = $id") }
 
