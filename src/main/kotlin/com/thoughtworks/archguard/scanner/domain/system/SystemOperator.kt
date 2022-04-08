@@ -121,7 +121,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
 
         return if (isGitRepository(workspace)) {
             log.debug("Going to fetch repo: ", workspace)
-            gitCommand.fetchCode()
+            gitCommand.pullCode()
         } else {
             log.debug("Going to clone {}", repoCombineWithAuthInfo)
             gitCommand.clone(repoCombineWithAuthInfo, 2048)

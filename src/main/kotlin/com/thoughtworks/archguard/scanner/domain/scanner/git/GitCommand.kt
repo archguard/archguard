@@ -55,12 +55,12 @@ class GitCommand(
         return result
     }
 
-    fun fetchCode(): Int {
+    fun pullCode(): Int {
         return runCascade(
             InMemoryConsumer(),
             git_C().withArgs("config", "--replace-all", "remote.origin.fetch", "+" + expandRefSpec()),
-            git_C().withArgs("fetch", "--prune", "--recurse-submodules=no"),
-            git_C().withArgs("checkout", "-B", localBranch(), remoteBranch())
+            git_C().withArgs("pull", "--rebase"),
+//            git_C().withArgs("checkout", "-B", localBranch(), remoteBranch())
         )
     }
 
