@@ -19,7 +19,7 @@ package com.thoughtworks.archguard.scanner.infrastructure.command
 import java.io.File
 import java.util.function.Consumer
 
-class CommandLine(command: String) {
+class CommandLine(val executable: String) {
     private var workingDir: File? = null
     private lateinit var encoding: String
     private var secrets: List<String> = listOf()
@@ -69,5 +69,16 @@ class CommandLine(command: String) {
     fun withEncoding(encoding: String): CommandLine {
         this.encoding = encoding
         return this
+    }
+
+    fun getCommandLine(): List<String> {
+        val args: MutableList<String> = ArrayList()
+        args.add(executable)
+        for (i in arguments.indices) {
+            val argument = arguments[i]
+            args.add(argument)
+        }
+
+        return args.toList()
     }
 }

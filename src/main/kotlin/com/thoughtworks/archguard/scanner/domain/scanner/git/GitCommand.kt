@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.CommandLine
+import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.lang.String.format
@@ -19,17 +20,18 @@ class GitCommand(
         return git().withArg("clone")
     }
 
-    fun clone(url: String, depth: Int) {
+    fun clone(url: String, depth: Int): Int {
         val gitClone = cloneCommand()
             .`when`(depth < Int.MAX_VALUE) { git -> git.withArg(String.format("--depth=%s", depth)) }
             .withArg(url).withArg(workingDir.absolutePath)
 
-        run(gitClone)
+        return run(gitClone)
     }
 
-    private fun run(block: CommandLine): Int {
-        // todo: collection logs for frontend
-        return 1
+    // todo: collection logs for frontend
+    private fun run(cmd: CommandLine): Int {
+        val processBuilder = ProcessBuilder(cmd.getCommandLine())
+        return Processor.executeWithLogs(processBuilder, workingDir)
     }
 
     private fun git(): CommandLine {
@@ -41,12 +43,14 @@ class GitCommand(
         return git().withWorkingDir(workingDir)
     }
 
-    fun fetch() {
+    fun fetch(): Int {
         val gitFetch: CommandLine = gitWd().withArgs("fetch", "origin", "--prune", "--recurse-submodules=no")
         val result: Int = run(gitFetch)
         if (result != 0) {
             throw RuntimeException(format("git fetch failed for [%s]", workingDir))
         }
+
+        return result
     }
 
     private fun git_C(): CommandLine {
