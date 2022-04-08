@@ -15,6 +15,7 @@ allprojects {
     group = "com.thoughtworks.archguard"
     version = "1.4.3"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
+    java.targetCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
         mavenCentral()
