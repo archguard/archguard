@@ -118,7 +118,6 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return mId
     }
 
-
     private fun findMethodIdByClzName(m: CodeFunction, clzName: String, funcName: String, pkgName: String): Optional<String?>? {
         return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName, pkgName)
     }
@@ -462,6 +461,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["package_name"] = packageName.orEmpty()
         values["class_name"] = className
         values["access"] = access
+        values["loc"] = ""
 
         batch.add("code_class", values)
         return clzId
