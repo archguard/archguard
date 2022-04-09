@@ -31,6 +31,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`, username username, " +
                         "password password, scanned scanned, quality_gate_profile_id qualityGateProfileId," +
                         "repo_type repoType, updated_time updatedTime, language language, code_path codePath, " +
+                        "workdir workdir, " +
                         "threshold_suite_id badSmellThresholdSuiteId, branch from system_info")
                         .mapTo<SystemInfo>()
                         .list()
@@ -49,7 +50,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     "threshold_suite_id = :badSmellThresholdSuiteId, " +
                     "branch = :branch, " +
                     "language = :language, " +
-                    "code_path = :codePath " +
+                    "code_path = :codePath, " +
+                    "workdir = :workdir " +
                     "where id = :id")
                     .bindBean(systemInfo)
                     .execute()
@@ -60,7 +62,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate("insert into system_info" +
                     "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
-                    " language, code_path, threshold_suite_id, branch) " +
+                    " language, code_path, threshold_suite_id, branch, workdir) " +
                     "values (:id, :systemName, " +
                     ":repo, " +
                     ":sql, " +
@@ -72,7 +74,8 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                     ":language, " +
                     ":codePath, " +
                     ":badSmellThresholdSuiteId, " +
-                    ":branch)")
+                    ":branch, " +
+                    ":workdir)")
                     .bindBean(systemInfo)
                     .executeAndReturnGeneratedKeys("id")
                     .mapTo(Long::class.java)

@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs
 
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,7 +29,8 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
             ArrayList(),
             "jvm",
             "",
-            ""
+            "",
+            InMemoryConsumer()
         )
         testBadSmellScanner.scan(scanContext)
 

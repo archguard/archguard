@@ -1,0 +1,1 @@
+alter table system_info add column `workdir` varchar(255) default '';

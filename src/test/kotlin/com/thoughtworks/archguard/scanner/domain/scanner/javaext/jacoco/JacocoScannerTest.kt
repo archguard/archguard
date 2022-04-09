@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.scanner.javaext.jacoco
 
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,7 +29,8 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
                 ArrayList(),
                 "jvm",
                 "",
-                ""
+                "",
+                InMemoryConsumer()
             )
         )
         val bundle = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->

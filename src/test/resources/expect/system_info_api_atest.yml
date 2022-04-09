@@ -12,3 +12,4 @@ system_info:
     branch: "master"
     updated_time: '2020-10-21 11:24:01'
     language: "jvm"
+    workdir: "/tmp"
