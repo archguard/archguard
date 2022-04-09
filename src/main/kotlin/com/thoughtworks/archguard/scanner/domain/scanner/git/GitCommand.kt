@@ -59,7 +59,7 @@ class GitCommand(
             logStream,
             gitWd().withArgs("reset", "--hard"),
             // clean files
-            gitWd().withArgs("clean", "--dff"),
+            gitWd().withArgs("clean", "-dff"),
             git_C().withArgs("config", "--replace-all", "remote.origin.fetch", "+" + expandRefSpec()),
             git_C().withArgs("pull", "--rebase"),
         )
