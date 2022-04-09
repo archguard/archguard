@@ -256,7 +256,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         }
 
         // module name empty for third-part deps
-        return doSaveClass(
+        return saveDepClass(
             name,
             THIRD_PARTY,
             "",
@@ -443,7 +443,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         }
     }
 
-    private fun doSaveClass(
+    private fun saveDepClass(
         name: String, module: String, access: String, thirdparty: Boolean, isTest: Boolean,
         packageName: String?, className: String
     ): String {
@@ -461,7 +461,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["package_name"] = packageName.orEmpty()
         values["class_name"] = className
         values["access"] = access
-        values["loc"] = ""
+        values["loc"] = "0"
 
         batch.add("code_class", values)
         return clzId
