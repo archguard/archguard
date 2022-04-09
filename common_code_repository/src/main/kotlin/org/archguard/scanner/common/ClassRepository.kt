@@ -45,6 +45,12 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName, clz.Package)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassAnnotation(clzId, clz.Annotations)
+
+        count.incrementAndGet()
+        if (count.get() == batchStep) {
+            flush()
+            count.compareAndSet(batchStep, 0)
+        }
     }
 
     private fun saveOrGetClzId(clz: CodeDataStruct): String? {
@@ -329,12 +335,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         }
 
         val fieldId = fieldIdOpt.get()
-        val methodFields: MutableMap<String, String> = HashMap()
-        methodFields["id"] = generateId()
-        methodFields["system_id"] = systemId
-        methodFields["a"] = methodId
-        methodFields["b"] = fieldId
-        batch.add("code_ref_class_fields", methodFields)
+        saveCodeRefClassFields(methodId, fieldId)
     }
 
     private fun findFieldId(field: CodeProperty, clzName: String): Optional<String?>? {
@@ -453,13 +454,29 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             values["createdAt"] = time
             batch.add("code_field", values)
 
-            val relation: MutableMap<String, String> = HashMap()
-            relation["id"] = generateId()
-            relation["system_id"] = systemId
-            relation["a"] = clzId
-            relation["b"] = id
-            batch.add("code_ref_class_fields", relation)
+            // JavaScript or TypeScript can use global field
+            if (isJs()) {
+                val keys: MutableMap<String, String> = HashMap()
+                keys["a"] = clzId
+                keys["b"] = id
+
+                val optional = batch.findId("code_ref_class_fields", keys)
+                if (optional == null) {
+                    saveCodeRefClassFields(clzId, id)
+                }
+            } else {
+                saveCodeRefClassFields(clzId, id)
+            }
         }
+    }
+
+    private fun saveCodeRefClassFields(clzId: String, id: String) {
+        val relation: MutableMap<String, String> = HashMap()
+        relation["id"] = generateId()
+        relation["system_id"] = systemId
+        relation["a"] = clzId
+        relation["b"] = id
+        batch.add("code_ref_class_fields", relation)
     }
 
     private fun saveDepClass(
