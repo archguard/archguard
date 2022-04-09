@@ -207,26 +207,29 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     ) {
         for (import in imports) {
             if (isJs()) {
-                var sourceName = packageName
+                import.UsageName.forEach {
+                    var sourceName = packageName
 
-                var importSource = import.Source
-                importSource = convertTypeScriptImport(importSource, filePath)
+                    var importSource = import.Source
+                    importSource = convertTypeScriptImport(importSource, filePath)
 
-                val mayBeComponent = packageName.endsWith(".index") && clzName == "default"
-                if (mayBeComponent) {
-                    val functions = clzFunctions.filter { it.IsReturnHtml }
-                    val isComponent = functions.isNotEmpty()
-                    if (isComponent) {
-                        sourceName = packageName.removeSuffix(".index")
+                    val mayBeComponent = packageName.endsWith(".index") && clzName == "default"
+                    if (mayBeComponent) {
+                        val functions = clzFunctions.filter { it.IsReturnHtml }
+                        val isComponent = functions.isNotEmpty()
+                        if (isComponent) {
+                            sourceName = packageName.removeSuffix(".index")
 
-                        if (exports.isNotEmpty()) {
-                            sourceName = sourceName + "." + exports[0].Name
+                            if (exports.isNotEmpty()) {
+                                sourceName = sourceName + "." + exports[0].Name
+                            }
                         }
                     }
-                }
 
-                val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
-                doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+                    importSource = "$importSource.$it"
+                    val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
+                    doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+                }
             } else {
                 val sourceName = "${packageName}.${clzName}"
 
