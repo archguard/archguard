@@ -77,7 +77,13 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         }
     }
 
-    private fun saveMethodCall(callerId: String, callee: CodeCall, moduleName: String, clzName: String, pkgName: String) {
+    private fun saveMethodCall(
+        callerId: String,
+        callee: CodeCall,
+        moduleName: String,
+        clzName: String,
+        pkgName: String
+    ) {
         val calleeId: String? = saveOrGetCalleeMethod(callee, moduleName, clzName, pkgName)
         val callees: MutableMap<String, String> = HashMap()
         callees["id"] = generateId()
@@ -88,7 +94,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveOrGetCalleeMethod(callee: CodeCall, module: String, clzName: String, pkgName: String): String? {
-        val methodId: Optional<String?>? = findCalleeMethodId(module, clzName, callee.Parameters, callee.FunctionName, pkgName)
+        val methodId: Optional<String?>? =
+            findCalleeMethodId(module, clzName, callee.Parameters, callee.FunctionName, pkgName)
         return methodId?.orElseGet { saveCalleeMethod(callee) }
     }
 
@@ -118,7 +125,12 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return mId
     }
 
-    private fun findMethodIdByClzName(m: CodeFunction, clzName: String, funcName: String, pkgName: String): Optional<String?>? {
+    private fun findMethodIdByClzName(
+        m: CodeFunction,
+        clzName: String,
+        funcName: String,
+        pkgName: String
+    ): Optional<String?>? {
         return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName, pkgName)
     }
 
@@ -201,7 +213,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                     if (isComponent) {
                         sourceName = packageName.removeSuffix(".index")
 
-                        if(exports.isNotEmpty()) {
+                        if (exports.isNotEmpty()) {
                             sourceName = sourceName + "." + exports[0].Name
                         }
                     }
@@ -297,8 +309,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             val methodId = doSaveMethod(clzName, method, pkgName)
             doSaveClassMethodRelations(clzId, methodId)
 
-            for (localVariable in method.LocalVariables) {
-                saveMethodField(methodId, localVariable, clzName)
+            // would not save local vars for JavaScript/TypeScript
+            if (!isJs()) {
+                for (localVariable in method.LocalVariables) {
+                    saveMethodField(methodId, localVariable, clzName)
+                }
             }
 
             method.Annotations.forEach {
@@ -402,6 +417,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return mId
     }
 
+    private val FIELD_NAME = "[a-zA-Z_\$@]+".toRegex()
     private fun saveClassFields(clzId: String, fields: Array<CodeField>, clzName: String) {
         for (field in fields) {
             val id = generateId()
@@ -410,14 +426,17 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
             // for TypeScript
             var name = field.TypeValue
-            if (field.TypeValue.contains("'")) {
-                name = field.TypeValue.replace("'", "''")
-            }
-            if (field.TypeValue.contains("\n")) {
-                name = field.TypeValue.replace("\n", "\\\n")
 
-                println(field.TypeValue)
-                println("field: ${field.TypeValue} contains \\\n will translate to '\\\\\n': --------------\n$name\n-------------")
+            if (isJs()) {
+                if (FIELD_NAME.matches(name)) {
+                    continue
+                }
+//                if (field.TypeValue.contains("'")) {
+//                    name = field.TypeValue.replace("'", "''")
+//                }
+//                if (field.TypeValue.contains("\n") || field.TypeValue.contains(":") || field.TypeValue.contains("{")) {
+//                    name = field.TypeValue.replace("\n", "\\\n")
+//                }
             }
 
             values["id"] = id
