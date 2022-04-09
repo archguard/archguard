@@ -210,12 +210,12 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                 import.UsageName.forEach {
                     var sourceName = packageName
 
-                    var importSource = import.Source
-                    importSource = convertTypeScriptImport(importSource, filePath)
+                    var targetName = import.Source
+                    targetName = convertTypeScriptImport(targetName, filePath)
 
                     val mayBeComponent = packageName.endsWith(".index") && clzName == "default"
                     if (mayBeComponent) {
-                        val functions = clzFunctions.filter { it.IsReturnHtml }
+                        val functions = clzFunctions.filter { func -> func.IsReturnHtml }
                         val isComponent = functions.isNotEmpty()
                         if (isComponent) {
                             sourceName = packageName.removeSuffix(".index")
@@ -226,9 +226,9 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                         }
                     }
 
-                    importSource = "$importSource.$it"
-                    val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
-                    doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
+                    targetName = "$targetName.$it"
+                    val clzDependenceId = saveOrGetDependentClass(targetName, DEFAULT_MODULE_NAME)
+                    doSaveClassDependence(clzId, clzDependenceId, sourceName, targetName)
                 }
             } else {
                 val sourceName = "${packageName}.${clzName}"
