@@ -41,7 +41,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     fun saveClassBody(clz: CodeDataStruct) {
         val clzId = saveOrGetClzId(clz)!!
-        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath, clz.Functions)
+        saveClassDependencies(clzId, clz.Imports, clz.Package, clz.NodeName, clz.FilePath, clz.Functions, clz.Exports)
         saveClassCallees(clz.Functions, DEFAULT_MODULE_NAME, clz.NodeName, clz.Package)
         saveClassParent(clzId, DEFAULT_MODULE_NAME, clz.Imports, clz.Extend)
         saveClassAnnotation(clzId, clz.Annotations)
@@ -177,7 +177,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         packageName: String,
         clzName: String,
         filePath: String,
-        clzFunctions: Array<CodeFunction>
+        clzFunctions: Array<CodeFunction>,
+        exports: Array<CodeExport>
     ) {
         for (import in imports) {
             if (isJs()) {
@@ -192,6 +193,10 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                     val isComponent = functions.isNotEmpty()
                     if (isComponent) {
                         sourceName = packageName.removeSuffix(".index")
+
+                        if(exports.isNotEmpty()) {
+                            sourceName = sourceName + "." + exports[0].Name
+                        }
                     }
                 }
 
