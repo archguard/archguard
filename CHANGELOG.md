@@ -1,13 +1,41 @@
-# [](https://github.com/archguard/archguard/compare/v1.5.1...v) (2022-04-07)
+# [](https://github.com/archguard/archguard/compare/v1.5.3...v) (2022-04-09)
 
 
 
-## [1.5.1](https://github.com/archguard/archguard/compare/v1.5.0...v1.5.1) (2022-04-07)
+## [1.5.3](https://github.com/archguard/archguard/compare/v1.5.2...v1.5.3) (2022-04-09)
+
+
+### Features
+
+* **log:** add basic log api to load logs for scanner and [#13](https://github.com/archguard/archguard/issues/13) ([1b341cc](https://github.com/archguard/archguard/commit/1b341ccbda056a89a7607e7f89564c6fc1dd4246))
+* **log:** add log for git clone and closed [#13](https://github.com/archguard/archguard/issues/13) ([73b2852](https://github.com/archguard/archguard/commit/73b2852220c28e51f98005460791b58154b667ba))
+* **log:** add log stream to all scanns tool for [#13](https://github.com/archguard/archguard/issues/13) ([b24708e](https://github.com/archguard/archguard/commit/b24708eaad4fea10dfe13aa8e2b8d2cc44b58411))
+
+
+
+## [1.5.2](https://github.com/archguard/archguard/compare/v1.5.0...v1.5.2) (2022-04-08)
 
 
 ### Bug Fixes
 
+* add curl into docker image to fix health-check ([f9086c0](https://github.com/archguard/archguard/commit/f9086c0501f5acf535eaab6c4a2fee21df1548ff))
+* fix annotaion key size issue ([3715089](https://github.com/archguard/archguard/commit/37150891ebe31676d6b4cee5e3b457c03b354b40))
+* fix lint ([1b6b1f6](https://github.com/archguard/archguard/commit/1b6b1f69f5a90c8b2aa4bd69a7bab816e987a3e8))
 * fix repo id error issues ([1c61eb1](https://github.com/archguard/archguard/commit/1c61eb13dc1cd06a83d40577a49ce0a58b2bba81))
+* fix rescan not clear related data issue ([4f02415](https://github.com/archguard/archguard/commit/4f024158a7517d5c8f23c4f343b4ba71d0242c59))
+* **git:** change fetch to pull rebase ([bacdd98](https://github.com/archguard/archguard/commit/bacdd98b7facbc9b949049ef9477d4a3333f5c17))
+
+
+### Features
+
+* **diff:** init db ([ed1de99](https://github.com/archguard/archguard/commit/ed1de995ddbac6adb626103d3537351a7992d692))
+* **git:** add fetch and checkout for command ([554c1d7](https://github.com/archguard/archguard/commit/554c1d7f3be4e4c521db175ec6582a0f10bea22d))
+* **git:** add fetch support ([1a5106d](https://github.com/archguard/archguard/commit/1a5106d89dbcd1d5efa6c04a932c8fec888308d7))
+* **git:** add workdir to system table ([4c9a1a3](https://github.com/archguard/archguard/commit/4c9a1a3fe5fd5f75d6914907c2b160152e48b5d6))
+* **git:** create workdir when scan start ([11eda39](https://github.com/archguard/archguard/commit/11eda399f312bc60833707dedb632f759dfb9b30))
+* **git:** make dir can clone ([cc75dd9](https://github.com/archguard/archguard/commit/cc75dd9e4bdd4cab1651ba17ad89d1530efb55c0))
+* init git command for home ([68be4fa](https://github.com/archguard/archguard/commit/68be4fa97f67139ce1dddcbf6919aff8c2e93e9c))
+* **log:** init basic memory consumer ([5907722](https://github.com/archguard/archguard/commit/5907722b8f073deeed73c506e3371b17463f878e))
 
 
 
