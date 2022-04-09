@@ -213,7 +213,6 @@ class GitDiffer(val path: String, val branch: String) {
             }
 
             if (this.differFileMap[filePath] != null) {
-
                 val oldDataStructs = this.differFileMap[filePath]!!.dataStructs
 
                 // compare for sized
