@@ -48,7 +48,15 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveOrGetClzId(clz: CodeDataStruct): String? {
-        val idOrOpt = findClass("${clz.Package}.${clz.NodeName}", DEFAULT_MODULE_NAME)
+        var clzFullName = "${clz.Package}.${clz.NodeName}"
+
+        if (isJs()) {
+            // todo: extract to method for handle Javascript/Typescript component handle
+            clzFullName = processNameForReactComponent(clz)
+        }
+
+        val idOrOpt = findClass(clzFullName, DEFAULT_MODULE_NAME)
+
         return idOrOpt.orElseGet {
             saveClass(clz)
         }
@@ -463,24 +471,17 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val time = currentTime
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
-        var pkgName = clz.Package
-        var clzName = clz.NodeName
+        val pkgName = clz.Package
+        val clzName = clz.NodeName
+        var fullName = "$pkgName.$clzName"
 
         if (isJs()) {
-            val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
-            if (mayBeAComponent) {
-                val functions = clz.Functions.filter { it.IsReturnHtml }
-                val isAComponent = functions.isNotEmpty()
-                if (isAComponent) {
-                    pkgName = pkgName.removeSuffix(".index")
-                    clzName = functions[0].Name
-                }
-            }
+            fullName = processNameForReactComponent(clz)
         }
 
         values["id"] = clzId
         values["system_id"] = systemId
-        values["name"] = "$pkgName.$clzName"
+        values["name"] = fullName
 
         values["loc"] = (clz.Position.StopLine - clz.Position.StartLine).toString()
 
@@ -495,6 +496,24 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_class", values)
 
         return clzId
+    }
+
+    private fun processNameForReactComponent(
+        clz: CodeDataStruct
+    ): String {
+        var pkgName = clz.Package
+        var clzName = clz.NodeName
+        val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
+        if (mayBeAComponent) {
+            val functions = clz.Functions.filter { it.IsReturnHtml }
+            val isAComponent = functions.isNotEmpty()
+            if (isAComponent) {
+                pkgName = pkgName.removeSuffix(".index")
+                clzName = functions[0].Name
+            }
+        }
+
+        return "$pkgName.$clzName"
     }
 
     fun findId(table: String, keys: Map<String, String>): Optional<String>? {
