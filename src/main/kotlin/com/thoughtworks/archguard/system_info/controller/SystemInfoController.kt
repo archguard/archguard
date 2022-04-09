@@ -4,11 +4,15 @@ import com.thoughtworks.archguard.common.CreateFileUtil
 import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.server.ResponseStatusException
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+
 
 @RestController
 @RequestMapping("/api/system-info")
@@ -17,11 +21,26 @@ class SystemInfoController(
         val systemInfoService: SystemInfoService,
         val systemInfoMapper: SystemInfoMapper) {
 
-
     @GetMapping("/{id}")
     fun getSystemInfo(@PathVariable("id") id: Long): SystemInfoDTO {
         val systemInfo = systemInfoService.getSystemInfo(id)
         return systemInfoMapper.toDTO(systemInfo)
+    }
+
+    @GetMapping("/{id}/log")
+    fun viewSystemLog(@PathVariable("id") id: Long): SystemLog {
+        val systemInfo = systemInfoService.getSystemInfo(id)
+
+        val workdir = systemInfo.workdir?.let { File(it) }
+        if (workdir == null || !workdir.exists()) {
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, "entity not found"
+            )
+
+        }
+
+        val log = File(workdir.resolve("archguard.log").toString()).readText().toString()
+        return SystemLog(systemInfo.id, systemInfo.workdir, log)
     }
 
     @GetMapping
@@ -80,3 +99,5 @@ class SystemInfoController(
         return Files.createFile(filePath)
     }
 }
+
+class SystemLog(val id: Long?, val workdir: String, val log: String)
