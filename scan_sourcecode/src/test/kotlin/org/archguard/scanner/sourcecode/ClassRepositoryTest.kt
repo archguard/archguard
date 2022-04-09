@@ -85,7 +85,7 @@ internal class ClassRepositoryTest {
         }
 
         val keys: MutableMap<String, String> = HashMap()
-        keys["name"] = "ModuleDependenceArgsForm"
+        keys["name"] = "ModuleDependenceArgsForm.ModuleDependenceArgsForm"
         keys["module"] = "root"
 
         val value = clzRepo.findId("code_class", keys)

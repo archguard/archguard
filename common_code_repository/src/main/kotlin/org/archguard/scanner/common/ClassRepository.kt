@@ -222,6 +222,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
                             if (exports.isNotEmpty()) {
                                 sourceName = sourceName + "." + exports[0].Name
+                            } else {
+                                sourceName = sourceName + "." + functions[0].Name
                             }
                         }
                     }
