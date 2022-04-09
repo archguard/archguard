@@ -543,6 +543,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     ): String {
         var pkgName = clz.Package
         var clzName = clz.NodeName
+        var isProcessedComponenet = false
 
         // for `Component/index.tsx`
         val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
@@ -550,6 +551,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             val functions = clz.Functions.filter { it.IsReturnHtml }
             val isAComponent = functions.isNotEmpty()
             if (isAComponent) {
+                isProcessedComponenet = true
+
                 pkgName = pkgName.removeSuffix(".index")
                 clzName = functions[0].Name
             }
@@ -557,7 +560,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
         // for `Component/SomeComponent.tsx`
         val filePath = clz.FilePath
-        if (clzName == "default" && (filePath.endsWith(".tsx") || filePath.endsWith(".jsx"))) {
+        if (!isProcessedComponenet && clzName == "default" && (filePath.endsWith(".tsx") || filePath.endsWith(".jsx"))) {
             val functions = clz.Functions.filter { it.IsReturnHtml }
             val isAComponent = functions.isNotEmpty()
             if (isAComponent) {
