@@ -186,11 +186,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                 var importSource = import.Source
                 importSource = convertTypeScriptImport(importSource, filePath)
 
-                val mayBeAComponent = packageName.endsWith(".index") && clzName == "default"
-                if (mayBeAComponent) {
+                val mayBeComponent = packageName.endsWith(".index") && clzName == "default"
+                if (mayBeComponent) {
                     val functions = clzFunctions.filter { it.IsReturnHtml }
-                    val isAComponent = functions.isNotEmpty()
-                    if (isAComponent) {
+                    val isComponent = functions.isNotEmpty()
+                    if (isComponent) {
                         sourceName = packageName.removeSuffix(".index")
                     }
                 }
