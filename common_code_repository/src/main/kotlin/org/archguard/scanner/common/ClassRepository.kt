@@ -57,8 +57,8 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         var clzFullName = "${clz.Package}.${clz.NodeName}"
 
         if (isJs()) {
-            // todo: extract to method for handle Javascript/Typescript component handle
-            clzFullName = processNameForReactComponent(clz)
+            val component = processNameForReactComponent(clz)
+            clzFullName = "${component.packageName}.${component.className}"
         }
 
         val idOrOpt = findClass(clzFullName, DEFAULT_MODULE_NAME)
@@ -511,12 +511,15 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         val time = currentTime
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
-        val pkgName = clz.Package
-        val clzName = clz.NodeName
+        var pkgName = clz.Package
+        var clzName = clz.NodeName
         var fullName = "$pkgName.$clzName"
 
         if (isJs()) {
-            fullName = processNameForReactComponent(clz)
+            val component = processNameForReactComponent(clz)
+            fullName = "${component.packageName}.${component.className}"
+            pkgName = component.packageName
+            clzName = component.className
         }
 
         values["id"] = clzId
@@ -538,9 +541,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return clzId
     }
 
-    private fun processNameForReactComponent(
-        clz: CodeDataStruct
-    ): String {
+
+    class ReactComponentClass (val packageName: String, val className: String,  val isProcessedComponent: Boolean)
+
+    // todo: need to default package name
+    private fun processNameForReactComponent(clz: CodeDataStruct): ReactComponentClass {
         var pkgName = clz.Package
         var clzName = clz.NodeName
         var isProcessedComponent = false
@@ -569,7 +574,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             }
         }
 
-        return "$pkgName.$clzName"
+        return ReactComponentClass(pkgName, clzName, isProcessedComponent)
     }
 
     private fun isComponent(filePath: String) = filePath.endsWith(".tsx") || filePath.endsWith(".jsx")
