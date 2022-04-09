@@ -573,7 +573,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return batch.findId(table, keys)
     }
 
-    private fun flush() {
+    fun flush() {
         batch.execute()
     }
 

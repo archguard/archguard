@@ -105,6 +105,9 @@ class Runner : CliktCommand(help = "scan git to sql") {
             repo.saveClassItem(data)
         }
 
+        // fix for different order in class and depClass
+        repo.flush()
+
         // save class imports, callees and parent
         dataStructs.forEach { data ->
             repo.saveClassBody(data)
