@@ -3,12 +3,12 @@ package com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs
 import com.thoughtworks.archguard.scanner.domain.tools.TestBadSmellReport
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
-
+class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : TestBadSmellReport {
     private val host = "https://github.com/archguard/scanner/releases/download/v1.4.3"
     private val version = "1.4.3"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
@@ -36,7 +36,7 @@ class TestBadsmellTool(val systemRoot: File) : TestBadSmellReport {
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
 
 

@@ -25,14 +25,14 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
 
     override fun scan(context: ScanContext) {
         log.info("start scan test bad smell")
-        val coca = TestBadsmellTool(context.workspace)
+        val coca = TestBadsmellTool(context.workspace, context.logStream)
         val report = coca.getTestBadSmellReport()
         val model = mapper.readValue<List<CocaTestBadSmellModel>>(report?.readText() ?: "[]")
         val testBadSmells = model
                 .map { m -> TestBadSmell(UUID.randomUUID().toString(), context.systemId, m.line, m.fileName, m.description, m.type) }
         testBadSmellRepo.save(testBadSmells)
 
-        val shellTool = ShellTool(context.workspace)
+        val shellTool = ShellTool(context.workspace, context.logStream)
         val countTest = shellTool.countTest()
         testBadSmellRepo.saveCount(Integer.parseInt(countTest.readText().trim()))
         log.info("finished scan test bad smell")

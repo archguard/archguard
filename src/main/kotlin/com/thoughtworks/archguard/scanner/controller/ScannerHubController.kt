@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.scanner.controller
 
 import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubExecutorService
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
@@ -18,10 +19,13 @@ class ScannerHubController(@Value("\${spring.datasource.url}") val dbUrl: String
 
     @PostMapping("/{id}/reports")
     fun scanModule(@PathVariable("id") id: Long): ModuleScanResponse {
+        val memoryConsumer = InMemoryConsumer()
+
         return ModuleScanResponse(
             hubService.doScanIfNotRunning(
                 id,
-                url
+                url,
+                memoryConsumer
             )
         )
     }

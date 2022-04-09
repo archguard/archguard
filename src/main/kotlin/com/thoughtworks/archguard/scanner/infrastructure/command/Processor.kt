@@ -9,9 +9,8 @@ import java.io.InputStreamReader
 object Processor {
     private val log = LoggerFactory.getLogger(Processor::class.java)
 
-    fun executeWithLogs(pb: ProcessBuilder, workspace: File): Int {
-        val consumer = InMemoryConsumer()
-        return executeWithLogsAndAppendToFile(pb, workspace, null, consumer)
+    fun executeWithLogs(pb: ProcessBuilder, workspace: File, logStream: StreamConsumer): Int {
+        return executeWithLogsAndAppendToFile(pb, workspace, null, logStream)
     }
 
     fun executeWithLogsAndAppendToFile(

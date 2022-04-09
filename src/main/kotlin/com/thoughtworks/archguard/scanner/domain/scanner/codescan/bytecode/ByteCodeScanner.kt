@@ -29,14 +29,14 @@ class ByteCodeScanner(@Autowired val byteCodeScanRepo: ByteCodeScanRepo) : Scann
     }
 
     private fun scanByteCode(context: ScanContext) {
-        val byteCodeTool = ByteCodeTool(context.workspace, context.dbUrl, context.systemId)
+        val byteCodeTool = ByteCodeTool(context.workspace, context.dbUrl, context.systemId, context.logStream)
         byteCodeTool.analyse()
         log.info("finished scan java byte code")
     }
 
     private fun scanLoc(context: ScanContext) {
         log.info("start update loc")
-        val gitScannerTool = GitScannerTool(context.workspace, null, context.systemId, context.repo)
+        val gitScannerTool = GitScannerTool(context.workspace, null, context.systemId, context.repo, context.logStream)
         val locReport = gitScannerTool.getLocReport()
         if (locReport != null) {
             byteCodeScanRepo.updateJClassLoc(locReport)

@@ -2,11 +2,12 @@ package com.thoughtworks.archguard.scanner.domain.scanner.codescan.bytecode
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) {
+class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long, val logStream: StreamConsumer) {
 
     private val log = LoggerFactory.getLogger(ByteCodeTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.2.2"
@@ -53,7 +54,7 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long) 
 
     private fun scan(cmd: List<String>) {
         log.info("execute cmd: + $cmd")
-        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
 
 }

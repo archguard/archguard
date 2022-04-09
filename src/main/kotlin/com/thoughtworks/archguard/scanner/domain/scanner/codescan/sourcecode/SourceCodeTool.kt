@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner.domain.scanner.codescan.sourcecode
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
@@ -11,7 +12,8 @@ class SourceCodeTool(
     val systemId: Long,
     val language: String,
     val dbUrl: String,
-    val codePath: String
+    val codePath: String,
+    val logStream: StreamConsumer
 ) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.4.3"
@@ -62,7 +64,7 @@ class SourceCodeTool(
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
 
 }

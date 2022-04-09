@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfoRepository
 import com.thoughtworks.archguard.scanner.infrastructure.client.AnalysisModuleClient
 import com.thoughtworks.archguard.scanner.infrastructure.client.Scanner2Client
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -76,12 +77,14 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
     }
 
     fun analyse(systemId: Long, language: String, workdir: Path) {
+        val memoryConsumer = InMemoryConsumer()
+
         log.info("************************************")
         log.info(" Start scan analysis")
         log.info("************************************")
         val url = dbUrl.replace("://", "://$username:$password@")
 
-        hubService.doScanIfNotRunning(systemId, url)
+        hubService.doScanIfNotRunning(systemId, url, memoryConsumer)
         log.info("************************************")
         log.info(" Finished level 1 scanners")
         log.info("************************************")
@@ -100,6 +103,12 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
         log.info("************************************")
         log.info(" Finished bad smell dashboard")
         log.info("************************************")
+
+        try {
+            File(workdir.resolve("archguard.log").toString()).writeText(memoryConsumer.toString())
+        } catch (e: Exception) {
+            log.info(e.toString())
+        }
     }
 
     private fun getSystemInfo(systemId: Long): SystemInfo {

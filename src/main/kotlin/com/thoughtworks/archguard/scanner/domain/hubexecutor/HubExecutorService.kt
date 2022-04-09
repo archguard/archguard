@@ -4,6 +4,8 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,11 +36,11 @@ class HubExecutorService : DisposableBean {
     @Autowired
     private lateinit var configureRepository: ScannerConfigureRepository
 
-    fun doScanIfNotRunning(id: Long, dbUrl: String): Boolean {
+    fun doScanIfNotRunning(id: Long, dbUrl: String, inMemoryConsumer: InMemoryConsumer): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             try {
-                doScan(id, dbUrl)
+                doScan(id, dbUrl, inMemoryConsumer)
             } catch (e: Exception) {
                 log.error(e.message)
                 throw e
@@ -53,7 +55,7 @@ class HubExecutorService : DisposableBean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             thread {
-                doScan(id, dbUrl)
+                doScan(id, dbUrl, InMemoryConsumer())
                 concurrentSet.remove(id)
                 evaluationReportClient.generate(type)
             }
@@ -61,7 +63,7 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    private fun doScan(id: Long, dbUrl: String) {
+    private fun doScan(id: Long, dbUrl: String, memoryConsumer: StreamConsumer) {
         val config = configureRepository.getToolConfigures()
         // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id)
@@ -76,7 +78,8 @@ class HubExecutorService : DisposableBean {
                 config,
                 compiledProject.language,
                 compiledProject.codePath,
-                compiledProject.branch
+                compiledProject.branch,
+                memoryConsumer
             )
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()

@@ -2,13 +2,14 @@ package com.thoughtworks.archguard.scanner.domain.tools
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-class DesigniteJavaTool(val systemRoot: File) {
+class DesigniteJavaTool(val systemRoot: File, val logStream: StreamConsumer) {
     private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
     private val SCAN_DESIGNITE_JAR = "DesigniteJava.jar"
@@ -82,7 +83,7 @@ class DesigniteJavaTool(val systemRoot: File) {
     }
 
     private fun scan(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot)
+        Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
 
     private fun getTargetScannedDirections(workspace: File): List<String> {

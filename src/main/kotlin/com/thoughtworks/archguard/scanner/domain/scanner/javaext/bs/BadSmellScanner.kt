@@ -32,7 +32,7 @@ class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
     }
 
     private fun getDesigniteJavaBadSmell(context: ScanContext): List<BadSmell> {
-        val designiteJavaTool = DesigniteJavaTool(context.workspace)
+        val designiteJavaTool = DesigniteJavaTool(context.workspace, context.logStream)
         return designiteJavaTool.readReport(DesigniteJavaReportType.BAD_SMELL_METRICS).map {
             val elements = it.split(",")
             BadSmell(UUID.randomUUID().toString(), context.systemId, elements[1] + "." + elements[2],

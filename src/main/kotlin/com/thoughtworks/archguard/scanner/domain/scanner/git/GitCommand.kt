@@ -14,7 +14,8 @@ class GitCommand(
     val workingDir: File,
     val branch: String,
     val isSubmodule: Boolean,
-    val secrets: List<String> = listOf()
+    val secrets: List<String> = listOf(),
+    val logStream: InMemoryConsumer
 ) {
     private val log = LoggerFactory.getLogger(GitCommand::class.java)
 
@@ -33,7 +34,7 @@ class GitCommand(
     // todo: collection logs for frontend
     private fun run(cmd: CommandLine, console: InMemoryConsumer): Int {
         val processBuilder = ProcessBuilder(cmd.getCommandLine())
-        return Processor.executeWithLogs(processBuilder, workingDir)
+        return Processor.executeWithLogs(processBuilder, workingDir, logStream)
     }
 
     private fun git(): CommandLine {

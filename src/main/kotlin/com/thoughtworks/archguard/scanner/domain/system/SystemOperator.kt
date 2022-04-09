@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.scanner.domain.system
 import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceException
 import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -13,6 +14,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val scanProjectMap = mutableMapOf<String, ScanProject>()
     val sql: String by lazy { systemInfo.sql }
+    private val logStream = InMemoryConsumer()
 
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
@@ -100,7 +102,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
             BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
             BuildTool.NONE -> throw CompileException("Fail to identify build tool for compile")
         }
-        Processor.executeWithLogs(pb, workspace)
+
+        Processor.executeWithLogs(pb, workspace, logStream)
     }
 
     private fun getBuildTool(workspace: File): BuildTool {
@@ -117,7 +120,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
 
         //TODO: Can use [git clone XXX --shallow-since "2020-09-05T00:00:00"] to shallow clone with a history after the specified time. 
         // So we can get the files often modified in git commit after the specified time via [coca git -t] and clone faster 
-        val gitCommand = GitCommand(workspace, systemInfo.branch, false)
+        val gitCommand = GitCommand(workspace, systemInfo.branch, false, arrayListOf(),  logStream)
 
         return if (isGitRepository(workspace)) {
             log.debug("Going to fetch repo: ", workspace)
@@ -169,7 +172,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         log.debug("command to be executed: {}", cmdList)
 
         val pb = ProcessBuilder(cmdList)
-        return Processor.executeWithLogs(pb, workspace)
+        return Processor.executeWithLogs(pb, workspace, logStream)
     }
 
     private fun cloneByZip(workspace: File, repo: String): Int {
@@ -177,6 +180,6 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         // unzip -d /temp test.zip
         val cmdList = listOf("unzip", repo)
         val pb = ProcessBuilder(cmdList)
-        return Processor.executeWithLogs(pb, workspace)
+        return Processor.executeWithLogs(pb, workspace, logStream)
     }
 }

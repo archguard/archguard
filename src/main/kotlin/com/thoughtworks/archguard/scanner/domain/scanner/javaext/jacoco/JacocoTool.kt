@@ -3,12 +3,12 @@ package com.thoughtworks.archguard.scanner.domain.scanner.javaext.jacoco
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool) {
-
+class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool, val logStream: StreamConsumer) {
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.4.3"
     private val version = "1.4.3"
@@ -64,6 +64,6 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
     }
 
     private fun call(cmd: List<String>) {
-        Processor.executeWithLogs(ProcessBuilder(cmd), workspace)
+        Processor.executeWithLogs(ProcessBuilder(cmd), workspace, logStream)
     }
 }
