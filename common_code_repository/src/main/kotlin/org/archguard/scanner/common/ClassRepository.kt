@@ -538,8 +538,21 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     ): String {
         var pkgName = clz.Package
         var clzName = clz.NodeName
+
+        // for `Component/index.tsx`
         val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
         if (mayBeAComponent) {
+            val functions = clz.Functions.filter { it.IsReturnHtml }
+            val isAComponent = functions.isNotEmpty()
+            if (isAComponent) {
+                pkgName = pkgName.removeSuffix(".index")
+                clzName = functions[0].Name
+            }
+        }
+
+        // for `Component/SomeComponent.tsx`
+        val filePath = clz.FilePath
+        if (clzName == "default" && (filePath.endsWith(".tsx") || filePath.endsWith(".jsx"))) {
             val functions = clz.Functions.filter { it.IsReturnHtml }
             val isAComponent = functions.isNotEmpty()
             if (isAComponent) {
