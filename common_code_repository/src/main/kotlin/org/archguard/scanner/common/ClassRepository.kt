@@ -282,7 +282,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return saveDepClass(
             name,
             THIRD_PARTY,
-            "",
+            "public",
             thirdparty = true,
             isTest = false,
             packageName = packageName,
