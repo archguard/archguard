@@ -5,16 +5,16 @@ import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: File) {
+class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: File, val logStream: StreamConsumer) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
     val scanProjectMap = mutableMapOf<String, ScanProject>()
     val sql: String by lazy { systemInfo.sql }
-    private val logStream = InMemoryConsumer()
 
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
@@ -120,7 +120,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
 
         //TODO: Can use [git clone XXX --shallow-since "2020-09-05T00:00:00"] to shallow clone with a history after the specified time. 
         // So we can get the files often modified in git commit after the specified time via [coca git -t] and clone faster 
-        val gitCommand = GitCommand(workspace, systemInfo.branch, false, arrayListOf(),  logStream)
+        val gitCommand = GitCommand(workspace, systemInfo.branch, false, arrayListOf(), logStream)
 
         return if (isGitRepository(workspace)) {
             log.debug("Going to fetch repo: ", workspace)

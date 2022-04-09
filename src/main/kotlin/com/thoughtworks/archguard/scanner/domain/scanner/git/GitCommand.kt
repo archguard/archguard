@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.scanner.domain.system.RefSpecHelper
 import com.thoughtworks.archguard.scanner.infrastructure.command.CommandLine
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.lang.String.format
@@ -15,7 +16,7 @@ class GitCommand(
     val branch: String,
     val isSubmodule: Boolean,
     val secrets: List<String> = listOf(),
-    val logStream: InMemoryConsumer
+    val logStream: StreamConsumer
 ) {
     private val log = LoggerFactory.getLogger(GitCommand::class.java)
 

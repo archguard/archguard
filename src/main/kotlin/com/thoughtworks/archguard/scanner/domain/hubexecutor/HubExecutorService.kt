@@ -60,13 +60,14 @@ class HubExecutorService : DisposableBean {
                 evaluationReportClient.generate(type)
             }
         }
+
         return concurrentSet.contains(id)
     }
 
     private fun doScan(id: Long, dbUrl: String, memoryConsumer: StreamConsumer) {
         val config = configureRepository.getToolConfigures()
         // todo: check workspace dir
-        val systemOperator = analysisService.getSystemOperator(id)
+        val systemOperator = analysisService.getSystemOperator(id, memoryConsumer)
         systemOperator.cloneAndBuildAllRepo()
         systemOperator.scanProjectMap.forEach { (repo, compiledProject) ->
             val context = ScanContext(
