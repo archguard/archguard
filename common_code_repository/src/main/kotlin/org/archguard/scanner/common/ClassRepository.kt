@@ -1,6 +1,5 @@
 package org.archguard.scanner.common
 
-import chapi.app.frontend.path.importConvert
 import chapi.domain.core.*
 import infrastructure.SourceBatch
 import kotlinx.serialization.encodeToString

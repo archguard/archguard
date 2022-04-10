@@ -1,6 +1,29 @@
-package chapi.app.frontend.path
+package org.archguard.scanner.common
 
 import java.io.File
+
+enum class OS {
+    WINDOWS, LINUX, MAC, SOLARIS
+}
+
+fun getOS(): OS? {
+    val os = System.getProperty("os.name").toLowerCase()
+    return when {
+        os.contains("win") -> {
+            OS.WINDOWS
+        }
+        os.contains("nix") || os.contains("nux") || os.contains("aix") -> {
+            OS.LINUX
+        }
+        os.contains("mac") -> {
+            OS.MAC
+        }
+        os.contains("sunos") -> {
+            OS.SOLARIS
+        }
+        else -> null
+    }
+}
 
 fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): String {
     var pathname = filepath
@@ -8,6 +31,9 @@ fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): 
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
+
+        if (getOS() == OS.WINDOWS) pathname = pathname.replace("\\", "/")
+
         return pathname
     }
 
@@ -35,6 +61,9 @@ fun importConvert(filepath: String, importPath: String): String {
     if(isResolvePath) {
         var pathname = importPath.removeRange(0, 2)
         pathname = "src/$pathname"
+
+        if (getOS() == OS.WINDOWS) pathname = pathname.replace("\\", "/")
+
         return pathname
     }
 
@@ -53,24 +82,33 @@ fun importConvert(filepath: String, importPath: String): String {
         return resolve.normalize().toString()
     }
 
+    var importPath = importPath
+
+    if (getOS() == OS.WINDOWS) importPath = importPath.replace("\\", "/")
+
     return importPath
 }
 
-fun relativeRoot(workspace: String, importPath: String): String {
+fun relativeRoot(filepath: String, importPath: String): String {
     var pathname = importPath
     val isResolvePath = pathname.startsWith("@/")
     if(isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
+
+        if (getOS() == OS.WINDOWS) pathname = pathname.replace("\\", "/")
+
         return pathname
     }
 
     var relativePath = pathname
     try {
-        relativePath = File(pathname).relativeTo(File(workspace)).toString()
+        relativePath = File(pathname).relativeTo(File(filepath)).toString()
     } catch (e: IllegalArgumentException) {
         println(e)
     }
+
+    if (getOS() == OS.WINDOWS) relativePath = relativePath.replace("\\", "/")
 
     return relativePath
 }

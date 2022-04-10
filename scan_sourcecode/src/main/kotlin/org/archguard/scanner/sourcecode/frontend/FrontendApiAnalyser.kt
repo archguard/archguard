@@ -2,8 +2,8 @@ package org.archguard.scanner.sourcecode.frontend
 
 import org.archguard.scanner.sourcecode.frontend.identify.AxiosHttpIdentify
 import org.archguard.scanner.sourcecode.frontend.identify.UmiHttpIdentify
-import chapi.app.frontend.path.ecmaImportConvert
-import chapi.app.frontend.path.relativeRoot
+import org.archguard.scanner.common.ecmaImportConvert
+import org.archguard.scanner.common.relativeRoot
 import chapi.domain.core.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
