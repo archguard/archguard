@@ -32,6 +32,7 @@ object Processor {
             log.info(line)
             consumer.consumeLine(line)
         }
+
         inputStream.close()
         p.waitFor()
         return p.exitValue()

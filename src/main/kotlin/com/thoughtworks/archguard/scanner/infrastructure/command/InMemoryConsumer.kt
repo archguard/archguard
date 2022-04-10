@@ -24,6 +24,15 @@ class InMemoryConsumer : StreamConsumer {
     override fun consumeLine(line: String) {
         try {
             lines.add(line)
+            when {
+                // try catch for catch error, like in: [https://dx.phodal.com/docs/factor/error-handling.html](https://dx.phodal.com/docs/factor/error-handling.html)
+                line.contains("Error: Unable to access jarfile ") -> {
+                    lines.add("下载 Scanner 可能出错，请尝试连接 VPN 下载")
+                }
+                line.contains("Invalid or corrupt jarfile") -> {
+                    lines.add("jar 包不完整，请尝试连接 VPN 下载")
+                }
+            }
         } catch (e: RuntimeException) {
             LOG.error("Problem consuming line [{}]", line, e)
         }
