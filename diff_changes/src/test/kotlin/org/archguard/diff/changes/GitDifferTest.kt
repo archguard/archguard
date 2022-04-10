@@ -1,13 +1,14 @@
 package org.archguard.diff.changes
 
 import org.junit.Ignore
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class GitDifferTest {
 
     @Test
-    @Ignore
+    @Disabled
     fun should_get_range_for_local_java() {
         val differ = GitDiffer("..", "master")
         val calculateChange = differ.countBetween("aa2b5379", "965be8c2")
@@ -21,7 +22,7 @@ internal class GitDifferTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     fun should_get_range_for_local_kotlin() {
         val differ = GitDiffer("..", "master")
         val calculateChange = differ.countBetween("92f1f59f", "d31422bd")
