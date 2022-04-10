@@ -86,7 +86,7 @@ class MysqlAnalyser {
         return text
     }
 
-    private val RAW_STRING_REGEX = "\"\"\"(((.*?)|\n)+)\"\"\"".toRegex()
+    private val RAW_STRING_REGEX = "\"\"\"(((.*?)|(\r\n|\n))+)\"\"\"".toRegex()
     private fun handleRawString(text: String): String {
         val rawString = RAW_STRING_REGEX.find(text)
         if (rawString != null) {
@@ -146,7 +146,10 @@ class MysqlAnalyser {
         return str
     }
 
-    private fun removeNextLine(text: String) = text.replace("\n", "")
+    private fun removeNextLine(text: String) = text
+        .replace("\r\n", "")
+        .replace("\n", "")
+
     private fun removePlusSymbol(text: String) = text
         .replace("\"+\"", "")
         .replace("+\"", "")
