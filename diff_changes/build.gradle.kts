@@ -15,8 +15,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 
-    implementation("com.phodal.chapi:chapi-application:1.5.4")
-    implementation("com.phodal.chapi:chapi-domain:1.5.4")
+    implementation("com.phodal.chapi:chapi-application:1.5.5")
+    implementation("com.phodal.chapi:chapi-domain:1.5.5")
 }
 
 application {
