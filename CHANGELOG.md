@@ -1,4 +1,20 @@
-# [](https://github.com/archguard/archguard/compare/v1.5.3...v) (2022-04-09)
+# [](https://github.com/archguard/archguard/compare/v1.5.4...v) (2022-04-10)
+
+
+
+## [1.5.4](https://github.com/archguard/archguard/compare/v1.5.3...v1.5.4) (2022-04-10)
+
+
+### Bug Fixes
+
+* fix not clean sql issues for [#16](https://github.com/archguard/archguard/issues/16) ([6fcc8af](https://github.com/archguard/archguard/commit/6fcc8af309a65e40ee0b1bd83ed0264dc13cdd95))
+* fix when over generalization empty issues ([30cc253](https://github.com/archguard/archguard/commit/30cc25302de6357448ef2c1da887169d04f76a9a))
+
+
+### Features
+
+* add handle for error catch ([b534293](https://github.com/archguard/archguard/commit/b5342933cb6838729f13a5186246eca6606c6f97))
+* **git:** fix command issue for [#16](https://github.com/archguard/archguard/issues/16) ([ea6aab7](https://github.com/archguard/archguard/commit/ea6aab720a3596e5bd96eaba17034dc79464e674))
 
 
 
