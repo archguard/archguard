@@ -436,12 +436,6 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                 if (!FIELD_NAME.matches(name)) {
                     continue
                 }
-//                if (field.TypeValue.contains("'")) {
-//                    name = field.TypeValue.replace("'", "''")
-//                }
-//                if (field.TypeValue.contains("\n") || field.TypeValue.contains(":") || field.TypeValue.contains("{")) {
-//                    name = field.TypeValue.replace("\n", "\\\n")
-//                }
             }
 
             values["id"] = id
