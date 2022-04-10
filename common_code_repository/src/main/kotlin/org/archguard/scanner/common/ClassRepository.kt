@@ -283,7 +283,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             name,
             THIRD_PARTY,
             "public",
-            thirdparty = true,
+            thirdParty = true,
             isTest = false,
             packageName = packageName,
             className = className
@@ -484,7 +484,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveDepClass(
-        name: String, module: String, access: String, thirdparty: Boolean, isTest: Boolean,
+        name: String, moduleName: String, accessName: String, thirdParty: Boolean, isTest: Boolean,
         packageName: String?, className: String
     ): String {
         val time: String = currentTime
@@ -493,14 +493,14 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["id"] = clzId
         values["system_id"] = systemId
         values["name"] = name
-        values["is_thirdparty"] = if (thirdparty) "true" else "false"
+        values["is_thirdparty"] = if (thirdParty) "true" else "false"
         values["is_test"] = if (isTest) "true" else "false"
         values["updatedAt"] = time
         values["createdAt"] = time
-        values["module"] = module
+        values["module"] = moduleName
         values["package_name"] = packageName.orEmpty()
         values["class_name"] = className
-        values["access"] = access
+        values["access"] = accessName
         values["loc"] = "0"
 
         batch.add("code_class", values)
@@ -542,7 +542,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
 
-    class ReactComponentClass (val packageName: String, val className: String,  val isProcessedComponent: Boolean)
+    class ReactComponentClass(val packageName: String, val className: String)
 
     // todo: need to default package name
     private fun processNameForReactComponent(clz: CodeDataStruct): ReactComponentClass {
@@ -574,7 +574,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             }
         }
 
-        return ReactComponentClass(pkgName, clzName, isProcessedComponent)
+        return ReactComponentClass(pkgName, clzName)
     }
 
     private fun isComponent(filePath: String) = filePath.endsWith(".tsx") || filePath.endsWith(".jsx")
