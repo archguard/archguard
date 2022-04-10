@@ -1,4 +1,78 @@
-# [](https://github.com/archguard/scanner/compare/v1.4.1...v) (2022-04-01)
+# [](https://github.com/archguard/scanner/compare/v1.4.4...v) (2022-04-10)
+
+
+
+## [1.4.4](https://github.com/archguard/scanner/compare/v1.4.3...v1.4.4) (2022-04-10)
+
+
+### Bug Fixes
+
+* **change:** fix diff size issues ([74872f9](https://github.com/archguard/scanner/commit/74872f966d34249bdd7709b0ade8e0906a34b7ba))
+* fix loc lost in third parth library ([a1f93f5](https://github.com/archguard/scanner/commit/a1f93f591bb73919e7a5075acdb97485c2bc12a1))
+* fix refactor issues ([2f1c395](https://github.com/archguard/scanner/commit/2f1c39541224e2752ef590cc782d217f76b380b6))
+* fix seriable issue ([a18122a](https://github.com/archguard/scanner/commit/a18122a64c98f03b8209f85fad1386f2731ad596))
+* fix typo ([377b7e7](https://github.com/archguard/scanner/commit/377b7e7fe945184f78f2f953e83fecf832989930))
+* fix typos ([3e9b6cd](https://github.com/archguard/scanner/commit/3e9b6cd56acf36f5e20008cdda0d879814857b1b))
+* fix windows import issues ([a1cbe35](https://github.com/archguard/scanner/commit/a1cbe35bd78b4e2657ec9df1731084d289fcca9b))
+* **mysql:** fix newline issue for windows ([0c9a789](https://github.com/archguard/scanner/commit/0c9a789e0cc7a9102124f2cf3c4187c7211aed9f))
+* **sourcecode:** fix class order issues ([9ee6368](https://github.com/archguard/scanner/commit/9ee63680dc730450b309eaf1be2c7727a0b08a89))
+* **sourcecode:** fix condition error issues ([4cd8a45](https://github.com/archguard/scanner/commit/4cd8a45aad4bdede25899aa02603ed0360592b96))
+* **typescript:** fix fields issues ([443d4fb](https://github.com/archguard/scanner/commit/443d4fb7e2778b48f9f84bc52d72a8764eca1ad5))
+* **typescript:** fix tests ([1c60a2d](https://github.com/archguard/scanner/commit/1c60a2d2f96d997cd899346a09f15f687a621605))
+* **typescript:** ignore field naming or error nam ([739ee9b](https://github.com/archguard/scanner/commit/739ee9b8ed09766dbb6cb8e04b3dde1c6c484cf8))
+
+
+### Features
+
+* **diff:** init repository ([18922d6](https://github.com/archguard/scanner/commit/18922d6497081a4a9ee698a7b74345f42aa9e6ac))
+* **diff:** init repository save ([6decf6d](https://github.com/archguard/scanner/commit/6decf6d7863299692c3e47cca410c49c1105b3da))
+* **diff:** make first diff changes ([fcd00db](https://github.com/archguard/scanner/commit/fcd00dbd9df71923a9a2dd909dc230b344eea9f2))
+* **sourcecode:** change thirdpart access to public ([d172bf8](https://github.com/archguard/scanner/commit/d172bf8544245b2fc1733b92b7e132dcf18295da))
+* **typescript:** add exports to name support ([6e7e6d2](https://github.com/archguard/scanner/commit/6e7e6d2ca1299524643d0f54daf07a71da9e07d8))
+* **typescript:** add normal component support ([99678d8](https://github.com/archguard/scanner/commit/99678d8299546df1777d09ae84e43649202b4f1a))
+* **typescript:** add usage name support ([31d7ac3](https://github.com/archguard/scanner/commit/31d7ac36251083f63ffb218e854846f2282ec76b))
+
+
+
+## [1.4.3](https://github.com/archguard/scanner/compare/v1.4.2...v1.4.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* **api:** fix empty requestMapping ([69975fb](https://github.com/archguard/scanner/commit/69975fbaf365ba68ad89d7fea2451a6ddcdf8c72))
+* fix typos ([54021f6](https://github.com/archguard/scanner/commit/54021f62dc5e3e6ff8a5c1326beb51586922b041))
+
+
+### Features
+
+* add basic change compare & wait for chapi 1.5.33 :sleepy::sleepy::sleepy::sleepy: ([132ba56](https://github.com/archguard/scanner/commit/132ba56855d9d495fbe14bdcb82c30613deebe42))
+* add differ for changed files ([c8f24f7](https://github.com/archguard/scanner/commit/c8f24f7e97353df24fead5ceb76a2a6b50e72393))
+* add differ for list names ([0f39383](https://github.com/archguard/scanner/commit/0f39383e59eea18232cf46b4a8d21a2d6783393b))
+* **differ:** add simple converter for items ([07d78a2](https://github.com/archguard/scanner/commit/07d78a2dbb8d00fbc81ddb1e3875674e985f373e))
+* **differ:** init basic logic, but need to update compare logic in chapi ([2c826dd](https://github.com/archguard/scanner/commit/2c826dd3f7d14861f777706c3567b431aa341631))
+* **differ:** init first commits for test in GitHub actions ([21ee575](https://github.com/archguard/scanner/commit/21ee575a24df4f834724330f7ce6e14a471af57b))
+* **differ:** init parameters ([d887eb7](https://github.com/archguard/scanner/commit/d887eb7835f12301713b93c88ed7efa52ddf39cc))
+* make differ return changed functions ([c4f0a1b](https://github.com/archguard/scanner/commit/c4f0a1ba6e5203ea696d1666908af3c558d1360f))
+* make filter changed ds works ([3acf9b3](https://github.com/archguard/scanner/commit/3acf9b33f29497d3d7fb0f1705ceb41ded200c17))
+* make first version rcalls ([8c83dfd](https://github.com/archguard/scanner/commit/8c83dfdd709549e410ce9c01405e07490e20ffdc))
+* make generte changes work snapshot versions ([bbf1627](https://github.com/archguard/scanner/commit/bbf162795502a2896c60ce6ce4552a308107b6ab))
+* remove compare for function sized ([68d0354](https://github.com/archguard/scanner/commit/68d035479d98cd1b8b849a74bb3981988a12deba))
+* use chapi to parse data structs ([3002663](https://github.com/archguard/scanner/commit/3002663fc934a12b7f6491e801701abf8145af77))
+
+
+
+## [1.4.2](https://github.com/archguard/scanner/compare/v1.4.1...v1.4.2) (2022-04-02)
+
+
+### Features
+
+* **datamap:** add jpa @Query ([ddc569c](https://github.com/archguard/scanner/commit/ddc569c8f1c70276351b7ab43d173fdf2de74e34))
+* **datamap:** fix backtick in table name ([fc354b7](https://github.com/archguard/scanner/commit/fc354b7ebebe1b296443a37b30b3c3bb85a68715))
+* **datamap:** fix close ([b51b266](https://github.com/archguard/scanner/commit/b51b26603a832b1dde1c31da9e9591b5c36843d2))
+* **datamap:** fix field typo ([82f87de](https://github.com/archguard/scanner/commit/82f87dee38138fcee01c2c2b839ba6cbf851ba69))
+* **datamap:** init code db relation repository ([a690b9f](https://github.com/archguard/scanner/commit/a690b9f26e58bbe2f290180986fe7ed5c54c2a07))
+* **differ:** init module ([b1eff2b](https://github.com/archguard/scanner/commit/b1eff2b0374941be617adf525266148d7a0043ec))
+* make save to projects ([97d1ff5](https://github.com/archguard/scanner/commit/97d1ff567206f63fdd05dd089fba85bc4c5b2808))
 
 
 
