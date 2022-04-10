@@ -1,10 +1,15 @@
-name: CI
+name: Java CI
 
 on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -24,4 +29,5 @@ jobs:
         run: ./gradlew check
 
       - name: Execute Gradle Coverage
+        if: runner.os == 'macOS'
         run: bash <(curl -s https://codecov.io/bash)
