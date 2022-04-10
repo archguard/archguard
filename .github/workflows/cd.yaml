@@ -12,7 +12,10 @@ jobs:
       contents: write
       packages: write
     steps:
+    steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v2
         with:
           java-version: '11'
