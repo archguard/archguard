@@ -32,6 +32,12 @@ class InMemoryConsumer : StreamConsumer {
                 line.contains("Invalid or corrupt jarfile") -> {
                     lines.add("jar 包不完整，请尝试连接 VPN 下载")
                 }
+                line.contains("Fail to clone source with exitCode 128") -> {
+                    lines.add("Git Clone 出错，尝试根据: https://archguard.org/docs/faq.html#git 进行配置")
+                }
+                line.contains("Fail to identify build tool for compile") -> {
+                    lines.add("暂时不支持的构建命令，建议选择 Java/Kotlin，再重新扫描。")
+                }
             }
         } catch (e: RuntimeException) {
             LOG.error("Problem consuming line [{}]", line, e)
