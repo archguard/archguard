@@ -5,7 +5,10 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import infrastructure.DBIStore
 import infrastructure.task.SqlExecuteThreadPool
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.nio.file.Files
 import java.util.concurrent.Phaser
 import kotlin.io.path.Path
@@ -48,6 +51,9 @@ class Runner : CliktCommand() {
 
         val tableName = "scm_diff_change"
         val repository = DiffRepository(systemId, language, since, until, tableName)
+
+        // logs for debug
+        File("changes.json").writeText(Json.encodeToString(changedCalls))
 
         repository.saveDiff(changedCalls)
         repository.close()
