@@ -13,7 +13,8 @@ class DiffChangesTool(
     val language: String,
     val dbUrl: String,
     val codePath: String,
-    val logStream: StreamConsumer
+    val logStream: StreamConsumer,
+    val additionArguments: List<String>
 ) {
     private val log = LoggerFactory.getLogger(DiffChangesTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.4.5"
@@ -27,17 +28,19 @@ class DiffChangesTool(
             path = "."
         }
 
-        scan(
-            listOf(
-                "java",
-                "-jar",
-                "-Ddburl=$dbUrl?useSSL=false",
-                "diff_changes.jar",
-                "--path=$path",
-                "--system-id=$systemId",
-                "--language=${language.lowercase()}"
-            )
+        val cmd = mutableListOf(
+            "java",
+            "-jar",
+            "-Ddburl=$dbUrl?useSSL=false",
+            "diff_changes.jar",
+            "--path=$path",
+            "--system-id=$systemId",
+            "--language=${language.lowercase()}"
         )
+
+        cmd.addAll(this.additionArguments)
+
+        scan(cmd)
     }
 
     private fun prepareTool() {
