@@ -78,7 +78,6 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
 
         // 1. create based ast model from since revision commit
         this.baseLineDataTree = createBaselineAstTree(repository, since)
-        File("diff-baseline.json").writeText(Json.encodeToString(baseLineDataTree))
 
         // 2. calculate changed files to utils file
         for (commit in git.log().addRange(since, until).call()) {
