@@ -97,14 +97,14 @@ class HubExecutorService : DisposableBean {
      * 关闭服务清空临时目录
      */
     override fun destroy() {
-        if(systemRoot.isEmpty()){
-            return
-        }
-        var file = File(systemRoot)
-        if(file.exists()){
-            var del = file.deleteRecursively()
-            log.info("tempFile {}, clean tempFile result：{}", systemRoot, del);
-        }
+//        if(systemRoot.isEmpty()){
+//            return
+//        }
+//        var file = File(systemRoot)
+//        if(file.exists()){
+//            var del = file.deleteRecursively()
+//            log.info("tempFile {}, clean tempFile result：{}", systemRoot, del);
+//        }
     }
 
 }
