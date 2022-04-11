@@ -13,8 +13,12 @@ import java.io.File
 @Service
 class DiffChangeService(
     @Value("\${spring.datasource.url}") val dbUrl: String,
+    @Value("\${spring.datasource.username}") val username: String,
+    @Value("\${spring.datasource.password}") val password: String,
     val changeScanner: DiffChangesScanner
 ) {
+    val url = dbUrl.replace("://", "://$username:$password@")
+
     fun execute(systemInfo: SystemInfo, since: String, until: String,) {
         val memoryConsumer = InMemoryConsumer()
         val scanContext = ScanContext(
@@ -22,7 +26,7 @@ class DiffChangeService(
             repo = systemInfo.repo,
             buildTool = BuildTool.NONE,
             workspace = File(systemInfo.workdir!!),
-            dbUrl = dbUrl,
+            dbUrl = url,
             config = listOf(),
             language = systemInfo.language!!,
             codePath = systemInfo.codePath!!,

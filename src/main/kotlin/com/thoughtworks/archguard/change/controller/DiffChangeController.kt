@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException
 class DiffChangeController(
     val gitChangeService: GitChangeService,
     val diffChangeService: DiffChangeService,
-    val systemInfoService: SystemInfoService
+    val systemInfoService: SystemInfoService,
     ) {
 
     @GetMapping("/influence")
