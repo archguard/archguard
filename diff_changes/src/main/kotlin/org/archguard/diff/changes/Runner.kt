@@ -9,6 +9,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.lang.Integer.parseInt
 import java.nio.file.Files
 import java.util.concurrent.Phaser
 import kotlin.io.path.Path
@@ -26,21 +27,24 @@ class Runner : CliktCommand() {
 
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "language").default("")
+    private val depth: String by option(help = "loop depth").default("7")
 
+    private val DEAFULT_LOOPT_DEPTH = 7
+    private val SHORT_ID_LENGTH = 7
 
     // todo: add multiple languages support
     override fun run() {
         logger.info("diff from $since to $until on branch: $branch with path: $path")
 
-        val differ = GitDiffer(path, branch)
-
+        val differ = GitDiffer(path, branch, parseInt(depth).or(DEAFULT_LOOPT_DEPTH))
         var sinceRev = since
-        if(since.length > 7) {
-            sinceRev = sinceRev.substring(0, 7)
+
+        if (since.length > SHORT_ID_LENGTH) {
+            sinceRev = sinceRev.substring(0, SHORT_ID_LENGTH)
         }
         var untilRev = until
-        if(until.length > 7) {
-            untilRev = untilRev.substring(0, 7)
+        if (until.length > SHORT_ID_LENGTH) {
+            untilRev = untilRev.substring(0, SHORT_ID_LENGTH)
         }
 
         val changedCalls = differ.countBetween(sinceRev, untilRev)

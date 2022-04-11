@@ -9,7 +9,7 @@ internal class GitDifferTest {
     @Test
     @Disabled
     fun should_get_range_for_local_java() {
-        val differ = GitDiffer("..", "master")
+        val differ = GitDiffer("..", "master", 7)
         val calculateChange = differ.countBetween("aa2b5379", "965be8c2")
 
         assertEquals(1, calculateChange.size)
@@ -23,7 +23,7 @@ internal class GitDifferTest {
     @Test
     @Disabled
     fun should_get_range_for_local_kotlin() {
-        val differ = GitDiffer("..", "master")
+        val differ = GitDiffer("..", "master", 7)
         val calculateChange = differ.countBetween("92f1f59f", "d31422bd")
 
         assertEquals(1, calculateChange.size)

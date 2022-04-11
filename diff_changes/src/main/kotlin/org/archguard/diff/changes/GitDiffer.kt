@@ -62,7 +62,7 @@ class ChangeRelation(
     val target: String
 )
 
-class GitDiffer(val path: String, val branch: String) {
+class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
     private var baseLineDataTree: List<DifferFile> = listOf()
     private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
     private val changedFiles: MutableMap<String, ChangedEntry> = mutableMapOf()
@@ -100,7 +100,7 @@ class GitDiffer(val path: String, val branch: String) {
         return changedFunctions.map {
             val callName = it.value.packageName + "." + it.value.className + "." + it.value.functionName
             val changeRelations: MutableList<ChangeRelation> = mutableListOf()
-            calculateReverseCalls(callName, changeRelations, LOOP_DEPTH) ?: listOf()
+            calculateReverseCalls(callName, changeRelations, loopDepth) ?: listOf()
 
             ChangedCall(
                 path = it.value.path,
@@ -111,7 +111,6 @@ class GitDiffer(val path: String, val branch: String) {
         }.toList()
     }
 
-    private val LOOP_DEPTH = 7
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
     private fun calculateReverseCalls(
@@ -133,7 +132,7 @@ class GitDiffer(val path: String, val branch: String) {
 
             if (reverseCallMap[child] != null) {
                 lastReverseCallChild = child
-                val optRelations = calculateReverseCalls(child, changeRelations, this.LOOP_DEPTH)
+                val optRelations = calculateReverseCalls(child, changeRelations, loopDepth)
                 if (optRelations != null) {
                     changeRelations += optRelations
                 }
