@@ -30,7 +30,8 @@ internal class JacocoScannerTest(@Autowired val jacocoScanner: JacocoScanner, @A
                 "jvm",
                 "",
                 "",
-                InMemoryConsumer()
+                InMemoryConsumer(),
+                listOf()
             )
         )
         val bundle = jdbi.withHandle<Int, RuntimeException> { handle: Handle ->

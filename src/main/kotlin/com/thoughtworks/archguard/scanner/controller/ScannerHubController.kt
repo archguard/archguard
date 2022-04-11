@@ -36,7 +36,8 @@ class ScannerHubController(@Value("\${spring.datasource.url}") val dbUrl: String
             hubService.evaluate(
                 evaluation.type,
                 id,
-                url
+                url,
+                listOf()
             )
         )
     }

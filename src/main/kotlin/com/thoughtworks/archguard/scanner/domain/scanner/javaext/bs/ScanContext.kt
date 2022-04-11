@@ -15,6 +15,6 @@ data class ScanContext(
     val language: String,
     val codePath: String,
     val branch: String,
-    // log stream
-    val logStream: StreamConsumer
+    val logStream: StreamConsumer,
+    val additionArguments: List<String>
 )

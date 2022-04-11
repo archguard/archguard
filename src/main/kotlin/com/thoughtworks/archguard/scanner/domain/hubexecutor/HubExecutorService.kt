@@ -40,7 +40,7 @@ class HubExecutorService : DisposableBean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             try {
-                doScan(id, dbUrl, inMemoryConsumer)
+                doScan(id, dbUrl, inMemoryConsumer, listOf())
             } catch (e: Exception) {
                 log.error(e.message)
                 throw e
@@ -51,11 +51,11 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    fun evaluate(type: String, id: Long, dbUrl: String): Boolean {
+    fun evaluate(type: String, id: Long, dbUrl: String, arguments: List<String>): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             thread {
-                doScan(id, dbUrl, InMemoryConsumer())
+                doScan(id, dbUrl, InMemoryConsumer(), arguments)
                 concurrentSet.remove(id)
                 evaluationReportClient.generate(type)
             }
@@ -64,7 +64,7 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    private fun doScan(id: Long, dbUrl: String, memoryConsumer: StreamConsumer) {
+    private fun doScan(id: Long, dbUrl: String, memoryConsumer: StreamConsumer, additionArguments: List<String>) {
         val config = configureRepository.getToolConfigures()
         // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id, memoryConsumer)
@@ -80,7 +80,8 @@ class HubExecutorService : DisposableBean {
                 compiledProject.language,
                 compiledProject.codePath,
                 compiledProject.branch,
-                memoryConsumer
+                memoryConsumer,
+                additionArguments
             )
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()
