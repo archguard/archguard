@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard
 
+import com.thoughtworks.archguard.change.infrastructure.DiffChangeDao
 import com.thoughtworks.archguard.report.infrastructure.ContainerServiceDao
 import com.thoughtworks.archguard.change.infrastructure.GitChangeDao
 import com.thoughtworks.archguard.scanner.infrastructure.db.*
@@ -38,6 +39,11 @@ class Application {
     @Bean
     fun gitHotFileDao(jdbi: Jdbi): GitChangeDao {
         return jdbi.onDemand(GitChangeDao::class.java)
+    }
+
+    @Bean
+    fun diffChangeDao(jdbi: Jdbi): DiffChangeDao {
+        return jdbi.onDemand(DiffChangeDao::class.java)
     }
 
     @Bean

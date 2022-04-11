@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.change.controller
 
 import com.thoughtworks.archguard.change.application.DiffChangeService
 import com.thoughtworks.archguard.change.application.GitChangeService
+import com.thoughtworks.archguard.change.domain.DiffChange
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -36,8 +37,9 @@ class DiffChangeController(
         @PathVariable("systemId") systemId: Long,
         @RequestParam(value = "since", required = true) since: String,
         @RequestParam(value = "until", required = true) until: String,
-    ) {
+    ): List<DiffChange> {
         val systemInfo = systemInfoService.getSystemInfo(systemId)
         diffChangeService.execute(systemInfo, since, until)
+        return diffChangeService.findBySystemId(systemId)
     }
 }
