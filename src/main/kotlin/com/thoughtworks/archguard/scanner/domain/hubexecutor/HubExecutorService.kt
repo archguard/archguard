@@ -36,11 +36,11 @@ class HubExecutorService : DisposableBean {
     @Autowired
     private lateinit var configureRepository: ScannerConfigureRepository
 
-    fun doScanIfNotRunning(id: Long, dbUrl: String, inMemoryConsumer: InMemoryConsumer): Boolean {
+    fun doScanIfNotRunning(id: Long, dbUrl: String, memoryConsumer: StreamConsumer): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             try {
-                doScan(id, dbUrl, inMemoryConsumer, listOf())
+                doScan(id, dbUrl, memoryConsumer, listOf())
             } catch (e: Exception) {
                 log.error(e.message)
                 throw e

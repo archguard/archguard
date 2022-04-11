@@ -12,7 +12,7 @@ class DiffChangesTool(
     val systemId: Long,
     val language: String,
     val dbUrl: String,
-    val codePath: String,
+    val branch: String,
     val logStream: StreamConsumer,
     val additionArguments: List<String>
 ) {
@@ -23,17 +23,13 @@ class DiffChangesTool(
 
     fun analyse() {
         prepareTool()
-        var path = codePath
-        if(codePath.isEmpty()) {
-            path = "."
-        }
 
         val cmd = mutableListOf(
             "java",
             "-jar",
             "-Ddburl=$dbUrl?useSSL=false",
             "diff_changes.jar",
-            "--path=$path",
+            "--path=.",
             "--system-id=$systemId",
             "--language=${language.lowercase()}"
         )

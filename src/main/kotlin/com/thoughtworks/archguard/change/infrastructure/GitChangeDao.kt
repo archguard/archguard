@@ -20,6 +20,6 @@ interface GitChangeDao {
             " order by changes desc limit 50 ")
     fun getTopChangesFile(systemId: Long) : List<GitPathChangeCount>
 
-    @SqlQuery("select id from scm_commit_log where system_id = :systemId and commit_time between :startTime AND :endTime")
+    @SqlQuery("select id from scm_commit_log where system_id = :systemId and commit_time between :startTime AND :endTime order by commit_time")
     fun findChangesByRange(systemId: Long, startTime: String, endTime: String): List<String>
 }

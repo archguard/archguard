@@ -20,7 +20,7 @@ class DiffChangesScanner: Scanner {
             context.systemId,
             context.language,
             context.dbUrl,
-            context.codePath,
+            context.branch,
             context.logStream,
             context.additionArguments
         ).also {
