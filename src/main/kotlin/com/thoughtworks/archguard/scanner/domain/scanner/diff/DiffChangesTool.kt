@@ -30,6 +30,7 @@ class DiffChangesTool(
             "-Ddburl=$dbUrl?useSSL=false",
             "diff_changes.jar",
             "--path=.",
+            "--branch=$branch",
             "--system-id=$systemId",
             "--language=${language.lowercase()}"
         )
