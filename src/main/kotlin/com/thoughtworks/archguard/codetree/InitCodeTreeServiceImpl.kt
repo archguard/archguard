@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code
+package com.thoughtworks.archguard.codetree
 
 import com.thoughtworks.archguard.clazz.domain.JClassRepository
 import org.springframework.stereotype.Service

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code
+package com.thoughtworks.archguard.codetree
 
 class CodeTree {
     var trees: HashSet<Node> = HashSet()

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code
+package com.thoughtworks.archguard.codetree
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
