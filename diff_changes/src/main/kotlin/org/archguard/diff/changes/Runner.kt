@@ -27,7 +27,7 @@ class Runner : CliktCommand() {
 
     // todo: add multiple languages support
     override fun run() {
-        logger.info("diff from $since to $until on branch: $branch ")
+        logger.info("diff from $since to $until on branch: $branch with path: $path")
 
         val differ = GitDiffer(path, branch)
 
