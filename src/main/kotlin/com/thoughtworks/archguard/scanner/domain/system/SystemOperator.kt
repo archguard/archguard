@@ -129,6 +129,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         } else {
             if (workspace.exists()) {
                 FileSystemUtils.deleteRecursively(workspace);
+                workspace.mkdir()
             }
 
             log.debug("Going to clone {}", repoCombineWithAuthInfo)
