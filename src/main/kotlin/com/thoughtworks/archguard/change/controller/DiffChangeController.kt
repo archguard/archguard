@@ -13,7 +13,7 @@ class DiffChangeController(
     val gitChangeService: GitChangeService,
     val diffChangeService: DiffChangeService,
     val systemInfoService: SystemInfoService,
-    ) {
+) {
 
     @GetMapping("/influence")
     fun influence(
@@ -22,12 +22,22 @@ class DiffChangeController(
         @RequestParam(value = "endTime", required = true) endTime: String,
     ) {
         val changes = gitChangeService.getChangesByRange(systemId, startTime, endTime)
-        if(changes.size < 2 ) {
+        if (changes.size < 2) {
             throw ResponseStatusException(
                 HttpStatus.INTERNAL_SERVER_ERROR, "entity not found"
             )
         }
         val systemInfo = systemInfoService.getSystemInfo(systemId)
         diffChangeService.execute(systemInfo, changes.first(), changes.last())
+    }
+
+    @GetMapping("/influence/commit")
+    fun influenceByCommit(
+        @PathVariable("systemId") systemId: Long,
+        @RequestParam(value = "since", required = true) since: String,
+        @RequestParam(value = "until", required = true) until: String,
+    ) {
+        val systemInfo = systemInfoService.getSystemInfo(systemId)
+        diffChangeService.execute(systemInfo, since, until)
     }
 }
