@@ -7,6 +7,7 @@ import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsume
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
+import org.springframework.util.FileSystemUtils
 import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
@@ -126,6 +127,10 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
             log.debug("Going to fetch repo: ", workspace)
             gitCommand.pullCode()
         } else {
+            if (workspace.exists()) {
+                FileSystemUtils.deleteRecursively(workspace);
+            }
+
             log.debug("Going to clone {}", repoCombineWithAuthInfo)
             gitCommand.clone(repoCombineWithAuthInfo, 2048)
         }
