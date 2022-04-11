@@ -32,6 +32,11 @@ class DiffChangeController(
         diffChangeService.execute(systemInfo, changes.first(), changes.last())
     }
 
+    @GetMapping("/influence/history")
+    fun historyInfluence(@PathVariable("systemId") systemId: Long, ): List<DiffChange> {
+        return diffChangeService.findBySystemId(systemId)
+    }
+
     @GetMapping("/influence/commit")
     fun influenceByCommit(
         @PathVariable("systemId") systemId: Long,
