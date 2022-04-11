@@ -30,7 +30,17 @@ class Runner : CliktCommand() {
         logger.info("diff from $since to $until on branch: $branch ")
 
         val differ = GitDiffer(path, branch)
-        val changedCalls = differ.countBetween(since, until)
+
+        var sinceRev = since
+        if(since.length > 7) {
+            sinceRev = sinceRev.substring(0, 7)
+        }
+        var untilRev = until
+        if(until.length > 7) {
+            untilRev = untilRev.substring(0, 7)
+        }
+
+        val changedCalls = differ.countBetween(sinceRev, untilRev)
 
         logger.info("found changes: ${changedCalls.size}")
         logger.info("start insert data into Mysql")

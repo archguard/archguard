@@ -1,6 +1,5 @@
 package org.archguard.diff.changes
 
-import org.junit.Ignore
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
