@@ -179,9 +179,6 @@ class GitDiffer(val path: String, val branch: String) {
 
                             reverseCallMap[callee]!! += caller
                         }
-                        if (caller == "infrastructure.SourceBatch.execute") {
-//                            println(functionMap)
-                        }
                     }
                 }
             }
