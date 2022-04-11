@@ -53,7 +53,7 @@ class Runner : CliktCommand() {
         val repository = DiffRepository(systemId, language, since, until, tableName)
 
         // logs for debug
-        File("changes.json").writeText(Json.encodeToString(changedCalls))
+        File("diff-changes.json").writeText(Json.encodeToString(changedCalls))
 
         repository.saveDiff(changedCalls)
         repository.close()

@@ -18,6 +18,8 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -76,6 +78,7 @@ class GitDiffer(val path: String, val branch: String) {
 
         // 1. create based ast model from since revision commit
         this.baseLineDataTree = createBaselineAstTree(repository, since)
+        File("diff-baseline.json").writeText(Json.encodeToString(baseLineDataTree))
 
         // 2. calculate changed files to utils file
         for (commit in git.log().addRange(since, until).call()) {
