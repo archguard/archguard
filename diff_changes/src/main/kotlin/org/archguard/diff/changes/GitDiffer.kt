@@ -198,7 +198,8 @@ class GitDiffer(val path: String, val branch: String) {
         revCommit: RevCommit
     ) {
         try {
-            val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree)
+            val treeWalk = TreeWalk.forPath(repository, diffEntry.newPath, revCommit.tree) ?: return
+
             val filePath = treeWalk.pathString
 
             val blobId = treeWalk.getObjectId(0)
