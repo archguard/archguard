@@ -21,6 +21,9 @@ dependencies {
 
     implementation("io.netty:netty-all:4.1.42.Final")
 
+    implementation("com.fasterxml.jackson.core:jackson-core:2.13.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("com.phodal.chapi:chapi-application:1.5.5")
