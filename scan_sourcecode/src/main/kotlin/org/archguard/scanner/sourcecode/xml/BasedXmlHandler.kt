@@ -11,7 +11,7 @@ open class BasedXmlHandler: DefaultHandler() {
         return false
     }
 
-    open fun compute(): XmlConfig {
+    open fun compute(filePath: String): XmlConfig {
         return EmptyXmlConfig()
     }
 }

@@ -1,6 +1,5 @@
 package org.archguard.scanner.sourcecode.xml
 
-import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import java.io.File
 import java.nio.file.Path
@@ -11,7 +10,8 @@ class XmlParser {
     companion object {
         @Throws(ParserConfigurationException::class, SAXException::class)
         fun fromPath(file: Path): XmlParser? {
-            val inputSource = File(file.toString())
+            val filePath = file.toString()
+            val inputSource = File(filePath)
             val parser = SAXParserFactory.newInstance().newSAXParser()
 
             // 1. first detect xml handler
@@ -25,9 +25,9 @@ class XmlParser {
             // 2. choice handler by types
             val xmlReader = parser.xmlReader
             xmlReader.contentHandler = contentHandler
-            xmlReader.parse(file.toString())
+            xmlReader.parse(filePath)
 
-            contentHandler.compute()
+            contentHandler.compute(filePath)
 
             return XmlParser()
         }
