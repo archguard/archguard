@@ -1,10 +1,10 @@
-package com.thoughtworks.archguard.method.infrastructure
+package com.thoughtworks.archguard.code.method.infrastructure
 
 import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.code.clazz.infrastructure.JClassRepositoryImpl
 import com.thoughtworks.archguard.common.TypeMap
-import com.thoughtworks.archguard.method.domain.JMethod
-import com.thoughtworks.archguard.method.domain.JMethodRepository
+import com.thoughtworks.archguard.code.method.domain.JMethod
+import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory

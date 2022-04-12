@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.method.domain
+package com.thoughtworks.archguard.code.method.domain
 
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.method.domain.service.MethodCalleesService
-import com.thoughtworks.archguard.method.domain.service.MethodCallersService
+import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
+import com.thoughtworks.archguard.code.method.domain.service.MethodCallersService
 import org.springframework.stereotype.Service
 
 @Service

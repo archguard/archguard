@@ -5,10 +5,10 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassConfigService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassMethodCalleesService
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.method.domain.JMethod
-import com.thoughtworks.archguard.method.domain.JMethodRepository
-import com.thoughtworks.archguard.method.domain.service.MethodCalleesService
-import com.thoughtworks.archguard.method.domain.service.MethodConfigService
+import com.thoughtworks.archguard.code.method.domain.JMethod
+import com.thoughtworks.archguard.code.method.domain.JMethodRepository
+import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
+import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

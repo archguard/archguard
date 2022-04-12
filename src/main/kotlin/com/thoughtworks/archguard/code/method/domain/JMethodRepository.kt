@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.method.domain
+package com.thoughtworks.archguard.code.method.domain
 
 import com.thoughtworks.archguard.code.clazz.domain.JField
 

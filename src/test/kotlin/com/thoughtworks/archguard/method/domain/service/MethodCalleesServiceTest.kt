@@ -1,8 +1,10 @@
 package com.thoughtworks.archguard.method.domain.service
 
 import com.thoughtworks.archguard.config.domain.ConfigureService
-import com.thoughtworks.archguard.method.domain.JMethod
-import com.thoughtworks.archguard.method.domain.JMethodRepository
+import com.thoughtworks.archguard.code.method.domain.JMethod
+import com.thoughtworks.archguard.code.method.domain.JMethodRepository
+import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
+import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

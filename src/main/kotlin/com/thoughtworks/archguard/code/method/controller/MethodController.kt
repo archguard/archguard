@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.method.controller
+package com.thoughtworks.archguard.code.method.controller
 
-import com.thoughtworks.archguard.method.domain.JMethod
-import com.thoughtworks.archguard.method.domain.MethodService
+import com.thoughtworks.archguard.code.method.domain.JMethod
+import com.thoughtworks.archguard.code.method.domain.MethodService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
