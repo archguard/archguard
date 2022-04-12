@@ -1,12 +1,14 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
+import org.apache.ibatis.builder.BuilderException
+import org.apache.ibatis.builder.ParameterExpression
+import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
+import org.apache.ibatis.parsing.GenericTokenParser
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
-import org.apache.ibatis.scripting.xmltags.SqlNode
-import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode
-import org.apache.ibatis.scripting.xmltags.TextSqlNode
+import org.apache.ibatis.scripting.xmltags.*
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.archguard.scanner.sourcecode.xml.XmlConfig
@@ -81,22 +83,25 @@ class MyBatisHandler : BasedXmlHandler() {
         val context = xPathParser.evalNode("/mapper")
         val list = context.evalNodes("select|insert|update|delete")
 
+
         list.forEach {
+            val xmlScriptBuilder = XMLScriptBuilder(config, it)
+
             val nodes = parseDynamicTags(it)
-            nodes.forEach { node ->
-                val simpleName = node.javaClass.simpleName
-                println(simpleName)
-                when (simpleName) {
-                    "TextSqlNode" -> {
-                        val textSqlNode = node as TextSqlNode
-                        println(textSqlNode)
-                    }
-                    "StaticTextSqlNode" -> {
-                        val textSqlNode = node as StaticTextSqlNode
-                        println(textSqlNode)
-                    }
-                }
-            }
+//            nodes.forEach { node ->
+//                val simpleName = node.javaClass.simpleName
+//                println(simpleName)
+//                when (simpleName) {
+//                    "TextSqlNode" -> {
+//                        val textSqlNode = node as TextSqlNode
+//                        println(textSqlNode)
+//                    }
+//                    "StaticTextSqlNode" -> {
+//                        val textSqlNode = node as StaticTextSqlNode
+//                        println(textSqlNode)
+//                    }
+//                }
+//            }
         }
 
         return this.config
@@ -117,11 +122,22 @@ class MyBatisHandler : BasedXmlHandler() {
                 }
             } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
                 // todo: parse text parameters from origin
+                val data = child.getStringBody("")
+
                 when (child.node.nodeName) {
                     "trim" -> {}
                     "where" -> {}
                     "set" -> {}
-                    "foreach" -> {}
+                    "foreach" -> {
+                        val foreachNode = parseDynamicTags(child)
+                        foreachNode[0]
+//                        println(toSql(data))
+
+                        val propertiesMap: Map<String, String> = ParameterExpression(data)
+                        propertiesMap.forEach {
+                            println("${it.key}: ${it.value}")
+                        }
+                    }
                     "if" -> {}
                     "choose" -> {}
                     "when" -> {}
@@ -129,10 +145,35 @@ class MyBatisHandler : BasedXmlHandler() {
                     "bind" -> {}
                 }
 
-                val data = child.getStringBody("")
             }
         }
 
         return contents
+    }
+
+    private val itemIndex: String = ""
+    private val index = 0
+    fun toSql(sql: String): String? {
+        var item = ""
+        val parser = GenericTokenParser("#{", "}") { content: String ->
+            var newContent = content.replaceFirst(
+                "^\\s*$item(?![^.,:\\s])".toRegex(),
+                itemizeItem(item, index)
+            )
+            if (itemIndex != null && newContent == content) {
+                newContent = content.replaceFirst(
+                    "^\\s*$itemIndex(?![^.,:\\s])".toRegex(),
+                    itemizeItem(itemIndex, index)
+                )
+            }
+            "#{$newContent}"
+        }
+
+        return parser.parse(sql)
+    }
+
+
+    private fun itemizeItem(item: String, i: Int): String {
+        return ForEachSqlNode.ITEM_PREFIX + item + "_" + i
     }
 }
