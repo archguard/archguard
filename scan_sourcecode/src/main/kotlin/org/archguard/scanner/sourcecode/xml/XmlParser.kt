@@ -1,31 +1,35 @@
 package org.archguard.scanner.sourcecode.xml
 
+import org.xml.sax.InputSource
 import org.xml.sax.SAXException
-import org.xml.sax.XMLReader
+import java.io.File
 import java.nio.file.Path
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.parsers.SAXParserFactory
 
-class XmlParser(val handler: HandlerDispatch, val xmlReader: XMLReader) {
-
-    fun byFile(file: Path) {
-        xmlReader.parse(file.toString())
-    }
-
+class XmlParser {
     companion object {
         @Throws(ParserConfigurationException::class, SAXException::class)
-        fun fromPath(): XmlParser {
+        fun fromPath(file: Path): XmlParser? {
+            val inputSource = File(file.toString())
             val parser = SAXParserFactory.newInstance().newSAXParser()
-            val xmlReader = parser.xmlReader
 
             // 1. first detect xml handler
-            val handler = HandlerDispatch()
+            val dispatcher = HandlerDispatcher()
+            parser.setProperty("http://xml.org/sax/properties/lexical-handler", dispatcher)
+
+            parser.parse(inputSource, dispatcher)
+
+            val contentHandler = dispatcher.getContentHandler() ?: return null
 
             // 2. choice handler by types
-            xmlReader.dtdHandler = handler
-            xmlReader.contentHandler = handler
+            val xmlReader = parser.xmlReader
+            xmlReader.contentHandler = contentHandler
+            xmlReader.parse(file.toString())
 
-            return XmlParser(handler, xmlReader)
+            contentHandler.compute()
+
+            return XmlParser()
         }
     }
 }

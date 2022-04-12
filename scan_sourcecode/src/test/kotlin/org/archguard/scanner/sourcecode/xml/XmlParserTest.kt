@@ -7,6 +7,6 @@ internal class XmlParserTest {
     @Test
     internal fun should_handle_mybatis() {
         val resource = this.javaClass.classLoader.getResource("mybatis/OmsOrderOperateHistoryDao.xml")!!
-        XmlParser.fromPath().byFile(resource.toURI().toPath())
+        XmlParser.fromPath(resource.toURI().toPath())
     }
 }
