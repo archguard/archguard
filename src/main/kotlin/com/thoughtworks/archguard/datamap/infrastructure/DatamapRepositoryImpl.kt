@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.datamap.controller.infrastructure
+package com.thoughtworks.archguard.datamap.infrastructure
 
-import com.thoughtworks.archguard.datamap.controller.domain.Datamap
-import com.thoughtworks.archguard.datamap.controller.domain.DatamapRepository
+import com.thoughtworks.archguard.datamap.domain.Datamap
+import com.thoughtworks.archguard.datamap.domain.DatamapRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 

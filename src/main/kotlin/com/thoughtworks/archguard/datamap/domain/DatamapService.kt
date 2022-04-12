@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.datamap.controller.domain
+package com.thoughtworks.archguard.datamap.domain
 
 import org.springframework.stereotype.Service
 
