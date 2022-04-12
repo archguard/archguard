@@ -18,8 +18,6 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RawTextComparator
@@ -187,10 +185,10 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
-            .map { d -> patchToDataStructs(d, repository, revCommit) }
+            .map { d -> compareWithBaseline(d, repository, revCommit) }
     }
 
-    private fun patchToDataStructs(
+    private fun compareWithBaseline(
         diffEntry: DiffEntry,
         repository: Repository,
         revCommit: RevCommit
