@@ -37,7 +37,26 @@ class MyBatisHandler : BasedXmlHandler() {
             "mapper" -> {
                 currentMapper.namespace = attributes.getValue("namespace")
             }
-            "select", "update", "delete", "insert" -> {
+            "include" -> {
+
+            }
+            "if" -> {
+
+            }
+            "choose", "when", "otherwise" -> {
+
+            }
+            "trim", "where", "set" -> {
+
+            }
+            "foreach" -> {
+
+            }
+            "bind" -> {
+
+            }
+            // query types
+            "sql", "select", "update", "delete", "insert" -> {
                 currentMapper.operationId = attributes.getValue("id")
             }
             else -> println(qName)
