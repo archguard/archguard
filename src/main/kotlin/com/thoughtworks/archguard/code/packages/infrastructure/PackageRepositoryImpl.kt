@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.packages.infrastructure
+package com.thoughtworks.archguard.code.packages.infrastructure
 
-import com.thoughtworks.archguard.packages.domain.PackageRepository
+import com.thoughtworks.archguard.code.packages.domain.PackageRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

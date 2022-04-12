@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.packages.controller
+package com.thoughtworks.archguard.code.packages.controller
 
-import com.thoughtworks.archguard.packages.domain.ModulePackage
-import com.thoughtworks.archguard.packages.domain.PackageService
+import com.thoughtworks.archguard.code.packages.domain.ModulePackage
+import com.thoughtworks.archguard.code.packages.domain.PackageService
 import org.springframework.web.bind.annotation.*
 
 @RestController

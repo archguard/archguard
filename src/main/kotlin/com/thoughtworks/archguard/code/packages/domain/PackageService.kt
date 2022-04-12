@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.packages.domain
+package com.thoughtworks.archguard.code.packages.domain
 
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.packages.infrastructure.PackageDependenceDTO
+import com.thoughtworks.archguard.code.packages.infrastructure.PackageDependenceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

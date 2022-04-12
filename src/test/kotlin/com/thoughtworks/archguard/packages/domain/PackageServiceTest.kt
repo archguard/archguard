@@ -1,8 +1,10 @@
 package com.thoughtworks.archguard.packages.domain
 
+import com.thoughtworks.archguard.code.packages.domain.PackageRepository
+import com.thoughtworks.archguard.code.packages.domain.PackageService
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.model.SubModule
-import com.thoughtworks.archguard.packages.infrastructure.PackageDependenceDTO
+import com.thoughtworks.archguard.code.packages.infrastructure.PackageDependenceDTO
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -31,8 +33,10 @@ internal class PackageServiceTest {
         //given
         val systemId: Long = 1
         every { moduleRepository.getAllSubModule(systemId) } returns listOf(SubModule("com.module1"), SubModule("com.module2"))
-        val dependencies1 = listOf(PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
-                "org.test.ThrowablePB\$ThrowableProto"))
+        val dependencies1 = listOf(
+            PackageDependenceDTO("org.wrapper.ThrowablePB\$ThrowableProto",
+                "org.test.ThrowablePB\$ThrowableProto")
+        )
         val dependencies2 = listOf<PackageDependenceDTO>()
         every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module1") } returns dependencies1
         every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module2") } returns dependencies2

@@ -1,3 +1,3 @@
-package com.thoughtworks.archguard.packages.infrastructure
+package com.thoughtworks.archguard.code.packages.infrastructure
 
 data class PackageDependenceDTO(var aClz: String, var bClz: String)

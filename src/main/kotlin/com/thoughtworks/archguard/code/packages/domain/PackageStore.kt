@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.packages.domain
+package com.thoughtworks.archguard.code.packages.domain
 
 
 class PackageStore {
