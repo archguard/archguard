@@ -81,7 +81,6 @@ class MyBatisHandler : BasedXmlHandler() {
         val context = xPathParser.evalNode("/mapper")
         val list = context.evalNodes("select|insert|update|delete")
 
-//        var builderAssistant = MapperBuilderAssistant(config, filePath)
         list.forEach {
             val nodes = parseDynamicTags(it)
             nodes.forEach { node ->
@@ -98,17 +97,6 @@ class MyBatisHandler : BasedXmlHandler() {
                     }
                 }
             }
-//            val lang = context.getStringAttribute("lang")
-//            val langDriver = XMLLanguageDriver()
-//            val sqlSource: SqlSource = langDriver.createSqlSource(config, it, null)
-//            println(sqlSource)
-//
-//            val statementParser = XMLStatementBuilder(config, builderAssistant, it, null)
-//            try {
-//                statementParser.parseStatementNode()
-//            } catch (e: IncompleteElementException) {
-//                config.addIncompleteStatement(statementParser);
-//            }
         }
 
         return this.config
