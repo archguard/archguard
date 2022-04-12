@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.codetree.controller
+package com.thoughtworks.archguard.code.codetree.controller
 
-import com.thoughtworks.archguard.codetree.CodeTree
-import com.thoughtworks.archguard.codetree.InitCodeTreeService
+import com.thoughtworks.archguard.code.codetree.CodeTree
+import com.thoughtworks.archguard.code.codetree.InitCodeTreeService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

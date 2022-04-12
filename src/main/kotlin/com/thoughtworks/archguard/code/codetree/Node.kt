@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.codetree
+package com.thoughtworks.archguard.code.codetree
 
 class Node(var node: String, var type: TypeEnum) {
     var children: HashSet<Node> = HashSet()

@@ -1,5 +1,8 @@
 package com.thoughtworks.archguard.codetree
 
+import com.thoughtworks.archguard.code.codetree.CodeTree
+import com.thoughtworks.archguard.code.codetree.Node
+import com.thoughtworks.archguard.code.codetree.TypeEnum
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,7 +22,8 @@ internal class CodeTreeTest {
         codeTree.addClass("a")
 
         assertThat(codeTree.trees).containsExactlyInAnyOrderElementsOf(listOf(
-                Node("a", TypeEnum.PACKAGE), Node("m", TypeEnum.PACKAGE), Node("x", TypeEnum.FILE), Node("a", TypeEnum.FILE)))
+                Node("a", TypeEnum.PACKAGE), Node("m", TypeEnum.PACKAGE), Node("x", TypeEnum.FILE), Node("a", TypeEnum.FILE)
+        ))
 
         assertThat(codeTree.trees.first { it == Node("a", TypeEnum.PACKAGE) }.children)
                 .containsExactlyInAnyOrderElementsOf(listOf(Node("b", TypeEnum.PACKAGE), Node("c", TypeEnum.FILE)))
