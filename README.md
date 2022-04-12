@@ -128,6 +128,8 @@ colima start --cpu 4 --memory 8
 
 <img src="https://archguard.org/qrcode.jpg" width="380" height="480">
 
+（PS：如果群满，请添加微信 `phodal02`，并注明 ArchGuard）
+
 ## Q & A
 
 ### Scanner 没有数据
