@@ -1,10 +1,16 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
-import org.apache.ibatis.builder.xml.XMLMapperBuilder
+import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
+import org.apache.ibatis.parsing.XNode
+import org.apache.ibatis.parsing.XPathParser
+import org.apache.ibatis.scripting.xmltags.SqlNode
+import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode
+import org.apache.ibatis.scripting.xmltags.TextSqlNode
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.archguard.scanner.sourcecode.xml.XmlConfig
+import org.w3c.dom.Node
 import org.xml.sax.Attributes
 import java.io.FileInputStream
 
@@ -50,13 +56,14 @@ class MyBatisHandler : BasedXmlHandler() {
 
             }
             "foreach" -> {
-
             }
             "bind" -> {
 
             }
-            // query types
-            "sql", "select", "update", "delete", "insert" -> {
+            "sql" -> { // raw sqls
+
+            }
+            "select", "update", "delete", "insert" -> {
                 currentMapper.operationId = attributes.getValue("id")
             }
             else -> println(qName)
@@ -70,17 +77,64 @@ class MyBatisHandler : BasedXmlHandler() {
         config.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
         config.isShrinkWhitespacesInSql = true
 
-        val builder = XMLMapperBuilder(inputStream, config, filePath, config.sqlFragments)
-        builder.parse()
-        inputStream.close()
+        val xPathParser = XPathParser(inputStream, true, config.variables, XMLMapperEntityResolver())
+        val context = xPathParser.evalNode("/mapper")
+        val list = context.evalNodes("select|insert|update|delete")
 
-        // todo: typeAlias for fake data
-        config.mappedStatements.forEach {
-            if (it.sqlSource != null) {
-//             println(it.sqlSource.getBoundSql('?').sql)
+//        var builderAssistant = MapperBuilderAssistant(config, filePath)
+        list.forEach {
+            val nodes = parseDynamicTags(it)
+            nodes.forEach { node ->
+                val simpleName = node.javaClass.simpleName
+                println(simpleName)
+                when(simpleName) {
+                    "TextSqlNode" -> {
+                        val textSqlNode = node as TextSqlNode
+                        println(textSqlNode)
+                    }
+                    "StaticTextSqlNode" -> {
+                        val textSqlNode = node as StaticTextSqlNode
+                        println(textSqlNode)
+                    }
+                }
             }
+//            val lang = context.getStringAttribute("lang")
+//            val langDriver = XMLLanguageDriver()
+//            val sqlSource: SqlSource = langDriver.createSqlSource(config, it, null)
+//            println(sqlSource)
+//
+//            val statementParser = XMLStatementBuilder(config, builderAssistant, it, null)
+//            try {
+//                statementParser.parseStatementNode()
+//            } catch (e: IncompleteElementException) {
+//                config.addIncompleteStatement(statementParser);
+//            }
         }
 
         return this.config
+    }
+
+    fun parseDynamicTags(node: XNode): MutableList<SqlNode> {
+        val contents: MutableList<SqlNode> = ArrayList()
+        val children = node.node.childNodes
+        for (i in 0 until children.length) {
+            val child = node.newXNode(children.item(i))
+            if (child.node.nodeType == Node.CDATA_SECTION_NODE || child.node.nodeType == Node.TEXT_NODE) {
+                val data = child.getStringBody("")
+                val textSqlNode = TextSqlNode(data)
+                if (textSqlNode.isDynamic) {
+                    contents.add(textSqlNode)
+                } else {
+                    contents.add(StaticTextSqlNode(data))
+                }
+            } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
+                // todo: thinking logic from XMLScriptBuilder::parseDynamicTags
+                // issue #628
+                val nodeName = child.node.nodeName
+                println("todo: $nodeName")
+            }
+        }
+
+        return contents
     }
 }
