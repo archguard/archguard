@@ -86,7 +86,7 @@ class MyBatisHandler : BasedXmlHandler() {
             nodes.forEach { node ->
                 val simpleName = node.javaClass.simpleName
                 println(simpleName)
-                when(simpleName) {
+                when (simpleName) {
                     "TextSqlNode" -> {
                         val textSqlNode = node as TextSqlNode
                         println(textSqlNode)
@@ -116,10 +116,20 @@ class MyBatisHandler : BasedXmlHandler() {
                     contents.add(StaticTextSqlNode(data))
                 }
             } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
-                // todo: thinking logic from XMLScriptBuilder::parseDynamicTags
-                // issue #628
-                val nodeName = child.node.nodeName
-                println("todo: $nodeName")
+                // todo: parse text parameters from origin
+                when (child.node.nodeName) {
+                    "trim" -> {}
+                    "where" -> {}
+                    "set" -> {}
+                    "foreach" -> {}
+                    "if" -> {}
+                    "choose" -> {}
+                    "when" -> {}
+                    "otherwise" -> {}
+                    "bind" -> {}
+                }
+
+                val data = child.getStringBody("")
             }
         }
 
