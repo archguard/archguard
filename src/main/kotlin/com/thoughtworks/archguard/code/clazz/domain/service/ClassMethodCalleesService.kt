@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.clazz.domain.service
+package com.thoughtworks.archguard.code.clazz.domain.service
 
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.method.domain.service.MethodCalleesService

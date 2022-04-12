@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.abstracts
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.module.domain.getModule
 import com.thoughtworks.archguard.module.domain.model.LogicModule

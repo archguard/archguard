@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.method.infrastructure
 
-import com.thoughtworks.archguard.clazz.domain.JField
-import com.thoughtworks.archguard.clazz.infrastructure.JClassRepositoryImpl
+import com.thoughtworks.archguard.code.clazz.domain.JField
+import com.thoughtworks.archguard.code.clazz.infrastructure.JClassRepositoryImpl
 import com.thoughtworks.archguard.common.TypeMap
 import com.thoughtworks.archguard.method.domain.JMethod
 import com.thoughtworks.archguard.method.domain.JMethodRepository

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.module.domain.dubbo
 
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.module.domain.model.Dependency
 import com.thoughtworks.archguard.module.domain.model.JClassVO
 import com.thoughtworks.archguard.module.domain.model.JMethodVO

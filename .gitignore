@@ -31,3 +31,4 @@ out/
 ### VS Code ###
 .vscode/
 *.jar
+**/.DS_Store

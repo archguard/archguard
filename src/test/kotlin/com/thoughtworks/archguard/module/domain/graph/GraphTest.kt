@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.module.domain.graph
 
-import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.module.domain.model.LogicModule
 import org.assertj.core.api.Assertions.assertThat

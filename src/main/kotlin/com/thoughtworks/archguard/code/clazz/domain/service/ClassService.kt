@@ -1,14 +1,15 @@
-package com.thoughtworks.archguard.clazz.domain.service
+package com.thoughtworks.archguard.code.clazz.domain.service
 
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import org.springframework.stereotype.Service
 
 @Service
 class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val classDependenciesService: ClassDependenciesService,
                    val classDependencerService: ClassDependencerService, val jClassRepository: JClassRepository,
-                   val classInvokeService: ClassInvokeService) {
+                   val classInvokeService: ClassInvokeService
+) {
 
     fun getDependencies(systemId: Long, module: String, name: String, deep: Int): JClass {
         val target = getTargetClass(systemId, module, name)

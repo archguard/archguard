@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.method.domain
 
-import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.code.clazz.domain.JField
 
 interface JMethodRepository {
     fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod>

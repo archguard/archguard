@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.module.infrastructure
 
-import com.thoughtworks.archguard.clazz.domain.ClazzType
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.domain.ClazzType
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

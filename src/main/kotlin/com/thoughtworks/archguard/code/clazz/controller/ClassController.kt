@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.clazz.controller
+package com.thoughtworks.archguard.code.clazz.controller
 
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.service.ClassService
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.domain.dfms
 
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.method.domain.JMethodRepository
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class DfmsApplService(
-        val logicModuleRepository: LogicModuleRepository,
-        val jClassRepository: JClassRepository,
-        val abstractAnalysisService: AbstractAnalysisService,
-        val jMethodRepository: JMethodRepository,
-        val couplingService: CouplingService) {
+    val logicModuleRepository: LogicModuleRepository,
+    val jClassRepository: JClassRepository,
+    val abstractAnalysisService: AbstractAnalysisService,
+    val jMethodRepository: JMethodRepository,
+    val couplingService: CouplingService) {
 
     fun getPackageDfms(systemId: Long, packageVO: PackageVO): PackageDfms {
         return PackageDfms.of(packageVO,

@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.clazz.infrastructure
+package com.thoughtworks.archguard.code.clazz.infrastructure
 
-import com.thoughtworks.archguard.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.clazz.domain.JClass
-import com.thoughtworks.archguard.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.code.clazz.domain.ClassRelation
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import com.thoughtworks.archguard.common.TypeMap
 import org.jdbi.v3.core.Jdbi

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.clazz.domain
+package com.thoughtworks.archguard.code.clazz.domain
 
 import com.thoughtworks.archguard.module.domain.graph.Node
 

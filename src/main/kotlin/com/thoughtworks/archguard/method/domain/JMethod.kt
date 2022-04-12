@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.method.domain
 
-import com.thoughtworks.archguard.clazz.domain.JField
+import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
 import com.thoughtworks.archguard.module.domain.model.JMethodVO
