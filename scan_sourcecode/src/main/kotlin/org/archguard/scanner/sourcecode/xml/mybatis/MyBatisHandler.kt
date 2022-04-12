@@ -1,9 +1,7 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
-import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLMapperBuilder
 import org.apache.ibatis.mapping.ResultSetType
-import org.apache.ibatis.mapping.SqlSource
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.archguard.scanner.sourcecode.xml.XmlConfig
@@ -12,6 +10,7 @@ import java.io.FileInputStream
 
 class MybatisEntry(
     var namespace: String = "",
+    // alias to method id
     var operationId: String = ""
 )
 
@@ -38,7 +37,7 @@ class MyBatisHandler : BasedXmlHandler() {
             "mapper" -> {
                 currentMapper.namespace = attributes.getValue("namespace")
             }
-            "insert" -> {
+            "select", "update", "delete", "insert" -> {
                 currentMapper.operationId = attributes.getValue("id")
             }
             else -> println(qName)
@@ -47,23 +46,17 @@ class MyBatisHandler : BasedXmlHandler() {
 
     override fun compute(filePath: String): XmlConfig {
         val inputStream = FileInputStream(filePath)
-//        val languageDriver: LanguageDriver = XMLLanguageDriver()
 
-        val configuration = Configuration()
-        configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
-        configuration.isShrinkWhitespacesInSql = true
+        val config = Configuration()
+        config.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
+        config.isShrinkWhitespacesInSql = true
 
-        val builder = XMLMapperBuilder(inputStream, configuration, filePath, configuration.sqlFragments)
+        val builder = XMLMapperBuilder(inputStream, config, filePath, config.sqlFragments)
         builder.parse()
         inputStream.close()
 
-//        val sqlSource: SqlSource = sqlSourceBuilder.parse(sql, null, null)
-//        val boundSql = sqlSource.getBoundSql(null)
-//        val actual = boundSql.sql
-
         // todo: typeAlias for fake data
-
-        configuration.mappedStatements.forEach {
+        config.mappedStatements.forEach {
             if (it.sqlSource != null) {
 //             println(it.sqlSource.getBoundSql('?').sql)
             }
