@@ -20,7 +20,9 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
     }
 
     override fun canScan(context: ScanContext): Boolean {
-        return context.language.lowercase() == "jvm"
+        return context.language.lowercase() == "jvm" ||
+                context.language.lowercase() == "java" ||
+                context.language.lowercase() == "kotlin"
     }
 
     override fun scan(context: ScanContext) {
