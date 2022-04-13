@@ -4,11 +4,15 @@ import org.apache.ibatis.builder.MapperBuilderAssistant
 import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
-import org.apache.ibatis.mapping.ResultSetType
+import org.apache.ibatis.executor.keygen.NoKeyGenerator
+import org.apache.ibatis.executor.keygen.SelectKeyGenerator
+import org.apache.ibatis.mapping.*
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
+import org.apache.ibatis.scripting.LanguageDriver
 import org.apache.ibatis.scripting.xmltags.DynamicContext
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode
+import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
 import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
@@ -69,49 +73,78 @@ class MyBatisHandler : BasedXmlHandler() {
 
         val list = context.evalNodes("select|insert|update|delete")
 
+        // todo: check raw language is need ?
+        // val lang = context.getStringAttribute("lang")
+
+        val langDriver: LanguageDriver = XMLLanguageDriver()
+
         val entry = MybatisEntry(namespace)
         list.forEach {
-            try {
-                val methodName = it.getStringAttribute("id")
-                // 1. enable include
-                val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
-                includeParser.applyIncludes(it.node)
+            val methodName = it.getStringAttribute("id")
+            // 1. enable include
+            val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
+            includeParser.applyIncludes(it.node)
 
-                // 2. follow parseStatementNode to remove all keys
-                val selectKeyNodes = it.evalNodes("selectKey")
-                selectKeyNodes.forEach { selectKey ->
-                    // todo: add key generator support
-//                    val id = selectKey.getStringAttribute("id")
-//                    configuration.addKeyGenerator(id, null)
-                }
-                // remove before parser
-                for (nodeToHandle in selectKeyNodes) {
-                    nodeToHandle.parent.node.removeChild(nodeToHandle.node)
-                }
-
-                val params: MutableMap<String, Any> = mutableMapOf()
-                // 2. get rootNode to do some simple calculate
-                val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
-                val dynamicContext = DynamicContext(configuration, params)
-                // everyNode parse in here
-                try {
-                    rootNode.apply(dynamicContext)
-                } catch (e: Exception) {
-                    // ignore this exception log, because ognl will always run parserExpression
-                }
-
-                // 3. convert to source. it will replace all parameters => ?
-                val sqlSourceParser = SqlSourceBuilder(configuration)
-                val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
-                val boundSql = sqlSource2.getBoundSql(params)
-
-                entry.methodSqlMap[methodName] = boundSql.sql
-            } catch (e: Exception) {
-                logger.info("process: $resource error")
-                logger.info(e.toString())
+            // 2. follow parseStatementNode to remove all keys
+            val selectKeyNodes = it.evalNodes("selectKey")
+            selectKeyNodes.forEach { selectNode ->
+                // todo: add key generator support
+                val id: String = methodName + SelectKeyGenerator.SELECT_KEY_SUFFIX
+                parseSelectKeyNode(id, selectNode, Any::class.java, langDriver, "", configuration, builderAssistant)
             }
+            // remove before parser
+            for (nodeToHandle in selectKeyNodes) {
+                nodeToHandle.parent.node.removeChild(nodeToHandle.node)
+            }
+
+            val params: MutableMap<String, Any> = mutableMapOf()
+            // 3. get rootNode to do some simple calculate
+            val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
+            val dynamicContext = DynamicContext(configuration, params)
+            // everyNode parse in here
+            try {
+                rootNode.apply(dynamicContext)
+            } catch (e: Exception) {
+                // ignore this exception log, because ognl will always run parserExpression
+            }
+
+            // 4. convert to source. it will replace all parameters => ?
+            val sqlSourceParser = SqlSourceBuilder(configuration)
+            val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
+            val boundSql = sqlSource2.getBoundSql(params)
+
+            entry.methodSqlMap[methodName] = boundSql.sql
         }
 
         return entry
+    }
+
+    private fun parseSelectKeyNode(
+        id: String,
+        nodeToHandle: XNode,
+        parameterTypeClass: Class<*>,
+        langDriver: LanguageDriver,
+        databaseId: String,
+        configuration: Configuration,
+        builderAssistant: MapperBuilderAssistant
+    ) {
+        val statementType =
+            StatementType.valueOf(nodeToHandle.getStringAttribute("statementType", StatementType.PREPARED.toString()))
+        val keyProperty = nodeToHandle.getStringAttribute("keyProperty")
+        val keyColumn = nodeToHandle.getStringAttribute("keyColumn")
+        val executeBefore = "BEFORE" == nodeToHandle.getStringAttribute("order", "AFTER")
+
+        val sqlSource = langDriver.createSqlSource(configuration, nodeToHandle, parameterTypeClass)
+
+        builderAssistant.addMappedStatement(
+            id, sqlSource, statementType, SqlCommandType.SELECT,
+            null as Int?, null as Int?, null as String?, parameterTypeClass, null as String?, null,
+            null as ResultSetType?, false, false, false,
+            NoKeyGenerator.INSTANCE, keyProperty, keyColumn, databaseId, langDriver, null
+        )
+
+        val id = builderAssistant.applyCurrentNamespace(id, false)
+        val keyStatement: MappedStatement = configuration.getMappedStatement(id, false)
+        configuration.addKeyGenerator(id, SelectKeyGenerator(keyStatement, executeBefore))
     }
 }
