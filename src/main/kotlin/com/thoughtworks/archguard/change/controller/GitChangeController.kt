@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.change.controller
 
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.change.application.GitChangeService
 import com.thoughtworks.archguard.change.domain.GitHotFile
 import com.thoughtworks.archguard.change.domain.GitPathChangeCount

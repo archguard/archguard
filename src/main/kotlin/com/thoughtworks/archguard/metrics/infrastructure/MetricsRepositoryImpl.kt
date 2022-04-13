@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.metrics.domain.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.stereotype.Repository
 

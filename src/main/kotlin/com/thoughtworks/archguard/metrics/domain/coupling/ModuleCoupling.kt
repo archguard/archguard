@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.module.domain.model.LogicModule
+import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import org.nield.kotlinstatistics.median
 
 class ModuleCoupling private constructor(

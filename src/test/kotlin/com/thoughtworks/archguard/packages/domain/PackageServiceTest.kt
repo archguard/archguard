@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.packages.domain
 
 import com.thoughtworks.archguard.code.packages.domain.PackageRepository
 import com.thoughtworks.archguard.code.packages.domain.PackageService
-import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.model.SubModule
+import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.code.module.domain.model.SubModule
 import com.thoughtworks.archguard.code.packages.infrastructure.PackageDependenceDTO
 import io.mockk.MockKAnnotations.init
 import io.mockk.every

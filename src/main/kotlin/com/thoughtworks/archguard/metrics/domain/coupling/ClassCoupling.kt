@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 
 class ClassCoupling(
         val jClassVO: JClassVO,

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.metrics.infrastructure
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -3,14 +3,13 @@ package com.thoughtworks.archguard.metrics.domain.coupling
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
-import com.thoughtworks.archguard.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.module.domain.getModule
-import com.thoughtworks.archguard.module.domain.model.Dependency
-import com.thoughtworks.archguard.module.domain.model.JClassVO
-import com.thoughtworks.archguard.module.domain.model.LogicModule
-import com.thoughtworks.archguard.module.domain.model.PackageVO
-import org.springframework.cache.annotation.Cacheable
+import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
+import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
+import com.thoughtworks.archguard.code.module.domain.getModule
+import com.thoughtworks.archguard.code.module.domain.model.Dependency
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import com.thoughtworks.archguard.code.module.domain.model.PackageVO
 import org.springframework.stereotype.Service
 
 @Service

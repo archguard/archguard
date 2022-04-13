@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.metrics.domain.dfms
 
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
-import com.thoughtworks.archguard.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 
 class ClassDfms private constructor(val jClassVO: JClassVO, val innerInstability: Double, val outerInstability: Double, val absRatio: Double) {
     companion object {
