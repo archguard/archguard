@@ -43,7 +43,7 @@ class MyBatisHandler : BasedXmlHandler() {
         val configuration = Configuration()
         configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
         configuration.isShrinkWhitespacesInSql = true
-//
+
 //        val builder = XMLMapperBuilder(inputStream, configuration, resource, configuration.sqlFragments)
 //        builder.parse()
 //        inputStream.close()
@@ -51,7 +51,6 @@ class MyBatisHandler : BasedXmlHandler() {
         val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
         val namespace = context.getStringAttribute("namespace")
-
 
         // alias to configurationElement
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
@@ -106,10 +105,13 @@ class MyBatisHandler : BasedXmlHandler() {
                     "where" -> {}
                     "set" -> {}
                     "foreach" -> {
-                        val stringAttribute = child.getStringAttribute("collection")?: "list"
+                        val collection = child.getStringAttribute("collection") ?: "list"
+                        val collectionItem = child.getStringAttribute("item") ?: "list"
                         val items = mutableListOf<String>()
                         items += "placeholder"
-                        params[stringAttribute] = items
+
+                        params[collection] = items
+                        params[collectionItem] = items
                     }
                     "if" -> {}
                     "choose" -> {}
