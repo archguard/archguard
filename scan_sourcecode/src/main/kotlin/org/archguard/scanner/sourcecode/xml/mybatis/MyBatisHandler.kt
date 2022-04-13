@@ -3,13 +3,11 @@ package org.archguard.scanner.sourcecode.xml.mybatis
 import org.apache.ibatis.builder.MapperBuilderAssistant
 import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
-import org.apache.ibatis.mapping.ParameterMap
 import org.apache.ibatis.mapping.ResultSetType
-import org.apache.ibatis.ognl.ASTNotEq
+import org.apache.ibatis.ognl.ComparisonExpression
 import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
-import org.apache.ibatis.scripting.xmltags.ExpressionEvaluator
 import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
@@ -116,12 +114,12 @@ class MyBatisHandler : BasedXmlHandler() {
                     "foreach" -> {
                         val collection = child.getStringAttribute("collection") ?: "list"
                         val collectionItem = child.getStringAttribute("item") ?: "list"
-                        val items = mutableListOf("placeholder")
+                        val items = mutableListOf(Any())
 
                         if (collection.contains(".")) {
                             // todo: check need to support for multiple parents if exists
                             val parent = collection.split(".")[0]
-                            params[parent] = items
+                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
                         }
 
                         params[collection] = items
@@ -129,16 +127,32 @@ class MyBatisHandler : BasedXmlHandler() {
                     }
                     "if" -> {
                         val condition = child.getStringAttribute("test")
-//                        val parseExpression = Ognl.parseExpression(condition)
-//                        when(parseExpression.javaClass.simpleName) {
-//                            "ASTNotEq" -> {
-//                                val ast = parseExpression as ASTNotEq
-//                                ast.comparisonFunction
-//                            }
-//                        }
+                        val parseExpression = Ognl.parseExpression(condition)
+                        val items = mutableListOf(Any())
 
-                        println(condition)
+                        when (parseExpression.javaClass.simpleName) {
+                            "ASTEq",
+                            "ASTGreater",
+                            "ASTGreaterEq",
+                            "ASTLess",
+                            "ASTLessEq",
+                            "ASTNotEq" -> {
+                                val ast = parseExpression as ComparisonExpression
+                                for (i in 0 until ast.jjtGetNumChildren()) {
+                                    val jjtGetChild = ast.jjtGetChild(i).toString()
+                                    if (jjtGetChild != "null") {
+                                        if (jjtGetChild.contains(".")) {
+                                            // todo: check need to support for multiple parents if exists
+                                            val split = jjtGetChild.split(".")
+                                            val parent = split[0]
+                                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
+                                        }
 
+                                        params[jjtGetChild] = items
+                                    }
+                                }
+                            }
+                        }
                     }
                     else -> {
                         println("Mybatis - need to support: ${child.node.nodeName}")
