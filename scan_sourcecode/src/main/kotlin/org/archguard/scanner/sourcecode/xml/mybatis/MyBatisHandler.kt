@@ -7,6 +7,8 @@ import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.executor.keygen.NoKeyGenerator
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator
 import org.apache.ibatis.mapping.*
+import org.apache.ibatis.ognl.ComparisonExpression
+import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
 import org.apache.ibatis.scripting.LanguageDriver
@@ -17,6 +19,7 @@ import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.slf4j.LoggerFactory
+import org.w3c.dom.Node
 import java.io.FileInputStream
 
 class MybatisEntry(
@@ -64,8 +67,11 @@ class MyBatisHandler : BasedXmlHandler() {
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
 
         // parse inside sql element
+        val basedParameters: MutableMap<String, Any> = mutableMapOf()
+
         val sqlNodes = context.evalNodes("/mapper/sql")
         sqlNodes.forEach {
+            basedParameters += fakeParameters(it)
             var id = it.getStringAttribute("id")
             id = builderAssistant.applyCurrentNamespace(id, false)
             configuration.sqlFragments[id] = it
@@ -97,7 +103,7 @@ class MyBatisHandler : BasedXmlHandler() {
                 nodeToHandle.parent.node.removeChild(nodeToHandle.node)
             }
 
-            val params: MutableMap<String, Any> = mutableMapOf()
+            val params = basedParameters + fakeParameters(it)
             // 3. get rootNode to do some simple calculate
             val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
             val dynamicContext = DynamicContext(configuration, params)
@@ -146,5 +152,77 @@ class MyBatisHandler : BasedXmlHandler() {
         val id = builderAssistant.applyCurrentNamespace(id, false)
         val keyStatement: MappedStatement = configuration.getMappedStatement(id, false)
         configuration.addKeyGenerator(id, SelectKeyGenerator(keyStatement, executeBefore))
+    }
+
+
+    private fun fakeParameters(node: XNode): MutableMap<String, Any> {
+        val params: MutableMap<String, Any> = mutableMapOf()
+        val children = node.node.childNodes
+        for (i in 0 until children.length) {
+            val child = node.newXNode(children.item(i))
+            if (child.node.nodeType == Node.CDATA_SECTION_NODE || child.node.nodeType == Node.TEXT_NODE) {
+//                val data = child.getStringBody("")
+            } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
+//                val data = child.getStringBody("")
+                when (child.node.nodeName) {
+                    "trim",
+                    "where" -> {
+                        params += fakeParameters(child)
+                    }
+                    "set" -> {
+                        params += fakeParameters(child)
+                    }
+                    "foreach" -> {
+                        val collection = child.getStringAttribute("collection") ?: "list"
+                        val collectionItem = child.getStringAttribute("item") ?: "list"
+                        val items = mutableListOf(Any())
+
+                        if (collection.contains(".")) {
+                            // todo: check need to support for multiple parents if exists
+                            val parent = collection.split(".")[0]
+                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
+                        }
+
+                        params[collection] = items
+                        params[collectionItem] = items
+                    }
+                    "if" -> {
+                        val condition = child.getStringAttribute("test")
+                        val parseExpression = Ognl.parseExpression(condition)
+                        val items = mutableListOf(Any())
+
+                        when (parseExpression.javaClass.simpleName) {
+                            "ASTEq",
+                            "ASTGreater",
+                            "ASTGreaterEq",
+                            "ASTLess",
+                            "ASTLessEq",
+                            "ASTNotEq" -> {
+                                val ast = parseExpression as ComparisonExpression
+                                for (i in 0 until ast.jjtGetNumChildren()) {
+                                    val jjtGetChild = ast.jjtGetChild(i).toString()
+                                    if (jjtGetChild != "null") {
+                                        if (jjtGetChild.contains(".")) {
+                                            // todo: check need to support for multiple parents if exists
+                                            val split = jjtGetChild.split(".")
+                                            val parent = split[0]
+                                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
+                                        }
+
+                                        params[jjtGetChild] = items
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else -> {
+                        println("Mybatis - need to support: ${child.node.nodeName}")
+                    }
+                }
+
+            }
+        }
+
+        return params
     }
 }
