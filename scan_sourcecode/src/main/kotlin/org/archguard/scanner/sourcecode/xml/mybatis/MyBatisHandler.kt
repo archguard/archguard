@@ -59,7 +59,9 @@ class MyBatisHandler : BasedXmlHandler() {
 
         // todo: add sql element
         val sqlNodes = context.evalNodes("/mapper/sql")
+        val basedParameters: MutableMap<String, Any> = mutableMapOf()
         sqlNodes.forEach {
+            basedParameters += fakeParameters(it)
             var id = it.getStringAttribute("id")
             id = builderAssistant.applyCurrentNamespace(id, false)
             configuration.sqlFragments[id] = it
@@ -80,7 +82,7 @@ class MyBatisHandler : BasedXmlHandler() {
                 val sqlSource = xmlScriptBuilder.parseScriptNode()
 
                 // if is a foreach
-                val params = fakeParameters(it)
+                val params = basedParameters + fakeParameters(it)
 
                 val sqlString = sqlSource.getBoundSql(params).sql
                 entry.methodSqlMap[methodName] = sqlString
@@ -125,6 +127,7 @@ class MyBatisHandler : BasedXmlHandler() {
                     }
                     "if" -> {
                         val condition = child.getStringAttribute("test")
+                        println(condition)
                     }
                     else -> {
                         println("Mybatis - need to support: ${child.node.nodeName}")
