@@ -55,10 +55,6 @@ class MyBatisHandler : BasedXmlHandler() {
         configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
         configuration.isShrinkWhitespacesInSql = true
 
-//        val builder = XMLMapperBuilder(inputStream, configuration, resource, configuration.sqlFragments)
-//        builder.parse()
-//        inputStream.close()
-
         val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
         val namespace = context.getStringAttribute("namespace")
@@ -83,21 +79,24 @@ class MyBatisHandler : BasedXmlHandler() {
         list.forEach {
             try {
                 val methodName = it.getStringAttribute("id")
-                // Include Fragments before parsing
+                // enable include
                 val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
                 includeParser.applyIncludes(it.node)
+
+                // create based parameters with sql ref id
                 val params = basedParameters + fakeParameters(it)
 
-//                val xmlScriptBuilder = XMLScriptBuilder(configuration, it)
-//                val sqlSource = xmlScriptBuilder.parseScriptNode()
-
-                // if is a foreach
-//                val sqlString = sqlSource.getBoundSql(params).sql
-
+                // get root Node
                 val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
 
                 val dynamicContext = DynamicContext(configuration, params)
-                rootNode.apply(dynamicContext)
+                // everyNode parse in here
+                try {
+                    rootNode.apply(dynamicContext)
+                } catch (e: Exception) {
+                    // todo: check
+//                    logger.info(e.toString())
+                }
                 val sqlSourceParser = SqlSourceBuilder(configuration)
                 val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
                 val boundSql = sqlSource2.getBoundSql(params)

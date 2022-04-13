@@ -38,6 +38,6 @@ internal class MyBatisHandlerTest {
         val toURI = resource.toURI().toPath().toAbsolutePath()
         val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), toURI.toString())
 
-        assertEquals(5, sqls.methodSqlMap.size)
+        assertEquals(12, sqls.methodSqlMap.size)
     }
 }
