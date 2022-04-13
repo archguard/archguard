@@ -10,7 +10,7 @@ internal class MyBatisHandlerTest {
     internal fun support_for_foreach() {
         val resource = this.javaClass.classLoader.getResource("mybatis/OmsOrderOperateHistoryDao.xml")!!
         val toURI = resource.toURI().toPath().toAbsolutePath()
-        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), filePath)
+        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), "mybatis/OmsOrderOperateHistoryDao.xml")
         assertEquals("INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)", sqls.methodSqlMap["insertList"])
     }
 
@@ -18,7 +18,7 @@ internal class MyBatisHandlerTest {
     internal fun official_author_map_test_cases() {
         val resource = this.javaClass.classLoader.getResource("mybatis/AuthorMapper.xml")!!
         val toURI = resource.toURI().toPath().toAbsolutePath()
-        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), filePath)
+        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), "mybatis/AuthorMapper.xml")
 
         assertEquals(15, sqls.methodSqlMap.size)
     }
@@ -27,7 +27,7 @@ internal class MyBatisHandlerTest {
     internal fun official_blog_map_test_cases() {
         val resource = this.javaClass.classLoader.getResource("mybatis/BlogMapper.xml")!!
         val toURI = resource.toURI().toPath().toAbsolutePath()
-        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), filePath)
+        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), "mybatis/BlogMapper.xml")
 
         assertEquals(6, sqls.methodSqlMap.size)
     }
