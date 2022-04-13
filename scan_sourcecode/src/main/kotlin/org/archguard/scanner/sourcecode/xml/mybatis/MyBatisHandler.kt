@@ -5,6 +5,8 @@ import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ParameterMap
 import org.apache.ibatis.mapping.ResultSetType
+import org.apache.ibatis.ognl.ASTNotEq
+import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
 import org.apache.ibatis.scripting.xmltags.ExpressionEvaluator
@@ -127,7 +129,16 @@ class MyBatisHandler : BasedXmlHandler() {
                     }
                     "if" -> {
                         val condition = child.getStringAttribute("test")
+//                        val parseExpression = Ognl.parseExpression(condition)
+//                        when(parseExpression.javaClass.simpleName) {
+//                            "ASTNotEq" -> {
+//                                val ast = parseExpression as ASTNotEq
+//                                ast.comparisonFunction
+//                            }
+//                        }
+
                         println(condition)
+
                     }
                     else -> {
                         println("Mybatis - need to support: ${child.node.nodeName}")
