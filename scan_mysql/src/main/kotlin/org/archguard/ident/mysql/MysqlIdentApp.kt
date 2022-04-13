@@ -15,10 +15,9 @@ object MysqlIdentApp {
 
         try {
             val statement: Statement = CCJSqlParserUtil.parse(sql)
-            val selectStatement: Select = statement as Select
             val tablesNamesFinder = TablesNamesFinder()
 
-            table.tableNames = tablesNamesFinder.getTableList(selectStatement).map {
+            table.tableNames = tablesNamesFinder.getTableList(statement).map {
                 var tableName = it
                 if (it.startsWith("`") && it.endsWith("`")) {
                      tableName = tableName.removeSuffix("`").removePrefix("`")

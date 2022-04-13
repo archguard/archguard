@@ -51,4 +51,12 @@ internal class MysqlIdentAppTest {
 
         assertEquals("system_info", relation!!.tableNames.joinToString(","))
     }
+
+    @Test
+    internal fun should_parse_for_mybatis_questions() {
+        val code = "INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)"
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("oms_order_operate_history", relation!!.tableNames.joinToString(","))
+    }
 }
