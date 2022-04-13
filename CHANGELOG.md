@@ -1,4 +1,31 @@
-# [](https://github.com/archguard/archguard/compare/v1.5.4...v) (2022-04-10)
+# [](https://github.com/archguard/archguard/compare/v1.6.0...v) (2022-04-13)
+
+
+
+# [1.6.0](https://github.com/archguard/archguard/compare/v1.5.4...v1.6.0) (2022-04-13)
+
+
+### Bug Fixes
+
+* **diff:** fix change dbUrl issue ([bc2584d](https://github.com/archguard/archguard/commit/bc2584dc0e2cc0b822629d7a8e994179cd42f3e8))
+* **diff:** fix scanner branch issue ([f32f90b](https://github.com/archguard/archguard/commit/f32f90b48b4ab786564dc515737f1e05bd48e7b2))
+* fix typos for version issues ([138cb6f](https://github.com/archguard/archguard/commit/138cb6fae2af60714d45d3c2ccc1df44d5b4ef9f))
+* **git:** clean dir when is not empty ([c01eec0](https://github.com/archguard/archguard/commit/c01eec0c09224c43da2579be60831266546a6ccd))
+* **git:** mkdir after clear ([58d6681](https://github.com/archguard/archguard/commit/58d6681583c349b7d24058a0e4deed1031db4e3e))
+* **scanner:** fix test bad smell not scan for test issue ([62a2eb6](https://github.com/archguard/archguard/commit/62a2eb6506c0f0597ab7731b61ebbf2f6b849edd))
+* **scm:** fix committer_email length issue for [#33](https://github.com/archguard/archguard/issues/33) ([2bbecac](https://github.com/archguard/archguard/commit/2bbecac14106ad601aea9f010391c601a7d84d13))
+
+
+### Features
+
+* **change:** add history api for query ([dbf1404](https://github.com/archguard/archguard/commit/dbf140434008b83304e517206be0cdde267ca821))
+* **change:** add send back results after analysis ([150b175](https://github.com/archguard/archguard/commit/150b175739ca17beb6b2299612b3cf40e1d9025b))
+* **diff:** add arguments for tools ([8ec1456](https://github.com/archguard/archguard/commit/8ec1456bd449051d8aefd6de15519f30903b3778))
+* **diff:** add since and util support [#19](https://github.com/archguard/archguard/issues/19) ([fa5f125](https://github.com/archguard/archguard/commit/fa5f1255b193155e30bf05f24e35a07017ebc9d9))
+* **diff:** disabled for can scan ([f6e675f](https://github.com/archguard/archguard/commit/f6e675f46d773ffe794b49eb9f8dfabe5e9ec505))
+* **diff:** make diff api to call scanner tool ([fa7af7f](https://github.com/archguard/archguard/commit/fa7af7fa1dfde2a5e500a3e4d814fb313f346fc0))
+* enable arguments for scanner tools ([1e6493b](https://github.com/archguard/archguard/commit/1e6493b2fac4b96b74a4e80a62e052f550b3489b))
+* **git:** enable kill tmp for save history ([2233449](https://github.com/archguard/archguard/commit/22334498351366eb6ffb7c224707eb57ddd73860))
 
 
 
