@@ -56,46 +56,34 @@ class MyBatisHandler : BasedXmlHandler() {
 
     fun streamToSqls(inputStream: FileInputStream, resource: String): MybatisEntry {
         val configuration = createConfiguration()
+        val langDriver: LanguageDriver = XMLLanguageDriver()
 
         val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
+
         val namespace = context.getStringAttribute("namespace")
+        val entry = MybatisEntry(namespace)
 
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
         val basedParameters: MutableMap<String, Any> = mutableMapOf()
 
         // create inside <sql> for inline
         val sqlNodes = context.evalNodes("/mapper/sql")
-        sqlNodes.forEach {
-            basedParameters += fakeParameters(it)
-            var id = it.getStringAttribute("id")
-            id = builderAssistant.applyCurrentNamespace(id, false)
-            configuration.sqlFragments[id] = it
-        }
+        parseSqlStatement(sqlNodes, basedParameters, builderAssistant, configuration)
 
         val crudList = context.evalNodes("select|insert|update|delete")
-        val langDriver: LanguageDriver = XMLLanguageDriver()
-
-        val entry = MybatisEntry(namespace)
         crudList.forEach {
             val methodName = it.getStringAttribute("id")
+            val params = basedParameters + fakeParameters(it)
+
             // 1. enable include
             val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
             includeParser.applyIncludes(it.node)
 
             // 2. follow parseStatementNode to remove all keys
             val selectKeyNodes = it.evalNodes("selectKey")
-            selectKeyNodes.forEach { selectNode ->
-                // todo: add key generator support
-                val id: String = methodName + SelectKeyGenerator.SELECT_KEY_SUFFIX
-                parseSelectKeyNode(id, selectNode, Any::class.java, langDriver, "", configuration, builderAssistant)
-            }
-            // remove before parser
-            for (nodeToHandle in selectKeyNodes) {
-                nodeToHandle.parent.node.removeChild(nodeToHandle.node)
-            }
+            parseSelectKeyStatement(selectKeyNodes, methodName, langDriver, configuration, builderAssistant)
 
-            val params = basedParameters + fakeParameters(it)
             // 3. get rootNode to do some simple calculate
             val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
             val dynamicContext = DynamicContext(configuration, params)
@@ -109,13 +97,44 @@ class MyBatisHandler : BasedXmlHandler() {
 
             // 4. convert to source. it will replace all parameters => ?
             val sqlSourceParser = SqlSourceBuilder(configuration)
-            val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
-            val boundSql = sqlSource2.getBoundSql(params)
+            val sqlSource = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
+            val boundSql = sqlSource.getBoundSql(params)
 
             entry.methodSqlMap[methodName] = boundSql.sql
         }
 
         return entry
+    }
+
+    private fun parseSqlStatement(
+        sqlNodes: MutableList<XNode>,
+        basedParameters: MutableMap<String, Any>,
+        builderAssistant: MapperBuilderAssistant,
+        configuration: Configuration
+    ) {
+        sqlNodes.forEach {
+            basedParameters += fakeParameters(it)
+            var id = it.getStringAttribute("id")
+            id = builderAssistant.applyCurrentNamespace(id, false)
+            configuration.sqlFragments[id] = it
+        }
+    }
+
+    private fun parseSelectKeyStatement(
+        selectKeyNodes: MutableList<XNode>,
+        methodName: String,
+        langDriver: LanguageDriver,
+        configuration: Configuration,
+        builderAssistant: MapperBuilderAssistant
+    ) {
+        selectKeyNodes.forEach { selectNode ->
+            val id: String = methodName + SelectKeyGenerator.SELECT_KEY_SUFFIX
+            parseSelectKeyNode(id, selectNode, Any::class.java, langDriver, "", configuration, builderAssistant)
+        }
+        // remove before parser
+        for (nodeToHandle in selectKeyNodes) {
+            nodeToHandle.parent.node.removeChild(nodeToHandle.node)
+        }
     }
 
     private fun createConfiguration(): Configuration {
