@@ -5,8 +5,6 @@ import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
-import org.apache.ibatis.ognl.ComparisonExpression
-import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
 import org.apache.ibatis.scripting.xmltags.DynamicContext
@@ -15,7 +13,6 @@ import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.slf4j.LoggerFactory
-import org.w3c.dom.Node
 import java.io.FileInputStream
 
 class MybatisEntry(
@@ -62,7 +59,7 @@ class MyBatisHandler : BasedXmlHandler() {
         // alias to configurationElement
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
 
-        // todo: add sql element
+        // parse inside sql element
         val sqlNodes = context.evalNodes("/mapper/sql")
         sqlNodes.forEach {
             var id = it.getStringAttribute("id")
@@ -80,6 +77,18 @@ class MyBatisHandler : BasedXmlHandler() {
                 val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
                 includeParser.applyIncludes(it.node)
 
+                // 2. follow parseStatementNode to remove all keys
+                val selectKeyNodes = it.evalNodes("selectKey")
+                selectKeyNodes.forEach { selectKey ->
+                    // todo: add key generator support
+//                    val id = selectKey.getStringAttribute("id")
+//                    configuration.addKeyGenerator(id, null)
+                }
+                // remove before parser
+                for (nodeToHandle in selectKeyNodes) {
+                    nodeToHandle.parent.node.removeChild(nodeToHandle.node)
+                }
+
                 val params: MutableMap<String, Any> = mutableMapOf()
                 // 2. get rootNode to do some simple calculate
                 val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
@@ -88,8 +97,7 @@ class MyBatisHandler : BasedXmlHandler() {
                 try {
                     rootNode.apply(dynamicContext)
                 } catch (e: Exception) {
-                    // todo: check
-//                    logger.info(e.toString())
+                    // ignore this exception log, because ognl will always run parserExpression
                 }
 
                 // 3. convert to source. it will replace all parameters => ?
