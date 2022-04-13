@@ -9,7 +9,9 @@
 Chinese: ArchGuard 是一个架构治理工具，用于管理和分析组织级别的软件架构。 结合 [C4 模型](https://c4model.com)，进行依赖分析，含容器级别（服务级别）、组件级别（/模块级别）、代码级别、数据库级别等。 
 同时，可以创建系统的架构适应度函数，度量系统的各项指标。
 
-All Components is opensource. Others:
+Document: [https://archguard.org/](https://archguard.org/)
+
+Others:
 
 - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
 - [ArchGuard Scanner](https://github.com/archguard/scanner)
@@ -19,12 +21,12 @@ Screenshots:
 
 <table>
   <tr>
-    <td><img src="https://archguard.org/assets/screenshots/archguard-20-overview.png"  alt="1" width = 480px ></td>
-    <td><img src="https://archguard.org/assets/screenshots/archguard-20-apilist.png" alt="2" width = 480px ></td>
+    <td><img src="https://archguard.org/assets/screenshots/archguard-20-overview.png"  alt="1" width = 480px /></td>
+    <td><img src="https://archguard.org/assets/screenshots/archguard-20-apilist.png" alt="2" width = 480px /></td>
    </tr> 
    <tr>
-      <td><img src="https://archguard.org/assets/screenshots/archguard-20-class.png" alt="3" width = 480px x></td>
-      <td><img src="https://archguard.org/assets/screenshots/archguard-20-servicesmap.png" align="right" width = 480px ></td>
+      <td><img src="https://archguard.org/assets/screenshots/archguard-20-class.png" alt="3" width = 480px /></td>
+      <td><img src="https://archguard.org/assets/screenshots/archguard-20-servicesmap.png" align="right" width = 480px /></td>
   </tr>
 </table>
 
@@ -47,80 +49,15 @@ Screenshots:
 - 数据库地图（进行中）
 - 精准测试/变化分析（进行中）
 
-Features: 
-
-- C4 analysis
-    - [x] container dependency analysis. (level: HTTP API)
-      - [x] basic fe/be call
-      - [x] RestTemplate for backend to backend
-      - [ ] GraphQL
-      - [ ] Kong Gateway
-    - [x] component (module) dependency analysis.
-    - [x] code dependency analysis. (level: pa``ckage, class, method)
-    - [ ] database dependency analysis
-- Scanner integration
-    - [x] PMD
-    - [x] Git with jGit
-        - [x] HotFile
-    - [x] Java/Jvm only
-        - [x] JVM Bytecode (need to rewrite with License issue)
-        - [x] CheckStyle
-        - [x] Badsmell by DesigniteJava
-        - [x] Test Badsmell by Coca (Java only)
-    - [x] TypeScript with Chapi
-    - [x] Kotlin with Chapi
-    - [x] Git Hot File 
-- System Info
-    - [ ] Custom build command  
-
 Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 | Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
 |---------------------|------|--------|-----|--------|------------|-----|-----|-------|-----|
-| http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | ✅  | 🆕    | 🆕  |
-| syntax parse        | ✅    | ✅      | ✅   | ✅     | ✅         | 🆕  | ✅  | ✅     | 🆕  |
-| function call       | ✅    | 🆕     |     | ✅     | ✅          |     |     |       |     |
-| arch/package        | ✅    |        |     | ✅        | ✅       |     |  ✅ | ✅     |     |
+| http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | ✅   | 🆕    | 🆕  |
+| syntax parse        | ✅    | ✅      | ✅   | ✅      | ✅          | 🆕  | ✅   | ✅     | 🆕  |
+| function call       | ✅    | 🆕     |     | ✅      | ✅          |     |     |       |     |
+| arch/package        | ✅    |        |     | ✅      | ✅          |     | ✅   | ✅     |     |
 | real world validate | ✅    |        |     |        | ✅          |     |     |       |     |
-
-### Tech decision (framework)
-
-- languages：Kotlin
-- frameworks：Spring Boot，JDBI
-- test frameworks：Junit5，Spring Boot Test，Flyway，H2
-- build tool：Gradle
-- data storage：MySQL, InfluxDB
-
-### Local setup
-
-requirements: JDK 12+
-
-#### database setup
-
-1. Local mysql, or docker created
-- `docker pull mysql:8`
-- `docker run --name=mysql -it -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql`
-2. Create archguard database
-- `create database archguard default character set utf8mb4 collate utf8mb4_unicode_ci;`
-- `./gradlew -Dflyway.configFiles=flyway.conf flywayMigrate` (probably not needed)
-
-#### run
-
-`./gradlew bootrun`
-
-### Docker
-
-```
-docker-compose -p ArchGuard -f ./docker-compose.yml up -d
-```
-
-Known issues with Colima: `docker mysql exited 137 memory`
-
-The default VM created by Colima has 2 CPUs, 2GiB memory and 60GiB storage.  When run scanner in large projects, the default config will make MySQL exited, can to set more memory for ArchGuard:
-
-```
-colima start --cpu 4 --memory 8
-```
 
 ### Chat
 
@@ -129,29 +66,6 @@ colima start --cpu 4 --memory 8
 <img src="https://archguard.org/qrcode.jpg" width="380" height="480">
 
 （PS：如果群满，请添加微信 `phodal02`，并注明 ArchGuard）
-
-## Q & A
-
-### Scanner 没有数据
-
-```
-java "-Ddburl=jdbc:mysql://localhost:3306/archguard?user=root&password=&useSSL=false" -jar scan_sourcecode.jar --system-id=6 --language=java --path=.
-```
-
-1. 运行目录 scanner 中的 .jar 是否完整。如果出错了，需要从 GitHub 重新下载。
-2. 查看是否生成对应的 sql 文件。如果没有的话，建议可以提交 issue，包含错误日志。
-
-### vs APM
-
-APM is awesome for developer. APM is build in runtime, ArchGuard is focus on development and rules. In archguard, not follow rule will not show data, better for governance.
-
-APM 是在运行态发现架构问题的，ArchGuard 是运行在开发态。两者之间存在一些 gap，ArchGuard 专注于代码，更适用于通过规范来治理架构 —— 没有规范，没有数据。
-
-### Git 源码配置
-
-ArchGuard 直接调用 `git clone` 去 clone 源码
-
-如果配置了用户名和秘密，则会执行 `repo.replace("//", "//${urlEncode(systemInfo.username)}:${urlEncode(systemInfo.getDeCryptPassword())}@")`，以生成一个带用户名和密码的 URL。
 
 License
 ---
