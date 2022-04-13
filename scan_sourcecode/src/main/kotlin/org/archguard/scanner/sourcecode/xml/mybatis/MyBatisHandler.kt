@@ -9,14 +9,11 @@ import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.archguard.scanner.sourcecode.xml.XmlConfig
 import org.w3c.dom.Node
-import org.xml.sax.Attributes
 import java.io.FileInputStream
 
 class MybatisEntry(
     var namespace: String = "",
-    // alias to method id
-    var operationId: String = "",
-    var sqls: String = ""
+    var methodSqlMap: MutableMap<String, String> = mutableMapOf()
 )
 
 class MyBatisHandler : BasedXmlHandler() {
@@ -35,23 +32,6 @@ class MyBatisHandler : BasedXmlHandler() {
         return false
     }
 
-    override fun startElement(uri: String?, localName: String?, qName: String?, attributes: Attributes?) {
-        if (attributes == null) return
-
-        when (qName) {
-            "mapper" -> {
-                currentMapper.namespace = attributes.getValue("namespace")
-            }
-            "sql" -> {
-
-            }
-            "select", "update", "delete", "insert" -> {
-                currentMapper.operationId = attributes.getValue("id")
-            }
-            else -> println(qName)
-        }
-    }
-
     override fun compute(filePath: String): XmlConfig {
         val inputStream = FileInputStream(filePath)
 
@@ -60,17 +40,21 @@ class MyBatisHandler : BasedXmlHandler() {
         return this.config
     }
 
-    fun streamToSqls(inputStream: FileInputStream): List<String> {
-        var sqls = listOf<String>()
+    fun streamToSqls(inputStream: FileInputStream): MybatisEntry {
         val config = Configuration()
         config.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
         config.isShrinkWhitespacesInSql = true
 
         val parser = XPathParser(inputStream, true, config.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
+        val namespace = context.getStringAttribute("namespace")
+
         val list = context.evalNodes("select|insert|update|delete")
 
+        val entry = MybatisEntry(namespace)
+
         list.forEach {
+            val methodName = it.getStringAttribute("id")
             val xmlScriptBuilder = XMLScriptBuilder(config, it)
             val sqlSource = xmlScriptBuilder.parseScriptNode()
 
@@ -78,10 +62,10 @@ class MyBatisHandler : BasedXmlHandler() {
             val params = fakeParameters(it)
 
             val sqlString = sqlSource.getBoundSql(params).sql
-            sqls += sqlString
+            entry.methodSqlMap[methodName] = sqlString
         }
 
-        return sqls
+        return entry
     }
 
     private fun fakeParameters(node: XNode): MutableMap<String, Any> {

@@ -11,7 +11,7 @@ internal class MyBatisHandlerTest {
         val resource = this.javaClass.classLoader.getResource("mybatis/OmsOrderOperateHistoryDao.xml")!!
         val toURI = resource.toURI().toPath().toAbsolutePath()
         val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()))
-        assertEquals("INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)", sqls[0])
+        assertEquals("INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)", sqls.methodSqlMap["insertList"])
     }
 
     @Test
@@ -20,7 +20,7 @@ internal class MyBatisHandlerTest {
         val toURI = resource.toURI().toPath().toAbsolutePath()
         val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()))
 
-        assertEquals(15, sqls.size)
+        assertEquals(15, sqls.methodSqlMap.size)
     }
 
     @Test
@@ -29,6 +29,6 @@ internal class MyBatisHandlerTest {
         val toURI = resource.toURI().toPath().toAbsolutePath()
         val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()))
 
-        assertEquals(6, sqls.size)
+        assertEquals(6, sqls.methodSqlMap.size)
     }
 }
