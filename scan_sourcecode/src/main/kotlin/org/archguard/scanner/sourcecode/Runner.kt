@@ -19,6 +19,7 @@ import org.archguard.scanner.common.backend.CSharpApiAnalyser
 import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.archguard.scanner.sourcecode.database.MysqlAnalyser
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
+import org.archguard.scanner.sourcecode.xml.XmlParser
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
@@ -82,7 +83,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
 
         saveApi(dataStructs, systemId, lang)
-        saveDatabase(dataStructs, systemId, lang)
+        saveDatabaseRelations(dataStructs, systemId, lang)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -116,21 +117,27 @@ class Runner : CliktCommand(help = "scan git to sql") {
         repo.close()
     }
 
-    private fun saveDatabase(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
+    private fun saveDatabaseRelations(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
         when (language.lowercase()) {
             "java", "kotlin" -> {
                 logger.info("start analysis database api ---- ${language.lowercase()}")
 
-                val apiAnalyser = MysqlAnalyser()
+                val sqlAnalyser = MysqlAnalyser()
                 val records = dataStructs.flatMap { data ->
-                    apiAnalyser.analysisByNode(data, "")
+                    sqlAnalyser.analysisByNode(data, "")
                 }.toList()
 
+
+                val mybatisEntries = XmlParser.parseMybatis(path)
+                val relations = sqlAnalyser.convertMyBatis(mybatisEntries)
+
+                relations.addAll(records)
+
                 val repo = DatamapRepository(systemId, language, path)
-                repo.saveRelations(records)
+                repo.saveRelations(relations)
                 repo.close()
 
-                File("database.json").writeText(Json.encodeToString(records))
+                File("database.json").writeText(Json.encodeToString(relations))
             }
         }
     }

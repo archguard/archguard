@@ -7,6 +7,7 @@ import org.apache.ibatis.parsing.XPathParser
 import org.apache.ibatis.scripting.xmltags.*
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
+import org.slf4j.LoggerFactory
 import org.w3c.dom.Node
 import java.io.FileInputStream
 
@@ -16,6 +17,8 @@ class MybatisEntry(
 )
 
 class MyBatisHandler : BasedXmlHandler() {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override fun name(): String {
         return "MyBatisHandler"
     }
@@ -31,10 +34,10 @@ class MyBatisHandler : BasedXmlHandler() {
     fun compute(filePath: String): MybatisEntry {
         val inputStream = FileInputStream(filePath)
 
-        return streamToSqls(inputStream)
+        return streamToSqls(inputStream, filePath)
     }
 
-    fun streamToSqls(inputStream: FileInputStream): MybatisEntry {
+    fun streamToSqls(inputStream: FileInputStream, filePath: String): MybatisEntry {
         val config = Configuration()
         config.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
         config.isShrinkWhitespacesInSql = true
@@ -48,15 +51,20 @@ class MyBatisHandler : BasedXmlHandler() {
         val entry = MybatisEntry(namespace)
 
         list.forEach {
-            val methodName = it.getStringAttribute("id")
-            val xmlScriptBuilder = XMLScriptBuilder(config, it)
-            val sqlSource = xmlScriptBuilder.parseScriptNode()
+            try {
+                val methodName = it.getStringAttribute("id")
+                val xmlScriptBuilder = XMLScriptBuilder(config, it)
+                val sqlSource = xmlScriptBuilder.parseScriptNode()
 
-            // if is a foreach
-            val params = fakeParameters(it)
+                // if is a foreach
+                val params = fakeParameters(it)
 
-            val sqlString = sqlSource.getBoundSql(params).sql
-            entry.methodSqlMap[methodName] = sqlString
+                val sqlString = sqlSource.getBoundSql(params).sql
+                entry.methodSqlMap[methodName] = sqlString
+            } catch (e: Exception) {
+                logger.info("process: $filePath error")
+                logger.info(e.toString())
+            }
         }
 
         return entry

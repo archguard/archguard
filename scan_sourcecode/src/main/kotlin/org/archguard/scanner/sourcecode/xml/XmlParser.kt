@@ -15,7 +15,7 @@ class XmlParser(
     val handlerName: String
 ) {
 
-    fun parseMyBatis(): MybatisEntry? {
+    fun processMyBatis(): MybatisEntry? {
         when(this.handlerName) {
             "MyBatisHandler" -> {
                 val mybatis = this.contentHandler as MyBatisHandler
@@ -27,12 +27,12 @@ class XmlParser(
     }
 
     companion object {
-        fun fromPath(path: String): List<MybatisEntry> {
+        fun parseMybatis(path: String): List<MybatisEntry> {
             return File(path)
                 .walk()
                 .filter { it.extension == "xml" }
                 .mapNotNull {
-                    fromFile(it.toString())?.parseMyBatis()
+                    fromFile(it.toString())?.processMyBatis()
                 }.toList()
         }
 

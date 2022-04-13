@@ -3,6 +3,7 @@ package org.archguard.scanner.sourcecode.database
 import chapi.domain.core.CodeDataStruct
 import org.archguard.ident.mysql.MysqlIdentApp
 import org.archguard.scanner.common.database.CodeDatabaseRelation
+import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
 import org.slf4j.LoggerFactory
 
 class MysqlAnalyser {
@@ -10,7 +11,7 @@ class MysqlAnalyser {
 
     // todo: split by framework
     fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<CodeDatabaseRelation> {
-        val logs: MutableList<CodeDatabaseRelation> = mutableListOf()
+        val relations: MutableList<CodeDatabaseRelation> = mutableListOf()
         // by annotation: identify
         node.Functions.forEach { function ->
             val sqls: MutableList<String> = mutableListOf()
@@ -48,7 +49,7 @@ class MysqlAnalyser {
             }
 
             if (sqls.size > 0) {
-                logs += CodeDatabaseRelation(
+                relations += CodeDatabaseRelation(
                     packageName = node.Package,
                     className = node.NodeName,
                     functionName = function.Name,
@@ -59,8 +60,30 @@ class MysqlAnalyser {
         }
 
         // by call: identify by jdbi
+        return relations
+    }
 
-        return logs
+    fun convertMyBatis(mybatisEntries: List<MybatisEntry>): MutableList<CodeDatabaseRelation> {
+        val relations: MutableList<CodeDatabaseRelation> = mutableListOf()
+        mybatisEntries.forEach { entry ->
+            val splits = entry.namespace.split(".")
+            val className = splits.last()
+            splits.dropLast(1)
+            val packageName = splits.joinToString(".")
+
+            entry.methodSqlMap.forEach {
+                val tables = MysqlIdentApp.analysis(it.value)?.tableNames
+                relations += CodeDatabaseRelation(
+                    packageName = packageName,
+                    className = className,
+                    functionName = it.key,
+                    tables = tables?.toList() ?: listOf(),
+                    sqls = listOf(it.value)
+                )
+            }
+        }
+
+        return relations
     }
 
     fun sqlify(value: String): String {
