@@ -1,8 +1,52 @@
-# [](https://github.com/archguard/scanner/compare/v1.4.4...v) (2022-04-10)
+# [](https://github.com/archguard/scanner/compare/v1.5.0...v) (2022-04-13)
 
 
 
-## [1.4.4](https://github.com/archguard/scanner/compare/v1.4.3...v1.4.4) (2022-04-10)
+# [1.5.0](https://github.com/archguard/scanner/compare/v1.4.5...v1.5.0) (2022-04-13)
+
+
+### Bug Fixes
+
+* **db:** fix insert statement issue ([067bef9](https://github.com/archguard/scanner/commit/067bef969a5e76fbd3f3245ddacf37fbddd77e6e))
+* **diff:** fix scanner issues ([f471e20](https://github.com/archguard/scanner/commit/f471e20f2b22f50d9cc35d17ffc33e1ffa19719f))
+* **mybatis:** fix test archguard/archguard# ([118eb97](https://github.com/archguard/scanner/commit/118eb973fb721a1726bf51706ecb7fc554d03b88))
+* **mybatis:** parse collection from attributes archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([181b378](https://github.com/archguard/scanner/commit/181b3782ca98f390c1ae6da4ce1b337d7289e81d))
+* remove unused code ([a08cf79](https://github.com/archguard/scanner/commit/a08cf793f5bb43cdab187188d43608750005a436))
+
+
+### Features
+
+* **api:** add old spring mvc annotation sample ([d519dcd](https://github.com/archguard/scanner/commit/d519dcd9f4e37733929bb3a447dd11e9a2fa357a))
+* **database:** add tablename downgrap support ([4d9d897](https://github.com/archguard/scanner/commit/4d9d8971dbef408bb92013af664fa78821b0d905))
+* **diff:** add short check for revision id ([d3368f4](https://github.com/archguard/scanner/commit/d3368f4e487592ab914763c33f1ac36d22707eed))
+* **git:** enable logs for debug ([0eed4ea](https://github.com/archguard/scanner/commit/0eed4ea3fe58f540cf8b0b025da45574ebc89f45))
+* **linter:** init source casing checker ([5f19111](https://github.com/archguard/scanner/commit/5f19111845e34cce15ce41485a9c490f48b66ba3))
+* **mybatis:** add baisc node handler [#9](https://github.com/archguard/scanner/issues/9) ([62b597a](https://github.com/archguard/scanner/commit/62b597ad585f3b4d57d72ed165ed5cc833174186))
+* **mybatis:** add from path support archguard/archguard# ([214f434](https://github.com/archguard/scanner/commit/214f43499ad883008ce7c1094446bc0aa6d8061e))
+* **mybatis:** add mybatis for try generate sql ([f09134a](https://github.com/archguard/scanner/commit/f09134a591aaa3cc559f04bb50f9257453fdea3d))
+* **mybatis:** add selectkey support archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([d494ae2](https://github.com/archguard/scanner/commit/d494ae2caf5506a652f325966d407d01d2046c76))
+* **mybatis:** change output to map archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([8e79200](https://github.com/archguard/scanner/commit/8e79200dd7338fa43d6e0846c03e7ea60fcf1d32))
+* **mybatis:** clean code archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([cf67c98](https://github.com/archguard/scanner/commit/cf67c98fa80c84d373857c069d1f31e2e1dcaa18))
+* **mybatis:** enable base parameters for common sql archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([5c583a9](https://github.com/archguard/scanner/commit/5c583a979b4934b8cdaf5dd5c67889331d200b31))
+* **mybatis:** enable process in db archguard/archguard# ([cb2124f](https://github.com/archguard/scanner/commit/cb2124fe42894818f5bee870bdb73dc8a9d92520))
+* **mybatis:** ignore apply for catch issues for archguard[#9](https://github.com/archguard/scanner/issues/9) ([666491c](https://github.com/archguard/scanner/commit/666491ccf69bf834550d25c210bdcd9150e9d448))
+* **mybatis:** re add fake parameters archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([5203cb2](https://github.com/archguard/scanner/commit/5203cb23f6c3ad15485e0e8daf53eba027e67a97))
+* **mybatis:** skip generator for key  archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([8fdf711](https://github.com/archguard/scanner/commit/8fdf7112ccdab8f242aad9dcd579246403f75ea1))
+* **mybatis:** support for collection archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([4cec7dc](https://github.com/archguard/scanner/commit/4cec7dca349dc35513a88369e48ad37da6e33223))
+* **mybatis:** support for includes archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([160fd19](https://github.com/archguard/scanner/commit/160fd19fc2537bc2fd1dd2917d1668ae3671a75c))
+* **mybatis:** test for ognl to parse but not works ([3328b22](https://github.com/archguard/scanner/commit/3328b2239d6a12c0124f8153309bb5f9764b75d0))
+* **mybatis:** try parse condition from ognl ([025b6ee](https://github.com/archguard/scanner/commit/025b6ee4d22125481db8b1fe2c9f5d4ca2f1e99b))
+* **mybatis:** try parse mybatis code & and crud to key ([c19122c](https://github.com/archguard/scanner/commit/c19122cc47d2537f7e9efb20c06cf87f163a5a90))
+* **mybatis:** try parse parmeter for archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([540a725](https://github.com/archguard/scanner/commit/540a725f7e307adff693a543f70bd00094f02b64))
+* **mybatis:** try to parse by iterations archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([e17a09d](https://github.com/archguard/scanner/commit/e17a09d0b7520dd291f8f97f3d2830a349b75989))
+* **mybatis:** try write rootNode builder ([969eda7](https://github.com/archguard/scanner/commit/969eda74dda92cb4b937177522086ec19402cd59))
+* **mybatis:** use official test caes archguard/archguard[#9](https://github.com/archguard/scanner/issues/9) ([02f8b04](https://github.com/archguard/scanner/commit/02f8b04eeb5997d9a12daf19d96996ff80a67bb4))
+* **xml:** init basic design for xml parser ([099552d](https://github.com/archguard/scanner/commit/099552d5d6934bd89889d80b5fe62b7b104f1487))
+* **xml:** init parser start element sample for mybatis ([8a281b5](https://github.com/archguard/scanner/commit/8a281b5b3c2f907a6654ae10018f3ffb7b38c60d))
+
+
+
+## [1.4.5](https://github.com/archguard/scanner/compare/v1.4.4...v1.4.5) (2022-04-10)
 
 
 ### Bug Fixes
@@ -11,6 +55,7 @@
 * fix loc lost in third parth library ([a1f93f5](https://github.com/archguard/scanner/commit/a1f93f591bb73919e7a5075acdb97485c2bc12a1))
 * fix refactor issues ([2f1c395](https://github.com/archguard/scanner/commit/2f1c39541224e2752ef590cc782d217f76b380b6))
 * fix seriable issue ([a18122a](https://github.com/archguard/scanner/commit/a18122a64c98f03b8209f85fad1386f2731ad596))
+* fix typo ([1ed21f4](https://github.com/archguard/scanner/commit/1ed21f4ac35bdeaa17b802b59a8fe1070856479d))
 * fix typo ([377b7e7](https://github.com/archguard/scanner/commit/377b7e7fe945184f78f2f953e83fecf832989930))
 * fix typos ([3e9b6cd](https://github.com/archguard/scanner/commit/3e9b6cd56acf36f5e20008cdda0d879814857b1b))
 * fix windows import issues ([a1cbe35](https://github.com/archguard/scanner/commit/a1cbe35bd78b4e2657ec9df1731084d289fcca9b))
