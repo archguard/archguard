@@ -1,10 +1,12 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
+import org.apache.ibatis.builder.MapperBuilderAssistant
+import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
-import org.apache.ibatis.scripting.xmltags.*
+import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.slf4j.LoggerFactory
@@ -37,14 +39,30 @@ class MyBatisHandler : BasedXmlHandler() {
         return streamToSqls(inputStream, filePath)
     }
 
-    fun streamToSqls(inputStream: FileInputStream, filePath: String): MybatisEntry {
-        val config = Configuration()
-        config.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
-        config.isShrinkWhitespacesInSql = true
+    fun streamToSqls(inputStream: FileInputStream, resource: String): MybatisEntry {
+        val configuration = Configuration()
+        configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
+        configuration.isShrinkWhitespacesInSql = true
+//
+//        val builder = XMLMapperBuilder(inputStream, configuration, resource, configuration.sqlFragments)
+//        builder.parse()
+//        inputStream.close()
 
-        val parser = XPathParser(inputStream, true, config.variables, XMLMapperEntityResolver())
+        val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
         val namespace = context.getStringAttribute("namespace")
+
+
+        // alias to configurationElement
+        val builderAssistant = MapperBuilderAssistant(configuration, resource)
+
+        // todo: add sql element
+        val sqlNodes = context.evalNodes("/mapper/sql")
+        sqlNodes.forEach {
+            var id = it.getStringAttribute("id")
+            id = builderAssistant.applyCurrentNamespace(id, false)
+            configuration.sqlFragments[id] = it
+        }
 
         val list = context.evalNodes("select|insert|update|delete")
 
@@ -53,7 +71,11 @@ class MyBatisHandler : BasedXmlHandler() {
         list.forEach {
             try {
                 val methodName = it.getStringAttribute("id")
-                val xmlScriptBuilder = XMLScriptBuilder(config, it)
+                // Include Fragments before parsing
+                val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
+                includeParser.applyIncludes(it.node)
+
+                val xmlScriptBuilder = XMLScriptBuilder(configuration, it)
                 val sqlSource = xmlScriptBuilder.parseScriptNode()
 
                 // if is a foreach
@@ -62,7 +84,7 @@ class MyBatisHandler : BasedXmlHandler() {
                 val sqlString = sqlSource.getBoundSql(params).sql
                 entry.methodSqlMap[methodName] = sqlString
             } catch (e: Exception) {
-                logger.info("process: $filePath error")
+                logger.info("process: $resource error")
                 logger.info(e.toString())
             }
         }
