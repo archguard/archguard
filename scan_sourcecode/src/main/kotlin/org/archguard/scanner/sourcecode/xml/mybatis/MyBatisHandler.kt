@@ -1,6 +1,7 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
 import org.apache.ibatis.builder.MapperBuilderAssistant
+import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
@@ -8,6 +9,8 @@ import org.apache.ibatis.ognl.ComparisonExpression
 import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
+import org.apache.ibatis.scripting.xmltags.DynamicContext
+import org.apache.ibatis.scripting.xmltags.MixedSqlNode
 import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
@@ -19,6 +22,12 @@ class MybatisEntry(
     var namespace: String = "",
     var methodSqlMap: MutableMap<String, String> = mutableMapOf()
 )
+
+class SimpleScriptBuilder(configuration: Configuration, val context: XNode) : XMLScriptBuilder(configuration, context) {
+    fun getNode(): MixedSqlNode? {
+        return parseDynamicTags(context)
+    }
+}
 
 class MyBatisHandler : BasedXmlHandler() {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -77,15 +86,23 @@ class MyBatisHandler : BasedXmlHandler() {
                 // Include Fragments before parsing
                 val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
                 includeParser.applyIncludes(it.node)
-
-                val xmlScriptBuilder = XMLScriptBuilder(configuration, it)
-                val sqlSource = xmlScriptBuilder.parseScriptNode()
-
-                // if is a foreach
                 val params = basedParameters + fakeParameters(it)
 
-                val sqlString = sqlSource.getBoundSql(params).sql
-                entry.methodSqlMap[methodName] = sqlString
+//                val xmlScriptBuilder = XMLScriptBuilder(configuration, it)
+//                val sqlSource = xmlScriptBuilder.parseScriptNode()
+
+                // if is a foreach
+//                val sqlString = sqlSource.getBoundSql(params).sql
+
+                val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
+
+                val dynamicContext = DynamicContext(configuration, params)
+                rootNode.apply(dynamicContext)
+                val sqlSourceParser = SqlSourceBuilder(configuration)
+                val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
+                val boundSql = sqlSource2.getBoundSql(params)
+
+                entry.methodSqlMap[methodName] = boundSql.sql
             } catch (e: Exception) {
                 logger.info("process: $resource error")
                 logger.info(e.toString())
@@ -105,6 +122,7 @@ class MyBatisHandler : BasedXmlHandler() {
             } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
 //                val data = child.getStringBody("")
                 when (child.node.nodeName) {
+                    "trim",
                     "where" -> {
                         params += fakeParameters(child)
                     }
