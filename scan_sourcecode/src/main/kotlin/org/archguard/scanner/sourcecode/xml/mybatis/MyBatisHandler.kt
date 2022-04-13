@@ -1,8 +1,6 @@
 package org.archguard.scanner.sourcecode.xml.mybatis
 
-import org.apache.ibatis.builder.BuilderException
 import org.apache.ibatis.builder.ParameterExpression
-import org.apache.ibatis.builder.SqlSourceBuilder
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.mapping.ResultSetType
 import org.apache.ibatis.parsing.GenericTokenParser
@@ -86,22 +84,17 @@ class MyBatisHandler : BasedXmlHandler() {
 
         list.forEach {
             val xmlScriptBuilder = XMLScriptBuilder(config, it)
+            val sql = xmlScriptBuilder.parseScriptNode()
+
+            // if is a foreacth
+            val params: MutableMap<String, Any> = mutableMapOf()
+            val items = mutableListOf<String>()
+            items += "demo"
+            params["list"] = items
+
+            println(sql.getBoundSql(params).sql)
 
             val nodes = parseDynamicTags(it)
-//            nodes.forEach { node ->
-//                val simpleName = node.javaClass.simpleName
-//                println(simpleName)
-//                when (simpleName) {
-//                    "TextSqlNode" -> {
-//                        val textSqlNode = node as TextSqlNode
-//                        println(textSqlNode)
-//                    }
-//                    "StaticTextSqlNode" -> {
-//                        val textSqlNode = node as StaticTextSqlNode
-//                        println(textSqlNode)
-//                    }
-//                }
-//            }
         }
 
         return this.config
@@ -129,14 +122,7 @@ class MyBatisHandler : BasedXmlHandler() {
                     "where" -> {}
                     "set" -> {}
                     "foreach" -> {
-                        val foreachNode = parseDynamicTags(child)
-                        foreachNode[0]
-//                        println(toSql(data))
-
-                        val propertiesMap: Map<String, String> = ParameterExpression(data)
-                        propertiesMap.forEach {
-                            println("${it.key}: ${it.value}")
-                        }
+                        parseDynamicTags(child)
                     }
                     "if" -> {}
                     "choose" -> {}
@@ -149,31 +135,5 @@ class MyBatisHandler : BasedXmlHandler() {
         }
 
         return contents
-    }
-
-    private val itemIndex: String = ""
-    private val index = 0
-    fun toSql(sql: String): String? {
-        var item = ""
-        val parser = GenericTokenParser("#{", "}") { content: String ->
-            var newContent = content.replaceFirst(
-                "^\\s*$item(?![^.,:\\s])".toRegex(),
-                itemizeItem(item, index)
-            )
-            if (itemIndex != null && newContent == content) {
-                newContent = content.replaceFirst(
-                    "^\\s*$itemIndex(?![^.,:\\s])".toRegex(),
-                    itemizeItem(itemIndex, index)
-                )
-            }
-            "#{$newContent}"
-        }
-
-        return parser.parse(sql)
-    }
-
-
-    private fun itemizeItem(item: String, i: Int): String {
-        return ForEachSqlNode.ITEM_PREFIX + item + "_" + i
     }
 }

@@ -24,4 +24,9 @@ internal class MyBatisHandlerTest {
         val parameterExpression = ParameterExpression("item.createTime,jdbcType=TIMESTAMP")
         assertEquals(2, parameterExpression.size)
     }
+
+    @Test
+    internal fun dynamic_sql_source() {
+
+    }
 }
