@@ -17,8 +17,8 @@ class GitScannerTool(
 ) : GitReport {
 
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.4.3"
-    private val version = "1.4.3"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.5.0"
+    private val version = "1.5.0"
     private val SCAN_GIT_JAR = "scan_git-$version-all.jar"
 
     override fun getGitReport(): File? {

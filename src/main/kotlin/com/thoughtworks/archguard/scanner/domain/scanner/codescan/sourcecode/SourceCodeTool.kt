@@ -16,8 +16,8 @@ class SourceCodeTool(
     val logStream: StreamConsumer
 ) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.4.5"
-    private val version = "1.4.5"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.5.0"
+    private val version = "1.5.0"
     private val SCAN_SOURCECODE_JAR = "scan_sourcecode-$version-all.jar"
 
     fun analyse() {
