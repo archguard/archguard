@@ -55,20 +55,16 @@ class MyBatisHandler : BasedXmlHandler() {
     }
 
     fun streamToSqls(inputStream: FileInputStream, resource: String): MybatisEntry {
-        val configuration = Configuration()
-        configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
-        configuration.isShrinkWhitespacesInSql = true
+        val configuration = createConfiguration()
 
         val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
         val namespace = context.getStringAttribute("namespace")
 
-        // alias to configurationElement
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
-
-        // parse inside sql element
         val basedParameters: MutableMap<String, Any> = mutableMapOf()
 
+        // create inside <sql> for inline
         val sqlNodes = context.evalNodes("/mapper/sql")
         sqlNodes.forEach {
             basedParameters += fakeParameters(it)
@@ -77,15 +73,11 @@ class MyBatisHandler : BasedXmlHandler() {
             configuration.sqlFragments[id] = it
         }
 
-        val list = context.evalNodes("select|insert|update|delete")
-
-        // todo: check raw language is need ?
-        // val lang = context.getStringAttribute("lang")
-
+        val crudList = context.evalNodes("select|insert|update|delete")
         val langDriver: LanguageDriver = XMLLanguageDriver()
 
         val entry = MybatisEntry(namespace)
-        list.forEach {
+        crudList.forEach {
             val methodName = it.getStringAttribute("id")
             // 1. enable include
             val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
@@ -107,7 +99,8 @@ class MyBatisHandler : BasedXmlHandler() {
             // 3. get rootNode to do some simple calculate
             val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
             val dynamicContext = DynamicContext(configuration, params)
-            // everyNode parse in here
+
+            // every node apply in here
             try {
                 rootNode.apply(dynamicContext)
             } catch (e: Exception) {
@@ -123,6 +116,13 @@ class MyBatisHandler : BasedXmlHandler() {
         }
 
         return entry
+    }
+
+    private fun createConfiguration(): Configuration {
+        val configuration = Configuration()
+        configuration.defaultResultSetType = ResultSetType.SCROLL_INSENSITIVE
+        configuration.isShrinkWhitespacesInSql = true
+        return configuration
     }
 
     private fun parseSelectKeyNode(
@@ -192,12 +192,7 @@ class MyBatisHandler : BasedXmlHandler() {
                         val items = mutableListOf(Any())
 
                         when (parseExpression.javaClass.simpleName) {
-                            "ASTEq",
-                            "ASTGreater",
-                            "ASTGreaterEq",
-                            "ASTLess",
-                            "ASTLessEq",
-                            "ASTNotEq" -> {
+                            "ASTEq", "ASTGreater", "ASTGreaterEq", "ASTLess", "ASTLessEq", "ASTNotEq" -> {
                                 val ast = parseExpression as ComparisonExpression
                                 for (i in 0 until ast.jjtGetNumChildren()) {
                                     val jjtGetChild = ast.jjtGetChild(i).toString()
