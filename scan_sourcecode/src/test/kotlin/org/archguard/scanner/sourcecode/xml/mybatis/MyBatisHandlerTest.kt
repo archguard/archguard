@@ -36,7 +36,7 @@ internal class MyBatisHandlerTest {
     internal fun include_in_mapper() {
         val resource = this.javaClass.classLoader.getResource("mybatis/PmsBrandMapper.xml")!!
         val toURI = resource.toURI().toPath().toAbsolutePath()
-        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), "mybatis/PmsBrandMapper.xml")
+        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), toURI.toString())
 
         assertEquals(5, sqls.methodSqlMap.size)
     }

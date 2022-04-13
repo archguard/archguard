@@ -3,9 +3,11 @@ package org.archguard.scanner.sourcecode.xml.mybatis
 import org.apache.ibatis.builder.MapperBuilderAssistant
 import org.apache.ibatis.builder.xml.XMLIncludeTransformer
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
+import org.apache.ibatis.mapping.ParameterMap
 import org.apache.ibatis.mapping.ResultSetType
 import org.apache.ibatis.parsing.XNode
 import org.apache.ibatis.parsing.XPathParser
+import org.apache.ibatis.scripting.xmltags.ExpressionEvaluator
 import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
@@ -101,23 +103,32 @@ class MyBatisHandler : BasedXmlHandler() {
             } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
 //                val data = child.getStringBody("")
                 when (child.node.nodeName) {
-                    "trim" -> {}
-                    "where" -> {}
-                    "set" -> {}
+                    "where" -> {
+                        params += fakeParameters(child)
+                    }
+                    "set" -> {
+                        params += fakeParameters(child)
+                    }
                     "foreach" -> {
                         val collection = child.getStringAttribute("collection") ?: "list"
                         val collectionItem = child.getStringAttribute("item") ?: "list"
-                        val items = mutableListOf<String>()
-                        items += "placeholder"
+                        val items = mutableListOf("placeholder")
+
+                        if (collection.contains(".")) {
+                            // todo: check need to support for multiple parents if exists
+                            val parent = collection.split(".")[0]
+                            params[parent] = items
+                        }
 
                         params[collection] = items
                         params[collectionItem] = items
                     }
-                    "if" -> {}
-                    "choose" -> {}
-                    "when" -> {}
-                    "otherwise" -> {}
-                    "bind" -> {}
+                    "if" -> {
+                        val condition = child.getStringAttribute("test")
+                    }
+                    else -> {
+                        println("Mybatis - need to support: ${child.node.nodeName}")
+                    }
                 }
 
             }
