@@ -84,9 +84,10 @@ class MyBatisHandler : BasedXmlHandler() {
                     "where" -> {}
                     "set" -> {}
                     "foreach" -> {
+                        val stringAttribute = child.getStringAttribute("collection")?: "list"
                         val items = mutableListOf<String>()
                         items += "placeholder"
-                        params["list"] = items
+                        params[stringAttribute] = items
                     }
                     "if" -> {}
                     "choose" -> {}
