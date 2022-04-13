@@ -23,4 +23,8 @@ class HandlerDispatcher: DefaultHandler2() {
 
         return null
     }
+
+    fun handlerName(): String {
+        return this.handlerName
+    }
 }

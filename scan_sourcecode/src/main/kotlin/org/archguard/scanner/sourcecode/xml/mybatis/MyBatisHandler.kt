@@ -7,7 +7,6 @@ import org.apache.ibatis.parsing.XPathParser
 import org.apache.ibatis.scripting.xmltags.*
 import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
-import org.archguard.scanner.sourcecode.xml.XmlConfig
 import org.w3c.dom.Node
 import java.io.FileInputStream
 
@@ -17,9 +16,6 @@ class MybatisEntry(
 )
 
 class MyBatisHandler : BasedXmlHandler() {
-    private val config: MyBatisXmlConfig = MyBatisXmlConfig()
-    private val currentMapper: MybatisEntry = MybatisEntry()
-
     override fun name(): String {
         return "MyBatisHandler"
     }
@@ -32,12 +28,10 @@ class MyBatisHandler : BasedXmlHandler() {
         return false
     }
 
-    override fun compute(filePath: String): XmlConfig {
+    fun compute(filePath: String): MybatisEntry {
         val inputStream = FileInputStream(filePath)
 
-        streamToSqls(inputStream)
-
-        return this.config
+        return streamToSqls(inputStream)
     }
 
     fun streamToSqls(inputStream: FileInputStream): MybatisEntry {

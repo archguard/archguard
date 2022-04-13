@@ -1,12 +1,32 @@
 package org.archguard.scanner.sourcecode.xml
 
+import org.archguard.scanner.sourcecode.xml.mybatis.MyBatisHandler
+import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
 import org.xml.sax.SAXException
+import org.xml.sax.XMLReader
 import java.io.File
 import java.nio.file.Path
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.parsers.SAXParserFactory
 
-class XmlParser {
+class XmlParser(
+    val xmlReader: XMLReader,
+    val contentHandler: BasedXmlHandler,
+    val filePath: String,
+    val handlerName: String
+) {
+
+    fun parseMyBatis(): MybatisEntry? {
+        when(this.handlerName) {
+            "MyBatisHandler" -> {
+                val mybatis = this.contentHandler as MyBatisHandler
+                return mybatis.compute(filePath)
+            }
+        }
+
+        return null
+    }
+
     companion object {
         @Throws(ParserConfigurationException::class, SAXException::class)
         fun fromPath(file: Path): XmlParser? {
@@ -27,9 +47,7 @@ class XmlParser {
             xmlReader.contentHandler = contentHandler
             xmlReader.parse(filePath)
 
-            contentHandler.compute(filePath)
-
-            return XmlParser()
+            return XmlParser(xmlReader, contentHandler, filePath, dispatcher.handlerName())
         }
     }
 }
