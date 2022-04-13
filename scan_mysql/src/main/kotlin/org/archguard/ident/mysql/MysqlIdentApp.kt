@@ -2,13 +2,14 @@ package org.archguard.ident.mysql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statement
-import net.sf.jsqlparser.statement.select.Select
 import net.sf.jsqlparser.util.TablesNamesFinder
 import org.archguard.ident.mysql.model.SimpleRelation
 import org.slf4j.LoggerFactory
 
 object MysqlIdentApp {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private val UPDATE_SQL = "update\\s+([a-zA-Z_]+)".toRegex()
 
     fun analysis(sql: String): SimpleRelation? {
         val table = SimpleRelation()
@@ -26,8 +27,14 @@ object MysqlIdentApp {
                 tableName
             }
         } catch (e: Exception) {
-            logger.warn(e.toString())
-            logger.info(sql)
+            // try used regex to match for CRUD by tables
+            if (UPDATE_SQL.find(sql) != null) {
+                val tableName = UPDATE_SQL.find(sql)!!.groups[1]!!.value
+                table.tableNames = arrayListOf(tableName)
+                return table
+            }
+
+            logger.info("analysis failure for sql: $sql")
             return null
         }
 

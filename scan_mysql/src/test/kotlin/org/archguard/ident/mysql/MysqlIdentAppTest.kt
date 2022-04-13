@@ -59,4 +59,12 @@ internal class MysqlIdentAppTest {
 
         assertEquals("oms_order_operate_history", relation!!.tableNames.joinToString(","))
     }
+
+    @Test
+    internal fun handle_for_update_with_tabel_name() {
+        val code = "update sms_coupon_product_category_relation"
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("sms_coupon_product_category_relation", relation!!.tableNames.joinToString(","))
+    }
 }
