@@ -64,9 +64,7 @@ class MyBatisHandler : BasedXmlHandler() {
 
         // todo: add sql element
         val sqlNodes = context.evalNodes("/mapper/sql")
-        val basedParameters: MutableMap<String, Any> = mutableMapOf()
         sqlNodes.forEach {
-            basedParameters += fakeParameters(it)
             var id = it.getStringAttribute("id")
             id = builderAssistant.applyCurrentNamespace(id, false)
             configuration.sqlFragments[id] = it
@@ -75,20 +73,16 @@ class MyBatisHandler : BasedXmlHandler() {
         val list = context.evalNodes("select|insert|update|delete")
 
         val entry = MybatisEntry(namespace)
-
         list.forEach {
             try {
                 val methodName = it.getStringAttribute("id")
-                // enable include
+                // 1. enable include
                 val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
                 includeParser.applyIncludes(it.node)
 
-                // create based parameters with sql ref id
-                val params = basedParameters + fakeParameters(it)
-
-                // get root Node
+                val params: MutableMap<String, Any> = mutableMapOf()
+                // 2. get rootNode to do some simple calculate
                 val rootNode: MixedSqlNode = SimpleScriptBuilder(configuration, it).getNode()!!
-
                 val dynamicContext = DynamicContext(configuration, params)
                 // everyNode parse in here
                 try {
@@ -97,6 +91,8 @@ class MyBatisHandler : BasedXmlHandler() {
                     // todo: check
 //                    logger.info(e.toString())
                 }
+
+                // 3. convert to source. it will replace all parameters => ?
                 val sqlSourceParser = SqlSourceBuilder(configuration)
                 val sqlSource2 = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
                 val boundSql = sqlSource2.getBoundSql(params)
@@ -109,76 +105,5 @@ class MyBatisHandler : BasedXmlHandler() {
         }
 
         return entry
-    }
-
-    private fun fakeParameters(node: XNode): MutableMap<String, Any> {
-        val params: MutableMap<String, Any> = mutableMapOf()
-        val children = node.node.childNodes
-        for (i in 0 until children.length) {
-            val child = node.newXNode(children.item(i))
-            if (child.node.nodeType == Node.CDATA_SECTION_NODE || child.node.nodeType == Node.TEXT_NODE) {
-//                val data = child.getStringBody("")
-            } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
-//                val data = child.getStringBody("")
-                when (child.node.nodeName) {
-                    "trim",
-                    "where" -> {
-                        params += fakeParameters(child)
-                    }
-                    "set" -> {
-                        params += fakeParameters(child)
-                    }
-                    "foreach" -> {
-                        val collection = child.getStringAttribute("collection") ?: "list"
-                        val collectionItem = child.getStringAttribute("item") ?: "list"
-                        val items = mutableListOf(Any())
-
-                        if (collection.contains(".")) {
-                            // todo: check need to support for multiple parents if exists
-                            val parent = collection.split(".")[0]
-                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
-                        }
-
-                        params[collection] = items
-                        params[collectionItem] = items
-                    }
-                    "if" -> {
-                        val condition = child.getStringAttribute("test")
-                        val parseExpression = Ognl.parseExpression(condition)
-                        val items = mutableListOf(Any())
-
-                        when (parseExpression.javaClass.simpleName) {
-                            "ASTEq",
-                            "ASTGreater",
-                            "ASTGreaterEq",
-                            "ASTLess",
-                            "ASTLessEq",
-                            "ASTNotEq" -> {
-                                val ast = parseExpression as ComparisonExpression
-                                for (i in 0 until ast.jjtGetNumChildren()) {
-                                    val jjtGetChild = ast.jjtGetChild(i).toString()
-                                    if (jjtGetChild != "null") {
-                                        if (jjtGetChild.contains(".")) {
-                                            // todo: check need to support for multiple parents if exists
-                                            val split = jjtGetChild.split(".")
-                                            val parent = split[0]
-                                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
-                                        }
-
-                                        params[jjtGetChild] = items
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else -> {
-                        println("Mybatis - need to support: ${child.node.nodeName}")
-                    }
-                }
-
-            }
-        }
-
-        return params
     }
 }
