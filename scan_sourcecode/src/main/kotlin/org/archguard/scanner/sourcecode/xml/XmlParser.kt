@@ -5,7 +5,6 @@ import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
 import org.xml.sax.SAXException
 import org.xml.sax.XMLReader
 import java.io.File
-import java.nio.file.Path
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.parsers.SAXParserFactory
 
@@ -28,9 +27,17 @@ class XmlParser(
     }
 
     companion object {
+        fun fromPath(path: String): List<MybatisEntry> {
+            return File(path)
+                .walk()
+                .filter { it.extension == "xml" }
+                .mapNotNull {
+                    fromFile(it.toString())?.parseMyBatis()
+                }.toList()
+        }
+
         @Throws(ParserConfigurationException::class, SAXException::class)
-        fun fromPath(file: Path): XmlParser? {
-            val filePath = file.toString()
+        fun fromFile(filePath: String): XmlParser? {
             val inputSource = File(filePath)
             val parser = SAXParserFactory.newInstance().newSAXParser()
 
