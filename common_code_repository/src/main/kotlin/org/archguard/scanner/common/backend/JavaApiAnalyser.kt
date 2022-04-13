@@ -11,7 +11,7 @@ class JavaApiAnalyser {
     var resources: List<ContainerResource> = listOf()
 
     fun analysisByNode(node: CodeDataStruct, _workspace: String) {
-        val routeAnnotation = node.filterAnnotations("RestController", "RequestMapping")
+        val routeAnnotation = node.filterAnnotations("RestController", "Controller", "RequestMapping")
         if (routeAnnotation.isNotEmpty()) {
             var baseUrl = ""
             val mappingAnnotation = node.filterAnnotations("RequestMapping")
@@ -80,6 +80,7 @@ class JavaApiAnalyser {
                 "PostMapping" -> httpMethod = "Post"
                 "DeleteMapping" -> httpMethod = "Delete"
                 "PutMapping" -> httpMethod = "Put"
+                "PatchMapping" -> httpMethod = "Patch"
                 else -> isHttpAnnotation = false
             }
 
@@ -92,6 +93,29 @@ class JavaApiAnalyser {
                     route = "$baseUrl$pureUrl"
                 } else {
                     route = pureUrl
+                }
+            }
+
+            // todo: split by class
+            // case 2
+            if (annotation.Name == "RequestMapping") {
+                val optUrl = annotation.KeyValues.filter { it.Key == "value" }
+                val optMethod = annotation.KeyValues.filter { it.Key == "method" }
+                if (optUrl.isNotEmpty() && optMethod.isNotEmpty()) {
+                    when (optMethod[0].Value) {
+                        "RequestMethod.GET", "GET" -> httpMethod = "Get"
+                        "RequestMethod.POST", "POST" -> httpMethod = "Post"
+                        "RequestMethod.DELETE", "DELETE" -> httpMethod = "Delete"
+                        "RequestMethod.PUT", "PUT" -> httpMethod = "Put"
+                        "RequestMethod.PATCH", "PATCH" -> httpMethod = "Patch"
+                    }
+
+                    val pureUrl = optUrl[0].Value.removePrefix("\"").removeSuffix("\"")
+                    if (baseUrl.isNotEmpty()) {
+                        route = "$baseUrl$pureUrl"
+                    } else {
+                        route = pureUrl
+                    }
                 }
             }
         }

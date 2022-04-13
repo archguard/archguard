@@ -67,6 +67,24 @@ internal class JavaApiAnalyserTest {
     }
 
     @Test
+    fun url_method_in_annotation() {
+        val resource = this.javaClass.classLoader.getResource("frameworks/spring/DemoController.java")!!
+        val path = Paths.get(resource.toURI()).toFile().absolutePath
+
+        val nodes = JavaAnalyserApp().analysisNodeByPath(path)
+        val javaApiAnalyser = JavaApiAnalyser()
+        nodes.forEach {
+            javaApiAnalyser.analysisByNode(it, "")
+        }
+
+        val services = javaApiAnalyser.toContainerServices()
+        val resources = services[0].resources
+        assertEquals(1, resources.size)
+        assertEquals("/brand/listAll", resources[0].sourceUrl)
+        assertEquals("Get", resources[0].sourceHttpMethod)
+    }
+
+    @Test
     fun identRestTemplateCall() {
         val resource = this.javaClass.classLoader.getResource("kotlin/")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
