@@ -16,6 +16,6 @@ internal class XmlParserTest {
     internal fun parser_from_path() {
         val resource = this.javaClass.classLoader.getResource("mybatis")!!
         val entries = XmlParser.parseMybatis(resource.toURI().toPath().toString())
-        assertEquals(3, entries.size)
+        assert(entries.size > 3)
     }
 }
