@@ -1,0 +1,1 @@
+alter table scm_commit_log change column committer_email committer_email varchar(255);
