@@ -30,7 +30,7 @@ class XmlParser(
         fun parseMybatis(path: String): List<MybatisEntry> {
             return File(path)
                 .walk()
-                .filter { it.extension == "xml" }
+                .filter { it.isFile && it.extension == "xml" }
                 .mapNotNull {
                     fromFile(it.toString())?.processMyBatis()
                 }.toList()
