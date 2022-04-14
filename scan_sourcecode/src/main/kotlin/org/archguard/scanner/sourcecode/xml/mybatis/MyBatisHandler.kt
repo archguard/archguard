@@ -168,9 +168,9 @@ class MyBatisHandler : BasedXmlHandler() {
             NoKeyGenerator.INSTANCE, keyProperty, keyColumn, databaseId, langDriver, null
         )
 
-        val id = builderAssistant.applyCurrentNamespace(id, false)
-        val keyStatement: MappedStatement = configuration.getMappedStatement(id, false)
-        configuration.addKeyGenerator(id, SelectKeyGenerator(keyStatement, executeBefore))
+        val idWithNamespace = builderAssistant.applyCurrentNamespace(id, false)
+        val keyStatement: MappedStatement = configuration.getMappedStatement(idWithNamespace, false)
+        configuration.addKeyGenerator(idWithNamespace, SelectKeyGenerator(keyStatement, executeBefore))
     }
 
 
@@ -181,8 +181,7 @@ class MyBatisHandler : BasedXmlHandler() {
             val child = node.newXNode(children.item(i))
             if (child.node.nodeType == Node.CDATA_SECTION_NODE || child.node.nodeType == Node.TEXT_NODE) {
 //                val data = child.getStringBody("")
-            } else if (child.node.nodeType == Node.ELEMENT_NODE) { // issue #628
-//                val data = child.getStringBody("")
+            } else if (child.node.nodeType == Node.ELEMENT_NODE) {
                 when (child.node.nodeName) {
                     "trim",
                     "where" -> {
@@ -192,42 +191,10 @@ class MyBatisHandler : BasedXmlHandler() {
                         params += fakeParameters(child)
                     }
                     "foreach" -> {
-                        val collection = child.getStringAttribute("collection") ?: "list"
-                        val collectionItem = child.getStringAttribute("item") ?: "list"
-                        val items = mutableListOf(Any())
-
-                        if (collection.contains(".")) {
-                            // todo: check need to support for multiple parents if exists
-                            val parent = collection.split(".")[0]
-                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
-                        }
-
-                        params[collection] = items
-                        params[collectionItem] = items
+                        processForeachParams(child, params)
                     }
                     "if" -> {
-                        val condition = child.getStringAttribute("test")
-                        val parseExpression = Ognl.parseExpression(condition)
-                        val items = mutableListOf(Any())
-
-                        when (parseExpression.javaClass.simpleName) {
-                            "ASTEq", "ASTGreater", "ASTGreaterEq", "ASTLess", "ASTLessEq", "ASTNotEq" -> {
-                                val ast = parseExpression as ComparisonExpression
-                                for (i in 0 until ast.jjtGetNumChildren()) {
-                                    val jjtGetChild = ast.jjtGetChild(i).toString()
-                                    if (jjtGetChild != "null") {
-                                        if (jjtGetChild.contains(".")) {
-                                            // todo: check need to support for multiple parents if exists
-                                            val split = jjtGetChild.split(".")
-                                            val parent = split[0]
-                                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
-                                        }
-
-                                        params[jjtGetChild] = items
-                                    }
-                                }
-                            }
-                        }
+                        processIfNodeParams(child, params)
                     }
                     else -> {
                         println("Mybatis - need to support: ${child.node.nodeName}")
@@ -238,5 +205,51 @@ class MyBatisHandler : BasedXmlHandler() {
         }
 
         return params
+    }
+
+    private fun processForeachParams(
+        child: XNode,
+        params: MutableMap<String, Any>
+    ) {
+        val collection = child.getStringAttribute("collection") ?: "list"
+        val collectionItem = child.getStringAttribute("item") ?: "list"
+        val items = mutableListOf(Any())
+
+        if (collection.contains(".")) {
+            // todo: check need to support for multiple parents if exists
+            val parent = collection.split(".")[0]
+            params[parent] = mutableListOf(mutableMapOf<String, Any>())
+        }
+
+        params[collection] = items
+        params[collectionItem] = items
+    }
+
+    private fun processIfNodeParams(
+        child: XNode,
+        params: MutableMap<String, Any>
+    ) {
+        val condition = child.getStringAttribute("test")
+        val parseExpression = Ognl.parseExpression(condition)
+        val items = mutableListOf(Any())
+
+        when (parseExpression.javaClass.simpleName) {
+            "ASTEq", "ASTGreater", "ASTGreaterEq", "ASTLess", "ASTLessEq", "ASTNotEq" -> {
+                val ast = parseExpression as ComparisonExpression
+                for (i in 0 until ast.jjtGetNumChildren()) {
+                    val jjtGetChild = ast.jjtGetChild(i).toString()
+                    if (jjtGetChild != "null") {
+                        if (jjtGetChild.contains(".")) {
+                            // todo: check need to support for multiple parents if exists
+                            val split = jjtGetChild.split(".")
+                            val parent = split[0]
+                            params[parent] = mutableListOf(mutableMapOf<String, Any>())
+                        }
+
+                        params[jjtGetChild] = items
+                    }
+                }
+            }
+        }
     }
 }

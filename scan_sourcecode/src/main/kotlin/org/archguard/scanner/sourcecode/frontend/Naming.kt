@@ -4,13 +4,13 @@ import chapi.app.frontend.path.OS
 import chapi.app.frontend.path.getOS
 
 fun naming(moduleName: String, nodeName: String): String {
-    var moduleName = moduleName
+    var module = moduleName
     if (nodeName == "default") {
-        return moduleName
+        return module
     }
 
-    if (getOS() == OS.WINDOWS) moduleName = moduleName.replace("\\", "/")
+    if (getOS() == OS.WINDOWS) module = module.replace("\\", "/")
 
-    return "${moduleName}::${nodeName}"
+    return "${module}::${nodeName}"
 }
 
