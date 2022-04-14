@@ -36,9 +36,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val path: String by option(help = "local path").default(".")
     private val apiOnly: Boolean by option(help = "only scan api").flag()
     private val systemId: String by option(help = "system id").default("0")
-    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
-        "Java"
-    )
+    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default("Java")
+    private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
     val API_TABLES = arrayOf(
         "container_demand",
@@ -197,6 +196,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
     }
 
     private fun storeDatabase(tables: Array<String>, systemId: String) {
+        if(withoutStorage) {
+            return;
+        }
+
         store.disableForeignCheck()
         store.initConnectionPool()
         logger.info("========================================================")
