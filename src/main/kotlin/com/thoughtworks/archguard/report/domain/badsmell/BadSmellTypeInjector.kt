@@ -1,6 +1,20 @@
 package com.thoughtworks.archguard.report.domain.badsmell
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.*
+import com.thoughtworks.archguard.report.domain.overview.calculator.CircularDependencyCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ClassOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClassCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DataClumpsCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.DeepInheritanceCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.MethodOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ModuleOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.OverGeneralizationCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageHubCouplingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.PackageOverSizingCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.RedundantElementCalculator
+import com.thoughtworks.archguard.report.domain.overview.calculator.ShotgunSurgeryCalculator
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 

@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.report.domain.ValidPagingParam
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Collections
 
 @Service
 class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {

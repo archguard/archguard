@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.CognitiveComplexity
 import com.thoughtworks.archguard.scanner2.domain.repository.CognitiveComplexityRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class CognitiveComplexityRepositoryImpl(val jdbi: Jdbi) : CognitiveComplexityRepository {

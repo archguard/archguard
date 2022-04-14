@@ -1,7 +1,5 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
-import java.util.*
-
 data class ModuleSizing(
     val id: String,
     val systemId: Long,

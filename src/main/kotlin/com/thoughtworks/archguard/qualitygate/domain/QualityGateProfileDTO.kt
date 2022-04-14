@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.qualitygate.domain
 
 import com.thoughtworks.archguard.common.JsonUtils
-import java.util.*
+import java.util.Date
 
 data class QualityGateProfileDTO(
     var id: Long?,

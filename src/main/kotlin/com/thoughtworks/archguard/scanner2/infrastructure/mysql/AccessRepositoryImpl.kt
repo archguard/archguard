@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.MethodAccess
 import com.thoughtworks.archguard.scanner2.domain.repository.AccessRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class AccessRepositoryImpl(val jdbi: Jdbi) : AccessRepository {

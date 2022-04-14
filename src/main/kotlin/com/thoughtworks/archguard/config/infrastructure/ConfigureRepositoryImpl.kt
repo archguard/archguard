@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class ConfigureRepositoryImpl(val jdbi: Jdbi) : ConfigureRepository {

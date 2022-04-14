@@ -2,7 +2,12 @@ package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.code.module.domain.model.*
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
+import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
+import com.thoughtworks.archguard.code.module.domain.model.ModuleMemberType
+import com.thoughtworks.archguard.code.module.domain.model.SubModule
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.qualitygate.infrastructure
 import org.jdbi.v3.core.mapper.ColumnMapper
 import org.jdbi.v3.core.statement.StatementContext
 import java.sql.ResultSet
-import java.util.*
+import java.util.Date
 
 class DateMapper : ColumnMapper<Date> {
 

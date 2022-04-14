@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
-import java.util.*
+import java.util.UUID
 
 data class PackageSizing(
     val id: String = UUID.randomUUID().toString(),

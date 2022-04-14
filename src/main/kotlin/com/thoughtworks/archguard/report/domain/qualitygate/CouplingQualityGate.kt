@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.qualitygate
 
-import java.util.*
+import java.util.Date
 
 data class CouplingQualityGate(
     var id: Long?,
