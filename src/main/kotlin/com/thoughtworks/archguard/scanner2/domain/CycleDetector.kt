@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.Edge
 import com.thoughtworks.archguard.scanner2.domain.model.Graph
 import com.thoughtworks.archguard.scanner2.domain.model.IdNode
 import com.thoughtworks.archguard.scanner2.domain.model.Node
-import java.util.*
+import java.util.Stack
 
 /**
  * Reference: https://www.baeldung.com/cs/detecting-cycles-in-directed-graph

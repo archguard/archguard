@@ -1,20 +1,18 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaTool
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
     private val log = LoggerFactory.getLogger(BadSmellScanner::class.java)
-    private val mapper = jacksonObjectMapper()
     override fun getScannerName(): String {
         return "BadSmell"
     }

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.infrastructure
 
-import java.util.*
+import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 

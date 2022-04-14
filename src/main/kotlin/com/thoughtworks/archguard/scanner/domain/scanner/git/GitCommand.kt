@@ -1,8 +1,9 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
 import com.thoughtworks.archguard.scanner.domain.system.RefSpecHelper
-import com.thoughtworks.archguard.scanner.infrastructure.command.*
-import org.slf4j.LoggerFactory
+import com.thoughtworks.archguard.scanner.infrastructure.command.CommandLine
+import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import java.io.File
 import java.lang.String.format
 
@@ -15,8 +16,6 @@ class GitCommand(
     val secrets: List<String> = listOf(),
     val logStream: StreamConsumer
 ) {
-    private val log = LoggerFactory.getLogger(GitCommand::class.java)
-
     private fun cloneCommand(): CommandLine {
         return git().withArg("clone")
     }

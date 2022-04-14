@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs.TestBadSmel
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.tbs.TestBadSmellRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class TestBadSmellRepoImpl(

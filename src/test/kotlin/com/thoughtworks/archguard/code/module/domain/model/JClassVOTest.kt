@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 internal class JClassVOTest {
     @Test

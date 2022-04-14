@@ -8,7 +8,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : Scanner {

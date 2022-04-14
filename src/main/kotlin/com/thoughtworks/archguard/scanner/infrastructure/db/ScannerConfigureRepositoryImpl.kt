@@ -7,7 +7,7 @@ import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
 class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : ScannerConfigureRepository {
@@ -28,7 +28,7 @@ class ScannerConfigureRepositoryImpl(@Autowired val configDao: ConfigDao) : Scan
         getConfigures()
             .groupBy { it.type }
             .mapValues {
-                it.value.map { i -> i.key to i.value }.toMap()
+                it.value.associate { i -> i.key to i.value }
             }
             .map { ToolConfigure(it.key, it.value) }
 

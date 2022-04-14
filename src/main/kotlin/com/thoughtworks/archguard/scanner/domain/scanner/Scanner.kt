@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.scanner.domain.scanner
 
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
-import java.util.*
 
 interface Scanner {
     val toolList: List<ToolConfigure>

@@ -86,5 +86,5 @@ class HttpRequestServiceTest {
         assertEquals("id2", httpRequests[0].targetId)
         assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
         assertEquals("GET", httpRequests[0].arg.methods[0])
-    } 
+    }
 }

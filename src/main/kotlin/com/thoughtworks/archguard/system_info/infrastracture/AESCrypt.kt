@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.system_info.infrastracture
 
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 

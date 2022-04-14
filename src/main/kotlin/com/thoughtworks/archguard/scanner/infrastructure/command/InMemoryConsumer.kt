@@ -16,7 +16,7 @@
 package com.thoughtworks.archguard.scanner.infrastructure.command
 
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class InMemoryConsumer : StreamConsumer {
