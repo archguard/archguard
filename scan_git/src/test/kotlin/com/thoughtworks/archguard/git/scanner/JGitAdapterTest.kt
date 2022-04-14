@@ -2,21 +2,29 @@ package com.thoughtworks.archguard.git.scanner
 
 import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.model.LineCounter
-import org.junit.jupiter.api.Disabled
+import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.nio.file.Paths
 
 internal class JGitAdapterTest {
-
-    // this test would not pass in CI
     @Test
-    @Disabled
     internal fun should_calculate_self() {
+        val localPath = File("./build/ddd")
+
+        // if test in local, skip clone
+        if (!File(localPath, ".git").isDirectory) {
+            Git.cloneRepository()
+                .setURI("https://github.com/archguard/ddd-monolithic-code-sample")
+                .setDirectory(localPath)
+                .call()
+        }
+
         val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
-        val (_, changeEntries) = jGitAdapter.scan("../", repoId = "0", systemId = 1)
+        val (_, changeEntries) = jGitAdapter.scan("./build/ddd", repoId = "0", systemId = 1)
 
         val changeCounts = jGitAdapter.countChangesByPath(changeEntries)
-        assert(changeCounts[".github/workflows/cd.yaml"]!! >= 4)
+        assert(changeCounts["README.md"]!! >= 2)
     }
 
     @Test
