@@ -82,11 +82,9 @@ fun importConvert(filepath: String, importPath: String): String {
         return resolve.normalize().toString()
     }
 
-    var importPath = importPath
-
-    if (getOS() == OS.WINDOWS) importPath = importPath.replace("\\", "/")
-
-    return importPath
+    var finalPath = importPath
+    if (getOS() == OS.WINDOWS) finalPath = finalPath.replace("\\", "/")
+    return finalPath
 }
 
 fun relativeRoot(filepath: String, importPath: String): String {

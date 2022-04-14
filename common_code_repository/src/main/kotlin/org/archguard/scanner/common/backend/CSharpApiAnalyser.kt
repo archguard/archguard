@@ -20,8 +20,8 @@ class CSharpApiAnalyser {
     }
 
     private fun createResource(func: CodeFunction, baseUrl: String, node: CodeDataStruct) {
-        var httpMethod = "";
-        var route = "";
+        var httpMethod = ""
+        var route = ""
         for (annotation in func.Annotations) {
             when (annotation.Name) {
                 "HttpGet" -> httpMethod = "Get"
