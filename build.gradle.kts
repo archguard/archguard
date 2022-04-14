@@ -31,8 +31,10 @@ allprojects {
         // test
         implementation(kotlin("test"))
         implementation(kotlin("test-junit"))
-        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+        val junitVersion = "5.8.2"
+        testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     }
 
     tasks.getByName<Test>("test") {
