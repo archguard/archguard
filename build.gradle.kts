@@ -36,9 +36,6 @@ allprojects {
         val junitVersion = "5.8.2"
         testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-
-//        testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-//        testImplementation("org.mockito:mockito-inline:4.4.0")
     }
 
     tasks.getByName<Test>("test") {
