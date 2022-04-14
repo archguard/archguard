@@ -229,9 +229,7 @@ class ByteCodeParser {
                     val item = it.cst.toString()
                     when(it.cst) {
                         is Type -> {
-                            println("Type -> cst: ${it.cst}")
-                            val cst = it.cst
-                            println(Type.getType(cst.toString()).className)
+//                            val cst = it.cst
                         }
                         else -> {
                             simpleConstantsPool.push(item)

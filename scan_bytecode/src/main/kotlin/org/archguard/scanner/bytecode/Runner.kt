@@ -3,6 +3,7 @@ package org.archguard.scanner.bytecode
 import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.infrastructure.SourceBatch.ALL_TABLES
@@ -27,7 +28,10 @@ class Runner : CliktCommand(help = "scan bytecode to sql") {
 
     private val path: String by option(help = "local path").default(".")
     private val systemId: String by option(help = "system id").default("0")
-    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default("Jvm")
+    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
+        "Jvm"
+    )
+    private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
     override fun run() {
         cleanSqlFile(ALL_TABLES)
@@ -41,7 +45,8 @@ class Runner : CliktCommand(help = "scan bytecode to sql") {
     fun byDir(dir: String): List<CodeDataStruct> {
         return File(dir)
             .walk(FileWalkDirection.BOTTOM_UP)
-            .filter { it.isFile && it.name.endsWith(".class") && !it.name.contains("$")
+            .filter {
+                it.isFile && it.name.endsWith(".class") && !it.name.contains("$")
             }
             .map {
                 ByteCodeParser().parseClassFile(it)
@@ -102,6 +107,10 @@ class Runner : CliktCommand(help = "scan bytecode to sql") {
     }
 
     private fun storeDatabase(tables: Array<String>, systemId: String) {
+        if (withoutStorage) {
+            return
+        }
+
         store.disableForeignCheck()
         store.initConnectionPool()
         logger.info("========================================================")
