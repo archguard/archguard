@@ -56,13 +56,11 @@ class MyBatisHandler : BasedXmlHandler() {
 
     fun streamToSqls(inputStream: FileInputStream, resource: String): MybatisEntry {
         val configuration = createConfiguration()
-        val langDriver: LanguageDriver = XMLLanguageDriver()
 
         val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
 
-        val namespace = context.getStringAttribute("namespace")
-        val entry = MybatisEntry(namespace)
+        val mybatisEntry = MybatisEntry(context.getStringAttribute("namespace"))
 
         val builderAssistant = MapperBuilderAssistant(configuration, resource)
         val basedParameters: MutableMap<String, Any> = mutableMapOf()
@@ -71,7 +69,20 @@ class MyBatisHandler : BasedXmlHandler() {
         val sqlNodes = context.evalNodes("/mapper/sql")
         parseSqlStatement(sqlNodes, basedParameters, builderAssistant, configuration)
 
+        mybatisEntry.methodSqlMap = buildCrudSqlMap(context, basedParameters, configuration, builderAssistant)
+        return mybatisEntry
+    }
+
+    private fun buildCrudSqlMap(
+        context: XNode,
+        basedParameters: MutableMap<String, Any>,
+        configuration: Configuration,
+        builderAssistant: MapperBuilderAssistant,
+    ): MutableMap<String, String> {
+        val sqlMap: MutableMap<String, String> = mutableMapOf()
+        val langDriver: LanguageDriver = XMLLanguageDriver()
         val crudList = context.evalNodes("select|insert|update|delete")
+
         crudList.forEach {
             val methodName = it.getStringAttribute("id")
             val params = basedParameters + fakeParameters(it)
@@ -100,10 +111,9 @@ class MyBatisHandler : BasedXmlHandler() {
             val sqlSource = sqlSourceParser.parse(dynamicContext.sql, Any::class.java, dynamicContext.bindings)
             val boundSql = sqlSource.getBoundSql(params)
 
-            entry.methodSqlMap[methodName] = boundSql.sql
+            sqlMap[methodName] = boundSql.sql
         }
-
-        return entry
+        return sqlMap
     }
 
     private fun parseSqlStatement(
