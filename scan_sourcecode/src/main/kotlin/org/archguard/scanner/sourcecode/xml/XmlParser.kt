@@ -2,6 +2,7 @@ package org.archguard.scanner.sourcecode.xml
 
 import org.archguard.scanner.sourcecode.xml.mybatis.MyBatisHandler
 import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
+import org.slf4j.LoggerFactory
 import org.xml.sax.SAXException
 import org.xml.sax.XMLReader
 import java.io.File
@@ -14,6 +15,7 @@ class XmlParser(
     val filePath: String,
     val handlerName: String
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     fun processMyBatis(): MybatisEntry? {
         when(this.handlerName) {
@@ -45,7 +47,12 @@ class XmlParser(
             val dispatcher = HandlerDispatcher()
             parser.setProperty("http://xml.org/sax/properties/lexical-handler", dispatcher)
 
-            parser.parse(inputSource, dispatcher)
+            try {
+                parser.parse(inputSource, dispatcher)
+            } catch(e: Exception) {
+                LoggerFactory.getLogger(XmlParser.javaClass).info(e.toString())
+                return null
+            }
 
             val contentHandler = dispatcher.getContentHandler() ?: return null
 
