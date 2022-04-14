@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.code.module.infrastructure.dto
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
-import java.util.*
+import java.util.UUID
 
 @Deprecated(message = "we are going to replace with LogicModule")
 class LogicModuleLegacy(var id: String?, val name: String, val members: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {

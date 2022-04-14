@@ -2,10 +2,19 @@ package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validFilterParam
-import com.thoughtworks.archguard.report.domain.sizing.*
+import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
+import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
+import com.thoughtworks.archguard.report.domain.sizing.MethodSizing
+import com.thoughtworks.archguard.report.domain.sizing.ModuleSizing
+import com.thoughtworks.archguard.report.domain.sizing.PackageSizing
+import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController

@@ -3,14 +3,11 @@ package com.thoughtworks.archguard.code.module.domain
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val couplingService: CouplingService) {
-    private val log = LoggerFactory.getLogger(LogicModuleService::class.java)
-
     fun getLogicModules(systemId: Long): List<LogicModule> {
         return logicModuleRepository.getAllBySystemId(systemId)
     }

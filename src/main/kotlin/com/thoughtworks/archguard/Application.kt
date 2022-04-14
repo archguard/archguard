@@ -3,7 +3,12 @@ package com.thoughtworks.archguard
 import com.thoughtworks.archguard.change.infrastructure.DiffChangeDao
 import com.thoughtworks.archguard.change.infrastructure.GitChangeDao
 import com.thoughtworks.archguard.report.infrastructure.ContainerServiceDao
-import com.thoughtworks.archguard.scanner.infrastructure.db.*
+import com.thoughtworks.archguard.scanner.infrastructure.db.BadSmellDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.ConfigDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.OverviewDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.ScannerGitHotFileDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.StyleDao
+import com.thoughtworks.archguard.scanner.infrastructure.db.TestBadSmellDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ClassMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.MethodMetricsDao
 import com.thoughtworks.archguard.scanner2.infrastructure.mysql.ModuleMetricsDao
@@ -21,7 +26,7 @@ import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import springfox.documentation.oas.annotations.EnableOpenApi
-import java.util.*
+import java.util.TimeZone
 import java.util.function.Consumer
 import javax.sql.DataSource
 
