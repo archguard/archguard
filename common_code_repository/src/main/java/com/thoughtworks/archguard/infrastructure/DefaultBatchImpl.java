@@ -1,8 +1,7 @@
-package infrastructure;
+package com.thoughtworks.archguard.infrastructure;
 
-import infrastructure.utils.UpdateRecord;
-import infrastructure.utils.UpdateRecordSet;
-import io.netty.util.internal.ConcurrentSet;
+import com.thoughtworks.archguard.infrastructure.utils.UpdateRecord;
+import com.thoughtworks.archguard.infrastructure.utils.UpdateRecordSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

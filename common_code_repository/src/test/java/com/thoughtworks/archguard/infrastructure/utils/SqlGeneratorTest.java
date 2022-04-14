@@ -1,4 +1,4 @@
-package infrastructure.utils;
+package com.thoughtworks.archguard.infrastructure.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

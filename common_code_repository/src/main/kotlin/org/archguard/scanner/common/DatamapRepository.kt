@@ -1,13 +1,14 @@
 package org.archguard.scanner.common
 
-import infrastructure.SourceBatch
+import com.thoughtworks.archguard.infrastructure.SourceBatch
 import org.archguard.scanner.common.RepositoryHelper.generateId
 import org.archguard.scanner.common.database.CodeDatabaseRelation
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 class DatamapRepository(systemId: String, language: String, workspace: String) {
-    private val batch: SourceBatch = SourceBatch()
+    private val batch: SourceBatch =
+        SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100
 

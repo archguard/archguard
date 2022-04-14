@@ -3,11 +3,10 @@ package org.archguard.scanner.bytecode
 import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import infrastructure.DBIStore
-import infrastructure.SourceBatch.ALL_TABLES
-import infrastructure.task.SqlExecuteThreadPool
+import com.thoughtworks.archguard.infrastructure.DBIStore
+import com.thoughtworks.archguard.infrastructure.SourceBatch.ALL_TABLES
+import com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.common.ClassRepository

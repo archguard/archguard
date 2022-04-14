@@ -3,13 +3,14 @@ package org.archguard.scanner.common
 import org.archguard.scanner.common.container.ContainerDemand
 import org.archguard.scanner.common.container.ContainerResource
 import org.archguard.scanner.common.container.ContainerService
-import infrastructure.SourceBatch
+import com.thoughtworks.archguard.infrastructure.SourceBatch
 import org.archguard.scanner.common.RepositoryHelper.currentTime
 import org.archguard.scanner.common.RepositoryHelper.generateId
 import java.util.HashMap
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
-    private val batch: SourceBatch = SourceBatch()
+    private val batch: SourceBatch =
+        SourceBatch()
     private val systemId: String
     private val language: String
     private val workspace: String

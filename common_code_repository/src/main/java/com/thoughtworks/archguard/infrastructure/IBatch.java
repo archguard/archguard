@@ -1,4 +1,4 @@
-package infrastructure;
+package com.thoughtworks.archguard.infrastructure;
 
 import java.util.Map;
 import java.util.Optional;

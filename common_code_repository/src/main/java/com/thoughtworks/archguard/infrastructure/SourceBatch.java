@@ -1,4 +1,4 @@
-package infrastructure;
+package com.thoughtworks.archguard.infrastructure;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static infrastructure.utils.SqlGenerator.generateBatchInsertSql;
 
 public class SourceBatch extends DefaultBatchImpl {
     private static final Logger logger = LoggerFactory.getLogger(SourceBatch.class);
@@ -89,7 +87,7 @@ public class SourceBatch extends DefaultBatchImpl {
             List<Map<String, String>> values = insertStore.get(table);
             if (values != null && !values.isEmpty()) {
                 totalInsert = totalInsert + values.size();
-                String sql = generateBatchInsertSql(table, values);
+                String sql = com.thoughtworks.archguard.infrastructure.utils.SqlGenerator.generateBatchInsertSql(table, values);
                 logger.debug(sql);
                 write(sql + ";", table + ".sql");
             }
@@ -107,7 +105,7 @@ public class SourceBatch extends DefaultBatchImpl {
         List<Map<String, String>> values = insertStore.get(table);
         if (values != null && !values.isEmpty()) {
             totalInsert = totalInsert + values.size();
-            String sql = generateBatchInsertSql(table, values);
+            String sql = com.thoughtworks.archguard.infrastructure.utils.SqlGenerator.generateBatchInsertSql(table, values);
             logger.debug(sql);
             write(sql + ";", table + ".sql");
         }

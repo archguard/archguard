@@ -1,4 +1,4 @@
-package infrastructure.task;
+package com.thoughtworks.archguard.infrastructure.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

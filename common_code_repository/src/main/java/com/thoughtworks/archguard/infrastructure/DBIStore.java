@@ -1,8 +1,6 @@
-package infrastructure;
+package com.thoughtworks.archguard.infrastructure;
 
 import com.zaxxer.hikari.HikariDataSource;
-import infrastructure.task.SqlExecuteRunnable;
-import infrastructure.task.SqlExecuteThreadPool;
 import io.netty.util.internal.StringUtil;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Batch;
@@ -33,11 +31,11 @@ public class DBIStore {
     }
 
     public void delete(String table, Phaser phaser, String systemId) {
-        SqlExecuteRunnable p = new SqlExecuteRunnable(table, phaser, () ->
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable p = new com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable(table, phaser, () ->
                 jdbi.withHandle(handle ->
                         handle.execute("DELETE FROM " + table + " WHERE system_id = " + systemId)));
 
-        SqlExecuteThreadPool.execute(p);
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool.execute(p);
     }
 
     public void save(List<String> sqls, String file, Phaser phaser) {
@@ -56,7 +54,7 @@ public class DBIStore {
             return;
         }
 
-        SqlExecuteRunnable p = new SqlExecuteRunnable(file, phaser, () ->
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable p = new com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable(file, phaser, () ->
                 jdbi.withHandle(handle -> {
                     Batch batch = handle.createBatch();
                     for (String sql : sqls) {
@@ -71,11 +69,11 @@ public class DBIStore {
                     return new ArrayList<Integer>();
                 }));
 
-        SqlExecuteThreadPool.execute(p);
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool.execute(p);
     }
 
     public void fix() {
-        SqlExecuteRunnable p = new SqlExecuteRunnable("FIX",
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable p = new com.thoughtworks.archguard.infrastructure.task.SqlExecuteRunnable("FIX",
                 () -> jdbi.withHandle(handle -> {
                     String sql = "update code_method, code_class, code_ref_class_methods\n" +
                             "set code_method.module = code_class.module\n" +
@@ -84,7 +82,7 @@ public class DBIStore {
                             "  and code_class.module != code_method.module";
                     return handle.execute(sql);
                 }));
-        SqlExecuteThreadPool.execute(p);
+        com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool.execute(p);
     }
 
     public void initConnectionPool() {
