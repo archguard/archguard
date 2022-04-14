@@ -13,21 +13,11 @@ Scanner:
 * scan_bytecode - for JVM languages
   * known issues: Bytecode not support for API analysis.
 * scan_sourcecode - Code analysis
-  * [x] Java
-  * [-] Kotlin
-     * [x] Annotation support
-  * [-] C#
-     * [x] Annotation support
-  * [x] TypeScript/JavaScript (not full test)
-     * [x] React support
-     * [ ] Angular support
-     * [ ] Vue support
-     * [ ] HTTP API
-        * [x] axios
-        * [x] umi-request
-* scan_test_badsmell - Test code badsmell
-    * [x] Java
-        * [x] based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs)
+  * SQL Analyser
+  * Http Api Analyser
+  * Database Analyser
+* scan_test_badsmell - Test code badsmell 
+    * [x] Java (based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs))
 * code_repository - share repository code for `scan_bytecode` and `scan_sourcecode`, can be for such as scan_llvm
   * [x] ContainerRepository
   * [x] CodeRepository
