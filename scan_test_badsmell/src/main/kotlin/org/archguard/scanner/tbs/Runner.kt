@@ -7,12 +7,14 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
+public val OUTPUT_FILE = "bs.json"
+
 class Runner : CliktCommand(help = "collect test bad smell") {
     private val path: String by option(help = "local path").default(".")
 
     override fun run() {
         val results = TbsAnalyser().analysisByPath(path)
-        File("bs.json").writeText(Json.encodeToString(results))
+        File(OUTPUT_FILE).writeText(Json.encodeToString(results))
     }
 }
 
