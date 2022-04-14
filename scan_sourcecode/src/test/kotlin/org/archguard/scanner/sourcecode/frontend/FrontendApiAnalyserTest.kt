@@ -25,6 +25,7 @@ internal class FrontendApiAnalyserTest {
         assertEquals("src/BadSmellThreshold/BadSmellThreshold", componentCalls[0].name)
         val apiRef = componentCalls[0].demands[0]
         assertEquals(naming("src/api/addition/systemInfo", "updateSystemInfo"), apiRef.source_caller)
+        assertEquals("src/api/addition/systemInfo::updateSystemInfo", apiRef.call_routes.joinToString(","))
         assertEquals("baseURL", apiRef.base)
         assertEquals("systemInfoApi", apiRef.target_url)
         assertEquals("PUT", apiRef.target_http_method)
@@ -68,6 +69,7 @@ internal class FrontendApiAnalyserTest {
 
         assertEquals(1, apiRef.size)
         assertEquals(naming("src/system-info", "querySystemInfo"), apiRef[0].source_caller)
+        assertEquals("src/system-info::querySystemInfo", apiRef[0].call_routes.joinToString(","))
         assertEquals("GET", apiRef[0].target_http_method)
         File("api.json").writeText(Json.encodeToString(componentCalls))
     }

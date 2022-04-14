@@ -102,11 +102,13 @@ class FrontendApiAnalyser {
     fun toContainerServices(): Array<ContainerService> {
         File("component.inbounds.json").writeText(Json.encodeToString(componentInbounds))
         var componentCalls: Array<ContainerService> = arrayOf()
-        componentInbounds.forEach { map ->
-            val componentRef = ContainerService(name = map.key)
-            map.value.forEach {
+        componentInbounds.forEach { inbound ->
+            val componentRef = ContainerService(name = inbound.key)
+            inbound.value.forEach {
                 // TODO: add support for multiple level call routes
                 if (httpAdapterMap[it] != null) {
+                    val route = listOf(it)
+
                     val call = httpAdapterMap[it]!!
 
                     var httpApi = ContainerDemand()
@@ -120,7 +122,7 @@ class FrontendApiAnalyser {
                     }
 
                     httpApi.source_caller = it
-                    httpApi.call_routes = listOf(it)
+                    httpApi.call_routes = route
                     componentRef.demands += httpApi
                 } else {
                     if (callMap[it] != null) {
@@ -128,6 +130,8 @@ class FrontendApiAnalyser {
                         val name = naming(codeCall.NodeName, codeCall.FunctionName)
 
                         if (httpAdapterMap[name] != null) {
+                            val routers = listOf(it, name)
+
                             val call = httpAdapterMap[name]!!
 
                             var httpApi = ContainerDemand()
@@ -141,7 +145,7 @@ class FrontendApiAnalyser {
                             }
 
                             httpApi.source_caller = name
-                            httpApi.call_routes = listOf(it, name)
+                            httpApi.call_routes = routers
                             componentRef.demands += httpApi
                         }
                     }
