@@ -1,25 +1,38 @@
 package com.thoughtworks.archguard.git.scanner
 
+import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class RunnerTest {
 
+    @BeforeEach
+    internal fun setUp() {
+        val localPath = File("./build/ddd")
+
+        // if test in local, skip clone
+        if (!File(localPath, ".git").isDirectory) {
+            Git.cloneRepository()
+                .setURI("https://github.com/archguard/ddd-monolithic-code-sample")
+                .setDirectory(localPath)
+                .call()
+        }
+    }
+
     @Test
-    @Disabled
     fun run() {
         val file = File("output.sql")
-        Runner().main(arrayOf("--path=../", "--branch=master"))
+        Runner().main(arrayOf("--path=./build/ddd", "--branch=master"))
         assertTrue(file.exists())
     }
 
     @Test
-    @Disabled
     fun run_loc() {
         val file = File("loc_output.sql")
-        Runner().main(arrayOf("--path=../", "--branch=master",  "--loc=true"))
+        Runner().main(arrayOf("--path=./build/ddd", "--branch=master",  "--loc=true"))
         assertTrue(file.exists())
     }
 }
