@@ -27,11 +27,7 @@ internal class RunnerTest {
         assert(File("code_ref_class_fields.sql").exists())
         assert(File("code_ref_class_methods.sql").exists())
         assert(File("code_ref_method_callees.sql").exists())
-//        assert(File("container_demand.sql").exists())
         assert(File("container_service.sql").exists())
-//        assert(File("data_code_database_relation.sql").exists())
-//        assert(File("database.json").exists())
-//        assert(File("structs.json").exists())
         assert(File("apis.json").exists())
     }
 }
