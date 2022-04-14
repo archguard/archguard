@@ -104,49 +104,20 @@ class FrontendApiAnalyser {
         var componentCalls: Array<ContainerService> = arrayOf()
         componentInbounds.forEach { inbound ->
             val componentRef = ContainerService(name = inbound.key)
-            inbound.value.forEach {
+            inbound.value.forEach { it ->
                 // TODO: add support for multiple level call routes
                 if (httpAdapterMap[it] != null) {
-                    val route = listOf(it)
+                    val routes = listOf(it)
 
-                    val call = httpAdapterMap[it]!!
-
-                    var httpApi = ContainerDemand()
-                    when (call.ApiType) {
-                        "axios" -> {
-                            httpApi = axiosIdent.convert(call)
-                        }
-                        "umi" -> {
-                            httpApi = umiIdent.convert(call)
-                        }
-                    }
-
-                    httpApi.source_caller = it
-                    httpApi.call_routes = route
-                    componentRef.demands += httpApi
+                    componentRef.demands += createHttpApi(it, routes)
                 } else {
                     if (callMap[it] != null) {
                         val codeCall = callMap[it]!!
                         val name = naming(codeCall.NodeName, codeCall.FunctionName)
 
                         if (httpAdapterMap[name] != null) {
-                            val routers = listOf(it, name)
-
-                            val call = httpAdapterMap[name]!!
-
-                            var httpApi = ContainerDemand()
-                            when (call.ApiType) {
-                                "axios" -> {
-                                    httpApi = axiosIdent.convert(call)
-                                }
-                                "umi" -> {
-                                    httpApi = umiIdent.convert(call)
-                                }
-                            }
-
-                            httpApi.source_caller = name
-                            httpApi.call_routes = routers
-                            componentRef.demands += httpApi
+                            val routes = listOf(it, name)
+                            componentRef.demands += createHttpApi(name, routes)
                         }
                     }
                 }
@@ -157,6 +128,27 @@ class FrontendApiAnalyser {
             }
         }
         return componentCalls
+    }
+
+    private fun createHttpApi(
+        name: String,
+        routes: List<String>
+    ): ContainerDemand {
+        val call = httpAdapterMap[name]!!
+
+        var httpApi = ContainerDemand()
+        when (call.ApiType) {
+            "axios" -> {
+                httpApi = axiosIdent.convert(call)
+            }
+            "umi" -> {
+                httpApi = umiIdent.convert(call)
+            }
+        }
+
+        httpApi.source_caller = name
+        httpApi.call_routes = routes
+        return httpApi
     }
 
     private fun fieldToCallMap(
