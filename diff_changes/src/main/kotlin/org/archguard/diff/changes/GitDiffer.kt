@@ -201,12 +201,14 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
             val blobId = treeWalk.getObjectId(0)
 
             var newDataStructs: Array<CodeDataStruct> = arrayOf()
-            if (filePath.endsWith(".kt")) {
-                newDataStructs = diffFileFromBlob(repository, blobId, filePath, KotlinAnalyserApp())
-            }
 
-            if (filePath.endsWith(".java")) {
-                newDataStructs = diffFileFromBlob(repository, blobId, filePath, JavaAnalyserApp())
+            when {
+                filePath.endsWith(".kt") -> {
+                    newDataStructs = diffFileFromBlob(repository, blobId, filePath, KotlinAnalyserApp())
+                }
+                filePath.endsWith(".java") -> {
+                    newDataStructs = diffFileFromBlob(repository, blobId, filePath, JavaAnalyserApp())
+                }
             }
 
             if (this.differFileMap[filePath] != null) {
@@ -277,21 +279,23 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
                 val pathString = tw.pathString
                 val blobId: ObjectId = tw.getObjectId(0)
 
-                if (pathString.endsWith(".kt")) {
-                    val dataStructs = diffFileFromBlob(repository, blobId, pathString, KotlinAnalyserApp())
-                    val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
+                when {
+                    pathString.endsWith(".kt") -> {
+                        val dataStructs = diffFileFromBlob(repository, blobId, pathString, KotlinAnalyserApp())
+                        val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
 
-                    differFileMap[pathString] = differFile
-                    files += differFile
+                        differFileMap[pathString] = differFile
+                        files += differFile
+                    }
+                    pathString.endsWith(".java") -> {
+                        val dataStructs = diffFileFromBlob(repository, blobId, pathString, JavaAnalyserApp())
+                        val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
+
+                        differFileMap[pathString] = differFile
+                        files += differFile
+                    }
                 }
 
-                if (pathString.endsWith(".java")) {
-                    val dataStructs = diffFileFromBlob(repository, blobId, pathString, JavaAnalyserApp())
-                    val differFile = DifferFile(path = pathString, dataStructs = dataStructs)
-
-                    differFileMap[pathString] = differFile
-                    files += differFile
-                }
             } catch (e: Exception) {
                 println(e)
             }
