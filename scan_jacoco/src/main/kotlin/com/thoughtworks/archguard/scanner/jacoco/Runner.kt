@@ -10,7 +10,7 @@ class Runner : CliktCommand() {
     private val exec: String by option(help = "jacoco data file").default("build/jacoco/test.exec")
 
     override fun run() {
-        Service(Bean2Sql()).readJacoco(Config(projectPath = targetProject, bin = bin, exec = exec))
+        JacocoService(Bean2Sql()).readJacoco(Config(projectPath = targetProject, bin = bin, exec = exec))
     }
 }
 

@@ -7,10 +7,8 @@ import org.jacoco.core.tools.ExecFileLoader
 import java.io.File
 import java.io.PrintWriter
 
-class Service(val bean2Sql: Bean2Sql) {
-
+class JacocoService(val bean2Sql: Bean2Sql) {
     fun readJacoco(config: Config) {
-
         val bundleCoverage = getBundleCoverage(config)
 
         PrintWriter("jacoco.sql").use { writer ->
