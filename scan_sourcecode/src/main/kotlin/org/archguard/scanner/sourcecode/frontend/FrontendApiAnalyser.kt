@@ -1,4 +1,3 @@
-
 package org.archguard.scanner.sourcecode.frontend
 
 import org.archguard.scanner.sourcecode.frontend.identify.AxiosHttpIdentify
@@ -99,27 +98,21 @@ class FrontendApiAnalyser {
         }
     }
 
+    class LoopDepth(var index: Int)
+
     fun toContainerServices(): Array<ContainerService> {
         File("component.inbounds.json").writeText(Json.encodeToString(componentInbounds))
         var componentCalls: Array<ContainerService> = arrayOf()
+
         componentInbounds.forEach { inbound ->
             val componentRef = ContainerService(name = inbound.key)
-            inbound.value.forEach { it ->
+            inbound.value.forEach {
                 // TODO: add support for multiple level call routes
                 if (httpAdapterMap[it] != null) {
                     val routes = listOf(it)
-
                     componentRef.demands += createHttpApi(it, routes)
                 } else {
-                    if (callMap[it] != null) {
-                        val codeCall = callMap[it]!!
-                        val name = naming(codeCall.NodeName, codeCall.FunctionName)
-
-                        if (httpAdapterMap[name] != null) {
-                            val routes = listOf(it, name)
-                            componentRef.demands += createHttpApi(name, routes)
-                        }
-                    }
+                    lookupSource(it, componentRef, LoopDepth(1))
                 }
             }
 
@@ -128,6 +121,25 @@ class FrontendApiAnalyser {
             }
         }
         return componentCalls
+    }
+
+    private val DEFAULT_LOOP_API_CALL_DEPTH = 3
+    private fun lookupSource(methodName: String, componentRef: ContainerService, loopDepth: LoopDepth) {
+        if (loopDepth.index > DEFAULT_LOOP_API_CALL_DEPTH) {
+            return
+        }
+        loopDepth.index++
+        if (callMap[methodName] != null) {
+            val codeCall = callMap[methodName]!!
+            val name = naming(codeCall.NodeName, codeCall.FunctionName)
+
+            if (httpAdapterMap[name] != null) {
+                val routes = listOf(methodName, name)
+                componentRef.demands += createHttpApi(name, routes)
+            } else {
+                lookupSource(name, componentRef, loopDepth)
+            }
+        }
     }
 
     private fun createHttpApi(
