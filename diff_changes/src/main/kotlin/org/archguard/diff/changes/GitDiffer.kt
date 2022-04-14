@@ -323,5 +323,4 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         return this
     }
 
-
 }

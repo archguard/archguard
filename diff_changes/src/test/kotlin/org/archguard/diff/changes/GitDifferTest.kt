@@ -1,36 +1,32 @@
 package org.archguard.diff.changes
 
-import org.junit.jupiter.api.Disabled
+import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Test
+import java.io.File
 import kotlin.test.assertEquals
 
 internal class GitDifferTest {
 
     @Test
-    @Disabled
     fun should_get_range_for_local_java() {
-        val differ = GitDiffer("..", "master", 7)
-        val calculateChange = differ.countBetween("aa2b5379", "965be8c2")
+        val localPath = File("./build/ddd")
 
-        assertEquals(1, calculateChange.size)
+        // if test in local, skip clone
+        if (!File(localPath, ".git").isDirectory) {
+            Git.cloneRepository()
+                .setURI("https://github.com/archguard/ddd-monolithic-code-sample")
+                .setDirectory(localPath)
+                .call()
+        }
 
-        val relations = calculateChange[0].relations
-        assertEquals(6, relations.size)
-        assertEquals("infrastructure.SourceBatch.execute", relations.last().source)
-        assertEquals("infrastructure.utils.SqlGenerator.generateBatchInsertSql", relations.last().target)
-    }
+        val differ = GitDiffer("./build/ddd", "master", 7)
+        val calculateChange = differ.countBetween("5952edc", "f3fb4e2")
 
-    @Test
-    @Disabled
-    fun should_get_range_for_local_kotlin() {
-        val differ = GitDiffer("..", "master", 7)
-        val calculateChange = differ.countBetween("92f1f59f", "d31422bd")
-
-        assertEquals(1, calculateChange.size)
+        assertEquals(3, calculateChange.size)
 
         val relations = calculateChange[0].relations
-        assertEquals(0, relations.size)
-//        assertEquals("infrastructure.SourceBatch.execute", relations.last().source)
-//        assertEquals("infrastructure.utils.SqlGenerator.generateBatchInsertSql", relations.last().target)
+        assertEquals(1, relations.size)
+        assertEquals("com.dmall.productservice.apis.ProductController.getAllProducts", relations.last().source)
+        assertEquals("com.dmall.productservice.apis.assembler.ProductAssembler.toProductResponseList", relations.last().target)
     }
 }
