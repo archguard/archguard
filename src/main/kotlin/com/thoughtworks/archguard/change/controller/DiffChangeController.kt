@@ -12,7 +12,7 @@ class DiffChangeController(
     val systemInfoService: SystemInfoService,
 ) {
     @GetMapping("/influence/history")
-    fun historyInfluence(@PathVariable("systemId") systemId: Long, ): List<DiffChange> {
+    fun historyInfluence(@PathVariable("systemId") systemId: Long,): List<DiffChange> {
         return diffChangeService.findBySystemId(systemId)
     }
 

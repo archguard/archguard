@@ -10,7 +10,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.createTempDirectory
 
-
 @RestController
 @RequestMapping("/api/scanner/file")
 class FileController {
@@ -36,5 +35,4 @@ class FileController {
 
         return Files.createFile(filePath)
     }
-
 }

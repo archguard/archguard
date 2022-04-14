@@ -23,8 +23,12 @@ class GitScannerTool(
 
     override fun getGitReport(): File? {
         prepareTool()
-        scan(listOf("java", "-jar", "scan_git.jar", "--path=.", "--branch=$branch",
-                "--repo-id=$repo", "--system-id=$systemId"))
+        scan(
+            listOf(
+                "java", "-jar", "scan_git.jar", "--path=.", "--branch=$branch",
+                "--repo-id=$repo", "--system-id=$systemId"
+            )
+        )
         val report = File("$systemRoot/output.sql")
         return if (report.exists()) {
             report
@@ -36,8 +40,12 @@ class GitScannerTool(
 
     fun getLocReport(): File? {
         prepareTool()
-        scan(listOf("java", "-jar", "scan_git.jar", "--path=.", "--loc=true",
-                "--repo-id=$repo", "--system-id=$systemId"))
+        scan(
+            listOf(
+                "java", "-jar", "scan_git.jar", "--path=.", "--loc=true",
+                "--repo-id=$repo", "--system-id=$systemId"
+            )
+        )
         val report = File("$systemRoot/loc_output.sql")
         return if (report.exists()) {
             report
@@ -63,7 +71,7 @@ class GitScannerTool(
             val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x scan_git.jar tool Exception")
         }
     }
@@ -83,5 +91,4 @@ class GitScannerTool(
     private fun scan(cmd: List<String>) {
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
-
 }

@@ -13,6 +13,4 @@ class BadSmellThresholdController(val thresholdSuiteService: ThresholdSuiteServi
     fun reloadThresholdCache() {
         thresholdSuiteService.reloadAllSuites()
     }
-
 }
-

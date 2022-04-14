@@ -13,4 +13,3 @@ interface JMethodRepository {
     fun getMethodsNotThirdParty(systemId: Long): List<JMethod>
     fun getMethodsNotThirdPartyAndNotTest(systemId: Long): List<JMethod>
 }
-

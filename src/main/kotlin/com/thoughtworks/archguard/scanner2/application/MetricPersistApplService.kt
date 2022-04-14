@@ -5,7 +5,6 @@ import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.model.MethodMetric
 import com.thoughtworks.archguard.scanner2.domain.model.ModuleMetric
 import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
-import com.thoughtworks.archguard.scanner2.domain.repository.ScannerCircularDependencyMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
@@ -13,12 +12,13 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.MethodMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.ModuleMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.PackageMetricRepository
-import com.thoughtworks.archguard.scanner2.domain.service.ScannerCircularDependencyService
-import com.thoughtworks.archguard.scanner2.domain.service.ScannerDataClassService
+import com.thoughtworks.archguard.scanner2.domain.repository.ScannerCircularDependencyMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.service.DitService
 import com.thoughtworks.archguard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archguard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archguard.scanner2.domain.service.NocService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerCircularDependencyService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerDataClassService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -27,22 +27,23 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-
 @Service
-class MetricPersistApplService(val ditService: DitService,
-                               val lcoM4Service: LCOM4Service,
-                               val nocService: NocService,
-                               val dataClassService: ScannerDataClassService,
-                               val jClassRepository: JClassRepository,
-                               val jMethodRepository: JMethodRepository,
-                               val fanInFanOutService: FanInFanOutService,
-                               val scannerCircularDependencyService: ScannerCircularDependencyService,
-                               val classMetricRepository: ClassMetricRepository,
-                               val methodMetricRepository: MethodMetricRepository,
-                               val packageMetricRepository: PackageMetricRepository,
-                               val moduleMetricRepository: ModuleMetricRepository,
-                               val dataClassRepository: DataClassRepository,
-                               val circularDependencyMetricRepository: ScannerCircularDependencyMetricRepository) {
+class MetricPersistApplService(
+    val ditService: DitService,
+    val lcoM4Service: LCOM4Service,
+    val nocService: NocService,
+    val dataClassService: ScannerDataClassService,
+    val jClassRepository: JClassRepository,
+    val jMethodRepository: JMethodRepository,
+    val fanInFanOutService: FanInFanOutService,
+    val scannerCircularDependencyService: ScannerCircularDependencyService,
+    val classMetricRepository: ClassMetricRepository,
+    val methodMetricRepository: MethodMetricRepository,
+    val packageMetricRepository: PackageMetricRepository,
+    val moduleMetricRepository: ModuleMetricRepository,
+    val dataClassRepository: DataClassRepository,
+    val circularDependencyMetricRepository: ScannerCircularDependencyMetricRepository
+) {
     private val log = LoggerFactory.getLogger(MetricPersistApplService::class.java)
 
     fun persistLevel2Metrics(systemId: Long) {
@@ -92,7 +93,6 @@ class MetricPersistApplService(val ditService: DitService,
         log.info("-----------------------------------------------------------------------")
         log.info("Finished persist circularDependenciesCount for systemId $systemId")
         log.info("-----------------------------------------------------------------------")
-
     }
 
     private suspend fun persistModuleLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
@@ -112,8 +112,10 @@ class MetricPersistApplService(val ditService: DitService,
     private suspend fun persistPackageLevel2Metrics(systemId: Long, jClasses: List<JClass>) {
         val packageFanInFanOutMap = fanInFanOutService.calculateAtPackageLevel(systemId, jClasses)
         val packageMetrics = packageFanInFanOutMap.map {
-            PackageMetric(systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
-                    it.value.fanIn, it.value.fanOut)
+            PackageMetric(
+                systemId, getModuleNameFromPackageFullName(it.key), getPackageNameFromPackageFullName(it.key),
+                it.value.fanIn, it.value.fanOut
+            )
         }
         log.info("Finished calculate packageMetric in systemId $systemId")
         packageMetricRepository.insertOrUpdatePackageMetric(systemId, packageMetrics)
@@ -128,8 +130,10 @@ class MetricPersistApplService(val ditService: DitService,
         val methodFanInFanOutMap = fanInFanOutService.calculateAtMethodLevel(systemId)
 
         val methodMetrics = methods.map {
-            MethodMetric(systemId, it.toVO(),
-                    methodFanInFanOutMap[it.id]?.fanIn ?: 0, methodFanInFanOutMap[it.id]?.fanOut ?: 0)
+            MethodMetric(
+                systemId, it.toVO(),
+                methodFanInFanOutMap[it.id]?.fanIn ?: 0, methodFanInFanOutMap[it.id]?.fanOut ?: 0
+            )
         }
         log.info("Finished calculate methodMetric in systemId $systemId")
 
@@ -147,12 +151,14 @@ class MetricPersistApplService(val ditService: DitService,
         val classFanInFanOutMap = async { fanInFanOutService.calculateAtClassLevel(systemId) }
 
         val classMetrics = jClasses.map {
-            ClassMetric(systemId, it.toVO(),
-                    ditMap.await()[it.id],
-                    nocMap.await()[it.id],
-                    lcom4Map.await()[it.id],
-                    classFanInFanOutMap.await()[it.id]?.fanIn ?: 0,
-                    classFanInFanOutMap.await()[it.id]?.fanOut ?: 0)
+            ClassMetric(
+                systemId, it.toVO(),
+                ditMap.await()[it.id],
+                nocMap.await()[it.id],
+                lcom4Map.await()[it.id],
+                classFanInFanOutMap.await()[it.id]?.fanIn ?: 0,
+                classFanInFanOutMap.await()[it.id]?.fanOut ?: 0
+            )
         }
         classMetricRepository.insertOrUpdateClassMetric(systemId, classMetrics)
         log.info("-----------------------------------------------------------------------")

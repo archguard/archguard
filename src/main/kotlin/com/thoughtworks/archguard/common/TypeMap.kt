@@ -27,5 +27,4 @@ object TypeMap {
         // TODO: support more type https://asm.ow2.io/javadoc/constant-values.html#org.objectweb.asm.Opcodes
         return methodTypes
     }
-
 }

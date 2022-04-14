@@ -6,5 +6,4 @@ interface ProfileRepository {
     fun create(profile: QualityGateProfile)
     fun update(profile: QualityGateProfile)
     fun delete(id: Long)
-
 }

@@ -13,8 +13,8 @@ class ChangeEntryRepositoryImpl(val jdbi: Jdbi) : ChangeEntryRepository {
         return jdbi.withHandle<List<ChangeEntryPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ChangeEntryPO::class.java))
             it.createQuery(sql)
-                    .mapTo(ChangeEntryPO::class.java)
-                    .list()
+                .mapTo(ChangeEntryPO::class.java)
+                .list()
         }.map { it.toChangeEntry() }
     }
 }

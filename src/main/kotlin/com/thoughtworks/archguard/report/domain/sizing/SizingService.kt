@@ -8,8 +8,10 @@ import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO.Companion
 import org.springframework.stereotype.Service
 
 @Service
-class SizingService(val thresholdSuiteService: ThresholdSuiteService,
-                    val sizingRepository: SizingRepository) {
+class SizingService(
+    val thresholdSuiteService: ThresholdSuiteService,
+    val sizingRepository: SizingRepository
+) {
 
     fun getModulePackageCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ModuleSizing>, Long, Int> {
         validPagingParam(limit, offset)
@@ -51,7 +53,6 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
-
     fun getPackageClassCountSizingAboveThresholdByFilterSizing(systemId: Long, filter: FilterSizing): Triple<List<PackageSizing>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
@@ -92,7 +93,6 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
-
     fun getClassSizingListAboveLineThreshold(systemId: Long, filter: FilterSizing): Triple<List<ClassSizingWithLine>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
@@ -109,7 +109,6 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         return Triple(data, count, threshold)
     }
 
-
     fun getMethodSizingSmellCount(systemId: Long): Long {
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
         return sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
@@ -119,21 +118,21 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_LOC)
         val methodCountThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_CLASS_BY_FUNC_COUNT)
         return sizingRepository.getClassSizingAboveLineThresholdCount(systemId, locThreshold) +
-                sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, methodCountThreshold)
+            sizingRepository.getClassSizingListAboveMethodCountThresholdCount(systemId, methodCountThreshold)
     }
 
     fun getModuleSizingSmellCount(systemId: Long): Long {
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_PACKAGE_COUNT)
         val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_LOC)
         return sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, locThreshold) +
-                sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold)
+            sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold)
     }
 
     fun getPackageSizingSmellCount(systemId: Long): Long {
         val locThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_LOC)
         val clzCountThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
         return sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, locThreshold) +
-                sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, clzCountThreshold)
+            sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, clzCountThreshold)
     }
 
     fun getSizingReport(systemId: Long): Map<BadSmellType, Long> {
@@ -142,10 +141,11 @@ class SizingService(val thresholdSuiteService: ThresholdSuiteService,
         val packageSizing = getPackageSizingSmellCount(systemId)
         val moduleSizing = getModuleSizingSmellCount(systemId)
 
-        return mapOf((BadSmellType.SIZINGMETHOD to methodSizing),
-                (BadSmellType.SIZINGCLASS to classSizing),
-                (BadSmellType.SIZINGPACKAGE to packageSizing),
-                (BadSmellType.SIZINGMODULES to moduleSizing))
+        return mapOf(
+            (BadSmellType.SIZINGMETHOD to methodSizing),
+            (BadSmellType.SIZINGCLASS to classSizing),
+            (BadSmellType.SIZINGPACKAGE to packageSizing),
+            (BadSmellType.SIZINGMODULES to moduleSizing)
+        )
     }
-
 }

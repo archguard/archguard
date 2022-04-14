@@ -15,29 +15,27 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
         }
         return jdbi.withHandle<List<PackageCoupling>, Exception> {
             val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from metric_package where system_id = :systemId and " +
-                    "(fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) " +
-                    orderSqlPiece + ", moduleName limit :limit offset :offset"
+                "(fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) " +
+                orderSqlPiece + ", moduleName limit :limit offset :offset"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("offset", offset)
-                    .bind("limit", limit)
-                    .bind("packageFanInThreshold", packageFanInThreshold)
-                    .bind("packageFanOutThreshold", packageFanOutThreshold)
-                    .mapTo(PackageCouplingPO::class.java).list().map { it.toPackageCoupling() }
+                .bind("systemId", systemId)
+                .bind("offset", offset)
+                .bind("limit", limit)
+                .bind("packageFanInThreshold", packageFanInThreshold)
+                .bind("packageFanOutThreshold", packageFanOutThreshold)
+                .mapTo(PackageCouplingPO::class.java).list().map { it.toPackageCoupling() }
         }
-
     }
 
     override fun getCouplingAboveThresholdCount(systemId: Long, packageFanInThreshold: Int, packageFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from metric_package where system_id = :systemId and (fanin > :packageFanInThreshold or fanout > :packageFanOutThreshold) "
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("packageFanInThreshold", packageFanInThreshold)
-                    .bind("packageFanOutThreshold", packageFanOutThreshold)
-                    .mapTo(Long::class.java).one()
+                .bind("systemId", systemId)
+                .bind("packageFanInThreshold", packageFanInThreshold)
+                .bind("packageFanOutThreshold", packageFanOutThreshold)
+                .mapTo(Long::class.java).one()
         }
-
     }
 
     override fun getCouplingAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
@@ -60,25 +58,23 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("level1Start", thresholdRanges[0].first)
-                    .bind("level1End", thresholdRanges[0].last)
-                    .bind("level2Start", thresholdRanges[1].first)
-                    .bind("level2End", thresholdRanges[0].last)
-                    .bind("level3Start", thresholdRanges[2].first)
-                    .mapTo(BadSmellCalculateResult::class.java)
-                    .one()
+                .bind("systemId", systemId)
+                .bind("level1Start", thresholdRanges[0].first)
+                .bind("level1End", thresholdRanges[0].last)
+                .bind("level2Start", thresholdRanges[1].first)
+                .bind("level2End", thresholdRanges[0].last)
+                .bind("level3Start", thresholdRanges[2].first)
+                .mapTo(BadSmellCalculateResult::class.java)
+                .one()
         }
-
     }
 
     override fun getAllCoupling(systemId: Long): List<PackageCoupling> {
         return jdbi.withHandle<List<PackageCoupling>, Exception> {
             val sql = "select id, module_name as moduleName, package_name as packageName, fanin as fanIn, fanout as fanOut from metric_package where system_id = :systemId order by fanIn desc, fanOut desc, moduleName"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(PackageCouplingPO::class.java).list().map { it.toPackageCoupling() }
+                .bind("systemId", systemId)
+                .mapTo(PackageCouplingPO::class.java).list().map { it.toPackageCoupling() }
         }
-
     }
 }

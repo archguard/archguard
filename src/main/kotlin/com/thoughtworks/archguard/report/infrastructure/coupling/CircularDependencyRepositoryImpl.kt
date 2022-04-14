@@ -12,12 +12,12 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
         val sql = "select circular_dependency from metric_circular_dependency where system_id=:system_id and type=:type order by circular_dependency LIMIT :limit OFFSET :offset"
         return jdbi.withHandle<List<String>, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("type", type)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
-                    .mapTo(String::class.java)
-                    .list()
+                .bind("system_id", systemId)
+                .bind("type", type)
+                .bind("limit", limit)
+                .bind("offset", offset)
+                .mapTo(String::class.java)
+                .list()
         }
     }
 
@@ -25,10 +25,10 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
         val sql = "select count(1) from metric_circular_dependency where system_id=:system_id and type=:type"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("type", type)
-                    .mapTo(Long::class.java)
-                    .one()
+                .bind("system_id", systemId)
+                .bind("type", type)
+                .mapTo(Long::class.java)
+                .one()
         }
     }
 
@@ -46,15 +46,15 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("type", type)
-                    .bind("level1Start", thresholdRanges[0].first)
-                    .bind("level1End", thresholdRanges[0].last)
-                    .bind("level2Start", thresholdRanges[1].first)
-                    .bind("level2End", thresholdRanges[0].last)
-                    .bind("level3Start", thresholdRanges[2].first)
-                    .mapTo(BadSmellCalculateResult::class.java)
-                    .one()
+                .bind("systemId", systemId)
+                .bind("type", type)
+                .bind("level1Start", thresholdRanges[0].first)
+                .bind("level1End", thresholdRanges[0].last)
+                .bind("level2Start", thresholdRanges[1].first)
+                .bind("level2End", thresholdRanges[0].last)
+                .bind("level3Start", thresholdRanges[2].first)
+                .mapTo(BadSmellCalculateResult::class.java)
+                .one()
         }
     }
 }

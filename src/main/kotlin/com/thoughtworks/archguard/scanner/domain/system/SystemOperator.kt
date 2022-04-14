@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.scanner.domain.system
 import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceException
 import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
-import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
@@ -119,8 +118,8 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         // todo: display repo with password
         val repoCombineWithAuthInfo = processGitUrl(repo)
 
-        //TODO: Can use [git clone XXX --shallow-since "2020-09-05T00:00:00"] to shallow clone with a history after the specified time. 
-        // So we can get the files often modified in git commit after the specified time via [coca git -t] and clone faster 
+        // TODO: Can use [git clone XXX --shallow-since "2020-09-05T00:00:00"] to shallow clone with a history after the specified time.
+        // So we can get the files often modified in git commit after the specified time via [coca git -t] and clone faster
         val gitCommand = GitCommand(workspace, systemInfo.branch, false, arrayListOf(), logStream)
 
         return if (isGitRepository(workspace)) {
@@ -128,7 +127,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
             gitCommand.pullCode()
         } else {
             if (workspace.exists()) {
-                FileSystemUtils.deleteRecursively(workspace);
+                FileSystemUtils.deleteRecursively(workspace)
                 workspace.mkdir()
             }
 

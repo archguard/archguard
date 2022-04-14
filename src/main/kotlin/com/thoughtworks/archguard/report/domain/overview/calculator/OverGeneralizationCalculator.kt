@@ -28,5 +28,4 @@ class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneral
             }
         }
     }
-
 }

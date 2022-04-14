@@ -21,14 +21,16 @@ import kotlin.io.path.createTempDirectory
 import kotlin.io.path.pathString
 
 @Service
-class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbUrl: String,
-                                     @Value("\${spring.datasource.username}") val username: String,
-                                     @Value("\${spring.datasource.password}") val password: String,
-                                     @Value("\${init.scan.status}") val updateScanStatus: Boolean,
-                                     val hubService: HubExecutorService,
-                                     val systemInfoRepository: SystemInfoRepository,
-                                     val analysisModuleClient: AnalysisModuleClient,
-                                     val scanner2Client: Scanner2Client) {
+class ArchitectureDependencyAnalysis(
+    @Value("\${spring.datasource.url}") val dbUrl: String,
+    @Value("\${spring.datasource.username}") val username: String,
+    @Value("\${spring.datasource.password}") val password: String,
+    @Value("\${init.scan.status}") val updateScanStatus: Boolean,
+    val hubService: HubExecutorService,
+    val systemInfoRepository: SystemInfoRepository,
+    val analysisModuleClient: AnalysisModuleClient,
+    val scanner2Client: Scanner2Client
+) {
     private val log = LoggerFactory.getLogger(ArchitectureDependencyAnalysis::class.java)
     private val runningSystemIdSet = CopyOnWriteArraySet<Long>()
     private val executor = Executors.newFixedThreadPool(5)
@@ -113,7 +115,7 @@ class ArchitectureDependencyAnalysis(@Value("\${spring.datasource.url}") val dbU
 
     private fun getSystemInfo(systemId: Long): SystemInfo {
         return systemInfoRepository.getSystemInfo(systemId)
-                ?: throw EntityNotFoundException("system info is not exists: $systemId")
+            ?: throw EntityNotFoundException("system info is not exists: $systemId")
     }
 
     private fun startScanSystem(systemInfo: SystemInfo) {

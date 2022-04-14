@@ -20,8 +20,6 @@ class Node(var node: String, var type: TypeEnum) {
         result = 31 * result + type.hashCode()
         return result
     }
-
-
 }
 
 enum class TypeEnum {

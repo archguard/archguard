@@ -8,7 +8,6 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
-
 @Repository
 class JAnnotationRepositoryImpl : JAnnotationRepository {
 
@@ -20,23 +19,21 @@ class JAnnotationRepositoryImpl : JAnnotationRepository {
         return jdbi.withHandle<List<JAnnotation>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JAnnotation::class.java))
             it.createQuery(sql)
-                    .mapTo(JAnnotation::class.java)
-                    .list()
+                .mapTo(JAnnotation::class.java)
+                .list()
         }
     }
-
 
     override fun getJAnnotationValues(annotationId: String): Map<String, String> {
         val sql = "select * from code_annotation_value where annotationId = '$annotationId'"
         val list = jdbi.withHandle<List<JAnnotationValueDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JAnnotationValueDto::class.java))
             it.createQuery(sql)
-                    .mapTo(JAnnotationValueDto::class.java)
-                    .list()
+                .mapTo(JAnnotationValueDto::class.java)
+                .list()
         }
 
         return list.associateBy({ it.key }, { it.value })
-
     }
 
     override fun getJAnnotationWithValueByName(name: String): List<JAnnotation> {
@@ -44,6 +41,4 @@ class JAnnotationRepositoryImpl : JAnnotationRepository {
         jAnnotations.forEach { it.values = getJAnnotationValues(it.id) }
         return jAnnotations
     }
-
-
 }

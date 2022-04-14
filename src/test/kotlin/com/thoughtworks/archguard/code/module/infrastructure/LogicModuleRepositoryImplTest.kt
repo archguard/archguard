@@ -23,17 +23,18 @@ internal class LogicModuleRepositoryImplTest {
     @Test
     @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should only select normal data from logic module`() {
-        val systemId:Long = 1
+        val systemId: Long = 1
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(systemId, true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).usingRecursiveComparison().isEqualTo(
-                LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider"))))
+            LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
+        )
     }
 
     @Test
     @Sql("classpath:sqls/insert_logic_module.sql")
     internal fun `should select all data from logic module`() {
-        val systemId:Long = 1
+        val systemId: Long = 1
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         assertThat(logicModules.size).isEqualTo(4)
         val lg1 = LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
@@ -43,7 +44,10 @@ internal class LogicModuleRepositoryImplTest {
         lg3.hide()
         val lg4 = LogicModule.create("id4", "dubbo-top", listOf(JClassVO.create("dubbo-api.DemoService")), listOf(lg3))
         lg4.hide()
-        assertThat(logicModules).usingRecursiveFieldByFieldElementComparator().containsAll(listOf(
-                lg1, lg2, lg3, lg4))
+        assertThat(logicModules).usingRecursiveFieldByFieldElementComparator().containsAll(
+            listOf(
+                lg1, lg2, lg3, lg4
+            )
+        )
     }
 }

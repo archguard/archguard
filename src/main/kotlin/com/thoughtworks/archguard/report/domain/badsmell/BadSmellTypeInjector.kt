@@ -5,21 +5,23 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
-class BadSmellTypeInjector(val moduleCalculator: ModuleOverSizingCalculator,
-                           val packageCalculator: PackageOverSizingCalculator,
-                           val classCalculator: ClassOverSizingCalculator,
-                           val methodCalculator: MethodOverSizingCalculator,
-                           val classHubCalculator: ClassHubCouplingCalculator,
-                           val methodHubCalculator: MethodHubCouplingCalculator,
-                           val packageHubCalculator: PackageHubCouplingCalculator,
-                           val moduleHubCalculator: ModuleHubCouplingCalculator,
-                           val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
-                           val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
-                           val circularDependencyCalculator: CircularDependencyCalculator,
-                           val redundantElementCalculator: RedundantElementCalculator,
-                           val overGeneralizationCalculator: OverGeneralizationCalculator,
-                           val dataClassCalculator: DataClassCalculator,
-                           val shotgunSurgeryCalculator: ShotgunSurgeryCalculator) {
+class BadSmellTypeInjector(
+    val moduleCalculator: ModuleOverSizingCalculator,
+    val packageCalculator: PackageOverSizingCalculator,
+    val classCalculator: ClassOverSizingCalculator,
+    val methodCalculator: MethodOverSizingCalculator,
+    val classHubCalculator: ClassHubCouplingCalculator,
+    val methodHubCalculator: MethodHubCouplingCalculator,
+    val packageHubCalculator: PackageHubCouplingCalculator,
+    val moduleHubCalculator: ModuleHubCouplingCalculator,
+    val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
+    val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
+    val circularDependencyCalculator: CircularDependencyCalculator,
+    val redundantElementCalculator: RedundantElementCalculator,
+    val overGeneralizationCalculator: OverGeneralizationCalculator,
+    val dataClassCalculator: DataClassCalculator,
+    val shotgunSurgeryCalculator: ShotgunSurgeryCalculator
+) {
     @PostConstruct
     fun postConstruct() {
         BadSmellType.SIZINGMODULES.badSmellCalculator = moduleCalculator

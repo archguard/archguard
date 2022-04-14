@@ -10,5 +10,4 @@ class PmdTool(private val context: ScanContext) {
         val reportFile = configs?.get("reportFile")?.split(',')
         return reportFile?.map { File(it) }?.filter { it.exists() } ?: emptyList()
     }
-
 }

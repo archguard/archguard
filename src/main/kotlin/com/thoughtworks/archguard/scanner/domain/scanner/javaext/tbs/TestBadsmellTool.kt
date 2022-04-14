@@ -39,7 +39,6 @@ class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : Te
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
 
-
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
         FileOperator.copyTo(File(SCAN_TEST_BADSMELL_JAR), File("$systemRoot/scan_scan_test_badsmell.jar"))
@@ -47,11 +46,10 @@ class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : Te
             val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x scan_git.jar tool Exception")
         }
     }
-
 
     private fun checkIfExistInLocal(): Boolean {
         return File(SCAN_TEST_BADSMELL_JAR).exists()

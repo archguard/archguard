@@ -23,6 +23,4 @@ class OverGeneralizationService(val overGeneralizationRepository: OverGeneraliza
         val overGeneralizationCount = overGeneralizationRepository.getOverGeneralizationCount(systemId)
         return mapOf((BadSmellType.OVER_GENERALIZATION to overGeneralizationCount))
     }
-
-
 }

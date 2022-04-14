@@ -15,15 +15,15 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
         }
         return jdbi.withHandle<List<ModuleCoupling>, Exception> {
             val sql = "select id, module_name as moduleName, fanin as fanIn, fanout as fanOut from metric_module where system_id = :systemId and " +
-                    "(fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) " +
-                    orderSqlPiece + ", moduleName limit :limit offset :offset"
+                "(fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) " +
+                orderSqlPiece + ", moduleName limit :limit offset :offset"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("offset", offset)
-                    .bind("limit", limit)
-                    .bind("moduleFanInThreshold", moduleFanInThreshold)
-                    .bind("moduleFanOutThreshold", moduleFanOutThreshold)
-                    .mapTo(ModuleCouplingPO::class.java).list().map { it.toModuleCoupling() }
+                .bind("systemId", systemId)
+                .bind("offset", offset)
+                .bind("limit", limit)
+                .bind("moduleFanInThreshold", moduleFanInThreshold)
+                .bind("moduleFanOutThreshold", moduleFanOutThreshold)
+                .mapTo(ModuleCouplingPO::class.java).list().map { it.toModuleCoupling() }
         }
     }
 
@@ -31,10 +31,10 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1) from metric_module where system_id = :systemId and (fanin > :moduleFanInThreshold or fanout > :moduleFanOutThreshold) "
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("moduleFanInThreshold", moduleFanInThreshold)
-                    .bind("moduleFanOutThreshold", moduleFanOutThreshold)
-                    .mapTo(Long::class.java).one()
+                .bind("systemId", systemId)
+                .bind("moduleFanInThreshold", moduleFanInThreshold)
+                .bind("moduleFanOutThreshold", moduleFanOutThreshold)
+                .mapTo(Long::class.java).one()
         }
     }
 
@@ -58,14 +58,14 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("level1Start", thresholdRanges[0].first)
-                    .bind("level1End", thresholdRanges[0].last)
-                    .bind("level2Start", thresholdRanges[1].first)
-                    .bind("level2End", thresholdRanges[0].last)
-                    .bind("level3Start", thresholdRanges[2].first)
-                    .mapTo(BadSmellCalculateResult::class.java)
-                    .one()
+                .bind("systemId", systemId)
+                .bind("level1Start", thresholdRanges[0].first)
+                .bind("level1End", thresholdRanges[0].last)
+                .bind("level2Start", thresholdRanges[1].first)
+                .bind("level2End", thresholdRanges[0].last)
+                .bind("level3Start", thresholdRanges[2].first)
+                .mapTo(BadSmellCalculateResult::class.java)
+                .one()
         }
     }
 
@@ -73,9 +73,8 @@ class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
         return jdbi.withHandle<List<ModuleCoupling>, Exception> {
             val sql = "select id, module_name as moduleName, fanin as fanIn, fanout as fanOut from metric_module where system_id = :systemId order by fanIn desc, fanOut desc, moduleName"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(ModuleCouplingPO::class.java).list().map { it.toModuleCoupling() }
+                .bind("systemId", systemId)
+                .mapTo(ModuleCouplingPO::class.java).list().map { it.toModuleCoupling() }
         }
-
     }
 }

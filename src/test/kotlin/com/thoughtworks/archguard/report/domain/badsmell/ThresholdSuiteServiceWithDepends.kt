@@ -5,6 +5,5 @@ import org.springframework.stereotype.Service
 
 @Service
 @DependsOn("flywayInitializer")
-class ThresholdSuiteServiceWithDepends(thresholdSuiteRepository: ThresholdSuiteRepository)
-    : ThresholdSuiteService(thresholdSuiteRepository) {
-}
+class ThresholdSuiteServiceWithDepends(thresholdSuiteRepository: ThresholdSuiteRepository) :
+    ThresholdSuiteService(thresholdSuiteRepository)

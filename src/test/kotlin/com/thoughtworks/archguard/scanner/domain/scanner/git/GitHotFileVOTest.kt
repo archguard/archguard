@@ -1,7 +1,10 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 internal class GitHotFileVOTest {
     @Test
@@ -14,7 +17,7 @@ internal class GitHotFileVOTest {
     @Test
     internal fun shouldReturnTrueWhenCheckIfJVMClassGivenJavaFile() {
         val gitHotFile = GitHotFileVO("src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.java", 10)
-        
+
         assertTrue(gitHotFile.isJVMClass())
     }
 
@@ -73,5 +76,4 @@ internal class GitHotFileVOTest {
 
         assertEquals("dubbo-samples-zookeeper", gitHotFile.moduleName())
     }
-
 }

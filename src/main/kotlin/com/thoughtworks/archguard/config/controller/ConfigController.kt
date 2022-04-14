@@ -23,32 +23,40 @@ class ConfigController(val configureService: ConfigureService) {
     }
 
     @PostMapping
-    fun create(@PathVariable("systemId") systemId: Long,
-               @RequestBody config: Configure): ResponseEntity<Nothing> {
+    fun create(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody config: Configure
+    ): ResponseEntity<Nothing> {
         configureService.create(config)
         config.systemId = systemId
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("systemId") systemId: Long,
-               @PathVariable("id") id: String,
-               @RequestBody config: Configure): ResponseEntity<Nothing> {
+    fun update(
+        @PathVariable("systemId") systemId: Long,
+        @PathVariable("id") id: String,
+        @RequestBody config: Configure
+    ): ResponseEntity<Nothing> {
         configureService.update(id, config)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable("systemId") systemId: Long,
-               @PathVariable("id") id: String): ResponseEntity<Nothing> {
+    fun delete(
+        @PathVariable("systemId") systemId: Long,
+        @PathVariable("id") id: String
+    ): ResponseEntity<Nothing> {
         configureService.delete(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @PostMapping("/types/{type}")
-    fun updateConfigsByType(@PathVariable("systemId") systemId: Long,
-                            @PathVariable("type") type: String,
-                            @RequestBody configs: List<Configure>): ResponseEntity<Nothing> {
+    fun updateConfigsByType(
+        @PathVariable("systemId") systemId: Long,
+        @PathVariable("type") type: String,
+        @RequestBody configs: List<Configure>
+    ): ResponseEntity<Nothing> {
         configureService.updateConfigsByType(systemId, type, configs)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }

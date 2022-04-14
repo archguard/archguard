@@ -22,7 +22,3 @@ class EvolutionBadSmellController(val badSmellThresholdService: BadSmellThreshol
         return badSmellThresholdService.getBadSmellSuiteWithSelectedInfoBySystemId(systemId)
     }
 }
-
-
-
-

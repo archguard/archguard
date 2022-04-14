@@ -36,7 +36,7 @@ class GraphServiceTest {
 
     @Test
     fun `should get graph of all logic modules dependency`() {
-        val systemId: Long = 1;
+        val systemId: Long = 1
         val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("submodule1.class")))
         val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("submodule2.class")))
         val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("submodule3.class")))
@@ -61,7 +61,7 @@ class GraphServiceTest {
 
     @Test
     fun `map bottom logic module to top level logic module`() {
-        val systemId: Long = 1;
+        val systemId: Long = 1
         val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
         val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
         val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
@@ -70,14 +70,14 @@ class GraphServiceTest {
 
         val service1 = LogicModule.create("id11", "lg11", emptyList(), listOf(logicModule1, logicModule3))
         val service2 = LogicModule.create("id12", "lg12", emptyList(), listOf(logicModule2, logicModule4))
-        val bottomLogicModules = listOf(Dependency(logicModule1, logicModule2),
-                Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5))
+        val bottomLogicModules = listOf(
+            Dependency(logicModule1, logicModule2),
+            Dependency(logicModule3, logicModule4), Dependency(logicModule4, logicModule5)
+        )
         every { logicModuleRepository.getAllBySystemId(systemId) } returns listOf(logicModule1, logicModule2, logicModule3, logicModule4, service1, service2)
         val serviceDependencies = service.mapModuleDependencyToServiceDependency(systemId, bottomLogicModules)
         Assertions.assertThat(serviceDependencies.size).isEqualTo(3)
         val results = listOf(Dependency(service1, service2), Dependency(service1, service2), Dependency(service2, logicModule5))
         Assertions.assertThat(serviceDependencies).usingRecursiveFieldByFieldElementComparator().containsAll(results)
-
     }
-
 }

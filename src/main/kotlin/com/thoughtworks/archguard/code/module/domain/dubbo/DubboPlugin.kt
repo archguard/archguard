@@ -39,7 +39,6 @@ class DubboPlugin : AbstractDependPlugin() {
             return listOf(methodDependency)
         }
         return mapCalleeToReal(systemId, caller, callee).map { Dependency(caller, it) }
-
     }
 
     fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO> {
@@ -50,5 +49,4 @@ class DubboPlugin : AbstractDependPlugin() {
         val realCalleeClasses = mapCalleeToReal(systemId, caller.clazz, callee.clazz)
         return realCalleeClasses.map { JMethodVO(callee.name, it, callee.returnType, callee.argumentTypes) }
     }
-
 }

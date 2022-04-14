@@ -18,11 +18,11 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         val moduleStore = GraphStore()
 
         moduleDependencies
-                .groupBy { it.caller }
-                .forEach {
-                    it.value.groupBy { i -> i.callee }
-                            .forEach { i -> moduleStore.addEdge(it.key, i.key, i.value.size) }
-                }
+            .groupBy { it.caller }
+            .forEach {
+                it.value.groupBy { i -> i.callee }
+                    .forEach { i -> moduleStore.addEdge(it.key, i.key, i.value.size) }
+            }
 
         return moduleStore.getGraph()
     }
@@ -65,5 +65,4 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         }
         return servicesDependencies
     }
-
 }

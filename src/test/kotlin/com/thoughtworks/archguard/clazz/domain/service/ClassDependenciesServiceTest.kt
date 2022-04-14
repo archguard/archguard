@@ -35,20 +35,19 @@ internal class ClassDependenciesServiceTest {
 
     @Test
     internal fun `should get class dependencees`() {
-        //given
+        // given
         val systemId = 1L
 
         val targetName = "clazz"
         val target = JClass("1", targetName, "module")
         val callee1 = JClass("2", "callee1", "module")
         val callee2 = JClass("3", "callee2", "module")
-        //when
+        // when
         every { repo.findDependencees(target.id) } returns listOf(callee1)
         every { repo.findDependencees(callee1.id) } returns listOf(callee2)
 
-
         val result = service.findDependencies(systemId, target, 2)
-        //then
+        // then
         assertThat(result.dependencies.size).isEqualTo(1)
         assertThat(result.dependencies[0].name).isEqualTo("callee1")
         assertThat(result.dependencies[0].dependencies.size).isEqualTo(1)
@@ -57,20 +56,20 @@ internal class ClassDependenciesServiceTest {
 
     @Test
     internal fun `should get class dependencees when deep is larger`() {
-        //given
+        // given
         val targetName = "clazz"
         val systemId = 1L
 
         val target = JClass("1", targetName, "module")
         val dependencee1 = JClass("2", "dependencee1", "module")
         val dependencee2 = JClass("3", "dependencee2", "module")
-        //when
+        // when
         every { repo.findDependencees(target.id) } returns listOf(dependencee1)
         every { repo.findDependencees(dependencee1.id) } returns listOf(dependencee2)
         every { repo.findDependencees(dependencee2.id) } returns listOf()
 
         val result = service.findDependencies(systemId, target, 4)
-        //then
+        // then
         assertThat(result.dependencies.size).isEqualTo(1)
         assertThat(result.dependencies[0].name).isEqualTo("dependencee1")
         assertThat(result.dependencies[0].dependencies.size).isEqualTo(1)

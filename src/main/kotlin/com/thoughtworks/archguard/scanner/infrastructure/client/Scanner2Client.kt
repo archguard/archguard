@@ -6,7 +6,6 @@ import com.thoughtworks.archguard.scanner2.controller.ShotgunSurgeryController
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
-
 @Component
 class Scanner2Client(
     val metricController: MetricController,
@@ -24,5 +23,4 @@ class Scanner2Client(
         accessController.persist(systemId)
         log.info("send metrics analysis request to module service")
     }
-
 }

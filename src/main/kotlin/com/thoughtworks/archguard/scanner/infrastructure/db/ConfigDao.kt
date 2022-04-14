@@ -4,11 +4,11 @@ import com.thoughtworks.archguard.scanner.domain.config.dto.ConfigureDTO
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch
 
-
 interface ConfigDao {
 
-    @SqlBatch("insert into system_scanner_configure (`id`, `type`, `key`, `value`, `updatedAt`, `createdAt`) " +
-            "values (:config.id, :config.type, :config.key, :config.value, NOW(), NOW())")
+    @SqlBatch(
+        "insert into system_scanner_configure (`id`, `type`, `key`, `value`, `updatedAt`, `createdAt`) " +
+            "values (:config.id, :config.type, :config.key, :config.value, NOW(), NOW())"
+    )
     fun saveAll(@BindBean("config") configList: List<ConfigureDTO>)
-
 }

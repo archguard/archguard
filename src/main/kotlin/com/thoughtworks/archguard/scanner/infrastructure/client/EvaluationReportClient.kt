@@ -12,7 +12,6 @@ class EvaluationReportClient(@Value("\${client.host}") val baseUrl: String) {
             EvaluationType.QUALITY -> RestTemplate().postForObject("$baseUrl/api/quality-evaluations", null, String::class.java)
         }
     }
-
 }
 
 enum class EvaluationType {

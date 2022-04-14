@@ -37,14 +37,14 @@ class EvaluationApiATest {
     fun should_generate_evaluation() {
         val request = MockMvcRequestBuilders.request(HttpMethod.POST, "/quality-evaluations")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val content = result.response.contentAsString
 
         val idSaved = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
             handle.createQuery("select id from report_evaluation")
-                    .mapTo(String::class.java).one()
+                .mapTo(String::class.java).one()
         }
         assertEquals(idSaved, content)
     }
@@ -54,8 +54,8 @@ class EvaluationApiATest {
     fun should_get_evaluations() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluations")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val jsonArray = JSONArray(result.response.contentAsString)
         assertEquals(jsonArray.length(), 1)
@@ -70,12 +70,12 @@ class EvaluationApiATest {
     fun should_get_evaluation_by_id() {
         val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
             handle.createQuery("select id from report_evaluation")
-                    .mapTo(String::class.java).one()
+                .mapTo(String::class.java).one()
         }
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluations/$id")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val evaluation = JSONObject(result.response.contentAsString)
 
@@ -87,14 +87,16 @@ class EvaluationApiATest {
     fun should_get_evaluation_detail_by_id() {
         val id = jdbi.withHandle<String, RuntimeException> { handle: Handle ->
             handle.createQuery("select id from report_evaluation")
-                    .mapTo(String::class.java).one()
+                .mapTo(String::class.java).one()
         }
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/evaluation-details/$id")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
-        assertEquals(result.response.contentAsString,
-                "{\"changeImpactReportDetail\":{\"scatteredCommits\":[],\"allCommits\":[],\"scatteredPercent\":\"NaN\"},\"codeStyleReportDetail\":null,\"dbCouplingReportDetail\":null,\"layerReportDetail\":null,\"moduleCouplingReportDetail\":{\"latestQualityList\":[],\"moduleInstabilityAverage\":\"NaN\",\"count8\":0,\"count8To6\":0,\"count6\":0},\"testProtectionReportDetail\":{\"testBs\":[],\"totalTest\":0,\"hotSpotTest\":[],\"hotSpotTestBadSmell\":[],\"classCoverageByFiles\":[],\"hotSpotFile\":[],\"classCoverageByModules\":[],\"hotSpotModule\":[],\"uselessTest\":0,\"latestUselessTest\":0,\"uselessPercent\":0.0,\"latestTestCoverage\":\"NaN\",\"latestModuleTestCoverage\":\"NaN\",\"testCoverage\":\"NaN\",\"modelCoverage\":\"NaN\"}}")
+        assertEquals(
+            result.response.contentAsString,
+            "{\"changeImpactReportDetail\":{\"scatteredCommits\":[],\"allCommits\":[],\"scatteredPercent\":\"NaN\"},\"codeStyleReportDetail\":null,\"dbCouplingReportDetail\":null,\"layerReportDetail\":null,\"moduleCouplingReportDetail\":{\"latestQualityList\":[],\"moduleInstabilityAverage\":\"NaN\",\"count8\":0,\"count8To6\":0,\"count6\":0},\"testProtectionReportDetail\":{\"testBs\":[],\"totalTest\":0,\"hotSpotTest\":[],\"hotSpotTestBadSmell\":[],\"classCoverageByFiles\":[],\"hotSpotFile\":[],\"classCoverageByModules\":[],\"hotSpotModule\":[],\"uselessTest\":0,\"latestUselessTest\":0,\"uselessPercent\":0.0,\"latestTestCoverage\":\"NaN\",\"latestModuleTestCoverage\":\"NaN\",\"testCoverage\":\"NaN\",\"modelCoverage\":\"NaN\"}}"
+        )
     }
 }

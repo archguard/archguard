@@ -29,7 +29,7 @@ class ThresholdSuiteService(val thresholdSuiteRepository: ThresholdSuiteReposito
 
     fun getThresholdValue(systemId: Long, key: ThresholdKey): Int {
         val newThreshold = allBadSmellThresholdSuites.filter { it.systemIds.contains(systemId) }
-        if(newThreshold.isNotEmpty()) {
+        if (newThreshold.isNotEmpty()) {
             return newThreshold[0].getValue(key)
         }
 

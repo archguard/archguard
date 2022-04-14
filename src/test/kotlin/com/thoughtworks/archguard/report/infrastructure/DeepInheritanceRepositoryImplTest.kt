@@ -27,14 +27,20 @@ internal class DeepInheritanceRepositoryImplTest {
     fun should_get_data_clumps_list_by_paging() {
 
         val classDitExceedThreshold = deepInheritanceRepositoryImpl
-                .getDitAboveThresholdList(1, 1, 1, 0)
+            .getDitAboveThresholdList(1, 1, 1, 0)
         kotlin.test.assertEquals(1, classDitExceedThreshold.size)
         kotlin.test.assertEquals(3, classDitExceedThreshold.get(0).dit)
-        kotlin.test.assertEquals("org.apache.dubbo.demo",
-                classDitExceedThreshold.get(0).packageName)
-        kotlin.test.assertEquals("DemoService",
-                classDitExceedThreshold.get(0).typeName)
-        kotlin.test.assertEquals("dubbo-demo-interface",
-                classDitExceedThreshold.get(0).moduleName)
+        kotlin.test.assertEquals(
+            "org.apache.dubbo.demo",
+            classDitExceedThreshold.get(0).packageName
+        )
+        kotlin.test.assertEquals(
+            "DemoService",
+            classDitExceedThreshold.get(0).typeName
+        )
+        kotlin.test.assertEquals(
+            "dubbo-demo-interface",
+            classDitExceedThreshold.get(0).moduleName
+        )
     }
 }

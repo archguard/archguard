@@ -7,9 +7,10 @@ import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import org.springframework.stereotype.Service
 
 @Service
-class DataClumpsService(val thresholdSuiteService: ThresholdSuiteService,
-                        val dataClumpsRepository: DataClumpsRepository) {
-
+class DataClumpsService(
+    val thresholdSuiteService: ThresholdSuiteService,
+    val dataClumpsRepository: DataClumpsRepository
+) {
 
     fun getClassDataClumpsWithTotalCount(systemId: Long, limit: Long, offset: Long): Triple<List<ClassDataClump>, Long, Int> {
         validPagingParam(limit, offset)
@@ -22,7 +23,5 @@ class DataClumpsService(val thresholdSuiteService: ThresholdSuiteService,
     fun getDataClumpReport(systemId: Long): Map<BadSmellType, Long> {
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_DATA_CLUMPS)
         return mapOf((BadSmellType.DATACLUMPS to dataClumpsRepository.getLCOM4AboveThresholdCount(systemId, threshold)))
-
     }
-
 }

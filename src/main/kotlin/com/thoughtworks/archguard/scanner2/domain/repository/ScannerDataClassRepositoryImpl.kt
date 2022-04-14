@@ -16,18 +16,18 @@ class ScannerDataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     fun deleteDataClass(systemId: Long) {
         jdbi.useHandle<Exception> {
             it.createUpdate("delete from metric_dataclass where system_id=:system_id")
-                    .bind("system_id", systemId)
-                    .execute()
+                .bind("system_id", systemId)
+                .execute()
         }
     }
 
     fun saveDataClass(dataClassPO: DataClassPO) {
         jdbi.useHandle<Exception> {
             it.createUpdate("insert into metric_dataclass (system_id, class_id, field_id) values (:system_id, :class_id, :field_id)")
-                    .bind("system_id", dataClassPO.systemId)
-                    .bind("class_id", dataClassPO.classId)
-                    .bind("field_id", dataClassPO.fieldId)
-                    .execute()
+                .bind("system_id", dataClassPO.systemId)
+                .bind("class_id", dataClassPO.classId)
+                .bind("field_id", dataClassPO.fieldId)
+                .execute()
         }
     }
 }

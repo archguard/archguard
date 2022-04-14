@@ -32,5 +32,4 @@ class ClassDependenciesService(val repo: JClassRepository, val configureService:
             doBuildDependencies(systemId, pendingClasses.flatMap { it.dependencies }, deep - 1, container)
         }
     }
-
 }

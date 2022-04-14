@@ -28,5 +28,4 @@ class TestIgnoreCalculator(val testBadSmellRepository: TestBadSmellRepository) :
             }
         }
     }
-
 }

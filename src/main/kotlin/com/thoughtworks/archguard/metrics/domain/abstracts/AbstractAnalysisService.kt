@@ -8,8 +8,10 @@ import com.thoughtworks.archguard.code.module.domain.model.PackageVO
 import org.springframework.stereotype.Service
 
 @Service
-class AbstractAnalysisService(val jClassRepository: JClassRepository,
-                              val logicModuleRepository: LogicModuleRepository) {
+class AbstractAnalysisService(
+    val jClassRepository: JClassRepository,
+    val logicModuleRepository: LogicModuleRepository
+) {
 
     fun calculatePackageAbstractRatio(systemId: Long, packageVO: PackageVO): PackageAbstractRatio {
         val classes = jClassRepository.getAllBySystemId(systemId)

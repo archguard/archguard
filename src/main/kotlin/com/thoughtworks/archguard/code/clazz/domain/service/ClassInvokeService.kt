@@ -10,8 +10,13 @@ import org.springframework.stereotype.Service
 class ClassInvokeService(val repo: JClassRepository, val configureService: ConfigureService, val classConfigService: ClassConfigService) {
     private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
 
-    fun findInvokes(systemId: Long, target: JClass, callerDeep: Int, calleeDeep: Int,
-                    needIncludeImpl: Boolean): JClass {
+    fun findInvokes(
+        systemId: Long,
+        target: JClass,
+        callerDeep: Int,
+        calleeDeep: Int,
+        needIncludeImpl: Boolean
+    ): JClass {
         findClassCallers(systemId, target, callerDeep, needIncludeImpl)
         findClassCallees(systemId, target, calleeDeep, needIncludeImpl)
         return target
@@ -27,13 +32,13 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
         var implements = listOf<JClass>()
         if (needIncludeImpl) {
             implements = repo.findClassImplements(systemId, target.name, target.module)
-                    .filter { configureService.isDisplayNode(systemId, it.name) }
+                .filter { configureService.isDisplayNode(systemId, it.name) }
             classConfigService.buildJClassColorConfig(implements, systemId)
         }
         target.implements = implements
 
         val callees = repo.findCallees(systemId, target.name, target.module)
-                .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
+            .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
         classConfigService.buildClassRelationColorConfig(callees, systemId)
         target.callees = callees
 
@@ -53,12 +58,12 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
             return
         }
         val parents = repo.findClassParents(systemId, target.module, target.name)
-                .filter { configureService.isDisplayNode(systemId, it.name) }
+            .filter { configureService.isDisplayNode(systemId, it.name) }
         classConfigService.buildJClassColorConfig(parents, systemId)
         target.parents = parents
 
         val callers = repo.findCallers(systemId, target.name, target.module)
-                .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
+            .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
         classConfigService.buildClassRelationColorConfig(callers, systemId)
         target.callers = callers
         if (deep == 1) {
@@ -68,6 +73,4 @@ class ClassInvokeService(val repo: JClassRepository, val configureService: Confi
             target.callers.map { findClassCallers(systemId, it.clazz, deep - 1, needIncludeImpl) }
         }
     }
-
-
 }

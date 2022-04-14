@@ -2,8 +2,12 @@ package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.hub.ModuleCoupling
 
-data class ModuleCouplingPO(val id: String, val moduleName: String,
-                            val fanIn: Int, val fanOut: Int) {
+data class ModuleCouplingPO(
+    val id: String,
+    val moduleName: String,
+    val fanIn: Int,
+    val fanOut: Int
+) {
     fun toModuleCoupling(): ModuleCoupling {
         var coupling = 1 - 1.0 / (fanIn + fanOut)
         if (coupling.isInfinite() || coupling.isNaN()) {

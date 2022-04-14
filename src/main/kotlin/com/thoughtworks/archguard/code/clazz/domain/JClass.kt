@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.clazz.domain
 
-import com.thoughtworks.archguard.config.domain.ConfigType
-import com.thoughtworks.archguard.config.domain.Configure
 import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
+import com.thoughtworks.archguard.config.domain.ConfigType
+import com.thoughtworks.archguard.config.domain.Configure
 import org.slf4j.LoggerFactory
 
 /**
@@ -24,7 +24,6 @@ open class JClass(val id: String, val name: String, val module: String?) {
 
     val configuresMap: MutableMap<String, String> = mutableMapOf()
 
-
     fun addClassType(clazzType: ClazzType) {
         classType.add(clazzType)
     }
@@ -36,7 +35,6 @@ open class JClass(val id: String, val name: String, val module: String?) {
     fun isAbstractClass(): Boolean {
         return classType.contains(ClazzType.ABSTRACT_CLASS)
     }
-
 
     override fun toString(): String {
         return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencies, dependencers=$dependencers, id=$id, classType=$classType)"

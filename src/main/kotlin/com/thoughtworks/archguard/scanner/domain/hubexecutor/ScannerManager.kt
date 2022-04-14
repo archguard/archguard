@@ -1,14 +1,13 @@
 package com.thoughtworks.archguard.scanner.domain.hubexecutor
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
-
 
 @Component
 class ScannerManager(@Autowired private val scanners: List<Scanner>) {

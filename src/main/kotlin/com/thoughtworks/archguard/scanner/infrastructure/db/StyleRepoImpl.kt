@@ -15,5 +15,4 @@ class StyleRepoImpl(@Autowired private val stylesDao: StyleDao) : StyleRepo {
     override fun deleteAll() {
         stylesDao.deleteAll()
     }
-
 }

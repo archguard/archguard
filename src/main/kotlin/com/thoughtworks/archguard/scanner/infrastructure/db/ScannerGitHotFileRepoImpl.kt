@@ -12,7 +12,7 @@ class ScannerGitHotFileRepoImpl(val scannerGitHotFileDao: ScannerGitHotFileDao) 
         scannerGitHotFileDao.deleteBySystemId(gitHotFiles[0].systemId)
         scannerGitHotFileDao.saveAll(gitHotFiles)
     }
-    
+
     override fun findBySystemId(systemId: Long): List<GitHotFile> {
         return scannerGitHotFileDao.findBySystemId(systemId)
     }

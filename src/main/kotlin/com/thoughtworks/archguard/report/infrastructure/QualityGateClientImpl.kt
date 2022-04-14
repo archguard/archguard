@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
-
 @Component
 class QualityGateClientImpl(@Value("\${client.host}") val baseUrl: String) : QualityGateClient {
     override fun getQualityGate(qualityGateName: String): CouplingQualityGate {

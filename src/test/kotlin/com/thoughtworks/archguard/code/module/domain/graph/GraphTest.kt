@@ -45,6 +45,5 @@ class GraphTest {
         graph.addEdge(jField3, jField4)
         assertThat(graph.getGraph().edges.size).isEqualTo(3)
         assertThat(graph.toUndirectedGraph().edges.size).isEqualTo(4)
-
     }
 }

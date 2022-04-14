@@ -27,12 +27,12 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: ScannerGitHo
         every { jClassRepository.findClassBy(any(), any(), any()) } returns JClass("1", "", "")
         spyGitHotFileScanner = spyk(GitHotFileScanner(gitHotFileRepo, jClassRepository))
     }
-    
+
     @Test
     internal fun shouldSaveGitHotFileReport() {
         every { spyGitHotFileScanner.getHotFileReport(any()) } returns listOf(
-                GitHotFileVO("src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.java", 4),
-                GitHotFileVO("src/test/java/com/qicaisheng/parkinglot/ParkingDirectorTest.java", 14)
+            GitHotFileVO("src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.java", 4),
+            GitHotFileVO("src/test/java/com/qicaisheng/parkinglot/ParkingDirectorTest.java", 14)
         )
 
         val scanContext = mockk<ScanContext>()
@@ -40,8 +40,8 @@ internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: ScannerGitHo
         every { scanContext.repo } returns "repo1"
         spyGitHotFileScanner.scan(scanContext)
 
-        val findBySystemId = gitHotFileRepo.findBySystemId(1);
-        
+        val findBySystemId = gitHotFileRepo.findBySystemId(1)
+
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
         assertEquals("src/main/java/com/qicaisheng/parkinglot/HTMLReportVisitor.java", findBySystemId[0].path)

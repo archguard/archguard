@@ -16,9 +16,13 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
 
     fun execToSql(): File? {
         prepareTool()
-        call(listOf("java", "-jar", "scan_jacoco.jar", "--target-project=${systemRoot.absolutePath}",
+        call(
+            listOf(
+                "java", "-jar", "scan_jacoco.jar", "--target-project=${systemRoot.absolutePath}",
                 "--bin=${buildTool.target}/classes",
-                "--exec=${buildTool.target}/jacoco.exec"))
+                "--exec=${buildTool.target}/jacoco.exec"
+            )
+        )
         val sqlFile = File("$workspace/jacoco.sql")
         return if (sqlFile.exists()) {
             sqlFile
@@ -44,7 +48,7 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
             val chmod = ProcessBuilder("chmod", "+x", "scan_jacoco.jar")
             chmod.directory(workspace)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x scan_jacoco.jar tool Exception")
         }
     }

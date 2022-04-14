@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
-
 class JMethod(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: List<String>) {
     var callees: List<JMethod> = ArrayList()
     val methodTypes: MutableList<MethodType> = mutableListOf()
@@ -31,7 +30,6 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
     fun isPrivate(): Boolean {
         return methodTypes.contains(MethodType.PRIVATE)
     }
-
 }
 
 // 暂时只有接口和类

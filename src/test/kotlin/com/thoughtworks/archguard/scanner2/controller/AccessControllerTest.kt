@@ -19,8 +19,10 @@ import kotlin.test.assertTrue
 @ActiveProfiles("test")
 @Transactional
 @Disabled
-internal class AccessControllerTest(@Autowired val accessController: AccessController,
-                                    @Autowired val jdbi: Jdbi) {
+internal class AccessControllerTest(
+    @Autowired val accessController: AccessController,
+    @Autowired val jdbi: Jdbi
+) {
 
     @Test
     @Sql("classpath:sqls/insert_jclass_and_class_dependencies.sql")
@@ -28,7 +30,7 @@ internal class AccessControllerTest(@Autowired val accessController: AccessContr
         accessController.persist(8)
         val classResult = jdbi.withHandle<List<ClassAccess>, RuntimeException> { handle: Handle ->
             handle.createQuery("select class_id as id, is_interface, is_abstract, is_synthetic from code_class_access order by class_id")
-                    .mapTo(ClassAccess::class.java).list()
+                .mapTo(ClassAccess::class.java).list()
         }.toList()
         assertEquals(2, classResult.size)
         assertTrue(classResult[0].isInterface)
@@ -37,21 +39,20 @@ internal class AccessControllerTest(@Autowired val accessController: AccessContr
 
         val methodResult = jdbi.withHandle<List<MethodAccess>, RuntimeException> { handle: Handle ->
             handle.createQuery("select method_id as id, is_synthetic, is_abstract, is_static, is_private from method_access order by method_id")
-                    .mapTo(MethodAccess::class.java).list()
+                .mapTo(MethodAccess::class.java).list()
         }.toList()
         assertEquals(2, methodResult.size)
 
-        //4164: 01000001000100
+        // 4164: 01000001000100
         assertTrue(methodResult[0].isSynthetic)
         assertFalse(methodResult[0].isAbstract)
         assertFalse(methodResult[0].isPrivate)
         assertFalse(methodResult[0].isStatic)
 
-        //4106: 01000000001010
+        // 4106: 01000000001010
         assertTrue(methodResult[1].isSynthetic)
         assertFalse(methodResult[1].isAbstract)
         assertTrue(methodResult[1].isStatic)
         assertTrue(methodResult[1].isPrivate)
-
     }
 }

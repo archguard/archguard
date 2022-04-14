@@ -21,8 +21,10 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
 
     @Cacheable("systemOverview")
     fun getOverview(systemId: Long): BadSmellOverviewDto {
-        return BadSmellOverviewDto(BadSmellType.values()
-                .mapNotNull { it.calculate(systemId) })
+        return BadSmellOverviewDto(
+            BadSmellType.values()
+                .mapNotNull { it.calculate(systemId) }
+        )
     }
 
     private fun getRepoCount(systemId: Long): Int {

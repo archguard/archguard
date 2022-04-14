@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.every
@@ -33,7 +33,7 @@ class LogicModuleServiceTest {
     @Test
     fun `should get logic modules`() {
         // given
-        val systemId:Long = 1
+        val systemId: Long = 1
         val logicModule1 = LogicModule("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
         val logicModule2 = LogicModule("2", "m2", listOf(LogicComponent.createLeaf("bm3"), LogicComponent.createLeaf("bm4")))
         val logicModules = listOf(logicModule1, logicModule2)
@@ -92,7 +92,7 @@ class LogicModuleServiceTest {
 
     @Test
     fun `should update and calculate when update module`() {
-        val systemId:Long = 1
+        val systemId: Long = 1
         val logicModule = LogicModule.createWithOnlyLeafMembers("1", "m1", listOf(LogicComponent.createLeaf("bm1"), LogicComponent.createLeaf("bm2")))
 
         val slot = slot<LogicModule>()
@@ -106,7 +106,7 @@ class LogicModuleServiceTest {
 
     @Test
     fun `should delete and calculate when delete module`() {
-        val systemId:Long = 1
+        val systemId: Long = 1
         service.deleteLogicModule(systemId, "id")
 
         verify(exactly = 1) { logicModuleRepository.delete("id") }

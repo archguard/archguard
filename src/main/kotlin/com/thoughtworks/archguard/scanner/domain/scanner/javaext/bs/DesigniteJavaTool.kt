@@ -73,7 +73,7 @@ class DesigniteJavaTool(val systemRoot: File, val logStream: StreamConsumer) {
             val chmod = ProcessBuilder("chmod", "+x", SCAN_DESIGNITE_JAR)
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x {} tool Exception", SCAN_DESIGNITE_JAR)
         }
     }
@@ -106,7 +106,6 @@ class DesigniteJavaTool(val systemRoot: File, val logStream: StreamConsumer) {
         }
         return false
     }
-
 }
 
 enum class DesigniteJavaReportType(val reportName: String) {

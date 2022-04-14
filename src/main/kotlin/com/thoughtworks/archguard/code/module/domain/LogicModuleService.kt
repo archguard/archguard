@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
@@ -60,11 +60,10 @@ class LogicModuleService(val logicModuleRepository: LogicModuleRepository, val c
     fun autoDefineLogicModule(systemId: Long) {
         logicModuleRepository.deleteBySystemId(systemId)
         val defaultModules = logicModuleRepository.getAllSubModule(systemId)
-                .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
+            .map { LogicModule.createWithOnlyLeafMembers(UUID.randomUUID().toString(), it.name, mutableListOf(it)) }
         logicModuleRepository.saveAll(systemId, defaultModules)
         couplingService.persistAllClassCouplingResults(systemId)
     }
-
 }
 
 fun getModule(modules: List<LogicModule>, logicComponent: LogicComponent): List<LogicModule> {
@@ -86,9 +85,9 @@ private fun startsWithMatch(jClass: LogicComponent, modules: List<LogicModule>):
     val matchModule: MutableList<LogicModule> = mutableListOf()
     for (logicModule in modules) {
         val maxMatchSizeInLogicModule = logicModule.members
-                .filter { member -> jClass.getFullName().startsWith("${member.getFullName()}.") }
-                .maxByOrNull { it.getFullName().length }
-                ?: continue
+            .filter { member -> jClass.getFullName().startsWith("${member.getFullName()}.") }
+            .maxByOrNull { it.getFullName().length }
+            ?: continue
 
         if (maxMatchSizeInLogicModule.getFullName().length > maxMatchSize) {
             maxMatchSize = maxMatchSizeInLogicModule.getFullName().length

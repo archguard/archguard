@@ -25,47 +25,47 @@ class ProfileServiceTest {
 
     @Test
     fun should_get_all_configures() {
-        //given
+        // given
         val profile = QualityGateProfile("name", "[]")
-        //when
+        // when
         every { repo.getAll() } returns listOf(profile)
         val configures = service.getAll()
-        //then
+        // then
         Assertions.assertThat(configures.size).isEqualTo(1)
         Assertions.assertThat(configures[0]).isEqualToComparingFieldByField(profile)
     }
 
     @Test
     fun should_create_configure() {
-        //given
+        // given
         val profile = QualityGateProfile("name", "[]")
-        //when
+        // when
         every { repo.create(profile) } just Runs
         service.create(profile)
-        //then
+        // then
         verify { repo.create(profile) }
     }
 
     @Test
     fun should_update_configure() {
-        //given
+        // given
         val id = 1L
         val profile = QualityGateProfile("name", "[]")
-        //when
+        // when
         every { repo.update(any()) } just Runs
         service.update(id, profile)
-        //then
+        // then
         verify { repo.update(any()) }
     }
 
     @Test
     fun should_delete_configure() {
-        //given
+        // given
         val id = 1L
-        //when
+        // when
         every { repo.delete(id) } just Runs
         service.delete(id)
-        //then
+        // then
         verify { repo.delete(id) }
     }
 }

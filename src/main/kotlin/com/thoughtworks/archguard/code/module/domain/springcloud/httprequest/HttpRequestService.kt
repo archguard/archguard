@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud.httprequest
 
-import com.thoughtworks.archguard.common.JsonUtils
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
+import com.thoughtworks.archguard.common.JsonUtils
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestMethod
@@ -11,7 +11,6 @@ import java.lang.annotation.ElementType
 @Service
 class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val springCloudServiceRepository: SpringCloudServiceRepository) {
     private val log = LoggerFactory.getLogger(HttpRequestService::class.java)
-
 
     fun getHttpRequests(): List<HttpRequest> {
 
@@ -63,5 +62,4 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val s
         }
         return finalPaths
     }
-
 }

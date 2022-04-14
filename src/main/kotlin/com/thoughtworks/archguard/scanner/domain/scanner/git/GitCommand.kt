@@ -103,5 +103,4 @@ class GitCommand(
         }
         return code
     }
-
 }

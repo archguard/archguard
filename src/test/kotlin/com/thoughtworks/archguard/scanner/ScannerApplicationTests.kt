@@ -11,5 +11,4 @@ class ScannerApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

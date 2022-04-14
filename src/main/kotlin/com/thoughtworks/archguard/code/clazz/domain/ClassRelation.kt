@@ -6,5 +6,3 @@ data class ClassRelation(val clazz: JClass, val count: Int) {
         return "ClassRelation(clazz=$clazz, count=$count)"
     }
 }
-
-

@@ -4,5 +4,4 @@ import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
 
 interface PackageMetricRepository {
     fun insertOrUpdatePackageMetric(systemId: Long, packageMetrics: List<PackageMetric>)
-
 }

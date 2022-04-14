@@ -22,7 +22,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-
 internal class BadSmellCalculatorTest {
 
     lateinit var classHubCalculator: ClassHubCouplingCalculator
@@ -105,12 +104,14 @@ internal class BadSmellCalculatorTest {
         shotgunSurgeryCalculator = ShotgunSurgeryCalculator(shotgunSurgeryService)
         dataClassCalculator = DataClassCalculator(dataClassRepository)
 
-        BadSmellType.BadSmellTypeInjector(moduleCalculator, packageCalculator, classCalculator, methodCalculator,
-                classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
-                dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
-                redundantElementCalculator, overGeneralizationCalculator,
-                dataClassCalculator, shotgunSurgeryCalculator, sleepCalculator, unassertCalculator, ignoreCalculator)
-                .postConstruct()
+        BadSmellType.BadSmellTypeInjector(
+            moduleCalculator, packageCalculator, classCalculator, methodCalculator,
+            classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
+            dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
+            redundantElementCalculator, overGeneralizationCalculator,
+            dataClassCalculator, shotgunSurgeryCalculator, sleepCalculator, unassertCalculator, ignoreCalculator
+        )
+            .postConstruct()
     }
 
     @Test
@@ -183,7 +184,6 @@ internal class BadSmellCalculatorTest {
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.A)
     }
-
 
     @Test
     fun should_calculate_method_sizing_bad_smell_result() {

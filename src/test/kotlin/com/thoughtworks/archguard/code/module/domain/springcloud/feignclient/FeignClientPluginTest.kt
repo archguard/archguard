@@ -31,8 +31,8 @@ class FeignClientPluginTest {
     @Test
     fun should_fix_method_dependencies() {
         // given
-        val systemId:Long = 1
-        val method1 = JMethodVO( "method1", "class1", "module1", "any", listOf())
+        val systemId: Long = 1
+        val method1 = JMethodVO("method1", "class1", "module1", "any", listOf())
         val method2 = JMethodVO("method2", "class2", "module2", "any", listOf())
         val method3 = JMethodVO("method3", "class3", "module3", "any", listOf())
 
@@ -47,7 +47,5 @@ class FeignClientPluginTest {
 
         // then
         Assertions.assertThat(methodMethodDependenciesAfterFix).isEqualTo(methodDependencies + Dependency(method2, method3))
-
     }
-
 }

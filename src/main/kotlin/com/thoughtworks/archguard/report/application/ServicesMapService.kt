@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceDO
-import com.thoughtworks.archguard.report.domain.container.ContainerServiceResponse
 import com.thoughtworks.archguard.report.domain.container.ContainerServiceRepo
+import com.thoughtworks.archguard.report.domain.container.ContainerServiceResponse
 import org.springframework.stereotype.Service
 
 @Service
 class ServicesMapService(val repo: ContainerServiceRepo) {
-    fun findBySystemId(systemId: Long) : ContainerServiceResponse {
+    fun findBySystemId(systemId: Long): ContainerServiceResponse {
         return ContainerServiceResponse(
             id = systemId,
             demands = repo.findDemandBySystemId(systemId),
@@ -19,7 +19,6 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         val allSystems = repo.findSystems(ids)
         return calculateServiceByIds(allSystems)
     }
-
 
     fun allContainerServices(): List<ContainerServiceResponse> {
         val allSystems = repo.findAllSystemIdName()

@@ -23,9 +23,11 @@ internal class SystemInfoServiceTest {
     @Test
     fun add_system_info() {
         systemInfoService.analysisClientProxy = DummyAnalysisClientProxy()
-        val info = SystemInfo(null, "addSystemInfo", "repo", "sql",
-                "username", "password", ScannedType.SCANNED, 1,
-                "GIT", null, 1, "master", "jvm", "", "")
+        val info = SystemInfo(
+            null, "addSystemInfo", "repo", "sql",
+            "username", "password", ScannedType.SCANNED, 1,
+            "GIT", null, 1, "master", "jvm", "", ""
+        )
 
         val id = systemInfoService.addSystemInfo(info)
         val info1 = systemInfoService.getSystemInfo(id)
@@ -37,9 +39,11 @@ internal class SystemInfoServiceTest {
     fun update_system_info() {
         systemInfoService.analysisClientProxy = DummyAnalysisClientProxy()
 
-        val info = SystemInfo(1, "systemName1", "repo1", "sql1",
-                "username1", "WCA5RH/O9J4yxgU40Z+thg==", ScannedType.NONE, 1,
-                "GIT", null, 2, "master", "jvm", "", "/tmp")
+        val info = SystemInfo(
+            1, "systemName1", "repo1", "sql1",
+            "username1", "WCA5RH/O9J4yxgU40Z+thg==", ScannedType.NONE, 1,
+            "GIT", null, 2, "master", "jvm", "", "/tmp"
+        )
         systemInfoService.updateSystemInfo(info)
 
         val info1 = systemInfoService.getSystemInfo(1)

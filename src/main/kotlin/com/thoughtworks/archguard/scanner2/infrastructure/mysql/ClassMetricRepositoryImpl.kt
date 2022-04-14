@@ -11,7 +11,7 @@ class ClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : ClassMet
 
     override fun insertOrUpdateClassMetric(systemId: Long, classMetrics: List<ClassMetric>) {
         val classMetricPOs = classMetrics
-                .map { ClassMetricPO(it.systemId, it.jClassVO.id!!, it.dit, it.noc, it.lcom4, it.fanIn, it.fanOut) }
+            .map { ClassMetricPO(it.systemId, it.jClassVO.id!!, it.dit, it.noc, it.lcom4, it.fanIn, it.fanOut) }
 
         classMetricsDao.deleteBy(systemId)
         log.info("Delete system class metric old data with id: {}", systemId)
@@ -22,5 +22,4 @@ class ClassMetricRepositoryImpl(val classMetricsDao: ClassMetricsDao) : ClassMet
         classMetricsDao.insert(classMetricPOs)
         log.info("Insert system class metric new data with id: {}", systemId)
     }
-
 }

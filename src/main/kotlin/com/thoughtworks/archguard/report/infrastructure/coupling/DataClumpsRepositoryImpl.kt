@@ -13,12 +13,12 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
     override fun getLCOM4AboveThresholdCount(systemId: Long, threshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(c.id) from code_class c inner join metric_class m on m.class_id = c.id " +
-                    "where c.system_id =:system_id and m.lcom4 > :lcom4"
+                "where c.system_id =:system_id and m.lcom4 > :lcom4"
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("lcom4", threshold)
-                    .mapTo(Long::class.java)
-                    .one()
+                .bind("system_id", systemId)
+                .bind("lcom4", threshold)
+                .mapTo(Long::class.java)
+                .one()
         }
     }
 
@@ -36,31 +36,31 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("level1Start", thresholdRanges[0].first)
-                    .bind("level1End", thresholdRanges[0].last)
-                    .bind("level2Start", thresholdRanges[1].first)
-                    .bind("level2End", thresholdRanges[0].last)
-                    .bind("level3Start", thresholdRanges[2].first)
-                    .mapTo(BadSmellCalculateResult::class.java)
-                    .one()
+                .bind("systemId", systemId)
+                .bind("level1Start", thresholdRanges[0].first)
+                .bind("level1End", thresholdRanges[0].last)
+                .bind("level2Start", thresholdRanges[1].first)
+                .bind("level2End", thresholdRanges[0].last)
+                .bind("level3Start", thresholdRanges[2].first)
+                .mapTo(BadSmellCalculateResult::class.java)
+                .one()
         }
     }
 
     override fun getLCOM4AboveThresholdList(systemId: Long, threshold: Int, limit: Long, offset: Long): List<ClassDataClump> {
         val sql = "select c.id, c.system_id, c.name, c.module, m.lcom4 from code_class c " +
-                "inner join metric_class m on m.class_id = c.id " +
-                "where c.system_id =:system_id and m.lcom4 > :lcom4 " +
-                "order by m.lcom4 desc LIMIT :limit OFFSET :offset"
+            "inner join metric_class m on m.class_id = c.id " +
+            "where c.system_id =:system_id and m.lcom4 > :lcom4 " +
+            "order by m.lcom4 desc LIMIT :limit OFFSET :offset"
         val classWithLCOM4List = jdbi.withHandle<List<ClassWithLCOM4PO>, Exception> {
             it.registerRowMapper(ConstructorMapper.factory(ClassWithLCOM4PO::class.java))
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("lcom4", threshold)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
-                    .mapTo(ClassWithLCOM4PO::class.java)
-                    .list()
+                .bind("system_id", systemId)
+                .bind("lcom4", threshold)
+                .bind("limit", limit)
+                .bind("offset", offset)
+                .mapTo(ClassWithLCOM4PO::class.java)
+                .list()
         }
         return classWithLCOM4List.map { it.toClassDataClump() }
     }

@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.codescan.bytecode
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitScannerTool
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

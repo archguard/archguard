@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependenciesService
+import com.thoughtworks.archguard.code.clazz.domain.JClass
+import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependencerService
+import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependenciesService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassInvokeService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassMethodCalleesService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -41,7 +41,7 @@ class ClassServiceTest {
 
     @Test
     fun `should get class dependencies`() {
-        //given
+        // given
         val systemId: Long = 1
         val targetName = "clazz"
         val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
@@ -49,13 +49,13 @@ class ClassServiceTest {
         val expected = JClass("1", targetName, "module")
         (expected.dependencies as MutableList).add(dependencee)
         (expected.dependencers as MutableList).add(dependencer)
-        //when
+        // when
         every { jClassRepository.getJClassBy(any(), any(), any()) } returns expected
         every { classDependenciesService.findDependencies(systemId, any(), any()) } returns expected
         every { classDependencerService.findDependencers(systemId, any(), any()) } returns expected
 
         val result = service.getDependencies(systemId, "module", targetName, 1)
-        //then
+        // then
         assertThat(result.dependencers.size).isEqualTo(1)
         assertThat(result.dependencies.size).isEqualTo(1)
         assertThat(result.dependencers[0]).isEqualToComparingFieldByField(dependencer)
@@ -64,26 +64,26 @@ class ClassServiceTest {
 
     @Test
     fun `should get class invokes`() {
-        //given
+        // given
         val systemId = 1L
         val targetName = "clazz"
         val module = "module"
         val target = JClass("1", targetName, module)
         val deep = 3
         val needIncludeImpl = true
-        //when
+        // when
         every { jClassRepository.getJClassBy(systemId, targetName, module) } returns target
         every {
             classInvokeService.findInvokes(systemId, target, deep, deep, needIncludeImpl)
         } returns target
         val invokes = service.findInvokes(systemId, module, targetName, deep, deep, needIncludeImpl)
-        //then
+        // then
         assertThat(invokes).isEqualToComparingFieldByField(target)
     }
 
     @Test
     fun `should get class method callees`() {
-        //given
+        // given
         val systemId: Long = 1
         val needIncludeImpl = true
         val needParents = true
@@ -91,13 +91,13 @@ class ClassServiceTest {
         val name = "clazz"
         val deep = 2
         val targetClass = JClass("id", name, module)
-        //when
+        // when
         every {
             classMethodCalleesService.findClassMethodsCallees(systemId, targetClass, deep, needIncludeImpl, needParents)
         } returns JClass("id", "clazz", "module")
         every { jClassRepository.getJClassBy(systemId, name, module) } returns targetClass
         val target = service.findMethodsCallees(systemId, module, name, deep, needIncludeImpl, needParents)
-        //then
+        // then
         assertThat(target.methods).isEmpty()
     }
 }

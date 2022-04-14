@@ -16,8 +16,8 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
         val sql = "select b from code_ref_class_methods where a='$classId'"
         return jdbi.withHandle<List<String>, Nothing> {
             it.createQuery(sql)
-                    .mapTo(String::class.java)
-                    .list()
+                .mapTo(String::class.java)
+                .list()
         }
     }
 
@@ -25,8 +25,8 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
         val sql = "select module from code_method where id = '$methodId'"
         return jdbi.withHandle<String, Nothing> {
             it.createQuery(sql)
-                    .mapTo(String::class.java)
-                    .one()
+                .mapTo(String::class.java)
+                .one()
         }
     }
 
@@ -37,10 +37,8 @@ class SpringCloudServiceRepositoryImpl : SpringCloudServiceRepository {
         return jdbi.withHandle<JMethodVO, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodVO::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethodVO::class.java)
-                    .first()
+                .mapTo(JMethodVO::class.java)
+                .first()
         }
     }
-
-
 }

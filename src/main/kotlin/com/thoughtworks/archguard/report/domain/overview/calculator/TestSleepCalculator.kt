@@ -28,5 +28,4 @@ class TestSleepCalculator(val testBadSmellRepository: TestBadSmellRepository) : 
             }
         }
     }
-
 }

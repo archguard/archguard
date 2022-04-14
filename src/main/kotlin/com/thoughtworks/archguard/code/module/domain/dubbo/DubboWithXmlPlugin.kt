@@ -24,5 +24,4 @@ class DubboWithXmlPlugin : DubboPlugin() {
         }
         return realCallee
     }
-
 }

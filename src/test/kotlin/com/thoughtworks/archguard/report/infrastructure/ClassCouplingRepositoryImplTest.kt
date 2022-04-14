@@ -25,5 +25,4 @@ internal class ClassCouplingRepositoryImplTest {
         val classCoupling3 = ClassCoupling("fe8f5fd7-d3d5-4787-9ad1-da227b3c1a7c", moduleName = "dubbo-samples-direct", packageName = "org.apache.dubbo.samples.direct.api", typeName = "DirectService", fanIn = 1, fanOut = 0, coupling = 0.0, instability = 0.0)
         assertThat(classCouplings).containsExactlyInAnyOrder(classCoupling1, classCoupling2, classCoupling3)
     }
-
 }

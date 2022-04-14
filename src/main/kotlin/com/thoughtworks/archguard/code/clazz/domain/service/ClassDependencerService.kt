@@ -33,5 +33,4 @@ class ClassDependencerService(val repo: JClassRepository, val configureService: 
             doBuildDependencers(systemId, pendingClasses.flatMap { it.dependencers }, deep - 1, container)
         }
     }
-
 }

@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.metrics.domain.coupling
 
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
-import com.thoughtworks.archguard.metrics.domain.MetricsRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.getModule
@@ -10,11 +9,16 @@ import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import com.thoughtworks.archguard.metrics.domain.MetricsRepository
 import org.springframework.stereotype.Service
 
 @Service
-class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModuleRepository: LogicModuleRepository,
-                          val dependencyService: DependencyService, val metricsRepository: MetricsRepository) : CouplingService {
+class CouplingServiceImpl(
+    val jClassRepository: JClassRepository,
+    val logicModuleRepository: LogicModuleRepository,
+    val dependencyService: DependencyService,
+    val metricsRepository: MetricsRepository
+) : CouplingService {
     override fun persistAllClassCouplingResults(systemId: Long) {
         val classCouplingResults = getAllClassCouplingResults(systemId)
         metricsRepository.insertAllClassCouplings(systemId, classCouplingResults)
@@ -32,7 +36,7 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
             jClassVO
         } else {
             val jClass = jClassRepository.getJClassBy(systemId, jClassVO.name, jClassVO.module)
-                    ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
+                ?: throw ClassNotFountException("Cannot found class with module: ${jClassVO.module} and name: ${jClassVO.name}")
             jClass.toVO()
         }
         val classCoupling = metricsRepository.getClassCoupling(jClassVOHasId)
@@ -109,8 +113,11 @@ class CouplingServiceImpl(val jClassRepository: JClassRepository, val logicModul
         return moduleCouplings
     }
 
-    fun getClassCouplingWithData(clazz: JClassVO, dependency: List<Dependency<JClassVO>>,
-                                 modules: List<LogicModule>): ClassCoupling {
+    fun getClassCouplingWithData(
+        clazz: JClassVO,
+        dependency: List<Dependency<JClassVO>>,
+        modules: List<LogicModule>
+    ): ClassCoupling {
         val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
         val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
         val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()

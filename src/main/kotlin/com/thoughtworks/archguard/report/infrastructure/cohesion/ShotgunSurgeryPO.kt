@@ -9,10 +9,14 @@ class ShotgunSurgeryPO(val commitId: String, val commitMessage: String, val oldP
         fun from(shotgunSurgery: Map<String, List<ShotgunSurgeryPO>>): List<ShotgunSurgery> {
             val result = ArrayList<ShotgunSurgery>()
             for (entry in shotgunSurgery) {
-                result.add(ShotgunSurgery(entry.key,
+                result.add(
+                    ShotgunSurgery(
+                        entry.key,
                         entry.value[0].commitMessage,
                         entry.value.map { if (it.newPath.equals("/dev/null")) it.oldPath else it.newPath }
-                                .map { Paths.get(it) }))
+                            .map { Paths.get(it) }
+                    )
+                )
             }
             return result
         }

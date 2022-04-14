@@ -14,7 +14,6 @@ class ConfigureController {
     @Autowired
     private lateinit var configureService: ScannerConfigureService
 
-
     @GetMapping("/config")
     fun getConfigures(): List<ConfigureDTO> {
         return configureService.getConfigures()

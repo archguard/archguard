@@ -15,33 +15,42 @@ import javax.validation.Valid
 class CohesionController(val shotgunSurgeryService: ShotgunSurgeryService, val dataClassService: DataClassService) {
 
     @PostMapping("/shotgun-surgery")
-    fun getShotgunSurgeryWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                        @RequestBody @Valid filterSizing: FilterSizingDto):
-            ResponseEntity<ShotgunSurgeryListDto> {
+    fun getShotgunSurgeryWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ):
+        ResponseEntity<ShotgunSurgeryListDto> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
 
         val result = shotgunSurgeryService.getShotgunSurgeryWithTotalCount(systemId, limit, offset)
-        return ResponseEntity.ok(ShotgunSurgeryListDto(
+        return ResponseEntity.ok(
+            ShotgunSurgeryListDto(
                 result.second.map { ShotgunSurgeryDto(it.commitId, it.commitMessage, it.clazzes) },
-                result.first, offset / limit + 1))
+                result.first, offset / limit + 1
+            )
+        )
     }
 
     @PostMapping("/data-class")
-    fun getDataClassWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                   @RequestBody @Valid filterSizing: FilterSizingDto):
-            ResponseEntity<DataClassDto> {
+    fun getDataClassWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ):
+        ResponseEntity<DataClassDto> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
 
         val result = dataClassService.getDataClassWithTotalCount(systemId, limit, offset)
-        return ResponseEntity.ok(DataClassDto(
+        return ResponseEntity.ok(
+            DataClassDto(
                 result.second,
-                result.first, offset / limit + 1))
+                result.first, offset / limit + 1
+            )
+        )
     }
-
 }
 
 data class ShotgunSurgeryListDto(val data: List<ShotgunSurgeryDto>, val count: Long, val currentPageNumber: Long)

@@ -6,9 +6,12 @@ import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import org.springframework.stereotype.Service
 
 @Service
-class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val classDependenciesService: ClassDependenciesService,
-                   val classDependencerService: ClassDependencerService, val jClassRepository: JClassRepository,
-                   val classInvokeService: ClassInvokeService
+class ClassService(
+    val classMethodCalleesService: ClassMethodCalleesService,
+    val classDependenciesService: ClassDependenciesService,
+    val classDependencerService: ClassDependencerService,
+    val jClassRepository: JClassRepository,
+    val classInvokeService: ClassInvokeService
 ) {
 
     fun getDependencies(systemId: Long, module: String, name: String, deep: Int): JClass {
@@ -20,7 +23,7 @@ class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val
 
     private fun getTargetClass(systemId: Long, module: String, name: String): JClass {
         return jClassRepository.getJClassBy(systemId, name, module)
-                ?: throw ClassNotFountException("Can't find class by module:${module}, class:${name}")
+            ?: throw ClassNotFountException("Can't find class by module:$module, class:$name")
     }
 
     fun findInvokes(systemId: Long, module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
@@ -28,10 +31,18 @@ class ClassService(val classMethodCalleesService: ClassMethodCalleesService, val
         return classInvokeService.findInvokes(systemId, targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
 
-    fun findMethodsCallees(systemId: Long, module: String, name: String, calleeDeep: Int,
-                           needIncludeImpl: Boolean, needParents: Boolean): JClass {
+    fun findMethodsCallees(
+        systemId: Long,
+        module: String,
+        name: String,
+        calleeDeep: Int,
+        needIncludeImpl: Boolean,
+        needParents: Boolean
+    ): JClass {
         val targetClass = getTargetClass(systemId, module, name)
-        return classMethodCalleesService.findClassMethodsCallees(systemId, targetClass,
-                calleeDeep, needIncludeImpl, needParents)
+        return classMethodCalleesService.findClassMethodsCallees(
+            systemId, targetClass,
+            calleeDeep, needIncludeImpl, needParents
+        )
     }
 }

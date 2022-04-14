@@ -67,5 +67,4 @@ class LogicModuleControllerTest {
         // then
         verify { service.updateLogicModule(systemId, any(), any()) }
     }
-
 }

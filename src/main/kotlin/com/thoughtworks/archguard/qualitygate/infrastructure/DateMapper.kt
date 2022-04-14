@@ -10,5 +10,4 @@ class DateMapper : ColumnMapper<Date> {
     override fun map(r: ResultSet, columnNumber: Int, ctx: StatementContext?): Date {
         return Date(r.getTimestamp(columnNumber).time)
     }
-
 }

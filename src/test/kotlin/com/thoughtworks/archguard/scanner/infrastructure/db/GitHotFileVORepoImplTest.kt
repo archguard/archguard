@@ -12,17 +12,25 @@ import kotlin.test.assertNotNull
 @SpringBootTest
 @ActiveProfiles("test")
 internal class GitHotFileVORepoImplTest(@Autowired val gitHotFileRepo: ScannerGitHotFileRepo) {
-    
+
     @Test
     fun shouldUpdateGitHotFilesGivenHistoryGItHotFilesWhenSave() {
-        gitHotFileRepo.save(listOf(GitHotFile(1, "repo1", "name1", null, null, 10, null),
-                GitHotFile(1, "repo1", "name2", null, null, 10, null)))
+        gitHotFileRepo.save(
+            listOf(
+                GitHotFile(1, "repo1", "name1", null, null, 10, null),
+                GitHotFile(1, "repo1", "name2", null, null, 10, null)
+            )
+        )
 
-        gitHotFileRepo.save(listOf(GitHotFile(1, "repo1", "name1", null, null, 12, null),
-                GitHotFile(1, "repo1", "name2", null, null, 13, null)))
+        gitHotFileRepo.save(
+            listOf(
+                GitHotFile(1, "repo1", "name1", null, null, 12, null),
+                GitHotFile(1, "repo1", "name2", null, null, 13, null)
+            )
+        )
 
-        val findBySystemId = gitHotFileRepo.findBySystemId(1);
-        
+        val findBySystemId = gitHotFileRepo.findBySystemId(1)
+
         assertNotNull(findBySystemId)
         assertEquals(2, findBySystemId.size)
         assertEquals("name1", findBySystemId[0].path)

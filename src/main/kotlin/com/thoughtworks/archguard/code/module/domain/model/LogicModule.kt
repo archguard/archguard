@@ -40,7 +40,6 @@ class LogicModule private constructor(val id: String, val name: String) : LogicC
             }
             return logicModule
         }
-
     }
 
     var members: List<LogicComponent> = emptyList()

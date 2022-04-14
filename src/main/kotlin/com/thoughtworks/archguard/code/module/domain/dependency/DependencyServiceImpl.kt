@@ -42,9 +42,7 @@ class DependencyServiceImpl : DependencyService {
         return getAllMethodDependencies(systemId).filter { method -> callerStart.any { method.caller.fullName.startsWith(it) } && calleeStart.any { method.callee.fullName.startsWith(it) } }
     }
 
-
     override fun getAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
         return getAllMethodDependencies(systemId).map { Dependency(it.caller.clazz, it.callee.clazz) }
     }
-
 }

@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner.domain.hubexecutor
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.AnalysisService
 import com.thoughtworks.archguard.scanner.domain.config.repository.ScannerConfigureRepository
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.io.File
 import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.concurrent.thread
 
@@ -106,5 +105,4 @@ class HubExecutorService : DisposableBean {
 //            log.info("tempFile {}, clean tempFile result：{}", systemRoot, del);
 //        }
     }
-
 }

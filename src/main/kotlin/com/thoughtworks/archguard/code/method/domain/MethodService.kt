@@ -1,13 +1,17 @@
 package com.thoughtworks.archguard.code.method.domain
 
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCallersService
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.stereotype.Service
 
 @Service
-class MethodService(val repo: JMethodRepository, val calleeService: MethodCalleesService,
-                    val callerService: MethodCallersService, val configureService: ConfigureService) {
+class MethodService(
+    val repo: JMethodRepository,
+    val calleeService: MethodCalleesService,
+    val callerService: MethodCallersService,
+    val configureService: ConfigureService
+) {
     fun findMethodCallees(systemId: Long, moduleName: String, clazzName: String, methodName: String, deep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val target = getMethodBy(systemId, moduleName, clazzName, methodName).filter { configureService.isDisplayNode(systemId, it.name) }
         calleeService.findCallees(systemId, target, deep, needIncludeImpl)
@@ -20,9 +24,15 @@ class MethodService(val repo: JMethodRepository, val calleeService: MethodCallee
         return target
     }
 
-
-    fun findMethodInvokes(systemId: Long, moduleName: String, clazzName: String, methodName: String,
-                          callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
+    fun findMethodInvokes(
+        systemId: Long,
+        moduleName: String,
+        clazzName: String,
+        methodName: String,
+        callerDeep: Int,
+        calleeDeep: Int,
+        needIncludeImpl: Boolean
+    ): List<JMethod> {
         val target = getMethodBy(systemId, moduleName, clazzName, methodName).filter { configureService.isDisplayNode(systemId, it.name) }
         callerService.findCallers(systemId, target, callerDeep)
         calleeService.findCallees(systemId, target, calleeDeep, needIncludeImpl)
@@ -36,5 +46,4 @@ class MethodService(val repo: JMethodRepository, val calleeService: MethodCallee
     fun findMethodByModuleAndClazz(systemId: Long, clazzName: String, submoduleName: String): List<JMethod> {
         return repo.findMethodsByModuleAndClass(systemId, submoduleName, clazzName)
     }
-
 }

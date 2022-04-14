@@ -27,5 +27,4 @@ class ModuleOverSizingCalculator(val sizingService: SizingService) : BadSmellLev
             }
         }
     }
-
 }

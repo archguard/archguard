@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.method.domain.service
 
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.code.method.domain.JMethod
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.stereotype.Service
 
 @Service

@@ -34,8 +34,10 @@ internal class FanInFanOutServiceTest {
 
         val fanInFanOutMap = fanInFanOutService.calculateFanInFanOutWithDependency(allClassDependencies)
         assertThat(fanInFanOutMap).containsExactlyInAnyOrderEntriesOf(
-                mapOf("c1" to FanInFanOut(1, 3), "c2" to FanInFanOut(1, 0),
-                        "c3" to FanInFanOut(1, 1), "c5" to FanInFanOut(1, 0)))
-
+            mapOf(
+                "c1" to FanInFanOut(1, 3), "c2" to FanInFanOut(1, 0),
+                "c3" to FanInFanOut(1, 1), "c5" to FanInFanOut(1, 0)
+            )
+        )
     }
 }

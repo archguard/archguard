@@ -35,7 +35,7 @@ internal class BadSmellScannerTest(@Autowired val badSmellScanner: BadSmellScann
 
         val badSmells = jdbi.withHandle<List<BadSmell>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from metric_code_bad_smell")
-                    .mapTo(BadSmell::class.java).list()
+                .mapTo(BadSmell::class.java).list()
         }
         Assertions.assertEquals(badSmells.size, 2)
         Assertions.assertEquals(badSmells[0].systemId, 1)

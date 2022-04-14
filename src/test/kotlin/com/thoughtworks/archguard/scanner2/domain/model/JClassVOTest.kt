@@ -51,5 +51,4 @@ internal class JClassVOTest {
         val jClassVO = JClassVO("JavaParser", "dubbo-service")
         assertEquals("JavaParser", jClassVO.getBaseClassName())
     }
-
 }

@@ -15,7 +15,7 @@ class PackageService {
 
     fun getPackageDependencies(systemId: Long, language: String): List<ModulePackage> {
         return moduleRepository.getAllSubModule(systemId).map { it.name }.map {
-            when(language.lowercase()) {
+            when (language.lowercase()) {
                 "kotlin", "java", "typescript", "csharp", "c#" -> {
                     val dependencies = packageRepository.getPackageDependenceByClass(systemId, it)
                     ModulePackage(it, getPackageGraph(dependencies))
@@ -36,16 +36,16 @@ class PackageService {
             it.bClz = it.bClz.substringBeforeLast('.')
         }
         results.filter {
-            !it.aClz.contains("$")
-                    && !it.aClz.contains("[")
-                    && !it.bClz.contains("$")
-                    && !it.bClz.contains("[")
+            !it.aClz.contains("$") &&
+                !it.aClz.contains("[") &&
+                !it.bClz.contains("$") &&
+                !it.bClz.contains("[")
         }
-                .groupBy { it.aClz }
-                .forEach {
-                    it.value.groupBy { i -> i.bClz }
-                            .forEach { i -> packageStore.addEdge(it.key, i.key, i.value.size) }
-                }
+            .groupBy { it.aClz }
+            .forEach {
+                it.value.groupBy { i -> i.bClz }
+                    .forEach { i -> packageStore.addEdge(it.key, i.key, i.value.size) }
+            }
 
         return packageStore.getPackageGraph()
     }

@@ -23,13 +23,15 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/systems/{systemId}/logic-modules")
-class LogicModuleController(val logicModuleService: LogicModuleService,
-                            val dependencyService: DependencyService,
-                            val graphService: GraphService) {
+class LogicModuleController(
+    val logicModuleService: LogicModuleService,
+    val dependencyService: DependencyService,
+    val graphService: GraphService
+) {
     @GetMapping
     fun getLogicModules(@PathVariable("systemId") systemId: Long): List<LogicModuleLegacy> {
         return logicModuleService.getLogicModules(systemId)
-                .filter { it.isLogicModule() }.map { LogicModuleLegacy.fromLogicModule(it) }
+            .filter { it.isLogicModule() }.map { LogicModuleLegacy.fromLogicModule(it) }
     }
 
     @PostMapping("/hide-all")
@@ -48,29 +50,37 @@ class LogicModuleController(val logicModuleService: LogicModuleService,
     }
 
     @PutMapping("/{id}")
-    fun updateLogicModule(@PathVariable("systemId") systemId: Long,
-                          @PathVariable id: String,
-                          @RequestBody logicModule: LogicModuleLegacy) {
+    fun updateLogicModule(
+        @PathVariable("systemId") systemId: Long,
+        @PathVariable id: String,
+        @RequestBody logicModule: LogicModuleLegacy
+    ) {
         logicModuleService.updateLogicModule(systemId, id, logicModule.toLogicModule())
     }
 
     @PostMapping
-    fun createLogicModule(@PathVariable("systemId") systemId: Long,
-                          @RequestBody logicModule: LogicModuleLegacy): String {
+    fun createLogicModule(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody logicModule: LogicModuleLegacy
+    ): String {
         logicModule.id = UUID.randomUUID().toString()
         return logicModuleService.createLogicModule(systemId, logicModule.toLogicModule())
     }
 
     @PostMapping("/service")
-    fun createLogicModuleWithCompositeNodes(@PathVariable("systemId") systemId: Long,
-                                            @RequestBody logicModule: LogicModuleWithCompositeNodes): String {
+    fun createLogicModuleWithCompositeNodes(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody logicModule: LogicModuleWithCompositeNodes
+    ): String {
         logicModule.id = UUID.randomUUID().toString()
         return logicModuleService.createLogicModuleWithCompositeNodes(systemId, logicModule.toLogicModule())
     }
 
     @DeleteMapping("/{id}")
-    fun deleteLogicModule(@PathVariable("systemId") systemId: Long,
-                          @PathVariable id: String) {
+    fun deleteLogicModule(
+        @PathVariable("systemId") systemId: Long,
+        @PathVariable id: String
+    ) {
         logicModuleService.deleteLogicModule(systemId, id)
     }
 
@@ -81,9 +91,11 @@ class LogicModuleController(val logicModuleService: LogicModuleService,
     }
 
     @GetMapping("/dependencies")
-    fun getLogicModulesDependencies(@PathVariable systemId: Long,
-                                    @RequestParam caller: String,
-                                    @RequestParam callee: String): List<Dependency<JMethodVO>> {
+    fun getLogicModulesDependencies(
+        @PathVariable systemId: Long,
+        @RequestParam caller: String,
+        @RequestParam callee: String
+    ): List<Dependency<JMethodVO>> {
         return dependencyService.getAllDistinctMethodDependencies(systemId, caller, callee)
     }
 
@@ -91,6 +103,4 @@ class LogicModuleController(val logicModuleService: LogicModuleService,
     fun getDependenciesGraph(@PathVariable systemId: Long): Graph {
         return graphService.getLogicModuleGraph(systemId)
     }
-
 }
-

@@ -13,13 +13,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-
 @RestController
 @RequestMapping("/api/system-info")
 class SystemInfoController(
-        @Value("\${module.zipFilePath}") val zipFilePath: String,
-        val systemInfoService: SystemInfoService,
-        val systemInfoMapper: SystemInfoMapper) {
+    @Value("\${module.zipFilePath}") val zipFilePath: String,
+    val systemInfoService: SystemInfoService,
+    val systemInfoMapper: SystemInfoMapper
+) {
 
     @GetMapping("/{id}")
     fun getSystemInfo(@PathVariable("id") id: Long): SystemInfoDTO {
@@ -36,7 +36,6 @@ class SystemInfoController(
             throw ResponseStatusException(
                 HttpStatus.NOT_FOUND, "entity not found"
             )
-
         }
 
         val log = File(workdir.resolve("archguard.log").toString()).readText().toString()
@@ -69,10 +68,8 @@ class SystemInfoController(
             return "上传失败，请选择文件"
         }
 
-
 //         createTempDir("temp", null, CreateFileUtil.createDir("/tmp/zip/files"))
 //        val createDir = CreateFileUtil.createDir(zipFilePath)
-
 
         try {
             val dir = CreateFileUtil.createDir(zipFilePath + "/" + System.nanoTime() + ".temp")
@@ -82,13 +79,11 @@ class SystemInfoController(
                 file.transferTo(filePath.toFile())
             }
             return filePath.toString()
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             println("常见目录失败")
             return "创建目录失败"
         }
-
     }
-
 
     private fun prepareZipFile(dir: String, fileName: String): Path {
         val filePath = Paths.get(dir, fileName)

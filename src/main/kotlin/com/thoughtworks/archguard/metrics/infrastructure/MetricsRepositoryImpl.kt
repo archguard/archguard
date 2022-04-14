@@ -1,18 +1,18 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.stereotype.Repository
 
 @Repository
 class MetricsRepositoryImpl(
-        val influxDBClient: InfluxDBClient,
-        val classCouplingWriteDao: ClassCouplingWriteDao,
-        val classCouplingReadDao: ClassCouplingReadDao
+    val influxDBClient: InfluxDBClient,
+    val classCouplingWriteDao: ClassCouplingWriteDao,
+    val classCouplingReadDao: ClassCouplingReadDao
 ) : MetricsRepository {
 
     @Transaction
@@ -35,5 +35,4 @@ class MetricsRepositoryImpl(
     override fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling> {
         return classCouplingReadDao.findClassCouplings(jClassVOs.map { it.id!! }).map { it.toClassCoupling() }
     }
-
 }

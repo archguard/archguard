@@ -6,7 +6,6 @@ import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
-
 @Repository
 class PackageRepositoryImpl : PackageRepository {
 
@@ -17,10 +16,12 @@ class PackageRepositoryImpl : PackageRepository {
         return jdbi.withHandle<List<PackageDependenceDTO>, Nothing> { handle ->
             handle.registerRowMapper(ConstructorMapper.factory(PackageDependenceDTO::class.java))
             handle
-                    .createQuery("select a.clzname aClz, b.clzname bClz from code_method a, code_method b, code_ref_method_callees mc " +
-                            "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.system_id='$systemId' and b.system_id='$systemId' and mc.system_id='$systemId'")
-                    .mapTo(PackageDependenceDTO::class.java)
-                    .list()
+                .createQuery(
+                    "select a.clzname aClz, b.clzname bClz from code_method a, code_method b, code_ref_method_callees mc " +
+                        "where a.id = mc.a and b.id = mc.b and a.module='$module' and b.module='$module' and a.system_id='$systemId' and b.system_id='$systemId' and mc.system_id='$systemId'"
+                )
+                .mapTo(PackageDependenceDTO::class.java)
+                .list()
         }
     }
 

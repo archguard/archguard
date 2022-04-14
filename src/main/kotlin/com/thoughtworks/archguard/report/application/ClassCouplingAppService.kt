@@ -54,5 +54,4 @@ class ClassCouplingAppService(val classCouplingRepository: ClassCouplingReposito
         }
         return duplicatedCouplings
     }
-
 }

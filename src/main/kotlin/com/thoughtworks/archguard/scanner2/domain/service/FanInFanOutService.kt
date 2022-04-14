@@ -67,7 +67,6 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         }
         return fanInFanOutMap
     }
-
 }
 
 data class FanInFanOut(val fanIn: Int = 0, val fanOut: Int = 0)

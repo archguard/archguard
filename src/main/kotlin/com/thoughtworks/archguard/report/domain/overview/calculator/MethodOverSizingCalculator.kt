@@ -28,5 +28,4 @@ class MethodOverSizingCalculator(val sizingService: SizingService) : BadSmellLev
             }
         }
     }
-
 }

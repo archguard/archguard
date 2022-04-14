@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class FeignClientPlugin: AbstractDependPlugin() {
+class FeignClientPlugin : AbstractDependPlugin() {
     @Autowired
     lateinit var feignClientService: FeignClientService
 
@@ -21,11 +21,11 @@ class FeignClientPlugin: AbstractDependPlugin() {
         return PluginType.FEIGN_CLIENT
     }
 
-    override fun fixMethodDependencies(systemId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>>{
+    override fun fixMethodDependencies(systemId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
         return methodDependencies + feignClientService.getFeignClientMethodDependencies().map { Dependency(mapHttpRequestToMethod(it.caller), mapHttpRequestToMethod(it.callee)) }
     }
 
-    private fun mapHttpRequestToMethod(httpRequest: HttpRequest): JMethodVO{
+    private fun mapHttpRequestToMethod(httpRequest: HttpRequest): JMethodVO {
         return springCloudServiceRepository.getMethodById(httpRequest.targetId)
     }
 }

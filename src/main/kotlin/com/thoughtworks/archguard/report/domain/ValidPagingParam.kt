@@ -14,20 +14,19 @@ object ValidPagingParam {
         }
     }
 
-
     fun validFilterParam(requestFilter: FilterSizingDto): FilterSizingDto {
 
         println("入参： requestFilter $requestFilter")
 
         return FilterSizingDto(
-                requestFilter.currentPageNumber,
-                requestFilter.numberPerPage,
-                validParam(requestFilter.module),
-                validParam(requestFilter.className),
-                validParam(requestFilter.packageName),
-                validParam(requestFilter.name))
+            requestFilter.currentPageNumber,
+            requestFilter.numberPerPage,
+            validParam(requestFilter.module),
+            validParam(requestFilter.className),
+            validParam(requestFilter.packageName),
+            validParam(requestFilter.name)
+        )
     }
-
 
     private fun validParam(filterKeyword: String?): String {
 
@@ -37,5 +36,4 @@ object ValidPagingParam {
             filterKeyword
         }
     }
-
 }

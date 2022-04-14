@@ -73,7 +73,6 @@ class CycleDetector(directedGraph: Graph) {
             this.cycles.add(cycle)
         }
     }
-
 }
 
 enum class VisitStatus {

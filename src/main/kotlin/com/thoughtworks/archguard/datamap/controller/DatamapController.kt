@@ -16,7 +16,3 @@ class DatamapController(val service: DatamapService) {
         return service.getDatamapBySystemId(systemId)
     }
 }
-
-
-
-

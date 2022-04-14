@@ -28,5 +28,4 @@ class TestUnassertCalculator(val testBadSmellRepository: TestBadSmellRepository)
             }
         }
     }
-
 }

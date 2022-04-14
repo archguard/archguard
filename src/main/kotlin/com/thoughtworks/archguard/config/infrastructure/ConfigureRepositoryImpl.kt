@@ -14,10 +14,10 @@ class ConfigureRepositoryImpl(val jdbi: Jdbi) : ConfigureRepository {
         return jdbi.withHandle<List<Configure>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ConfigureDTO::class.java))
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(ConfigureDTO::class.java)
-                    .map { configure -> configure.toDomainObject() }
-                    .list()
+                .bind("systemId", systemId)
+                .mapTo(ConfigureDTO::class.java)
+                .map { configure -> configure.toDomainObject() }
+                .list()
         }
     }
 
@@ -29,12 +29,12 @@ class ConfigureRepositoryImpl(val jdbi: Jdbi) : ConfigureRepository {
             configureDTOList.forEach {
                 val id = it.id ?: UUID.randomUUID().toString()
                 batch.bind("id", id)
-                        .bind("systemId", it.systemId)
-                        .bind("type", it.type)
-                        .bind("key", it.key)
-                        .bind("value", it.value)
-                        .bind("order", it.order)
-                        .add()
+                    .bind("systemId", it.systemId)
+                    .bind("type", it.type)
+                    .bind("key", it.key)
+                    .bind("value", it.value)
+                    .bind("order", it.order)
+                    .add()
             }
             batch.execute()
         }
@@ -43,15 +43,17 @@ class ConfigureRepositoryImpl(val jdbi: Jdbi) : ConfigureRepository {
     override fun create(config: Configure) {
         val configureDTO = ConfigureDTO.of(config)
         jdbi.withHandle<Int, Nothing> { handle ->
-            handle.execute("INSERT INTO system_configure (id, system_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
-                    configureDTO.id, configureDTO.systemId, configureDTO.type, configureDTO.key, configureDTO.value, configureDTO.order)
+            handle.execute(
+                "INSERT INTO system_configure (id, system_id, type, `key`, value, `order`) VALUES (?, ?, ?, ?, ?, ?)",
+                configureDTO.id, configureDTO.systemId, configureDTO.type, configureDTO.key, configureDTO.value, configureDTO.order
+            )
         }
     }
 
     override fun update(config: Configure) {
         val configureDTO = ConfigureDTO.of(config)
         val sql = "update system_configure set " +
-                "type='${configureDTO.type}', "
+            "type='${configureDTO.type}', "
         "key='${configureDTO.key}', "
         "value='${configureDTO.value}', "
         "order='${configureDTO.order}', "

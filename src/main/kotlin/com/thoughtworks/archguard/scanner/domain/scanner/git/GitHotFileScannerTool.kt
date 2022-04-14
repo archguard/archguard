@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.git
 
-import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
@@ -14,15 +13,15 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String, val consum
         if (getGitHotFileCommitFile() == null) return mapOf()
         val map = mutableMapOf<String, Int>()
         getGitHotFileCommitFile()!!.readLines().stream()
-                .map { it.replace("\n", "").replace("\r", "") }
-                .filter { it != "" }
-                .forEach {
-                    if (map.contains(it)) {
-                        map[it] = map[it]!! + 1
-                    } else {
-                        map[it] = 1
-                    }
+            .map { it.replace("\n", "").replace("\r", "") }
+            .filter { it != "" }
+            .forEach {
+                if (map.contains(it)) {
+                    map[it] = map[it]!! + 1
+                } else {
+                    map[it] = 1
                 }
+            }
         return map
     }
 

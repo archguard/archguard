@@ -13,8 +13,10 @@ internal class LogicComponentTest {
         val module4 = SubModule("Module4")
         val lg1 = LogicModule("id2", "lg2", listOf(module4, jClass3))
         val lg2 = LogicModule("id2", "lg2", listOf(module3, lg1))
-        val logicModule = LogicModule("id10", "lg",
-                listOf(module1, jClass2, lg2))
+        val logicModule = LogicModule(
+            "id10", "lg",
+            listOf(module1, jClass2, lg2)
+        )
 
         assertThat(logicModule.containsOrEquals(module1)).isTrue()
         assertThat(logicModule.containsOrEquals(jClass2)).isTrue()

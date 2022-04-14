@@ -9,9 +9,9 @@ class GitHotFileVO(val path: String, val modifiedCount: Int) {
 
     fun className(): String? {
         return jvmClassSuffixMap.entries
-                .filter { path.endsWith(it.value) }
-                .map { path.substringAfter("${it.key}/").substringBefore(it.value).replace("/", ".") }
-                .firstOrNull()
+            .filter { path.endsWith(it.value) }
+            .map { path.substringAfter("${it.key}/").substringBefore(it.value).replace("/", ".") }
+            .firstOrNull()
     }
 
     fun moduleName(): String? {
@@ -24,5 +24,4 @@ class GitHotFileVO(val path: String, val modifiedCount: Int) {
 
         return null
     }
-
 }

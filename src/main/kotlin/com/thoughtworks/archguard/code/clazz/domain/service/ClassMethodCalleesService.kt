@@ -2,20 +2,29 @@ package com.thoughtworks.archguard.code.clazz.domain.service
 
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.stereotype.Service
 
 @Service
-class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo: JClassRepository,
-                                val methodCalleesService: MethodCalleesService, val configureService: ConfigureService,
-                                val classConfigService: ClassConfigService, val methodConfigService: MethodConfigService
+class ClassMethodCalleesService(
+    val methodRepo: JMethodRepository,
+    val classRepo: JClassRepository,
+    val methodCalleesService: MethodCalleesService,
+    val configureService: ConfigureService,
+    val classConfigService: ClassConfigService,
+    val methodConfigService: MethodConfigService
 ) {
 
-    fun findClassMethodsCallees(systemId: Long, target: JClass, calleeDeep: Int, needIncludeImpl: Boolean,
-                                needParents: Boolean): JClass {
+    fun findClassMethodsCallees(
+        systemId: Long,
+        target: JClass,
+        calleeDeep: Int,
+        needIncludeImpl: Boolean,
+        needParents: Boolean
+    ): JClass {
         if (target.module == null) {
             return target
         }
@@ -32,5 +41,4 @@ class ClassMethodCalleesService(val methodRepo: JMethodRepository, val classRepo
         }
         return target
     }
-
 }

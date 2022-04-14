@@ -28,5 +28,4 @@ class PackageOverSizingCalculator(val sizingService: SizingService) : BadSmellLe
             }
         }
     }
-
 }

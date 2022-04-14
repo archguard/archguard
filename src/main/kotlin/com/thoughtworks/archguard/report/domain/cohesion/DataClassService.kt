@@ -19,5 +19,4 @@ class DataClassService(val dataClassRepository: DataClassRepository) {
         val count = dataClassRepository.getAllDataClassCount(systemId)
         return mapOf((BadSmellType.DATA_CLASS to count))
     }
-
 }

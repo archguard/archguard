@@ -1,15 +1,14 @@
 package com.thoughtworks.archguard.code.method.domain.service
 
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class MethodCalleesService(val repo: JMethodRepository, val configureService: ConfigureService, val methodConfigService: MethodConfigService) {
     private val log = LoggerFactory.getLogger(MethodCalleesService::class.java)
-
 
     fun buildMethodCallees(systemId: Long, methods: List<JMethod>, calleeDeep: Int, needIncludeImpl: Boolean): List<JMethod> {
         val container = ArrayList<JMethod>()
@@ -33,10 +32,14 @@ class MethodCalleesService(val repo: JMethodRepository, val configureService: Co
                     it.implements = implements
                 }
             }
-            doBuildCallees(systemId,
-                    pendindMethods.flatMap { it.callees }, calleeDeep - 1, container, needIncludeImpl)
-            doBuildCallees(systemId,
-                    pendindMethods.flatMap { it.implements }, calleeDeep, container, needIncludeImpl)
+            doBuildCallees(
+                systemId,
+                pendindMethods.flatMap { it.callees }, calleeDeep - 1, container, needIncludeImpl
+            )
+            doBuildCallees(
+                systemId,
+                pendindMethods.flatMap { it.implements }, calleeDeep, container, needIncludeImpl
+            )
         }
     }
 

@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class LCOM4Service(val jClassRepository: JClassRepository,
-                   val jMethodRepository: JMethodRepository) {
+class LCOM4Service(
+    val jClassRepository: JClassRepository,
+    val jMethodRepository: JMethodRepository
+) {
 
     private val log = LoggerFactory.getLogger(LCOM4Service::class.java)
 

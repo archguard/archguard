@@ -34,8 +34,10 @@ class ProfileController(val service: ProfileService) {
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable("id") id: Long,
-               @RequestBody profile: QualityGateProfileDTO): ResponseEntity<Nothing> {
+    fun update(
+        @PathVariable("id") id: Long,
+        @RequestBody profile: QualityGateProfileDTO
+    ): ResponseEntity<Nothing> {
         service.update(id, profile.toProfile())
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }

@@ -3,12 +3,13 @@ package com.thoughtworks.archguard.qualitygate.domain
 import com.thoughtworks.archguard.common.JsonUtils
 import java.util.*
 
-
-data class QualityGateProfile(var id: Long?,
-                              val name: String,
-                              val config: String,
-                              val createdAt: Date,
-                              var updatedAt: Date) {
+data class QualityGateProfile(
+    var id: Long?,
+    val name: String,
+    val config: String,
+    val createdAt: Date,
+    var updatedAt: Date
+) {
     constructor(name: String, config: String) : this(null, name, config, Date(), Date())
 
     companion object {
@@ -22,4 +23,3 @@ data class QualityGateProfile(var id: Long?,
         return QualityGateProfileDTO(id, name, qualityGateConfig, createdAt, updatedAt)
     }
 }
-

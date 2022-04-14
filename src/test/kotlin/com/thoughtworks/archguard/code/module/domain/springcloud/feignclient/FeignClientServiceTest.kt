@@ -33,7 +33,7 @@ class FeignClientServiceTest {
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = FeignClientService(jAnnotationRepository,springCloudServiceRepository, httpRequestService)
+        service = FeignClientService(jAnnotationRepository, springCloudServiceRepository, httpRequestService)
     }
 
     @Test
@@ -73,7 +73,6 @@ class FeignClientServiceTest {
         every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
         every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
 
-
         // when
         val dependencies = service.getFeignClientMethodDependencies()
 
@@ -81,9 +80,6 @@ class FeignClientServiceTest {
         assertEquals(1, dependencies.size)
         Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
         Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
-
-
-
     }
 
     @Test
@@ -102,7 +98,6 @@ class FeignClientServiceTest {
         every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
         every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
 
-
         // when
         val dependencies = service.getFeignClientMethodDependencies()
 
@@ -110,7 +105,6 @@ class FeignClientServiceTest {
         assertEquals(1, dependencies.size)
         Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
         Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
-
     }
 
     @Test
@@ -129,7 +123,6 @@ class FeignClientServiceTest {
         every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
         every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
 
-
         // when
         val dependencies = service.getFeignClientMethodDependencies()
 
@@ -137,7 +130,6 @@ class FeignClientServiceTest {
         assertEquals(1, dependencies.size)
         Assertions.assertThat(dependencies[0].caller).isEqualTo(httpRequestMethod1)
         Assertions.assertThat(dependencies[0].callee).isEqualTo(httpRequestMethod2)
-
     }
 
     @Test
@@ -156,13 +148,10 @@ class FeignClientServiceTest {
         every { springCloudServiceRepository.getServiceNameByMethodId("idm1") } returns "consumer"
         every { springCloudServiceRepository.getServiceNameByMethodId("idm2") } returns "producer"
 
-
         // when
         val dependencies = service.getFeignClientMethodDependencies()
 
         // then
         assertEquals(0, dependencies.size)
     }
-
-
 }

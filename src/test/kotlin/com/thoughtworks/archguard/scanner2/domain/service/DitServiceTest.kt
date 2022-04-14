@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class DitServiceTest{
+internal class DitServiceTest {
     private lateinit var service: DitService
 
     @MockK
@@ -23,7 +23,7 @@ internal class DitServiceTest{
 
     @Test
     fun should_get_depthOfInheritance() {
-        //given
+        // given
         val systemId: Long = 1
         val child = JClass("any", "Child", "module")
         val parent = JClass("any", "Parent", "module")
@@ -33,15 +33,14 @@ internal class DitServiceTest{
         every { jClassRepository.findClassParents(systemId, "module", "Parent") } returns listOf(grandparent)
         every { jClassRepository.findClassParents(systemId, "module", "Grandparent") } returns listOf()
 
-        //when
+        // when
         val childDIT = service.getDepthOfInheritance(systemId, child)
         val parentDIT = service.getDepthOfInheritance(systemId, parent)
         val grandparentDIT = service.getDepthOfInheritance(systemId, grandparent)
 
-        //then
+        // then
         assertEquals(2, childDIT)
         assertEquals(1, parentDIT)
         assertEquals(0, grandparentDIT)
-
     }
 }

@@ -64,7 +64,6 @@ internal class CycleDetectorTest {
         graph.addEdge(nodeP, nodeQ)
         graph.addEdge(nodeQ, nodeM)
 
-
         val cycleDetector = CycleDetector(graph.toDirectedGraph())
         val cycles = cycleDetector.findCycles()
         assertThat(cycles.size).isEqualTo(2)
@@ -93,7 +92,6 @@ internal class CycleDetectorTest {
         graph.addEdge(nodeN, nodeP)
         graph.addEdge(nodeP, nodeQ)
         graph.addEdge(nodeQ, nodeM)
-
 
         val cycleDetector = CycleDetector(graph.toDirectedGraph())
         val cycles = cycleDetector.findCycles()

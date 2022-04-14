@@ -12,8 +12,8 @@ class BadSmellThresholdService(val badSmellSuitRepository: BadSmellSuiteReposito
     fun getBadSmellSuiteWithSelectedInfoBySystemId(systemId: Long): List<BadSmellSuiteWithSelected> {
         val selectedId = badSmellSuitRepository.getSelectedBadSmellSuiteIdBySystem(systemId)
         return badSmellSuitRepository.getAllBadSmellThresholdSuites()
-                .map {
-                    BadSmellSuiteWithSelected(it.id, it.suiteName, it.isDefault, it.id == selectedId, it.thresholds)
-                }
+            .map {
+                BadSmellSuiteWithSelected(it.id, it.suiteName, it.isDefault, it.id == selectedId, it.thresholds)
+            }
     }
 }

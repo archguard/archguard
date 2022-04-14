@@ -11,9 +11,11 @@ import javax.validation.Valid
 class HubController(val hubService: HubService) {
 
     @PostMapping("/classes/above-threshold")
-    fun getClassesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
-                                    @RequestBody @Valid filterSizing: FilterSizingDto,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false): ResponseEntity<ClassHubListDto> {
+    fun getClassesAboveHubThreshold(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto,
+        @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false
+    ): ResponseEntity<ClassHubListDto> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -24,9 +26,11 @@ class HubController(val hubService: HubService) {
     }
 
     @PostMapping("/methods/above-threshold")
-    fun getMethodsAboveHubThreshold(@PathVariable("systemId") systemId: Long,
-                                    @RequestBody @Valid filterSizing: FilterSizingDto,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false): ResponseEntity<MethodHubListDto> {
+    fun getMethodsAboveHubThreshold(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto,
+        @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false
+    ): ResponseEntity<MethodHubListDto> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -37,10 +41,11 @@ class HubController(val hubService: HubService) {
     }
 
     @PostMapping("/packages/above-threshold")
-    fun getPackagesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestBody @Valid filterSizing: FilterSizingDto,
-                                     @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false): ResponseEntity<PackageHubListDto> {
-
+    fun getPackagesAboveHubThreshold(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto,
+        @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false
+    ): ResponseEntity<PackageHubListDto> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -51,9 +56,11 @@ class HubController(val hubService: HubService) {
     }
 
     @PostMapping("/modules/above-threshold")
-    fun getModulesAboveHubThreshold(@PathVariable("systemId") systemId: Long,
-                                    @RequestBody @Valid filterSizing: FilterSizingDto,
-                                    @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false): ResponseEntity<ModuleHubListDto> {
+    fun getModulesAboveHubThreshold(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto,
+        @RequestParam(value = "orderByFanIn") orderByFanIn: Boolean = false
+    ): ResponseEntity<ModuleHubListDto> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()

@@ -15,14 +15,16 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
     lateinit var jdbi: Jdbi
 
     override fun getSystemInfo(id: Long): SystemInfo? =
-            jdbi.withHandle<SystemInfo, Nothing> {
-                it.createQuery("select id, system_name systemName, repo repo, sql_table `sql`," +
-                        " username username, language language, branch branch, code_path codePath," +
-                        " password password, repo_type repoType, workdir workdir from system_info where id = :id")
-                        .bind("id", id)
-                        .mapTo<SystemInfo>()
-                        .firstOrNull()
-            }
+        jdbi.withHandle<SystemInfo, Nothing> {
+            it.createQuery(
+                "select id, system_name systemName, repo repo, sql_table `sql`," +
+                    " username username, language language, branch branch, code_path codePath," +
+                    " password password, repo_type repoType, workdir workdir from system_info where id = :id"
+            )
+                .bind("id", id)
+                .mapTo<SystemInfo>()
+                .firstOrNull()
+        }
 
     override fun setSystemWorkspace(id: Long, workdir: String) {
         jdbi.withHandle<Unit, Nothing> {
@@ -35,7 +37,8 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
 
     override fun updateSystemInfo(systemInfo: SystemInfo): Int {
         return jdbi.withHandle<Int, Nothing> {
-            it.createUpdate("update system_info set " +
+            it.createUpdate(
+                "update system_info set " +
                     "system_name = :systemName, " +
                     "repo = :repo, " +
                     "sql_table = :sql, " +
@@ -47,17 +50,20 @@ class ScannerSystemInfoRepositoryImpl : SystemInfoRepository {
                     "code_path = :codePath, " +
                     "branch = :branch, " +
                     "updated_time = NOW() " +
-                    "where id = :id")
-                    .bindBean(systemInfo)
-                    .execute()
+                    "where id = :id"
+            )
+                .bindBean(systemInfo)
+                .execute()
         }
     }
 
     override fun updateScanningSystemToScanFail() {
         jdbi.withHandle<Unit, Nothing> {
-            it.createUpdate("update system_info s1 set s1.scanned='FAILED' where s1.id in " +
-                    "(select s2.id from (select * from system_info) s2 where s2.scanned='SCANNING') ;")
-                    .execute()
+            it.createUpdate(
+                "update system_info s1 set s1.scanned='FAILED' where s1.id in " +
+                    "(select s2.id from (select * from system_info) s2 where s2.scanned='SCANNING') ;"
+            )
+                .execute()
         }
     }
 

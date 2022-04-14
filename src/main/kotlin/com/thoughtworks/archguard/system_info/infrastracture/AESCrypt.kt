@@ -32,5 +32,4 @@ class AESCrypt {
             return String(decrypt)
         }
     }
-
 }

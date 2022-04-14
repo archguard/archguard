@@ -35,7 +35,7 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long, 
             val chmod = ProcessBuilder("chmod", "+x", "scan_java_bytecode.jar")
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x scan_java_bytecode.jar tool Exception")
         }
     }
@@ -56,5 +56,4 @@ class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long, 
         log.info("execute cmd: + $cmd")
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
-
 }

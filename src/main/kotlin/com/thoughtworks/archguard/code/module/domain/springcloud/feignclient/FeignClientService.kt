@@ -14,7 +14,6 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
 
     private val log = LoggerFactory.getLogger(FeignClientService::class.java)
 
-
     fun getFeignClients(): List<FeignClient> {
         val feignClientAnnotations = jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient").filter { it.targetType == ElementType.TYPE.name }
         return feignClientAnnotations.map { FeignClient(it.targetId, FeignClientArg(it.values.orEmpty())) }
@@ -39,11 +38,9 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
             val callees = services.getOrDefault(serviceName, mutableListOf())
 
             feignClientMethodDependencies.addAll(callers.flatMap { caller -> mapToMethod(caller, callees).map { callee -> Dependency(caller, callee) } })
-
         }
 
         return feignClientMethodDependencies
-
     }
 
     private fun margeFeignClientArgToMethod(feignClientArg: FeignClientArg, method: HttpRequest): HttpRequest {
@@ -58,9 +55,7 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
         val regex = Regex("""\{[^/]*}""")
         val callerPathStr = callerPath.replace(regex, "any")
         val calleePathRegex = calleePath.replace(regex, """[^/]*""")
-        
+
         return Regex(calleePathRegex).matches(callerPathStr)
     }
-
-
 }

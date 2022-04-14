@@ -7,11 +7,13 @@ import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import org.springframework.stereotype.Service
 
 @Service
-class HubService(val thresholdSuiteService: ThresholdSuiteService,
-                 val classCouplingRepository: ClassCouplingRepository,
-                 val methodCouplingRepository: MethodCouplingRepository,
-                 val packageCouplingRepository: PackageCouplingRepository,
-                 val moduleCouplingRepository: ModuleCouplingRepository) {
+class HubService(
+    val thresholdSuiteService: ThresholdSuiteService,
+    val classCouplingRepository: ClassCouplingRepository,
+    val methodCouplingRepository: MethodCouplingRepository,
+    val packageCouplingRepository: PackageCouplingRepository,
+    val moduleCouplingRepository: ModuleCouplingRepository
+) {
 
     fun getClassHubListAboveThreshold(systemId: Long, limit: Long, offset: Long, orderByFanIn: Boolean): Triple<List<ClassCoupling>, Long, Int> {
         validPagingParam(limit, offset)
@@ -51,11 +53,10 @@ class HubService(val thresholdSuiteService: ThresholdSuiteService,
         val classThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_HUB_CLASS)
         val methodThreshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.COUPLING_HUB_METHOD)
         return mapOf(
-                (BadSmellType.CLASSHUB to classCouplingRepository.getCouplingAboveThresholdCount(systemId, classThreshold, classThreshold)),
-                (BadSmellType.PACKAGEHUB to packageCouplingRepository.getCouplingAboveThresholdCount(systemId, packageThreshold, packageThreshold)),
-                (BadSmellType.MODULEHUB to moduleCouplingRepository.getCouplingAboveThresholdCount(systemId, moduleThreshold, moduleThreshold)),
-                (BadSmellType.METHODHUB to methodCouplingRepository.getCouplingAboveThresholdCount(systemId, methodThreshold, methodThreshold))
+            (BadSmellType.CLASSHUB to classCouplingRepository.getCouplingAboveThresholdCount(systemId, classThreshold, classThreshold)),
+            (BadSmellType.PACKAGEHUB to packageCouplingRepository.getCouplingAboveThresholdCount(systemId, packageThreshold, packageThreshold)),
+            (BadSmellType.MODULEHUB to moduleCouplingRepository.getCouplingAboveThresholdCount(systemId, moduleThreshold, moduleThreshold)),
+            (BadSmellType.METHODHUB to methodCouplingRepository.getCouplingAboveThresholdCount(systemId, methodThreshold, methodThreshold))
         )
     }
-
 }

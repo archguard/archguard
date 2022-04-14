@@ -8,22 +8,30 @@ import org.springframework.stereotype.Component
 class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val methodResult = circularDependencyRepository
-                .getCircularDependencyBadSmellCalculateResult(systemId,
-                        CircularDependencyType.METHOD,
-                        getMethodCircularDependencyLevelRanges())
+            .getCircularDependencyBadSmellCalculateResult(
+                systemId,
+                CircularDependencyType.METHOD,
+                getMethodCircularDependencyLevelRanges()
+            )
         val classResult = circularDependencyRepository
-                .getCircularDependencyBadSmellCalculateResult(systemId,
-                        CircularDependencyType.CLASS,
-                        getClassCircularDependencyLevelRanges())
+            .getCircularDependencyBadSmellCalculateResult(
+                systemId,
+                CircularDependencyType.CLASS,
+                getClassCircularDependencyLevelRanges()
+            )
         val packageResult = circularDependencyRepository
-                .getCircularDependencyBadSmellCalculateResult(systemId,
-                        CircularDependencyType.PACKAGE,
-                        getPackageCircularDependencyLevelRanges())
+            .getCircularDependencyBadSmellCalculateResult(
+                systemId,
+                CircularDependencyType.PACKAGE,
+                getPackageCircularDependencyLevelRanges()
+            )
 
         val moduleResult = circularDependencyRepository
-                .getCircularDependencyBadSmellCalculateResult(systemId,
-                        CircularDependencyType.MODULE,
-                        getModuleCircularDependencyLevelRanges())
+            .getCircularDependencyBadSmellCalculateResult(
+                systemId,
+                CircularDependencyType.MODULE,
+                getModuleCircularDependencyLevelRanges()
+            )
 
         var result = methodResult.plus(classResult)
         result = result.plus(packageResult)

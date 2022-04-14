@@ -7,8 +7,10 @@ class ClassWithDitPO(val id: String, val systemId: Long, val name: String, val m
     fun toDeepInheritance(): DeepInheritance {
         val lastDelimiterIndex = name.lastIndexOf(".")
         return if (lastDelimiterIndex > 0) {
-            DeepInheritance(id, systemId, module, name.substring(0, lastDelimiterIndex),
-                    name.substring(lastDelimiterIndex + 1), dit)
+            DeepInheritance(
+                id, systemId, module, name.substring(0, lastDelimiterIndex),
+                name.substring(lastDelimiterIndex + 1), dit
+            )
         } else {
             DeepInheritance(id, systemId, module, "", name, dit)
         }

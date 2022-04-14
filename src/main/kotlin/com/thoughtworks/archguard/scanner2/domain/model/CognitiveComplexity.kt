@@ -1,9 +1,11 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
-class CognitiveComplexity(val commitId: String,
-                          val changedCognitiveComplexity: Int,
-                          val systemId: Long,
-                          val path: String) {
+class CognitiveComplexity(
+    val commitId: String,
+    val changedCognitiveComplexity: Int,
+    val systemId: Long,
+    val path: String
+) {
 
     companion object {
         fun from(path: String, changeEntryList: List<ChangeEntry>, systemId: Long): List<CognitiveComplexity> {
@@ -19,5 +21,4 @@ class CognitiveComplexity(val commitId: String,
             return result
         }
     }
-
 }

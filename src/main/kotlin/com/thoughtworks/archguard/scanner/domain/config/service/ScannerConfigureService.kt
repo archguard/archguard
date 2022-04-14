@@ -25,5 +25,4 @@ class ScannerConfigureService {
             UpdateMessageDTO(false, "There is no such config refer to this id")
         }
     }
-
 }

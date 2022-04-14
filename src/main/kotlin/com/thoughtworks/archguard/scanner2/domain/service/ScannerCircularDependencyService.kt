@@ -13,7 +13,6 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.infrastructure.Toggle
 import org.springframework.stereotype.Service
 
-
 @Service
 class ScannerCircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
@@ -96,8 +95,8 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
         val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         return allClassIdDependencies.map { dependency: Dependency<String> ->
             Dependency(
-                    jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(),
-                    jClassesHasModules.first { jClass -> jClass.id == dependency.callee }.toVO()
+                jClassesHasModules.first { jClass -> jClass.id == dependency.caller }.toVO(),
+                jClassesHasModules.first { jClass -> jClass.id == dependency.callee }.toVO()
             )
         }
     }

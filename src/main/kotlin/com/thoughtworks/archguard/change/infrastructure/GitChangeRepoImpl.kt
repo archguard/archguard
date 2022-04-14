@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.change.infrastructure
 
-import com.thoughtworks.archguard.change.domain.GitHotFile
 import com.thoughtworks.archguard.change.domain.GitChangeRepo
+import com.thoughtworks.archguard.change.domain.GitHotFile
 import com.thoughtworks.archguard.change.domain.GitPathChangeCount
 import org.springframework.stereotype.Repository
 

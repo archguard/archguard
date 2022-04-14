@@ -11,7 +11,6 @@ class ShotgunSurgeryCalculator(val shotgunSurgeryService: ShotgunSurgeryService)
         return getBadSmellLevel(shotgunSurgeryCount, getLevelRanges())
     }
 
-
     private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellCalculateResult {
         return when (count) {
             in range[0] -> BadSmellCalculateResult(1L, 0L, 0L)

@@ -14,13 +14,17 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/systems/{systemId}/redundancy")
-class RedundancyController(val redundancyService: RedundancyService,
-                           val overGeneralizationService: OverGeneralizationService) {
+class RedundancyController(
+    val redundancyService: RedundancyService,
+    val overGeneralizationService: OverGeneralizationService
+) {
 
     @PostMapping("/class/one-method")
-    fun getOneMethodClassWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                        @RequestBody @Valid filterSizing: FilterSizingDto):
-            ResponseEntity<OneMethodClassDto> {
+    fun getOneMethodClassWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ):
+        ResponseEntity<OneMethodClassDto> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -30,9 +34,11 @@ class RedundancyController(val redundancyService: RedundancyService,
     }
 
     @PostMapping("/class/one-field")
-    fun getOneFieldClassWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                       @RequestBody @Valid filterSizing: FilterSizingDto):
-            ResponseEntity<OneFieldDataClassDto> {
+    fun getOneFieldClassWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ):
+        ResponseEntity<OneFieldDataClassDto> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -42,9 +48,11 @@ class RedundancyController(val redundancyService: RedundancyService,
     }
 
     @PostMapping("/class/over-generalization")
-    fun getOverGeneralizationClassWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                                 @RequestBody @Valid filterSizing: FilterSizingDto):
-            ResponseEntity<OverGeneralizationPairListDTO> {
+    fun getOverGeneralizationClassWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ):
+        ResponseEntity<OverGeneralizationPairListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -54,7 +62,6 @@ class RedundancyController(val redundancyService: RedundancyService,
         val data = result.second.map { pair -> OverGeneralizationPairDTO.create(pair) }.toList()
         return ResponseEntity.ok(OverGeneralizationPairListDTO(data, result.first, offset / limit + 1))
     }
-
 }
 
 data class OneMethodClassDto(val data: List<ClassVO>, val count: Long, val currentPageNumber: Long)

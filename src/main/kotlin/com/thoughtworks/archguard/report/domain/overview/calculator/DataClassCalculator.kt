@@ -27,5 +27,4 @@ class DataClassCalculator(val dataClassRepository: DataClassRepository) : BadSme
         val countRangeLevel3 = 100L until Long.MAX_VALUE
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
-
 }

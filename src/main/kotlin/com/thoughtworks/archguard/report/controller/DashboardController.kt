@@ -19,4 +19,3 @@ class DashboardController(val dashboardService: DashboardService) {
         dashboardService.saveReport(systemId)
     }
 }
-

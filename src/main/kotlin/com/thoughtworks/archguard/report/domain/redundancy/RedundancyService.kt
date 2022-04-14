@@ -27,5 +27,4 @@ class RedundancyService(val redundancyRepository: RedundancyRepository, val data
 
         return mapOf((BadSmellType.REDUNDANT_ELEMENT to oneMethodCount + oneFieldCount))
     }
-
 }

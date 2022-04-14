@@ -14,8 +14,8 @@ class BadSmellSuiteRepositoryImpl(val jdbi: Jdbi) : BadSmellSuiteRepository {
         return jdbi.withHandle<List<BadSmellSuitePO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(BadSmellSuitePO::class.java))
             it.createQuery(sql)
-                    .mapTo(BadSmellSuitePO::class.java)
-                    .list()
+                .mapTo(BadSmellSuitePO::class.java)
+                .list()
         }.map { it.toBadSmellSuite() }
     }
 
@@ -23,9 +23,8 @@ class BadSmellSuiteRepositoryImpl(val jdbi: Jdbi) : BadSmellSuiteRepository {
         val sql = "select threshold_suite_id from system_info where id=:systemId"
         return jdbi.withHandle<Long, Nothing> {
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(Long::class.java).one()
+                .bind("systemId", systemId)
+                .mapTo(Long::class.java).one()
         }
     }
-
 }

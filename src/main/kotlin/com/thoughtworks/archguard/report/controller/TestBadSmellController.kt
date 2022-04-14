@@ -13,9 +13,10 @@ import javax.validation.Valid
 class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
 
     @PostMapping("/static-methods")
-    fun getModulesAboveLineThreshold(@PathVariable("systemId") systemId: Long,
-                                     @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getModulesAboveLineThreshold(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -25,9 +26,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/empty-test-methods")
-    fun getEmptyTests(@PathVariable("systemId") systemId: Long,
-                      @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getEmptyTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -37,9 +39,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/sleep-test-methods")
-    fun getSleepTests(@PathVariable("systemId") systemId: Long,
-                      @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getSleepTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -48,9 +51,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/ignore-test-methods")
-    fun getIgnoreTests(@PathVariable("systemId") systemId: Long,
-                       @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getIgnoreTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -60,9 +64,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/unassert-test-methods")
-    fun getUnassertTests(@PathVariable("systemId") systemId: Long,
-                         @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getUnassertTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -72,9 +77,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/multi-assert-test-methods")
-    fun getMultiAssertTests(@PathVariable("systemId") systemId: Long,
-                            @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getMultiAssertTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -84,9 +90,10 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
     }
 
     @PostMapping("/redundant-print-test-methods")
-    fun getRedundantPrintTests(@PathVariable("systemId") systemId: Long,
-                               @RequestBody @Valid filterSizing: FilterSizingDto)
-            : ResponseEntity<MethodInfoListDTO> {
+    fun getRedundantPrintTests(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<MethodInfoListDTO> {
 
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
@@ -94,5 +101,4 @@ class TestBadSmellController(val testBadSmellService: TestBadSmellService) {
 
         return ResponseEntity.ok(testBadSmellService.getRedundantPrintTestMethodList(systemId, limit, offset))
     }
-
 }

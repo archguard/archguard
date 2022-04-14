@@ -15,31 +15,31 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
         }
         return jdbi.withHandle<List<ClassCoupling>, Exception> {
             val sql = "select jc.id as id, jc.module as moduleName, jc.name as classFullName, " +
-                    "cm.fanin as fanIn, cm.fanout as fanOut from metric_class cm JOIN code_class jc " +
-                    "on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId and " +
-                    "(cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold) " +
-                    orderSqlPiece + ", moduleName, classFullName limit :limit offset :offset"
+                "cm.fanin as fanIn, cm.fanout as fanOut from metric_class cm JOIN code_class jc " +
+                "on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId and " +
+                "(cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold) " +
+                orderSqlPiece + ", moduleName, classFullName limit :limit offset :offset"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("offset", offset)
-                    .bind("limit", limit)
-                    .bind("classFanInThreshold", classFanInThreshold)
-                    .bind("classFanOutThreshold", classFanOutThreshold)
-                    .mapTo(ClassCouplingPO::class.java).list().map { it.toClassCoupling() }
+                .bind("systemId", systemId)
+                .bind("offset", offset)
+                .bind("limit", limit)
+                .bind("classFanInThreshold", classFanInThreshold)
+                .bind("classFanOutThreshold", classFanOutThreshold)
+                .mapTo(ClassCouplingPO::class.java).list().map { it.toClassCoupling() }
         }
     }
 
     override fun getCouplingAboveThresholdCount(systemId: Long, classFanInThreshold: Int, classFanOutThreshold: Int): Long {
         return jdbi.withHandle<Long, Exception> {
             val sql = "select count(1)" +
-                    "from metric_class cm " +
-                    "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
-                    "and (cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold)"
+                "from metric_class cm " +
+                "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
+                "and (cm.fanin > :classFanInThreshold or cm.fanout > :classFanOutThreshold)"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("classFanInThreshold", classFanInThreshold)
-                    .bind("classFanOutThreshold", classFanOutThreshold)
-                    .mapTo(Long::class.java).one()
+                .bind("systemId", systemId)
+                .bind("classFanInThreshold", classFanInThreshold)
+                .bind("classFanOutThreshold", classFanOutThreshold)
+                .mapTo(Long::class.java).one()
         }
     }
 
@@ -65,27 +65,27 @@ class ClassCouplingRepositoryImpl(val jdbi: Jdbi) : ClassCouplingRepository {
                      ) as c
             """.trimIndent()
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .bind("level1Start", thresholdRanges[0].first)
-                    .bind("level1End", thresholdRanges[0].last)
-                    .bind("level2Start", thresholdRanges[1].first)
-                    .bind("level2End", thresholdRanges[0].last)
-                    .bind("level3Start", thresholdRanges[2].first)
-                    .mapTo(BadSmellCalculateResult::class.java)
-                    .one()
+                .bind("systemId", systemId)
+                .bind("level1Start", thresholdRanges[0].first)
+                .bind("level1End", thresholdRanges[0].last)
+                .bind("level2Start", thresholdRanges[1].first)
+                .bind("level2End", thresholdRanges[0].last)
+                .bind("level3Start", thresholdRanges[2].first)
+                .mapTo(BadSmellCalculateResult::class.java)
+                .one()
         }
     }
 
     override fun getAllCoupling(systemId: Long): List<ClassCoupling> {
         return jdbi.withHandle<List<ClassCoupling>, Exception> {
             val sql = "select jc.id as id, jc.module as moduleName, jc.name as classFullName, " +
-                    "cm.fanin as fanIn, cm.fanout as fanOut " +
-                    "from metric_class cm " +
-                    "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
-                    "order by fanIn desc, fanOut desc, moduleName, classFullName"
+                "cm.fanin as fanIn, cm.fanout as fanOut " +
+                "from metric_class cm " +
+                "JOIN code_class jc on cm.system_id = jc.system_id and cm.class_id = jc.id where cm.system_id=:systemId " +
+                "order by fanIn desc, fanOut desc, moduleName, classFullName"
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(ClassCouplingPO::class.java).list().map { it.toClassCoupling() }
+                .bind("systemId", systemId)
+                .mapTo(ClassCouplingPO::class.java).list().map { it.toClassCoupling() }
         }
     }
 }

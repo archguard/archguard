@@ -16,12 +16,10 @@ class PmdRepository(@Autowired val jdbi: Jdbi) {
         }
     }
 
-
     fun clean() {
         jdbi.useHandle<Exception> {
             val delete = "delete from violation where 1=1"
             it.execute(delete)
         }
     }
-
 }

@@ -14,8 +14,10 @@ import kotlin.test.assertEquals
 @SpringBootTest
 @ActiveProfiles("test")
 @Disabled
-internal class ShotgunSurgeryControllerTest(@Autowired val shotgunSurgeryController: ShotgunSurgeryController,
-                                            @Autowired val jdbi: Jdbi) {
+internal class ShotgunSurgeryControllerTest(
+    @Autowired val shotgunSurgeryController: ShotgunSurgeryController,
+    @Autowired val jdbi: Jdbi
+) {
 
     @Test
     @Sql("classpath:sqls/insert_commit_log_and_change_log.sql")
@@ -23,7 +25,7 @@ internal class ShotgunSurgeryControllerTest(@Autowired val shotgunSurgeryControl
         shotgunSurgeryController.persist(0)
         val result = jdbi.withHandle<List<CognitiveComplexity>, RuntimeException> { handle: Handle ->
             handle.createQuery("select * from metric_cognitive_complexity")
-                    .mapTo(CognitiveComplexity::class.java).list()
+                .mapTo(CognitiveComplexity::class.java).list()
         }
         val arrayList = ArrayList(result)
         assertEquals(18, arrayList.size)

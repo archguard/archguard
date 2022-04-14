@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/container-service")
 class ContainerServiceController(val service: ServicesMapService) {
     @GetMapping("/{systemId}")
-    fun getServicesMap(@PathVariable("systemId") systemId: Long) : ContainerServiceResponse {
+    fun getServicesMap(@PathVariable("systemId") systemId: Long): ContainerServiceResponse {
         return service.findBySystemId(systemId)
     }
 
     @GetMapping("/systems")
-    fun getSystemByIds(@RequestParam(name="system") ids: List<String> ) : List<ContainerServiceResponse> {
+    fun getSystemByIds(@RequestParam(name = "system") ids: List<String>): List<ContainerServiceResponse> {
         return service.findAllServiceByIds(ids)
     }
 

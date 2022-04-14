@@ -11,5 +11,4 @@ class InitCodeTreeServiceImpl(val jClassRepository: JClassRepository) : InitCode
         codeTree.fixTopNodeSubModuleType()
         return codeTree
     }
-
 }

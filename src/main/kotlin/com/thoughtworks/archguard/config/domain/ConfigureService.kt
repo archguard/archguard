@@ -45,7 +45,6 @@ class ConfigureService(val configureRepository: ConfigureRepository) {
         return colorConfigures.filter { nodePropertyName.contains(it.key) }
     }
 
-
     fun updateConfigsByType(systemId: Long, type: String, configs: List<Configure>) {
         configureRepository.deleteConfiguresByType(systemId, type)
         configs.forEach { it.systemId = systemId }

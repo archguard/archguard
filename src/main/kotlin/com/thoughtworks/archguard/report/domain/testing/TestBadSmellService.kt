@@ -83,9 +83,9 @@ class TestBadSmellService(val testBadSmellRepository: TestBadSmellRepository) {
         val unAssertTestCount = testBadSmellRepository.getUnassertTestMethodIds(systemId).size.toLong()
 
         return mapOf(
-                (BadSmellType.IGNORE_TEST to ignoreTestMethodCount),
-                (BadSmellType.SLEEP_TEST to sleepTestMethodCount),
-                (BadSmellType.UN_ASSERT_TEST to unAssertTestCount))
+            (BadSmellType.IGNORE_TEST to ignoreTestMethodCount),
+            (BadSmellType.SLEEP_TEST to sleepTestMethodCount),
+            (BadSmellType.UN_ASSERT_TEST to unAssertTestCount)
+        )
     }
-
 }

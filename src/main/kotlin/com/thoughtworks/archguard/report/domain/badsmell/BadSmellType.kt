@@ -23,7 +23,6 @@ import com.thoughtworks.archguard.report.domain.overview.calculator.TestUnassert
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
-
 enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevelCalculator?) {
     DATACLUMPS("数据泥团", null),
     DEEPINHERITANCE("过深继承", null),
@@ -53,25 +52,26 @@ enum class BadSmellType(val value: String, var badSmellCalculator: BadSmellLevel
     }
 
     @Component
-    class BadSmellTypeInjector(val moduleCalculator: ModuleOverSizingCalculator,
-                               val packageCalculator: PackageOverSizingCalculator,
-                               val classCalculator: ClassOverSizingCalculator,
-                               val methodCalculator: MethodOverSizingCalculator,
+    class BadSmellTypeInjector(
+        val moduleCalculator: ModuleOverSizingCalculator,
+        val packageCalculator: PackageOverSizingCalculator,
+        val classCalculator: ClassOverSizingCalculator,
+        val methodCalculator: MethodOverSizingCalculator,
 
-                               val classHubCalculator: ClassHubCouplingCalculator,
-                               val methodHubCalculator: MethodHubCouplingCalculator,
-                               val packageHubCalculator: PackageHubCouplingCalculator,
-                               val moduleHubCalculator: ModuleHubCouplingCalculator,
-                               val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
-                               val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
-                               val circularDependencyCalculator: CircularDependencyCalculator,
-                               val redundantElementCalculator: RedundantElementCalculator,
-                               val overGeneralizationCalculator: OverGeneralizationCalculator,
-                               val dataClassCalculator: DataClassCalculator,
-                               val shotgunSurgeryCalculator: ShotgunSurgeryCalculator,
-                               val testSleepCalculator: TestSleepCalculator,
-                               val testUnassertCalculator: TestUnassertCalculator,
-                               val testIgnoreCalculator: TestIgnoreCalculator
+        val classHubCalculator: ClassHubCouplingCalculator,
+        val methodHubCalculator: MethodHubCouplingCalculator,
+        val packageHubCalculator: PackageHubCouplingCalculator,
+        val moduleHubCalculator: ModuleHubCouplingCalculator,
+        val dataClumpsCouplingCalculator: DataClumpsCouplingCalculator,
+        val deepInheritanceCouplingCalculator: DeepInheritanceCouplingCalculator,
+        val circularDependencyCalculator: CircularDependencyCalculator,
+        val redundantElementCalculator: RedundantElementCalculator,
+        val overGeneralizationCalculator: OverGeneralizationCalculator,
+        val dataClassCalculator: DataClassCalculator,
+        val shotgunSurgeryCalculator: ShotgunSurgeryCalculator,
+        val testSleepCalculator: TestSleepCalculator,
+        val testUnassertCalculator: TestUnassertCalculator,
+        val testIgnoreCalculator: TestIgnoreCalculator
     ) {
         @PostConstruct
         fun postConstruct() {

@@ -10,5 +10,3 @@ class BadSmellGroupPO(val name: String, val threshold: List<BadSmellThresholdPO>
         }
     }
 }
-
-

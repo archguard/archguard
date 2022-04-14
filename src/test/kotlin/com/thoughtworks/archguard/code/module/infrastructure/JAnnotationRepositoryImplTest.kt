@@ -25,7 +25,5 @@ internal class JAnnotationRepositoryImplTest {
         val expectedJAnnotation = JAnnotation("3b32c105-137c-4f1b-a064-a209250f729b", "TYPE", "a72fd1cd-6ca0-4585-b87c-d5e8b47e33ef", "org.springframework.cloud.netflix.feign.FeignClient")
         expectedJAnnotation.values = mapOf("name" to "\"spring-cloud-producer\"")
         Assertions.assertThat(jAnnotations.get(0)).isEqualToComparingFieldByField(expectedJAnnotation)
-
     }
-
 }

@@ -9,7 +9,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class NocServiceTest{
+internal class NocServiceTest {
     @MockK
     lateinit var jClassRepository: JClassRepository
 

@@ -47,7 +47,6 @@ class DobboPluginTest {
         every { jClassRepository.getJClassesHasModules(systemId) } returns listOf(class2)
         every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(class3, class4)
 
-
         // when
         val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(systemId, methodDependencies)
 
@@ -55,5 +54,4 @@ class DobboPluginTest {
         assertEquals(2, fixedMethodDependencies.size)
         assertThat(fixedMethodDependencies).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(method1, method3), Dependency(method1, method4)))
     }
-
 }

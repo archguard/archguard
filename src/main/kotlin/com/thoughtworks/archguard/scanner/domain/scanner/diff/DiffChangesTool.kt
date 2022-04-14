@@ -56,7 +56,7 @@ class DiffChangesTool(
             val chmod = ProcessBuilder("chmod", "+x", "diff_changes.jar")
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x diff_changes.jar tool Exception")
         }
     }
@@ -76,5 +76,4 @@ class DiffChangesTool(
     private fun scan(cmd: List<String>) {
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
-
 }

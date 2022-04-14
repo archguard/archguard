@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.jacoco
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.db.SqlScriptRunner
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +27,7 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
         sqlScriptRunner.run(DELETE_BUNDLE)
         sqlScriptRunner.run(DELETE_ITEM)
         getTargetProjects(context.workspace)
-                .forEach { w -> runSql(JacocoTool(context.workspace, w, context.buildTool, context.logStream).execToSql()) }
+            .forEach { w -> runSql(JacocoTool(context.workspace, w, context.buildTool, context.logStream).execToSql()) }
         log.info("finished scan jacoco exec file")
     }
 
@@ -39,8 +39,8 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
 
     private fun getTargetProjects(workspace: File): List<File> {
         return workspace.walkTopDown()
-                .filter { f -> f.absolutePath.endsWith("jacoco.exec") }
-                .map { f -> f.parentFile.parentFile }
-                .toList()
+            .filter { f -> f.absolutePath.endsWith("jacoco.exec") }
+            .map { f -> f.parentFile.parentFile }
+            .toList()
     }
 }

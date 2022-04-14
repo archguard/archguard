@@ -10,5 +10,4 @@ enum class Toggle(private var status: Boolean) {
     fun setStatus(status: Boolean) {
         this.status = status
     }
-
 }

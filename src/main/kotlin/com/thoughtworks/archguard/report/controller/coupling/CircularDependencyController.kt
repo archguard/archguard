@@ -15,8 +15,10 @@ import javax.validation.Valid
 class CircularDependencyController(val circularDependencyService: CircularDependencyService) {
 
     @PostMapping("/module")
-    fun getModuleCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                                  @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<CircularDependencyListDto<ModuleVO>> {
+    fun getModuleCircularDependencyWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<CircularDependencyListDto<ModuleVO>> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -26,8 +28,10 @@ class CircularDependencyController(val circularDependencyService: CircularDepend
     }
 
     @PostMapping("/package")
-    fun getPackageCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                                   @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<CircularDependencyListDto<PackageVO>> {
+    fun getPackageCircularDependencyWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<CircularDependencyListDto<PackageVO>> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -37,8 +41,10 @@ class CircularDependencyController(val circularDependencyService: CircularDepend
     }
 
     @PostMapping("/class")
-    fun getClassCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                                 @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<CircularDependencyListDto<ClassVO>> {
+    fun getClassCircularDependencyWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<CircularDependencyListDto<ClassVO>> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()
@@ -48,8 +54,10 @@ class CircularDependencyController(val circularDependencyService: CircularDepend
     }
 
     @PostMapping("/method")
-    fun getMethodCircularDependencyWithTotalCount(@PathVariable("systemId") systemId: Long,
-                                                  @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<CircularDependencyListDto<MethodVO>> {
+    fun getMethodCircularDependencyWithTotalCount(
+        @PathVariable("systemId") systemId: Long,
+        @RequestBody @Valid filterSizing: FilterSizingDto
+    ): ResponseEntity<CircularDependencyListDto<MethodVO>> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
         val limit = request.getLimit()
         val offset = request.getOffset()

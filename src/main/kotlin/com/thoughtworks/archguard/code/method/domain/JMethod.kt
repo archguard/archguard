@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.method.domain
 
 import com.thoughtworks.archguard.code.clazz.domain.JField
+import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 
 class JMethod(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: List<String>) {
     var callees: List<JMethod> = ArrayList()

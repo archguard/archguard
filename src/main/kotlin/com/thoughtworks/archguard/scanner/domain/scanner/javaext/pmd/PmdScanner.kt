@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.pmd
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.db.PmdRepository
 import com.thoughtworks.archguard.scanner.infrastructure.db.Violation
 import org.dom4j.Element
@@ -44,16 +44,17 @@ class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
     }
 
     private fun elementToViolation(violationE: Element, file: String, systemId: Long): Violation {
-        return Violation(systemId = systemId, file = file,
-                beginline = violationE.attributeValue("beginline").toInt(),
-                endline = violationE.attributeValue("endline").toInt(),
-                priority = violationE.attributeValue("priority").toInt(),
-                text = violationE.text)
+        return Violation(
+            systemId = systemId, file = file,
+            beginline = violationE.attributeValue("beginline").toInt(),
+            endline = violationE.attributeValue("endline").toInt(),
+            priority = violationE.attributeValue("priority").toInt(),
+            text = violationE.text
+        )
     }
 
     private fun save(vioList: List<Violation>) {
         pmdRepository.clean()
         pmdRepository.save(vioList)
     }
-
 }

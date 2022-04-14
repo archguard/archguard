@@ -107,5 +107,4 @@ class ScannerCircularDependencyServiceTest {
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
         assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(listOf(jClassM.toVO(), jClassN.toVO()))
     }
-
 }

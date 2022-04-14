@@ -8,14 +8,16 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
-                        var analysisClientProxy: AnalysisClientProxy) {
+class SystemInfoService(
+    val systemInfoRepository: SystemInfoRepository,
+    var analysisClientProxy: AnalysisClientProxy
+) {
 
     val logger: Logger = LoggerFactory.getLogger(SystemInfoService::class.java)
 
     fun getSystemInfo(id: Long): SystemInfo {
         return systemInfoRepository.getSystemInfo(id)
-                ?: throw EntityNotFoundException(SystemInfo::class.java, id)
+            ?: throw EntityNotFoundException(SystemInfo::class.java, id)
     }
 
     fun getAllSystemInfo(): List<SystemInfo> {
@@ -49,7 +51,6 @@ class SystemInfoService(val systemInfoRepository: SystemInfoRepository,
 
         // todo: temp clean for tests
         systemInfoRepository.deleteSystemInfoRelated()
-
     }
 
     fun cleanupSystemInfo() {

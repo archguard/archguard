@@ -16,8 +16,8 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         return jdbi.withHandle<List<JField>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JField::class.java))
             it.createQuery(sql)
-                    .mapTo(JField::class.java)
-                    .list()
+                .mapTo(JField::class.java)
+                .list()
         }
     }
 
@@ -27,15 +27,15 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
 
     override fun getAllMethodDependenciesAndNotThirdParty(systemId: Long): List<Dependency<String>> {
         val sql = "select a as caller, b as callee from code_ref_method_callees where system_id = :systemId " +
-                "and a in (select id from code_method where code_method.system_id = :systemId and is_test = 0 and module is not NULL) " +
-                "and b in (select id from code_method where code_method.system_id = :systemId and is_test = 0 and module is not NULL) " +
-                "and a!=b"
+            "and a in (select id from code_method where code_method.system_id = :systemId and is_test = 0 and module is not NULL) " +
+            "and b in (select id from code_method where code_method.system_id = :systemId and is_test = 0 and module is not NULL) " +
+            "and a!=b"
         return jdbi.withHandle<List<IdDependencyDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(IdDependencyDto::class.java))
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(IdDependencyDto::class.java)
-                    .list()
+                .bind("systemId", systemId)
+                .mapTo(IdDependencyDto::class.java)
+                .list()
         }.map { it.toDependency() }
     }
 
@@ -49,33 +49,33 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethodPO::class.java)
-                    .map { it.toJMethod() }
-                    .list()
+                .mapTo(JMethodPO::class.java)
+                .map { it.toJMethod() }
+                .list()
         }
     }
 
     override fun getMethodsNotThirdParty(systemId: Long): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM code_method WHERE " +
-                "system_id=:systemId AND module is not NULL"
+            "system_id=:systemId AND module is not NULL"
         return jdbi.withHandle<List<JMethodPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodPO::class.java))
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(JMethodPO::class.java)
-                    .list()
+                .bind("systemId", systemId)
+                .mapTo(JMethodPO::class.java)
+                .list()
         }.map { it.toJMethod() }
     }
 
     override fun getMethodsNotThirdPartyAndNotTest(systemId: Long): List<JMethod> {
         val sql = "SELECT id, name, clzname as clazz, module, returntype, argumenttypes, access FROM code_method WHERE " +
-                "system_id=:systemId and is_test = 0 AND module is not NULL and name not like '<%>'"
+            "system_id=:systemId and is_test = 0 AND module is not NULL and name not like '<%>'"
         return jdbi.withHandle<List<JMethodPO>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethodPO::class.java))
             it.createQuery(sql)
-                    .bind("systemId", systemId)
-                    .mapTo(JMethodPO::class.java)
-                    .list()
+                .bind("systemId", systemId)
+                .mapTo(JMethodPO::class.java)
+                .list()
         }.map { it.toJMethod() }
     }
 
@@ -84,9 +84,9 @@ class ScannerJMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
         return jdbi.withHandle<List<JMethod>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JMethod::class.java))
             it.createQuery(sql)
-                    .mapTo(JMethodPO::class.java)
-                    .map { it.toJMethod() }
-                    .list()
+                .mapTo(JMethodPO::class.java)
+                .map { it.toJMethod() }
+                .list()
         }
     }
 }

@@ -23,7 +23,7 @@ class SourceCodeTool(
     fun analyse() {
         prepareTool()
         var path = codePath
-        if(codePath.isEmpty()) {
+        if (codePath.isEmpty()) {
             path = "."
         }
 
@@ -46,7 +46,7 @@ class SourceCodeTool(
             val chmod = ProcessBuilder("chmod", "+x", "scan_sourcecode.jar")
             chmod.directory(systemRoot)
             chmod.start().waitFor()
-        }catch (ex:Exception) {
+        } catch (ex: Exception) {
             log.warn("chmod +x scan_sourcecode.jar tool Exception")
         }
     }
@@ -66,5 +66,4 @@ class SourceCodeTool(
     private fun scan(cmd: List<String>) {
         Processor.executeWithLogs(ProcessBuilder(cmd), systemRoot, logStream)
     }
-
 }

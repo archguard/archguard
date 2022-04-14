@@ -38,6 +38,4 @@ class SubModule(val name: String) : LogicComponent() {
     override fun hashCode(): Int {
         return name.hashCode()
     }
-
-
 }

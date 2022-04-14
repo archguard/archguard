@@ -7,9 +7,9 @@ internal class JClassVOTest {
     @Test
     internal fun shouldGetPackageNameGivenNameStartWithPackageName() {
         val jClassVO = JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service")
-        
+
         val packageName = jClassVO.getPackageName()
-        
+
         assertEquals("net.aimeizi.dubbo.service.service", packageName)
     }
 

@@ -5,8 +5,10 @@ import com.thoughtworks.archguard.report.domain.redundancy.RedundancyRepository
 import org.springframework.stereotype.Component
 
 @Component
-class RedundantElementCalculator(val redundancyRepository: RedundancyRepository,
-                                 val dataClassRepository: DataClassRepository) : BadSmellLevelCalculator {
+class RedundantElementCalculator(
+    val redundancyRepository: RedundancyRepository,
+    val dataClassRepository: DataClassRepository
+) : BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val oneMethodClassCount = redundancyRepository.getOneMethodClassCount(systemId)
@@ -53,5 +55,4 @@ class RedundantElementCalculator(val redundancyRepository: RedundancyRepository,
         val countRangeLevel3 = 100L until Long.MAX_VALUE
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
-
 }

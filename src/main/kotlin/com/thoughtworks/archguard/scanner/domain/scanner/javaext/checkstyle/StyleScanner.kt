@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.checkstyle
 
-import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.analyser.ArchitectureDependencyAnalysis
 import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import org.slf4j.LoggerFactory
@@ -65,12 +65,14 @@ class StyleScanner : Scanner {
     }
 
     private fun elementToStyle(element: Element, name: String, systemId: Long): Style {
-        return Style(UUID.randomUUID().toString(), systemId, name,
-                element.attributeValue("source"),
-                element.attributeValue("message"),
-                element.attributeValue("line").toInt(),
-                element.attributeValue("column").orEmpty().toIntOrNull() ?: 0,
-                element.attributeValue("severity"))
+        return Style(
+            UUID.randomUUID().toString(), systemId, name,
+            element.attributeValue("source"),
+            element.attributeValue("message"),
+            element.attributeValue("line").toInt(),
+            element.attributeValue("column").orEmpty().toIntOrNull() ?: 0,
+            element.attributeValue("severity")
+        )
     }
 
     private fun save(reports: List<Style>) {

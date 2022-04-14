@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class TestBadSmellRepoImpl(@Autowired private val testBadSmellDao: TestBadSmellDao,
-                           @Autowired private val overviewDao: OverviewDao) : TestBadSmellRepo {
+class TestBadSmellRepoImpl(
+    @Autowired private val testBadSmellDao: TestBadSmellDao,
+    @Autowired private val overviewDao: OverviewDao
+) : TestBadSmellRepo {
 
     override fun save(testBadSmells: List<TestBadSmell>) {
         testBadSmellDao.deleteAll()

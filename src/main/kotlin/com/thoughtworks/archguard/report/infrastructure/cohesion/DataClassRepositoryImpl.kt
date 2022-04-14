@@ -13,9 +13,9 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
         val sql = "select count(distinct class_id) from metric_dataclass where system_id = :system_id"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .mapTo(Long::class.java)
-                    .one()
+                .bind("system_id", systemId)
+                .mapTo(Long::class.java)
+                .one()
         }
     }
 
@@ -23,9 +23,9 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
         val sql = "select count(1) from (select class_id from metric_dataclass where system_id = :system_id group by class_id having count(field_id) = 1 ) as dc"
         return jdbi.withHandle<Long, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .mapTo(Long::class.java)
-                    .one()
+                .bind("system_id", systemId)
+                .mapTo(Long::class.java)
+                .one()
         }
     }
 
@@ -33,51 +33,49 @@ class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
         val sql = "select distinct class_id as classId, module, name as className from metric_dataclass join code_class JC on metric_dataclass.class_id = JC.id and JC.system_id=:system_id and metric_dataclass.system_id=:system_id order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
-                    .mapTo(DataClassPO::class.java)
-                    .list()
+                .bind("system_id", systemId)
+                .bind("limit", limit)
+                .bind("offset", offset)
+                .mapTo(DataClassPO::class.java)
+                .list()
         }
         val fieldSql = "select name, type from metric_dataclass join code_field JF on metric_dataclass.field_id = JF.id and metric_dataclass.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
             val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->
                 handle.createQuery(fieldSql)
-                        .bind("system_id", systemId)
-                        .bind("class_id", it.classId)
-                        .mapTo(FieldPO::class.java)
-                        .list()
+                    .bind("system_id", systemId)
+                    .bind("class_id", it.classId)
+                    .mapTo(FieldPO::class.java)
+                    .list()
             }
             DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames.map { FieldVO(it.name, it.type) })
         }
-
     }
 
     override fun getAllDataClassWithOnlyOneField(systemId: Long, limit: Long, offset: Long): List<DataClass> {
         val sql = "select distinct class_id as classId, module, name as className from metric_dataclass join code_class JC on metric_dataclass.class_id = JC.id and JC.system_id=:system_id and metric_dataclass.system_id=:system_id group by class_id, module, name having count(1)=1 order by module, name limit :limit offset :offset"
         val dataClassPOs = jdbi.withHandle<List<DataClassPO>, Exception> {
             it.createQuery(sql)
-                    .bind("system_id", systemId)
-                    .bind("limit", limit)
-                    .bind("offset", offset)
-                    .mapTo(DataClassPO::class.java)
-                    .list()
+                .bind("system_id", systemId)
+                .bind("limit", limit)
+                .bind("offset", offset)
+                .mapTo(DataClassPO::class.java)
+                .list()
         }
         val fieldSql = "select name, type from metric_dataclass join code_field JF on metric_dataclass.field_id = JF.id and metric_dataclass.system_id = :system_id and JF.system_id = :system_id and class_id=:class_id"
 
         return dataClassPOs.map {
             val fieldNames = jdbi.withHandle<List<FieldPO>, Exception> { handle ->
                 handle.createQuery(fieldSql)
-                        .bind("system_id", systemId)
-                        .bind("class_id", it.classId)
-                        .mapTo(FieldPO::class.java)
-                        .list()
+                    .bind("system_id", systemId)
+                    .bind("class_id", it.classId)
+                    .mapTo(FieldPO::class.java)
+                    .list()
             }
             DataClass(it.module, NameUtil.getPackageName(it.className), NameUtil.getClassName(it.className), fieldNames.map { FieldVO(it.name, it.type) })
         }
     }
-
 }
 
 data class DataClassPO(val classId: String, val module: String, val className: String)

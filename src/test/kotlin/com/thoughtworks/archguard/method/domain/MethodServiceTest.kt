@@ -3,9 +3,9 @@ package com.thoughtworks.archguard.method.domain
 import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.MethodService
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCallersService
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -37,59 +37,59 @@ class MethodServiceTest {
 
     @Test
     internal fun `should get method callers`() {
-        //given
+        // given
         val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
-        //when
+        // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
         every { callerService.findCallers(systemId, target, deep) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
         val result = service.findMethodCallers(systemId, moduleName, clazzName, methodName, deep)
-        //then
+        // then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
 
     @Test
     fun `should get method callees`() {
-        //given
+        // given
         val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
-        //when
+        // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
         every { calleeService.findCallees(systemId, target, deep, true) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
         val result = service.findMethodCallees(systemId, moduleName, clazzName, methodName, deep, true)
-        //then
+        // then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
 
     @Test
     fun `should get method invokes`() {
-        //given
+        // given
         val systemId = 1L
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
         val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
-        //when
+        // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
         every { calleeService.findCallees(systemId, target, deep, true) } returns target
         every { callerService.findCallers(systemId, target, deep) } returns target
         every { configureService.isDisplayNode(any(), any()) } returns true
 
         val result = service.findMethodInvokes(systemId, moduleName, clazzName, methodName, deep, deep, true)
-        //then
+        // then
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(target)
     }
 }

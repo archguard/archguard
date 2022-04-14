@@ -10,5 +10,4 @@ interface BadSmellLevelCalculator {
         val result = getCalculateResult(systemId)
         return BadSmellOverviewItem(badSmellType, result.calculateLevel(), result.totalCount())
     }
-
 }

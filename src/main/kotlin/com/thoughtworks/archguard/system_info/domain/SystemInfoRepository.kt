@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.system_info.domain
 
-
 interface SystemInfoRepository {
     fun getSystemInfo(id: Long): SystemInfo?
 

@@ -25,7 +25,6 @@ class ScannerDataClassService(val jClassRepository: JClassRepository, val jMetho
         }
         return dataClasses
     }
-
 }
 
 fun checkIsDataClass(jClass: JClass): Boolean {
@@ -44,7 +43,6 @@ fun checkIsDataClass(jClass: JClass): Boolean {
     }
     return true
 }
-
 
 fun capitalize(line: String): String {
     if (line.isEmpty()) {

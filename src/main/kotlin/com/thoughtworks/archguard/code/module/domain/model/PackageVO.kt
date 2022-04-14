@@ -12,7 +12,7 @@ class PackageVO(val packageName: String, val module: String) {
 
     companion object {
         fun fromFullName(fullName: String): PackageVO {
-            if(fullName == "..") {
+            if (fullName == "..") {
                 return PackageVO("", ".")
             }
 

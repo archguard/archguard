@@ -39,15 +39,15 @@ class SystemtInfoApiATest {
     fun should_get_system_info_when_sent_get_system_info_api_given_there_is_already_system_info_in_database() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val content = result.response.contentAsString
         val status = result.response.status
 
         val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
+            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -59,19 +59,17 @@ class SystemtInfoApiATest {
     fun should_get_system_info_success_when_get_by_id() {
         val request = MockMvcRequestBuilders.request(HttpMethod.GET, "/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val content = result.response.contentAsString
         val status = result.response.status
 
         val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
+            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
         assertEquals(200, status)
         assertEquals(except, content)
-
-
     }
 
     @Test
@@ -79,15 +77,15 @@ class SystemtInfoApiATest {
     fun should_delete_system_info_success_when_get_by_id() {
         val request = MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/system-info/1")
         val result = MockMvcBuilders.webAppContextSetup(wac).build().perform(request)
-                .andExpect(status().isOk)
-                .andReturn()
+            .andExpect(status().isOk)
+            .andReturn()
 
         val status = result.response.status
 
         val re = jdbi.withHandle<List<Long>, Nothing> {
             it.createQuery("select id from system_info where `system_name` = 'systemName1'")
-                    .mapTo(Long::class.java)
-                    .list()
+                .mapTo(Long::class.java)
+                .list()
         }
 
         assertEquals(200, status)

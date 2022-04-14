@@ -11,8 +11,8 @@ class CognitiveComplexityRepositoryImpl(val jdbi: Jdbi) : CognitiveComplexityRep
     override fun saveAll(systemId: Long, cognitiveComplexityList: List<CognitiveComplexity>) {
         jdbi.useHandle<Exception> {
             it.createUpdate("delete from metric_cognitive_complexity where system_id=:system_id")
-                    .bind("system_id", systemId)
-                    .execute()
+                .bind("system_id", systemId)
+                .execute()
         }
         cognitiveComplexityList.forEach {
             save(it)
@@ -22,12 +22,12 @@ class CognitiveComplexityRepositoryImpl(val jdbi: Jdbi) : CognitiveComplexityRep
     private fun save(cognitiveComplexity: CognitiveComplexity) {
         jdbi.useHandle<Exception> {
             it.createUpdate("insert into metric_cognitive_complexity (id, commit_id, changed_cognitive_complexity, path, system_id) values (:id, :commit_id, :changed_cognitive_complexity,:path, :system_id)")
-                    .bind("id", UUID.randomUUID().toString())
-                    .bind("system_id", cognitiveComplexity.systemId)
-                    .bind("commit_id", cognitiveComplexity.commitId)
-                    .bind("changed_cognitive_complexity", cognitiveComplexity.changedCognitiveComplexity)
-                    .bind("path", cognitiveComplexity.path)
-                    .execute()
+                .bind("id", UUID.randomUUID().toString())
+                .bind("system_id", cognitiveComplexity.systemId)
+                .bind("commit_id", cognitiveComplexity.commitId)
+                .bind("changed_cognitive_complexity", cognitiveComplexity.changedCognitiveComplexity)
+                .bind("path", cognitiveComplexity.path)
+                .execute()
         }
     }
 }

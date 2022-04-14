@@ -15,13 +15,10 @@ class HttpRequestServiceTest {
     @MockK
     lateinit var jAnnotationRepository: JAnnotationRepository
 
-
     @MockK
     lateinit var springCloudServiceRepository: SpringCloudServiceRepository
 
-
     private lateinit var service: HttpRequestService
-
 
     @BeforeEach
     fun setUp() {
@@ -47,7 +44,6 @@ class HttpRequestServiceTest {
         assertEquals("id1", httpRequests[0].targetId)
         assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
         assertEquals("POST", httpRequests[0].arg.methods[0])
-
     }
 
     @Test
@@ -59,7 +55,6 @@ class HttpRequestServiceTest {
 
         every { jAnnotationRepository.getJAnnotationWithValueByName("PostMapping") } returns listOf(jAnnotation)
 
-
         // when
         val httpRequests = service.getHttpRequests()
 
@@ -68,7 +63,6 @@ class HttpRequestServiceTest {
         assertEquals("id1", httpRequests[0].targetId)
         assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
         assertEquals("POST", httpRequests[0].arg.methods[0])
-
     }
 
     @Test
@@ -81,7 +75,6 @@ class HttpRequestServiceTest {
         val jAnnotation2 = JAnnotation("ida2", ElementType.METHOD.name, "id2", "org.springframework.web.bind.annotation.PostMapping")
         jAnnotation2.values = mapOf("value" to "[\"/{name}\"]")
 
-
         every { jAnnotationRepository.getJAnnotationWithValueByName("RequestMapping") } returns listOf(jAnnotation1, jAnnotation2)
         every { springCloudServiceRepository.getMethodIdsByClassId("id1") } returns listOf("id2")
 
@@ -93,6 +86,5 @@ class HttpRequestServiceTest {
         assertEquals("id2", httpRequests[0].targetId)
         assertEquals("/hello/{name}", httpRequests[0].arg.paths[0])
         assertEquals("GET", httpRequests[0].arg.methods[0])
-
-    }}
-
+    } 
+}

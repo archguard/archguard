@@ -11,7 +11,7 @@ class MethodMetricRepositoryImpl(val methodMetricsDao: MethodMetricsDao) : Metho
 
     override fun insertOrUpdateMethodMetric(systemId: Long, methodMetric: List<MethodMetric>) {
         val methodMetricPOs = methodMetric
-                .map { MethodMetricPO(it.systemId, it.jMethodVO.id!!, it.fanIn, it.fanOut) }
+            .map { MethodMetricPO(it.systemId, it.jMethodVO.id!!, it.fanIn, it.fanOut) }
 
         methodMetricsDao.deleteBy(systemId)
         log.info("Delete system method metric old data with id: {}", systemId)

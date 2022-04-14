@@ -8,8 +8,11 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.springframework.stereotype.Service
 
 @Service
-class AccessService(val accessRepository: AccessRepository,
-                    val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository) {
+class AccessService(
+    val accessRepository: AccessRepository,
+    val jClassRepository: JClassRepository,
+    val jMethodRepository: JMethodRepository
+) {
     fun persist(systemId: Long) {
         val classes = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         accessRepository.saveOrUpdateAllClass(systemId, ClassAccess.from(classes))
@@ -17,5 +20,4 @@ class AccessService(val accessRepository: AccessRepository,
         val methods = jMethodRepository.getMethodsNotThirdParty(systemId)
         accessRepository.saveOrUpdateAllMethod(systemId, MethodAccess.from(methods))
     }
-
 }

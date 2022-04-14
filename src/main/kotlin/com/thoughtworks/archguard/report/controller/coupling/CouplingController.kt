@@ -12,10 +12,12 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/systems/{systemId}/coupling")
-class CouplingController(val dataClumpsService: DataClumpsService,
-                         val deepInheritanceService: DeepInheritanceService,
-                         val classCouplingRepository: ClassCouplingRepository,
-                         val classCouplingAppService: ClassCouplingAppService) {
+class CouplingController(
+    val dataClumpsService: DataClumpsService,
+    val deepInheritanceService: DeepInheritanceService,
+    val classCouplingRepository: ClassCouplingRepository,
+    val classCouplingAppService: ClassCouplingAppService
+) {
 
     @PostMapping("/data-clumps")
     fun getClassesDataClumpsWithTotalCount(@PathVariable("systemId") systemId: Long, @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<ClassDataClumpsListDto> {

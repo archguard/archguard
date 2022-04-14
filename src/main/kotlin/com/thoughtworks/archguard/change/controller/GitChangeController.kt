@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.change.controller
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.change.application.GitChangeService
 import com.thoughtworks.archguard.change.domain.GitHotFile
 import com.thoughtworks.archguard.change.domain.GitPathChangeCount
+import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

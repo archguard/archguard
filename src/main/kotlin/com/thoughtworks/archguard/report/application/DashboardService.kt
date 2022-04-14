@@ -19,17 +19,19 @@ import org.springframework.stereotype.Service
 import kotlin.math.roundToInt
 
 @Service
-class DashboardService(val sizingService: SizingService,
-                       val hubService: HubService,
-                       val dataClumpsService: DataClumpsService,
-                       val deepInheritanceService: DeepInheritanceService,
-                       val circularDependencyService: CircularDependencyService,
-                       val redundancyService: RedundancyService,
-                       val overGeneralizationService: OverGeneralizationService,
-                       val dataClassService: DataClassService,
-                       val shotgunSurgeryService: ShotgunSurgeryService,
-                       val testBadSmellService: TestBadSmellService,
-                       val influxDBClient: InfluxDBClient) {
+class DashboardService(
+    val sizingService: SizingService,
+    val hubService: HubService,
+    val dataClumpsService: DataClumpsService,
+    val deepInheritanceService: DeepInheritanceService,
+    val circularDependencyService: CircularDependencyService,
+    val redundancyService: RedundancyService,
+    val overGeneralizationService: OverGeneralizationService,
+    val dataClassService: DataClassService,
+    val shotgunSurgeryService: ShotgunSurgeryService,
+    val testBadSmellService: TestBadSmellService,
+    val influxDBClient: InfluxDBClient
+) {
 
     private val TIME: String = "1d"
     private val SIZNG_REPORT: String = "sizing_report"
@@ -55,42 +57,53 @@ class DashboardService(val sizingService: SizingService,
         val dataClumpsReport = dataClumpsService.getDataClumpReport(systemId)
         val deepInheritanceReport = deepInheritanceService.getDeepInheritanceReport(systemId)
         val circularDependencyReport = circularDependencyService.getCircularDependencyReport(systemId)
-        influxDBClient.saveReport(COUPLING_REPORT, systemId.toString(),
-                hubReport.plus(dataClumpsReport).plus(deepInheritanceReport).plus(circularDependencyReport))
+        influxDBClient.saveReport(
+            COUPLING_REPORT, systemId.toString(),
+            hubReport.plus(dataClumpsReport).plus(deepInheritanceReport).plus(circularDependencyReport)
+        )
 
         val redundancyElementReport = redundancyService.getRedundantReport(systemId)
         val overGeneralizationReport = overGeneralizationService.getRedundantReport(systemId)
-        influxDBClient.saveReport(REDUNDANCY_REPORT, systemId.toString(),
-                redundancyElementReport.plus(overGeneralizationReport))
+        influxDBClient.saveReport(
+            REDUNDANCY_REPORT, systemId.toString(),
+            redundancyElementReport.plus(overGeneralizationReport)
+        )
 
         val dataClassReport = dataClassService.getCohesionReport(systemId)
         val shotgunSurgeryReport = shotgunSurgeryService.getCohesionReport(systemId)
-        influxDBClient.saveReport(COHESION_REPORT, systemId.toString(),
-                dataClassReport.plus(shotgunSurgeryReport))
+        influxDBClient.saveReport(
+            COHESION_REPORT, systemId.toString(),
+            dataClassReport.plus(shotgunSurgeryReport)
+        )
 
         val testReport = testBadSmellService.getTestingReport(systemId)
         influxDBClient.saveReport(TEST_BAD_SMELL_REPORT, systemId.toString(), testReport)
     }
 
-
     private fun queryReport(systemId: Long, badSmellType: BadSmellType, reportName: String): List<GraphData> {
         val query = "SELECT " +
-                "mean(\"${badSmellType.name}\") AS \"${badSmellType.name}\" " +
-                "FROM \"${reportName}\" " +
-                "WHERE (\"system_id\" = '${systemId}') GROUP BY time(${TIME}) fill(none)"
+            "mean(\"${badSmellType.name}\") AS \"${badSmellType.name}\" " +
+            "FROM \"${reportName}\" " +
+            "WHERE (\"system_id\" = '$systemId') GROUP BY time($TIME) fill(none)"
         return influxDBClient.query(query).map { it.values }
-                .flatten().map {
-                    GraphData(it[0],
-                            it[1].toDouble().roundToInt())
-                }
+            .flatten().map {
+                GraphData(
+                    it[0],
+                    it[1].toDouble().roundToInt()
+                )
+            }
     }
 
     private fun getDashboard(systemId: Long, dashboardGroup: DashboardGroup, reportName: String): Dashboard {
         val groupData = dashboardGroup.badSmells
-                .map {
-                    GroupData(it, it.calculate(systemId)?.level
-                            ?: BadSmellLevel.A, queryReport(systemId, it, reportName))
-                }
+            .map {
+                GroupData(
+                    it,
+                    it.calculate(systemId)?.level
+                        ?: BadSmellLevel.A,
+                    queryReport(systemId, it, reportName)
+                )
+            }
         return Dashboard(dashboardGroup, groupData)
     }
 }
@@ -100,4 +113,3 @@ class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>)
 }
 
 data class GraphData(val date: String, val value: Int)
-

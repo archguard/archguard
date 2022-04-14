@@ -30,5 +30,4 @@ class ProfileService {
     fun delete(id: Long) {
         repo.delete(id)
     }
-
 }
