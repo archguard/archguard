@@ -28,7 +28,7 @@ fun getOS(): OS? {
 fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): String {
     var pathname = filepath
     val isResolvePath = pathname.startsWith("@/")
-    if(isResolvePath) {
+    if (isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
 
@@ -58,7 +58,7 @@ fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): 
 fun importConvert(filepath: String, importPath: String): String {
     // import "@/src/component/Hello.js"
     val isResolvePath = importPath.startsWith("@/")
-    if(isResolvePath) {
+    if (isResolvePath) {
         var pathname = importPath.removeRange(0, 2)
         pathname = "src/$pathname"
 
@@ -67,11 +67,11 @@ fun importConvert(filepath: String, importPath: String): String {
         return pathname
     }
 
-    if(importPath.startsWith("./") || importPath.startsWith("../")) {
+    if (importPath.startsWith("./") || importPath.startsWith("../")) {
         var file = File(filepath)
 
         // use parent to convert
-        if(file.extension.isNotEmpty()) {
+        if (file.extension.isNotEmpty()) {
             // src/main.tsx don't have parent
             if (file.parentFile != null) {
                 file = file.parentFile
@@ -90,7 +90,7 @@ fun importConvert(filepath: String, importPath: String): String {
 fun relativeRoot(filepath: String, importPath: String): String {
     var pathname = importPath
     val isResolvePath = pathname.startsWith("@/")
-    if(isResolvePath) {
+    if (isResolvePath) {
         pathname = pathname.removeRange(0, 2)
         pathname = "src/$pathname"
 
