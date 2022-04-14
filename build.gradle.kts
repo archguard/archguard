@@ -2,6 +2,7 @@ plugins {
     base
     java
     id("jacoco-report-aggregation")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 jacoco {
@@ -69,11 +70,15 @@ allprojects {
 
     tasks.withType<JacocoReport> {
         afterEvaluate {
-            classDirectories.setFrom(files(classDirectories.files.map {
-                fileTree(it).apply {
-                    exclude("dev.evolution")
-                }
-            }))
+            classDirectories.setFrom(
+                files(
+                    classDirectories.files.map {
+                        fileTree(it).apply {
+                            exclude("dev.evolution")
+                        }
+                    }
+                )
+            )
         }
     }
 }
