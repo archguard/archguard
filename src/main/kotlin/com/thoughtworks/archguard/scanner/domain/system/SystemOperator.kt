@@ -132,7 +132,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
             }
 
             log.debug("Going to clone {}", repoCombineWithAuthInfo)
-            gitCommand.clone(repoCombineWithAuthInfo, 2048)
+            gitCommand.clone(repoCombineWithAuthInfo, 2048, systemInfo.branch)
         }
     }
 

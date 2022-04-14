@@ -20,10 +20,11 @@ class GitCommand(
         return git().withArg("clone")
     }
 
-    fun clone(url: String, depth: Int): Int {
+    fun clone(url: String, depth: Int, branch: String): Int {
         val gitClone = cloneCommand()
             .`when`(depth < Int.MAX_VALUE) { git -> git.withArg(String.format("--depth=%s", depth)) }
             .withArg(url).withArg(workingDir.absolutePath)
+            .withArgs("--branch", branch)
 
         return run(gitClone, logStream)
     }
