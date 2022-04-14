@@ -30,25 +30,6 @@ Screenshots:
   </tr>
 </table>
 
-特性（Features）：
-
-- 容器级别依赖分析（当前支持 HTTP API）。API 生产者支持语言：Java、Kotlin、C#，API 消费者支持语言：TypeScript/JavaScript、Kotlin、Java 等。
-   - HTTP API 使用清单、调用清单
-   - HTTP API 依赖可视化分析
-- 五大维度架构质量评估以及对应的指标分析。
-   - 体量维度。过大的包、类、方法、模块
-   - 耦合维度。枢纽模块、包、类、方法，数据泥团、过深继承、循环依赖
-   - 内聚维度。霰弹式修改、数据类
-   - 冗余维度。冗余元素、过度泛化
-   - 质量维度（Java）。包含休眠的测试、被忽略的测试、缺乏校验的测试、包含繁杂判断的测试、包含冗余打印的测试、静态方法
-- 代码坏味道分析。常见的那些。
-- 还有其它相关的总览 
-   - 代码间依赖分析。支持级别模块、包、类、方法四个级别。
-   - 代码行数分析。
-   - 系统不稳定性模块分析。
-- 数据库地图（进行中）
-- 精准测试/变化分析（进行中）
-
 Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 | Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
