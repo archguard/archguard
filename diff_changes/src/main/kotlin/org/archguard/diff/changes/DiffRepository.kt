@@ -15,8 +15,7 @@ class DiffRepository(
     val until: String,
     val tableName: String
 ) {
-    private val batch: SourceBatch =
-        SourceBatch()
+    private val batch: SourceBatch = SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100
 
