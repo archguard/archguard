@@ -9,10 +9,19 @@ RUN addgroup -S spring && adduser -S spring -G spring
 
 USER spring:spring
 
+WORKDIR /home/spring
+
+ARG SCAN_VERSION_ARG
+ENV SCAN_VERSION=$SCAN_VERSION_ARG
+
 ARG JAR_FILE=./build/libs/*.jar
 
 COPY ${JAR_FILE} /home/spring/app.jar
 
-WORKDIR /home/spring
+ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/diff_changes-${SCAN_VERSION}-all.jar .
+ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_git-${SCAN_VERSION}-all.jar .
+ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_sourcecode-${SCAN_VERSION}-all.jar .
+ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_jacoco-${SCAN_VERSION}-all.jar .
+ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_test_badsmell-${SCAN_VERSION}-all.jar .
 
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
