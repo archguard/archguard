@@ -1,28 +1,26 @@
 package org.archguard.scanner.bytecode
 
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
+import kotlin.io.path.toPath
 
 internal class RunnerTest {
-
-    @BeforeEach
-    internal fun setUp() {
+    @Test
+    internal fun should_generate_core_files() {
         System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
+
+        val resource = this.javaClass.classLoader.getResource("e2e").toURI().toPath().toFile().absolutePath
 
         val runner = Runner()
         runner.main(
             listOf(
-                "--path=src/test/resources/e2e",
+                "--path=$resource",
                 "--language=jvm",
                 "--without-storage",
                 "--system-id=2"
             )
         )
-    }
 
-    @Test
-    internal fun should_generate_core_files() {
         assert(File("code_annotation.sql").exists())
         assert(File("code_annotation_value.sql").exists())
         assert(File("code_class.sql").exists())
@@ -35,17 +33,11 @@ internal class RunnerTest {
         assert(File("container_service.sql").exists())
         assert(File("container_resource.sql").exists())
         assert(File("apis.json").exists())
-    }
 
-    @Test
-    internal fun should_contain_annotation_value() {
         val values = File("code_annotation_value.sql").readText()
         assert(values.contains("/api/systems/{systemId}/code-tree"))
-    }
 
-    @Test
-    internal fun should_contain_api_resource() {
-        val values = File("container_resource.sql").readText()
-        assert(values.contains("/api/systems/{systemId}/code-tree"))
+        val resources = File("container_resource.sql").readText()
+        assert(resources.contains("/api/systems/{systemId}/code-tree"))
     }
 }
