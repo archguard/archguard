@@ -37,6 +37,4 @@ class JavaLoCApp(private val systemId: String, private val repository: LoCReposi
         visitor.visit(tree)
         repository.save(loc, systemId)
     }
-
-
 }
