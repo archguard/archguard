@@ -2,6 +2,7 @@ package org.archguard.diff.changes
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool
@@ -28,6 +29,7 @@ class Runner : CliktCommand() {
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "language").default("")
     private val depth: String by option(help = "loop depth").default("7")
+    private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
     private val DEAFULT_LOOPT_DEPTH = 7
     private val SHORT_ID_LENGTH = 7
@@ -62,11 +64,13 @@ class Runner : CliktCommand() {
         repository.saveDiff(changedCalls)
         repository.close()
 
-        storeDatabase(systemId, tableName)
+        if (!withoutStorage) {
+            storeDatabase(systemId, tableName)
 
-        val sqlEnd = System.currentTimeMillis()
-        logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
-        SqlExecuteThreadPool.close()
+            val sqlEnd = System.currentTimeMillis()
+            logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
+            SqlExecuteThreadPool.close()
+        }
     }
 
     private fun storeDatabase(systemId: String, tableName: String) {

@@ -1,5 +1,8 @@
 package org.archguard.scanner.sourcecode
 
+import org.jdbi.v3.core.ConnectionException
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -40,5 +43,26 @@ internal class RunnerTest {
         outputs.forEach {
             assert(File(it).exists())
         }
+    }
+
+    @Test
+    internal fun crash_for_no_mysql() {
+        val thrown: ConnectionException = assertThrows(
+            ConnectionException::class.java, {
+                System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
+
+                val runner = Runner()
+                runner.main(
+                    listOf(
+                        "--path=.",
+                        "--language=kotlin",
+                        "--system-id=2"
+                    )
+                )
+            },
+            "Expected doThing() to throw, but it didn't")
+
+
+        assertTrue(thrown.message!!.contains("Access denied for"));
     }
 }

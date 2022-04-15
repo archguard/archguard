@@ -30,6 +30,8 @@ dependencies {
     implementation("org.mybatis:mybatis:3.5.9")
     implementation("ognl:ognl:3.3.2") // for mybatis expression
 
+    implementation("org.jdbi:jdbi3-core:3.8.2")
+
     implementation("com.phodal.chapi:chapi-application:1.5.6")
     implementation("com.phodal.chapi:chapi-domain:1.5.6")
 }
