@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.infrastructure.utils;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UpdateRecordKeyTest {
-
     @org.junit.jupiter.api.Test
     public void testEqual() {
         java.util.Map<String, String> keyA = new java.util.concurrent.ConcurrentHashMap<>();
@@ -17,7 +16,7 @@ class UpdateRecordKeyTest {
     }
 
     @org.junit.jupiter.api.Test
-    public void testMapKey(){
+    public void testMapKey() {
         java.util.Map<UpdateRecordKey, String> map = new java.util.concurrent.ConcurrentHashMap<>();
         java.util.Map<String, String> keyA = new java.util.concurrent.ConcurrentHashMap<>();
         java.util.Map<String, String> keyB = new java.util.concurrent.ConcurrentHashMap<>();

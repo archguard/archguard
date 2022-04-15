@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.infrastructure.utils;
 
-import com.thoughtworks.archguard.infrastructure.utils.UpdateRecord;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SqlGeneratorTest {
@@ -16,9 +16,9 @@ class SqlGeneratorTest {
         rowValue.put("key4", "true");
         rowValue.put("key5", "false");
         java.util.List<java.util.Map<String, String>> values = java.util.Arrays.asList(rowValue);
-        
+
         String insertSql = SqlGenerator.generateBatchInsertSql(table, values);
-        
+
         assertEquals("INSERT INTO `test`(`key1`,`key2`,`key5`,`key3`,`key4`)  VALUES   ('value1','value2',false,null,true)", insertSql);
     }
 
