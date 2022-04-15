@@ -18,24 +18,16 @@ internal class RunnerTest {
             )
         )
 
-        // test for ci
-        File(".")
-            .walk(FileWalkDirection.BOTTOM_UP)
-            .maxDepth(1)
-            .forEach {
-                println(it)
-            }
-
-//        assert(File("code_annotation.sql").exists())
-//        assert(File("code_annotation_value.sql").exists())
-//        assert(File("code_class.sql").exists())
-//        assert(File("code_field.sql").exists())
-//        assert(File("code_method.sql").exists())
-//        assert(File("code_ref_class_dependencies.sql").exists())
-//        assert(File("code_ref_class_fields.sql").exists())
-//        assert(File("code_ref_class_methods.sql").exists())
-//        assert(File("code_ref_method_callees.sql").exists())
-//        assert(File("container_service.sql").exists())
-//        assert(File("apis.json").exists())
+        assert(File("code_annotation.sql").exists())
+        assert(File("code_annotation_value.sql").exists())
+        assert(File("code_class.sql").exists())
+        assert(File("code_field.sql").exists())
+        assert(File("code_method.sql").exists())
+        assert(File("code_ref_class_dependencies.sql").exists())
+        assert(File("code_ref_class_fields.sql").exists())
+        assert(File("code_ref_class_methods.sql").exists())
+        assert(File("code_ref_method_callees.sql").exists())
+        assert(File("container_service.sql").exists())
+        assert(File("apis.json").exists())
     }
 }
