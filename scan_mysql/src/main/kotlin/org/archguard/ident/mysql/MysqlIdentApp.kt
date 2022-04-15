@@ -1,14 +1,14 @@
 package org.archguard.ident.mysql
 
+import mu.KotlinLogging
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.util.TablesNamesFinder
 import org.archguard.ident.mysql.model.SimpleRelation
-import org.slf4j.LoggerFactory
+
+private val logger = KotlinLogging.logger {}
 
 object MysqlIdentApp {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     private val UPDATE_SQL = "update\\s+([a-zA-Z_]+)".toRegex()
 
     fun analysis(sql: String): SimpleRelation? {

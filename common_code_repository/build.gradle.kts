@@ -15,4 +15,8 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.28")
 
     implementation("com.phodal.chapi:chapi-domain:1.5.6")
+
+    // mock for logger
+    implementation("io.github.hakky54:logcaptor:2.7.9")
+    testImplementation("org.assertj:assertj-core:3.22.0")
 }
