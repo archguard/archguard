@@ -9,10 +9,8 @@ RUN addgroup -S spring && adduser -S spring -G spring
 
 USER spring:spring
 
-ARG JAR_FILE=./build/libs/*.jar
-
-COPY ${JAR_FILE} /home/spring/app.jar
-
 WORKDIR /home/spring
+
+ADD archguard.tar.gz .
 
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
