@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.git.scanner
 
-import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.model.LineCounter
 import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Test
@@ -20,7 +19,7 @@ internal class JGitAdapterTest {
                 .call()
         }
 
-        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
+        val jGitAdapter = JGitAdapter("java")
         val (_, changeEntries) = jGitAdapter.scan("./build/ddd", repoId = "0", systemId = 1)
 
         val changeCounts = jGitAdapter.countChangesByPath(changeEntries)

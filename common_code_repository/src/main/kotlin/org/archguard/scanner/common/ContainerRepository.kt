@@ -9,8 +9,7 @@ import org.archguard.scanner.common.RepositoryHelper.generateId
 import java.util.HashMap
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
-    private val batch: SourceBatch =
-        SourceBatch()
+    private val batch: SourceBatch = SourceBatch()
     private val systemId: String
     private val language: String
     private val workspace: String

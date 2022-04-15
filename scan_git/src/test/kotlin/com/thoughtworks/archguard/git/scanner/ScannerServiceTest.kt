@@ -1,12 +1,8 @@
 package com.thoughtworks.archguard.git.scanner
 
-import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
 import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 import java.io.File
 
 internal class ScannerServiceTest {
@@ -23,7 +19,7 @@ internal class ScannerServiceTest {
                 .call()
         }
 
-        val jGitAdapter = JGitAdapter(CognitiveComplexityParser(), "java")
+        val jGitAdapter = JGitAdapter("java")
         val scannerService = ScannerService(jGitAdapter, Bean2Sql())
         scannerService.git2SqlFile("./build/ddd", "master", "0", "0", 1)
     }

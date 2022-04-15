@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.git.scanner
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import com.thoughtworks.archguard.git.scanner.complexity.CognitiveComplexityParser
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
 import com.thoughtworks.archguard.git.scanner.loc.LoCRepository
 import com.thoughtworks.archguard.git.scanner.loc.java.JavaLoCApp
@@ -21,7 +20,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
     override fun run() {
         if (loc == null) {
-            val service = ScannerService(JGitAdapter(CognitiveComplexityParser(), language), Bean2Sql())
+            val service = ScannerService(JGitAdapter(language), Bean2Sql())
             service.git2SqlFile(path, branch, after, repoId, systemId.toLong())
         } else {
             val loCRepository = LoCRepository()
