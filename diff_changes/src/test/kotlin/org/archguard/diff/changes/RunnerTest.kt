@@ -3,6 +3,7 @@ package org.archguard.diff.changes
 import org.eclipse.jgit.api.Git
 import org.jdbi.v3.core.ConnectionException
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -69,7 +70,9 @@ internal class RunnerTest {
         )
 
 
-        Assertions.assertTrue(thrown.message!!.contains("Access denied for"));
+        assertTrue(
+            (thrown.message!!.contains("Access denied for") || thrown.message!!.contains("Communications link failure"))
+        )
     }
 
     @Test
@@ -92,6 +95,6 @@ internal class RunnerTest {
         )
 
 
-        Assertions.assertTrue(thrown.message!!.contains("git.repository.resolve(sinceRev) must not be null"));
+        assertTrue(thrown.message!!.contains("git.repository.resolve(sinceRev) must not be null"));
     }
 }

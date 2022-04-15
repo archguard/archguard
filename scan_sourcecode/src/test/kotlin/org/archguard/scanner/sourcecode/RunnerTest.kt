@@ -63,6 +63,8 @@ internal class RunnerTest {
             "Expected doThing() to throw, but it didn't")
 
 
-        assertTrue(thrown.message!!.contains("Access denied for"));
+        assertTrue(
+            (thrown.message!!.contains("Access denied for") || thrown.message!!.contains("Communications link failure"))
+        )
     }
 }
