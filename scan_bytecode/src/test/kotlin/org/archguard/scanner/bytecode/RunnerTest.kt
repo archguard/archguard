@@ -1,5 +1,7 @@
 package org.archguard.scanner.bytecode
 
+import org.jdbi.v3.core.ConnectionException
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.io.path.toPath
@@ -39,5 +41,27 @@ internal class RunnerTest {
 
         val resources = File("container_resource.sql").readText()
         assert(resources.contains("/api/systems/{systemId}/code-tree"))
+    }
+
+    @Test
+    internal fun crash_for_no_mysql() {
+        val thrown: ConnectionException = Assertions.assertThrows(
+            ConnectionException::class.java, {
+                System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
+
+                val runner = Runner()
+                runner.main(
+                    listOf(
+                        "--path=.",
+                        "--language=jvm",
+                        "--system-id=2"
+                    )
+                )
+            },
+            "Expected doThing() to throw, but it didn't"
+        )
+
+
+        Assertions.assertTrue(thrown.message!!.contains("Access denied for"));
     }
 }

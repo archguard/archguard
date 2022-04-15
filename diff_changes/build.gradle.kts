@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     api(project(":common_code_repository"))
+    implementation("org.jdbi:jdbi3-core:3.8.2")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
