@@ -2,6 +2,6 @@ package org.archguard.rule.ruleset
 
 import org.archguard.rule.core.RuleSetProvider
 
-class StandardRuleSetProvider : RuleSetProvider {
+abstract class StandardRuleSetProvider : RuleSetProvider {
 
 }

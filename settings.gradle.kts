@@ -23,5 +23,3 @@ include(":scan_bytecode")
 
 // adapter for ci
 include(":collector_ci")
-
-include(":common_linter")

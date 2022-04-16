@@ -1,7 +1,6 @@
-package org.archguard.linter
+package org.archguard.rule.impl.common
 
-
-class CasingChecker {
+class Casing {
     val FLAT_CASING = Regex("[a-z][a-z0-9]*")
     val CAMEL_CASING = Regex("[a-z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
     val PASCAL_CASING = Regex("[A-Z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
