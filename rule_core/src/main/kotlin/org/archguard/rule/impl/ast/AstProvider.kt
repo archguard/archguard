@@ -1,4 +1,9 @@
 package org.archguard.rule.impl.ast
 
-class AstProvider {
+import org.archguard.rule.core.RuleSetProvider
+
+/*
+ * Low level provider
+ */
+class AstProvider: RuleSetProvider {
 }

@@ -1,4 +1,7 @@
 package org.archguard.rule.impl.ast
 
-class ChangeProvider {
+import org.archguard.rule.core.RuleSetProvider
+
+class ChangeProvider : RuleSetProvider {
+
 }
