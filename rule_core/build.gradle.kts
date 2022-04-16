@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
+    implementation("com.phodal.chapi:chapi-domain:1.5.6")
 }
