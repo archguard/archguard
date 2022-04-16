@@ -85,6 +85,8 @@ dependencies {
 
     jacocoAggregation(project(":common_code_repository"))
 
+    jacocoAggregation(project(":rule_core"))
+
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sourcecode"))

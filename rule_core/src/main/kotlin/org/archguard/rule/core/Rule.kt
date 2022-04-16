@@ -1,4 +1,4 @@
-package org.archguard.scanner.tbs.rule
+package org.archguard.rule.core
 
 enum class Severity {
     // ERROR -> BLOCKER can be for continuous integration
@@ -10,18 +10,22 @@ enum class RuleType {
      * Normal code smell
      */
     CODE_SMELL,
+
     /*
      * REST API Smell
      */
     REST_API_SMELL,
+
     /*
      * Database smell, if a Controller have to many smells
      */
     DATABASE_MAP_SMELL,
+
     /*
      * SCM (like Git) change's smell, maybe change multiple files
      */
     CHANGE_SMELL,
+
     /*
      * for metric team size and others
      */
@@ -46,10 +50,11 @@ open class Rule(
     val tags: List<String> = listOf()
 ) {}
 
-abstract class IfttRule: Rule() {
+abstract class IfttRule : Rule() {
     fun given(conditions: List<String>): IfttRule {
         return this
     }
+
     fun then(conditions: List<String>): IfttRule {
         return this
     }

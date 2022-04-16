@@ -11,6 +11,9 @@ include(":common_code_repository")
 
 include(":diff_changes")
 
+// core rule model
+include(":rule_core")
+
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_sourcecode")
