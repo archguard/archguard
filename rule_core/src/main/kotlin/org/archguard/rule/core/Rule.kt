@@ -33,21 +33,21 @@ enum class RuleType {
 }
 
 open class Rule(
-    val key: String = "",
+    var key: String = "",
     // rule name for identify
-    val name: String = "",
+    var name: String = "",
     //  description for rule index
-    val description: String = "",
+    var description: String = "",
     // message about context, can be information for refactor
-    val message: String = "",
+    var message: String = "",
     // Rule Type, like Test, API, such as this
-    val type: String = "",
+    var type: String = "",
     // like Priority in sonar
-    val severity: Severity = Severity.INFO,
+    var severity: Severity = Severity.INFO,
     // rule flags
-    val status: String = "READY",
+    var status: String = "READY",
     // custom for search
-    val tags: List<String> = listOf()
+    var tags: List<String> = listOf()
 ) {}
 
 abstract class IfttRule : Rule() {
