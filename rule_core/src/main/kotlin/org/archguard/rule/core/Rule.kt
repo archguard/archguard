@@ -36,6 +36,7 @@ open class Rule(
     var key: String = "",
     // rule name for identify
     var name: String = "",
+    // todo: i18N support, load from properties
     //  description for rule index
     var description: String = "",
     // message about context, can be information for refactor
@@ -45,10 +46,13 @@ open class Rule(
     // like Priority in sonar
     var severity: Severity = Severity.INFO,
     // rule flags
+    var given: List<String> = arrayListOf(),
     var status: String = "READY",
     // custom for search
     var tags: List<String> = listOf()
-) {}
+) {
+
+}
 
 abstract class IfttRule : Rule() {
     fun given(conditions: List<String>): IfttRule {

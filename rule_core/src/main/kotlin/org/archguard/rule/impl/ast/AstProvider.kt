@@ -13,7 +13,7 @@ class AstProvider: RuleSetProvider {
         return RuleSet(
             RuleType.CHANGE_SMELL,
             "normal",
-            CasingRule()
+            CasingRule(),
         )
     }
 }
