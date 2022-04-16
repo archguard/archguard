@@ -48,7 +48,9 @@ abstract class Rule(
     // like Priority in sonar
     var severity: Severity = Severity.INFO,
     // rule flags
+    // given as a selector?
     var given: List<String> = arrayListOf(),
+    // then as a functions?
     var status: String = "READY",
     // custom for search
     var tags: List<String> = listOf()
