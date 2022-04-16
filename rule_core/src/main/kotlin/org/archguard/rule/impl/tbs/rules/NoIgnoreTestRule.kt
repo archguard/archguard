@@ -8,6 +8,6 @@ class NoIgnoreTestRule : TbsRule() {
         this.key = this.javaClass.name
         this.description = "Some casing description"
         // rule for AstPath or ognl?
-        this.given = listOf("$.class.function.calls <= 0")
+        this.given = listOf("$.class.function.annotations contains 'Ignore'")
     }
 }

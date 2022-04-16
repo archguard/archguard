@@ -1,5 +1,7 @@
 package org.archguard.rule.core
 
+import chapi.domain.core.CodeDataStruct
+
 enum class Severity {
     // ERROR -> BLOCKER can be for continuous integration
     HINT, WARN, INFO, BLOCKER
@@ -32,7 +34,7 @@ enum class RuleType {
     ORGANIZATION,
 }
 
-open class Rule(
+abstract class Rule(
     var key: String = "",
     // rule name for identify
     var name: String = "",
@@ -51,7 +53,7 @@ open class Rule(
     // custom for search
     var tags: List<String> = listOf()
 ) {
-
+    open fun visit(rootNode: CodeDataStruct, callback: () -> Unit) {}
 }
 
 abstract class IfttRule : Rule() {
