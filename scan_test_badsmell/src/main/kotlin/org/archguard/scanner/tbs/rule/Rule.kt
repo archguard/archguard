@@ -5,6 +5,14 @@ enum class Severity {
     HINT, WARN, INFO, BLOCKER
 }
 
+enum class RuleType {
+    CODE_SMELL,
+    API_SMELL,
+    DATABASE_MAP_SMELL,
+    // for metric team size and others
+    ORGANIZATION,
+}
+
 open class Rule(
     val key: String = "",
     // rule name for identify
