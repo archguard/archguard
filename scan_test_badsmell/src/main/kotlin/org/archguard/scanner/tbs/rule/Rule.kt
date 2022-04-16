@@ -6,10 +6,25 @@ enum class Severity {
 }
 
 enum class RuleType {
+    /*
+     * Normal code smell
+     */
     CODE_SMELL,
-    API_SMELL,
+    /*
+     * REST API Smell
+     */
+    REST_API_SMELL,
+    /*
+     * Database smell, if a Controller have to many smells
+     */
     DATABASE_MAP_SMELL,
-    // for metric team size and others
+    /*
+     * SCM (like Git) change's smell, maybe change multiple files
+     */
+    CHANGE_SMELL,
+    /*
+     * for metric team size and others
+     */
     ORGANIZATION,
 }
 
