@@ -77,6 +77,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         for (function in functions) {
             val mId = findMethodIdByClzName(function, clzName, function.Name, pkgName)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
+                // not a correct NodeName
+                if(call.NodeName.contains("\"") || call.NodeName.contains("'")) {
+                    continue
+                }
+
                 saveMethodCall(mId, call, moduleName, clzName, call.Package)
             }
         }

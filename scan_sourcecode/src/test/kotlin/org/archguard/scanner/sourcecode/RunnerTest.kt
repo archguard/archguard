@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.toPath
+import kotlin.test.assertEquals
 
 internal class RunnerTest {
 
@@ -66,5 +69,25 @@ internal class RunnerTest {
         assertTrue(
             (thrown.message!!.contains("Access denied for") || thrown.message!!.contains("Communications link failure"))
         )
+    }
+
+    @Test
+    internal fun code_method_in_correct() {
+        val resource = this.javaClass.classLoader.getResource("bugfixes").toURI().toPath().absolutePathString()
+
+        System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
+
+        val runner = Runner()
+        runner.main(
+            listOf(
+                "--path=${resource}",
+                "--language=kotlin",
+                "--without-storage",
+                "--system-id=2"
+            )
+        )
+
+        val codeMethod = File("code_method.sql").readLines()
+        assertEquals(2, codeMethod.size)
     }
 }
