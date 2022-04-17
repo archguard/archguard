@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.clazz.domain.service
 
+import com.thoughtworks.archguard.code.clazz.domain.CodeTree
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
-import com.thoughtworks.archguard.code.codetree.CodeTree
 import org.springframework.stereotype.Service
 
 @Service
