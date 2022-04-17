@@ -2,6 +2,8 @@ package com.thoughtworks.archguard.code.clazz.controller
 
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
+import com.thoughtworks.archguard.code.codetree.CodeTree
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -49,5 +51,11 @@ class ClassController(val service: ClassService) {
         @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean
     ): JClass {
         return service.findMethodsCallees(systemId, module, name, deep, needIncludeImpl, needParents)
+    }
+
+    @GetMapping("/code-tree")
+    fun getCodeTree(@PathVariable("systemId") systemId: Long): ResponseEntity<CodeTree> {
+        val codeTree = service.initCodeTree(systemId)
+        return ResponseEntity.ok(codeTree)
     }
 }

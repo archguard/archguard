@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.code.clazz.domain.service
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.code.codetree.CodeTree
 import org.springframework.stereotype.Service
 
 @Service
@@ -44,5 +45,12 @@ class ClassService(
             systemId, targetClass,
             calleeDeep, needIncludeImpl, needParents
         )
+    }
+
+    fun initCodeTree(systemId: Long): CodeTree {
+        val codeTree = CodeTree()
+        jClassRepository.getAllBySystemId(systemId).filter { it.module != null }.map { codeTree.addClass(it.getFullName()) }
+        codeTree.fixTopNodeSubModuleType()
+        return codeTree
     }
 }
