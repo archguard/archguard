@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  archguard_mysql:
+    extends:
+      file: docker-compose.yml
+      service: archguard_mysql
+    ports:
+      - "3306:3306"
+  archguard_influxdb:
+    extends:
+      file: docker-compose.yml
+      service: archguard_influxdb
+    ports:
+      - "8086:8086"
+
+networks:
+  dependence_network:
+
+volumes:
+  mysql:
+  influxdb:
