@@ -10,7 +10,7 @@ dependencies {
 
     implementation("io.netty:netty-all:4.1.42.Final")
 
-    implementation("com.zaxxer:HikariCP:3.4.5")
+    implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.jdbi:jdbi3-core:3.8.2")
     implementation("mysql:mysql-connector-java:8.0.28")
 
