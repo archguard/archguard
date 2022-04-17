@@ -40,12 +40,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
     )
     private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
-    val API_TABLES = arrayOf(
-        "container_demand",
-        "container_resource",
-        "container_service"
-    )
-
     override fun run() {
         cleanSqlFile(ALL_TABLES)
 
