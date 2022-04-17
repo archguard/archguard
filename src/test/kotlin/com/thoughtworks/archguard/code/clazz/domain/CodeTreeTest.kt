@@ -26,29 +26,35 @@ internal class CodeTreeTest {
 
         Assertions.assertThat(codeTree.trees.first { it == Node("a", TypeEnum.PACKAGE) }.children)
             .containsExactlyInAnyOrderElementsOf(listOf(Node("b", TypeEnum.PACKAGE), Node("c", TypeEnum.FILE)))
-        Assertions.assertThat(codeTree.trees.first {
-            it == Node(
-                "a",
-                TypeEnum.PACKAGE
-            )
-        }.children.first { it.node == "b" }.children)
+        Assertions.assertThat(
+            codeTree.trees.first {
+                it == Node(
+                    "a",
+                    TypeEnum.PACKAGE
+                )
+            }.children.first { it.node == "b" }.children
+        )
             .containsExactlyInAnyOrderElementsOf(listOf(Node("d", TypeEnum.FILE), Node("e", TypeEnum.PACKAGE)))
-        Assertions.assertThat(codeTree.trees.first {
-            it == Node(
-                "a",
-                TypeEnum.PACKAGE
-            )
-        }.children.first { it.node == "b" }.children.first { it.node == "e" }.children)
+        Assertions.assertThat(
+            codeTree.trees.first {
+                it == Node(
+                    "a",
+                    TypeEnum.PACKAGE
+                )
+            }.children.first { it.node == "b" }.children.first { it.node == "e" }.children
+        )
             .containsOnly(Node("f", TypeEnum.FILE))
 
         Assertions.assertThat(codeTree.trees.first { it == Node("m", TypeEnum.PACKAGE) }.children)
             .containsExactlyInAnyOrderElementsOf(listOf(Node("n", TypeEnum.PACKAGE), Node("q", TypeEnum.FILE)))
-        Assertions.assertThat(codeTree.trees.first {
-            it == Node(
-                "m",
-                TypeEnum.PACKAGE
-            )
-        }.children.first { it == Node("n", TypeEnum.PACKAGE) }.children)
+        Assertions.assertThat(
+            codeTree.trees.first {
+                it == Node(
+                    "m",
+                    TypeEnum.PACKAGE
+                )
+            }.children.first { it == Node("n", TypeEnum.PACKAGE) }.children
+        )
             .containsOnly(Node("p", TypeEnum.FILE))
     }
 }
