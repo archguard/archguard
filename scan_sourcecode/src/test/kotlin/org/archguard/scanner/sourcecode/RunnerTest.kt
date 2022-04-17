@@ -72,8 +72,28 @@ internal class RunnerTest {
     }
 
     @Test
-    internal fun code_method_in_correct() {
-        val resource = this.javaClass.classLoader.getResource("bugfixes").toURI().toPath().absolutePathString()
+    internal fun code_method_call_incorrect_nodename() {
+        val resource = this.javaClass.classLoader.getResource("bugfixes/MethodCallNodeNameError.kt").toURI().toPath().absolutePathString()
+
+        System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
+
+        val runner = Runner()
+        runner.main(
+            listOf(
+                "--path=${resource}",
+                "--language=kotlin",
+                "--without-storage",
+                "--system-id=2"
+            )
+        )
+
+        val codeMethod = File("code_method.sql").readLines()
+        assertEquals(2, codeMethod.size)
+    }
+
+    @Test
+    internal fun type_error() {
+        val resource = this.javaClass.classLoader.getResource("bugfixes/BadSmellScanner.kt").toURI().toPath().absolutePathString()
 
         System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
 

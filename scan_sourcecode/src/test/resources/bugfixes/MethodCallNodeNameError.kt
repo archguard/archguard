@@ -7,7 +7,7 @@ import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
 @Repository
-class ModuleCouplingRepositoryImpl(val jdbi: Jdbi) : ModuleCouplingRepository {
+class MethodCallNodeNameError(val jdbi: Jdbi) : ModuleCouplingRepository {
     override fun getCouplingAboveThreshold(systemId: Long, moduleFanInThreshold: Int, moduleFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ModuleCoupling> {
         var orderSqlPiece = "order by fanIn desc, fanOut desc "
         if (!orderByFanIn) {
