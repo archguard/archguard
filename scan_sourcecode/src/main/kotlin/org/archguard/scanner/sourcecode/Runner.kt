@@ -34,9 +34,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
     private val store = DBIStore.getInstance()
 
     private val path: String by option(help = "local path").default(".")
-    private val apiOnly: Boolean by option(help = "only scan api").flag()
     private val systemId: String by option(help = "system id").default("0")
-    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default("Java")
+    private val language: String by option(help = "langauge: Java, Kotlin, TypeScript, CSharp, Python, Golang").default(
+        "Java"
+    )
     private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
     val API_TABLES = arrayOf(
@@ -46,11 +47,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     )
 
     override fun run() {
-        if (!apiOnly) {
-            cleanSqlFile(API_TABLES)
-        } else {
-            cleanSqlFile(ALL_TABLES)
-        }
+        cleanSqlFile(ALL_TABLES)
 
         var dataStructs: Array<CodeDataStruct> = arrayOf()
         val lang = language.lowercase()
@@ -77,9 +74,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
 
         File("structs.json").writeText(Json.encodeToString(dataStructs))
 
-        if (!apiOnly) {
-            saveDataStructs(dataStructs, systemId, lang)
-        }
+        saveDataStructs(dataStructs, systemId, lang)
 
         saveApi(dataStructs, systemId, lang)
         saveDatabaseRelations(dataStructs, systemId, lang)
@@ -87,11 +82,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
 
-        if (!apiOnly) {
-            storeDatabase(ALL_TABLES, systemId)
-        } else {
-            storeDatabase(API_TABLES, systemId)
-        }
+        storeDatabase(ALL_TABLES, systemId)
 
         val sqlEnd = System.currentTimeMillis()
         logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
@@ -196,7 +187,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
     }
 
     private fun storeDatabase(tables: Array<String>, systemId: String) {
-        if(withoutStorage) {
+        if (withoutStorage) {
             return;
         }
 
