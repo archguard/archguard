@@ -429,7 +429,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             val time: String = currentTime
             val values: MutableMap<String, String> = HashMap()
 
-            val name = field.TypeValue
+            val name = field.TypeKey
             // for TypeScript
             if (isJs()) {
                 if (!FIELD_NAME.matches(name)) {

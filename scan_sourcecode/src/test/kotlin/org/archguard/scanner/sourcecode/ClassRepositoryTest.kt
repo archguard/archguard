@@ -1,6 +1,7 @@
 package org.archguard.scanner.sourcecode
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeField
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 import org.archguard.scanner.common.ClassRepository

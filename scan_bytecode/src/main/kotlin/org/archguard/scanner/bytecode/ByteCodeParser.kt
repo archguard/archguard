@@ -138,10 +138,9 @@ class ByteCodeParser {
     private fun createField(field: FieldNode): CodeField {
         val isInterface = CodeConstants.ACC_INTERFACE == field.access
 
-        // todo: add field annotation
-//        field.Annotations = field.visibleAnnotations?.map {
-//            createAnnotation(it)
-//        }?.toTypedArray() ?: arrayOf()
+        val annotations = field.visibleAnnotations?.mapNotNull {
+            createAnnotation(it)
+        }?.toTypedArray() ?: arrayOf()
 
         val className = Type.getType(field.desc).className
 
@@ -150,6 +149,7 @@ class ByteCodeParser {
         return CodeField(
             TypeType = className,
             TypeValue = field.name,
+            Annotaiton = annotations,
             Modifiers = createModifiers(field.access, FIELD_ALLOWED, isInterface, FIELD_EXCLUDED)
         )
     }
