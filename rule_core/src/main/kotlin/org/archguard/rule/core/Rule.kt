@@ -1,6 +1,9 @@
 package org.archguard.rule.core
 
+import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeField
+import chapi.domain.core.CodeFunction
 
 enum class Severity {
     // ERROR -> BLOCKER can be for continuous integration
@@ -34,6 +37,8 @@ enum class RuleType {
     ORGANIZATION,
 }
 
+typealias SmellEmit = (message: String) -> Unit
+
 abstract class Rule(
     var key: String = "",
     // rule name for identify
@@ -55,7 +60,7 @@ abstract class Rule(
     // custom for search
     var tags: List<String> = listOf()
 ) {
-    open fun visit(rootNode: CodeDataStruct, callback: () -> Unit) {}
+    open fun visit(rootNode: CodeDataStruct, callback: SmellEmit) {}
 }
 
 abstract class IfttRule : Rule() {

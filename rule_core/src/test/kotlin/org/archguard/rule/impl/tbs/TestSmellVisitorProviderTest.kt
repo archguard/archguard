@@ -13,5 +13,6 @@ internal class TestSmellVisitorProviderTest {
 
         visitor
             .visitor(listOf(provider.get()), ds)
+
     }
 }
