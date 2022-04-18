@@ -12,7 +12,7 @@ internal class TestSmellVisitorProviderTest {
         val provider = TestSmellProvider()
 
         val ds = CodeDataStruct()
-        ds.Functions += CodeFunction(Annotations = arrayOf(CodeAnnotation(Name = "Ignore")))
+        ds.Functions += CodeFunction(Annotations = arrayOf(CodeAnnotation(Name = "Test"), CodeAnnotation(Name = "Ignore")))
 
         val visitor = TestSmellVisitor(arrayOf(ds))
 

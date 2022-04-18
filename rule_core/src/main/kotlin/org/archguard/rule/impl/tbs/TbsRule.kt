@@ -30,7 +30,7 @@ open class TbsRule(
 
         rootNode.Functions.forEachIndexed { index, it ->
             // todo: condition by languages
-            val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".test") }
+            val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
             val isTest = testsFilter.isNotEmpty()
 
             if (isTest) {
