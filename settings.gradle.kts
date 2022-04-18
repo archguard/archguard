@@ -16,6 +16,7 @@ include(":diff_changes")
 include(":rule_core")
 // standard scanner model
 include(":scanner_core")
+include(":scanner_cli")
 
 // official scanner implementation
 include(":scan_git")

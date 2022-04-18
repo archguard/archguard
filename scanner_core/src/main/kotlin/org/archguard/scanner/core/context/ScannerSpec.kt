@@ -1,4 +1,4 @@
-package org.archguard.scanner.context
+package org.archguard.scanner.core.context
 
 data class ScannerSpec(
     val identifier: String,

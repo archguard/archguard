@@ -1,6 +1,6 @@
-package org.archguard.scanner.context.impl
+package org.archguard.scanner.impl
 
-import org.archguard.scanner.context.ScannerSpec
+import org.archguard.scanner.core.context.ScannerSpec
 
 enum class OfficialScannerSpecs(val spec: ScannerSpec) {
     JAVA(
@@ -12,4 +12,8 @@ enum class OfficialScannerSpecs(val spec: ScannerSpec) {
         )
     )
     ;
+
+    companion object {
+        fun specs() = values().map { it.spec }
+    }
 }
