@@ -6,6 +6,7 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.impl.CasingRule
 import org.archguard.rule.impl.tbs.rules.EmptyTestRule
 import org.archguard.rule.impl.tbs.rules.NoIgnoreTestRule
+import org.archguard.rule.impl.tbs.rules.RedundantPrintTestRule
 import org.archguard.rule.impl.tbs.rules.SleepyTestRule
 
 /*
@@ -20,6 +21,7 @@ class TestSmellProvider: RuleSetProvider {
             EmptyTestRule(),
             NoIgnoreTestRule(),
             SleepyTestRule(),
+            RedundantPrintTestRule(),
         )
     }
 }
