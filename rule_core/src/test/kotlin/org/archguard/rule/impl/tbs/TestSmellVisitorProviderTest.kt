@@ -4,6 +4,7 @@ import chapi.domain.core.CodeAnnotation
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 internal class TestSmellVisitorProviderTest {
     @Test
@@ -15,8 +16,11 @@ internal class TestSmellVisitorProviderTest {
 
         val visitor = TestSmellVisitor(arrayOf(ds))
 
-        visitor
+        val results = visitor
             .visitor(listOf(provider.get()), ds)
 
+        assertEquals(2, results.size)
+        assertEquals("EmptyTest", results[0].name)
+        assertEquals("NoIgnoreTest", results[1].name)
     }
 }

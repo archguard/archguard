@@ -8,9 +8,9 @@ import org.archguard.rule.impl.tbs.smellPosition
 
 class EmptyTestRule: TbsRule() {
     init {
-        this.name = "EmptyTestRule"
+        this.name = "EmptyTest"
         this.key = this.javaClass.name
-        this.description = "Some casing description"
+        this.description = "Test is without any code"
         this.severity = Severity.WARN
     }
 
