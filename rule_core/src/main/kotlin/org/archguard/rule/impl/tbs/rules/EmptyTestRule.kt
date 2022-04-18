@@ -4,6 +4,7 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.SmellEmit
 import org.archguard.rule.impl.tbs.TbsRule
+import org.archguard.rule.impl.tbs.smellPosition
 
 class EmptyTestRule: TbsRule() {
     init {
@@ -15,7 +16,7 @@ class EmptyTestRule: TbsRule() {
 
     override fun visitFunction(function: CodeFunction, index: Int, callback: SmellEmit) {
         if(function.isJUnitTest() && function.FunctionCalls.isEmpty()) {
-            callback(this)
+            callback(this, function.Position.smellPosition())
         }
     }
 }
