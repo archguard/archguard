@@ -119,4 +119,28 @@ internal class TestSmellVisitorProviderTest {
         assertEquals(1, results.size)
         assertEquals("UnknownTest", results[0].name)
     }
+
+    @Test
+    internal fun duplicate_asserts() {
+        val provider = TestSmellProvider()
+
+        val parameters: Array<CodeProperty> = arrayOf(CodeProperty(TypeValue = "true", TypeType = "Boolean"))
+
+        val ds = CodeDataStruct()
+        val assertCall = CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters)
+        ds.Functions += CodeFunction(
+            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = arrayOf(
+                assertCall, assertCall, assertCall, assertCall, assertCall, assertCall
+            )
+        )
+
+        val visitor = TestSmellVisitor(arrayOf(ds))
+
+        val results = visitor
+            .visitor(listOf(provider.get()), ds)
+
+        assertEquals(1, results.size)
+        assertEquals("DuplicateAssert", results[0].name)
+    }
 }
