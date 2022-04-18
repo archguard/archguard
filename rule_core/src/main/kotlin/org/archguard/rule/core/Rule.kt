@@ -1,9 +1,6 @@
 package org.archguard.rule.core
 
-import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeField
-import chapi.domain.core.CodeFunction
 
 enum class Severity {
     // ERROR -> BLOCKER can be for continuous integration
@@ -38,6 +35,7 @@ enum class RuleType {
 }
 
 typealias SmellEmit = (message: String) -> Unit
+typealias RuleContext = Any
 
 abstract class Rule(
     var key: String = "",

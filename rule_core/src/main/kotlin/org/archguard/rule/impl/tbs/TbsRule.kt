@@ -5,8 +5,8 @@ import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeField
 import chapi.domain.core.CodeFunction
-import org.archguard.rule.core.SmellEmit
 import org.archguard.rule.core.Rule
+import org.archguard.rule.core.SmellEmit
 
 open class TbsRule : Rule() {
     override fun visit(rootNode: CodeDataStruct, callback: SmellEmit) {

@@ -7,9 +7,10 @@ internal class TestSmellVisitorProviderTest {
     @Test
     internal fun name() {
         val provider = TestSmellProvider()
-        val visitor = TestSmellVisitor()
 
         val ds = CodeDataStruct()
+
+        val visitor = TestSmellVisitor(arrayOf(ds))
 
         visitor
             .visitor(listOf(provider.get()), ds)
