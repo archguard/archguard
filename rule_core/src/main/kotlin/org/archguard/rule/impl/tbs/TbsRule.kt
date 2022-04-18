@@ -30,20 +30,21 @@ val ASSERTION_LIST = arrayOf(
     "spec",     // RestAssured,
     "verify"    // Mockito,
 )
+
 open class TbsRule(
     var language: TbsLanguage = TbsLanguage.JAVA
 ) : Rule() {
-    protected fun isAssert(codeCall: CodeCall) =
-        ASSERTION_LIST.contains(codeCall.FunctionName) || codeCall.FunctionName.startsWith("assert")
 
+    // todo: before visit check
     override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)
         }
 
         rootNode.Functions.forEachIndexed { index, it ->
-            // todo: condition by languages
             if (isTest(it)) {
+                this.beforeVisitFunction(it, callback)
+
                 this.visitFunction(it, index, callback)
 
                 it.Annotations.forEachIndexed { annotationIndex, annotation ->
@@ -57,12 +58,20 @@ open class TbsRule(
                 currentMethodCalls.forEachIndexed { callIndex, call ->
                     this.visitFunctionCall(it, call, callIndex, callback)
                 }
+
+                this.afterVisitFunction(it, callback)
             }
         }
     }
 
+    protected fun isAssert(codeCall: CodeCall) =
+        ASSERTION_LIST.contains(codeCall.FunctionName)
+                || codeCall.NodeName.startsWith("assert")
+                || codeCall.FunctionName.startsWith("assert")
+
+    // todo: condition by languages
     private fun isTest(it: CodeFunction): Boolean {
-        return when(language) {
+        return when (language) {
             TbsLanguage.JAVA, TbsLanguage.KOTLIN -> {
                 val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
                 testsFilter.isNotEmpty()
@@ -92,7 +101,11 @@ open class TbsRule(
     }
 
     open fun visitField(field: CodeField, index: Int, callback: SmellEmit) {}
+
+    open fun beforeVisitFunction(function: CodeFunction, callback: SmellEmit) {}
     open fun visitFunction(function: CodeFunction, index: Int, callback: SmellEmit) {}
+    open fun afterVisitFunction(function: CodeFunction, callback: SmellEmit) {}
+
     open fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {}
     open fun visitAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {}
 }

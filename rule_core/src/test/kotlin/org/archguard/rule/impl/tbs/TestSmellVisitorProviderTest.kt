@@ -26,7 +26,7 @@ internal class TestSmellVisitorProviderTest {
         val results = visitor
             .visitor(listOf(provider.get()), ds)
 
-        assertEquals(2, results.size)
+        assertEquals(3, results.size)
         assertEquals("EmptyTest", results[0].name)
         assertEquals("NoIgnoreTest", results[1].name)
     }
@@ -93,7 +93,7 @@ internal class TestSmellVisitorProviderTest {
             .visitor(listOf(provider.get()), ds)
 
         assertEquals(1, results.size)
-        assertEquals("RedundantAssertionRuleTest", results[0].name)
+        assertEquals("RedundantAssertionTest", results[0].name)
     }
 
     @Test

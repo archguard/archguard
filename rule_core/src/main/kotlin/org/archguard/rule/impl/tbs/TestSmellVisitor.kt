@@ -29,7 +29,7 @@ class TestSmellVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor
         return callMethodMap
     }
 
-    internal fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct): Array<RuleResult> {
+    fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct): Array<RuleResult> {
         var results: Array<RuleResult> = arrayOf()
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach {

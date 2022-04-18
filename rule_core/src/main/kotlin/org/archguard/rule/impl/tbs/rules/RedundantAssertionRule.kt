@@ -10,7 +10,7 @@ import org.archguard.rule.impl.tbs.smellPosition
 
 class RedundantAssertionRule : TbsRule() {
     init {
-        this.name = "RedundantAssertionRuleTest"
+        this.name = "RedundantAssertionTest"
         this.key = this.javaClass.name
         this.description = "The test is contains invalid assert, like assertEquals(true, true)"
         this.severity = Severity.WARN
