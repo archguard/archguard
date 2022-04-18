@@ -1,4 +1,40 @@
-# [](https://github.com/archguard/scanner/compare/v1.5.0...v) (2022-04-13)
+# [](https://github.com/archguard/scanner/compare/v1.6.1...v) (2022-04-18)
+
+
+
+## [1.6.1](https://github.com/archguard/scanner/compare/v1.5.0...v1.6.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* fix newline issue in Windows ([6f4136a](https://github.com/archguard/scanner/commit/6f4136a1ff67afe864359bf4d4f1db7b03de23d8))
+* fix origin package error issues ([b06556f](https://github.com/archguard/scanner/commit/b06556f2a8ea1eb380fa07bfa49af8ce375aadc0))
+* fix package issues ([b413276](https://github.com/archguard/scanner/commit/b4132762b7ad446fa4fe984cec50525089bc93cc))
+* **mybatis:** fix cannot parse local dtd issue ([c902629](https://github.com/archguard/scanner/commit/c902629b9c43b1aa66652457beb9801246b3c0bd))
+* **mybatis:** fix dir with xml issues ([9c3224f](https://github.com/archguard/scanner/commit/9c3224f2662be005aa8e271689ba4ba0ba04ca3a))
+* **mybatis:** fix empty code issues ([1d52481](https://github.com/archguard/scanner/commit/1d524814c6f9bfc58e6fb5c19dc76de08ea1bedc))
+* **sourcecode:** fix field name use keyvalue issue ([f7eedb9](https://github.com/archguard/scanner/commit/f7eedb9b06ed2d874ffba5883bb05c2a87b6f9c1))
+* **sourcecode:** fix get a error node name for Kotlin ([5d87b5e](https://github.com/archguard/scanner/commit/5d87b5e2b2748b278390e45cab2b538ce4c9dabd))
+* **sourcecode:** fix simple fix for newline issue in sql ([b4a0eef](https://github.com/archguard/scanner/commit/b4a0eefcce0018b093770cc4b5c695b9851b6a1c))
+* **sourcecode:** remove api CODE ([88957e8](https://github.com/archguard/scanner/commit/88957e8e28f421f2e3d1a77d4120daf06e6417ed))
+* **sourcecode:** remove api only scanner ([24b8feb](https://github.com/archguard/scanner/commit/24b8feb2e437b18844984d026bb02b7546659932))
+
+
+### Features
+
+* **bytcode:** add test cases for code treee annotation ([f8aca10](https://github.com/archguard/scanner/commit/f8aca10821f71e95110094d2f62eca0b442275df))
+* **kotlin:** add visit for rule ([1292ec4](https://github.com/archguard/scanner/commit/1292ec4cd429e2c5bf88629579e394e023a18571))
+* **rule:** add basic test smell provider ([ceeff9d](https://github.com/archguard/scanner/commit/ceeff9d85f81252de8594ca42d530d2967990553))
+* **rule:** add callback for save results for [#4](https://github.com/archguard/scanner/issues/4) ([86b42c1](https://github.com/archguard/scanner/commit/86b42c1882d82413f90d711c5b8fed649808eed8))
+* **rule:** add language for tbsrule [#4](https://github.com/archguard/scanner/issues/4) ([c6eadb2](https://github.com/archguard/scanner/commit/c6eadb234e585996df1b7439b709c446787f94a6))
+* **rule:** add sample for test bad smells ([8cf0de3](https://github.com/archguard/scanner/commit/8cf0de326702fd146d3cba7fd3031bcda1483ec3))
+* **rule:** add smell position for  [#4](https://github.com/archguard/scanner/issues/4) ([bf21462](https://github.com/archguard/scanner/commit/bf21462bbd63c8345775ded1839e303b48540448))
+* **rule:** enable rules for visit ([cb722cd](https://github.com/archguard/scanner/commit/cb722cd89a2c90c07db589a4f845d9f1c2f5d253))
+* **rule:** init basic rule cores ([77ce71d](https://github.com/archguard/scanner/commit/77ce71d93e80d59d25c00ec8841c5fc421bbc972))
+* **rule:** init context for TbsRuleVisitor ([18072ef](https://github.com/archguard/scanner/commit/18072efeaa6f449645ec5fdcc78f9cbf4e9c1e16))
+* **rule:** split impl mods ([9c8abe0](https://github.com/archguard/scanner/commit/9c8abe0ab40658e838c6dc77dde84dff1615ec41))
+* **rule:** use visit function for node ([81ef133](https://github.com/archguard/scanner/commit/81ef13373c05130f5729da72a8a6c5e10ad479c6))
+* **sourcecode:** add first runner tests ([64bc86e](https://github.com/archguard/scanner/commit/64bc86ee47b7d310b6e5e9c223614a6c627bb8c3))
 
 
 
