@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaReportType
 import com.thoughtworks.archguard.scanner.domain.tools.DesigniteJavaTool
