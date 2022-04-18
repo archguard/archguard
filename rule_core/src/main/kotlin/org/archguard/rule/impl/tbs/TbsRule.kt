@@ -20,7 +20,9 @@ fun CodePosition.smellPosition(): SmellPosition {
     )
 }
 
-open class TbsRule : Rule() {
+open class TbsRule(
+    var language: TbsLanguage = TbsLanguage.JAVA
+) : Rule() {
     override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)
