@@ -20,7 +20,7 @@ class RedundantPrintRule : TbsRule() {
         when(this.language) {
             TbsLanguage.JAVA -> {
                 if (codeCall.NodeName == "System.out" && (codeCall.FunctionName == "println" || codeCall.FunctionName == "printf" || codeCall.FunctionName == "print")) {
-                    callback(this, function.Position.smellPosition())
+                    callback(this, codeCall.Position.smellPosition())
                 }
             }
             else -> {}

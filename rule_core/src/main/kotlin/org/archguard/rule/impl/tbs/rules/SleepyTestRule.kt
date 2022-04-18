@@ -17,7 +17,7 @@ class SleepyTestRule : TbsRule() {
 
     override fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {
         if (codeCall.FunctionName == "sleep" && codeCall.NodeName == "Thread") {
-            callback(this, function.Position.smellPosition())
+            callback(this, codeCall.Position.smellPosition())
         }
     }
 }
