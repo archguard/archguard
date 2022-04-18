@@ -20,9 +20,22 @@ fun CodePosition.smellPosition(): SmellPosition {
     )
 }
 
+
+val ASSERTION_LIST = arrayOf(
+    "assert",
+    "should",
+    "check",    // ArchUnit,
+    "maynotbe", // ArchUnit,
+    "is",       // RestAssured,
+    "spec",     // RestAssured,
+    "verify"    // Mockito,
+)
 open class TbsRule(
     var language: TbsLanguage = TbsLanguage.JAVA
 ) : Rule() {
+    protected fun isAssert(codeCall: CodeCall) =
+        ASSERTION_LIST.contains(codeCall.FunctionName) || codeCall.FunctionName.startsWith("assert")
+
     override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)

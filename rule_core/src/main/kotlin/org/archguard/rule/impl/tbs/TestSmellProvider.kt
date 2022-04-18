@@ -9,6 +9,7 @@ import org.archguard.rule.impl.tbs.rules.NoIgnoreTestRule
 import org.archguard.rule.impl.tbs.rules.RedundantAssertionRule
 import org.archguard.rule.impl.tbs.rules.RedundantPrintRule
 import org.archguard.rule.impl.tbs.rules.SleepyTestRule
+import org.archguard.rule.impl.tbs.rules.UnknownTestRule
 
 /*
  * Low level provider
@@ -24,6 +25,7 @@ class TestSmellProvider: RuleSetProvider {
             SleepyTestRule(),
             RedundantPrintRule(),
             RedundantAssertionRule(),
+            UnknownTestRule(),
         )
     }
 }

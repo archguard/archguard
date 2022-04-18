@@ -46,7 +46,7 @@ internal class TestSmellVisitorProviderTest {
         val results = visitor
             .visitor(listOf(provider.get()), ds)
 
-        assertEquals(1, results.size)
+        assertEquals(2, results.size)
         assertEquals("RedundantPrintTest", results[0].name)
     }
 
@@ -57,7 +57,10 @@ internal class TestSmellVisitorProviderTest {
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
             Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(CodeCall(NodeName = "Thread", FunctionName = "sleep"))
+            FunctionCalls = arrayOf(
+                CodeCall(NodeName = "Thread", FunctionName = "sleep"),
+                CodeCall(NodeName = "", FunctionName = "assert")
+            )
         )
 
         val visitor = TestSmellVisitor(arrayOf(ds))
@@ -91,5 +94,29 @@ internal class TestSmellVisitorProviderTest {
 
         assertEquals(1, results.size)
         assertEquals("RedundantAssertionRuleTest", results[0].name)
+    }
+
+    @Test
+    internal fun unknown_test() {
+        val provider = TestSmellProvider()
+
+        val parameters: Array<CodeProperty> = arrayOf(
+            CodeProperty(TypeValue = "true", TypeType = "Boolean"),
+            CodeProperty(TypeValue = "true", TypeType = "Boolean")
+        )
+
+        val ds = CodeDataStruct()
+        ds.Functions += CodeFunction(
+            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "demo", Parameters = parameters))
+        )
+
+        val visitor = TestSmellVisitor(arrayOf(ds))
+
+        val results = visitor
+            .visitor(listOf(provider.get()), ds)
+
+        assertEquals(1, results.size)
+        assertEquals("UnknownTest", results[0].name)
     }
 }

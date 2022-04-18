@@ -7,15 +7,6 @@ import org.archguard.rule.core.SmellEmit
 import org.archguard.rule.impl.tbs.TbsRule
 import org.archguard.rule.impl.tbs.smellPosition
 
-val ASSERTION_LIST = arrayOf(
-    "assert",
-    "should",
-    "check",    // ArchUnit,
-    "maynotbe", // ArchUnit,
-    "is",       // RestAssured,
-    "spec",     // RestAssured,
-    "verify"    // Mockito,
-)
 
 class RedundantAssertionRule : TbsRule() {
     init {
@@ -27,8 +18,7 @@ class RedundantAssertionRule : TbsRule() {
 
     override fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {
         val assertParametersSize = 2
-        val isAssert = ASSERTION_LIST.contains(codeCall.FunctionName) || codeCall.FunctionName.startsWith("assert")
-        if (isAssert) {
+        if (isAssert(codeCall)) {
             if (codeCall.Parameters.size == assertParametersSize) {
                 if (codeCall.Parameters[0].TypeValue == codeCall.Parameters[1].TypeValue) {
                     callback(this, codeCall.Position.smellPosition())
