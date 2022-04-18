@@ -28,7 +28,7 @@ internal class TestSmellVisitorProviderTest {
 
         assertEquals(3, results.size)
         assertEquals("EmptyTest", results[0].name)
-        assertEquals("NoIgnoreTest", results[1].name)
+        assertEquals("IgnoreTest", results[1].name)
     }
 
     @Test
@@ -141,6 +141,6 @@ internal class TestSmellVisitorProviderTest {
             .visitor(listOf(provider.get()), ds)
 
         assertEquals(1, results.size)
-        assertEquals("DuplicateAssert", results[0].name)
+        assertEquals("DuplicateAssertTest", results[0].name)
     }
 }

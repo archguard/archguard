@@ -63,9 +63,7 @@ internal class TbsAnalyserTest {
         val results = TbsAnalyser().analysisByPath(path)
 
         assertEquals(results[0].line, 7)
-        assertEquals(results[0].type, "EmptyTest")
-        assertEquals(results[1].line, 7)
-        assertEquals(results[1].type, "UnknownTest")
+        assertEquals(results[0].type, "UnknownTest")
     }
 
     @Test

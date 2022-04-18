@@ -10,7 +10,7 @@ private const val MAX_ASSERTS = 5
 
 class DuplicateAssertRule : TbsRule() {
     init {
-        this.name = "DuplicateAssert"
+        this.name = "DuplicateAssertTest"
         this.key = this.javaClass.name
         this.description = "has multiple asserts"
         this.severity = Severity.WARN
@@ -19,7 +19,7 @@ class DuplicateAssertRule : TbsRule() {
     override fun visitFunction(function: CodeFunction, index: Int, callback: SmellEmit) {
         if (function.FunctionCalls.isNotEmpty()) {
             val asserts = function.FunctionCalls.filter { isAssert(it) }.toList()
-            if (asserts.size > MAX_ASSERTS) {
+            if (asserts.size >= MAX_ASSERTS) {
                 callback(this, function.Position.smellPosition())
             }
         }

@@ -42,14 +42,14 @@ open class TbsRule(
         }
 
         rootNode.Functions.forEachIndexed { index, it ->
+            it.Annotations.forEachIndexed { annotationIndex, annotation ->
+                this.visitAnnotation(it, annotation, annotationIndex, callback)
+            }
+
             if (isTest(it)) {
                 this.beforeVisitFunction(it, callback)
 
                 this.visitFunction(it, index, callback)
-
-                it.Annotations.forEachIndexed { annotationIndex, annotation ->
-                    this.visitAnnotation(it, annotation, annotationIndex, callback)
-                }
 
                 // in some cases, people would like to use assert in function
                 val currentMethodCalls =
@@ -65,9 +65,7 @@ open class TbsRule(
     }
 
     protected fun isAssert(codeCall: CodeCall) =
-        ASSERTION_LIST.contains(codeCall.FunctionName)
-                || codeCall.NodeName.startsWith("assert")
-                || codeCall.FunctionName.startsWith("assert")
+        ASSERTION_LIST.contains(codeCall.FunctionName) || codeCall.FunctionName.startsWith("assert")
 
     // todo: condition by languages
     private fun isTest(it: CodeFunction): Boolean {

@@ -9,7 +9,7 @@ import org.archguard.rule.impl.tbs.smellPosition
 
 class NoIgnoreTestRule : TbsRule() {
     init {
-        this.name = "NoIgnoreTest"
+        this.name = "IgnoreTest"
         this.key = this.javaClass.name
         this.description = "The test is ignore or disabled"
         this.severity = Severity.WARN

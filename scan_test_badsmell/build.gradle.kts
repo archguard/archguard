@@ -9,6 +9,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":rule_core"))
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
