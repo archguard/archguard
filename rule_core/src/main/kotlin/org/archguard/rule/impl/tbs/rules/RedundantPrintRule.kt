@@ -8,7 +8,7 @@ import org.archguard.rule.impl.tbs.TbsLanguage
 import org.archguard.rule.impl.tbs.TbsRule
 import org.archguard.rule.impl.tbs.smellPosition
 
-class RedundantPrintTestRule : TbsRule() {
+class RedundantPrintRule : TbsRule() {
     init {
         this.name = "RedundantPrintTest"
         this.key = this.javaClass.name
