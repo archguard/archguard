@@ -20,6 +20,7 @@ import org.apache.ibatis.session.Configuration
 import org.archguard.scanner.sourcecode.xml.BasedXmlHandler
 import org.slf4j.LoggerFactory
 import org.w3c.dom.Node
+import java.io.File
 import java.io.FileInputStream
 
 class MybatisEntry(
@@ -41,8 +42,10 @@ class MyBatisHandler : BasedXmlHandler() {
     }
 
     override fun detect(name: String?, publicId: String?, systemId: String?): Boolean {
-        if (name == "mapper" && systemId == "http://mybatis.org/dtd/mybatis-3-mapper.dtd") {
-            return true
+        if (systemId != null) {
+            if (name == "mapper" && (systemId.endsWith("mybatis-3-mapper.dtd"))) {
+                return true
+            }
         }
 
         return false
@@ -50,15 +53,17 @@ class MyBatisHandler : BasedXmlHandler() {
 
     fun compute(filePath: String): MybatisEntry {
         logger.info("process file: $filePath")
-        val inputStream = FileInputStream(filePath)
-
-        return streamToSqls(inputStream, filePath)
+        return streamToSqls(filePath)
     }
 
-    fun streamToSqls(inputStream: FileInputStream, resource: String): MybatisEntry {
+    fun streamToSqls(resource: String): MybatisEntry {
         val configuration = createConfiguration()
 
-        val parser = XPathParser(inputStream, true, configuration.variables, XMLMapperEntityResolver())
+        var xml = File(resource).readText()
+        xml = xml.replace("http://mybatis.org/dtd/mybatis-3-mapper.dtd", "classpath:/mybatis-3-mapper.dtd")
+        xml = xml.replace("http://mybatis.org/dtd/mybatis-3-config.dtd", "classpath:/mybatis-3-config.dtd")
+
+        val parser = XPathParser(xml, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
 
         val mybatisEntry = MybatisEntry(context.getStringAttribute("namespace"))
