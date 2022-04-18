@@ -2,6 +2,7 @@ package org.archguard.rule.impl.tbs
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleVisitor
@@ -29,9 +30,9 @@ class TestSmellVisitor(private val structs: Array<CodeDataStruct>): RuleVisitor 
     internal fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct) {
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach {
-                it.visit(rootNode) {
-                    return@visit
-                }
+                it.visit(rootNode, this.context, fun(rule: Rule) {
+                    println(rule.name)
+                })
             }
         }
     }
