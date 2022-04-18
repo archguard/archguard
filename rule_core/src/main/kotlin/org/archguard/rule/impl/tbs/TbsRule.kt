@@ -30,23 +30,32 @@ open class TbsRule(
 
         rootNode.Functions.forEachIndexed { index, it ->
             // todo: condition by languages
-            val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
-            val isTest = testsFilter.isNotEmpty()
-
-            if (isTest) {
+            if (isTest(it)) {
                 this.visitFunction(it, index, callback)
 
                 it.Annotations.forEachIndexed { annotationIndex, annotation ->
                     this.visitAnnotation(it, annotation, annotationIndex, callback)
                 }
 
-
+                // in some cases, people would like to use assert in function
                 val currentMethodCalls =
                     addExtractAssertMethodCall(it, rootNode, (context as TestSmellContext).methodMap)
 
                 currentMethodCalls.forEachIndexed { callIndex, call ->
                     this.visitFunctionCall(it, call, callIndex, callback)
                 }
+            }
+        }
+    }
+
+    private fun isTest(it: CodeFunction): Boolean {
+        return when(language) {
+            TbsLanguage.JAVA, TbsLanguage.KOTLIN -> {
+                val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
+                testsFilter.isNotEmpty()
+            }
+            else -> {
+                false
             }
         }
     }
