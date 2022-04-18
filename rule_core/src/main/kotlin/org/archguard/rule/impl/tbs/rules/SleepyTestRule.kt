@@ -9,9 +9,9 @@ import org.archguard.rule.impl.tbs.smellPosition
 
 class SleepyTestRule : TbsRule() {
     init {
-        this.name = "UnknownTest"
+        this.name = "SleepyTest"
         this.key = this.javaClass.name
-        this.description = "test not assert"
+        this.description = "is contains Thread.sleep, it wil slow down test speeds"
         this.severity = Severity.WARN
     }
 

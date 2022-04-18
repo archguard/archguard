@@ -43,4 +43,23 @@ internal class TestSmellVisitorProviderTest {
         assertEquals(1, results.size)
         assertEquals("RedundantPrintTest", results[0].name)
     }
+
+    @Test
+    internal fun sleepy() {
+        val provider = TestSmellProvider()
+
+        val ds = CodeDataStruct()
+        ds.Functions += CodeFunction(
+            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = arrayOf(CodeCall(NodeName = "Thread", FunctionName = "sleep"))
+        )
+
+        val visitor = TestSmellVisitor(arrayOf(ds))
+
+        val results = visitor
+            .visitor(listOf(provider.get()), ds)
+
+        assertEquals(1, results.size)
+        assertEquals("SleepyTest", results[0].name)
+    }
 }
