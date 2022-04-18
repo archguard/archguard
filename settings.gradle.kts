@@ -7,13 +7,17 @@
 rootProject.name = "ArchGuard Scanner"
 
 // common for share code repository
+// TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
 include(":common_code_repository")
 
 include(":diff_changes")
 
 // core rule model
 include(":rule_core")
+// standard scanner model
+include(":scanner_core")
 
+// official scanner implementation
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_sourcecode")
