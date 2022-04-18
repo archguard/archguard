@@ -49,6 +49,7 @@ class MyBatisHandler : BasedXmlHandler() {
     }
 
     fun compute(filePath: String): MybatisEntry {
+        logger.info("process file: $filePath")
         val inputStream = FileInputStream(filePath)
 
         return streamToSqls(inputStream, filePath)
@@ -69,7 +70,12 @@ class MyBatisHandler : BasedXmlHandler() {
         val sqlNodes = context.evalNodes("/mapper/sql")
         parseSqlStatement(sqlNodes, basedParameters, builderAssistant, configuration)
 
-        mybatisEntry.methodSqlMap = buildCrudSqlMap(context, basedParameters, configuration, builderAssistant)
+        try {
+            mybatisEntry.methodSqlMap = buildCrudSqlMap(context, basedParameters, configuration, builderAssistant)
+        } catch (e: Exception) {
+            logger.info(e.toString())
+        }
+
         return mybatisEntry
     }
 
@@ -83,13 +89,18 @@ class MyBatisHandler : BasedXmlHandler() {
         val langDriver: LanguageDriver = XMLLanguageDriver()
         val crudList = context.evalNodes("select|insert|update|delete")
 
-        crudList.forEach {
+        for (it in crudList) {
             val methodName = it.getStringAttribute("id")
             val params = basedParameters + fakeParameters(it)
 
             // 1. enable include
-            val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
-            includeParser.applyIncludes(it.node)
+            try {
+                val includeParser = XMLIncludeTransformer(configuration, builderAssistant)
+                includeParser.applyIncludes(it.node)
+            } catch (e: Exception) {
+                logger.info(e.toString())
+                continue
+            }
 
             // 2. follow parseStatementNode to remove all keys
             val selectKeyNodes = it.evalNodes("selectKey")

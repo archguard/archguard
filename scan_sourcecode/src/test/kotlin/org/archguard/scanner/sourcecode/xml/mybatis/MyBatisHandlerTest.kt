@@ -40,4 +40,13 @@ internal class MyBatisHandlerTest {
 
         assertEquals(14, sqls.methodSqlMap.size)
     }
+
+    @Test
+    internal fun should_handle_refid_lost() {
+        val resource = this.javaClass.classLoader.getResource("mybatis/OrderMapper.xml")!!
+        val toURI = resource.toURI().toPath().toAbsolutePath()
+        val sqls = MyBatisHandler().streamToSqls(FileInputStream(toURI.toString()), toURI.toString())
+
+        assertEquals(1, sqls.methodSqlMap.size)
+    }
 }
