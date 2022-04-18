@@ -29,16 +29,44 @@ open class TbsRule(
         }
 
         rootNode.Functions.forEachIndexed { index, it ->
-            this.visitFunction(it, index, callback)
+            // todo: condition by languages
+            val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".test") }
+            val isTest = testsFilter.isNotEmpty()
 
-            it.Annotations.forEachIndexed { annotationIndex, annotation ->
-                this.visitAnnotation(it, annotation, annotationIndex, callback)
-            }
+            if (isTest) {
+                this.visitFunction(it, index, callback)
 
-            it.FunctionCalls.forEachIndexed { callIndex, call ->
-                this.visitFunctionCall(it, call, callIndex, callback)
+                it.Annotations.forEachIndexed { annotationIndex, annotation ->
+                    this.visitAnnotation(it, annotation, annotationIndex, callback)
+                }
+
+
+                val currentMethodCalls =
+                    addExtractAssertMethodCall(it, rootNode, (context as TestSmellContext).methodMap)
+
+                currentMethodCalls.forEachIndexed { callIndex, call ->
+                    this.visitFunctionCall(it, call, callIndex, callback)
+                }
             }
         }
+    }
+
+    private fun addExtractAssertMethodCall(
+        method: CodeFunction,
+        node: CodeDataStruct,
+        callMethodMap: MutableMap<String, CodeFunction>
+    ): Array<CodeCall> {
+        var methodCalls = method.FunctionCalls
+        for (methodCall in methodCalls) {
+            if (methodCall.NodeName == node.NodeName) {
+                val mapFunc = callMethodMap[methodCall.buildFullMethodName()]
+                if (mapFunc != null && mapFunc.Name != "") {
+                    methodCalls += mapFunc.FunctionCalls
+                }
+            }
+        }
+
+        return methodCalls
     }
 
     open fun visitField(field: CodeField, index: Int, callback: SmellEmit) {}
