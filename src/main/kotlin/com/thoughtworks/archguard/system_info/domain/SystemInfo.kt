@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.system_info.domain
 
+import com.thoughtworks.archguard.system_info.controller.RepoAuthType
 import java.sql.Timestamp
 
 data class SystemInfo(
@@ -16,6 +17,10 @@ data class SystemInfo(
     val badSmellThresholdSuiteId: Long? = null,
     val branch: String? = "master",
     val language: String? = "jvm",
+    // for TypeScript/JavaScript, if some code is in subdiretory
     val codePath: String? = "",
-    val workdir: String? = ""
+    // git clone target directory
+    val workdir: String? = "",
+    val repoAuthType: RepoAuthType = RepoAuthType.UsernameAndPassword,
+    val sshKeyString: String? = ""
 )
