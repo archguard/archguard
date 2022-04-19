@@ -1,8 +1,10 @@
 package com.thoughtworks.archguard.system_info.controller
 
+import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.common.CreateFileUtil
 import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -28,6 +30,7 @@ class SystemInfoController(
     val systemInfoService: SystemInfoService,
     val systemInfoMapper: SystemInfoMapper
 ) {
+    private val logger = LoggerFactory.getLogger(SystemInfoController::class.java)
 
     @GetMapping("/{id}")
     fun getSystemInfo(@PathVariable("id") id: Long): SystemInfoDTO {
@@ -46,7 +49,7 @@ class SystemInfoController(
             )
         }
 
-        val log = File(workdir.resolve("archguard.log").toString()).readText().toString()
+        val log = File(workdir.resolve("archguard.log").toString()).readText()
         return SystemLog(systemInfo.id, systemInfo.workdir, log)
     }
 
@@ -88,7 +91,7 @@ class SystemInfoController(
             }
             return filePath.toString()
         } catch (e: Exception) {
-            println("常见目录失败")
+            logger.info("常见目录失败")
             return "创建目录失败"
         }
     }
