@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.system_info.controller
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.common.CreateFileUtil
 import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
