@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  archguard_mysql:
+    image: "mysql:8"
+    container_name: archguard_mysql
+    platform: linux/amd64
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: prisma
+      MYSQL_DATABASE: archguard
+      TZ: Asia/Shanghai
+    networks:
+      - dependence_network
+    volumes:
+      - mysql:/var/lib/mysql:rw
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 5
+
+  archguard_influxdb:
+    image: "influxdb:1.8"
+    container_name: archguard_influxdb
+    ports:
+      - '8086:8086'
+    networks:
+      - dependence_network
+    healthcheck:
+      test: curl -f http://localhost:8086/ping || exit 1
+      timeout: 10s
+      retries: 5
+    volumes:
+      - influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+
+networks:
+  dependence_network:
+
+volumes:
+  mysql:
+  influxdb:

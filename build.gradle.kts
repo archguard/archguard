@@ -7,6 +7,7 @@ plugins {
     // flyway 7.0 require spring .boot > 2.4
     id("org.flywaydb.flyway").version("7.15.0")
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("com.avast.gradle.docker-compose") version "0.15.2"
 
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
@@ -160,4 +161,11 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     classpath = ktlint
     mainClass.set("com.pinterest.ktlint.Main")
     args = listOf("-F", "src/**/*.kt")
+}
+
+dockerCompose {
+    projectName = "ArchGuard"
+    isRequiredBy(project.tasks.bootRun)
+    useComposeFiles.set(listOf("$projectDir/config/infrastructure/docker-compose.local.yml"))
+    removeVolumes.set(false)
 }
