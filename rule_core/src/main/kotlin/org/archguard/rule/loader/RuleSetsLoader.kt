@@ -1,9 +1,9 @@
-package org.archguard.rule.ruleset
+package org.archguard.rule.loader
 
 import org.archguard.rule.core.RuleSetProvider
 import java.util.ServiceLoader
 
-// load ruleset
+// load rulesets by classes
 class RuleSetsLoader {
     // todo: thinking others way.
     fun load() {
