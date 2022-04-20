@@ -15,4 +15,15 @@ internal class ContainerVisitorTest {
         assertEquals(1, results.size)
         assertEquals("UrlSplitNamingRule", results[0].name)
     }
+
+    @Test
+    internal fun not_end_with_create() {
+        val resource = ContainerResource(sourceUrl = "/api/book/create")
+        val visitor = ContainerVisitor(arrayOf(resource))
+        val ruleSetProvider = ContainerRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        assertEquals(1, results.size)
+        assertEquals("EndWithoutCrudRule", results[0].name)
+    }
 }
