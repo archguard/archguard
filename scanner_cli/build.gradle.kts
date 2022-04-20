@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    implementation(project(":scanner_core"))
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")

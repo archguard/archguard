@@ -15,7 +15,7 @@ class MyApiAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnal
             .map { ContainerService(name = it.NodeName) }
 
         // persist the data
-        client.saveApi(apis, context.systemId, context.language)
+        client.saveApi(apis)
 
         return null
     }

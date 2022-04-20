@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test
 
 internal class KotlinAnalyserTest {
     private val mockClient = mockk<ArchGuardClient> {
-        every { saveDataStructure(any(), any(), any()) } just runs
+        every { saveDataStructure(any()) } just runs
     }
     private val mockContext = mockk<SourceCodeContext> {
-        every { systemId } returns "systemId"
-        every { language } returns "kotlin"
         every { client } returns mockClient
     }
 

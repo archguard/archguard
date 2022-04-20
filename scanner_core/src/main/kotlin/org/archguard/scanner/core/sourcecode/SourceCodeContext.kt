@@ -9,6 +9,5 @@ interface SourceCodeContext : Context {
     val language: String
     val features: List<String>
     val path: String
-    val systemId: String
     val withoutStorage: Boolean
 }

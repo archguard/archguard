@@ -19,7 +19,7 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it, context.systemId, context.language) }
+            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

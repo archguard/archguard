@@ -1,71 +1,56 @@
 package org.archguard.scanner.ctl
 
-import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.core.AnalyserSpec
+import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
-import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
-import org.archguard.scanner.core.sourcecode.LanguageSourceCodeAnalyser
-import org.archguard.scanner.core.sourcecode.SourceCodeContext
-import org.archguard.scanner.ctl.client.ArchGuardHttpClient
+import org.archguard.scanner.ctl.client.ArchGuardDBClient
 import org.archguard.scanner.ctl.impl.CliSourceCodeContext
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 
-// cli main entry
-fun main() {
-    val params = mapOf(
-        "type" to "source_code",
-        "language" to "java",
-        "features" to "db",
-        "path" to "kotlin/org/archguard/scanner/Runner.kt",
-        "systemId" to "1",
-        "withoutStorage" to "false",
-        "archguard_server_url" to "http://localhost:8080/api/v1/",
-        "specs" to listOf(
-            mapOf(
-                "name" to "customized_scanner",
-                "url" to "https://raw.githubusercontent.com/archguard/archguard-scanner/master/official_scanner_specs.json"
+class Runner {
+    fun execute(params: Map<String, Any>) {
+        val context = buildContext(params)
+        val customizedScannerSpecs =
+            buildCustomizedAnalyserSpecs(params.getValue("specs") as? List<Map<String, String>>)
+
+        AnalyserDispatcher(context, customizedScannerSpecs).dispatch()
+    }
+
+    private fun buildCustomizedAnalyserSpecs(params: List<Map<String, String>>?): List<AnalyserSpec> {
+        return params?.map {
+            AnalyserSpec(
+                identifier = it.getValue("identifier"),
+                host = it.getValue("host"),
+                version = it.getValue("version"),
+                jar = it.getValue("jar"),
+                className = it.getValue("className"),
             )
-        )
-    )
-
-    // create source code context when type is source_code
-    val context: Context = CliSourceCodeContext(
-        language = params.getValue("language").toString(),
-        features = params.getValue("features").toString().split(","),
-        path = params.getValue("path").toString(),
-        systemId = params.getValue("systemId").toString(),
-        withoutStorage = params.getValue("systemId").toString().toBoolean(),
-        client = ArchGuardHttpClient(params.getValue("archguard_server_url").toString()),
-    )
-    val customizedScannerSpecs = (params.getValue("specs") as List<Map<String, String>>).map {
-        AnalyserSpec(
-            identifier = "db",
-            host = "host",
-            version = "version",
-            jar = "jar",
-            className = "DBAnalyser",
-        )
+        } ?: emptyList()
     }
 
-    // execute
-    AnalyserDispatcher(context, customizedScannerSpecs).dispatch()
-}
+    private fun buildContext(params: Map<String, Any>): Context {
+        val type = (params["type"] as? String)?.let { AnalyserType.valueOf(it) }
+            ?: throw  IllegalArgumentException("analyser type is not defined")
 
-// move to scan_xxx
-
-class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    override fun analyse(): List<CodeDataStruct> {
-        println("im in java analyser")
-        println("language: ${context.language}")
-        println("features: ${context.features}")
-        return listOf(CodeDataStruct(NodeName = "java"))
+        return when (type) {
+            AnalyserType.SOURCE_CODE -> {
+                val language = params.getValue("language").toString()
+                val systemId = params.getValue("systemId").toString()
+                val path = params.getValue("path").toString()
+                // val serverUrl = params.getValue("archguard_server_url").toString()
+                CliSourceCodeContext(
+                    systemId = systemId,
+                    language = language,
+                    features = params.getValue("features").toString().split(","),
+                    client = buildClient(language, systemId, path),
+                    path = path,
+                    withoutStorage = params.getValue("systemId").toString().toBoolean(),
+                )
+            }
+            else -> TODO("Not implemented yet")
+        }
     }
-}
 
-class DBAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser {
-    override fun analyse(input: List<CodeDataStruct>): Any? {
-        println("im in db analyser")
-        println("input: ${input.map { it.NodeName }}")
-        return null
-    }
+    private fun buildClient(language: String, systemId: String, path: String) =
+        ArchGuardDBClient(language, systemId, path)
 }

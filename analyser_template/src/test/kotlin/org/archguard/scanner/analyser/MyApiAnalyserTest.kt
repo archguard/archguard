@@ -12,12 +12,10 @@ import org.junit.jupiter.api.Test
 
 internal class MyApiAnalyserTest {
     private val mockClient: ArchGuardClient = mockk {
-        every { saveApi(any(), any(), any()) } just runs
+        every { saveApi(any()) } just runs
     }
     private val mockContext: SourceCodeContext = mockk {
         every { client } returns mockClient
-        every { systemId } returns "systemId"
-        every { language } returns "kotlin"
     }
 
     @Test
@@ -31,7 +29,7 @@ internal class MyApiAnalyserTest {
         analyser.analyse(inputs)
 
         verify {
-            mockClient.saveApi(any(), any(), any())
+            mockClient.saveApi(any())
         }
     }
 }

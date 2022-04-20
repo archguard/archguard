@@ -5,12 +5,12 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.dto.ContainerService
 
 // 通过db insert回写分析数据
-class ArchGuardDBClient : ArchGuardClient {
-    override fun saveDataStructure(dataStructure: List<CodeDataStruct>, systemId: String, language: String) {
+class ArchGuardDBClient(language: String, systemId: String, path: String) : ArchGuardClient {
+    override fun saveDataStructure(dataStructure: List<CodeDataStruct>) {
         TODO("Not yet implemented")
     }
 
-    override fun saveApi(api: List<ContainerService>, systemId: String, language: String) {
+    override fun saveApi(api: List<ContainerService>) {
         TODO("Not yet implemented")
     }
 }
