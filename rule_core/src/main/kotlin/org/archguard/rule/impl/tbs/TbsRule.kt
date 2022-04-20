@@ -8,7 +8,7 @@ import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.core.SmellEmit
+import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.impl.common.Language
 
@@ -34,7 +34,7 @@ val ASSERTION_LIST = arrayOf(
 
 open class TbsRule(var language: Language = Language.JAVA) : Rule() {
     // todo: before visit check
-    override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {
+    override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: IssueEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)
         }
@@ -96,15 +96,15 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
         return methodCalls
     }
 
-    open fun visitField(field: CodeField, index: Int, callback: SmellEmit) {}
+    open fun visitField(field: CodeField, index: Int, callback: IssueEmit) {}
 
-    open fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {}
+    open fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: IssueEmit) {}
 
-    open fun beforeVisitFunction(function: CodeFunction, callback: SmellEmit) {}
+    open fun beforeVisitFunction(function: CodeFunction, callback: IssueEmit) {}
 
-    open fun visitFunction(function: CodeFunction, index: Int, callback: SmellEmit) {}
+    open fun visitFunction(function: CodeFunction, index: Int, callback: IssueEmit) {}
 
-    open fun afterVisitFunction(function: CodeFunction, callback: SmellEmit) {}
+    open fun afterVisitFunction(function: CodeFunction, callback: IssueEmit) {}
 
-    open fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {}
+    open fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: IssueEmit) {}
 }

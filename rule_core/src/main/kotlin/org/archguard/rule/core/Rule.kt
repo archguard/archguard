@@ -34,7 +34,7 @@ enum class RuleType {
     ORGANIZATION,
 }
 
-typealias SmellEmit = (rule: Rule, position: IssuePosition) -> Unit
+typealias IssueEmit = (rule: Rule, position: IssuePosition) -> Unit
 typealias RuleContext = Any
 
 abstract class Rule(
@@ -58,7 +58,7 @@ abstract class Rule(
     // custom for search
     var tags: List<String> = listOf()
 ) {
-    open fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {}
+    open fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: IssueEmit) {}
 }
 
 abstract class IfttRule : Rule() {
