@@ -89,7 +89,7 @@ dependencies {
     jacocoAggregation(project(":scanner_cli"))
 
     jacocoAggregation(project(":analyser_template"))
-    // jacocoAggregation(project(":analyser_sourcecode:lang_java"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))
 
     jacocoAggregation(project(":scan_dep"))
 

@@ -4,7 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
-import org.archguard.scanner.core.sourcecode.FrontierSourceCodeAnalyser
+import org.archguard.scanner.core.sourcecode.LanguageSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.ctl.client.ArchGuardHttpClient
 import org.archguard.scanner.ctl.impl.CliSourceCodeContext
@@ -53,7 +53,7 @@ fun main() {
 
 // move to scan_xxx
 
-class JavaAnalyser(override val context: SourceCodeContext) : FrontierSourceCodeAnalyser {
+class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
     override fun analyse(): List<CodeDataStruct> {
         println("im in java analyser")
         println("language: ${context.language}")
