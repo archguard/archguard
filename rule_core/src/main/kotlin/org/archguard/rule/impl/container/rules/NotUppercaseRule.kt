@@ -8,6 +8,7 @@ import org.archguard.rule.impl.container.ContainerRule
 import org.archguard.rule.impl.container.model.ContainerResource
 
 private val HAS_UPPERCASE_RULE = ".*[A-Z].*".toRegex()
+private val PARAMETER_IN_URL = "\\{[a-zA-Z]+\\}".toRegex()
 
 class NotUppercaseRule: ContainerRule() {
     init {
@@ -19,8 +20,10 @@ class NotUppercaseRule: ContainerRule() {
 
     override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
         val split = resource.sourceUrl.split("/")
-        if(HAS_UPPERCASE_RULE.matches(split.last())) {
-            callback(this, IssuePosition())
+        split.forEach {
+            if(HAS_UPPERCASE_RULE.matches(it) && !PARAMETER_IN_URL.matches(it)) {
+                callback(this, IssuePosition())
+            }
         }
     }
 }
