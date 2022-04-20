@@ -32,10 +32,7 @@ val ASSERTION_LIST = arrayOf(
     "verify"    // Mockito,
 )
 
-open class TbsRule(
-    var language: Language = Language.JAVA
-) : Rule() {
-
+open class TbsRule(var language: Language = Language.JAVA) : Rule() {
     // todo: before visit check
     override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: SmellEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
@@ -44,7 +41,7 @@ open class TbsRule(
 
         rootNode.Functions.forEachIndexed { index, it ->
             it.Annotations.forEachIndexed { annotationIndex, annotation ->
-                this.visitAnnotation(it, annotation, annotationIndex, callback)
+                this.visitFunctionAnnotation(it, annotation, annotationIndex, callback)
             }
 
             if (isTest(it)) {
@@ -52,7 +49,7 @@ open class TbsRule(
 
                 this.visitFunction(it, index, callback)
 
-                // in some cases, people would like to use assert in function
+                // in some cases, people would like to use assert in other function
                 val currentMethodCalls =
                     addExtractAssertMethodCall(it, rootNode, (context as TestSmellContext).methodMap)
 
@@ -101,10 +98,13 @@ open class TbsRule(
 
     open fun visitField(field: CodeField, index: Int, callback: SmellEmit) {}
 
+    open fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {}
+
     open fun beforeVisitFunction(function: CodeFunction, callback: SmellEmit) {}
+
     open fun visitFunction(function: CodeFunction, index: Int, callback: SmellEmit) {}
+
     open fun afterVisitFunction(function: CodeFunction, callback: SmellEmit) {}
 
     open fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {}
-    open fun visitAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {}
 }

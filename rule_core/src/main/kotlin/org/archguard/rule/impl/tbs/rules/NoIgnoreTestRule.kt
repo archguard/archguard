@@ -15,7 +15,7 @@ class NoIgnoreTestRule : TbsRule() {
         this.severity = Severity.WARN
     }
 
-    override fun visitAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {
+    override fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: SmellEmit) {
         if (annotation.Name == "Ignore" || annotation.Name == "Disabled") {
             callback(this, function.Position.smellPosition())
         }
