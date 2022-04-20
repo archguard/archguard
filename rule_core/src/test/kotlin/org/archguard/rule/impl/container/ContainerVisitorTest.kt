@@ -26,4 +26,15 @@ internal class ContainerVisitorTest {
         assertEquals(1, results.size)
         assertEquals("EndWithoutCrudRule", results[0].name)
     }
+
+    @Test
+    internal fun not_uppercase() {
+        val resource = ContainerResource(sourceUrl = "/api/Book")
+        val visitor = ContainerVisitor(arrayOf(resource))
+        val ruleSetProvider = ContainerRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        assertEquals(1, results.size)
+        assertEquals("NotUppercaseRule", results[0].name)
+    }
 }

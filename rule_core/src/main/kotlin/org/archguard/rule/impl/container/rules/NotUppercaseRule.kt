@@ -7,11 +7,11 @@ import org.archguard.rule.core.Severity
 import org.archguard.rule.impl.container.ContainerRule
 import org.archguard.rule.impl.container.model.ContainerResource
 
-private val CRUD = arrayOf("create", "update", "refresh", "delete", "get", "put", "set")
+private val HAS_UPPERCASE_RULE = ".*[A-Z].*".toRegex()
 
-class EndWithoutCrudRule: ContainerRule() {
+class NotUppercaseRule: ContainerRule() {
     init {
-        this.name = "EndWithoutCrudRule"
+        this.name = "NotUppercaseRule"
         this.key = this.javaClass.name
         this.description = "url should not end with crud (like /create)"
         this.severity = Severity.WARN
@@ -19,7 +19,7 @@ class EndWithoutCrudRule: ContainerRule() {
 
     override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
         val split = resource.sourceUrl.split("/")
-        if(CRUD.contains(split.last().lowercase())) {
+        if(HAS_UPPERCASE_RULE.matches(split.last())) {
             callback(this, IssuePosition())
         }
     }
