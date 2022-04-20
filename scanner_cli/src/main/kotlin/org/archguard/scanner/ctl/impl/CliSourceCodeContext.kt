@@ -1,6 +1,6 @@
 package org.archguard.scanner.ctl.impl
 
-import org.archguard.scanner.core.context.ArchGuardClient
+import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
 class CliSourceCodeContext(
