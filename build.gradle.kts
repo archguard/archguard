@@ -163,6 +163,14 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf("-F", "src/**/*.kt")
 }
 
+val installGitHooks = task<Copy>("installGitHooks") {
+    from(file("$projectDir/config/githooks/commit-msg"))
+    into(file("$projectDir/.git/hooks"))
+    fileMode = 493
+}
+
+tasks.check { dependsOn(installGitHooks) }
+
 dockerCompose {
     projectName = "ArchGuard"
     isRequiredBy(project.tasks.bootRun)
