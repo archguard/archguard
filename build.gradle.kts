@@ -172,7 +172,6 @@ val installGitHooks = task<Copy>("installGitHooks") {
 tasks.check { dependsOn(installGitHooks) }
 
 dockerCompose {
-    projectName = "ArchGuard"
     isRequiredBy(project.tasks.bootRun)
     useComposeFiles.set(listOf("$projectDir/config/infrastructure/docker-compose.local.yml"))
     removeVolumes.set(false)
