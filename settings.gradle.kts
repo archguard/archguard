@@ -18,7 +18,11 @@ include(":rule_core")
 include(":scanner_core")
 include(":scanner_cli")
 
-// official scanner implementation
+// official analyser implementations
+include(":analyser_template")
+// include(":analyser_sourcecode:lang_java")
+
+// legacy scanners, should replace by analyser
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_sourcecode")

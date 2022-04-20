@@ -86,7 +86,10 @@ dependencies {
     jacocoAggregation(project(":common_code_repository"))
 
     jacocoAggregation(project(":rule_core"))
-    jacocoAggregation(project(":scanner_core"))
+    jacocoAggregation(project(":scanner_cli"))
+
+    jacocoAggregation(project(":analyser_template"))
+    // jacocoAggregation(project(":analyser_sourcecode:lang_java"))
 
     jacocoAggregation(project(":scan_dep"))
 
