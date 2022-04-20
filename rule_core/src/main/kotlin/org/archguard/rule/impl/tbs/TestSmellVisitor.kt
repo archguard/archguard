@@ -4,10 +4,10 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.core.RuleResult
+import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleVisitor
-import org.archguard.rule.core.SmellPosition
+import org.archguard.rule.core.IssuePosition
 
 class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext() {}
 
@@ -29,12 +29,12 @@ class TestSmellVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor
         return callMethodMap
     }
 
-    fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct): Array<RuleResult> {
-        var results: Array<RuleResult> = arrayOf()
+    fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct): Array<Issue> {
+        var results: Array<Issue> = arrayOf()
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach {
-                it.visit(rootNode, this.context, fun(rule: Rule, position: SmellPosition) {
-                    results += RuleResult(
+                it.visit(rootNode, this.context, fun(rule: Rule, position: IssuePosition) {
+                    results += Issue(
                         position,
                         ruleId = rule.key,
                         name = rule.name,

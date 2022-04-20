@@ -9,10 +9,10 @@ import chapi.domain.core.CodePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.SmellEmit
-import org.archguard.rule.core.SmellPosition
+import org.archguard.rule.core.IssuePosition
 
-fun CodePosition.smellPosition(): SmellPosition {
-    return SmellPosition(
+fun CodePosition.smellPosition(): IssuePosition {
+    return IssuePosition(
         startLine = this.StartLine,
         startColumn = this.StartLinePosition,
         endLine = this.StopLine,

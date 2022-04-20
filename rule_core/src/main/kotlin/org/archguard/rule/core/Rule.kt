@@ -34,7 +34,7 @@ enum class RuleType {
     ORGANIZATION,
 }
 
-typealias SmellEmit = (rule: Rule, position: SmellPosition) -> Unit
+typealias SmellEmit = (rule: Rule, position: IssuePosition) -> Unit
 typealias RuleContext = Any
 
 abstract class Rule(
