@@ -8,7 +8,7 @@ import org.archguard.rule.impl.container.ContainerRule
 import org.archguard.rule.impl.container.model.ContainerResource
 
 private val HAS_UPPERCASE_RULE = ".*[A-Z].*".toRegex()
-private val PARAMETER_IN_URL = "\\{[a-zA-Z]+\\}".toRegex()
+private val PARAMETER_IN_URL = "\\{[a-zA-Z?:]+\\}".toRegex()
 
 class NotUppercaseRule: ContainerRule() {
     init {
