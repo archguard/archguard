@@ -8,10 +8,8 @@ import java.io.File
 class MyLanguageAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
     override fun analyse(): List<CodeDataStruct> {
         return File(context.path).walk()
-            .filter { it.isFile && it.name.endsWith("Test.class") }
+            .filter { it.isFile }
             .map {
-                println(it.name)
-                println(it.absolutePath)
                 CodeDataStruct(NodeName = it.name, FilePath = it.absolutePath)
             }
             .toList()

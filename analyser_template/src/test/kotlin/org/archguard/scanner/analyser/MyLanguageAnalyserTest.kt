@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 
 internal class MyLanguageAnalyserTest {
     private val mockContext: SourceCodeContext = mockk {
-        every { path } returns MyLanguageAnalyser::class.java.getResource("/").path
+        every { path } returns this.javaClass.classLoader.getResource("kotlin").path
     }
 
     @Test
@@ -16,7 +16,6 @@ internal class MyLanguageAnalyserTest {
         val analyser = MyLanguageAnalyser(mockContext)
         val result = analyser.analyse()
 
-        assertThat(result[0].NodeName).isEqualTo("MyLanguageAnalyserTest.class")
-        assertThat(result[1].NodeName).isEqualTo("MyApiAnalyserTest.class")
+        assertThat(result[0].NodeName).isEqualTo("Hello.kt")
     }
 }
