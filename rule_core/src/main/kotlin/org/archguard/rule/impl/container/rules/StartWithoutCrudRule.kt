@@ -7,11 +7,9 @@ import org.archguard.rule.core.Severity
 import org.archguard.rule.impl.container.ContainerRule
 import org.archguard.rule.impl.container.model.ContainerResource
 
-val CRUD = arrayOf("create", "update", "refresh", "delete", "get", "put", "set")
-
-class EndWithoutCrudRule: ContainerRule() {
+class StartWithoutCrudRule : ContainerRule() {
     init {
-        this.name = "EndWithoutCrudRule"
+        this.name = "StartWithoutCrudRule"
         this.key = this.javaClass.name
         this.description = "url should not end with crud (like /create)"
         this.severity = Severity.WARN
@@ -19,8 +17,12 @@ class EndWithoutCrudRule: ContainerRule() {
 
     override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
         val split = resource.sourceUrl.split("/")
-        if(CRUD.contains(split.last().lowercase())) {
-            callback(this, IssuePosition())
+        split.forEach { node ->
+            CRUD.forEach {
+                if (node != it && node.lowercase().startsWith(it)) {
+                    callback(this, IssuePosition())
+                }
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.impl.container.rules.EndWithoutCrudRule
 import org.archguard.rule.impl.container.rules.NotUppercaseRule
+import org.archguard.rule.impl.container.rules.StartWithoutCrudRule
 import org.archguard.rule.impl.container.rules.UrlSplitNamingRule
 
 class ContainerRuleSetProvider: RuleSetProvider {
@@ -15,6 +16,7 @@ class ContainerRuleSetProvider: RuleSetProvider {
             UrlSplitNamingRule(),
             EndWithoutCrudRule(),
             NotUppercaseRule(),
+            StartWithoutCrudRule(),
         )
     }
 }
