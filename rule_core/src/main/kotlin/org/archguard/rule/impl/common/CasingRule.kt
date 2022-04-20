@@ -1,4 +1,4 @@
-package org.archguard.rule.impl
+package org.archguard.rule.impl.common
 
 import org.archguard.rule.core.Rule
 

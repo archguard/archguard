@@ -10,6 +10,7 @@ import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.SmellEmit
 import org.archguard.rule.core.IssuePosition
+import org.archguard.rule.impl.common.Language
 
 fun CodePosition.smellPosition(): IssuePosition {
     return IssuePosition(
@@ -32,7 +33,7 @@ val ASSERTION_LIST = arrayOf(
 )
 
 open class TbsRule(
-    var language: TbsLanguage = TbsLanguage.JAVA
+    var language: Language = Language.JAVA
 ) : Rule() {
 
     // todo: before visit check
@@ -70,7 +71,7 @@ open class TbsRule(
     // todo: condition by languages
     private fun isTest(it: CodeFunction): Boolean {
         return when (language) {
-            TbsLanguage.JAVA, TbsLanguage.KOTLIN -> {
+            Language.JAVA, Language.KOTLIN -> {
                 val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
                 testsFilter.isNotEmpty()
             }

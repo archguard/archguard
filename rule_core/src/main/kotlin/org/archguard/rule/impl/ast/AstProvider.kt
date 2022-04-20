@@ -3,7 +3,7 @@ package org.archguard.rule.impl.ast
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
-import org.archguard.rule.impl.CasingRule
+import org.archguard.rule.impl.common.CasingRule
 
 /*
  * Low level provider

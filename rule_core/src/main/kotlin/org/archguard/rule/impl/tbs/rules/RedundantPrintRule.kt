@@ -4,7 +4,7 @@ import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.SmellEmit
-import org.archguard.rule.impl.tbs.TbsLanguage
+import org.archguard.rule.impl.common.Language
 import org.archguard.rule.impl.tbs.TbsRule
 import org.archguard.rule.impl.tbs.smellPosition
 
@@ -18,7 +18,7 @@ class RedundantPrintRule : TbsRule() {
 
     override fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: SmellEmit) {
         when(this.language) {
-            TbsLanguage.JAVA -> {
+            Language.JAVA -> {
                 if (codeCall.NodeName == "System.out" && (codeCall.FunctionName == "println" || codeCall.FunctionName == "printf" || codeCall.FunctionName == "print")) {
                     callback(this, codeCall.Position.smellPosition())
                 }

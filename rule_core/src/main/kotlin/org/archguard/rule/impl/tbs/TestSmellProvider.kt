@@ -3,7 +3,7 @@ package org.archguard.rule.impl.tbs
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
-import org.archguard.rule.impl.CasingRule
+import org.archguard.rule.impl.common.CasingRule
 import org.archguard.rule.impl.tbs.rules.DuplicateAssertRule
 import org.archguard.rule.impl.tbs.rules.EmptyTestRule
 import org.archguard.rule.impl.tbs.rules.NoIgnoreTestRule

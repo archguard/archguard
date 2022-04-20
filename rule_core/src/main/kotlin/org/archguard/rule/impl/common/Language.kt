@@ -1,6 +1,6 @@
-package org.archguard.rule.impl.tbs
+package org.archguard.rule.impl.common
 
-enum class TbsLanguage {
+enum class Language {
     JAVA,
     KOTLIN,
     CSHARP,
