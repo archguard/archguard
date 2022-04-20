@@ -88,6 +88,8 @@ dependencies {
     jacocoAggregation(project(":rule_core"))
     jacocoAggregation(project(":scanner_core"))
 
+    jacocoAggregation(project(":scan_dep"))
+
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sourcecode"))

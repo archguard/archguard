@@ -1,4 +1,4 @@
-package org.archguard.collector.ci
+package org.archguard.scanner.dep
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default

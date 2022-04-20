@@ -26,5 +26,7 @@ include(":scan_mysql")
 include(":scan_test_badsmell")
 include(":scan_bytecode")
 
+include(":scan_dep")
+
 // adapter for ci
 include(":collector_ci")
