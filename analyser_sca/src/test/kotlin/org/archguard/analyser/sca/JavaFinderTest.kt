@@ -5,13 +5,14 @@ import java.io.File
 
 internal class JavaFinderTest {
     @Test
-    internal fun name() {
-
+    internal fun count_self_module_deps() {
         val declTree = JavaFinder().getDeclTree(File(".").absolutePath)
-
         assert(declTree[0].dependencies.size >= 2)
+    }
 
+    @Test
+    internal fun root_tree() {
         val declTree2 = JavaFinder().buildDeclTree(File("..").canonicalPath)
-        println(declTree2)
+        assert(declTree2!!.childrens.size > 5)
     }
 }

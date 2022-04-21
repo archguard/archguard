@@ -53,10 +53,11 @@ class JavaFinder {
             val fileName = it.value.filename
             val parent = parentPath(it.key) + fileName
 
-            try {
+            if (nodeMap[parent] != null) {
                 nodeMap[parent]!!.childrens += it.value
-            } catch (e: NullPointerException) {
-//                println("Parent not found")
+            } else {
+                // if not parent, set to root
+                ret!!.childrens += it.value
             }
         }
 
