@@ -40,7 +40,7 @@ internal class MavenParserTest {
         val dependencies = lookupSource[0].dependencies
         assertEquals(1, dependencies.size)
         assertEquals("junit:junit", dependencies[0].name)
-        assertEquals("junit", dependencies[0].group[0])
+        assertEquals("junit", dependencies[0].group)
         assertEquals("junit", dependencies[0].artifact)
         assertEquals("4.12", dependencies[0].version)
     }

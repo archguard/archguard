@@ -27,9 +27,27 @@ dependencies {
         assertEquals("joda-time:joda-time", dependencies[0].name)
         assertEquals("2.2", dependencies[0].version)
 
-        assertEquals("junit", dependencies[1].group[0])
+        assertEquals("junit", dependencies[1].group)
         assertEquals("junit", dependencies[1].artifact)
         assertEquals("4.12", dependencies[1].version)
         assertEquals(DEP_SCOPE.TEST, dependencies[1].scope)
+    }
+
+    @Test
+    internal fun keywordArg() {
+        val declFile = DeclFile("archguard", "pom.xml", """
+dependencies {
+    runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
+}
+        """.trimIndent())
+        val depDecls = GradleParser().lookupSource(declFile)
+        assertEquals(1, depDecls.size)
+
+        val dependencies = depDecls[0].dependencies
+        assertEquals(1, dependencies.size)
+        assertEquals(DEP_SCOPE.RUNTIME, dependencies[0].scope)
+        assertEquals("org.springframework", dependencies[0].group)
+        assertEquals("spring-core", dependencies[0].artifact)
+        assertEquals("2.5", dependencies[0].version)
     }
 }

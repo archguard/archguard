@@ -49,7 +49,7 @@ class MavenParser : Finder() {
 
             DepDependency(
                 name = "$groupId:$artifact",
-                group = listOf(groupId),
+                group = groupId,
                 artifact = artifact,
                 version = xPath.evaluate("version", item) ?: "",
                 scope = DEP_SCOPE.from(scope)

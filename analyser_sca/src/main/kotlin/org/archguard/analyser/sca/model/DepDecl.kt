@@ -46,7 +46,7 @@ enum class DEP_SCOPE {
 class DepDependency(
     // full name groupId:artifactId
     val name: String,
-    val group: List<String>,
+    val group: String,
     val artifact: String,
     val version: String,
     // url: like github, maven

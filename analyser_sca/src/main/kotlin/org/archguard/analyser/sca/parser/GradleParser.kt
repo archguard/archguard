@@ -6,13 +6,17 @@ import org.archguard.analyser.sca.model.DeclFile
 import org.archguard.analyser.sca.model.DepDecl
 import org.archguard.analyser.sca.model.DepDependency
 
-private val GRADLE_IMPL_REGEX =
+private val GRADLE_SHORT_IMPL_REGEX =
     "([a-zA-Z]+)(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
+
+private val GRADLE_KEYWORD_REGEX =
+    "\\s+([a-zA-Z]+)(?:^|\\s|,|\\()((([a-zA-Z]+)(\\s*=|:)\\s*['\"]([^'\"]+)['\"][\\s,]*)+)\\)".toRegex()
 
 class GradleParser : Finder() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val deps = mutableListOf<DepDependency>()
         deps += parseShortform(file.content)
+        deps += parseKeywordArg(file.content)
 
         return listOf(
             DepDecl(
@@ -26,7 +30,7 @@ class GradleParser : Finder() {
 
     // sample: implementation "joda-time:joda-time:2.2"
     private fun parseShortform(content: String): List<DepDependency> {
-        return GRADLE_IMPL_REGEX.findAll(content).filter {
+        return GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
             it.groups.isNotEmpty() && it.groups.size == 6
         }.map {
             val groups = it.groups
@@ -34,7 +38,7 @@ class GradleParser : Finder() {
             DepDependency(
                 name = "${groups[3]!!.value}:${groups[4]!!.value}",
                 artifact = groups[3]!!.value,
-                group = listOf(groups[4]!!.value),
+                group = groups[4]!!.value,
                 version = groups[5]!!.value,
                 scope = scope
             )
@@ -54,7 +58,36 @@ class GradleParser : Finder() {
     }
 
     // sample: runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
-    private fun parseKeywordArg() {}
+    private fun parseKeywordArg(content: String): List<DepDependency> {
+        return content.lines().mapNotNull { line ->
+            val matchResult = GRADLE_KEYWORD_REGEX.find(line)
+            if (matchResult != null && matchResult.groups.size > 6) {
+                val scope = scopeForGradle(matchResult.groups[1]!!.value)
+                val group = valueFromRegex("group", line)
+                val artifact = valueFromRegex("name", line)
+                val version = valueFromRegex("version", line)
+
+                DepDependency(
+                    name = "$group:$artifact",
+                    group = group,
+                    artifact = artifact,
+                    version = version,
+                    scope = scope
+                )
+            } else {
+                null
+            }
+        }
+    }
+
+    private fun valueFromRegex(key: String, text: String): String {
+        val keyRegex = "($key(\\s*=|:)\\s*['\"]([^'\"]+)['\"])".toRegex()
+        val matchResult = keyRegex.find(text)
+        if (matchResult != null) {
+            return matchResult.groups[3]!!.value
+        }
+        return ""
+    }
 
     // sample: dependencySet(group:'org.slf4j', version: '1.7.7') { entry 'slf4j-api' }
     private fun parseDependencySet() {}
