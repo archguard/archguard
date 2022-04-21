@@ -17,6 +17,9 @@ private val GRADLE_KEYWORD_REGEX =
 private val DEPENDENCY_SET_START_REGEX =
     "(?:^|\\s)dependencySet\\(([^\\)]+)\\)\\s*\\{".toRegex()
 
+private val ENTRY_REGEX =
+    "\\s+entry\\s+['\"]([^\\s,@'\":\\/\\\\]+)['\"]".toRegex()
+
 class GradleParser : Finder() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val deps = mutableListOf<DepDependency>()
@@ -97,23 +100,44 @@ class GradleParser : Finder() {
 
     // sample: dependencySet(group:'org.slf4j', version: '1.7.7') { entry 'slf4j-api' }
     private fun parseDependencySet(content: String): List<DepDependency> {
-        return content.lines().mapNotNull {
-            val matchResult = DEPENDENCY_SET_START_REGEX.find(it)
-            if(matchResult != null && matchResult.groups.size == 2) {
-                val entry = matchResult.groups[1]!!.value
+        val deps = mutableListOf<DepDependency>()
+        val sequence = content.lineSequence().iterator()
+        while (sequence.hasNext()) {
+            val text = sequence.next()
+            val depSetResult = DEPENDENCY_SET_START_REGEX.find(text)
+            if (depSetResult != null && depSetResult.groups.size == 2) {
+                val entries: MutableList<String> = mutableListOf()
+                val entry = depSetResult.groups[1]!!.value
                 val group = valueFromRegex("group", entry)
                 val version = valueFromRegex("version", entry)
 
-                DepDependency (
-                    name = "",
-                    artifact = "",
-                    group = group,
-                    version = version,
-                )
-            } else {
-                null
+                while (sequence.hasNext()) {
+                    val next = sequence.next()
+                    if (next.contains("}")) {
+                        break
+                    } else {
+                        entries += next
+                    }
+                }
+
+                entries.map {
+                    val find = ENTRY_REGEX.find(it)
+                    if (find != null && find.groups.size == 2) {
+                        val artifact = find.groups[1]!!.value
+
+                        deps += DepDependency(
+                            name = "$group:$artifact",
+                            artifact = artifact,
+                            group = group,
+                            version = version,
+                        )
+
+                    }
+                }
             }
-        }.toList()
+        }
+
+        return deps
     }
 
     // sample: plugins { }

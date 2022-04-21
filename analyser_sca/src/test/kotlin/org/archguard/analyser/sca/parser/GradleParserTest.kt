@@ -63,5 +63,7 @@ dependencySet(group:'org.slf4j', version: '1.7.7') {
 
         val dependencies = depDecls[0].dependencies
         assertEquals(1, dependencies.size)
+        assertEquals("slf4j-api", dependencies[0].artifact)
+        assertEquals("1.7.7", dependencies[0].version)
     }
 }
