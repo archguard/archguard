@@ -19,18 +19,20 @@ class MavenFinder : Finder() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val builder: DocumentBuilder = builderFactory.newDocumentBuilder()
-
         val xmlDocument: Document = builder.parse(InputSource(StringReader(file.content)))
-
         val xPath: XPath = XPathFactory.newInstance().newXPath()
+
+        val groupId = xPath.compile("/project/groupId").evaluate(xmlDocument, XPathConstants.STRING)
+        val artifactId = xPath.compile("/project/artifactId").evaluate(xmlDocument, XPathConstants.STRING)
+        val version = xPath.compile("/project/version").evaluate(xmlDocument, XPathConstants.STRING)
+
 
         return listOf(
             DepDecl(
-                name = "",
-                version = "",
+                name = "$groupId:$artifactId",
+                version = "$version",
                 packageManager = "maven",
                 dependencies = lookupDependencies(xPath, xmlDocument)
-
             )
         )
     }
