@@ -1,6 +1,6 @@
 package org.archguard.analyser.sca.parser
 
-import org.archguard.analyser.sca.common.Finder
+import org.archguard.analyser.sca.common.Parser
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFile
 import org.archguard.analyser.sca.model.DepDecl
@@ -16,7 +16,7 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
-class MavenParser : Finder() {
+class MavenParser : Parser() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val builder: DocumentBuilder = builderFactory.newDocumentBuilder()

@@ -1,6 +1,6 @@
 package org.archguard.analyser.sca.parser
 
-import org.archguard.analyser.sca.common.Finder
+import org.archguard.analyser.sca.common.Parser
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFile
 import org.archguard.analyser.sca.model.DepDecl
@@ -20,7 +20,7 @@ private val DEPENDENCY_SET_START_REGEX =
 private val ENTRY_REGEX =
     "\\s+entry\\s+['\"]([^\\s,@'\":\\/\\\\]+)['\"]".toRegex()
 
-class GradleParser : Finder() {
+class GradleParser : Parser() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val deps = mutableListOf<DepDependency>()
         deps += parseShortform(file.content)
@@ -54,6 +54,7 @@ class GradleParser : Finder() {
         }.toList()
     }
 
+    // sample: `testRuntimeOnly`
     private fun scopeForGradle(text: String): DEP_SCOPE {
         if (text.startsWith("test")) {
             return DEP_SCOPE.TEST
@@ -89,6 +90,8 @@ class GradleParser : Finder() {
         }
     }
 
+    // case 1: `name = 'joda-time'`
+    // case 2: `name: 'joda-time'`
     private fun valueFromRegex(key: String, text: String): String {
         val keyRegex = "($key(\\s*=|:)\\s*['\"]([^'\"]+)['\"])".toRegex()
         val matchResult = keyRegex.find(text)

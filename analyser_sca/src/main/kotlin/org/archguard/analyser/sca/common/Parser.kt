@@ -3,7 +3,7 @@ package org.archguard.analyser.sca.common
 import org.archguard.analyser.sca.model.DeclFile
 import org.archguard.analyser.sca.model.DepDecl
 
-abstract class Finder {
+abstract class Parser {
     open fun lookupSource(file: DeclFile): List<DepDecl> {
         return listOf()
     }
