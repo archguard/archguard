@@ -3,6 +3,7 @@ package org.archguard.scanner.sourcecode
 import org.jdbi.v3.core.ConnectionException
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.io.path.absolutePathString
@@ -12,6 +13,7 @@ import kotlin.test.assertEquals
 internal class RunnerTest {
 
     @Test
+    @Disabled("failure on ci")
     internal fun run_for_function() {
         System.setProperty("dburl", "jdbc:mysql://localhost:3306/")
 
