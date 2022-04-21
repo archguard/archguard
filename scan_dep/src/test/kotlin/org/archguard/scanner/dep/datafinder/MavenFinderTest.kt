@@ -1,6 +1,8 @@
 package org.archguard.scanner.dep.datafinder
 
+import org.archguard.scanner.dep.model.DEP_SCOPE
 import org.archguard.scanner.dep.model.DeclFile
+import org.archguard.scanner.dep.model.DepSource
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -49,8 +51,16 @@ internal class MavenFinderTest {
         val declFile = DeclFile("archguard", "pom.xml", sampleXml)
         val lookupSource = MavenFinder().lookupSource(declFile)
 
-        val dependencies = lookupSource[0].dependencies
         assertEquals("com.mycompany.app:my-app", lookupSource[0].name)
         assertEquals("1.0-SNAPSHOT", lookupSource[0].version)
+    }
+
+    @Test
+    internal fun should_parse_scope() {
+        val declFile = DeclFile("archguard", "pom.xml", sampleXml)
+        val lookupSource = MavenFinder().lookupSource(declFile)
+
+        val dependencies = lookupSource[0].dependencies
+        assertEquals(DEP_SCOPE.TEST, dependencies[0].scope)
     }
 }

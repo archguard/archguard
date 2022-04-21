@@ -1,6 +1,7 @@
 package org.archguard.scanner.dep.datafinder
 
 import org.archguard.scanner.dep.common.Finder
+import org.archguard.scanner.dep.model.DEP_SCOPE
 import org.archguard.scanner.dep.model.DeclFile
 import org.archguard.scanner.dep.model.DepDecl
 import org.archguard.scanner.dep.model.DepDependency
@@ -26,7 +27,6 @@ class MavenFinder : Finder() {
         val artifactId = xPath.compile("/project/artifactId").evaluate(xmlDocument, XPathConstants.STRING)
         val version = xPath.compile("/project/version").evaluate(xmlDocument, XPathConstants.STRING)
 
-
         return listOf(
             DepDecl(
                 name = "$groupId:$artifactId",
@@ -45,12 +45,14 @@ class MavenFinder : Finder() {
             val item: Element = nodeList.item(i) as Element
             val groupId = xPath.evaluate("groupId", item) ?: ""
             val artifact = xPath.evaluate("artifactId", item) ?: ""
+            val scope = xPath.evaluate("scope", item) ?: ""
 
             DepDependency(
                 name = "$groupId:$artifact",
                 group = listOf(groupId),
                 artifact = artifact,
-                version = xPath.evaluate("version", item) ?: ""
+                version = xPath.evaluate("version", item) ?: "",
+                scope = DEP_SCOPE.from(scope)
             )
         }.toList()
     }

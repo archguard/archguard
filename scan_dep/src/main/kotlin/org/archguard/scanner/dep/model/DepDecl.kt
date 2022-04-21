@@ -25,7 +25,20 @@ class DepDecl(
 
 enum class DEP_SCOPE {
     NORMAL,
-    TEST
+    TEST;
+
+    companion object {
+        fun from(str: String): DEP_SCOPE {
+            when(str) {
+                "test" -> {
+                    return DEP_SCOPE.TEST
+                }
+                else -> {
+                    return DEP_SCOPE.NORMAL
+                }
+            }
+        }
+    }
 }
 
 class DepDependency(
