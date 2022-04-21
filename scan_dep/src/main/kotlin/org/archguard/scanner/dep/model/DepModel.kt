@@ -1,25 +1,34 @@
 package org.archguard.scanner.dep.model
 
+/*
+ * file for save content ?
+ */
 class DepFile(
     val name: String,
     val content: String,
 )
 
 class DepModel(
+    // self name
     val name: String,
+    // self version for some cases
     val version: String,
+    // like `maven`, `gradle`
     val packageManager: String,
-    // todo: change to version
-    val requirements: List<DepRequirement>
+    // requirements in maven
+    val dependencies: List<DepDependency>
 ) {
 }
 
-class DepRequirement(
+class DepDependency(
     // version
-    val requirement: String,
+    val version: String,
     val file: String,
     val group: List<String>,
+    // url: like github, maven
+    // file: like NPM in local
     val source: DepSource,
+    // additional information
     val metadata: DepMetadata
 ) {
 
