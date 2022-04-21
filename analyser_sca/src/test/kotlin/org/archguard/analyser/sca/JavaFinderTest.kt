@@ -6,7 +6,7 @@ import java.io.File
 internal class JavaFinderTest {
     @Test
     internal fun count_self_module_deps() {
-        val declTree = JavaFinder().getDeclTree(File(".").absolutePath)
+        val declTree = JavaFinder().byGradleFiles(File(".").absolutePath)
         assert(declTree[0].dependencies.size >= 2)
     }
 

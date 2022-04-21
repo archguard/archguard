@@ -6,10 +6,12 @@ import org.archguard.analyser.sca.parser.GradleParser
 import java.io.File
 
 class JavaFinder {
-    fun getDeclTree(path: String): List<DepDecl> {
+    private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
+
+    fun byGradleFiles(path: String): List<DepDecl> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
-                it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
+                isGradleFile(it)
             }
             .flatMap {
                 val file = DeclFileTree(filename = it.name, path = it.absolutePath, content = it.readText())
@@ -20,7 +22,7 @@ class JavaFinder {
     fun buildDeclTree(path: String): DeclFileTree? {
         val dirPaths = File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
-                it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
+                isGradleFile(it)
             }.map {
                 it.absolutePath
             }
@@ -29,8 +31,7 @@ class JavaFinder {
             }
             .toMutableList()
 
-        val nodesFromPathList = nodesFromPathList(dirPaths)
-        return nodesFromPathList
+        return nodesFromPathList(dirPaths)
     }
 
     private fun nodesFromPathList(dirPaths: MutableList<String>): DeclFileTree? {
