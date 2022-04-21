@@ -1,7 +1,7 @@
-package org.archguard.scanner.dep.parser
+package org.archguard.analyser.sca.parser
 
-import org.archguard.scanner.dep.model.DEP_SCOPE
-import org.archguard.scanner.dep.model.DeclFile
+import org.archguard.analyser.sca.model.DEP_SCOPE
+import org.archguard.analyser.sca.model.DeclFile
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

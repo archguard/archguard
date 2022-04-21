@@ -1,10 +1,10 @@
-package org.archguard.scanner.dep.parser
+package org.archguard.analyser.sca.parser
 
-import org.archguard.scanner.dep.common.Finder
-import org.archguard.scanner.dep.model.DEP_SCOPE
-import org.archguard.scanner.dep.model.DeclFile
-import org.archguard.scanner.dep.model.DepDecl
-import org.archguard.scanner.dep.model.DepDependency
+import org.archguard.analyser.sca.common.Finder
+import org.archguard.analyser.sca.model.DEP_SCOPE
+import org.archguard.analyser.sca.model.DeclFile
+import org.archguard.analyser.sca.model.DepDecl
+import org.archguard.analyser.sca.model.DepDependency
 
 private val GRADLE_IMPL_REGEX =
     "([a-zA-Z]+)(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()

@@ -1,4 +1,4 @@
-package org.archguard.scanner.dep.model
+package org.archguard.analyser.sca.model
 
 /*
  * file for save content ?
@@ -33,10 +33,10 @@ enum class DEP_SCOPE {
         fun from(str: String): DEP_SCOPE {
             when(str) {
                 "test" -> {
-                    return DEP_SCOPE.TEST
+                    return TEST
                 }
                 else -> {
-                    return DEP_SCOPE.NORMAL
+                    return NORMAL
                 }
             }
         }

@@ -10,13 +10,13 @@ dependencies {
 }
 
 application {
-    mainClass.set("org.archguard.scanner.dep.RunnerKt")
+    mainClass.set("org.archguard.analyser.sca.RunnerKt")
 }
 
-tasks{
+tasks {
     shadowJar {
         manifest {
-            attributes(Pair("Main-Class", "org.archguard.scanner.dep.RunnerKt"))
+            attributes(Pair("Main-Class", "org.archguard.analyser.sca.RunnerKt"))
         }
     }
 }

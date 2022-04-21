@@ -1,4 +1,4 @@
-package org.archguard.scanner.dep
+package org.archguard.analyser.sca
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
