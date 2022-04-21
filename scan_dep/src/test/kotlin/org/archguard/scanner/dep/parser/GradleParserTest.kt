@@ -1,5 +1,6 @@
 package org.archguard.scanner.dep.parser
 
+import org.archguard.scanner.dep.model.DEP_SCOPE
 import org.archguard.scanner.dep.model.DeclFile
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -29,5 +30,6 @@ dependencies {
         assertEquals("junit", dependencies[1].group[0])
         assertEquals("junit", dependencies[1].artifact)
         assertEquals("4.12", dependencies[1].version)
+        assertEquals(DEP_SCOPE.TEST, dependencies[1].scope)
     }
 }
