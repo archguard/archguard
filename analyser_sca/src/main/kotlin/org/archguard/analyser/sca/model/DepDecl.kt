@@ -4,10 +4,10 @@ package org.archguard.analyser.sca.model
  * file for save content ?
  */
 class DeclFileTree(
-    val name: String,
+    val filename: String,
     val path: String,
     val content: String,
-    val childrens: List<DeclFileTree> = listOf()
+    var childrens: List<DeclFileTree> = listOf()
 )
 
 class DepDecl(

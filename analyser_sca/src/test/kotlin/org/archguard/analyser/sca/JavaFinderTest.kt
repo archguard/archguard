@@ -6,9 +6,12 @@ import java.io.File
 internal class JavaFinderTest {
     @Test
     internal fun name() {
-        val parent = File(".")
-        val declTree = JavaFinder().getDeclTree(parent.absolutePath)
+
+        val declTree = JavaFinder().getDeclTree(File(".").absolutePath)
 
         assert(declTree[0].dependencies.size >= 2)
+
+        val declTree2 = JavaFinder().buildDeclTree(File("..").canonicalPath)
+        println(declTree2)
     }
 }
