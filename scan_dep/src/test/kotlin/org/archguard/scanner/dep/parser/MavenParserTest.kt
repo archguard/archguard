@@ -1,13 +1,12 @@
-package org.archguard.scanner.dep.datafinder
+package org.archguard.scanner.dep.parser
 
 import org.archguard.scanner.dep.model.DEP_SCOPE
 import org.archguard.scanner.dep.model.DeclFile
-import org.archguard.scanner.dep.model.DepSource
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 
-internal class MavenFinderTest {
+internal class MavenParserTest {
     private val sampleXml = """
         <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -36,7 +35,7 @@ internal class MavenFinderTest {
     @Test
     internal fun should_parse_xml_deps() {
         val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenFinder().lookupSource(declFile)
+        val lookupSource = MavenParser().lookupSource(declFile)
 
         val dependencies = lookupSource[0].dependencies
         assertEquals(1, dependencies.size)
@@ -49,7 +48,7 @@ internal class MavenFinderTest {
     @Test
     internal fun should_parse_self_version() {
         val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenFinder().lookupSource(declFile)
+        val lookupSource = MavenParser().lookupSource(declFile)
 
         assertEquals("com.mycompany.app:my-app", lookupSource[0].name)
         assertEquals("1.0-SNAPSHOT", lookupSource[0].version)
@@ -58,7 +57,7 @@ internal class MavenFinderTest {
     @Test
     internal fun should_parse_scope() {
         val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenFinder().lookupSource(declFile)
+        val lookupSource = MavenParser().lookupSource(declFile)
 
         val dependencies = lookupSource[0].dependencies
         assertEquals(DEP_SCOPE.TEST, dependencies[0].scope)

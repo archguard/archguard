@@ -1,4 +1,4 @@
-package org.archguard.scanner.dep.datafinder
+package org.archguard.scanner.dep.parser
 
 import org.archguard.scanner.dep.common.Finder
 import org.archguard.scanner.dep.model.DEP_SCOPE
@@ -16,7 +16,7 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
-class MavenFinder : Finder() {
+class MavenParser : Finder() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val builder: DocumentBuilder = builderFactory.newDocumentBuilder()
