@@ -7,16 +7,22 @@ import org.archguard.analyser.sca.model.DepDecl
 import org.archguard.analyser.sca.model.DepDependency
 
 private val GRADLE_SHORT_IMPL_REGEX =
+    // implementation "joda-time:joda-time:2.2"
     "([a-zA-Z]+)(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
 
 private val GRADLE_KEYWORD_REGEX =
+    // runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
     "\\s+([a-zA-Z]+)(?:^|\\s|,|\\()((([a-zA-Z]+)(\\s*=|:)\\s*['\"]([^'\"]+)['\"][\\s,]*)+)\\)".toRegex()
+
+private val DEPENDENCY_SET_START_REGEX =
+    "(?:^|\\s)dependencySet\\(([^\\)]+)\\)\\s*\\{".toRegex()
 
 class GradleParser : Finder() {
     override fun lookupSource(file: DeclFile): List<DepDecl> {
         val deps = mutableListOf<DepDependency>()
         deps += parseShortform(file.content)
         deps += parseKeywordArg(file.content)
+        deps += parseDependencySet(file.content)
 
         return listOf(
             DepDecl(
@@ -90,7 +96,25 @@ class GradleParser : Finder() {
     }
 
     // sample: dependencySet(group:'org.slf4j', version: '1.7.7') { entry 'slf4j-api' }
-    private fun parseDependencySet() {}
+    private fun parseDependencySet(content: String): List<DepDependency> {
+        return content.lines().mapNotNull {
+            val matchResult = DEPENDENCY_SET_START_REGEX.find(it)
+            if(matchResult != null && matchResult.groups.size == 2) {
+                val entry = matchResult.groups[1]!!.value
+                val group = valueFromRegex("group", entry)
+                val version = valueFromRegex("version", entry)
+
+                DepDependency (
+                    name = "",
+                    artifact = "",
+                    group = group,
+                    version = version,
+                )
+            } else {
+                null
+            }
+        }.toList()
+    }
 
     // sample: plugins { }
     private fun parsePlugin() {}

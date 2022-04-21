@@ -17,8 +17,8 @@ dependencies {
 """.trimIndent()
 
     @Test
-    internal fun shouldMatch() {
-        val declFile = DeclFile("archguard", "pom.xml", gradleSample)
+    internal fun normal_match() {
+        val declFile = DeclFile("archguard", "build.gradle", gradleSample)
         val depDecls = GradleParser().lookupSource(declFile)
         assertEquals(1, depDecls.size)
 
@@ -34,8 +34,8 @@ dependencies {
     }
 
     @Test
-    internal fun keywordArg() {
-        val declFile = DeclFile("archguard", "pom.xml", """
+    internal fun keyword_arg() {
+        val declFile = DeclFile("archguard", "build.gradle", """
 dependencies {
     runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
 }
@@ -49,5 +49,19 @@ dependencies {
         assertEquals("org.springframework", dependencies[0].group)
         assertEquals("spring-core", dependencies[0].artifact)
         assertEquals("2.5", dependencies[0].version)
+    }
+
+    @Test
+    internal fun dependency_set() {
+        val declFile = DeclFile("archguard", "build.gradle", """
+dependencySet(group:'org.slf4j', version: '1.7.7') { 
+    entry 'slf4j-api' 
+}
+        """.trimIndent())
+        val depDecls = GradleParser().lookupSource(declFile)
+        assertEquals(1, depDecls.size)
+
+        val dependencies = depDecls[0].dependencies
+        assertEquals(1, dependencies.size)
     }
 }
