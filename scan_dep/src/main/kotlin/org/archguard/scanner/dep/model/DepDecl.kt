@@ -24,7 +24,9 @@ class DepDecl(
 )
 
 enum class DEP_SCOPE {
+    //
     NORMAL,
+    RUNTIME,
     TEST;
 
     companion object {
