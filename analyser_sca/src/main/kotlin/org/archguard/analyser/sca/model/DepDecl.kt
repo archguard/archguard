@@ -3,11 +3,11 @@ package org.archguard.analyser.sca.model
 /*
  * file for save content ?
  */
-class DeclFile(
+class DeclFileTree(
     val name: String,
     val path: String,
     val content: String,
-    val child: List<DeclFile> = listOf()
+    val childrens: List<DeclFileTree> = listOf()
 )
 
 class DepDecl(
@@ -24,19 +24,18 @@ class DepDecl(
 )
 
 enum class DEP_SCOPE {
-    //
     NORMAL,
     RUNTIME,
     TEST;
 
     companion object {
         fun from(str: String): DEP_SCOPE {
-            when(str) {
+            return when (str) {
                 "test" -> {
-                    return TEST
+                    TEST
                 }
                 else -> {
-                    return NORMAL
+                    NORMAL
                 }
             }
         }

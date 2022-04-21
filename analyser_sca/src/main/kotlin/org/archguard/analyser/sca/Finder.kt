@@ -1,6 +1,6 @@
-package org.archguard.analyser.sca.common
+package org.archguard.analyser.sca
 
-object FinderUtil {
+object Finder {
     // for: Golang
     fun parseGitDependency() {}
     // for: npm

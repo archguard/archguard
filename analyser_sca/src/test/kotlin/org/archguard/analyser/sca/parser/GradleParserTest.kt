@@ -1,7 +1,7 @@
 package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFile
+import org.archguard.analyser.sca.model.DeclFileTree
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -18,8 +18,8 @@ dependencies {
 
     @Test
     internal fun normal_match() {
-        val declFile = DeclFile("archguard", "build.gradle", gradleSample)
-        val depDecls = GradleParser().lookupSource(declFile)
+        val declFileTree = DeclFileTree("archguard", "build.gradle", gradleSample)
+        val depDecls = GradleParser().lookupSource(declFileTree)
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
@@ -35,12 +35,12 @@ dependencies {
 
     @Test
     internal fun keyword_arg() {
-        val declFile = DeclFile("archguard", "build.gradle", """
+        val declFileTree = DeclFileTree("archguard", "build.gradle", """
 dependencies {
     runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
 }
         """.trimIndent())
-        val depDecls = GradleParser().lookupSource(declFile)
+        val depDecls = GradleParser().lookupSource(declFileTree)
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
@@ -53,12 +53,12 @@ dependencies {
 
     @Test
     internal fun dependency_set() {
-        val declFile = DeclFile("archguard", "build.gradle", """
+        val declFileTree = DeclFileTree("archguard", "build.gradle", """
 dependencySet(group:'org.slf4j', version: '1.7.7') { 
     entry 'slf4j-api' 
 }
         """.trimIndent())
-        val depDecls = GradleParser().lookupSource(declFile)
+        val depDecls = GradleParser().lookupSource(declFileTree)
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
@@ -69,13 +69,13 @@ dependencySet(group:'org.slf4j', version: '1.7.7') {
 
     @Test
     internal fun dependency_set_multiple() {
-        val declFile = DeclFile("archguard", "build.gradle", """
+        val declFileTree = DeclFileTree("archguard", "build.gradle", """
 dependencySet(group:'org.slf4j', version: '1.7.7') { 
     entry 'slf4j-api' 
     entry 'slf4j-simple'
 }
         """.trimIndent())
-        val depDecls = GradleParser().lookupSource(declFile)
+        val depDecls = GradleParser().lookupSource(declFileTree)
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
@@ -89,10 +89,10 @@ dependencySet(group:'org.slf4j', version: '1.7.7') {
 
     @Test
     internal fun single_line() {
-        val declFile = DeclFile("archguard", "build.gradle", """
+        val declFileTree = DeclFileTree("archguard", "build.gradle", """
 libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:4.4.0"
         """.trimIndent())
-        val depDecls = GradleParser().lookupSource(declFile)
+        val depDecls = GradleParser().lookupSource(declFileTree)
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies

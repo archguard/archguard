@@ -1,8 +1,7 @@
 package org.archguard.analyser.sca.parser
 
-import org.archguard.analyser.sca.common.Parser
 import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFile
+import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.DepDecl
 import org.archguard.analyser.sca.model.DepDependency
 import org.w3c.dom.Document
@@ -17,7 +16,7 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
 class MavenParser : Parser() {
-    override fun lookupSource(file: DeclFile): List<DepDecl> {
+    override fun lookupSource(file: DeclFileTree): List<DepDecl> {
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val builder: DocumentBuilder = builderFactory.newDocumentBuilder()
         val xmlDocument: Document = builder.parse(InputSource(StringReader(file.content)))

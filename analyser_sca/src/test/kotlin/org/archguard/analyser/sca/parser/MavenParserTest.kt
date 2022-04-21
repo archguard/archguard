@@ -1,7 +1,7 @@
 package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFile
+import org.archguard.analyser.sca.model.DeclFileTree
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -34,8 +34,8 @@ internal class MavenParserTest {
 
     @Test
     internal fun should_parse_xml_deps() {
-        val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenParser().lookupSource(declFile)
+        val declFileTree = DeclFileTree("archguard", "pom.xml", sampleXml)
+        val lookupSource = MavenParser().lookupSource(declFileTree)
 
         val dependencies = lookupSource[0].dependencies
         assertEquals(1, dependencies.size)
@@ -47,8 +47,8 @@ internal class MavenParserTest {
 
     @Test
     internal fun should_parse_self_version() {
-        val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenParser().lookupSource(declFile)
+        val declFileTree = DeclFileTree("archguard", "pom.xml", sampleXml)
+        val lookupSource = MavenParser().lookupSource(declFileTree)
 
         assertEquals("com.mycompany.app:my-app", lookupSource[0].name)
         assertEquals("1.0-SNAPSHOT", lookupSource[0].version)
@@ -56,8 +56,8 @@ internal class MavenParserTest {
 
     @Test
     internal fun should_parse_scope() {
-        val declFile = DeclFile("archguard", "pom.xml", sampleXml)
-        val lookupSource = MavenParser().lookupSource(declFile)
+        val declFileTree = DeclFileTree("archguard", "pom.xml", sampleXml)
+        val lookupSource = MavenParser().lookupSource(declFileTree)
 
         val dependencies = lookupSource[0].dependencies
         assertEquals(DEP_SCOPE.TEST, dependencies[0].scope)
