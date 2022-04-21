@@ -8,7 +8,7 @@ import org.archguard.analyser.sca.model.DepDependency
 
 private val GRADLE_SHORT_IMPL_REGEX =
     // implementation "joda-time:joda-time:2.2"
-    "([a-zA-Z]+)(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
+    "([a-zA-Z]+)?(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
 
 private val GRADLE_KEYWORD_REGEX =
     // runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
@@ -43,11 +43,11 @@ class GradleParser : Parser() {
             it.groups.isNotEmpty() && it.groups.size == 6
         }.map {
             val groups = it.groups
-            val scope = scopeForGradle(groups[1]!!.value)
+            val scope = scopeForGradle(groups[1]?.value ?: "")
             DepDependency(
                 name = "${groups[3]!!.value}:${groups[4]!!.value}",
-                artifact = groups[3]!!.value,
-                group = groups[4]!!.value,
+                group = groups[3]!!.value,
+                artifact = groups[4]!!.value,
                 version = groups[5]!!.value,
                 scope = scope
             )

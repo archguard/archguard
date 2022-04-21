@@ -86,4 +86,17 @@ dependencySet(group:'org.slf4j', version: '1.7.7') {
         assertEquals("slf4j-simple", dependencies[1].artifact)
         assertEquals("1.7.7", dependencies[1].version)
     }
+
+    @Test
+    internal fun single_line() {
+        val declFile = DeclFile("archguard", "build.gradle", """
+libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:4.4.0"
+        """.trimIndent())
+        val depDecls = GradleParser().lookupSource(declFile)
+        assertEquals(1, depDecls.size)
+
+        val dependencies = depDecls[0].dependencies
+        assertEquals(1, dependencies.size)
+        assertEquals("junit-jupiter-api", dependencies[0].artifact)
+    }
 }
