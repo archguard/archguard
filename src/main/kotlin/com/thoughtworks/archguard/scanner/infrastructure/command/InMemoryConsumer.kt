@@ -30,7 +30,7 @@ class InMemoryConsumer : StreamConsumer {
                     lines.add("下载 Scanner 可能出错，请尝试连接 VPN 下载。访问： https://archguard.org/docs/faq.html 了解更多")
                 }
                 line.contains("Invalid or corrupt jarfile") -> {
-                    lines.add("jar 包不完整，请尝试连接 VPN 下载。访问： https://archguard.org/docs/faq.html 了解更多")
+                    lines.add("jar 包不完整，请删除，并尝试连接 VPN 下载。访问： https://archguard.org/docs/faq.html 了解更多")
                 }
                 line.contains("Fail to clone source with exitCode 128") -> {
                     lines.add("Git Clone 出错，尝试根据: https://archguard.org/docs/faq.html#git 进行配置")
