@@ -12,7 +12,7 @@ class ScaScannerTool(
     val systemId: Long,
     val language: String,
     val logStream: StreamConsumer
-)  {
+) {
 
     private val log = LoggerFactory.getLogger(ScaScannerTool::class.java)
     private val host = "https://github.com/archguard/scanner/releases/download/v1.5.0"

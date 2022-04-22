@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.project
 
-data class CompositionDependency(
+data class CompositionDependencyDTO(
     val id: String = "",
     val systemId: String = "",
     val name: String = "",

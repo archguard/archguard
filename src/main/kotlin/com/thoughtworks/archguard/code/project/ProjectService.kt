@@ -8,7 +8,7 @@ class ProjectService {
     @Autowired
     lateinit var projectRepository: ProjectRepository
 
-    fun getProjectDependencies(systemId: Long): List<CompositionDependency> {
+    fun getProjectDependencies(systemId: Long): List<CompositionDependencyDTO> {
         return projectRepository.getProjectDependencies(systemId)
     }
 }

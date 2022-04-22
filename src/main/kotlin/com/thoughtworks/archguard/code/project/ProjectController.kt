@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class ProjectController(val projectService: ProjectService) {
 
     @GetMapping("/sca")
-    fun getDependencies(@PathVariable("systemId") systemId: Long): List<CompositionDependency> {
+    fun getDependencies(@PathVariable("systemId") systemId: Long): List<CompositionDependencyDTO> {
         return projectService.getProjectDependencies(systemId)
     }
 }

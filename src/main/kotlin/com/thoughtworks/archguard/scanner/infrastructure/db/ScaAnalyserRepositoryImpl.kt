@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
 import com.thoughtworks.archguard.scanner.domain.scanner.codescan.sca.ScaAnalyserRepo
-import com.thoughtworks.archguard.scanner.domain.scanner.git.GitSourceScanRepo
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.slf4j.LoggerFactory
