@@ -3,10 +3,12 @@ package org.archguard.analyser.sca
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.DepDeclaration
 import org.archguard.analyser.sca.parser.GradleParser
+import org.archguard.analyser.sca.parser.MavenParser
 import java.io.File
 
 class JavaFinder {
     private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
+    private fun isPomFile(it: File) = it.isFile && it.name == "pom.xml"
 
     fun byGradleFiles(path: String): List<DepDeclaration> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
@@ -16,6 +18,17 @@ class JavaFinder {
             .flatMap {
                 val file = DeclFileTree(filename = it.name, path = it.absolutePath, content = it.readText())
                 GradleParser().lookupSource(file)
+            }.toList()
+    }
+
+    fun byMavenFiles(path: String): List<DepDeclaration> {
+        return File(path).walk(FileWalkDirection.BOTTOM_UP)
+            .filter {
+                isPomFile(it)
+            }
+            .flatMap {
+                val file = DeclFileTree(filename = it.name, path = it.absolutePath, content = it.readText())
+                MavenParser().lookupSource(file)
             }.toList()
     }
 

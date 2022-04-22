@@ -11,6 +11,12 @@ internal class JavaFinderTest {
     }
 
     @Test
+    internal fun count_maven_module_deps() {
+        val declTree = JavaFinder().byMavenFiles(File(".").absolutePath)
+        assert(declTree[0].dependencies.isNotEmpty())
+    }
+
+    @Test
     internal fun root_tree() {
         val declTree2 = JavaFinder().buildDeclTree(File("..").canonicalPath)
         assert(declTree2!!.childrens.size > 5)
