@@ -10,6 +10,7 @@ data class CompositionDependency(
     @Sql("name") val name: String,
     @Sql("version") val version: String,
     @Sql("parent_id") val parentId: String,
+    @Sql("package_manager") val packageManager: String,
     @Sql("dep_name") val dpeName: String,
     @Sql("dep_group") val depGroup: String,
     @Sql("dep_artifact") val depArtifact: String,
@@ -21,6 +22,8 @@ data class CompositionDependency(
 annotation class Sql(val value: String)
 
 class Bean2Sql {
+    private val STEP = 100
+
     fun bean2Sql(datas: List<Any>): String {
         val clazz = datas[0]::class
 
@@ -39,12 +42,20 @@ class Bean2Sql {
             }
         }
 
-        val valueString = values.joinToString {
-            if (it is String) {
-                "'${it.replace("'", "''")}'"
-            } else it.toString()
-        }
+        val chunkedByColumn = values.chunked(columns.size)
+        val chunked = chunkedByColumn.chunked(STEP)
+        return chunked.joinToString("\n") { list ->
+            val valueString = list.joinToString(",") {
+                val value = it.joinToString(transform = { item ->
+                    if (item is String) {
+                        "'${item.replace("'", "''")}'"
+                    } else item.toString()
+                })
 
-        return "insert into $table(${columns.joinToString()}) values($valueString);"
+                "($value)"
+            }
+
+            "insert into $table(${columns.joinToString()}) values $valueString;"
+        }
     }
 }
