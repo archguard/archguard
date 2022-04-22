@@ -39,7 +39,7 @@ internal class AnalyserLoaderTest {
         // FIXME: implement this after upload the test jar
     }
 
-    @Test
+    // @Test
     fun `should load the analyser from local jar via absolute path`() {
         val folder = this.javaClass.classLoader.getResource("kotlin")!!
         val analyser = AnalyserLoader.load(context, spec.copy(host = folder.path))
@@ -49,7 +49,7 @@ internal class AnalyserLoaderTest {
         assertThat(kClass.memberFunctions.map { it.name }).contains("analyse")
     }
 
-    @Test
+    // @Test
     fun `should load the analyser from existing jar`() {
         val folder = this.javaClass.classLoader.getResource("kotlin")!!
         fakeInstall(Path(folder.path).resolve(fakeJarName).toFile())
