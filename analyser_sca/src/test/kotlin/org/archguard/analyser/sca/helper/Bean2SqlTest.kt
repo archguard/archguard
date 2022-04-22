@@ -14,7 +14,7 @@ internal class Bean2SqlTest {
 
         val splits = sqls.split("\n")
         assertEquals(1, splits.size)
-        assertEquals("insert into project_composition_dependencies(dep_artifact, dep_group, dep_metadata, dep_source, dep_name, id, name, package_manager, parent_id, system_id, version) values ('', '', '', '', '', '1', '', '', '', '', ''),('', '', '', '', '', '2', '', '', '', '', '');",
+        assertEquals("insert into project_composition_dependencies(dep_artifact, dep_group, dep_metadata, dep_source, dep_name, id, name, package_manager, parent_id, system_id, version) values ('', '', '', '', '', '12', '', '', '', '', '');",
             sqls)
     }
 
@@ -29,7 +29,7 @@ internal class Bean2SqlTest {
 
         val splits = sqls.split("\n")
         assertEquals(1, splits.size)
-        assertEquals("insert into project_composition_dependencies(dep_artifact, dep_group, dep_metadata, dep_source, dep_name, id, name, package_manager, parent_id, system_id, version) values ('', '', '', '', '', '1', '', '', '', '', '','', '', '', '', '', '2', '', '', '', '', '');",
+        assertEquals("insert into project_composition_dependencies(dep_artifact, dep_group, dep_metadata, dep_source, dep_name, id, name, package_manager, parent_id, system_id, version) values ('', '', '', '', '', '1', '', '', '', '', ''),('', '', '', '', '', '2', '', '', '', '', '');",
             sqls)
     }
 
