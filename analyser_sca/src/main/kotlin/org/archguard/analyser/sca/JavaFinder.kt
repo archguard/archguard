@@ -10,13 +10,19 @@ class JavaFinder {
     private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
     private fun isPomFile(it: File) = it.isFile && it.name == "pom.xml"
 
+    fun find(path: String): List<DepDeclaration> {
+        val declarations = byGradleFiles(path).toMutableList()
+        declarations += byMavenFiles(path)
+        return declarations
+    }
+
     fun byGradleFiles(path: String): List<DepDeclaration> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
                 isGradleFile(it)
             }
             .flatMap {
-                val file = DeclFileTree(filename = it.name, path = it.absolutePath, content = it.readText())
+                val file = DeclFileTree(filename = it.name, path = it.canonicalPath, content = it.readText())
                 GradleParser().lookupSource(file)
             }.toList()
     }
@@ -27,7 +33,7 @@ class JavaFinder {
                 isPomFile(it)
             }
             .flatMap {
-                val file = DeclFileTree(filename = it.name, path = it.absolutePath, content = it.readText())
+                val file = DeclFileTree(filename = it.name, path = it.canonicalPath, content = it.readText())
                 MavenParser().lookupSource(file)
             }.toList()
     }
@@ -37,7 +43,7 @@ class JavaFinder {
             .filter {
                 isGradleFile(it)
             }.map {
-                it.absolutePath
+                it.canonicalPath
             }
             .sortedBy {
                 it.split(File.separatorChar).size
