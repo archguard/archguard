@@ -2,7 +2,7 @@ package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDecl
+import org.archguard.analyser.sca.model.DepDeclaration
 import org.archguard.analyser.sca.model.DepDependency
 
 private val GRADLE_SHORT_IMPL_REGEX =
@@ -20,14 +20,14 @@ private val ENTRY_REGEX =
     "\\s+entry\\s+['\"]([^\\s,@'\":\\/\\\\]+)['\"]".toRegex()
 
 class GradleParser : Parser() {
-    override fun lookupSource(file: DeclFileTree): List<DepDecl> {
+    override fun lookupSource(file: DeclFileTree): List<DepDeclaration> {
         val deps = mutableListOf<DepDependency>()
         deps += parseShortform(file.content)
         deps += parseKeywordArg(file.content)
         deps += parseDependencySet(file.content)
 
         return listOf(
-            DepDecl(
+            DepDeclaration(
                 name = "",
                 version = "",
                 packageManager = "gradle",

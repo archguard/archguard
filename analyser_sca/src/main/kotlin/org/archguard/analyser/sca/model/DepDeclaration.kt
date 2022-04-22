@@ -10,7 +10,7 @@ class DeclFileTree(
     var childrens: List<DeclFileTree> = listOf()
 )
 
-class DepDecl(
+class DepDeclaration(
     // self name
     val name: String,
     // self version for some cases
@@ -19,8 +19,8 @@ class DepDecl(
     val packageManager: String,
     // requirements in maven
     val dependencies: List<DepDependency>,
-    // sub dependencies
-    val childrens: List<DepDecl> = listOf()
+    // child dependencies
+    val childrens: List<DepDeclaration> = listOf()
 )
 
 enum class DEP_SCOPE {

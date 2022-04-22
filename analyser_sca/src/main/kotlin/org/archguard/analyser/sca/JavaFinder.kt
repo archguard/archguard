@@ -1,14 +1,14 @@
 package org.archguard.analyser.sca
 
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDecl
+import org.archguard.analyser.sca.model.DepDeclaration
 import org.archguard.analyser.sca.parser.GradleParser
 import java.io.File
 
 class JavaFinder {
     private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
 
-    fun byGradleFiles(path: String): List<DepDecl> {
+    fun byGradleFiles(path: String): List<DepDeclaration> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
                 isGradleFile(it)
