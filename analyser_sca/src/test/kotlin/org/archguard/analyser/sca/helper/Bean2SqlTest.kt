@@ -7,7 +7,7 @@ internal class Bean2SqlTest {
     @Test
     fun normal_bean() {
         val samples: MutableList<CompositionDependency> = mutableListOf()
-        samples += CompositionDependency("12", "", "", "", "", "", "", "", "", "", "")
+        samples += CompositionDependency("12", "", "", "", "", "", "", "", "", "", "", "")
 
         val bean2Sql = Bean2Sql()
         val sqls = bean2Sql.bean2Sql(samples)
@@ -21,8 +21,8 @@ internal class Bean2SqlTest {
     @Test
     fun two_beans() {
         val samples: MutableList<CompositionDependency> = mutableListOf()
-        samples += CompositionDependency("1", "", "", "", "", "", "", "", "", "", "")
-        samples += CompositionDependency("2", "", "", "", "", "", "", "", "", "", "")
+        samples += CompositionDependency("1", "", "", "", "", "", "", "", "", "", "", "")
+        samples += CompositionDependency("2", "", "", "", "", "", "", "", "", "", "", "")
 
         val bean2Sql = Bean2Sql()
         val sqls = bean2Sql.bean2Sql(samples)
@@ -37,7 +37,7 @@ internal class Bean2SqlTest {
     fun split_when_beans_more_than_100() {
         val samples: MutableList<CompositionDependency> = mutableListOf()
         for (i in 0..150) {
-            samples += CompositionDependency(i.toString(), "", "", "", "", "", "", "", "", "", "")
+            samples += CompositionDependency(i.toString(), "", "", "", "", "", "", "", "", "", "", "")
         }
 
         val bean2Sql = Bean2Sql()
