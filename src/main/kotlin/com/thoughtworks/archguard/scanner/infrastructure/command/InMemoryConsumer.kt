@@ -38,6 +38,9 @@ class InMemoryConsumer : StreamConsumer {
                 line.contains("Fail to identify build tool for compile") -> {
                     lines.add("暂时不支持的构建命令，建议选择 Java/Kotlin，再重新扫描。访问： https://archguard.org/docs/faq.html#jvm 了解更多")
                 }
+                line.contains("Failed to scan xxxScanner") -> {
+                    lines.add("检查 Scanner 是否完整? 版本是否正常? 对应版本映射关系见: https://archguard.org/release/version-mapping")
+                }
             }
         } catch (e: RuntimeException) {
             LOG.error("Problem consuming line [{}]", line, e)

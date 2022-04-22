@@ -42,7 +42,7 @@ class ByteCodeScanner(@Autowired val byteCodeScanRepo: ByteCodeScanRepo) : Scann
             byteCodeScanRepo.updateJClassLoc(locReport)
             log.info("finished scan loc source")
         } else {
-            log.warn("failed to scan loc")
+            log.warn("Failed to scan loc")
         }
     }
 }

@@ -26,7 +26,7 @@ class ScannerManager(@Autowired private val scanners: List<Scanner>) {
                         s.scan(context)
                     }
                 } catch (e: Exception) {
-                    log.error("failed to scan {}", s.javaClass.simpleName, e)
+                    log.error("Failed to scan {}", s.javaClass.simpleName, e)
                 }
             }
         }
