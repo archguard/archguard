@@ -26,7 +26,7 @@ class MethodController(val methodService: MethodService) {
         return ResponseEntity.ok(jMethod)
     }
 
-    @GetMapping("/allers")
+    @GetMapping("/callers")
     fun getMethodCallees(
         @PathVariable("systemId") systemId: Long,
         @RequestParam("name") methodName: String,
