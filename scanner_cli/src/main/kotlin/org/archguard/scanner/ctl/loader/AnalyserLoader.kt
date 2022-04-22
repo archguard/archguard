@@ -4,9 +4,12 @@ import org.archguard.scanner.core.Analyser
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.Context
 import org.slf4j.LoggerFactory
+import java.net.URL
 import java.net.URLClassLoader
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.system.measureTimeMillis
 
 object AnalyserLoader {
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -35,17 +38,29 @@ object AnalyserLoader {
     }
 
     private fun AnalyserSpec.download() {
-        TODO("download from remote url")
+        val sourceUrl = URL("$host/$jar")
+        val targetJarPath = getLocalPath()
+
+        logger.debug("analyser is configured as url, downloading to installation path...")
+        logger.debug("| $sourceUrl -> $targetJarPath |")
+
+        logger.debug("downloading...")
+        val cost = measureTimeMillis {
+            sourceUrl.openStream().use {
+                Files.copy(it, targetJarPath)
+            }
+        }
+        logger.debug("downloading finished in $cost ms")
     }
 
     private fun AnalyserSpec.copyFrom() {
-        val sourceJar = Paths.get(host).resolve(jar)
-        val targetJar = getLocalPath().toFile()
+        val sourceJarFile = Paths.get(host).resolve(jar).toFile()
+        val targetJarFile = getLocalPath().toFile()
 
         logger.debug("analyser is configured as absolute path, copying to installation path...")
-        logger.debug("| $sourceJar -> $targetJar |")
+        logger.debug("| $sourceJarFile -> $targetJarFile |")
 
-        sourceJar.toFile().copyTo(targetJar)
+        sourceJarFile.copyTo(targetJarFile)
     }
 
     private fun AnalyserSpec.getFullClassName(): String {
@@ -60,13 +75,11 @@ object AnalyserLoader {
 
     fun load(context: Context, spec: AnalyserSpec): Analyser<Context> {
         if (!spec.isInstalled()) spec.install()
+        val jarUrl = spec.getLocalPath().toUri().toURL()
+        val cl = URLClassLoader(arrayOf(jarUrl), this.javaClass.classLoader)
 
-        return spec.run {
-            val jarUrl = getLocalPath().toUri().toURL()
-            val cl = URLClassLoader(arrayOf(jarUrl), this.javaClass.classLoader)
-            Class.forName(spec.getFullClassName(), true, cl)
-                .declaredConstructors[0]
-                .newInstance(context) as Analyser<Context>
-        }
+        return Class.forName(spec.getFullClassName(), true, cl)
+            .declaredConstructors[0]
+            .newInstance(context) as Analyser<Context>
     }
 }
