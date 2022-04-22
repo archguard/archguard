@@ -8,7 +8,9 @@ plugins {
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
 application {

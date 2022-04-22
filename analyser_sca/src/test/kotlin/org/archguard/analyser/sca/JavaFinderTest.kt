@@ -2,7 +2,6 @@ package org.archguard.analyser.sca
 
 import org.junit.jupiter.api.Test
 import java.io.File
-import kotlin.test.assertEquals
 
 internal class JavaFinderTest {
     @Test

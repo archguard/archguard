@@ -10,7 +10,9 @@ class Runner : CliktCommand() {
     private val language: String by option(help = "language").default("")
 
     override fun run() {
+        when (language == "java") {
 
+        }
     }
 }
 
