@@ -22,8 +22,8 @@ class Runner {
                 identifier = it.getValue("identifier"),
                 host = it.getValue("host"),
                 version = it.getValue("version"),
-                jar = it.getValue("jar"),
                 className = it.getValue("className"),
+                jar = it.getValue("jar"),
             )
         } ?: emptyList()
     }

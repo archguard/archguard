@@ -7,4 +7,3 @@ data class AnalyserSpec(
     val jar: String,
     val className: String, // calculate via identifier??
 )
-

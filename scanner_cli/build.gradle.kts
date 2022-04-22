@@ -12,6 +12,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     // http client, on trial
     implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
     // chapi domain
     implementation("com.phodal.chapi:chapi-domain:1.5.6")
 
