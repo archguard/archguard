@@ -17,8 +17,17 @@ class Runner : CliktCommand() {
     override fun run() {
         val bean2Sql = Bean2Sql()
         when (language.lowercase()) {
-            "java" -> {
+            "java", "kotlin" -> {
                 val depDeclarations = JavaFinder().find(path)
+                val deps = depDeclarations.flatMap {
+                    it.toCompositionDependency(systemId)
+                }.toList()
+
+                val string = bean2Sql.bean2Sql(deps)
+                File("output.sql").writeText(string)
+            }
+            "javascript", "typescript" -> {
+                val depDeclarations = JavaScriptFinder().find(path)
                 val deps = depDeclarations.flatMap {
                     it.toCompositionDependency(systemId)
                 }.toList()
