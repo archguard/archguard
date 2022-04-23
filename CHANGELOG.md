@@ -1,4 +1,29 @@
-# [](https://github.com/archguard/archguard/compare/v1.6.0...v) (2022-04-13)
+# [](https://github.com/archguard/archguard/compare/v1.6.2...v) (2022-04-23)
+
+
+
+## [1.6.2](https://github.com/archguard/archguard/compare/v1.6.0...v1.6.2) (2022-04-23)
+
+
+### Bug Fixes
+
+* add clone with branch and fixed [#36](https://github.com/archguard/archguard/issues/36) ([6fdbfb5](https://github.com/archguard/archguard/commit/6fdbfb5de5b53ad54f49894ce3ebb67123c8cdac))
+* fix callers typo && fixed [#54](https://github.com/archguard/archguard/issues/54) ([13a8e43](https://github.com/archguard/archguard/commit/13a8e436c95839ac8b47245f4c68fa723b9caeab))
+* fix imports ([2ad7b04](https://github.com/archguard/archguard/commit/2ad7b04a47522a1ee365310baefb75fb94d631f5))
+* fix typos ([69ce509](https://github.com/archguard/archguard/commit/69ce509df2baeb1439a3d5052b3735bdacfe09ab))
+* **sca:** add lost dep source ([40c485e](https://github.com/archguard/archguard/commit/40c485e0034ece7760599d5f06a641d61d18c765))
+* **sca:** add lost dep version ([bcd87f7](https://github.com/archguard/archguard/commit/bcd87f759e81f627ff67cf6a1f1566bb822b75d6))
+* Service naming conforms to k8s DNS specification ([a5b1d34](https://github.com/archguard/archguard/commit/a5b1d34a5322c764e69bd9ceb4102f085e3e9b95))
+
+
+### Features
+
+* **auth:** add auth type model for [#40](https://github.com/archguard/archguard/issues/40) ([d292503](https://github.com/archguard/archguard/commit/d292503dad7787e4c40533c4243e2a99a1305edb))
+* **sca:** add lost version ([ce94715](https://github.com/archguard/archguard/commit/ce947155f1f77eebd2993778b080ddf3743b12a6))
+* **sca:** fix dto jdbi issue ([dc2a38c](https://github.com/archguard/archguard/commit/dc2a38c287a503282e7e87f8d445a6f24eeaa9c8))
+* **sca:** init project controller and api ([ba01b16](https://github.com/archguard/archguard/commit/ba01b1600c681a3e60f316a5308bc79485c105f3))
+* **sca:** init project table ([0153b67](https://github.com/archguard/archguard/commit/0153b678c37e386bfb11a363d480613aeceedbe6))
+* **sca:** init tool and scanner for scan ([cbd1fdb](https://github.com/archguard/archguard/commit/cbd1fdb35de179fc3f7cfe0245cd98f71d5dbb68))
 
 
 
