@@ -5,6 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.core.client.dto.ContainerService
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
@@ -15,7 +16,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
     private val client = context.client
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    override fun analyse(input: List<CodeDataStruct>): Any? {
+    override fun analyse(input: List<CodeDataStruct>): Array<ContainerService> {
         val language = context.language.lowercase()
         val path = context.path
 
