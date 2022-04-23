@@ -85,7 +85,7 @@ internal class JavaApiAnalyserTest {
     }
 
     @Test
-    fun url_method_in_annotation() {
+    fun urlMethodInAnnotation() {
         val resource = this.javaClass.classLoader.getResource("frameworks/spring/DemoController.java")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
 
