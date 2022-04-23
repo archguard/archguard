@@ -1,18 +1,26 @@
-# [](https://github.com/archguard/scanner/compare/v1.6.1...v) (2022-04-18)
+# [](https://github.com/archguard/scanner/compare/v1.6.2...v) (2022-04-23)
 
 
 
-## [1.6.1](https://github.com/archguard/scanner/compare/v1.5.0...v1.6.1) (2022-04-18)
+## [1.6.2](https://github.com/archguard/scanner/compare/v1.5.0...v1.6.2) (2022-04-23)
 
 
 ### Bug Fixes
 
+* fix call position error issues ([0cd6d2d](https://github.com/archguard/scanner/commit/0cd6d2d788c5e3c1cfd9a09c0f758c66d27ac17a))
+* fix naming typos ([f2043c8](https://github.com/archguard/scanner/commit/f2043c8cf2ec84e119b2004d60806156438ce111))
 * fix newline issue in Windows ([6f4136a](https://github.com/archguard/scanner/commit/6f4136a1ff67afe864359bf4d4f1db7b03de23d8))
 * fix origin package error issues ([b06556f](https://github.com/archguard/scanner/commit/b06556f2a8ea1eb380fa07bfa49af8ce375aadc0))
 * fix package issues ([b413276](https://github.com/archguard/scanner/commit/b4132762b7ad446fa4fe984cec50525089bc93cc))
 * **mybatis:** fix cannot parse local dtd issue ([c902629](https://github.com/archguard/scanner/commit/c902629b9c43b1aa66652457beb9801246b3c0bd))
 * **mybatis:** fix dir with xml issues ([9c3224f](https://github.com/archguard/scanner/commit/9c3224f2662be005aa8e271689ba4ba0ba04ca3a))
 * **mybatis:** fix empty code issues ([1d52481](https://github.com/archguard/scanner/commit/1d524814c6f9bfc58e6fb5c19dc76de08ea1bedc))
+* **mybatis:** fix systemId will load from http issue for [#44](https://github.com/archguard/scanner/issues/44) ([1aaef98](https://github.com/archguard/scanner/commit/1aaef984c8e717204b32202b2a71a8461c1c2c82))
+* **rule:** fix code issue ([aa7e807](https://github.com/archguard/scanner/commit/aa7e807eebac45e300b2d9c4d9dfa5fcf62d589a))
+* **rule:** fix parameter in url issue ([736c266](https://github.com/archguard/scanner/commit/736c266665b40cc8d0495bddb663ffe159eb8349))
+* **scan:** analyse api calls via code structs which output by language analyser ([2bd9999](https://github.com/archguard/scanner/commit/2bd9999f0a43a3055afb1a31ab30063c84613195))
+* simplify the template and fix tests ([c49478d](https://github.com/archguard/scanner/commit/c49478d7cf563cbc5629df81238e85dc24779f92))
+* skip analyser loading tests (wait for fix windows path) ([638a8a2](https://github.com/archguard/scanner/commit/638a8a2b96429de8352f7c2473bb92c50391e018))
 * **sourcecode:** fix field name use keyvalue issue ([f7eedb9](https://github.com/archguard/scanner/commit/f7eedb9b06ed2d874ffba5883bb05c2a87b6f9c1))
 * **sourcecode:** fix get a error node name for Kotlin ([5d87b5e](https://github.com/archguard/scanner/commit/5d87b5e2b2748b278390e45cab2b538ce4c9dabd))
 * **sourcecode:** fix simple fix for newline issue in sql ([b4a0eef](https://github.com/archguard/scanner/commit/b4a0eefcce0018b093770cc4b5c695b9851b6a1c))
@@ -23,18 +31,63 @@
 ### Features
 
 * **bytcode:** add test cases for code treee annotation ([f8aca10](https://github.com/archguard/scanner/commit/f8aca10821f71e95110094d2f62eca0b442275df))
+* create a template for analyser ([c4a6e61](https://github.com/archguard/scanner/commit/c4a6e61b723e97472453ae517d6fc4cd5ea83b8b))
+* create context/analyser/client in scanner_cli ([da940cc](https://github.com/archguard/scanner/commit/da940cc6f2924c4efa1fef90f7ca354454482361))
+* create scanner cli to dispatch the context data to different analyser ([30e46ff](https://github.com/archguard/scanner/commit/30e46ff0a73b4a1778b4a2af4aed7c610732d80f))
+* create scanner structure, dynamic load with customized specs ([9cbceae](https://github.com/archguard/scanner/commit/9cbceaeef3525fbcda08d7c5c9bea5071d279378))
+* **dep:** add main node for maven ([f3a96a5](https://github.com/archguard/scanner/commit/f3a96a50cdf760358136cf74434db6e949f4254d))
+* **dep:** add regex for match gradle context ([38fd628](https://github.com/archguard/scanner/commit/38fd6289d69a14cc41eb76d7d963ec860313d574))
+* **dep:** add scope for maven ([6cacdab](https://github.com/archguard/scanner/commit/6cacdabeef1452f710607a92b986485df8ad164e))
+* **dep:** basic parse for maven ([8287e03](https://github.com/archguard/scanner/commit/8287e0306649db80195ccbd79e5410c635b6661b))
+* **dep:** init first version model ([20f2f19](https://github.com/archguard/scanner/commit/20f2f19058d30b591dd151135807a8b33a2a72b8))
+* **dep:** init scan dep ([541d317](https://github.com/archguard/scanner/commit/541d3174b2efcee267972001ff16aca8ffced448))
 * **kotlin:** add visit for rule ([1292ec4](https://github.com/archguard/scanner/commit/1292ec4cd429e2c5bf88629579e394e023a18571))
+* language analyser for kotlin ([66abc39](https://github.com/archguard/scanner/commit/66abc39bc63edf9a4a259c97b4419f9b0581b91f))
+* load analyser via absolute path at runtime ([52faea2](https://github.com/archguard/scanner/commit/52faea2a7a6344e2a2999a813fefbdc748d1312e))
+* **maven:** add scope support ([26a7c31](https://github.com/archguard/scanner/commit/26a7c31bbe78324f341c0451c616f36395bb69e8))
+* new scanner module ([5b31b43](https://github.com/archguard/scanner/commit/5b31b430ac734b5016901cb0cfd235435ce70295))
+* package analyser as a shadow jar, exclude the redundant dependencies to minimize the size ([0a19a93](https://github.com/archguard/scanner/commit/0a19a93065d9b863b33dd7ee52fd891cfe1dc73e))
 * **rule:** add basic test smell provider ([ceeff9d](https://github.com/archguard/scanner/commit/ceeff9d85f81252de8594ca42d530d2967990553))
 * **rule:** add callback for save results for [#4](https://github.com/archguard/scanner/issues/4) ([86b42c1](https://github.com/archguard/scanner/commit/86b42c1882d82413f90d711c5b8fed649808eed8))
+* **rule:** add end without crud create ([4577495](https://github.com/archguard/scanner/commit/4577495366a3aa414c25be3e49c6918caf2da00b))
 * **rule:** add language for tbsrule [#4](https://github.com/archguard/scanner/issues/4) ([c6eadb2](https://github.com/archguard/scanner/commit/c6eadb234e585996df1b7439b709c446787f94a6))
+* **rule:** add not start with crud rule ([d0df54f](https://github.com/archguard/scanner/commit/d0df54fb74e18740615ce82d88c1a425e483f7a1))
+* **rule:** add not upppercase rule ([aebea86](https://github.com/archguard/scanner/commit/aebea86a5305f3e19378632b113fa5868a83c3dc))
 * **rule:** add sample for test bad smells ([8cf0de3](https://github.com/archguard/scanner/commit/8cf0de326702fd146d3cba7fd3031bcda1483ec3))
 * **rule:** add smell position for  [#4](https://github.com/archguard/scanner/issues/4) ([bf21462](https://github.com/archguard/scanner/commit/bf21462bbd63c8345775ded1839e303b48540448))
+* **rule:** add tbs app for test ([2f161d3](https://github.com/archguard/scanner/commit/2f161d31eaa71faf8bea4d66f2170eca738b9da3))
 * **rule:** enable rules for visit ([cb722cd](https://github.com/archguard/scanner/commit/cb722cd89a2c90c07db589a4f845d9f1c2f5d253))
+* **rule:** init basic ast rule ([c89c528](https://github.com/archguard/scanner/commit/c89c528ff0be13ae1c2cd960de4d348c9b7f15aa))
 * **rule:** init basic rule cores ([77ce71d](https://github.com/archguard/scanner/commit/77ce71d93e80d59d25c00ec8841c5fc421bbc972))
 * **rule:** init context for TbsRuleVisitor ([18072ef](https://github.com/archguard/scanner/commit/18072efeaa6f449645ec5fdcc78f9cbf4e9c1e16))
+* **rule:** init simple test for container ([d0083c5](https://github.com/archguard/scanner/commit/d0083c58c352c72fbf18869871bc22ef162b0260))
 * **rule:** split impl mods ([9c8abe0](https://github.com/archguard/scanner/commit/9c8abe0ab40658e838c6dc77dde84dff1615ec41))
 * **rule:** use visit function for node ([81ef133](https://github.com/archguard/scanner/commit/81ef13373c05130f5729da72a8a6c5e10ad479c6))
+* **sca:** add basic dependency set support ([e476323](https://github.com/archguard/scanner/commit/e4763239d3b07695a664be76df0332feed106ba7))
+* **sca:** add basic test for java finder ([efd2a57](https://github.com/archguard/scanner/commit/efd2a57acffce33549051147ee61fd3bb5689b21))
+* **sca:** add depSet entry support ([2c3d595](https://github.com/archguard/scanner/commit/2c3d595de49ccf7ef142af5c7d8dfa63d915bf81))
+* **sca:** add dev, optional dep for npm ([c344bf6](https://github.com/archguard/scanner/commit/c344bf6add69a86091e977bedaf8303334d49870))
+* **sca:** add first version node tree ([93b509e](https://github.com/archguard/scanner/commit/93b509ede3b2a72ef5248f3c1b7f669c427e1592))
+* **sca:** add keyword arg support ([c2abb72](https://github.com/archguard/scanner/commit/c2abb721b4813590de036b765a1eac58d5b38fe4))
+* **sca:** add lost dep version ([aec940e](https://github.com/archguard/scanner/commit/aec940ee4e792184b1d97bff4b9eeb6c0f0bdc2c))
+* **sca:** add normal npm decl support ([e3b40db](https://github.com/archguard/scanner/commit/e3b40dbe604eb051fc52bd4f4d52b568317c85e5))
+* **sca:** add simple line for gradle ([83ce943](https://github.com/archguard/scanner/commit/83ce94316d8b96538c29922c2a14752521bf8bde))
+* **sca:** init basic to sql scripts ([de128a5](https://github.com/archguard/scanner/commit/de128a5b4c0ca012f8e76846bb396e78f738849d))
+* **sca:** init first output sql ([b38f547](https://github.com/archguard/scanner/commit/b38f5477682a7e6931486260c038387e9231e914))
+* **sca:** init maven parse support ([695739c](https://github.com/archguard/scanner/commit/695739c525e4174caf1e4230ddb9c161f90f8a35))
+* **sca:** init two beans for bean2sql script ([8840d9e](https://github.com/archguard/scanner/commit/8840d9e0033d828a979e34135000d3cfb17f8a01))
+* **scan:** add shadow package for template as well ([a6bc90d](https://github.com/archguard/scanner/commit/a6bc90d988aa36fc1b481cff4c40396fbaf56eda))
+* **scan:** migrate java ([e3eceb6](https://github.com/archguard/scanner/commit/e3eceb67402e4de714c7219205ee3b908f9c4fb1))
+* **scan:** migrate typescript ([46b214f](https://github.com/archguard/scanner/commit/46b214f19f5b312f16d6b7092020a7370b808e33))
+* **scan:** output the test nodes json, feature analyser can take it as the input (contract test) ([406c3e7](https://github.com/archguard/scanner/commit/406c3e713278a1e814ba51f05a76d09761df2177))
+* **scan:** split the api analyser ([7c6e798](https://github.com/archguard/scanner/commit/7c6e798e44a757059bb98bf14aabcefc55779126))
 * **sourcecode:** add first runner tests ([64bc86e](https://github.com/archguard/scanner/commit/64bc86ee47b7d310b6e5e9c223614a6c627bb8c3))
+* the basic structure of the scanners ([6283b7a](https://github.com/archguard/scanner/commit/6283b7a1c85469aa55cf35ba651488eb0c997d59))
+
+
+### Reverts
+
+* Revert "build: config swap memory for CI" ([731828e](https://github.com/archguard/scanner/commit/731828e7406c43e5a44c3f6b9fed6adb768e3e0f))
 
 
 
