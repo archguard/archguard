@@ -16,7 +16,8 @@ data class CompositionDependency(
     @Sql("dep_artifact") val depArtifact: String,
     @Sql("dep_metadata") val depMetadata: String = "",
     @Sql("dep_source") val depSource: String = "",
-    @Sql("dep_scope") val depScope: String
+    @Sql("dep_scope") val depScope: String,
+    @Sql("dep_version") val depVersion: String
 )
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)

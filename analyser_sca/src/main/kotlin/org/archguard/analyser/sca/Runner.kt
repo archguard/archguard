@@ -42,7 +42,8 @@ private fun DepDeclaration.toCompositionDependency(systemId: String): List<Compo
             depName = it.name,
             depArtifact = it.artifact,
             depGroup = it.group,
-            depScope = it.scope.toString()
+            depScope = it.scope.toString(),
+            depVersion = it.version.toString()
         )
     }.toList()
 }
