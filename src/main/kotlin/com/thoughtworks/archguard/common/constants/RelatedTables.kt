@@ -45,5 +45,7 @@ val RELATED_TABLES = listOf(
     "container_resource",
     "container_service",
 
-    "data_code_database_relation"
+    "data_code_database_relation",
+
+    "project_composition_dependencies"
 )

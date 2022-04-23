@@ -15,8 +15,8 @@ class ScaScannerTool(
 ) {
 
     private val log = LoggerFactory.getLogger(ScaScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.5.0"
-    private val version = "1.5.0"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
+    private val version = "1.6.2"
     private val SCA_JAR = "analyser_sca-$version-all.jar"
 
     fun getScaReport(): File? {

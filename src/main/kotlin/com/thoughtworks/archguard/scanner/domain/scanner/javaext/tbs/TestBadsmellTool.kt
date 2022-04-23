@@ -9,8 +9,8 @@ import java.io.File
 import java.net.URL
 
 class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : TestBadSmellReport {
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.4.5"
-    private val version = "1.4.5"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
+    private val version = "1.6.2"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
     private val SCAN_TEST_BADSMELL_JAR = "scan_test_badsmell-$version-all.jar"
 
@@ -41,7 +41,7 @@ class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : Te
 
     private fun copyIntoSystemRoot() {
         log.info("copy jar tool from local")
-        FileOperator.copyTo(File(SCAN_TEST_BADSMELL_JAR), File("$systemRoot/scan_scan_test_badsmell.jar"))
+        FileOperator.copyTo(File(SCAN_TEST_BADSMELL_JAR), File("$systemRoot/scan_test_badsmell.jar"))
         try {
             val chmod = ProcessBuilder("chmod", "+x", "scan_git.jar")
             chmod.directory(systemRoot)
