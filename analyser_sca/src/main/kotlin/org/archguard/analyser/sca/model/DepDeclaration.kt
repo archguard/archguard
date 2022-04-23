@@ -26,7 +26,9 @@ class DepDeclaration(
 enum class DEP_SCOPE {
     NORMAL,
     RUNTIME,
-    TEST;
+    TEST,
+    OPTIONAL,
+    DEV;
 
     companion object {
         fun from(str: String): DEP_SCOPE {
