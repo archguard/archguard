@@ -102,12 +102,12 @@ class JavaApiAnalyser {
                 val optUrl = annotation.KeyValues.filter { it.Key == "value" }
                 val optMethod = annotation.KeyValues.filter { it.Key == "method" }
                 if (optUrl.isNotEmpty() && optMethod.isNotEmpty()) {
-                    when (optMethod[0].Value) {
-                        "RequestMethod.GET", "GET" -> httpMethod = "Get"
-                        "RequestMethod.POST", "POST" -> httpMethod = "Post"
-                        "RequestMethod.DELETE", "DELETE" -> httpMethod = "Delete"
-                        "RequestMethod.PUT", "PUT" -> httpMethod = "Put"
-                        "RequestMethod.PATCH", "PATCH" -> httpMethod = "Patch"
+                    when (optMethod[0].Value.replace("\\s".toRegex(), "")) {
+                        "RequestMethod.GET", "GET", "{RequestMethod.GET}" -> httpMethod = "Get"
+                        "RequestMethod.POST", "POST", "{RequestMethod.POST}" -> httpMethod = "Post"
+                        "RequestMethod.DELETE", "DELETE", "{RequestMethod.DELETE}" -> httpMethod = "Delete"
+                        "RequestMethod.PUT", "PUT", "{RequestMethod.PUT}" -> httpMethod = "Put"
+                        "RequestMethod.PATCH", "PATCH", "{RequestMethod.PATCH}" -> httpMethod = "Patch"
                     }
 
                     val pureUrl = optUrl[0].Value.removePrefix("\"").removeSuffix("\"")

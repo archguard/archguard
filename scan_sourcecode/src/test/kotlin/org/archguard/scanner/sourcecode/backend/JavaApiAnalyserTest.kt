@@ -49,6 +49,24 @@ internal class JavaApiAnalyserTest {
     }
 
     @Test
+    fun shouldHandleRequestMethodWithCurlyBrackets() {
+        val resource = this.javaClass.classLoader.getResource("frameworks/spring/RequestMethodController.java")!!
+        val path = Paths.get(resource.toURI()).toFile().absolutePath
+
+        val nodes = JavaAnalyserApp().analysisNodeByPath(path)
+        val javaApiAnalyser = JavaApiAnalyser()
+        nodes.forEach {
+            javaApiAnalyser.analysisByNode(it, "")
+        }
+
+        val services = javaApiAnalyser.toContainerServices()
+        val resources = services[0].resources
+        assertEquals(2, resources.size)
+        assertEquals("Get", resources[0].sourceHttpMethod)
+        assertEquals("Post", resources[1].sourceHttpMethod)
+    }
+
+    @Test
     fun shouldHandleErrorSlash() {
         val resource = this.javaClass.classLoader.getResource("frameworks/spring/NormalController.java")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
