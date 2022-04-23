@@ -15,6 +15,7 @@ class CompositionDependencyDTO {
     val depMetadata: String
     val depSource: String
     val depScope: String
+    val depVersion: String
 
     // JDBI issue?
     @JdbiConstructor
@@ -30,7 +31,8 @@ class CompositionDependencyDTO {
         depArtifact: String = "",
         depMetadata: String = "",
         depSource: String = "",
-        depScope: String = ""
+        depScope: String = "",
+        depVersion: String = "",
     ) {
         this.id = id
         this.systemId = systemId
@@ -44,5 +46,6 @@ class CompositionDependencyDTO {
         this.depMetadata = depMetadata
         this.depSource = depSource
         this.depScope = depScope
+        this.depVersion = depVersion
     }
 }
