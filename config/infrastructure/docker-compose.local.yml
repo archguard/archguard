@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  archguard_mysql:
+  archguard-mysql:
     image: "mysql:8"
-    container_name: archguard_mysql
+    container_name: archguard-mysql
     platform: linux/amd64
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -20,9 +20,9 @@ services:
       timeout: 10s
       retries: 5
 
-  archguard_influxdb:
+  archguard-influxdb:
     image: "influxdb:1.8"
-    container_name: archguard_influxdb
+    container_name: archguard-influxdb
     ports:
       - '8086:8086'
     networks:
