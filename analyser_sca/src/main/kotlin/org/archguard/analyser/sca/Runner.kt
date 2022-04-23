@@ -43,7 +43,7 @@ private fun DepDeclaration.toCompositionDependency(systemId: String): List<Compo
             depArtifact = it.artifact,
             depGroup = it.group,
             depScope = it.scope.toString(),
-            depVersion = it.version.toString()
+            depVersion = it.version
         )
     }.toList()
 }
