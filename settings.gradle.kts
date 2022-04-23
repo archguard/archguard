@@ -21,6 +21,7 @@ include(":scanner_cli")
 // official analyser implementations
 include(":analyser_template")
 include(":analyser_sourcecode:lang_kotlin")
+include(":analyser_sourcecode:lang_typescript")
 
 // legacy scanners, should replace by analyser
 include(":scan_git")

@@ -90,6 +90,7 @@ dependencies {
 
     jacocoAggregation(project(":analyser_template"))
     jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_typescript"))
 
     jacocoAggregation(project(":analyser_sca"))
 
