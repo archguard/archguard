@@ -62,4 +62,21 @@ internal class SqlRuleVisitorTest {
         kotlin.test.assertEquals(1, results.size)
         kotlin.test.assertEquals("InsertWithoutField", results[0].name)
     }
+
+    @Test
+    internal fun limit_join_in_update() {
+        val sql = "SELECT columns FROM table1 INNER JOIN table2 ON table1.column = table2.column " +
+                " INNER JOIN table3 ON table1.column = table3.column " +
+                " INNER JOIN table4 ON table1.column = table4.column " +
+                " INNER JOIN table5 ON table1.column = table5.column " +
+                " INNER JOIN table6 ON table1.column = table6.column "
+
+        val stmt = CCJSqlParserUtil.parseStatements(sql)
+        val visitor = SqlRuleVisitor(stmt.statements)
+        val ruleSetProvider = SqlRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        kotlin.test.assertEquals(1, results.size)
+        kotlin.test.assertEquals("LimitJoins", results[0].name)
+    }
 }
