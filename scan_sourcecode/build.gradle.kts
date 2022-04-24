@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     api(project(":common_code_repository"))
-    api(project(":scan_mysql"))
+    api(project(":scan_sql"))
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
 

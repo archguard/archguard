@@ -29,7 +29,7 @@ include(":analyser_sourcecode:feat_apicalls")
 include(":scan_git")
 include(":scan_jacoco")
 include(":scan_sourcecode")
-include(":scan_mysql")
+include(":scan_sql")
 include(":scan_test_badsmell")
 include(":scan_bytecode")
 

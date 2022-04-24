@@ -98,7 +98,7 @@ dependencies {
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sourcecode"))
-    jacocoAggregation(project(":scan_mysql"))
+    jacocoAggregation(project(":scan_sql"))
     jacocoAggregation(project(":scan_test_badsmell"))
     jacocoAggregation(project(":scan_bytecode"))
 }
