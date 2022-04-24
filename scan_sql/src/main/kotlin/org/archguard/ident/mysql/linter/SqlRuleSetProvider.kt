@@ -1,5 +1,6 @@
 package org.archguard.ident.mysql.linter
 
+import org.archguard.ident.mysql.linter.rules.FuzzyPercentNotAtStartRule
 import org.archguard.ident.mysql.linter.rules.UnknownNumberColumnRule
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
@@ -11,6 +12,7 @@ class SqlRuleSetProvider: RuleSetProvider {
             RuleType.SQL_SMELL,
             "normal",
             UnknownNumberColumnRule(),
+            FuzzyPercentNotAtStartRule(),
         )
     }
 }
