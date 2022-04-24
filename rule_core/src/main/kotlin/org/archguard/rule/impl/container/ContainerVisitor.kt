@@ -10,23 +10,25 @@ import org.archguard.rule.core.RuleVisitor
 import org.archguard.rule.impl.container.model.ContainerResource
 
 class ContainerVisitor(private val resources: Array<ContainerResource>) : RuleVisitor {
-    fun visitor(ruleSets: Iterable<RuleSet>, rootNode: ContainerResource): Array<Issue> {
+    fun visitor(ruleSets: Iterable<RuleSet>): Array<Issue> {
         var results: Array<Issue> = arrayOf()
         val context = RuleContext()
 
         ruleSets.forEach { ruleSet ->
-            ruleSet.rules.forEach {
+            ruleSet.rules.forEach { rule ->
                 // todo: cast by plugins
-                val rule = it as ContainerRule
-                rule.visitResource(rootNode, context, fun(rule: Rule, position: IssuePosition) {
-                    results += Issue(
-                        position,
-                        ruleId = rule.key,
-                        name = rule.name,
-                        detail = rule.description,
-                        ruleType = RuleType.HTTP_API_SMELL
-                    )
-                })
+                val rule = rule as ContainerRule
+                resources.map {
+                    rule.visitResource(it, context, fun(rule: Rule, position: IssuePosition) {
+                        results += Issue(
+                            position,
+                            ruleId = rule.key,
+                            name = rule.name,
+                            detail = rule.description,
+                            ruleType = RuleType.HTTP_API_SMELL
+                        )
+                    })
+                }
             }
         }
 

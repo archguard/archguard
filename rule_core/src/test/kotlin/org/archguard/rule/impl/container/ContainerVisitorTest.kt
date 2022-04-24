@@ -11,7 +11,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
         assertEquals("SpliceNamingRule", results[0].name)
     }
@@ -22,7 +22,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(2, results.size)
         assertEquals("EndWithoutCrudRule", results[0].name)
     }
@@ -33,7 +33,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
         assertEquals("NotUppercaseRule", results[0].name)
     }
@@ -44,7 +44,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
         assertEquals("StartWithoutCrudRule", results[0].name)
     }
@@ -55,7 +55,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(0, results.size)
     }
 
@@ -65,7 +65,7 @@ internal class ContainerVisitorTest {
         val visitor = ContainerVisitor(arrayOf(resource))
         val ruleSetProvider = ContainerRuleSetProvider()
 
-        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
         assertEquals("NoHttpMethodInUrl", results[0].name)
     }
