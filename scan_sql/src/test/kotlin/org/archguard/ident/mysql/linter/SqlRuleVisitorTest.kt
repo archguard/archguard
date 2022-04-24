@@ -50,4 +50,16 @@ internal class SqlRuleVisitorTest {
         kotlin.test.assertEquals(1, results.size)
         kotlin.test.assertEquals("SnakeCasing", results[0].name)
     }
+
+    @Test
+    internal fun insert_should_with_field() {
+        val sql = "INSERT INTO user VALUES ('alicfeng',23);"
+        val stmt = CCJSqlParserUtil.parseStatements(sql)
+        val visitor = SqlRuleVisitor(stmt.statements)
+        val ruleSetProvider = SqlRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        kotlin.test.assertEquals(1, results.size)
+        kotlin.test.assertEquals("InsertWithoutField", results[0].name)
+    }
 }
