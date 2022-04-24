@@ -29,7 +29,7 @@ internal class SqlRuleVisitorTest {
 
     @Test
     internal fun table_name_limit() {
-        val sql = "CREATE TABLE this_is_a_very_long_table_name_32 ()"
+        val sql = "CREATE TABLE this_is_a_very_long_table_name_32 (id INT(11) PRIMARY KEY)"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
         val ruleSetProvider = SqlRuleSetProvider()
@@ -78,5 +78,17 @@ internal class SqlRuleVisitorTest {
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         kotlin.test.assertEquals(1, results.size)
         kotlin.test.assertEquals("LimitJoins", results[0].name)
+    }
+
+    @Test
+    internal fun at_least_primary_key() {
+        val sql = "CREATE TABLE tb_emp3 (id INT(11), name VARCHAR(25));"
+        val stmt = CCJSqlParserUtil.parseStatements(sql)
+        val visitor = SqlRuleVisitor(stmt.statements)
+        val ruleSetProvider = SqlRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        kotlin.test.assertEquals(1, results.size)
+        kotlin.test.assertEquals("AtLeastOnePrimaryKey", results[0].name)
     }
 }

@@ -2,6 +2,7 @@ package org.archguard.ident.mysql.linter
 
 import org.archguard.ident.mysql.linter.rules.FuzzyPercentNotAtStartRule
 import org.archguard.ident.mysql.linter.rules.UnknownNumberColumnRule
+import org.archguard.ident.mysql.linter.rules.create.AtLeastOnePrimaryKeyRule
 import org.archguard.ident.mysql.linter.rules.create.SnakeCasingRule
 import org.archguard.ident.mysql.linter.rules.create.LimitTableNameLengthRule
 import org.archguard.ident.mysql.linter.rules.expression.LimitJoinsRule
@@ -20,7 +21,8 @@ class SqlRuleSetProvider: RuleSetProvider {
             LimitTableNameLengthRule(),
             SnakeCasingRule(),
             InsertWithoutField(),
-            LimitJoinsRule()
+            LimitJoinsRule(),
+            AtLeastOnePrimaryKeyRule()
         )
     }
 }

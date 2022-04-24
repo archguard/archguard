@@ -17,8 +17,8 @@ class LimitTableNameLengthRule : SqlRule() {
         this.severity = Severity.INFO
     }
 
-    override fun visitCreateTable(it: CreateTable, context: RuleContext, callback: IssueEmit) {
-        if (it.table.name.length >= TABLE_LENGTH) {
+    override fun visitCreateTable(createStmt: CreateTable, context: RuleContext, callback: IssueEmit) {
+        if (createStmt.table.name.length >= TABLE_LENGTH) {
             callback(this, IssuePosition())
         }
     }
