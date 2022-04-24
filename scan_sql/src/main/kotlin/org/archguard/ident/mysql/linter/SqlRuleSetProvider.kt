@@ -2,6 +2,8 @@ package org.archguard.ident.mysql.linter
 
 import org.archguard.ident.mysql.linter.rules.FuzzyPercentNotAtStartRule
 import org.archguard.ident.mysql.linter.rules.UnknownNumberColumnRule
+import org.archguard.ident.mysql.linter.rules.create.SnakeCasingRule
+import org.archguard.ident.mysql.linter.rules.create.LimitTableNameLengthRule
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
@@ -13,6 +15,8 @@ class SqlRuleSetProvider: RuleSetProvider {
             "normal",
             UnknownNumberColumnRule(),
             FuzzyPercentNotAtStartRule(),
+            LimitTableNameLengthRule(),
+            SnakeCasingRule()
         )
     }
 }
