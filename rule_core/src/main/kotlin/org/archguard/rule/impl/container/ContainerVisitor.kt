@@ -19,7 +19,7 @@ class ContainerVisitor(private val resources: Array<ContainerResource>) : RuleVi
                 // todo: cast by plugins
                 val rule = rule as ContainerRule
                 resources.map {
-                    rule.visitResource(it, context, fun(rule: Rule, position: IssuePosition) {
+                    rule.visitResources(this.resources, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(
                             position,
                             ruleId = rule.key,
