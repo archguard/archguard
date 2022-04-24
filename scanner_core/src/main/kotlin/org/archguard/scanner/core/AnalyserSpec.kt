@@ -1,5 +1,8 @@
 package org.archguard.scanner.core
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AnalyserSpec(
     val identifier: String,
     val host: String,

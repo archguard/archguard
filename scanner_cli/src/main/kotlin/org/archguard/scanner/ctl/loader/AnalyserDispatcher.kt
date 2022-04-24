@@ -1,40 +1,42 @@
 package org.archguard.scanner.ctl.loader
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.archguard.scanner.core.Analyser
 import org.archguard.scanner.core.AnalyserSpec
+import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.sourcecode.SourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
-import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
+import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
+import org.archguard.scanner.ctl.command.ScannerCommand
 
-class AnalyserDispatcher(
-    private val context: Context,
-    customized: List<AnalyserSpec>,
-) {
-    private val specs = customized + OfficialAnalyserSpecs.specs()
-
-    private fun getOrInstall(identifier: String): Analyser<Context> {
-        // specs 会形成一个优先级队列, 对于相同的identifier, 会优先使用用户自定义的. e.g. 自定义java analyser用来覆盖官方的analyser
-        val theOne = specs.find { identifier == it.identifier }
-            ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
-        return AnalyserLoader.load(context, theOne)
+class AnalyserDispatcher {
+    fun dispatch(command: ScannerCommand) {
+        when (command.type) {
+            AnalyserType.SOURCE_CODE -> SourceCodeWorker(command.buildSourceCodeContext(), command.getAnalyserSpecs())
+            else -> TODO("not implemented yet")
+        }.run()
     }
+}
 
-    fun dispatch() = runBlocking {
-        when (context) {
-            is SourceCodeContext -> {
-                val languageAnalyser = getOrInstall(context.language) as SourceCodeAnalyser
-                val ast = languageAnalyser.analyse(null) ?: return@runBlocking
-                context.features.map {
-                    async {
-                        (getOrInstall(it) as SourceCodeAnalyser).analyse(ast)
-                    }
-                }.awaitAll()
-            }
-            else -> throw IllegalArgumentException("Unsupported context type")
-        }
+private interface AbstractWorker<T : Context> {
+    val context: T
+    val analyserSpecs: List<AnalyserSpec>
+    fun run()
+
+    fun <T> getOrInstall(identifier: String): T {
+        val theOne = analyserSpecs.find { identifier == it.identifier }
+            ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
+        return AnalyserLoader.load(context, theOne) as T
+    }
+}
+
+private class SourceCodeWorker(
+    override val context: SourceCodeContext,
+    override val analyserSpecs: List<AnalyserSpec>,
+) : AbstractWorker<SourceCodeContext> {
+    override fun run(): Unit = runBlocking {
+        val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
+        val ast = languageAnalyser.analyse(null) ?: return@runBlocking
+        context.features.asyncMap { getOrInstall<SourceCodeAnalyser>(it).analyse(ast) }
     }
 }
