@@ -1,7 +1,9 @@
 package org.archguard.ident.mysql
 
-import org.junit.jupiter.api.Assertions.*
+import net.sf.jsqlparser.parser.CCJSqlParserUtil
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+
 
 internal class MysqlIdentAppTest {
     @Test

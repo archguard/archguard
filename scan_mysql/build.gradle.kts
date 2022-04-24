@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.github.jsqlparser:jsqlparser:4.2")
+    implementation("com.github.jsqlparser:jsqlparser:4.4")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 
