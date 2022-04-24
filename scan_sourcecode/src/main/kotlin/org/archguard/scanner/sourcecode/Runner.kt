@@ -3,6 +3,8 @@ package org.archguard.scanner.sourcecode
 import chapi.app.analyser.*
 import chapi.app.analyser.config.ChapiConfig
 import chapi.domain.core.CodeDataStruct
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -22,12 +24,26 @@ import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.archguard.scanner.sourcecode.xml.XmlParser
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.Phaser
 import kotlin.io.path.Path
 import kotlin.io.path.exists
+
+val csvMapper = CsvMapper().apply {
+    registerModule(KotlinModule())
+}
+
+inline fun <reified T> writeCsvFile(data: Array<T>, fileName: String) {
+    FileWriter(fileName).use { writer ->
+        csvMapper.writer(csvMapper.schemaFor(T::class.java).withHeader())
+            .writeValues(writer)
+            .writeAll(data)
+            .close()
+    }
+}
 
 class Runner : CliktCommand(help = "scan git to sql") {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -158,6 +174,10 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 val apiCalls = csharpApiAnalyser.toContainerServices()
 
                 val containerRepository = ContainerRepository(systemId, language, path)
+
+                val resources = apiCalls.flatMap { it.resources }.toTypedArray()
+                writeCsvFile(resources, "apis.csv")
+
                 File("apis.json").writeText(Json.encodeToString(apiCalls))
                 containerRepository.saveContainerServices(apiCalls)
                 containerRepository.close()

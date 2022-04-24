@@ -23,6 +23,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.core:jackson-core:2.13.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
