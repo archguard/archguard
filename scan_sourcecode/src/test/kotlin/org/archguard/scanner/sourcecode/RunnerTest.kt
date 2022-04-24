@@ -74,6 +74,7 @@ internal class RunnerTest {
     }
 
     @Test
+    @Disabled
     internal fun code_method_call_incorrect_nodename() {
         val resource = this.javaClass.classLoader.getResource("bugfixes/MethodCallNodeNameError.kt").toURI().toPath().absolutePathString()
 
