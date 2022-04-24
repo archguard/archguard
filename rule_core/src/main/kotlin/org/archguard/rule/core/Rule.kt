@@ -13,10 +13,13 @@ enum class RuleType {
      */
     CODE_SMELL,
 
+    // code smell for test
+    TEST_CODE_SMELL,
+
     /*
      * REST API Smell
      */
-    REST_API_SMELL,
+    HTTP_API_SMELL,
 
     /*
      * Database smell, if a Controller have to many smells

@@ -5,6 +5,7 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
+import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.rule.impl.container.model.ContainerResource
 
@@ -22,7 +23,8 @@ class ContainerVisitor(private val resources: Array<ContainerResource>) : RuleVi
                         position,
                         ruleId = rule.key,
                         name = rule.name,
-                        detail = rule.description
+                        detail = rule.description,
+                        ruleType = RuleType.HTTP_API_SMELL
                     )
                 })
             }

@@ -8,6 +8,7 @@ import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.rule.core.IssuePosition
+import org.archguard.rule.core.RuleType
 
 class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext() {}
 
@@ -38,7 +39,8 @@ class TestSmellVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor
                         position,
                         ruleId = rule.key,
                         name = rule.name,
-                        detail = rule.description
+                        detail = rule.description,
+                        ruleType = RuleType.TEST_CODE_SMELL
                     )
                 })
             }
