@@ -25,7 +25,7 @@ enum class RuleType {
     /*
      * Database smell, if a Controller have to many smells
      */
-    DATABASE_MAP_SMELL,
+    SQL_SMELL,
 
     /*
      * SCM (like Git) change's smell, maybe change multiple files

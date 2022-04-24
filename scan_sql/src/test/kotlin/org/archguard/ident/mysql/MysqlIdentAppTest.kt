@@ -69,4 +69,10 @@ internal class MysqlIdentAppTest {
 
         assertEquals("sms_coupon_product_category_relation", relation!!.tableNames.joinToString(","))
     }
+//
+//    @Test
+//    internal fun parse_sql() {
+//        val stmt = CCJSqlParserUtil.parseStatements("SELECT * FROM tab1; SELECT * FROM tab2")
+//        println(stmt.statements)
+//    }
 }
