@@ -2,7 +2,6 @@ package org.archguard.rule.impl.container.rules
 
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
-import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.rule.impl.container.ContainerRule
