@@ -23,7 +23,7 @@ internal class ContainerVisitorTest {
         val ruleSetProvider = ContainerRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
-        assertEquals(1, results.size)
+        assertEquals(2, results.size)
         assertEquals("EndWithoutCrudRule", results[0].name)
     }
 
@@ -59,14 +59,14 @@ internal class ContainerVisitorTest {
         assertEquals(0, results.size)
     }
 
-//    @Test
-//    internal fun not_method_in_node() {
-//        val resource = ContainerResource(sourceUrl = "api/book/delete/{bookId}")
-//        val visitor = ContainerVisitor(arrayOf(resource))
-//        val ruleSetProvider = ContainerRuleSetProvider()
-//
-//        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
-//        assertEquals(1, results.size)
-//        assertEquals("NotHttpMethodInUrl", results[0].name)
-//    }
+    @Test
+    internal fun not_method_in_node() {
+        val resource = ContainerResource(sourceUrl = "api/book/delete/{bookId}")
+        val visitor = ContainerVisitor(arrayOf(resource))
+        val ruleSetProvider = ContainerRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
+        assertEquals(1, results.size)
+        assertEquals("NoHttpMethodInUrl", results[0].name)
+    }
 }

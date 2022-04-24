@@ -2,23 +2,27 @@ package org.archguard.rule.impl.container.rules
 
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
+import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.rule.impl.container.ContainerRule
 import org.archguard.rule.impl.container.model.ContainerResource
 
-class EndWithoutCrudRule: ContainerRule() {
+class NoHttpMethodInUrlRule : ContainerRule() {
     init {
-        this.name = "EndWithoutCrudRule"
+        this.name = "NoHttpMethodInUrl"
         this.key = this.javaClass.name
-        this.description = "url should not end with crud (like /create)"
+        this.description = "url resource should not equal crud "
         this.severity = Severity.WARN
     }
 
     override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
         val split = resource.sourceUrl.split("/")
-        if(CRUD.contains(split.last().lowercase())) {
-            callback(this, IssuePosition())
+
+        split.map {
+            if (CRUD.contains(it)) {
+                callback(this, IssuePosition())
+            }
         }
     }
 }
