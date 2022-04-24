@@ -91,4 +91,20 @@ internal class SqlRuleVisitorTest {
         kotlin.test.assertEquals(1, results.size)
         kotlin.test.assertEquals("AtLeastOnePrimaryKey", results[0].name)
     }
+
+    @Test
+    internal fun limit_column_size() {
+        val sql = "CREATE TABLE tb_emp3 (id INT PRIMARY KEY, i1 INT, i1 INT, i1 INT, i1 INT, " +
+                "i1 INT, i1 INT, i1 INT, i1 INT, i1 INT, " +
+                "i1 INT, i1 INT, i1 INT, i1 INT, i1 INT, " +
+                "i1 INT, i1 INT, i1 INT, i1 INT, i1 INT, " +
+                "i1 INT );"
+        val stmt = CCJSqlParserUtil.parseStatements(sql)
+        val visitor = SqlRuleVisitor(stmt.statements)
+        val ruleSetProvider = SqlRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        kotlin.test.assertEquals(1, results.size)
+        kotlin.test.assertEquals("LimitColumnSize", results[0].name)
+    }
 }
