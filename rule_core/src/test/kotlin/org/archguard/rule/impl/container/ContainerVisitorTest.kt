@@ -13,7 +13,7 @@ internal class ContainerVisitorTest {
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()), resource)
         assertEquals(1, results.size)
-        assertEquals("UrlSplitNamingRule", results[0].name)
+        assertEquals("SpliceNamingRule", results[0].name)
     }
 
     @Test

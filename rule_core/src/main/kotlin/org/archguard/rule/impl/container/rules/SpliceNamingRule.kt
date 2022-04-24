@@ -10,9 +10,9 @@ import org.archguard.rule.impl.container.ContainerRule
 private const val MAX_URL_NODE_LENGTH = 20
 private val CHAR_REGEX = "[a-zA-Z]+".toRegex()
 
-class UrlSplitNamingRule : ContainerRule() {
+class SpliceNamingRule : ContainerRule() {
     init {
-        this.name = "UrlSplitNamingRule"
+        this.name = "SpliceNamingRule"
         this.key = this.javaClass.name
         this.description = "resource node should less than 20"
         this.severity = Severity.WARN
