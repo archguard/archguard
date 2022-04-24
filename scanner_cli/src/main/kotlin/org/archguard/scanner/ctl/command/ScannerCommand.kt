@@ -19,7 +19,7 @@ data class ScannerCommand(
     // TODO support git url as well?? move 'git clone' logic in cli
     val path: String,
 
-    // for source code analysing
+    // for source code analysing, may be Map, String or AnalyserSpec
     val language: Any? = null,
     val features: List<Any> = emptyList(),
     val withoutStorage: Boolean = false,
