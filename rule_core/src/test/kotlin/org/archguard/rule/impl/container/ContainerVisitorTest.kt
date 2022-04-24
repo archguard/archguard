@@ -69,4 +69,26 @@ internal class ContainerVisitorTest {
         assertEquals(1, results.size)
         assertEquals("NoHttpMethodInUrl", results[0].name)
     }
+
+    @Test
+    internal fun multiple_parameters() {
+        val resource = ContainerResource(sourceUrl = "/api/book/{bookType}/{bookId}/{bookChildType}/{childId}")
+        val visitor = ContainerVisitor(arrayOf(resource))
+        val ruleSetProvider = ContainerRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        assertEquals(1, results.size)
+        assertEquals("MultipleParameters", results[0].name)
+    }
+
+    @Test
+    internal fun min_feature() {
+        val resource = ContainerResource(sourceUrl = "/api/book-with-author/")
+        val visitor = ContainerVisitor(arrayOf(resource))
+        val ruleSetProvider = ContainerRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        assertEquals(1, results.size)
+        assertEquals("MinFeature", results[0].name)
+    }
 }

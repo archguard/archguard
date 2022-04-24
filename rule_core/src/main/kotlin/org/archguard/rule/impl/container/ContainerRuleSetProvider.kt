@@ -3,7 +3,9 @@ package org.archguard.rule.impl.container
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
+import org.archguard.rule.impl.container.rules.MultipleParametersRule
 import org.archguard.rule.impl.container.rules.EndWithoutCrudRule
+import org.archguard.rule.impl.container.rules.MinFeatureApiRule
 import org.archguard.rule.impl.container.rules.NoHttpMethodInUrlRule
 import org.archguard.rule.impl.container.rules.NotUppercaseRule
 import org.archguard.rule.impl.container.rules.StartWithoutCrudRule
@@ -19,6 +21,8 @@ class ContainerRuleSetProvider: RuleSetProvider {
             NotUppercaseRule(),
             StartWithoutCrudRule(),
             NoHttpMethodInUrlRule(),
+            MinFeatureApiRule(),
+            MultipleParametersRule(),
         )
     }
 }
