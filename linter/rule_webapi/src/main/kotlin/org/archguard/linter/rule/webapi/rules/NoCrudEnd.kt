@@ -7,7 +7,7 @@ import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.ContainerRule
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
-class NoCrudEndRule: ContainerRule() {
+class NoCrudEnd: ContainerRule() {
     init {
         this.id = "no-crud-end"
         this.name = "NoCrudEndRule"

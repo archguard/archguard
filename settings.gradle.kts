@@ -12,7 +12,9 @@ include(":common_code_repository")
 
 include(":diff_changes")
 
-// standard scanner model
+include(":doc_generator")
+
+// standard doc model
 include(":scanner_core")
 include(":scanner_cli")
 

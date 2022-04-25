@@ -15,7 +15,6 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.jetbrains.dokka")
 
-
     group = "com.thoughtworks.archguard"
     version = "1.6.2"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -84,6 +83,8 @@ allprojects {
 
 dependencies {
     jacocoAggregation(project(":diff_changes"))
+
+    jacocoAggregation(project(":"))
 
     jacocoAggregation(project(":common_code_repository"))
 
