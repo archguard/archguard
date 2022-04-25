@@ -8,9 +8,10 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.rule.common.Casing
 
-class SnakeCasingRule : SqlRule() {
+class SnakeCaseNamingRule : SqlRule() {
     init {
-        this.name = "SnakeCasing"
+        this.id = "snake-name-case"
+        this.name = "SnakeCaseNaming"
         this.key = this.javaClass.name
         this.description = "table name and field should be use-kebab"
         this.severity = Severity.INFO

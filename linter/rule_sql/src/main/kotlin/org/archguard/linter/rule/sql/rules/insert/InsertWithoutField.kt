@@ -9,6 +9,7 @@ import org.archguard.rule.core.Severity
 
 class InsertWithoutField : SqlRule() {
     init {
+        this.id = "insert-without-field"
         this.name = "InsertWithoutField"
         this.key = this.javaClass.name
         this.description = "insert should with fields"

@@ -39,6 +39,9 @@ typealias IssueEmit = (rule: Rule, position: IssuePosition) -> Unit
 typealias RuleContext = Any
 
 open class Rule(
+    // for lazy load
+    var id: String = "",
+    // class name
     var key: String = "",
     // rule name for identify
     var name: String = "",

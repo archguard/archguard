@@ -9,17 +9,20 @@ import org.archguard.rule.core.Severity
 
 class LimitColumnSizeRule : SqlRule() {
     private val MAX_COLUMN_SIZE = 20
+    private var maxColumnSize: Int = 0
 
     init {
+        this.id = "limit-column-size"
         this.name = "LimitColumnSize"
         this.key = this.javaClass.name
+        this.maxColumnSize = this.MAX_COLUMN_SIZE
         this.description = "table column should less than 20"
         this.severity = Severity.INFO
     }
 
     override fun visitCreateTable(createStmt: CreateTable, context: RuleContext, callback: IssueEmit) {
         if (createStmt.columnDefinitions != null) {
-            if (createStmt.columnDefinitions.size >= MAX_COLUMN_SIZE) {
+            if (createStmt.columnDefinitions.size >= maxColumnSize) {
                 callback(this, IssuePosition())
             }
         }

@@ -8,9 +8,10 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 
-class UnknownNumberColumnRule : SqlRule() {
+class UnknownColumnSizeRule : SqlRule() {
     init {
-        this.name = "UnknownNumberColumn"
+        this.id = "unknown-column-size"
+        this.name = "UnknownColumnSize"
         this.key = this.javaClass.name
         this.description = "could not use * as list SELECT * from xxx"
         this.severity = Severity.WARN

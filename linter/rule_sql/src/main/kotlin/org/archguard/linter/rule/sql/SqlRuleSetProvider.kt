@@ -1,10 +1,10 @@
 package org.archguard.linter.rule.sql
 
-import org.archguard.linter.rule.sql.rules.FuzzyPercentNotAtStartRule
-import org.archguard.linter.rule.sql.rules.UnknownNumberColumnRule
+import org.archguard.linter.rule.sql.rules.LikeStartWithoutPercentRule
+import org.archguard.linter.rule.sql.rules.UnknownColumnSizeRule
 import org.archguard.linter.rule.sql.rules.create.AtLeastOnePrimaryKeyRule
 import org.archguard.linter.rule.sql.rules.create.LimitColumnSizeRule
-import org.archguard.linter.rule.sql.rules.create.SnakeCasingRule
+import org.archguard.linter.rule.sql.rules.create.SnakeCaseNamingRule
 import org.archguard.linter.rule.sql.rules.create.LimitTableNameLengthRule
 import org.archguard.linter.rule.sql.rules.expression.LimitJoinsRule
 import org.archguard.linter.rule.sql.rules.insert.InsertWithoutField
@@ -17,10 +17,10 @@ class SqlRuleSetProvider: RuleSetProvider {
         return RuleSet(
             RuleType.SQL_SMELL,
             "normal",
-            UnknownNumberColumnRule(),
-            FuzzyPercentNotAtStartRule(),
+            UnknownColumnSizeRule(),
+            LikeStartWithoutPercentRule(),
             LimitTableNameLengthRule(),
-            SnakeCasingRule(),
+            SnakeCaseNamingRule(),
             InsertWithoutField(),
             LimitJoinsRule(),
             AtLeastOnePrimaryKeyRule(),

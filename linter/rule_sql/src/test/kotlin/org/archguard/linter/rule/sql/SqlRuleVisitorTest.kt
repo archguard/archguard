@@ -14,7 +14,7 @@ internal class SqlRuleVisitorTest {
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         kotlin.test.assertEquals(1, results.size)
-        kotlin.test.assertEquals("UnknownNumberColumn", results[0].name)
+        kotlin.test.assertEquals("UnknownColumnSize", results[0].name)
     }
 
     @Test
@@ -26,7 +26,7 @@ internal class SqlRuleVisitorTest {
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         kotlin.test.assertEquals(1, results.size)
-        kotlin.test.assertEquals("FuzzyPercentNotAtStart", results[0].name)
+        kotlin.test.assertEquals("LikeStartWithoutPercent", results[0].name)
     }
 
     @Test
@@ -50,7 +50,7 @@ internal class SqlRuleVisitorTest {
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         kotlin.test.assertEquals(1, results.size)
-        kotlin.test.assertEquals("SnakeCasing", results[0].name)
+        kotlin.test.assertEquals("SnakeCaseNaming", results[0].name)
     }
 
     @Test
