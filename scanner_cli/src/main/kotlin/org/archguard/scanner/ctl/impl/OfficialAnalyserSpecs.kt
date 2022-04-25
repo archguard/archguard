@@ -2,42 +2,54 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
+// TODO, replace the host as the release url
+private const val RELEASE_REPO = "https://github.com/archguard/scanner/releases/download"
+
 enum class OfficialAnalyserSpecs(
-    private val host: String,
+    private val url: String,
     private val version: String,
     private val className: String,
+    private val isLanguage: Boolean = true,
 ) {
-    // TODO, replace the host as the release url
-    KOTLIN(
-        host = "https://github.com/archguard/scanner/tree/master/analyser_sourcecode/lang_kotlin/src/test/resources/kotlin",
-        version = "1.6.1",
-        className = "KotlinAnalyser",
+    CSHARP(
+        RELEASE_REPO, "1.6.1", "CSharpAnalyser",
     ),
-    TYPESCRIPT(
-        host = "https://github.com/archguard/scanner/tree/master/analyser_sourcecode/lang_kotlin/src/test/resources/kotlin",
-        version = "1.6.1",
-        className = "TypeScriptAnalyser",
-    ),
-    JAVASCRIPT(
-        host = "https://github.com/archguard/scanner/tree/master/analyser_sourcecode/lang_kotlin/src/test/resources/kotlin",
-        version = "1.6.1",
-        className = "TypeScriptAnalyser",
+    GO(
+        RELEASE_REPO, "1.6.1", "GoAnalyser",
     ),
     JAVA(
-        host = "https://github.com/archguard/scanner/tree/master/analyser_sourcecode/lang_kotlin/src/test/resources/kotlin",
-        version = "1.6.1",
-        className = "JavaAnalyser",
+        RELEASE_REPO, "1.6.1", "JavaAnalyser",
     ),
-    API_CALLS(
-        host = "https://github.com/archguard/scanner/tree/master/analyser_sourcecode/lang_kotlin/src/test/resources/kotlin",
-        version = "1.6.1",
-        className = "ApiCallAnalyser",
+    KOTLIN(
+        RELEASE_REPO, "1.6.1", "KotlinAnalyser",
+    ),
+    PYTHON(
+        RELEASE_REPO, "1.6.1", "PythonAnalyser",
+    ),
+    SCALA(
+        RELEASE_REPO, "1.6.1", "ScalaAnalyser",
+    ),
+    TYPESCRIPT(
+        RELEASE_REPO, "1.6.1", "TypeScriptAnalyser",
+    ),
+    JAVASCRIPT(
+        TYPESCRIPT.url, TYPESCRIPT.version, TYPESCRIPT.className
+    ),
+    APICALLS(
+        RELEASE_REPO, "1.6.1", "ApiCallAnalyser", false,
+    ),
+    DATAMAP(
+        RELEASE_REPO, "1.6.1", "DataMapAnalyser", false,
     ),
     ;
 
     fun spec(): AnalyserSpec {
         val identifier = name.lowercase()
-        return AnalyserSpec(identifier, host, version, "$identifier-$version-all.jar", className)
+        val host = "$url/$version"
+        val prefix = if (isLanguage) "lang" else "feat"
+        val jar = "${prefix}_$identifier-$version-all.jar"
+
+        return AnalyserSpec(identifier, host, version, jar, className)
     }
 
     companion object {

@@ -8,6 +8,24 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        assets:
+          - scan_git/build/libs/scan*-all.jar
+          - scan_jacoco/build/libs/scan*-all.jar
+          - scan_sourcecode/build/libs/scan*-all.jar
+          - scan_test_badsmell/build/libs/scan*-all.jar
+          - diff_changes/build/libs/diff_changes*-all.jar
+          - analyser_sca/build/libs/analyser_sca*-all.jar
+          - analyser_sourcecode/feat_apicalls/build/libs/feat*-all.jar
+          - analyser_sourcecode/feat_datamap/build/libs/feat*-all.jar
+          - analyser_sourcecode/lang_csharp/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_golang/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_java/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_kotlin/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_python/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_scala/build/libs/lang*-all.jar
+          - analyser_sourcecode/lang_typescript/build/libs/lang*-all.jar
     permissions:
       contents: write
       packages: write
@@ -24,57 +42,11 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: Upload scan_git to release
+      - name: Upload asserts to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_git/build/libs/scan*-all.jar
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload scan_jacoco to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_jacoco/build/libs/scan*-all.jar
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload scan_sourcecode to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_sourcecode/build/libs/scan*-all.jar
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload scan_test_badsmell to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: scan_test_badsmell/build/libs/scan*-all.jar
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload diff_changes to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: diff_changes/build/libs/diff_changes*-all.jar
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-
-      - name: Upload analyser_sca to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: analyser_sca/build/libs/analyser_sca*-all.jar
+          file: ${{ matrix.assets }}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
