@@ -17,15 +17,15 @@ jobs:
           - scan_test_badsmell/build/libs/scan*-all.jar
           - diff_changes/build/libs/diff_changes*-all.jar
           - analyser_sca/build/libs/analyser_sca*-all.jar
-          - analyser_sourcecode/feat_apicalls/build/libs/feat*-all.jar
-          - analyser_sourcecode/feat_datamap/build/libs/feat*-all.jar
-          - analyser_sourcecode/lang_csharp/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_golang/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_java/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_kotlin/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_python/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_scala/build/libs/lang*-all.jar
-          - analyser_sourcecode/lang_typescript/build/libs/lang*-all.jar
+          - analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
+          - analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar
+          - analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar
+          - analyser_sourcecode/lang_golang/build/libs/lang_golang*-all.jar
+          - analyser_sourcecode/lang_java/build/libs/lang_java*-all.jar
+          - analyser_sourcecode/lang_kotlin/build/libs/lang_kotlin*-all.jar
+          - analyser_sourcecode/lang_python/build/libs/lang_python*-all.jar
+          - analyser_sourcecode/lang_scala/build/libs/lang_scala*-all.jar
+          - analyser_sourcecode/lang_typescript/build/libs/lang_typescript*-all.jar
     permissions:
       contents: write
       packages: write
