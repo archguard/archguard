@@ -23,12 +23,12 @@ internal class ScannerCommandTest {
         fun `should parse the language spec when given the identifier`() {
             val command = fixture.copy(
                 language = "kotlin",
-                features = listOf("api_calls"),
+                features = listOf("apicalls"),
             )
 
             assertThat(command.getAnalyserSpecs()).containsOnly(
                 OfficialAnalyserSpecs.KOTLIN.spec(),
-                OfficialAnalyserSpecs.API_CALLS.spec(),
+                OfficialAnalyserSpecs.APICALLS.spec(),
             )
             assertThat(command.buildSourceCodeContext().language).isEqualTo("kotlin")
         }
@@ -37,12 +37,12 @@ internal class ScannerCommandTest {
         fun `should parse the language spec when given the analyser spec`() {
             val command = fixture.copy(
                 language = "kotlin",
-                features = listOf(OfficialAnalyserSpecs.API_CALLS.spec()),
+                features = listOf(OfficialAnalyserSpecs.APICALLS.spec()),
             )
 
             assertThat(command.getAnalyserSpecs()).containsOnly(
                 OfficialAnalyserSpecs.KOTLIN.spec(),
-                OfficialAnalyserSpecs.API_CALLS.spec(),
+                OfficialAnalyserSpecs.APICALLS.spec(),
             )
             assertThat(command.buildSourceCodeContext().language).isEqualTo("kotlin")
         }
@@ -58,12 +58,12 @@ internal class ScannerCommandTest {
             )
             val command = fixture.copy(
                 language = "kotlin",
-                features = listOf("API_CALLS", customized),
+                features = listOf("APICALLS", customized),
             )
 
             assertThat(command.getAnalyserSpecs()).containsOnly(
                 OfficialAnalyserSpecs.KOTLIN.spec(),
-                OfficialAnalyserSpecs.API_CALLS.spec(),
+                OfficialAnalyserSpecs.APICALLS.spec(),
                 customized,
             )
             assertThat(command.buildSourceCodeContext().language).isEqualTo("kotlin")
@@ -80,12 +80,12 @@ internal class ScannerCommandTest {
             )
             val command = fixture.copy(
                 language = "KOTLIN",
-                features = listOf("API_CALLS", Json.encodeToString(customized)),
+                features = listOf("APICALLS", Json.encodeToString(customized)),
             )
 
             assertThat(command.getAnalyserSpecs()).containsOnly(
                 OfficialAnalyserSpecs.KOTLIN.spec(),
-                OfficialAnalyserSpecs.API_CALLS.spec(),
+                OfficialAnalyserSpecs.APICALLS.spec(),
                 customized,
             )
             assertThat(command.buildSourceCodeContext().language).isEqualTo("kotlin")
