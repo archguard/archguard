@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.container.rules
+package org.archguard.linter.rule.webapi.rules
 
 var CREATE_OPS = arrayOf("post", "create", "put")
 var GET_OPS = arrayOf("get", "fetch")

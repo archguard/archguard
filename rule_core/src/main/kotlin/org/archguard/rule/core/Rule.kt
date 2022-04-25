@@ -1,7 +1,6 @@
 package org.archguard.rule.core
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.rule.impl.container.model.ContainerResource
 
 enum class Severity {
     // ERROR -> BLOCKER can be for continuous integration

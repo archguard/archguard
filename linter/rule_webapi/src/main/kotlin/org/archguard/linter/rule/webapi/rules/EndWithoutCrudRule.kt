@@ -1,11 +1,11 @@
-package org.archguard.rule.impl.container.rules
+package org.archguard.linter.rule.webapi.rules
 
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
-import org.archguard.rule.impl.container.ContainerRule
-import org.archguard.rule.impl.container.model.ContainerResource
+import org.archguard.linter.rule.webapi.ContainerRule
+import org.archguard.linter.rule.webapi.model.ContainerResource
 
 class EndWithoutCrudRule: ContainerRule() {
     init {

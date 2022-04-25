@@ -1,10 +1,9 @@
-package org.archguard.rule.impl.container
+package org.archguard.linter.rule.webapi
 
 import org.archguard.rule.core.IssueEmit
-import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.impl.container.model.ContainerResource
+import org.archguard.linter.rule.webapi.model.ContainerResource
 
 open class ContainerRule : Rule() {
     open fun visitResources(resources: Array<ContainerResource>, context: RuleContext, callback: IssueEmit) {

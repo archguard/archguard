@@ -38,6 +38,7 @@ include(":analyser_sca")
 include(":rule_core")
 include(":linter:rule_sql")
 include(":linter:rule_test_code")
+include(":linter:rule_webapi")
 
 // adapter for ci
 include(":collector_ci")

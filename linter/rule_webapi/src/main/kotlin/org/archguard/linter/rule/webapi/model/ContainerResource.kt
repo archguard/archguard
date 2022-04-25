@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.container.model
+package org.archguard.linter.rule.webapi.model
 
 import kotlinx.serialization.Serializable
 
