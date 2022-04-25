@@ -23,7 +23,6 @@ data class ScannerCommand(
     // for source code analysing, may be Map, String or AnalyserSpec
     val language: Any? = null,
     val features: List<Any> = emptyList(),
-    val withoutStorage: Boolean = false,
 ) {
     private val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
     private val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }
@@ -45,7 +44,6 @@ data class ScannerCommand(
             features = featureSpecs.map { it.identifier },
             client = ArchGuardHttpClient(languageSpec!!.identifier, serverUrl, systemId, path),
             path = path,
-            withoutStorage = withoutStorage,
             systemId = systemId,
         )
     }

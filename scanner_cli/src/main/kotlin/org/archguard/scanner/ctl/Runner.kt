@@ -4,7 +4,6 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
@@ -28,7 +27,6 @@ class Runner : CliktCommand(help = "scanner cli") {
         help = "official supported language: Java, Kotlin, TypeScript, CSharp, Python, Golang. You can also input a json to define your own language analyser."
     ).default("Java")
     private val features: List<String> by option(help = "features: API_CALLS, DB. You can also input a json to define your own feature analyser.").multiple()
-    private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
     /**
      *  --language=java
@@ -47,7 +45,6 @@ class Runner : CliktCommand(help = "scanner cli") {
                     else -> it
                 }
             },
-            withoutStorage
         )
         AnalyserDispatcher().dispatch(command)
     }

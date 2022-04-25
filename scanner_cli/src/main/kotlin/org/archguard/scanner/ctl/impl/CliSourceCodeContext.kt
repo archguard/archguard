@@ -9,6 +9,5 @@ data class CliSourceCodeContext(
     override val features: List<String>,
     override val client: ArchGuardClient,
     override val path: String,
-    override val withoutStorage: Boolean,
     val systemId: String,
 ) : SourceCodeContext

@@ -23,7 +23,6 @@ object PluggableScannerAdapter {
         override val language: String get() = l
         override val features: List<String> get() = emptyList()
         override val path: String get() = p
-        override val withoutStorage: Boolean get() = s
         override val client: ArchGuardClient get() = buildClient(systemId, l, p)
     }
 
