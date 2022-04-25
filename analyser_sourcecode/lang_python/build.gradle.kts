@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":scanner_core"))
+    api(project(":scanner_core"))
 
     implementation("com.phodal.chapi:chapi-ast-python:1.5.6") {
         // around 10mb, only documents files, exclude (reuse in cli?)

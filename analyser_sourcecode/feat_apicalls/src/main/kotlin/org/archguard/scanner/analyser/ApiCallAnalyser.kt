@@ -1,8 +1,6 @@
 package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.archguard.scanner.core.client.dto.ContainerService
@@ -57,7 +55,6 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             else -> throw IllegalArgumentException("Unsupported language: $language")
         }
 
-        File("apis.json").writeText(Json.encodeToString(apiCalls))
         client.saveApi(apiCalls.toList())
         return apiCalls
     }
