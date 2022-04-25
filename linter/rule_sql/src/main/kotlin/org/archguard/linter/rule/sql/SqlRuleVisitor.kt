@@ -17,8 +17,8 @@ class SqlRuleVisitor(val statements: List<Statement>) : RuleVisitor {
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach { rule ->
                 // todo: cast by plugins
-                val rule = rule as SqlRule
-                rule.visit(statements, context, fun(rule: Rule, position: IssuePosition) {
+                val sqlRule = rule as SqlRule
+                sqlRule.visit(statements, context, fun(rule: Rule, position: IssuePosition) {
                     results += Issue(
                         position,
                         ruleId = rule.key,
