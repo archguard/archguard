@@ -7,6 +7,6 @@ internal class RuleSetsLoaderTest {
 
     @Test
     internal fun name() {
-        RuleSetsLoader().load()
+        RuleSetsLoader().load("no-crud")
     }
 }
