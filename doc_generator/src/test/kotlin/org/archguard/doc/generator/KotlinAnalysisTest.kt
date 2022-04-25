@@ -35,10 +35,12 @@ internal class KotlinAnalysisTest {
 
         val analyzeContext = parser.parse(*files)
 
-        val clazz = analyzeContext.allClasses.filter {
-            it.name.asString() == "KotlinAnalysis"
+        val rules = analyzeContext.allClasses.filter { clz ->
+            clz.typeConstructor.supertypes.any { it.toString().endsWith("Rule") }
         }
 
-        assertEquals(1, clazz.size)
+        rules.forEach {
+            println(it)
+        }
     }
 }

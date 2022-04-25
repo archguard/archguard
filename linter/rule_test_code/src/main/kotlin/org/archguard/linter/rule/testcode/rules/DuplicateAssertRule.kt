@@ -8,6 +8,8 @@ import org.archguard.rule.core.IssueEmit
 
 private const val MAX_ASSERTS = 5
 
+// todo: add Rule from annotation
+// @Rule()
 class DuplicateAssertRule : TbsRule() {
     init {
         this.name = "DuplicateAssertTest"
