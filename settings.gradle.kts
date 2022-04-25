@@ -33,7 +33,6 @@ include(":scan_bytecode")
 
 include(":analyser_sca")
 
-
 // core rule model
 include(":rule_core")
 include(":linter:rule_sql")
