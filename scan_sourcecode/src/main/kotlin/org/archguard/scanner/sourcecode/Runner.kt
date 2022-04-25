@@ -1,6 +1,5 @@
 package org.archguard.scanner.sourcecode
 
-import chapi.domain.core.CodeDataStruct
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -8,21 +7,16 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.infrastructure.SourceBatch.ALL_TABLES
 import com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.analyser.ApiCallAnalyser
 import org.archguard.scanner.analyser.CSharpAnalyser
+import org.archguard.scanner.analyser.DataMapAnalyser
 import org.archguard.scanner.analyser.GoAnalyser
 import org.archguard.scanner.analyser.JavaAnalyser
 import org.archguard.scanner.analyser.KotlinAnalyser
 import org.archguard.scanner.analyser.PythonAnalyser
 import org.archguard.scanner.analyser.TypeScriptAnalyser
-import org.archguard.scanner.common.DatamapRepository
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
-import org.archguard.scanner.sourcecode.database.MysqlAnalyser
-import org.archguard.scanner.sourcecode.xml.XmlParser
 import org.slf4j.LoggerFactory
-import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -49,27 +43,20 @@ class Runner : CliktCommand(help = "scan git to sql") {
     override fun run() {
         cleanSqlFile(ALL_TABLES)
 
-        val dataStructs = when (context.language) {
-            "java" ->
-                JavaAnalyser(context).analyse()
-            "kotlin" ->
-                KotlinAnalyser(context).analyse()
-            "typescript", "javascript" ->
-                TypeScriptAnalyser(context).analyse()
-            "csharp", "c#" ->
-                CSharpAnalyser(context).analyse()
-            "python" ->
-                PythonAnalyser(context).analyse()
-            "go" ->
-                GoAnalyser(context).analyse()
+        val sourceCodeAnalyser = when (context.language) {
+            "java" -> JavaAnalyser(context)
+            "kotlin" -> KotlinAnalyser(context)
+            "typescript", "javascript" -> TypeScriptAnalyser(context)
+            "csharp", "c#" -> CSharpAnalyser(context)
+            "python" -> PythonAnalyser(context)
+            "go" -> GoAnalyser(context)
             else -> throw IllegalArgumentException("Unknown language: ${context.language}")
         }
 
-        ApiCallAnalyser(context).analyse(dataStructs)
-
         // save json, save api have been moved to analysers
-
-        saveDatabaseRelations(dataStructs, systemId, context.language)
+        val dataStructs = sourceCodeAnalyser.analyse()
+        ApiCallAnalyser(context).analyse(dataStructs)
+        DataMapAnalyser(context).analyse(dataStructs)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -79,30 +66,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
         val sqlEnd = System.currentTimeMillis()
         logger.info("Insert into MySql spend: {} s", (sqlEnd - sqlStart) / 1000)
         SqlExecuteThreadPool.close()
-    }
-
-    private fun saveDatabaseRelations(dataStructs: List<CodeDataStruct>, systemId: String, language: String) {
-        when (language.lowercase()) {
-            "java", "kotlin" -> {
-                logger.info("start analysis database api ---- ${language.lowercase()}")
-
-                val sqlAnalyser = MysqlAnalyser()
-                val records = dataStructs.flatMap { data ->
-                    sqlAnalyser.analysisByNode(data, "")
-                }.toList()
-
-                val mybatisEntries = XmlParser.parseMybatis(path)
-                val relations = sqlAnalyser.convertMyBatis(mybatisEntries)
-
-                relations.addAll(records)
-
-                val repo = DatamapRepository(systemId, language, path)
-                repo.saveRelations(relations)
-                repo.close()
-
-                File("database.json").writeText(Json.encodeToString(relations))
-            }
-        }
     }
 
     private fun storeDatabase(tables: Array<String>, systemId: String) {

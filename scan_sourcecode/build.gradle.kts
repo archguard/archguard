@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":analyser_sourcecode:lang_csharp"))
     implementation(project(":analyser_sourcecode:lang_scala"))
     implementation(project(":analyser_sourcecode:feat_apicalls"))
+    implementation(project(":analyser_sourcecode:feat_datamap"))
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
 
@@ -37,10 +38,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-
-    // todo: split mybatis to a plugins
-    implementation("org.mybatis:mybatis:3.5.9")
-    implementation("ognl:ognl:3.3.2") // for mybatis expression
 
     implementation("org.jdbi:jdbi3-core:3.8.2")
 }

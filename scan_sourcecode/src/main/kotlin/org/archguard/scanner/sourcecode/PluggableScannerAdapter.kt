@@ -1,18 +1,17 @@
 package org.archguard.scanner.sourcecode
 
 import chapi.domain.core.CodeDataStruct
-import com.fasterxml.jackson.dataformat.csv.CsvMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.common.ClassRepository
 import org.archguard.scanner.common.ContainerRepository
+import org.archguard.scanner.common.DatamapRepository
 import org.archguard.scanner.core.client.ArchGuardClient
+import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.FileWriter
 
 object PluggableScannerAdapter {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -33,10 +32,10 @@ object PluggableScannerAdapter {
         private val path = p
         private val repo = ClassRepository(systemId, l, p)
 
-        override fun saveDataStructure(dataStructure: List<CodeDataStruct>) {
-            File("structs.json").writeText(Json.encodeToString(dataStructure))
+        override fun saveDataStructure(codes: List<CodeDataStruct>) {
+            File("structs.json").writeText(Json.encodeToString(codes))
 
-            dataStructure.forEach { data ->
+            codes.forEach { data ->
                 repo.saveClassItem(data)
             }
 
@@ -44,19 +43,27 @@ object PluggableScannerAdapter {
             repo.flush()
 
             // save class imports, callees and parent
-            dataStructure.forEach { data ->
+            codes.forEach { data ->
                 repo.saveClassBody(data)
             }
 
             repo.close()
         }
 
-        override fun saveApi(api: List<ContainerService>) {
-            File("apis.json").writeText(Json.encodeToString(api))
+        override fun saveApi(apis: List<ContainerService>) {
+            File("apis.json").writeText(Json.encodeToString(apis))
 
             val containerRepository = ContainerRepository(systemId, language, path)
-            containerRepository.saveContainerServices(api.toTypedArray())
+            containerRepository.saveContainerServices(apis.toTypedArray())
             containerRepository.close()
+        }
+
+        override fun saveRelation(records: List<CodeDatabaseRelation>) {
+            File("database.json").writeText(Json.encodeToString(records))
+
+            val repo = DatamapRepository(systemId, language, path)
+            repo.saveRelations(records)
+            repo.close()
         }
     }
 }

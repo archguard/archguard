@@ -1,4 +1,4 @@
-package org.archguard.scanner.common.database
+package org.archguard.scanner.core.client.dto
 
 import kotlinx.serialization.Serializable
 
@@ -10,3 +10,4 @@ data class CodeDatabaseRelation(
     val tables: List<String> = listOf(),
     val sqls: List<String> = listOf()
 )
+

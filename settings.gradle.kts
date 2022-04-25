@@ -28,7 +28,8 @@ include(
     ":analyser_sourcecode:lang_golang",
     ":analyser_sourcecode:lang_csharp",
     ":analyser_sourcecode:lang_scala",
-    ":analyser_sourcecode:feat_apicalls"
+    ":analyser_sourcecode:feat_apicalls",
+    ":analyser_sourcecode:feat_datamap",
 )
 
 // legacy scanners, should replace by analyser

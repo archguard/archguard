@@ -2,8 +2,7 @@ package org.archguard.scanner.common
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import org.archguard.scanner.common.RepositoryHelper.generateId
-import org.archguard.scanner.common.database.CodeDatabaseRelation
-import java.util.HashMap
+import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import java.util.concurrent.atomic.AtomicInteger
 
 class DatamapRepository(systemId: String, language: String, workspace: String) {

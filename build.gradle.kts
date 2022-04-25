@@ -104,6 +104,7 @@ dependencies {
     jacocoAggregation(project(":analyser_sourcecode:lang_csharp"))
     jacocoAggregation(project(":analyser_sourcecode:lang_scala"))
     jacocoAggregation(project(":analyser_sourcecode:feat_apicalls"))
+    jacocoAggregation(project(":analyser_sourcecode:feat_datamap"))
 
     jacocoAggregation(project(":analyser_sca"))
 

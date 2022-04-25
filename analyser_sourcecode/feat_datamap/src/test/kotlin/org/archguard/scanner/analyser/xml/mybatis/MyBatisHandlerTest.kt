@@ -1,7 +1,6 @@
-package org.archguard.scanner.sourcecode.xml.mybatis
+package org.archguard.scanner.analyser.xml.mybatis
 
 import org.junit.jupiter.api.Test
-import java.io.FileInputStream
 import kotlin.io.path.toPath
 import kotlin.test.assertEquals
 

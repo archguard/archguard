@@ -1,4 +1,4 @@
-package org.archguard.scanner.sourcecode.database
+package org.archguard.scanner.analyser.database
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

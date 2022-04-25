@@ -1,5 +1,6 @@
 package org.archguard.scanner.sourcecode.xml
 
+import org.archguard.scanner.analyser.xml.XmlParser
 import org.junit.jupiter.api.Test
 import kotlin.io.path.toPath
 import kotlin.test.assertEquals
