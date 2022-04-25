@@ -17,6 +17,16 @@ dependencies {
     api(project(":common_code_repository"))
     api(project(":scan_sql"))
 
+    // TODO temporarily inject source code analysers into old scanner, will disable this scanner after finished the cli
+    implementation(project(":analyser_sourcecode:lang_kotlin"))
+    implementation(project(":analyser_sourcecode:lang_java"))
+    implementation(project(":analyser_sourcecode:lang_typescript"))
+    implementation(project(":analyser_sourcecode:lang_python"))
+    implementation(project(":analyser_sourcecode:lang_golang"))
+    implementation(project(":analyser_sourcecode:lang_csharp"))
+    implementation(project(":analyser_sourcecode:lang_scala"))
+    implementation(project(":analyser_sourcecode:feat_apicalls"))
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
 
     implementation("io.netty:netty-all:4.1.42.Final")
@@ -33,9 +43,6 @@ dependencies {
     implementation("ognl:ognl:3.3.2") // for mybatis expression
 
     implementation("org.jdbi:jdbi3-core:3.8.2")
-
-    implementation("com.phodal.chapi:chapi-application:1.5.6")
-    implementation("com.phodal.chapi:chapi-domain:1.5.6")
 }
 
 application {

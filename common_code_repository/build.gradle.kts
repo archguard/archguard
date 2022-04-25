@@ -6,6 +6,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":scanner_core"))
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("io.netty:netty-all:4.1.42.Final")

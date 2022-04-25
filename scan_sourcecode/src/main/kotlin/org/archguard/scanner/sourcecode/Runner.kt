@@ -1,10 +1,6 @@
 package org.archguard.scanner.sourcecode
 
-import chapi.app.analyser.*
-import chapi.app.analyser.config.ChapiConfig
 import chapi.domain.core.CodeDataStruct
-import com.fasterxml.jackson.dataformat.csv.CsvMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -14,36 +10,25 @@ import com.thoughtworks.archguard.infrastructure.SourceBatch.ALL_TABLES
 import com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.common.ClassRepository
-import org.archguard.scanner.common.ContainerRepository
+import org.archguard.scanner.analyser.ApiCallAnalyser
+import org.archguard.scanner.analyser.CSharpAnalyser
+import org.archguard.scanner.analyser.GoAnalyser
+import org.archguard.scanner.analyser.JavaAnalyser
+import org.archguard.scanner.analyser.KotlinAnalyser
+import org.archguard.scanner.analyser.PythonAnalyser
+import org.archguard.scanner.analyser.TypeScriptAnalyser
 import org.archguard.scanner.common.DatamapRepository
-import org.archguard.scanner.common.backend.CSharpApiAnalyser
-import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.sourcecode.database.MysqlAnalyser
-import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.archguard.scanner.sourcecode.xml.XmlParser
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.Phaser
 import kotlin.io.path.Path
 import kotlin.io.path.exists
-
-val csvMapper = CsvMapper().apply {
-    registerModule(KotlinModule())
-}
-
-inline fun <reified T> writeCsvFile(data: Array<T>, fileName: String) {
-    FileWriter(fileName).use { writer ->
-        csvMapper.writer(csvMapper.schemaFor(T::class.java).withHeader())
-            .writeValues(writer)
-            .writeAll(data)
-            .close()
-    }
-}
 
 class Runner : CliktCommand(help = "scan git to sql") {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -56,38 +41,35 @@ class Runner : CliktCommand(help = "scan git to sql") {
     )
     private val withoutStorage: Boolean by option(help = "skip storage").flag(default = false)
 
+    // TODO: temporary solution
+    private val context: SourceCodeContext by lazy {
+        PluggableScannerAdapter.buildContext(language.lowercase(), path, withoutStorage, systemId)
+    }
+
     override fun run() {
         cleanSqlFile(ALL_TABLES)
 
-        var dataStructs: Array<CodeDataStruct> = arrayOf()
-        val lang = language.lowercase()
-        when (lang) {
-            "java" -> {
-                dataStructs = JavaAnalyserApp().analysisNodeByPath(path)
-            }
-            "kotlin" -> {
-                dataStructs = KotlinAnalyserApp().analysisNodeByPath(path)
-            }
-            "typescript", "javascript" -> {
-                dataStructs = TypeScriptAnalyserApp().analysisNodeByPath(path)
-            }
-            "csharp", "c#" -> {
-                dataStructs = CSharpAnalyserApp().analysisNodeByPath(path)
-            }
-            "python" -> {
-                dataStructs = PythonAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
-            }
-            "go" -> {
-                dataStructs = GoAnalyserApp(ChapiConfig()).analysisNodeByPath(path)
-            }
+        val dataStructs = when (context.language) {
+            "java" ->
+                JavaAnalyser(context).analyse()
+            "kotlin" ->
+                KotlinAnalyser(context).analyse()
+            "typescript", "javascript" ->
+                TypeScriptAnalyser(context).analyse()
+            "csharp", "c#" ->
+                CSharpAnalyser(context).analyse()
+            "python" ->
+                PythonAnalyser(context).analyse()
+            "go" ->
+                GoAnalyser(context).analyse()
+            else -> throw IllegalArgumentException("Unknown language: ${context.language}")
         }
 
-        File("structs.json").writeText(Json.encodeToString(dataStructs))
+        ApiCallAnalyser(context).analyse(dataStructs)
 
-        saveDataStructs(dataStructs, systemId, lang)
+        // save json, save api have been moved to analysers
 
-        saveApi(dataStructs, systemId, lang)
-        saveDatabaseRelations(dataStructs, systemId, lang)
+        saveDatabaseRelations(dataStructs, systemId, context.language)
 
         logger.info("start insert data into Mysql")
         val sqlStart = System.currentTimeMillis()
@@ -99,25 +81,7 @@ class Runner : CliktCommand(help = "scan git to sql") {
         SqlExecuteThreadPool.close()
     }
 
-    private fun saveDataStructs(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
-        val repo = ClassRepository(systemId, language, path)
-
-        dataStructs.forEach { data ->
-            repo.saveClassItem(data)
-        }
-
-        // fix for different order in class and depClass
-        repo.flush()
-
-        // save class imports, callees and parent
-        dataStructs.forEach { data ->
-            repo.saveClassBody(data)
-        }
-
-        repo.close()
-    }
-
-    private fun saveDatabaseRelations(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
+    private fun saveDatabaseRelations(dataStructs: List<CodeDataStruct>, systemId: String, language: String) {
         when (language.lowercase()) {
             "java", "kotlin" -> {
                 logger.info("start analysis database api ---- ${language.lowercase()}")
@@ -126,7 +90,6 @@ class Runner : CliktCommand(help = "scan git to sql") {
                 val records = dataStructs.flatMap { data ->
                     sqlAnalyser.analysisByNode(data, "")
                 }.toList()
-
 
                 val mybatisEntries = XmlParser.parseMybatis(path)
                 val relations = sqlAnalyser.convertMyBatis(mybatisEntries)
@@ -142,68 +105,8 @@ class Runner : CliktCommand(help = "scan git to sql") {
         }
     }
 
-    private fun saveApi(dataStructs: Array<CodeDataStruct>, systemId: String, language: String) {
-        logger.info("========================================================")
-        when (language.lowercase()) {
-            "typescript", "javascript" -> {
-                logger.info("start analysis frontend api")
-
-                val feApiAnalyser = FrontendApiAnalyser()
-                // save class first, and can query dependencies for later
-                val absPath = File(path).absolutePath
-
-                dataStructs.forEach { data ->
-                    feApiAnalyser.analysisByNode(data, absPath)
-                }
-
-                val apiCalls = feApiAnalyser.toContainerServices()
-                val containerRepository = ContainerRepository(systemId, language, path)
-                File("apis.json").writeText(Json.encodeToString(apiCalls))
-
-                containerRepository.saveContainerServices(apiCalls)
-                containerRepository.close()
-            }
-            "c#", "csharp" -> {
-                logger.info("start analysis backend api ---- CSharp")
-
-                val csharpApiAnalyser = CSharpApiAnalyser()
-                dataStructs.forEach { data ->
-                    csharpApiAnalyser.analysisByNode(data, "")
-                }
-
-                val apiCalls = csharpApiAnalyser.toContainerServices()
-
-                val containerRepository = ContainerRepository(systemId, language, path)
-
-                val resources = apiCalls.flatMap { it.resources }.toTypedArray()
-                writeCsvFile(resources, "apis.csv")
-
-                File("apis.json").writeText(Json.encodeToString(apiCalls))
-                containerRepository.saveContainerServices(apiCalls)
-                containerRepository.close()
-            }
-            "java", "kotlin" -> {
-                logger.info("start analysis backend api ---- ${language.lowercase()}")
-
-                val apiAnalyser = JavaApiAnalyser()
-                dataStructs.forEach { data ->
-                    apiAnalyser.analysisByNode(data, "")
-                }
-
-                val apiCalls = apiAnalyser.toContainerServices()
-
-                val containerRepository = ContainerRepository(systemId, language, path)
-                File("apis.json").writeText(Json.encodeToString(apiCalls))
-                containerRepository.saveContainerServices(apiCalls)
-                containerRepository.close()
-            }
-        }
-    }
-
     private fun storeDatabase(tables: Array<String>, systemId: String) {
-        if (withoutStorage) {
-            return;
-        }
+        if (withoutStorage) return
 
         store.disableForeignCheck()
         store.initConnectionPool()

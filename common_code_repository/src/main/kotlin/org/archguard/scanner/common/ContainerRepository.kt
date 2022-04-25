@@ -1,12 +1,11 @@
 package org.archguard.scanner.common
 
-import org.archguard.scanner.common.container.ContainerDemand
-import org.archguard.scanner.common.container.ContainerResource
-import org.archguard.scanner.common.container.ContainerService
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import org.archguard.scanner.common.RepositoryHelper.currentTime
 import org.archguard.scanner.common.RepositoryHelper.generateId
-import java.util.HashMap
+import org.archguard.scanner.core.client.dto.ContainerDemand
+import org.archguard.scanner.core.client.dto.ContainerResource
+import org.archguard.scanner.core.client.dto.ContainerService
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
@@ -52,7 +51,6 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return serviceId
     }
 
-
     private fun saveResource(it: ContainerResource, serviceId: String, name: String): String {
         val time: String = currentTime
         val resourceId = generateId()
@@ -76,7 +74,6 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         batch.add("container_resource", values)
         return resourceId
     }
-
 
     private fun saveDemand(demand: ContainerDemand, serviceId: String, name: String): String {
         val time: String = currentTime
