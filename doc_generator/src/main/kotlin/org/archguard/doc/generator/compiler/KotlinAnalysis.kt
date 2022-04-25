@@ -62,23 +62,11 @@ import java.io.File
 
 class KotlinAnalysis {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private var messageCollector: DocMessageCollector
-//    private val classPath: ArrayList<File> = run {
-//        val classpath = arrayListOf<File>()
-//        PathUtil.getResourcePathForClass(AnnotationTarget.CLASS.javaClass)
-//        classpath
-//    }
-
-
-    /**
-     * Classpath for this environment.
-     */
-    val classPath: List<File> get() = configuration.jvmClasspathRoots
-
+    private var messageCollector: DocMessageCollector = DocMessageCollector(logger)
+    private val classPath: List<File> get() = configuration.jvmClasspathRoots
     private val configuration = CompilerConfiguration()
 
     init {
-        this.messageCollector = DocMessageCollector(logger)
         configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
     }
 
