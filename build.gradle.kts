@@ -3,6 +3,7 @@ plugins {
     java
     id("jacoco-report-aggregation")
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    id("org.jetbrains.dokka") version "1.6.20"
 }
 
 jacoco {
@@ -12,6 +13,8 @@ jacoco {
 allprojects {
     apply(plugin = "java")
     apply(plugin = "jacoco")
+    apply(plugin = "org.jetbrains.dokka")
+
 
     group = "com.thoughtworks.archguard"
     version = "1.6.2"
