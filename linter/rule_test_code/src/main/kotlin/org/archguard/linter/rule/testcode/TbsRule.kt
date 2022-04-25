@@ -10,7 +10,7 @@ import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
-import org.archguard.rule.impl.common.Language
+import org.archguard.rule.common.Language
 
 fun CodePosition.smellPosition(): IssuePosition {
     return IssuePosition(
@@ -34,7 +34,11 @@ val ASSERTION_LIST = arrayOf(
 
 open class TbsRule(var language: Language = Language.JAVA) : Rule() {
     // todo: before visit check
-    override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: IssueEmit) {
+    override fun visit(rootNode: Any, context: RuleContext, callback: IssueEmit) {
+        this.visitRoot(rootNode as CodeDataStruct, context as TestSmellContext, callback)
+    }
+
+    private fun visitRoot(rootNode: CodeDataStruct, context: TestSmellContext, callback: IssueEmit) {
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)
         }
@@ -51,7 +55,7 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
 
                 // in some cases, people would like to use assert in other function
                 val currentMethodCalls =
-                    addExtractAssertMethodCall(it, rootNode, (context as TestSmellContext).methodMap)
+                    addExtractAssertMethodCall(it, rootNode, context.methodMap)
 
                 currentMethodCalls.forEachIndexed { callIndex, call ->
                     this.visitFunctionCall(it, call, callIndex, callback)

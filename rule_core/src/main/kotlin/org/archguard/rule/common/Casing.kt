@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.common
+package org.archguard.rule.common
 
 val FLAT_CASING = Regex("[a-z][a-z0-9]*")
 val CAMEL_CASING = Regex("[a-z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
@@ -12,24 +12,24 @@ class Casing {
     fun checkNaming(list: List<String>): MutableMap<String, MutableList<String>> {
         val multipleNaming: MutableMap<String, MutableList<String>> = hashMapOf()
         list.forEach {
-            val isNeedToFlag = it.isNotEmpty() && !Companion.isflat(it)
+            val isNeedToFlag = it.isNotEmpty() && !isflat(it)
             if (isNeedToFlag) {
-                if (Companion.IsPacal(it)) {
+                if (IsPacal(it)) {
                     addCasingType(multipleNaming, "pascal", it)
                 }
-                if (Companion.`is-kebab`(it)) {
+                if (`is-kebab`(it)) {
                     addCasingType(multipleNaming, "kebab", it)
                 }
-                if (Companion.`IS-COBOL`(it)) {
+                if (`IS-COBOL`(it)) {
                     addCasingType(multipleNaming, "cobol", it)
                 }
-                if (Companion.is_nake(it)) {
+                if (is_nake(it)) {
                     addCasingType(multipleNaming, "snake", it)
                 }
-                if (Companion.IS_MACRO(it)) {
+                if (IS_MACRO(it)) {
                     addCasingType(multipleNaming, "macro", it)
                 }
-                if (Companion.isCamel(it)) {
+                if (isCamel(it)) {
                     addCasingType(multipleNaming, "camel", it)
                 }
             }

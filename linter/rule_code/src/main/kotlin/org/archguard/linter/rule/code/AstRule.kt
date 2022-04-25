@@ -7,10 +7,14 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.impl.common.Language
+import org.archguard.rule.common.Language
 
 open class AstRule(var language: Language = Language.JAVA) : Rule() {
-    override fun visit(rootNode: CodeDataStruct, context: RuleContext, callback: IssueEmit) {
+    override fun visit(rootNode: Any, context: RuleContext, callback: IssueEmit) {
+        visitRoot(rootNode as CodeDataStruct, callback)
+    }
+
+    private fun visitRoot(rootNode: CodeDataStruct, callback: IssueEmit) {
         this.visitPackage(rootNode.Package, callback)
 
         rootNode.Fields.forEachIndexed { index, it ->

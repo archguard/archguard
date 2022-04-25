@@ -6,7 +6,7 @@ import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
-import org.archguard.rule.impl.common.Casing
+import org.archguard.rule.common.Casing
 
 class SnakeCasingRule : SqlRule() {
     init {

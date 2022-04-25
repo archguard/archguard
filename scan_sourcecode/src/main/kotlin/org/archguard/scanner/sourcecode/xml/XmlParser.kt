@@ -4,19 +4,15 @@ import org.archguard.scanner.sourcecode.xml.mybatis.MyBatisHandler
 import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
 import org.slf4j.LoggerFactory
 import org.xml.sax.SAXException
-import org.xml.sax.XMLReader
 import java.io.File
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.parsers.SAXParserFactory
 
 class XmlParser(
-    val xmlReader: XMLReader,
     val contentHandler: BasedXmlHandler,
     val filePath: String,
     val handlerName: String
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     fun processMyBatis(): MybatisEntry? {
         when(this.handlerName) {
             "MyBatisHandler" -> {
@@ -61,7 +57,7 @@ class XmlParser(
             xmlReader.contentHandler = contentHandler
             xmlReader.parse(filePath)
 
-            return XmlParser(xmlReader, contentHandler, filePath, dispatcher.handlerName())
+            return XmlParser(contentHandler, filePath, dispatcher.handlerName())
         }
     }
 }

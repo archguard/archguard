@@ -1,6 +1,6 @@
 package org.archguard.rule.impl
 
-import org.archguard.rule.impl.common.Casing
+import org.archguard.rule.common.Casing
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

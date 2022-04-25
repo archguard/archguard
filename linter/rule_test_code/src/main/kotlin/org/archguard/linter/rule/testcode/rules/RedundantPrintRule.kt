@@ -4,7 +4,7 @@ import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
-import org.archguard.rule.impl.common.Language
+import org.archguard.rule.common.Language
 import org.archguard.linter.rule.testcode.TbsRule
 import org.archguard.linter.rule.testcode.smellPosition
 
