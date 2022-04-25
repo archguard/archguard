@@ -101,6 +101,10 @@ dependencies {
     jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))
     jacocoAggregation(project(":analyser_sourcecode:lang_java"))
     jacocoAggregation(project(":analyser_sourcecode:lang_typescript"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_python"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_golang"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_csharp"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_scala"))
     jacocoAggregation(project(":analyser_sourcecode:feat_apicalls"))
 
     jacocoAggregation(project(":analyser_sca"))

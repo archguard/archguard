@@ -19,11 +19,17 @@ include(":scanner_core")
 include(":scanner_cli")
 
 // official analyser implementations
-include(":analyser_template")
-include(":analyser_sourcecode:lang_kotlin")
-include(":analyser_sourcecode:lang_java")
-include(":analyser_sourcecode:lang_typescript")
-include(":analyser_sourcecode:feat_apicalls")
+include(
+    ":analyser_template",
+    ":analyser_sourcecode:lang_kotlin",
+    ":analyser_sourcecode:lang_java",
+    ":analyser_sourcecode:lang_typescript",
+    ":analyser_sourcecode:lang_python",
+    ":analyser_sourcecode:lang_golang",
+    ":analyser_sourcecode:lang_csharp",
+    ":analyser_sourcecode:lang_scala",
+    ":analyser_sourcecode:feat_apicalls"
+)
 
 // legacy scanners, should replace by analyser
 include(":scan_git")
