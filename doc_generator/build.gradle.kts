@@ -9,6 +9,8 @@ dependencies {
     api("org.jetbrains.kotlin:kotlin-compiler:1.6.10")
     api(project(":common_code_repository"))
 
+    implementation("io.github.microutils:kotlin-logging:2.1.21")
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
 }
