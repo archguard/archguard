@@ -36,7 +36,6 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import org.jetbrains.kotlin.config.languageVersionSettings
-import org.jetbrains.kotlin.container.ComponentProvider
 import org.jetbrains.kotlin.container.tryGetService
 import org.jetbrains.kotlin.context.ProjectContext
 import org.jetbrains.kotlin.context.withModule
@@ -71,10 +70,17 @@ class KotlinAnalysis {
     }
 
     fun parse(vararg files: File): TopDownAnalysisContext {
-        return createEnvironmentAndFacade(files)
+        val environment = createEnvironmentAndFacade(files)
+
+        val container = createSingleModuleResolver(environment).componentProvider
+
+        val lazyTopDownAnalyzer = container.tryGetService(LazyTopDownAnalyzer::class.java) as LazyTopDownAnalyzer
+        val analysisContext = lazyTopDownAnalyzer.analyzeDeclarations(TopDownAnalysisMode.TopLevelDeclarations,
+            environment.getSourceFiles())
+        return analysisContext
     }
 
-    private fun createEnvironmentAndFacade(files: Array<out File>): TopDownAnalysisContext {
+    private fun createEnvironmentAndFacade(files: Array<out File>): KotlinCoreEnvironment {
         configuration.addJvmClasspathRoots(PathUtil.getJdkClassesRootsFromCurrentJre())
 
         // todo: add source sets
@@ -93,13 +99,7 @@ class KotlinAnalysis {
         // todo: loadLanguageVersionSettings
         loadLanguageVersionSettings()
 
-        val environment = createCoreEnvironment()
-        val container = createSingleModuleResolver(environment)
-
-        val lazyTopDownAnalyzer = container.tryGetService(LazyTopDownAnalyzer::class.java) as LazyTopDownAnalyzer
-        val analysisContext = lazyTopDownAnalyzer.analyzeDeclarations(TopDownAnalysisMode.TopLevelDeclarations,
-            environment.getSourceFiles())
-        return analysisContext
+        return createCoreEnvironment()
     }
 
     private fun loadLanguageVersionSettings() {
@@ -147,7 +147,7 @@ class KotlinAnalysis {
     }
 
 
-    private fun createSingleModuleResolver(environment: KotlinCoreEnvironment): ComponentProvider {
+    private fun createSingleModuleResolver(environment: KotlinCoreEnvironment): ResolverForModule {
         val projectContext = ProjectContext(environment.project, "Doc")
         val sourceFiles = environment.getSourceFiles()
 
@@ -197,7 +197,7 @@ class KotlinAnalysis {
         builtIns.initialize(moduleDescriptor, true)
 
         val resolverForModule = resolverForProject.resolverForModule(moduleInfo)
-        return resolverForModule.componentProvider
+        return resolverForModule
     }
 
     private fun createJvmResolverForProject(
