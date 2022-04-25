@@ -166,7 +166,6 @@ class KotlinAnalysis {
         val targetPlatform = JvmPlatforms.defaultJvmPlatform
 
         val kotlinLibraries: Map<String, KotlinLibrary> = emptyMap()
-        val extraModuleDependencies: Map<String, KotlinLibrary> = emptyMap()
 
         val library = object : LibraryModuleInfo {
             override val analyzerServices: PlatformDependentAnalyzerServices = CommonPlatformAnalyzerServices
@@ -177,9 +176,6 @@ class KotlinAnalysis {
                 .map { libraryFile -> libraryFile.absolutePath }
                 .filter { path -> path !in kotlinLibraries }
         }
-
-
-//        val moduleInfo = SourceModuleInfo(Name.special("<main"), mapOf(), false)
 
         val moduleInfo = object : ModuleInfo {
             override val analyzerServices: PlatformDependentAnalyzerServices = CommonPlatformAnalyzerServices
@@ -194,17 +190,12 @@ class KotlinAnalysis {
             when (it) {
                 library -> ModuleContent(it, emptyList(), GlobalSearchScope.notScope(sourcesScope))
                 moduleInfo -> ModuleContent(it, emptyList(), GlobalSearchScope.allScope(environment.project))
-//                is CommonKlibModuleInfo -> ModuleContent(it, emptyList(), GlobalSearchScope.notScope(sourcesScope))
                 else -> null
             } ?: throw IllegalArgumentException("Unexpected module info")
         }
 
-        var builtIns: JvmBuiltIns? = null
+        val builtIns = JvmBuiltIns(projectContext.storageManager, JvmBuiltIns.Kind.FROM_CLASS_LOADER)
 
-        builtIns = JvmBuiltIns(
-            projectContext.storageManager,
-            JvmBuiltIns.Kind.FROM_CLASS_LOADER
-        ) // TODO we should use FROM_DEPENDENCIES
         val resolverForProject = createJvmResolverForProject(
             projectContext,
             moduleInfo,
@@ -214,14 +205,10 @@ class KotlinAnalysis {
             builtIns
         )
 
-//        val libraryModuleDescriptor = resolverForProject.descriptorForModule(library)
         val moduleDescriptor = resolverForProject.descriptorForModule(moduleInfo)
         builtIns.initialize(moduleDescriptor, true)
 
-//        val resolverForLibrary =
-//            resolverForProject.resolverForModule(library) // Required before module to initialize library properly
         val resolverForModule = resolverForProject.resolverForModule(moduleInfo)
-//        val resolverForModule = resolver.resolverForModule(moduleInfo)
         return resolverForModule.componentProvider
     }
 
@@ -236,13 +223,15 @@ class KotlinAnalysis {
         val javaRoots = classPath
             .mapNotNull { file ->
                 val rootFile = when (file.extension) {
-                    "jar" -> StandardFileSystems.jar().findFileByPath("${file.absolutePath}${Companion.JAR_SEPARATOR}")
+                    "jar" -> StandardFileSystems.jar().findFileByPath("${file.absolutePath}$JAR_SEPARATOR")
                     else -> StandardFileSystems.local().findFileByPath(file.absolutePath)
                 }
+
                 rootFile?.let { JavaRoot(it, JavaRoot.RootType.BINARY) }
             }
 
-        return object : AbstractResolverForProject<ModuleInfo>("Doc", projectContext, modules = listOf(module, library)) {
+        class ModuleInfoAbstractResolverForProject :
+            AbstractResolverForProject<ModuleInfo>("Doc", projectContext, modules = listOf(module, library)) {
             override fun modulesContent(module: ModuleInfo): ModuleContent<ModuleInfo> =
                 when (module) {
                     library -> ModuleContent(module, emptyList(), GlobalSearchScope.notScope(sourcesScope))
@@ -255,37 +244,41 @@ class KotlinAnalysis {
             override fun createResolverForModule(
                 descriptor: ModuleDescriptor,
                 moduleInfo: ModuleInfo,
-            ): ResolverForModule = JvmResolverForModuleFactory(
-                JvmPlatformParameters(packagePartProviderFactory = { content ->
-                    JvmPackagePartProvider(
-                        configuration.languageVersionSettings,
-                        content.moduleContentScope
-                    )
-                        .apply {
-                            addRoots(javaRoots, messageCollector)
-                        }
-                }, moduleByJavaClass = {
-                    val file =
-                        (it as? BinaryJavaClass)?.virtualFile ?: (it as JavaClassImpl).psi.containingFile.virtualFile
-                    if (file in sourcesScope)
-                        module
-                    else
-                        library
-                }, resolverForReferencedModule = null,
-                    useBuiltinsProviderForModule = { false }),
-                CompilerEnvironment,
-                JvmPlatforms.unspecifiedJvmPlatform
-            ).createResolverForModule(
-                descriptor as ModuleDescriptorImpl,
-                projectContext.withModule(descriptor),
-                modulesContent(moduleInfo),
-                this,
-                configuration.languageVersionSettings,
-                CliSealedClassInheritorsProvider,
-            )
+            ): ResolverForModule {
+                val platformParameters = JvmPlatformParameters(
+                    packagePartProviderFactory = { content ->
+                        JvmPackagePartProvider(configuration.languageVersionSettings, content.moduleContentScope)
+                            .apply { addRoots(javaRoots, messageCollector) }
+                    },
+                    moduleByJavaClass = {
+                        val file = (it as? BinaryJavaClass)?.virtualFile
+                            ?: (it as JavaClassImpl).psi.containingFile.virtualFile
+                        if (file in sourcesScope) module else library
+                    },
+                    resolverForReferencedModule = null,
+                    useBuiltinsProviderForModule = { false }
+                )
+
+                val jvmResolverForModuleFactory = JvmResolverForModuleFactory(
+                    platformParameters,
+                    CompilerEnvironment,
+                    JvmPlatforms.unspecifiedJvmPlatform
+                )
+
+                return jvmResolverForModuleFactory.createResolverForModule(
+                    descriptor as ModuleDescriptorImpl,
+                    projectContext.withModule(descriptor),
+                    modulesContent(moduleInfo),
+                    this,
+                    configuration.languageVersionSettings,
+                    CliSealedClassInheritorsProvider,
+                )
+            }
 
             override fun sdkDependency(module: ModuleInfo): ModuleInfo? = null
         }
+
+        return ModuleInfoAbstractResolverForProject()
     }
 
     companion object {
