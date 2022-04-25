@@ -35,5 +35,7 @@ include(":scan_bytecode")
 
 include(":analyser_sca")
 
+include(":linter:rule_sql")
+
 // adapter for ci
 include(":collector_ci")

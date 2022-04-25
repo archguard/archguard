@@ -85,6 +85,8 @@ dependencies {
     jacocoAggregation(project(":common_code_repository"))
 
     jacocoAggregation(project(":rule_core"))
+    jacocoAggregation(project(":linter:rule_sql"))
+
     jacocoAggregation(project(":scanner_cli"))
 
     jacocoAggregation(project(":analyser_template"))
