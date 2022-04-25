@@ -7,9 +7,10 @@ import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.ContainerRule
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
-class EndWithoutCrudRule: ContainerRule() {
+class NoCrudEndRule: ContainerRule() {
     init {
-        this.name = "EndWithoutCrudRule"
+        this.id = "no-crud-end"
+        this.name = "NoCrudEndRule"
         this.key = this.javaClass.name
         this.description = "url should not end with crud (like /create)"
         this.severity = Severity.WARN

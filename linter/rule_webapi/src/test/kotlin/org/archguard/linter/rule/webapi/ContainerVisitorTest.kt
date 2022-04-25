@@ -24,7 +24,7 @@ internal class ContainerVisitorTest {
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(2, results.size)
-        assertEquals("EndWithoutCrudRule", results[0].name)
+        assertEquals("NoCrudEndRule", results[0].name)
     }
 
     @Test

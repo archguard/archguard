@@ -60,7 +60,8 @@ open class Rule(
     // then as a functions?
     var status: String = "READY",
     // custom for search
-    var tags: List<String> = listOf()
+    // todo: like BestPractise, PossibleErrors
+    var tags: List<String> = listOf(),
 ) {
     open fun visit(rootNode: Any, context: RuleContext, callback: IssueEmit) {}
 }
