@@ -1,4 +1,4 @@
-package org.archguard.scanner.common.backend
+package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction

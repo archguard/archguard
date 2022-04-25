@@ -1,6 +1,6 @@
 package org.archguard.scanner.bytecode
 
-import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.backend.JavaApiAnalyser
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import kotlin.test.assertEquals

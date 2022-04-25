@@ -2,7 +2,7 @@ package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
-import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.backend.JavaApiAnalyser
 import org.archguard.scanner.core.client.dto.ContainerService
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext

@@ -3,7 +3,6 @@ package org.archguard.scanner.analyser.backend
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.common.backend.JavaApiAnalyser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File

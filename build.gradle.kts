@@ -96,8 +96,6 @@ dependencies {
     jacocoAggregation(project(":linter:rule_template"))
 
     jacocoAggregation(project(":scanner_cli"))
-
-    jacocoAggregation(project(":analyser_template"))
     jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))
     jacocoAggregation(project(":analyser_sourcecode:lang_java"))
     jacocoAggregation(project(":analyser_sourcecode:lang_typescript"))
@@ -111,7 +109,7 @@ dependencies {
 
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
-    jacocoAggregation(project(":scan_sourcecode"))
+    // jacocoAggregation(project(":scan_sourcecode"))
     jacocoAggregation(project(":scan_sql"))
     jacocoAggregation(project(":scan_test_badsmell"))
     jacocoAggregation(project(":scan_bytecode"))

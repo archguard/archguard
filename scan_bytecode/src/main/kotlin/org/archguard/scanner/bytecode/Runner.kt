@@ -12,7 +12,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.common.ClassRepository
 import org.archguard.scanner.common.ContainerRepository
-import org.archguard.scanner.common.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.backend.JavaApiAnalyser
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException

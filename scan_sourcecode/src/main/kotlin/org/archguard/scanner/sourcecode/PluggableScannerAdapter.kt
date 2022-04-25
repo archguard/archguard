@@ -52,26 +52,11 @@ object PluggableScannerAdapter {
         }
 
         override fun saveApi(api: List<ContainerService>) {
-            logger.info("========================================================")
-            val containerRepository = ContainerRepository(systemId, language, path)
-            writeCsvFile(api.toTypedArray(), "apis.csv")
             File("apis.json").writeText(Json.encodeToString(api))
 
+            val containerRepository = ContainerRepository(systemId, language, path)
             containerRepository.saveContainerServices(api.toTypedArray())
             containerRepository.close()
-        }
-    }
-
-    val csvMapper = CsvMapper().apply {
-        registerModule(KotlinModule())
-    }
-
-    inline fun <reified T> writeCsvFile(data: Array<T>, fileName: String) {
-        FileWriter(fileName).use { writer ->
-            csvMapper.writer(csvMapper.schemaFor(T::class.java).withHeader())
-                .writeValues(writer)
-                .writeAll(data)
-                .close()
         }
     }
 }
