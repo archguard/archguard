@@ -1,16 +1,16 @@
-package org.archguard.rule.impl.tbs
+package org.archguard.linter.rule.testcode
 
+import org.archguard.linter.rule.testcode.rules.DuplicateAssertRule
+import org.archguard.linter.rule.testcode.rules.EmptyTestRule
+import org.archguard.linter.rule.testcode.rules.NoIgnoreTestRule
+import org.archguard.linter.rule.testcode.rules.RedundantAssertionRule
+import org.archguard.linter.rule.testcode.rules.RedundantPrintRule
+import org.archguard.linter.rule.testcode.rules.SleepyTestRule
+import org.archguard.linter.rule.testcode.rules.UnknownTestRule
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.impl.common.CasingRule
-import org.archguard.rule.impl.tbs.rules.DuplicateAssertRule
-import org.archguard.rule.impl.tbs.rules.EmptyTestRule
-import org.archguard.rule.impl.tbs.rules.NoIgnoreTestRule
-import org.archguard.rule.impl.tbs.rules.RedundantAssertionRule
-import org.archguard.rule.impl.tbs.rules.RedundantPrintRule
-import org.archguard.rule.impl.tbs.rules.SleepyTestRule
-import org.archguard.rule.impl.tbs.rules.UnknownTestRule
 
 /*
  * Low level provider

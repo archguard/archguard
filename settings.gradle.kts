@@ -12,8 +12,6 @@ include(":common_code_repository")
 
 include(":diff_changes")
 
-// core rule model
-include(":rule_core")
 // standard scanner model
 include(":scanner_core")
 include(":scanner_cli")
@@ -35,7 +33,11 @@ include(":scan_bytecode")
 
 include(":analyser_sca")
 
+
+// core rule model
+include(":rule_core")
 include(":linter:rule_sql")
+include(":linter:rule_test_code")
 
 // adapter for ci
 include(":collector_ci")

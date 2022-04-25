@@ -3,8 +3,8 @@ package org.archguard.scanner.tbs
 import chapi.app.analyser.ChapiAnalyser
 import chapi.app.analyser.config.ChapiConfig
 import kotlinx.serialization.Serializable
-import org.archguard.rule.impl.tbs.TestSmellProvider
-import org.archguard.rule.impl.tbs.TestSmellVisitor
+import org.archguard.linter.rule.testcode.TestSmellProvider
+import org.archguard.linter.rule.testcode.TestSmellVisitor
 
 @Serializable
 open class TestBadSmell(
@@ -13,9 +13,6 @@ open class TestBadSmell(
     var description: String = "",
     var line: Int = 0
 )
-
-@Serializable
-open class TbsResult(var results: Array<TestBadSmell>)
 
 class TbsAnalyser(
     private val config: ChapiConfig = ChapiConfig()

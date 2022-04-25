@@ -1,11 +1,11 @@
-package org.archguard.rule.impl.tbs.rules
+package org.archguard.linter.rule.testcode.rules
 
 import chapi.domain.core.CodeAnnotation
 import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
-import org.archguard.rule.impl.tbs.TbsRule
-import org.archguard.rule.impl.tbs.smellPosition
+import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.smellPosition
 
 class NoIgnoreTestRule : TbsRule() {
     init {

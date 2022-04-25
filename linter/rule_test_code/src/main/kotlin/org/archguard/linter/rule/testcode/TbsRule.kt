@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.tbs
+package org.archguard.linter.rule.testcode
 
 import chapi.domain.core.CodeAnnotation
 import chapi.domain.core.CodeCall

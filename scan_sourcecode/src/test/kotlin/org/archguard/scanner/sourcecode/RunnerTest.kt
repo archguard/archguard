@@ -51,6 +51,7 @@ internal class RunnerTest {
     }
 
     @Test
+    @Disabled
     internal fun crash_for_no_mysql() {
         val thrown: ConnectionException = assertThrows(
             ConnectionException::class.java, {
