@@ -1,0 +1,38 @@
+package org.archguard.linter.rule.sql.linter.rules
+
+import net.sf.jsqlparser.expression.StringValue
+import net.sf.jsqlparser.expression.operators.relational.LikeExpression
+import net.sf.jsqlparser.statement.select.PlainSelect
+import net.sf.jsqlparser.statement.select.Select
+import org.archguard.linter.rule.sql.linter.SqlRule
+import org.archguard.rule.core.IssueEmit
+import org.archguard.rule.core.IssuePosition
+import org.archguard.rule.core.RuleContext
+import org.archguard.rule.core.Severity
+
+class FuzzyPercentNotAtStartRule : SqlRule() {
+    init {
+        this.name = "FuzzyPercentNotAtStart"
+        this.key = this.javaClass.name
+        this.description = "使用 like 模糊匹配时，查找字符串中通配符 % 放首位会导致无法使用索引。"
+        this.severity = Severity.INFO
+    }
+
+    override fun visitSelect(select: Select, context: RuleContext, callback: IssueEmit) {
+        when (val selectBody = select.selectBody) {
+            is PlainSelect -> {
+                when(val where = selectBody.where) {
+                    is LikeExpression -> {
+                        when(val right = where.rightExpression) {
+                            is StringValue -> {
+                                if(right.value.startsWith("%")) {
+                                    callback(this, IssuePosition())
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
