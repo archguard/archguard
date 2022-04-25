@@ -1,7 +1,7 @@
-package org.archguard.linter.rule.sql.linter.rules.expression
+package org.archguard.linter.rule.sql.rules.expression
 
 import net.sf.jsqlparser.statement.select.Join
-import org.archguard.linter.rule.sql.linter.SqlRule
+import org.archguard.linter.rule.sql.SqlRule
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext

@@ -1,4 +1,4 @@
-package org.archguard.linter.rule.sql
+package org.archguard.scanner.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import org.junit.jupiter.api.Assertions.assertEquals

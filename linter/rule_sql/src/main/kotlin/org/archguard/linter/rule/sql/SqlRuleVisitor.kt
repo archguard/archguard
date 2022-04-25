@@ -1,4 +1,4 @@
-package org.archguard.linter.rule.sql.linter
+package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.statement.Statement
 import org.archguard.rule.core.Issue

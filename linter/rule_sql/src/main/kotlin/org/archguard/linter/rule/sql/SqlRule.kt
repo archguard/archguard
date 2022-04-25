@@ -1,4 +1,4 @@
-package org.archguard.linter.rule.sql.linter
+package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.create.table.CreateTable
@@ -9,7 +9,6 @@ import net.sf.jsqlparser.statement.select.PlainSelect
 import net.sf.jsqlparser.statement.select.Select
 import net.sf.jsqlparser.statement.update.Update
 import org.archguard.rule.core.IssueEmit
-import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 

@@ -1,7 +1,7 @@
 package org.archguard.scanner.sourcecode.database
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.linter.rule.sql.MysqlIdentApp
+import org.archguard.scanner.sql.MysqlIdentApp
 import org.archguard.scanner.common.database.CodeDatabaseRelation
 import org.archguard.scanner.sourcecode.xml.mybatis.MybatisEntry
 import org.slf4j.LoggerFactory

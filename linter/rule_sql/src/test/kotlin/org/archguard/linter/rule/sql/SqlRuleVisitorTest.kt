@@ -1,6 +1,8 @@
-package org.archguard.linter.rule.sql.linter
+package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
+import org.archguard.linter.rule.sql.SqlRuleSetProvider
+import org.archguard.linter.rule.sql.SqlRuleVisitor
 import org.junit.jupiter.api.Test
 
 internal class SqlRuleVisitorTest {

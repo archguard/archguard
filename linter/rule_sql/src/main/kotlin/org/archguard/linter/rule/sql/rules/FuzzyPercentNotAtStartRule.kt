@@ -1,10 +1,10 @@
-package org.archguard.linter.rule.sql.linter.rules
+package org.archguard.linter.rule.sql.rules
 
 import net.sf.jsqlparser.expression.StringValue
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression
 import net.sf.jsqlparser.statement.select.PlainSelect
 import net.sf.jsqlparser.statement.select.Select
-import org.archguard.linter.rule.sql.linter.SqlRule
+import org.archguard.linter.rule.sql.SqlRule
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
