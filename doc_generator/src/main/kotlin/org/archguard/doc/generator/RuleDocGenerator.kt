@@ -42,7 +42,7 @@ class RuleDocGenerator {
             page.content += DocText("className: " + it.key)
             page.content += DocText("description: " + it.description)
 
-            if(it.description.isNotEmpty()) {
+            if(it.message.isNotEmpty()) {
                 page.content += DocText("suggest: " + it.message)
             }
         }
@@ -51,7 +51,7 @@ class RuleDocGenerator {
     }
 
     fun toMarkdown(page: DocPage): String {
-        var output: String = ""
+        var output = ""
         page.content.forEach {
             when (it) {
                 is DocText -> {
