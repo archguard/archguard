@@ -18,11 +18,11 @@ ARG JAR_FILE=./build/libs/*.jar
 
 COPY ${JAR_FILE} /home/spring/app.jar
 
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/analyser_sca-${SCAN_VERSION}-all.jar .
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/diff_changes-${SCAN_VERSION}-all.jar .
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_git-${SCAN_VERSION}-all.jar .
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_sourcecode-${SCAN_VERSION}-all.jar .
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_jacoco-${SCAN_VERSION}-all.jar .
-ADD https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_test_badsmell-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/analyser_sca-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/diff_changes-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_git-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_sourcecode-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_jacoco-${SCAN_VERSION}-all.jar .
+ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_test_badsmell-${SCAN_VERSION}-all.jar .
 
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
