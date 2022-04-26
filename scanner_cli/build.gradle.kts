@@ -10,10 +10,14 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.phodal.chapi:chapi-domain:1.5.6")
-    implementation("io.ktor:ktor-client-core:2.0.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
+    implementation("io.ktor:ktor-client-core:2.0.0")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
 
     testImplementation("io.mockk:mockk:1.12.3")

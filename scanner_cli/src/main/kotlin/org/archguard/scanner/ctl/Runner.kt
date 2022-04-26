@@ -27,6 +27,7 @@ class Runner : CliktCommand(help = "scanner cli") {
         help = "official supported language: Java, Kotlin, TypeScript, CSharp, Python, Golang. You can also input a json to define your own language analyser."
     ).default("Java")
     private val features: List<String> by option(help = "features: API_CALLS, DB. You can also input a json to define your own feature analyser.").multiple()
+    private val output: List<String> by option(help = "http, csv, json, console").multiple()
 
     /**
      *  --language=java
@@ -37,6 +38,17 @@ class Runner : CliktCommand(help = "scanner cli") {
      *  --features='{identifier: "DB", version: "1.0.0" ... }'
      */
     override fun run() {
+        logger.debug(
+            """
+            |type: $type
+            |systemId: $systemId
+            |serverUrl: $serverUrl
+            |path: $path
+            |language: $language
+            |features: $features
+           """.trimIndent()
+        )
+
         val command = ScannerCommand(
             type, systemId, serverUrl, path, language,
             features.map {
@@ -45,6 +57,7 @@ class Runner : CliktCommand(help = "scanner cli") {
                     else -> it
                 }
             },
+            output,
         )
         AnalyserDispatcher().dispatch(command)
     }
