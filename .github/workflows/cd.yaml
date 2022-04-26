@@ -17,6 +17,8 @@ jobs:
           - scan_test_badsmell/build/libs/scan*-all.jar
           - diff_changes/build/libs/diff_changes*-all.jar
           - analyser_sca/build/libs/analyser_sca*-all.jar
+          - scanner_cli/build/libs/scanner_cli*-all.jar
+#          - sourcecode analysers
           - analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
           - analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar
           - analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar
