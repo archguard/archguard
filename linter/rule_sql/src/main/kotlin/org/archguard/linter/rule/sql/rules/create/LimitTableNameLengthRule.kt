@@ -14,7 +14,7 @@ class LimitTableNameLengthRule : SqlRule() {
         this.id = "limit-table-name-length"
         this.name = "LimitTableNameLength"
         this.key = this.javaClass.name
-        this.description = "table name should < 32"
+        this.description = "表名应该小于 32 个字符"
         this.severity = Severity.INFO
     }
 

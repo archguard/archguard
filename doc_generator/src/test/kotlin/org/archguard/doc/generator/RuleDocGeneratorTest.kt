@@ -17,7 +17,7 @@ internal class RuleDocGeneratorTest {
         assert(sqlNodes.content.size > 20)
 
         val node = ruleDocGenerator.nodeFromRules(arrayOf(LikeStartWithoutPercentRule()))
-        assertEquals(3, node.content.size)
+        assertEquals(4, node.content.size)
         assertEquals("org.archguard.doc.generator.render.DocHeader", node.content[0].javaClass.name)
     }
 
@@ -38,6 +38,8 @@ internal class RuleDocGeneratorTest {
 className: org.archguard.linter.rule.sql.rules.LikeStartWithoutPercentRule
 
 description: 使用 like 模糊匹配时，查找字符串中通配符 % 放首位会导致无法使用索引。
+
+severity: INFO
 
 """, text)
     }

@@ -16,7 +16,7 @@ class LimitColumnSizeRule : SqlRule() {
         this.name = "LimitColumnSize"
         this.key = this.javaClass.name
         this.maxColumnSize = this.MAX_COLUMN_SIZE
-        this.description = "table column should less than 20"
+        this.description = "表的字段应该控制在 20 以内。"
         this.severity = Severity.INFO
     }
 

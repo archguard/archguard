@@ -13,7 +13,7 @@ class SnakeCaseNamingRule : SqlRule() {
         this.id = "snake-case-naming"
         this.name = "SnakeCaseNaming"
         this.key = this.javaClass.name
-        this.description = "table name and field should be use-kebab"
+        this.description = "表名应该使用 _ 来命名。"
         this.severity = Severity.INFO
     }
 

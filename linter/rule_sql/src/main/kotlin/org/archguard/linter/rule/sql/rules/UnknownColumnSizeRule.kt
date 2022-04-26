@@ -13,8 +13,8 @@ class UnknownColumnSizeRule : SqlRule() {
         this.id = "unknown-column-size"
         this.name = "UnknownColumnSize"
         this.key = this.javaClass.name
-        this.description = "could not use * as list SELECT * from xxx"
-        this.severity = Severity.WARN
+        this.description = "禁止使用 SELECT * 进行查询。建议按需求选择合适的字段列，杜绝直接 SELECT * 读取全部字段，减少网络带宽消耗，有效利用覆盖索引；"
+        this.severity = Severity.BLOCKER
     }
 
     override fun visitSelect(select: Select, context: RuleContext, callback: IssueEmit) {

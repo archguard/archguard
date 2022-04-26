@@ -12,7 +12,8 @@ class InsertWithoutField : SqlRule() {
         this.id = "insert-without-field"
         this.name = "InsertWithoutField"
         this.key = this.javaClass.name
-        this.description = "insert should with fields"
+        this.description = "INSERT 应该包含字段键名。"
+        this.message = "正确示例：`INSERT INTO system (`name`) VALUES ('archguard');`\n"
         this.severity = Severity.BLOCKER
     }
 

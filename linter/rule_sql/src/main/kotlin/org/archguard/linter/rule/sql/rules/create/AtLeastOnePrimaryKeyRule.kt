@@ -12,8 +12,8 @@ class AtLeastOnePrimaryKeyRule : SqlRule() {
         this.id = "at-least-one-primary-key"
         this.name = "AtLeastOnePrimaryKey"
         this.key = this.javaClass.name
-        this.description = "at least one primary key"
-        this.severity = Severity.INFO
+        this.description = "至少包含一个 Primary Key。"
+        this.severity = Severity.WARN
     }
 
     override fun visitCreateTable(createStmt: CreateTable, context: RuleContext, callback: IssueEmit) {

@@ -12,7 +12,7 @@ class LimitJoinsRule : SqlRule() {
         this.id = "limit-joins"
         this.name = "LimitJoins"
         this.key = this.javaClass.name
-        this.description = "join should less than 5"
+        this.description = "建议 JOIN 的表不要超过 5 个，JOIN 多表查询比较耗时时间，关联的表越多越耗时间，防止执行超时或死锁。"
         this.severity = Severity.BLOCKER
     }
 

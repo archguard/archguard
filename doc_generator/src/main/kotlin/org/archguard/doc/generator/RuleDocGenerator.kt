@@ -42,6 +42,8 @@ class RuleDocGenerator {
             page.content += DocText("className: " + it.key)
             page.content += DocText("description: " + it.description)
 
+            page.content += DocText("severity: " + it.severity)
+
             if(it.message.isNotEmpty()) {
                 page.content += DocText("suggest: " + it.message)
             }
