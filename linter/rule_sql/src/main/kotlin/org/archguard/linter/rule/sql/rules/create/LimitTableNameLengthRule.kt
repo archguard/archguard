@@ -11,6 +11,7 @@ private const val TABLE_LENGTH = 32
 
 class LimitTableNameLengthRule : SqlRule() {
     init {
+        this.id = "limit-table-name-length"
         this.name = "LimitTableNameLength"
         this.key = this.javaClass.name
         this.description = "table name should < 32"

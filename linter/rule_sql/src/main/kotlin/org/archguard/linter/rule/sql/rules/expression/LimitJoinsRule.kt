@@ -9,6 +9,7 @@ import org.archguard.rule.core.Severity
 
 class LimitJoinsRule : SqlRule() {
     init {
+        this.id = "limit-joins"
         this.name = "LimitJoins"
         this.key = this.javaClass.name
         this.description = "join should less than 5"

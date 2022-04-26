@@ -10,7 +10,7 @@ import org.archguard.rule.common.Casing
 
 class SnakeCaseNamingRule : SqlRule() {
     init {
-        this.id = "snake-name-case"
+        this.id = "snake-case-naming"
         this.name = "SnakeCaseNaming"
         this.key = this.javaClass.name
         this.description = "table name and field should be use-kebab"

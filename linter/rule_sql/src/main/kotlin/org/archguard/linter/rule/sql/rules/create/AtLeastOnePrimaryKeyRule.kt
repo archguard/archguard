@@ -9,6 +9,7 @@ import org.archguard.rule.core.Severity
 
 class AtLeastOnePrimaryKeyRule : SqlRule() {
     init {
+        this.id = "at-least-one-primary-key"
         this.name = "AtLeastOnePrimaryKey"
         this.key = this.javaClass.name
         this.description = "at least one primary key"
