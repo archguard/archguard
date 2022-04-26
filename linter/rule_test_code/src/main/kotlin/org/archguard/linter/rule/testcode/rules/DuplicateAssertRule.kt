@@ -3,13 +3,12 @@ package org.archguard.linter.rule.testcode.rules
 import chapi.domain.core.CodeFunction
 import org.archguard.linter.rule.testcode.TbsRule
 import org.archguard.linter.rule.testcode.smellPosition
-import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
+import org.archguard.rule.core.Severity
 
 private const val MAX_ASSERTS = 5
 
 // todo: add Rule from annotation
-// @Rule()
 class DuplicateAssertRule : TbsRule() {
     init {
         this.name = "DuplicateAssertTest"

@@ -1,7 +1,7 @@
 package org.archguard.doc.generator
 
 import org.archguard.doc.generator.compiler.KotlinAnalysis
-import org.junit.jupiter.api.Disabled
+import org.jetbrains.kotlin.name.FqName
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -40,7 +40,11 @@ internal class KotlinAnalysisTest {
         }
 
         rules.forEach {
-            println(it)
+            val annotation = it.annotations.findAnnotation(FqName("org.archguard.rule.core.RuleDecl"))
+            annotation?.allValueArguments?.forEach { arg ->
+                println(arg.key)
+                println(arg.value)
+            }
         }
     }
 }
