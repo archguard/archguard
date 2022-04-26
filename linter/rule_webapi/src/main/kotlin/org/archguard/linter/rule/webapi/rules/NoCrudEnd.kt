@@ -12,7 +12,7 @@ class NoCrudEndRule: WebApiRule() {
         this.id = "no-crud-end"
         this.name = "NoCrudEndRule"
         this.key = this.javaClass.name
-        this.description = "url should not end with crud (like /create)"
+        this.description = "URL 不应该以 CRUD 结尾，错误的方式 `/api/book/get`，正确的方式： `GET /api/book`"
         this.severity = Severity.WARN
     }
 

@@ -9,10 +9,10 @@ import org.archguard.linter.rule.webapi.model.ContainerResource
 
 class MultipleParametersRule : WebApiRule() {
     init {
+        this.id = "multiple-parameters"
         this.name = "MultipleParameters"
         this.key = this.javaClass.name
-        this.description = "api should"
-        this.message = "error samples: /api/book/{bookType}/{bookId}/{bookChildType}/{childId}"
+        this.description = "URL 中的参数不宜超过 3 个，可以放到 body 中。错误示例：/api/book/{bookType}/{bookId}/{bookChildType}/{childId}"
         this.severity = Severity.INFO
     }
 

@@ -9,9 +9,10 @@ import org.archguard.linter.rule.webapi.model.ContainerResource
 
 class StartWithoutCrudRule : WebApiRule() {
     init {
+        this.id = "start-without-crud"
         this.name = "StartWithoutCrudRule"
         this.key = this.javaClass.name
-        this.description = "url should not end with crud (like /create)"
+        this.description = "URL 不应该以 CRUD 开头。错误示例： `/api/getbook`， 正确示例： `GET /api/book`"
         this.severity = Severity.WARN
     }
 

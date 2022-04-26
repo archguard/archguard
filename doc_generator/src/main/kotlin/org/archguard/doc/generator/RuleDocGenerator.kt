@@ -28,7 +28,7 @@ class RuleDocGenerator {
 
         val testStr = listOf(
             CustomJekyllFrontMatter(title = "Web API", navOrder = 99, permalink = "web-api").toMarkdown(),
-            this.toMarkdown(this.nodeFromRules(TestSmellProvider().get().rules))
+            this.toMarkdown(this.nodeFromRules(WebApiRuleSetProvider().get().rules))
         ).joinToString("\n")
 
         File("build" + File.separator + "web-api.md").writeText(testStr)

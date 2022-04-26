@@ -12,9 +12,10 @@ private val CHAR_REGEX = "[a-zA-Z]+".toRegex()
 
 class SpliceNamingRule : WebApiRule() {
     init {
+        this.id = "splice-naming"
         this.name = "SpliceNamingRule"
         this.key = this.javaClass.name
-        this.description = "resource node should less than 20"
+        this.description = "API 应该采用 - 的方式命名，单个资源的长度通常不超过 20 字符。"
         this.severity = Severity.WARN
     }
 

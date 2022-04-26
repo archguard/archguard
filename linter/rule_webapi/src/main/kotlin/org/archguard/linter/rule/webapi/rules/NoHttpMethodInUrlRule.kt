@@ -9,9 +9,10 @@ import org.archguard.linter.rule.webapi.model.ContainerResource
 
 class NoHttpMethodInUrlRule : WebApiRule() {
     init {
+        this.id = "no-http-method-in-url"
         this.name = "NoHttpMethodInUrl"
         this.key = this.javaClass.name
-        this.description = "url resource should not equal crud "
+        this.description = "URL 中不应该包含 CRUD 方法。"
         this.severity = Severity.WARN
     }
 

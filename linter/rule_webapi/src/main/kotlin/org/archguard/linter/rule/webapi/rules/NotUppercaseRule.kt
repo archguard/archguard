@@ -12,9 +12,10 @@ private val PARAMETER_IN_URL = "\\{[a-zA-Z?:]+\\}".toRegex()
 
 class NotUppercaseRule: WebApiRule() {
     init {
+        this.id = "not-uppercase"
         this.name = "NotUppercaseRule"
         this.key = this.javaClass.name
-        this.description = "url should not end with crud (like /create)"
+        this.description = "URL 中不应该包含大写字符。"
         this.severity = Severity.WARN
     }
 
