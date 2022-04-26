@@ -26,4 +26,21 @@ class RuleDocGenerator {
 
         return page
     }
+
+    fun toMarkdown(page: DocPage): String {
+        var output: String = ""
+        page.content.forEach {
+            when (it) {
+                is DocText -> {
+                    output += "${it.text}\n"
+                }
+                is DocHeader -> {
+                    output += "#".repeat(it.level) + " " + it.title + "\n"
+                }
+            }
+            output += "\n"
+        }
+
+        return output
+    }
 }
