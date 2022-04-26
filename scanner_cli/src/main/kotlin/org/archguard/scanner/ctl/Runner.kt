@@ -1,8 +1,6 @@
 package org.archguard.scanner.ctl
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
@@ -18,9 +16,9 @@ import org.slf4j.LoggerFactory
 // parse the cli inputs as the standard command (controller), build the context and dispatch to run
 class Runner : CliktCommand(help = "scanner cli") {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val type: AnalyserType by argument().enum(ignoreCase = true)
-    private val systemId: String by argument(help = "system id").default("0")
-    private val serverUrl: String by argument(help = "the base url of the archguard api server")
+    private val type: AnalyserType by option().enum<AnalyserType>(ignoreCase = true).default(AnalyserType.SOURCE_CODE)
+    private val systemId: String by option(help = "system id").default("0")
+    private val serverUrl: String by option(help = "the base url of the archguard api server").default("http://localhost:8080")
 
     private val path: String by option(help = "the path of target project").default(".")
     private val language: String by option(
@@ -62,3 +60,5 @@ class Runner : CliktCommand(help = "scanner cli") {
         AnalyserDispatcher().dispatch(command)
     }
 }
+
+fun main(args: Array<String>) = Runner().main(args)

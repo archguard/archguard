@@ -19,6 +19,7 @@ dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("io.ktor:ktor-client-core:2.0.0")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
+    implementation("ch.qos.logback:logback-core:1.3.0-alpha14")
 
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.assertj:assertj-core:3.22.0")
@@ -30,6 +31,9 @@ application {
 
 tasks {
     shadowJar {
-        minimize()
+        manifest {
+            attributes(Pair("Main-Class", "org.archguard.scanner.ctl.RunnerKt"))
+        }
+        // minimize()
     }
 }

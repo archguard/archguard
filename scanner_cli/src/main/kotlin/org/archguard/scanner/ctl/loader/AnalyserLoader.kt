@@ -9,6 +9,8 @@ import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+import kotlin.io.path.createDirectories
 import kotlin.system.measureTimeMillis
 
 object AnalyserLoader {
@@ -47,7 +49,7 @@ object AnalyserLoader {
         logger.debug("downloading...")
         val cost = measureTimeMillis {
             sourceUrl.openStream().use {
-                Files.copy(it, targetJarPath)
+                Files.copy(it, targetJarPath, StandardCopyOption.REPLACE_EXISTING)
             }
         }
         logger.debug("downloading finished in $cost ms")
@@ -70,7 +72,8 @@ object AnalyserLoader {
     }
 
     private fun AnalyserSpec.getLocalPath(): Path {
-        return rootPath.resolve(folder).resolve(jar)
+        val folderPath = rootPath.resolve(folder).also { it.createDirectories() }
+        return folderPath.resolve(jar)
     }
 
     fun load(context: Context, spec: AnalyserSpec): Analyser<Context> {

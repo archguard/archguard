@@ -2,7 +2,9 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-private const val RELEASE_REPO = "https://github.com/archguard/scanner/releases/download/plugin-ea-0.0.4"
+private const val VERSION = "1.6.3"
+private const val TAG = "plugin-ea-0.0.4"
+private const val RELEASE_REPO_URL = "https://github.com/archguard/scanner/releases/download/$TAG"
 
 enum class OfficialAnalyserSpecs(
     private val url: String,
@@ -11,47 +13,50 @@ enum class OfficialAnalyserSpecs(
     private val isLanguage: Boolean = true,
 ) {
     CSHARP(
-        RELEASE_REPO, "1.6.3", "CSharpAnalyser",
+        RELEASE_REPO_URL, VERSION, "CSharpAnalyser",
     ),
     GO(
-        RELEASE_REPO, "1.6.3", "GoAnalyser",
+        RELEASE_REPO_URL, VERSION, "GoAnalyser",
     ),
     JAVA(
-        RELEASE_REPO, "1.6.3", "JavaAnalyser",
+        RELEASE_REPO_URL, VERSION, "JavaAnalyser",
     ),
     KOTLIN(
-        RELEASE_REPO, "1.6.3", "KotlinAnalyser",
+        RELEASE_REPO_URL, VERSION, "KotlinAnalyser",
     ),
     PYTHON(
-        RELEASE_REPO, "1.6.3", "PythonAnalyser",
+        RELEASE_REPO_URL, VERSION, "PythonAnalyser",
     ),
     SCALA(
-        RELEASE_REPO, "1.6.3", "ScalaAnalyser",
+        RELEASE_REPO_URL, VERSION, "ScalaAnalyser",
     ),
     TYPESCRIPT(
-        RELEASE_REPO, "1.6.3", "TypeScriptAnalyser",
+        RELEASE_REPO_URL, VERSION, "TypeScriptAnalyser",
     ),
     JAVASCRIPT(
         TYPESCRIPT.url, TYPESCRIPT.version, TYPESCRIPT.className
     ),
     APICALLS(
-        RELEASE_REPO, "1.6.3", "ApiCallAnalyser", false,
+        RELEASE_REPO_URL, VERSION, "ApiCallAnalyser", false,
     ),
     DATAMAP(
-        RELEASE_REPO, "1.6.3", "DataMapAnalyser", false,
+        RELEASE_REPO_URL, VERSION, "DataMapAnalyser", false,
     ),
     ;
 
     fun spec(): AnalyserSpec {
         val identifier = name.lowercase()
-        val host = "$url/$version"
         val prefix = if (isLanguage) "lang" else "feat"
         val jar = "${prefix}_$identifier-$version-all.jar"
 
-        return AnalyserSpec(identifier, host, version, jar, className)
+        return AnalyserSpec(identifier, url, version, jar, className)
     }
 
     companion object {
         fun specs() = values().map(OfficialAnalyserSpecs::spec)
     }
 }
+
+// https://github.com/archguard/scanner/releases/download/plugin-ea-0.0.4/lang_kotlin-1.6.3-all.jar
+// https://github.com/archguard/scanner/releases/download/plugin-ea-0.0.4/lang_kotlin-1.6.3-all.jar
+// https://github.com/archguard/scanner/releases/download/plugin-ea-0.0.4/1.6.3/lang_kotlin-1.6.3-all.jar
