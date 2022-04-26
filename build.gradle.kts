@@ -16,7 +16,7 @@ allprojects {
     apply(plugin = "org.jetbrains.dokka")
 
     group = "com.thoughtworks.archguard"
-    version = "1.6.3"
+    version = "1.7.0"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
 

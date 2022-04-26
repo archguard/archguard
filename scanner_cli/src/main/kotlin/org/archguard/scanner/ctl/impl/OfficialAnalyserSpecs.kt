@@ -2,8 +2,8 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-private const val VERSION = "1.6.3"
-private const val TAG = "plugin-ea-0.0.4"
+private const val VERSION = "1.7.0"
+private const val TAG = "plugin-ea-0.0.5"
 private const val RELEASE_REPO_URL = "https://github.com/archguard/scanner/releases/download/$TAG"
 
 enum class OfficialAnalyserSpecs(
