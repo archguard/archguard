@@ -2,8 +2,7 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-// TODO, replace the host as the release url
-private const val RELEASE_REPO = "https://github.com/archguard/scanner/releases/download"
+private const val RELEASE_REPO = "https://github.com/archguard/scanner/releases/download/plugin-ea-0.0.4"
 
 enum class OfficialAnalyserSpecs(
     private val url: String,
@@ -12,34 +11,34 @@ enum class OfficialAnalyserSpecs(
     private val isLanguage: Boolean = true,
 ) {
     CSHARP(
-        RELEASE_REPO, "1.6.1", "CSharpAnalyser",
+        RELEASE_REPO, "1.6.3", "CSharpAnalyser",
     ),
     GO(
-        RELEASE_REPO, "1.6.1", "GoAnalyser",
+        RELEASE_REPO, "1.6.3", "GoAnalyser",
     ),
     JAVA(
-        RELEASE_REPO, "1.6.1", "JavaAnalyser",
+        RELEASE_REPO, "1.6.3", "JavaAnalyser",
     ),
     KOTLIN(
-        RELEASE_REPO, "1.6.1", "KotlinAnalyser",
+        RELEASE_REPO, "1.6.3", "KotlinAnalyser",
     ),
     PYTHON(
-        RELEASE_REPO, "1.6.1", "PythonAnalyser",
+        RELEASE_REPO, "1.6.3", "PythonAnalyser",
     ),
     SCALA(
-        RELEASE_REPO, "1.6.1", "ScalaAnalyser",
+        RELEASE_REPO, "1.6.3", "ScalaAnalyser",
     ),
     TYPESCRIPT(
-        RELEASE_REPO, "1.6.1", "TypeScriptAnalyser",
+        RELEASE_REPO, "1.6.3", "TypeScriptAnalyser",
     ),
     JAVASCRIPT(
         TYPESCRIPT.url, TYPESCRIPT.version, TYPESCRIPT.className
     ),
     APICALLS(
-        RELEASE_REPO, "1.6.1", "ApiCallAnalyser", false,
+        RELEASE_REPO, "1.6.3", "ApiCallAnalyser", false,
     ),
     DATAMAP(
-        RELEASE_REPO, "1.6.1", "DataMapAnalyser", false,
+        RELEASE_REPO, "1.6.3", "DataMapAnalyser", false,
     ),
     ;
 
