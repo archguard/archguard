@@ -9,6 +9,7 @@ import kotlin.test.assertEquals
 
 internal class KotlinAnalysisTest {
     @Test
+    @Disabled
     internal fun compiler_file() {
         val scriptFile = "src/"
         val parser = KotlinAnalysis()

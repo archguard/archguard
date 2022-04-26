@@ -8,13 +8,8 @@ import org.archguard.linter.rule.sql.SqlRule
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.core.RuleDecl
 import org.archguard.rule.core.Severity
 
-@RuleDecl(
-    name = "LikeStartWithoutPercent",
-    description = "使用 like 模糊匹配时，查找字符串中通配符 % 放首位会导致无法使用索引。"
-)
 class LikeStartWithoutPercentRule : SqlRule() {
     init {
         this.id = "like-start-without-percent"

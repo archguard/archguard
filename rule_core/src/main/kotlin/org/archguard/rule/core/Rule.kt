@@ -38,14 +38,6 @@ enum class RuleType {
 typealias IssueEmit = (rule: Rule, position: IssuePosition) -> Unit
 typealias RuleContext = Any
 
-annotation class RuleDecl(
-    // rule name for identify
-    val name: String = "",
-    // todo: i18N support, load from properties
-    //  description for rule index
-    val description: String = "",
-)
-
 open class Rule(
     // for lazy load
     var id: String = "",
