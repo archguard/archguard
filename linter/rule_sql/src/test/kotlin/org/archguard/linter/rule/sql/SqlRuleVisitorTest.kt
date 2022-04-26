@@ -1,13 +1,13 @@
 package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
-import org.archguard.linter.rule.sql.SqlRuleSetProvider
-import org.archguard.linter.rule.sql.SqlRuleVisitor
 import org.junit.jupiter.api.Test
 
+
+// test should support close to RuleName
 internal class SqlRuleVisitorTest {
     @Test
-    internal fun not_uppercase() {
+    internal fun test_rule_unknown_column_size() {
         val stmt = CCJSqlParserUtil.parseStatements("SELECT * FROM tab2")
         val visitor = SqlRuleVisitor(stmt.statements)
         val ruleSetProvider = SqlRuleSetProvider()
@@ -18,7 +18,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun not_percent_in_like_start() {
+    internal fun test_rule_like_start_without_percent() {
         val sql = "SELECT customer_name FROM customers WHERE last_name LIKE '%Sm%';"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
@@ -30,7 +30,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun table_name_limit() {
+    internal fun test_rule_limit_table_name_length() {
         val sql = "CREATE TABLE this_is_a_very_long_table_name_32 (id INT(11) PRIMARY KEY)"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
@@ -42,7 +42,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun table_name_and_field_in_kebab() {
+    internal fun test_rule_snake_case_naming() {
         val sql = "CREATE TABLE NotSnake ()"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
@@ -54,7 +54,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun insert_should_with_field() {
+    internal fun test_rule_insert_without_field() {
         val sql = "INSERT INTO user VALUES ('alicfeng',23);"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
@@ -66,7 +66,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun limit_join_in_update() {
+    internal fun test_rule_limit_joins() {
         val sql = "SELECT columns FROM table1 INNER JOIN table2 ON table1.column = table2.column " +
                 " INNER JOIN table3 ON table1.column = table3.column " +
                 " INNER JOIN table4 ON table1.column = table4.column " +
@@ -83,7 +83,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun at_least_primary_key() {
+    internal fun test_rule_at_least_one_primary_key() {
         val sql = "CREATE TABLE tb_emp3 (id INT(11), name VARCHAR(25));"
         val stmt = CCJSqlParserUtil.parseStatements(sql)
         val visitor = SqlRuleVisitor(stmt.statements)
@@ -95,7 +95,7 @@ internal class SqlRuleVisitorTest {
     }
 
     @Test
-    internal fun limit_column_size() {
+    internal fun test_rule_limit_column_size() {
         val sql = "CREATE TABLE tb_emp3 (id INT PRIMARY KEY, i1 INT, i1 INT, i1 INT, i1 INT, " +
                 "i1 INT, i1 INT, i1 INT, i1 INT, i1 INT, " +
                 "i1 INT, i1 INT, i1 INT, i1 INT, i1 INT, " +
