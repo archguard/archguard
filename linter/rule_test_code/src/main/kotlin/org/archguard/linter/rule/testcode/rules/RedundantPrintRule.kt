@@ -10,9 +10,11 @@ import org.archguard.linter.rule.testcode.smellPosition
 
 class RedundantPrintRule : TbsRule() {
     init {
+        this.id = "redundant-print"
         this.name = "RedundantPrintTest"
         this.key = this.javaClass.name
-        this.description = "The test is contains print function, it can be removed"
+        this.description = "包含了过多调试打印信息的测试用例"
+        this.message = "自动化测试用例中，应该使用自动的 Assert 语句，替代需要人眼观察的 Print"
         this.severity = Severity.WARN
     }
 

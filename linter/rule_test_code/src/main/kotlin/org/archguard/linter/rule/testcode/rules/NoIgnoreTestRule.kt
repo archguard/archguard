@@ -9,9 +9,11 @@ import org.archguard.linter.rule.testcode.smellPosition
 
 class NoIgnoreTestRule : TbsRule() {
     init {
+        this.id = "no-ignore-test"
         this.name = "IgnoreTest"
         this.key = this.javaClass.name
-        this.description = "The test is ignore or disabled"
+        this.description = "被忽略（Ignore、Disabled）的测试用例"
+        this.message = "当需求修改导致测试用例失败、失效了，应该尽快修复或移除而不是忽略。"
         this.severity = Severity.WARN
     }
 

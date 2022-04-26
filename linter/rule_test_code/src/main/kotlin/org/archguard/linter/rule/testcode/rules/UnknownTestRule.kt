@@ -11,9 +11,11 @@ class UnknownTestRule : TbsRule() {
     private var hasAssert: Boolean = false
 
     init {
+        this.id = "unknown-test"
         this.name = "UnknownTest"
         this.key = this.javaClass.name
-        this.description = "don't have assert"
+        this.description = "缺乏了自动校验的测试用例，这将无法达到自动验证结果的目的。"
+        this.message = "为每个测试用例都添加足够的自动校验 Assert 语句"
         this.severity = Severity.WARN
     }
 

@@ -20,7 +20,6 @@ class TestSmellProvider: RuleSetProvider {
         return RuleSet(
             RuleType.CHANGE_SMELL,
             "normal",
-            CasingRule(),
             EmptyTestRule(),
             NoIgnoreTestRule(),
             SleepyTestRule(),

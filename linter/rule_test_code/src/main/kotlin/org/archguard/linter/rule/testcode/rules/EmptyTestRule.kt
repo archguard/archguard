@@ -8,6 +8,7 @@ import org.archguard.linter.rule.testcode.smellPosition
 
 class EmptyTestRule: TbsRule() {
     init {
+        this.id = "empty-test"
         this.name = "EmptyTest"
         this.key = this.javaClass.name
         this.description = "Test is without any code"

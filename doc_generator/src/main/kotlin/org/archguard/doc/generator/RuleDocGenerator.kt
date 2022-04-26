@@ -20,8 +20,8 @@ class RuleDocGenerator {
         File("build" + File.separator + "sql.md").writeText(sqlStr)
 
         val apiStr = listOf(
-            CustomJekyllFrontMatter(title = "Web API", navOrder = 2, permalink = "web-api").toMarkdown(),
-            this.toMarkdown(this.nodeFromRules(WebApiRuleSetProvider().get().rules))
+            CustomJekyllFrontMatter(title = "Test smell", navOrder = 2, permalink = "test-smell").toMarkdown(),
+            this.toMarkdown(this.nodeFromRules(TestSmellProvider().get().rules))
         ).joinToString("\n")
 
         File("build" + File.separator + "test-smell.md").writeText(apiStr)
@@ -41,6 +41,10 @@ class RuleDocGenerator {
             page.content += DocHeader(it.id, listOf(), level = 2)
             page.content += DocText("className: " + it.key)
             page.content += DocText("description: " + it.description)
+
+            if(it.description.isNotEmpty()) {
+                page.content += DocText("suggest: " + it.message)
+            }
         }
 
         return page
