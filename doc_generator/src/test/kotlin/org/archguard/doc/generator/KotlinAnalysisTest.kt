@@ -2,6 +2,7 @@ package org.archguard.doc.generator
 
 import org.archguard.doc.generator.compiler.KotlinAnalysis
 import org.jetbrains.kotlin.name.FqName
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
