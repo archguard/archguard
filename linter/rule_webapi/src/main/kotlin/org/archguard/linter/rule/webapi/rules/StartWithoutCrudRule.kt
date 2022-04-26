@@ -4,10 +4,10 @@ import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
-import org.archguard.linter.rule.webapi.ContainerRule
+import org.archguard.linter.rule.webapi.WebApiRule
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
-class StartWithoutCrudRule : ContainerRule() {
+class StartWithoutCrudRule : WebApiRule() {
     init {
         this.name = "StartWithoutCrudRule"
         this.key = this.javaClass.name

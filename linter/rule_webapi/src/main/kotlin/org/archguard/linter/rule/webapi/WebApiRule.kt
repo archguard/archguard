@@ -5,7 +5,7 @@ import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
-open class ContainerRule : Rule() {
+open class WebApiRule : Rule() {
     open fun visitResources(resources: Array<ContainerResource>, context: RuleContext, callback: IssueEmit) {
         resources.forEach {
             this.visitResource(it, context, callback)

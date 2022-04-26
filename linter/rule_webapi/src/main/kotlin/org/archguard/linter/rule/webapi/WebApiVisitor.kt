@@ -9,7 +9,7 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
-class ContainerVisitor(private val resources: Array<ContainerResource>) : RuleVisitor {
+class WebApiVisitor(private val resources: Array<ContainerResource>) : RuleVisitor {
     fun visitor(ruleSets: Iterable<RuleSet>): Array<Issue> {
         var results: Array<Issue> = arrayOf()
         val context = RuleContext()
@@ -17,7 +17,7 @@ class ContainerVisitor(private val resources: Array<ContainerResource>) : RuleVi
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach { rule ->
                 // todo: cast by plugins
-                val rule = rule as ContainerRule
+                val rule = rule as WebApiRule
                 resources.map {
                     rule.visitResources(this.resources, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(

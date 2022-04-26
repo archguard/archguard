@@ -4,13 +4,13 @@ import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
-import org.archguard.linter.rule.webapi.ContainerRule
+import org.archguard.linter.rule.webapi.WebApiRule
 import org.archguard.linter.rule.webapi.model.ContainerResource
 
 private val HAS_UPPERCASE_RULE = ".*[A-Z].*".toRegex()
 private val PARAMETER_IN_URL = "\\{[a-zA-Z?:]+\\}".toRegex()
 
-class NotUppercaseRule: ContainerRule() {
+class NotUppercaseRule: WebApiRule() {
     init {
         this.name = "NotUppercaseRule"
         this.key = this.javaClass.name

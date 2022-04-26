@@ -4,12 +4,12 @@ import org.archguard.linter.rule.webapi.model.ContainerResource
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class ContainerVisitorTest {
+internal class WebApiVisitorTest {
     @Test
     internal fun length_count() {
         val resource = ContainerResource(sourceUrl = "/api/fadlfkjaldfjaslfjalsfjalksdsj")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
@@ -19,8 +19,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun not_end_with_create() {
         val resource = ContainerResource(sourceUrl = "/api/book/create")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(2, results.size)
@@ -30,8 +30,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun not_uppercase() {
         val resource = ContainerResource(sourceUrl = "/api/Book")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
@@ -41,8 +41,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun start_without_crud() {
         val resource = ContainerResource(sourceUrl = "/api/getcfg")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
@@ -52,8 +52,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun allow_parameter_in_url() {
         val resource = ContainerResource(sourceUrl = "api/book/{bookId}")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(0, results.size)
@@ -62,8 +62,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun not_method_in_node() {
         val resource = ContainerResource(sourceUrl = "api/book/delete/{bookId}")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
@@ -73,8 +73,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun multiple_parameters() {
         val resource = ContainerResource(sourceUrl = "/api/book/{bookType}/{bookId}/{bookChildType}/{childId}")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)
@@ -84,8 +84,8 @@ internal class ContainerVisitorTest {
     @Test
     internal fun min_feature() {
         val resource = ContainerResource(sourceUrl = "/api/book-with-author/")
-        val visitor = ContainerVisitor(arrayOf(resource))
-        val ruleSetProvider = ContainerRuleSetProvider()
+        val visitor = WebApiVisitor(arrayOf(resource))
+        val ruleSetProvider = WebApiRuleSetProvider()
 
         val results = visitor.visitor(listOf(ruleSetProvider.get()))
         assertEquals(1, results.size)

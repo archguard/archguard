@@ -1,19 +1,38 @@
 package org.archguard.doc.generator
 
+import org.archguard.doc.generator.render.CustomJekyllFrontMatter
 import org.archguard.doc.generator.render.DocHeader
 import org.archguard.doc.generator.render.DocPage
 import org.archguard.doc.generator.render.DocText
 import org.archguard.linter.rule.sql.SqlRuleSetProvider
+import org.archguard.linter.rule.testcode.TestSmellProvider
+import org.archguard.linter.rule.webapi.WebApiRuleSetProvider
 import org.archguard.rule.core.Rule
+import java.io.File
 
 class RuleDocGenerator {
-    fun sqlNodes(): DocPage {
-        // 1. load ruleset to maps
-        val ruleSetProvider = SqlRuleSetProvider()
-        val rules = ruleSetProvider.get().rules
+    fun execute() {
+        val sqlStr = listOf(
+            CustomJekyllFrontMatter(title = "SQL", navOrder = 1, permalink = "sql").toMarkdown(),
+            this.toMarkdown(this.nodeFromRules(SqlRuleSetProvider().get().rules))
+        ).joinToString("\n")
 
-        return nodeFromRules(rules)
-        // 2. load test as error cases
+        File("build" + File.separator + "sql.md").writeText(sqlStr)
+
+        val apiStr = listOf(
+            CustomJekyllFrontMatter(title = "Web API", navOrder = 2, permalink = "web-api").toMarkdown(),
+            this.toMarkdown(this.nodeFromRules(WebApiRuleSetProvider().get().rules))
+        ).joinToString("\n")
+
+        File("build" + File.separator + "test-smell.md").writeText(apiStr)
+
+        val testStr = listOf(
+            CustomJekyllFrontMatter(title = "Web API", navOrder = 99, permalink = "web-api").toMarkdown(),
+            this.toMarkdown(this.nodeFromRules(TestSmellProvider().get().rules))
+        ).joinToString("\n")
+
+        File("build" + File.separator + "web-api.md").writeText(testStr)
+
     }
 
     fun nodeFromRules(rules: Array<out Rule>): DocPage {

@@ -1,5 +1,6 @@
 package org.archguard.doc.generator
 
+import org.archguard.linter.rule.sql.SqlRuleSetProvider
 import org.archguard.linter.rule.sql.rules.LikeStartWithoutPercentRule
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -9,7 +10,10 @@ internal class RuleDocGeneratorTest {
     internal fun should_count_sql_nodes() {
         val ruleDocGenerator = RuleDocGenerator()
 
-        val sqlNodes = ruleDocGenerator.sqlNodes()
+        val sqlNodes = ruleDocGenerator.        // 1. load ruleset to maps
+
+            // todo: 2. load test as error cases
+        nodeFromRules(SqlRuleSetProvider().get().rules)
         assert(sqlNodes.content.size > 20)
 
         val node = ruleDocGenerator.nodeFromRules(arrayOf(LikeStartWithoutPercentRule()))
@@ -21,7 +25,10 @@ internal class RuleDocGeneratorTest {
     internal fun should_convert_text() {
         val ruleDocGenerator = RuleDocGenerator()
 
-        val sqlNodes = ruleDocGenerator.sqlNodes()
+        val sqlNodes = ruleDocGenerator.        // 1. load ruleset to maps
+
+            // todo: 2. load test as error cases
+        nodeFromRules(SqlRuleSetProvider().get().rules)
         assert(sqlNodes.content.size > 20)
 
         val node = ruleDocGenerator.nodeFromRules(arrayOf(LikeStartWithoutPercentRule()))

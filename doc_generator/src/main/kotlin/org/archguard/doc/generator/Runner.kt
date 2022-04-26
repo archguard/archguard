@@ -5,10 +5,8 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
 class Runner : CliktCommand() {
-    private val project: String by option(help = "the path of target project").default(".")
-
     override fun run() {
-        println(project)
+        RuleDocGenerator().execute()
     }
 }
 

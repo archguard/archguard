@@ -5,12 +5,12 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.model.ContainerResource
-import org.archguard.linter.rule.webapi.ContainerRule
+import org.archguard.linter.rule.webapi.WebApiRule
 
 private const val MAX_URL_NODE_LENGTH = 20
 private val CHAR_REGEX = "[a-zA-Z]+".toRegex()
 
-class SpliceNamingRule : ContainerRule() {
+class SpliceNamingRule : WebApiRule() {
     init {
         this.name = "SpliceNamingRule"
         this.key = this.javaClass.name

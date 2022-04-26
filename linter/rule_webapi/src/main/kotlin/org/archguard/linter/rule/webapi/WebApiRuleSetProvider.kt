@@ -11,7 +11,7 @@ import org.archguard.linter.rule.webapi.rules.NotUppercaseRule
 import org.archguard.linter.rule.webapi.rules.StartWithoutCrudRule
 import org.archguard.linter.rule.webapi.rules.SpliceNamingRule
 
-class ContainerRuleSetProvider: RuleSetProvider {
+class WebApiRuleSetProvider: RuleSetProvider {
     override fun get(): RuleSet {
         return RuleSet(
             RuleType.CHANGE_SMELL,
