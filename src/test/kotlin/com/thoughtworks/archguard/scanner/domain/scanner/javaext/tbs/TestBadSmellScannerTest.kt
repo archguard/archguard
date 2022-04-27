@@ -31,7 +31,8 @@ internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestB
             "",
             "",
             InMemoryConsumer(),
-            listOf()
+            listOf(),
+            ""
         )
         testBadSmellScanner.scan(scanContext)
 
