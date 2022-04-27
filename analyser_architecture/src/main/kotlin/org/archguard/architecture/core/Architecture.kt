@@ -1,12 +1,15 @@
 package org.archguard.architecture.core
 
 class Architecture(
+    // 分层等架构风格
     val archStyle: ArchitectureStyle,
+    // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
     val subSystem: List<SubSystem>,
+    // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
-    // connectors or connectorStyles
+    // 组件或系统之间的关系风格，connectors or connectorStyles
     val connectorStyles: List<ConnectorStyle>,
-    val codeStructureStyle: List<CodeStructureStyle>,
+    // 分析
     val metadata: ArchMedataData,
 )
 
