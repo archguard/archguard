@@ -27,16 +27,16 @@ class InMemoryConsumer : StreamConsumer {
             when {
                 // try catch for catch error, like in: [https://dx.phodal.com/docs/factor/error-handling.html](https://dx.phodal.com/docs/factor/error-handling.html)
                 line.contains("Error: Unable to access jarfile ") -> {
-                    lines.add("下载 Scanner 可能出错，请尝试连接 VPN 下载。访问： https://archguard.org/docs/faq.html 了解更多")
+                    lines.add("下载 Scanner 可能出错，请尝试连接 VPN 下载。访问： https://archguard.org/faq 了解更多")
                 }
                 line.contains("Invalid or corrupt jarfile") -> {
-                    lines.add("jar 包不完整，请删除，并尝试连接 VPN 下载。访问： https://archguard.org/docs/faq.html 了解更多")
+                    lines.add("jar 包不完整，请删除，并尝试连接 VPN 下载。访问： https://archguard.org/faq 了解更多")
                 }
                 line.contains("Fail to clone source with exitCode 128") -> {
-                    lines.add("Git Clone 出错，尝试根据: https://archguard.org/docs/faq.html#git 进行配置")
+                    lines.add("Git Clone 出错，尝试根据: https://archguard.org/faq#git 进行配置")
                 }
                 line.contains("Fail to identify build tool for compile") -> {
-                    lines.add("暂时不支持的构建命令，建议选择 Java/Kotlin，再重新扫描。访问： https://archguard.org/docs/faq.html#jvm 了解更多")
+                    lines.add("暂时不支持的构建命令，建议选择 Java/Kotlin，再重新扫描。访问： https://archguard.org/faq#jvm 了解更多")
                 }
                 line.contains("Failed to scan xxxScanner") -> {
                     lines.add("检查 Scanner 是否完整? 版本是否正常? 对应版本映射关系见: https://archguard.org/release/version-mapping")
