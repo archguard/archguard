@@ -107,6 +107,7 @@ dependencies {
     jacocoAggregation(project(":analyser_sourcecode:feat_datamap"))
 
     jacocoAggregation(project(":analyser_sca"))
+    jacocoAggregation(project(":analyser_architecture"))
 
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))

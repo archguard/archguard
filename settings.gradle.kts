@@ -32,6 +32,9 @@ include(
     ":analyser_sourcecode:feat_datamap",
 )
 
+include(":analyser_sca")
+include(":analyser_architecture")
+
 // legacy scanners, should replace by analyser
 include(":scan_git")
 include(":scan_jacoco")
@@ -40,7 +43,6 @@ include(":scan_sql")
 include(":scan_test_badsmell")
 include(":scan_bytecode")
 
-include(":analyser_sca")
 
 // core rule model
 include(":rule_core")
