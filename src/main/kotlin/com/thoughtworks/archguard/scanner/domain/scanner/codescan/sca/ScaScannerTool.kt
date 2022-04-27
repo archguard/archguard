@@ -11,13 +11,13 @@ class ScaScannerTool(
     val systemRoot: File,
     val systemId: Long,
     val language: String,
-    val logStream: StreamConsumer
+    val logStream: StreamConsumer,
+    val scannerVersion: String
 ) {
 
     private val log = LoggerFactory.getLogger(ScaScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
-    private val version = "1.6.2"
-    private val SCA_JAR = "analyser_sca-$version-all.jar"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val SCA_JAR = "analyser_sca-$scannerVersion-all.jar"
 
     fun getScaReport(): File? {
         prepareTool()

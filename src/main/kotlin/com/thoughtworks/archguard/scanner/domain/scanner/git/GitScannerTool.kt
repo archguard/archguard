@@ -13,13 +13,13 @@ class GitScannerTool(
     val branch: String?,
     val systemId: Long,
     val repo: String,
-    val logStream: StreamConsumer
+    val logStream: StreamConsumer,
+    val scannerVersion: String
 ) : GitReport {
 
     private val log = LoggerFactory.getLogger(GitScannerTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
-    private val version = "1.6.2"
-    private val SCAN_GIT_JAR = "scan_git-$version-all.jar"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val SCAN_GIT_JAR = "scan_git-$scannerVersion-all.jar"
 
     override fun getGitReport(): File? {
         prepareTool()
@@ -82,7 +82,7 @@ class GitScannerTool(
 
     private fun download() {
         log.info("start download scan_git tool")
-        val downloadUrl = "$host/scan_git-$version-all.jar"
+        val downloadUrl = "$host/scan_git-$scannerVersion-all.jar"
         FileOperator.download(URL(downloadUrl), File(SCAN_GIT_JAR))
         log.info("downloaded scan_git tool")
         copyIntoSystemRoot()

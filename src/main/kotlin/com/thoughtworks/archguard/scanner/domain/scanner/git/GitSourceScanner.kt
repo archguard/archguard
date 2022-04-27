@@ -21,7 +21,7 @@ class GitSourceScanner(@Autowired val gitSourceScanRepo: GitSourceScanRepo) : Sc
 
     override fun scan(context: ScanContext) {
         log.info("start scan git source")
-        val gitScannerTool = GitScannerTool(context.workspace, context.branch, context.systemId, context.repo, context.logStream)
+        val gitScannerTool = GitScannerTool(context.workspace, context.branch, context.systemId, context.repo, context.logStream, context.scannerVersion)
         val gitReport = gitScannerTool.getGitReport()
         if (gitReport != null) {
             gitSourceScanRepo.cleanupCommitLog(context.systemId)

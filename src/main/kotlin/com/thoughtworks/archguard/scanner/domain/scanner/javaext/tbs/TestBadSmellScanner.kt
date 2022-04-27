@@ -27,7 +27,7 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
 
     override fun scan(context: ScanContext) {
         log.info("start scan test bad smell")
-        val coca = TestBadsmellTool(context.workspace, context.logStream)
+        val coca = TestBadsmellTool(context.workspace, context.logStream, context.scannerVersion)
         val report = coca.getTestBadSmellReport()
         val model = mapper.readValue<List<CocaTestBadSmellModel>>(report?.readText() ?: "[]")
         val testBadSmells = model

@@ -21,7 +21,8 @@ class SourceCodeScanner : Scanner {
             context.language,
             context.dbUrl,
             context.codePath,
-            context.logStream
+            context.logStream,
+            context.scannerVersion
         ).also {
             it.analyse()
         }

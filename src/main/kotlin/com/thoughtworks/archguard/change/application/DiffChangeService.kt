@@ -21,7 +21,7 @@ class DiffChangeService(
 ) {
     val url = dbUrl.replace("://", "://$username:$password@")
 
-    fun execute(systemInfo: SystemInfo, since: String, until: String,) {
+    fun execute(systemInfo: SystemInfo, since: String, until: String, scannerVersion: String) {
         val memoryConsumer = InMemoryConsumer()
         val scanContext = ScanContext(
             systemId = systemInfo.id!!,
@@ -37,7 +37,8 @@ class DiffChangeService(
             additionArguments = listOf(
                 "--since=$since",
                 "--until=$until",
-            )
+            ),
+            scannerVersion = scannerVersion
         )
 
         changeScanner.scan(scanContext)

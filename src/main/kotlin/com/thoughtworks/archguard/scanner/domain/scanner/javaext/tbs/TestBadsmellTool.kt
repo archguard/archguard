@@ -8,11 +8,10 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : TestBadSmellReport {
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
-    private val version = "1.6.2"
+class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer, val scannerVersion: String) : TestBadSmellReport {
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
-    private val SCAN_TEST_BADSMELL_JAR = "scan_test_badsmell-$version-all.jar"
+    private val SCAN_TEST_BADSMELL_JAR = "scan_test_badsmell-$scannerVersion-all.jar"
 
     private fun prepareTool() {
         val jarExist = checkIfExistInLocal()
@@ -57,7 +56,7 @@ class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer) : Te
 
     private fun download() {
         log.info("start download scan_test_badsmell tool")
-        val downloadUrl = "$host/scan_test_badsmell-$version-all.jar"
+        val downloadUrl = "$host/scan_test_badsmell-$scannerVersion-all.jar"
         FileOperator.download(URL(downloadUrl), File(SCAN_TEST_BADSMELL_JAR))
         log.info("downloaded scan_test_badsmell tool")
         copyIntoSystemRoot()

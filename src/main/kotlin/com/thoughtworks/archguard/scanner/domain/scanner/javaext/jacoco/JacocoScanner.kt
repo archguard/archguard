@@ -27,7 +27,7 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
         sqlScriptRunner.run(DELETE_BUNDLE)
         sqlScriptRunner.run(DELETE_ITEM)
         getTargetProjects(context.workspace)
-            .forEach { w -> runSql(JacocoTool(context.workspace, w, context.buildTool, context.logStream).execToSql()) }
+            .forEach { w -> runSql(JacocoTool(context.workspace, w, context.buildTool, context.logStream, context.scannerVersion).execToSql()) }
         log.info("finished scan jacoco exec file")
     }
 

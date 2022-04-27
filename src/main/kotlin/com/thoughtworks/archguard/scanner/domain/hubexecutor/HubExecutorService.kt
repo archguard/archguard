@@ -35,11 +35,11 @@ class HubExecutorService : DisposableBean {
     @Autowired
     private lateinit var configureRepository: ScannerConfigureRepository
 
-    fun doScanIfNotRunning(id: Long, dbUrl: String, memoryConsumer: StreamConsumer): Boolean {
+    fun doScanIfNotRunning(id: Long, dbUrl: String, scannerVersion: String, memoryConsumer: StreamConsumer): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             try {
-                doScan(id, dbUrl, memoryConsumer, listOf())
+                doScan(id, dbUrl, scannerVersion, memoryConsumer, listOf())
             } catch (e: Exception) {
                 log.error(e.message)
                 throw e
@@ -50,11 +50,11 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    fun evaluate(type: String, id: Long, dbUrl: String, arguments: List<String>): Boolean {
+    fun evaluate(type: String, id: Long, dbUrl: String, scannerVersion: String, arguments: List<String>): Boolean {
         if (!concurrentSet.contains(id)) {
             concurrentSet.add(id)
             thread {
-                doScan(id, dbUrl, InMemoryConsumer(), arguments)
+                doScan(id, dbUrl, scannerVersion, InMemoryConsumer(), arguments)
                 concurrentSet.remove(id)
                 evaluationReportClient.generate(type)
             }
@@ -63,7 +63,7 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    private fun doScan(id: Long, dbUrl: String, memoryConsumer: StreamConsumer, additionArguments: List<String>) {
+    private fun doScan(id: Long, dbUrl: String, scannerVersion: String, memoryConsumer: StreamConsumer, additionArguments: List<String>) {
         val config = configureRepository.getToolConfigures()
         // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id, memoryConsumer)
@@ -80,7 +80,8 @@ class HubExecutorService : DisposableBean {
                 compiledProject.codePath,
                 compiledProject.branch,
                 memoryConsumer,
-                additionArguments
+                additionArguments,
+                scannerVersion
             )
             val hubExecutor = HubExecutor(context, manager)
             hubExecutor.execute()

@@ -22,7 +22,8 @@ class DiffChangesScanner : Scanner {
             context.dbUrl,
             context.branch,
             context.logStream,
-            context.additionArguments
+            context.additionArguments,
+            context.scannerVersion
         ).also {
             it.analyse()
         }

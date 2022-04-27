@@ -26,13 +26,14 @@ class ScannerHubController(
     val url = dbUrl.replace("://", "://$username:$password@")
 
     @PostMapping("/{id}/reports")
-    fun scanModule(@PathVariable("id") id: Long): ModuleScanResponse {
+    fun scanModule(@PathVariable("id") id: Long, @RequestParam(defaultValue = "1.6.2") scannerVersion: String): ModuleScanResponse {
         val memoryConsumer = InMemoryConsumer()
 
         return ModuleScanResponse(
             hubService.doScanIfNotRunning(
                 id,
                 url,
+                scannerVersion,
                 memoryConsumer
             )
         )
@@ -45,6 +46,7 @@ class ScannerHubController(
                 evaluation.type,
                 id,
                 url,
+                evaluation.scannerVersion,
                 listOf()
             )
         )
@@ -62,5 +64,5 @@ class ScannerHubController(
 
     data class ModuleScanResponse(val isRunning: Boolean)
 
-    data class EvaluationRequest(val type: String)
+    data class EvaluationRequest(val type: String, val scannerVersion: String = "1.6.2")
 }

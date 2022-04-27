@@ -42,7 +42,7 @@ class ArchitectureDependencyAnalysis(
         }
     }
 
-    fun asyncAnalyse(systemId: Long) {
+    fun asyncAnalyse(systemId: Long, scannerVersion: String) {
         if (runningSystemIdSet.contains(systemId)) {
             throw AnalysisException("this system is scanning: $systemId")
         }
@@ -54,7 +54,7 @@ class ArchitectureDependencyAnalysis(
                 val workdir = createWorkingDirectoryIfNotExist(systemInfo)
 
                 startScanSystem(systemInfo)
-                analyse(systemId, systemInfo.language, workdir)
+                analyse(systemId, systemInfo.language, scannerVersion, workdir)
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
@@ -78,7 +78,7 @@ class ArchitectureDependencyAnalysis(
         return workdir
     }
 
-    fun analyse(systemId: Long, language: String, workdir: Path) {
+    fun analyse(systemId: Long, language: String, scannerVersion: String, workdir: Path) {
         val memoryConsumer = InMemoryConsumer()
 
         log.info("************************************")
@@ -86,7 +86,7 @@ class ArchitectureDependencyAnalysis(
         log.info("************************************")
         val url = dbUrl.replace("://", "://$username:$password@")
 
-        hubService.doScanIfNotRunning(systemId, url, memoryConsumer)
+        hubService.doScanIfNotRunning(systemId, url, scannerVersion, memoryConsumer)
         log.info("************************************")
         log.info(" Finished level 1 scanners")
         log.info("************************************")

@@ -13,12 +13,12 @@ class SourceCodeTool(
     val language: String,
     val dbUrl: String,
     val codePath: String,
-    val logStream: StreamConsumer
+    val logStream: StreamConsumer,
+    val scannerVersion: String
 ) {
     private val log = LoggerFactory.getLogger(SourceCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v1.6.2"
-    private val version = "1.6.2"
-    private val SCAN_SOURCECODE_JAR = "scan_sourcecode-$version-all.jar"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val SCAN_SOURCECODE_JAR = "scan_sourcecode-$scannerVersion-all.jar"
 
     fun analyse() {
         prepareTool()

@@ -21,7 +21,7 @@ class ScaScanner(@Autowired val scaAnalyserRepo: ScaAnalyserRepo) : Scanner {
 
     override fun scan(context: ScanContext) {
         log.info("start scan project dependencies source")
-        val scaScannerTool = ScaScannerTool(context.workspace, context.systemId, context.language, context.logStream)
+        val scaScannerTool = ScaScannerTool(context.workspace, context.systemId, context.language, context.logStream, context.scannerVersion)
         val gitReport = scaScannerTool.getScaReport()
         if (gitReport != null) {
             scaAnalyserRepo.cleanupSca(context.systemId)

@@ -25,9 +25,10 @@ class DiffChangeController(
         @PathVariable("systemId") systemId: Long,
         @RequestParam(value = "since", required = true) since: String,
         @RequestParam(value = "until", required = true) until: String,
+        @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
     ): List<DiffChange> {
         val systemInfo = systemInfoService.getSystemInfo(systemId)
-        diffChangeService.execute(systemInfo, since, until)
+        diffChangeService.execute(systemInfo, since, until, scannerVersion)
         return diffChangeService.findBySystemId(systemId)
     }
 }
