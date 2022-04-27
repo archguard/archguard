@@ -3,13 +3,19 @@ package com.thoughtworks.archguard.scanner.controller
 import com.thoughtworks.archguard.scanner.domain.analyser.ArchitectureDependencyAnalysis
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/scanner/systems/{systemId}")
 class AnalysisController(@Autowired val dependencyAnalysis: ArchitectureDependencyAnalysis) {
     @PostMapping("/dependency-analyses")
-    fun analyseDependency(@PathVariable("systemId") systemId: Long, @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
+    fun analyseDependency(
+        @PathVariable("systemId") systemId: Long,
+        @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
     ): ResponseEntity<String> {
         return try {
             dependencyAnalysis.asyncAnalyse(systemId, scannerVersion)
