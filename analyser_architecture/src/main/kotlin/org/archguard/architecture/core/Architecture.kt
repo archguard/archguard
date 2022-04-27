@@ -92,8 +92,11 @@ enum class ArchitectureStyle {
 // from file name: like repository, controller, services
 enum class CodeStructureStyle {
     MVC,
+    // examples: https://github.com/domain-driven-design/ddd-lite-example
+    ModuleDDD,
     DDD,
-    CLEAN
+    CLEAN,
+    UNKNOWN
 }
 
 enum class ComponentTypes {
