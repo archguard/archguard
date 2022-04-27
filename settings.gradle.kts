@@ -43,7 +43,6 @@ include(":scan_sql")
 include(":scan_test_badsmell")
 include(":scan_bytecode")
 
-
 // core rule model
 include(":rule_core")
 include(":linter:rule_sql")

@@ -1,5 +1,9 @@
 # 架构分析
 
+Refs:
+
+- [Architecture Description Language (ADL)](https://cio-wiki.org/wiki/Architecture_Description_Language_(ADL))
+
 ## 多个子系统导入
 
 基于 CSV, JSON， Markdown

@@ -3,15 +3,30 @@ package org.archguard.architecture.core
 class Architecture(
     val archStyle: ArchitectureStyle,
     val subSystem: List<SubSystem>,
+    var components: List<ArchComponent>,
+    // connectors or connectorStyles
+    val connectorStyles: List<ConnectorStyle>,
     val codeStructureStyle: List<CodeStructureStyle>,
-    val metadata: ArchMedataData
+    val metadata: ArchMedataData,
 )
+
+enum class ConnectorStyle {
+    HttpApi,
+    RPC,
+    SQLLink,
+    Protocol,
+    DependencyInjection,
+}
 
 class ArchMedataData(
     // tech stacks, like Spring, Redis, Kafka, MyBatis, Dubbo
     val techStacks: List<String>,
     // language summary ?
     val lineCounts: List<String>,
+)
+
+class ArchComponent(
+    val name: String,
 )
 
 // sub-systems with relations
@@ -21,13 +36,15 @@ class SubSystem(
     // examples: DDD
     val codeStructureStyle: List<CodeStructureStyle>,
     // examples: org.archguard.domain, org.archguard.infrastructure, org.archguard.interface, org.archguard.application
-    val packageStructure: List<String>
+    val packageStructure: List<String>,
+    val component: List<ArchComponent>,
 )
 
 // from GitTags
 enum class DevelMethodology {
     // 频繁的 tag 发布
     Agile,
+
     // 没有 Tag
     Waterfall,
     Unknown
@@ -35,7 +52,6 @@ enum class DevelMethodology {
 
 // from Git History
 enum class ScmStrategy {
-    //
     GitFlow,
 }
 
@@ -43,18 +59,28 @@ enum class ScmStrategy {
 enum class ArchitectureStyle {
     // 分层
     Layered,
+
     // 管道
     Pipeline,
+
     // 微内核
     MicroKernel,
+
     // 基于服务
     ServiceBased,
+
+    // ?
+    Serverless,
+
     // 事件驱动
     EventDriven,
+
     // 基于空间
     SpaceBased,
+
     // 编制驱动的面向服务
     OrchestrationDrivenServiceOriented,
+
     // 微服务
     Microservice,
     Unknown
@@ -66,3 +92,24 @@ enum class CodeStructureStyle {
     DDD,
     CLEAN
 }
+
+enum class ComponentTypes {
+    Module,
+    Computation,
+    SharedData,
+    SeqFile,
+    Filter,
+    Process,
+    SchedProcess,
+    General
+}
+
+enum class ConnectorTypes {
+    Pipe,
+    DataAccess,
+    FileIO,
+    RemoteProcedureCall,
+    ProcedureCall,
+    RTScheduler,
+}
+
