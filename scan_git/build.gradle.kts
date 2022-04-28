@@ -26,7 +26,3 @@ tasks{
         }
     }
 }
-
-sourceSets.main {
-    java.srcDirs("${project.buildDir}/generated-src")
-}
