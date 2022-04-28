@@ -10,17 +10,19 @@ typealias Language = String
 @Serializable
 class CodeArchitectureMarkup(
     val language: String,
-    @SerialName("app_types")
-    val appTypes: HashMap<String, List<String>> = hashMapOf(),
+    @SerialName("app_type_mapping")
+    val appTypeMapping: HashMap<String, List<String>> = hashMapOf(),
     @SerialName("protocol_mapping")
     var protocolMapping: HashMap<String, List<String>> = hashMapOf(),
     val extends: String = "",
 ) {
     companion object {
         fun fromResource(): Array<CodeArchitectureMarkup> {
-            val fileContent = this.javaClass.classLoader.getResource("frameworks.json").readText()
-            val markups = Json.decodeFromString<Array<CodeArchitectureMarkup>>(fileContent)
+            val markups = loadFrameworkMaps()
+            return extendLanguage(markups)
+        }
 
+        private fun extendLanguage(markups: Array<CodeArchitectureMarkup>): Array<CodeArchitectureMarkup> {
             val needExtends: MutableMap<Language, Language> = mutableMapOf()
 
             val markupMap: MutableMap<String, CodeArchitectureMarkup> = mutableMapOf()
@@ -35,14 +37,19 @@ class CodeArchitectureMarkup(
             if (needExtends.isNotEmpty()) {
                 needExtends.forEach {
                     if (markupMap[it.key] != null && markupMap[it.value] != null) {
-                        markupMap[it.key]!!.appTypes += markupMap[it.value]!!.appTypes
+                        markupMap[it.key]!!.appTypeMapping += markupMap[it.value]!!.appTypeMapping
                         markupMap[it.key]!!.protocolMapping += markupMap[it.value]!!.protocolMapping
                     }
                 }
             }
 
+            val codeArchitectureMarkups = markupMap.map { it.value }.toTypedArray()
+            return codeArchitectureMarkups
+        }
 
-            return markupMap.map { it.value }.toTypedArray()
+        private fun loadFrameworkMaps(): Array<CodeArchitectureMarkup> {
+            val fileContent = this.javaClass.classLoader.getResource("framework-maps.json").readText()
+            return Json.decodeFromString(fileContent)
         }
     }
 }

@@ -1,7 +1,7 @@
 [
   {
     "language": "Java",
-    "app_types": {
+    "app_type_mapping": {
       "web": [
         "org.springframework.boot"
       ],
