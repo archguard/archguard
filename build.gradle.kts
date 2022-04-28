@@ -49,14 +49,10 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.10.1")
 
-    implementation("io.pebbletemplates:pebble:3.0.8")
-
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
-    implementation("io.ktor:ktor-server-core:1.1.4")
-    implementation("io.ktor:ktor-server-netty:1.1.4")
-    implementation("io.ktor:ktor-gson:1.1.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
