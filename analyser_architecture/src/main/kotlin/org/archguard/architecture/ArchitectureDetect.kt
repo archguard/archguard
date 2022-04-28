@@ -6,6 +6,7 @@ class ArchitectureDetect() {
 
         // 1. load project dependencies
 
+
         // 2. identify web, data, like
 
         // 3. analysis protocol
