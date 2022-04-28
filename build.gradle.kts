@@ -43,11 +43,11 @@ dependencies {
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
 
-    implementation("org.jdbi:jdbi3-core:3.10.1")
-    implementation("org.jdbi:jdbi3-spring4:3.10.1")    // provide JdbiFactoryBean
-    implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.10.1")
+    implementation("org.jdbi:jdbi3-core:3.28.0")
+    implementation("org.jdbi:jdbi3-spring4:3.19.0")    // provide JdbiFactoryBean
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.28.0")
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
-    implementation("org.jdbi:jdbi3-testing:3.10.1")
+    implementation("org.jdbi:jdbi3-testing:3.28.0")
 
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
