@@ -17,4 +17,15 @@ internal class DddLayeredIdentifyTest {
 
         assertEquals(CodeStructureStyle.DDD, LayeredIdentify(packages).identify())
     }
+
+    @Test
+    fun simple_mvc_match() {
+        val packages: List<String> = listOf(
+            "com.thoughtworks.archguard.change.controller",
+            "com.thoughtworks.archguard.change.service",
+            "com.thoughtworks.archguard.change.repository"
+        )
+
+        assertEquals(CodeStructureStyle.MVC, LayeredIdentify(packages).identify())
+    }
 }
