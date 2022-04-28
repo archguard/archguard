@@ -8,10 +8,17 @@ class Architecture(
     // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
-    val connectorStyles: List<ConnectorStyle>,
+    val connections: List<ArchConnection>,
     // 分析
     val metadata: ArchMedataData,
 )
+
+class ArchConnection(
+    val connectors: String,
+    val connectorStyles: ConnectorStyle,
+) {
+
+}
 
 enum class ConnectorStyle {
     HttpApi,
@@ -92,6 +99,7 @@ enum class ArchitectureStyle {
 // from file name: like repository, controller, services
 enum class CodeStructureStyle {
     MVC,
+
     // examples: https://github.com/domain-driven-design/ddd-lite-example
     ModuleDDD,
     DDD,
