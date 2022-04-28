@@ -1,6 +1,11 @@
 [
   {
     "language": "Java",
+    "core_stacks": [
+      "org.springframework.boot",
+      "org.jdbi:jdbi3",
+      "org.flywaydb"
+    ],
     "app_type_mapping": {
       "web": [
         "org.springframework.boot"
@@ -15,7 +20,7 @@
         "org.apache.flink:flink-core"
       ]
     },
-    "protocol_mapping":{
+    "protocol_mapping": {
       "http": [
         "org.springframework.boot"
       ],
