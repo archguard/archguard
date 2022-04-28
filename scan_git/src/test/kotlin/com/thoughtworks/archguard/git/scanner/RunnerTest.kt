@@ -28,11 +28,4 @@ internal class RunnerTest {
         Runner().main(arrayOf("--path=./build/ddd", "--branch=master"))
         assertTrue(file.exists())
     }
-
-    @Test
-    fun run_loc() {
-        val file = File("loc_output.sql")
-        Runner().main(arrayOf("--path=./build/ddd", "--branch=master",  "--loc=true"))
-        assertTrue(file.exists())
-    }
 }

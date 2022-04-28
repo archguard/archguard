@@ -1,5 +1,4 @@
 plugins {
-    antlr
     application
 
     kotlin("jvm") version "1.6.10"
@@ -8,7 +7,6 @@ plugins {
 }
 
 dependencies {
-    antlr("org.antlr:antlr4:4.9.3")
     implementation("org.antlr:antlr4-runtime:4.9.3")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
@@ -36,18 +34,4 @@ tasks{
 
 sourceSets.main {
     java.srcDirs("${project.buildDir}/generated-src")
-}
-
-tasks.generateGrammarSource {
-    maxHeapSize = "64m"
-    arguments = arguments + listOf("-package", "dev.evolution") + listOf("-visitor", "-long-messages")
-    outputDirectory  = file("${project.buildDir}/generated-src/dev/evolution")
-}
-
-tasks.named("compileKotlin") {
-    dependsOn(tasks.withType<AntlrTask>())
-}
-
-tasks.withType<AntlrTask> {
-
 }
