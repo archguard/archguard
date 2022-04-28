@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.git.scanner.model
+package com.thoughtworks.archguard.language
 
 import java.io.BufferedReader
 import java.io.File

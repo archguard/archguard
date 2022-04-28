@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.git.scanner
 
-import com.thoughtworks.archguard.git.scanner.model.LineCounter
+import com.thoughtworks.archguard.language.LineCounter
 import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.Test
 import java.io.File

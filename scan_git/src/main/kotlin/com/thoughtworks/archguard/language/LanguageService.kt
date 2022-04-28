@@ -1,9 +1,8 @@
 // based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 // SPDX-License-Identifier: MIT OR Unlicense
 
-package com.thoughtworks.archguard.git.scanner
+package com.thoughtworks.archguard.language
 
-import com.thoughtworks.archguard.git.scanner.model.Language
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File

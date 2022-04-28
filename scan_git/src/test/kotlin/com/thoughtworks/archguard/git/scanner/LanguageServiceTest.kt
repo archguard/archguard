@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.git.scanner
 
+import com.thoughtworks.archguard.language.LanguageService
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.git.scanner
 
 import com.thoughtworks.archguard.git.scanner.helper.Bean2Sql
-import com.thoughtworks.archguard.git.scanner.model.LineCounter
+import com.thoughtworks.archguard.language.LanguageService
+import com.thoughtworks.archguard.language.LineCounter
 import java.io.File
 import java.util.*
 

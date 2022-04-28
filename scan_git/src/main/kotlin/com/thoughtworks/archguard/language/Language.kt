@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.git.scanner.model
+package com.thoughtworks.archguard.language
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
