@@ -7,6 +7,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":scanner_core"))
+
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
