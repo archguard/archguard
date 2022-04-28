@@ -1,0 +1,30 @@
+[
+  {
+    "language": "Java",
+    "app_types": {
+      "web": [
+        "spring"
+      ],
+      "compiler": [
+        "org.antlr:antlr4-runtime"
+      ],
+      "cli": [
+        "com.github.ajalt.clikt:clikt"
+      ],
+      "data": [
+        "org.apache.flink:flink-core"
+      ]
+    },
+    "protocol":{
+      "http": [
+        "spring"
+      ],
+      "rpc": [
+        "dubbo"
+      ],
+      "databaselink": [
+        "HikariCP"
+      ]
+    }
+  }
+]
