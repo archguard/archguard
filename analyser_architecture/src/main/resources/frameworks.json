@@ -3,7 +3,7 @@
     "language": "Java",
     "app_types": {
       "web": [
-        "spring"
+        "org.springframework.boot"
       ],
       "compiler": [
         "org.antlr:antlr4-runtime"
@@ -15,15 +15,19 @@
         "org.apache.flink:flink-core"
       ]
     },
+    "style": {
+      "pipeline": "@app_types.compiler",
+      "web": "@app_types.web"
+    },
     "protocol":{
       "http": [
-        "spring"
+        "org.springframework.boot"
       ],
       "rpc": [
-        "dubbo"
+        "org.apache.dubbo:dubbo"
       ],
       "databaselink": [
-        "HikariCP"
+        "com.zaxxer:HikariCP"
       ]
     }
   }

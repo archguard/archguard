@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import org.archguard.analyser.sca.helper.Bean2Sql
 import org.archguard.analyser.sca.helper.CompositionDependency
-import org.archguard.analyser.sca.model.DepDeclaration
+import org.archguard.analyser.sca.model.PackageDependencies
 import java.io.File
 import java.util.*
 
@@ -39,7 +39,7 @@ class Runner : CliktCommand() {
     }
 }
 
-private fun DepDeclaration.toCompositionDependency(systemId: String): List<CompositionDependency> {
+private fun PackageDependencies.toCompositionDependency(systemId: String): List<CompositionDependency> {
     return this.dependencies.map {
         CompositionDependency(
             id = UUID.randomUUID().toString(),

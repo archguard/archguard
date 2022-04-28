@@ -6,8 +6,8 @@ import com.jayway.jsonpath.JsonPath.using
 import com.jayway.jsonpath.Option
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDeclaration
-import org.archguard.analyser.sca.model.DepDependency
+import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.analyser.sca.model.DependencyEntry
 
 class NpmParser : Parser() {
     val conf: Configuration = Configuration.builder().options(Option.SUPPRESS_EXCEPTIONS).build()
@@ -17,7 +17,7 @@ class NpmParser : Parser() {
         "devDependencies" to DEP_SCOPE.DEV
     )
 
-    override fun lookupSource(file: DeclFileTree): List<DepDeclaration> {
+    override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
         val name: String = JsonPath.read(file.content, "$.name")
         val version: String = JsonPath.read(file.content, "$.version")
 
@@ -25,7 +25,7 @@ class NpmParser : Parser() {
             createDepByType(it, file.content)
         }.toList()
 
-        return listOf(DepDeclaration(
+        return listOf(PackageDependencies(
             name,
             version,
             "npm",
@@ -36,8 +36,8 @@ class NpmParser : Parser() {
     private fun createDepByType(
         field: String,
         content: String,
-    ): List<DepDependency> {
-        val listOf = mutableListOf<DepDependency>()
+    ): List<DependencyEntry> {
+        val listOf = mutableListOf<DependencyEntry>()
         val optionalDep: Map<String, String>? = using(conf).parse(content).read("$.$field");
         if (optionalDep != null) {
             listOf += createDependencies(optionalDep, depTypeMap[field]!!)
@@ -46,9 +46,9 @@ class NpmParser : Parser() {
         return listOf
     }
 
-    private fun createDependencies(depMap: Map<String, String>, scope: DEP_SCOPE): List<DepDependency> {
+    private fun createDependencies(depMap: Map<String, String>, scope: DEP_SCOPE): List<DependencyEntry> {
         return depMap.map {
-            DepDependency(
+            DependencyEntry(
                 name = it.key,
                 group = "",
                 artifact = it.key,

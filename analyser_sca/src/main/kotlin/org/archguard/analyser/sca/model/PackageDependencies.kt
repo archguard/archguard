@@ -7,10 +7,10 @@ class DeclFileTree(
     val filename: String,
     val path: String,
     val content: String,
-    var childrens: List<DeclFileTree> = listOf()
+    var childrens: List<DeclFileTree> = listOf(),
 )
 
-class DepDeclaration(
+class PackageDependencies(
     // self name
     val name: String,
     // self version for some cases
@@ -18,9 +18,9 @@ class DepDeclaration(
     // like `maven`, `gradle`
     val packageManager: String,
     // requirements in maven
-    val dependencies: List<DepDependency>,
+    val dependencies: List<DependencyEntry>,
     // child dependencies
-    val childrens: List<DepDeclaration> = listOf()
+    val childrens: List<PackageDependencies> = listOf(),
 )
 
 enum class DEP_SCOPE {
@@ -44,7 +44,7 @@ enum class DEP_SCOPE {
     }
 }
 
-class DepDependency(
+class DependencyEntry(
     // full name groupId:artifactId
     val name: String,
     val group: String,
@@ -55,7 +55,7 @@ class DepDependency(
     // file: like NPM in local
     val source: DepSource = DepSource(),
     // additional information
-    val metadata: DepMetadata = DepMetadata()
+    val metadata: DepMetadata = DepMetadata(),
 )
 
 // like GitHub link,

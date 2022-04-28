@@ -2,8 +2,8 @@ package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDeclaration
-import org.archguard.analyser.sca.model.DepDependency
+import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.analyser.sca.model.DependencyEntry
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList
@@ -16,7 +16,7 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
 class MavenParser : Parser() {
-    override fun lookupSource(file: DeclFileTree): List<DepDeclaration> {
+    override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val builder: DocumentBuilder = builderFactory.newDocumentBuilder()
         val xmlDocument: Document = builder.parse(InputSource(StringReader(file.content)))
@@ -27,7 +27,7 @@ class MavenParser : Parser() {
         val version = xPath.compile("/project/version").evaluate(xmlDocument, XPathConstants.STRING)
 
         return listOf(
-            DepDeclaration(
+            PackageDependencies(
                 name = "$groupId:$artifactId",
                 version = "$version",
                 packageManager = "maven",
@@ -36,7 +36,7 @@ class MavenParser : Parser() {
         )
     }
 
-    private fun lookupDependencies(xPath: XPath, xmlDocument: Document): List<DepDependency> {
+    private fun lookupDependencies(xPath: XPath, xmlDocument: Document): List<DependencyEntry> {
         val expression = "/project/dependencies/dependency"
         val nodeList = xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET) as NodeList
 
@@ -46,7 +46,7 @@ class MavenParser : Parser() {
             val artifact = xPath.evaluate("artifactId", item) ?: ""
             val scope = xPath.evaluate("scope", item) ?: ""
 
-            DepDependency(
+            DependencyEntry(
                 name = "$groupId:$artifact",
                 group = groupId,
                 artifact = artifact,

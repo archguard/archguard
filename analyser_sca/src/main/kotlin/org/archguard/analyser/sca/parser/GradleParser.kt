@@ -2,8 +2,8 @@ package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDeclaration
-import org.archguard.analyser.sca.model.DepDependency
+import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.analyser.sca.model.DependencyEntry
 
 private val GRADLE_SHORT_IMPL_REGEX =
     // implementation "joda-time:joda-time:2.2"
@@ -20,14 +20,14 @@ private val ENTRY_REGEX =
     "\\s+entry\\s+['\"]([^\\s,@'\":\\/\\\\]+)['\"]".toRegex()
 
 class GradleParser : Parser() {
-    override fun lookupSource(file: DeclFileTree): List<DepDeclaration> {
-        val deps = mutableListOf<DepDependency>()
+    override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
+        val deps = mutableListOf<DependencyEntry>()
         deps += parseShortform(file.content)
         deps += parseKeywordArg(file.content)
         deps += parseDependencySet(file.content)
 
         return listOf(
-            DepDeclaration(
+            PackageDependencies(
                 name = "",
                 version = "",
                 packageManager = "gradle",
@@ -37,13 +37,13 @@ class GradleParser : Parser() {
     }
 
     // sample: implementation "joda-time:joda-time:2.2"
-    private fun parseShortform(content: String): List<DepDependency> {
+    private fun parseShortform(content: String): List<DependencyEntry> {
         return GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
             it.groups.isNotEmpty() && it.groups.size == 6
         }.map {
             val groups = it.groups
             val scope = scopeForGradle(groups[1]?.value ?: "")
-            DepDependency(
+            DependencyEntry(
                 name = "${groups[3]!!.value}:${groups[4]!!.value}",
                 group = groups[3]!!.value,
                 artifact = groups[4]!!.value,
@@ -67,7 +67,7 @@ class GradleParser : Parser() {
     }
 
     // sample: runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
-    private fun parseKeywordArg(content: String): List<DepDependency> {
+    private fun parseKeywordArg(content: String): List<DependencyEntry> {
         return content.lines().mapNotNull { line ->
             val matchResult = GRADLE_KEYWORD_REGEX.find(line)
             if (matchResult != null && matchResult.groups.size > 6) {
@@ -76,7 +76,7 @@ class GradleParser : Parser() {
                 val artifact = valueFromRegex("name", line)
                 val version = valueFromRegex("version", line)
 
-                DepDependency(
+                DependencyEntry(
                     name = "$group:$artifact",
                     group = group,
                     artifact = artifact,
@@ -101,8 +101,8 @@ class GradleParser : Parser() {
     }
 
     // sample: dependencySet(group:'org.slf4j', version: '1.7.7') { entry 'slf4j-api' }
-    private fun parseDependencySet(content: String): List<DepDependency> {
-        val deps = mutableListOf<DepDependency>()
+    private fun parseDependencySet(content: String): List<DependencyEntry> {
+        val deps = mutableListOf<DependencyEntry>()
         val sequence = content.lineSequence().iterator()
         while (sequence.hasNext()) {
             val text = sequence.next()
@@ -127,7 +127,7 @@ class GradleParser : Parser() {
                     if (find != null && find.groups.size == 2) {
                         val artifact = find.groups[1]!!.value
 
-                        deps += DepDependency(
+                        deps += DependencyEntry(
                             name = "$group:$artifact",
                             artifact = artifact,
                             group = group,

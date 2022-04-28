@@ -1,7 +1,7 @@
 package org.archguard.analyser.sca
 
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.DepDeclaration
+import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.analyser.sca.parser.GradleParser
 import org.archguard.analyser.sca.parser.MavenParser
 import java.io.File
@@ -10,13 +10,13 @@ class JavaFinder {
     private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
     private fun isPomFile(it: File) = it.isFile && it.name == "pom.xml"
 
-    fun find(path: String): List<DepDeclaration> {
+    fun find(path: String): List<PackageDependencies> {
         val declarations = byGradleFiles(path).toMutableList()
         declarations += byMavenFiles(path)
         return declarations
     }
 
-    fun byGradleFiles(path: String): List<DepDeclaration> {
+    fun byGradleFiles(path: String): List<PackageDependencies> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
                 isGradleFile(it)
@@ -27,7 +27,7 @@ class JavaFinder {
             }.toList()
     }
 
-    fun byMavenFiles(path: String): List<DepDeclaration> {
+    fun byMavenFiles(path: String): List<PackageDependencies> {
         return File(path).walk(FileWalkDirection.BOTTOM_UP)
             .filter {
                 isPomFile(it)
