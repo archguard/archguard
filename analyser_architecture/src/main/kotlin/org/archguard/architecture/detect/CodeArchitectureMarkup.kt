@@ -16,6 +16,8 @@ class CodeArchitectureMarkup(
     var protocolMapping: HashMap<String, List<String>> = hashMapOf(),
     val extends: String = "",
 ) {
+
+
     companion object {
         fun fromResource(): Array<CodeArchitectureMarkup> {
             val markups = loadFrameworkMaps()
@@ -43,8 +45,7 @@ class CodeArchitectureMarkup(
                 }
             }
 
-            val codeArchitectureMarkups = markupMap.map { it.value }.toTypedArray()
-            return codeArchitectureMarkups
+            return markupMap.map { it.value }.toTypedArray()
         }
 
         private fun loadFrameworkMaps(): Array<CodeArchitectureMarkup> {
