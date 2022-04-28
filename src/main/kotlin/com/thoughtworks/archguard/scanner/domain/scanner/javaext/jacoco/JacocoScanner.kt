@@ -19,7 +19,7 @@ class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
     }
 
     override fun canScan(context: ScanContext): Boolean {
-        return context.language.lowercase() == "jvm"
+        return false
     }
 
     override fun scan(context: ScanContext) {
