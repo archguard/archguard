@@ -28,7 +28,7 @@
     }
   },
   {
-    "extends": "java",
-    "language": "kotlin"
+    "extends": "Java",
+    "language": "Kotlin"
   }
 ]
