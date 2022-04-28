@@ -7,8 +7,6 @@ plugins {
 }
 
 dependencies {
-    implementation("org.antlr:antlr4-runtime:4.9.3")
-
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
