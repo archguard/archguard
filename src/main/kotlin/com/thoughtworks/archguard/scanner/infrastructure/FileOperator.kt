@@ -1,8 +1,9 @@
 package com.thoughtworks.archguard.scanner.infrastructure
 
 import java.io.File
-import java.io.FileOutputStream
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 object FileOperator {
 
@@ -11,24 +12,12 @@ object FileOperator {
     }
 
     fun download(url: URL, file: File) {
-        url.openStream().use { input ->
-            FileOutputStream(file).use { output ->
-                input.copyTo(output)
-                output.close()
-                input.close()
-            }
+        url.openStream().use {
+            Files.copy(it, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
         }
     }
 
     fun deleteDirectory(dir: File) {
-        if (!dir.exists()) {
-            return
-        }
-        dir.listFiles().orEmpty().forEach {
-            if (it.isDirectory) {
-                deleteDirectory(it)
-            }
-            it.delete()
-        }
+        if (dir.exists()) dir.deleteRecursively()
     }
 }

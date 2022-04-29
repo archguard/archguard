@@ -40,6 +40,8 @@ class StranglerScannerExecutor(
             systemId = context.systemId.toString(),
             serverUrl = "http://localhost:$serverPort",
             path = context.codePath,
+            workspace = context.workspace,
+            logStream = context.logStream,
         ).also {
             it.language = context.language
             it.features = listOf("apicalls", "datamap")
