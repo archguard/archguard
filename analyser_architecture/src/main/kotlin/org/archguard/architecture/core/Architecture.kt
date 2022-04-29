@@ -22,8 +22,15 @@ class ArchConnection(
     val source: String,
     // `qualifiedName`
     val target: String,
+    var connectionType: ConnectionType,
     val connectorStyles: ConnectorStyle,
 )
+
+// like ServiceLoader, ClassLoader
+enum class ConnectionType {
+    STATIC,
+    DYNAMIC
+}
 
 enum class ConnectorStyle {
     HttpApi,
