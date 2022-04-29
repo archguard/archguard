@@ -3,7 +3,7 @@ package org.archguard.architecture
 import org.archguard.analyser.sca.model.DependencyEntry
 import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.architecture.detect.FrameworkMarkup
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class ArchitectureDetectTest {

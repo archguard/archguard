@@ -28,7 +28,9 @@
         "org.apache.dubbo:dubbo"
       ],
       "databaselink": [
-        "com.zaxxer:HikariCP"
+        "com.zaxxer:HikariCP",
+        "org.springframework.boot:spring-boot-starter-jdbc",
+        "org.jdbi:jdbi3"
       ]
     }
   },

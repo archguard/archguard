@@ -49,6 +49,10 @@ class ArchMedataData(
 
 class ArchComponent(
     val name: String,
+    // link HTTP API, RPC API, CLI API
+    val inbounds: List<String>,
+    // like database, HTTP Call
+    var outbound: List<String>,
 )
 
 // sub-systems with relations
