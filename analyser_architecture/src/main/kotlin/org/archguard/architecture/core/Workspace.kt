@@ -8,5 +8,5 @@ class Workspace(
     val dataStructs: List<CodeDataStruct>,
     val projectDependencies: PackageDependencies,
     val services: ContainerService,
-//    val lan
+//    val lanuages
 )

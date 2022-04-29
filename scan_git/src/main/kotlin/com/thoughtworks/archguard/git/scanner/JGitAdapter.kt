@@ -12,10 +12,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 /**
- * @param path  repository location
- * @param branch  branch name, default is master
+ * @param language program language
  */
-
 class JGitAdapter(val language: String) {
 
     fun scan(path: String, branch: String = "master", after: String = "0", repoId: String, systemId: Long):
@@ -101,7 +99,7 @@ class JGitAdapter(val language: String) {
         return this
     }
 
-    /*specify git branch*/
+    /* specify git branch */
     private fun Git.specifyBranch(branch: String): Git {
         checkout().setName(branch).call()
         return this
