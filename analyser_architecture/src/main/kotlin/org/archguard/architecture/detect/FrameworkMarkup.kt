@@ -18,13 +18,28 @@ class FrameworkMarkup(
     var protocolMapping: HashMap<String, List<String>> = hashMapOf(),
     val extends: String = "",
 ) {
+    fun depToAppType(): HashMap<String, String> {
+        val mapping: HashMap<String, String> = hashMapOf()
+        appTypeMapping.forEach { appType ->
+            appType.value.forEach {
+               mapping[it] = appType.key
+           }
+        }
+        return mapping
+    }
+
     companion object {
-        fun fromResource(): Array<FrameworkMarkup> {
+        fun byLanguage(language: String): FrameworkMarkup? {
             val markups = loadFrameworkMaps()
-            return extendLanguage(markups)
+            return extendLanguage(markups)[language]
         }
 
-        private fun extendLanguage(markups: Array<FrameworkMarkup>): Array<FrameworkMarkup> {
+        fun fromResource(): Array<FrameworkMarkup> {
+            val markups = loadFrameworkMaps()
+            return extendLanguage(markups).map { it.value }.toTypedArray()
+        }
+
+        private fun extendLanguage(markups: Array<FrameworkMarkup>): MutableMap<String, FrameworkMarkup> {
             val needExtends: MutableMap<Language, Language> = mutableMapOf()
 
             val markupMap: MutableMap<String, FrameworkMarkup> = mutableMapOf()
@@ -45,7 +60,7 @@ class FrameworkMarkup(
                 }
             }
 
-            return markupMap.map { it.value }.toTypedArray()
+            return markupMap
         }
 
         private fun loadFrameworkMaps(): Array<FrameworkMarkup> {

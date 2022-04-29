@@ -50,8 +50,8 @@ class MvcLayeredIdentify() : LayeredChecker {
     private var hasService: Boolean = false
     private var hasRepo: Boolean = false
 
-    override fun addToIdentify(it: String) {
-        val split = it.split(".")
+    override fun addToIdentify(str: String) {
+        val split = str.split(".")
         if (!this.hasController) {
             this.hasController = CONTROLLERS.contains(split.last())
         }

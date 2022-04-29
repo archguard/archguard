@@ -16,4 +16,10 @@ internal class FrameworkMarkupTest {
         assertEquals("Kotlin", markups[1].language)
         assert(markups[1].appTypeMapping.isNotEmpty())
     }
+
+    @Test
+    internal fun by_language() {
+        val markup = FrameworkMarkup.byLanguage("Kotlin")
+        assert(markup!!.appTypeMapping.isNotEmpty())
+    }
 }
