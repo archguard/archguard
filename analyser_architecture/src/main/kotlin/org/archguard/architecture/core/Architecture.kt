@@ -11,14 +11,19 @@ class Architecture(
     val connections: List<ArchConnection>,
     // 分析
     val metadata: ArchMedataData,
+    // 1. generate from libraries
+    // 2. generate from app types domain
+    val ability: List<String>
 )
 
 class ArchConnection(
     val connectors: String,
+    // `qualifiedName`
+    val source: String,
+    // `qualifiedName`
+    val target: String,
     val connectorStyles: ConnectorStyle,
-) {
-
-}
+)
 
 enum class ConnectorStyle {
     HttpApi,
