@@ -4,8 +4,7 @@ import org.archguard.architecture.core.CodeStructureStyle
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class DddLayeredIdentifyTest {
-
+internal class LayeredIdentifyTest {
     @Test
     fun simple_ddd_match() {
         val packages: List<String> = listOf(

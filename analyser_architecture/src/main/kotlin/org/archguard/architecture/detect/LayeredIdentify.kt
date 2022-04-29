@@ -10,14 +10,19 @@ var INFRA: List<String> = listOf("infrastructure", "infra")
 var APPLICATION: List<String> = listOf("application", "app")
 var SERVICES: List<String> = listOf("service", "services")
 
-class DddLayeredIdentify() {
+interface LayeredChecker {
+    fun addToIdentify(str: String)
+    fun canMarked(): Boolean
+}
+
+class DddLayeredChecker() : LayeredChecker {
     private var hasDomain: Boolean = false
     private var hasInfra: Boolean = false
     private var hasInterfaces: Boolean = false
     private var hasApp: Boolean = false
 
-    fun addToIdentify(it: String) {
-        val split = it.split(".")
+    override fun addToIdentify(str: String) {
+        val split = str.split(".")
         if (!this.hasDomain) {
             this.hasDomain = DOMAIN.contains(split.last())
         }
@@ -35,17 +40,17 @@ class DddLayeredIdentify() {
         }
     }
 
-    fun canMarked(): Boolean {
+    override fun canMarked(): Boolean {
         return this.hasInterfaces && this.hasDomain && this.hasApp && this.hasInfra
     }
 }
 
-class MvcLayeredIdentify() {
+class MvcLayeredIdentify() : LayeredChecker {
     private var hasController: Boolean = false
     private var hasService: Boolean = false
     private var hasRepo: Boolean = false
 
-    fun addToIdentify(it: String) {
+    override fun addToIdentify(it: String) {
         val split = it.split(".")
         if (!this.hasController) {
             this.hasController = CONTROLLERS.contains(split.last())
@@ -60,13 +65,13 @@ class MvcLayeredIdentify() {
         }
     }
 
-    fun canMarked(): Boolean {
+    override fun canMarked(): Boolean {
         return this.hasController && this.hasService && this.hasRepo
     }
 }
 
 class LayeredIdentify(private val packages: List<String>) {
-    private var ddd = DddLayeredIdentify();
+    private var ddd = DddLayeredChecker();
     private var mvc = MvcLayeredIdentify();
     fun identify(): CodeStructureStyle {
         packages.forEach {
