@@ -5,9 +5,18 @@ import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.scanner.core.client.dto.CodeLanguage
 import org.archguard.scanner.core.client.dto.ContainerService
 
+/**
+ * **Workspace** is like IDE/Editor's workspace, same as to Git/SVN project.
+ *
+ * @property dataStructs the analysis result of projects.
+ * @property projectDependencies the analysis result of package manager's config.
+ * @property port the analysis result of container services.
+ * @property languages the overview of project languages.
+ *
+ */
 class Workspace(
     val dataStructs: List<CodeDataStruct> = listOf(),
     val projectDependencies: PackageDependencies = PackageDependencies("", "", "", listOf()),
-    val outbounds: ContainerService = ContainerService(),
+    val port: ContainerService = ContainerService(),
     val languages: List<CodeLanguage> = listOf()
 )

@@ -1,10 +1,18 @@
 package org.archguard.architecture.core
 
-class SystemArchitecture(
-    // 分层等架构风格
+/**
+ * **WorkspaceArchitecture** is the analysis result of Workspace
+ * @property archStyle the architecture style
+ * @property subSystems the sub-systems, a sub system contains components
+ * @property components the component sets
+ * @property connections the relations of sub-systems or components
+ * @property metadata the summary of other data
+ * @property ability -ability from source code
+ */
+class WorkspaceArchitecture(
     val archStyle: ArchitectureStyle,
     // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
-    val subSystem: List<SubSystem>,
+    val subSystems: List<SubSystem>,
     // todo: rename component to Element?
     // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
@@ -15,6 +23,19 @@ class SystemArchitecture(
     // 1. generate from libraries
     // 2. generate from app types domain
     val ability: List<String>
+)
+
+/**
+ * sub-systems with relations
+ */
+class SubSystem(
+    // inbound system ids
+    val inbounds: List<String>,
+    // examples: DDD
+    val codeStructureStyle: List<CodeStructureStyle>,
+    // examples: org.archguard.domain, org.archguard.infrastructure, org.archguard.interface, org.archguard.application
+    val packageStructure: List<String>,
+    val component: List<ArchComponent>,
 )
 
 class Connection(
@@ -54,9 +75,7 @@ class ArchComponent(
     val name: String,
     // like
     val type: ArchComponentType,
-
     val port: List<Port>,
-
     val children: List<ArchComponent>
 )
 
@@ -72,24 +91,12 @@ class Protocol(
     val name: String
 )
 
-
 enum class ArchComponentType {
     SERVICE,
     MODULE,
     PACKAGE,
     CLASSES,
 }
-
-// sub-systems with relations
-class SubSystem(
-    // inbound system ids
-    val inbounds: List<String>,
-    // examples: DDD
-    val codeStructureStyle: List<CodeStructureStyle>,
-    // examples: org.archguard.domain, org.archguard.infrastructure, org.archguard.interface, org.archguard.application
-    val packageStructure: List<String>,
-    val component: List<ArchComponent>,
-)
 
 // from GitTags
 enum class DevelMethodology {
