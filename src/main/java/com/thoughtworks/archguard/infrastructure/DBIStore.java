@@ -27,6 +27,9 @@ public class DBIStore {
         this.checkJdbcUrl();
         this.ds.setJdbcUrl(dburl);
         this.ds.setMaximumPoolSize(5);
+
+        disableForeignCheck();
+        initConnectionPool();
     }
 
     public void delete(String table, Phaser phaser, String systemId) {

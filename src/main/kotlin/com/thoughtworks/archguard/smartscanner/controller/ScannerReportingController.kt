@@ -82,6 +82,7 @@ class ScannerReportingController(
             "container_resource",
             "container_service",
         )
+        logger.info(input.toString())
 
         try {
             val repo = ContainerRepository(systemId, language, path)
@@ -113,8 +114,8 @@ class ScannerReportingController(
     }
 
     private fun execute(systemId: String, tables: Array<String>) {
-        store.disableForeignCheck()
-        store.initConnectionPool()
+        // store.disableForeignCheck()
+        // store.initConnectionPool()
         logger.info("========================================================")
 
         val phaser = Phaser(1)
@@ -128,7 +129,7 @@ class ScannerReportingController(
         phaser.arriveAndAwaitAdvance()
         logger.info("============ system {} update db is done ==============", systemId)
         logger.info("========================================================")
-        store.enableForeignCheck()
+        // store.enableForeignCheck()
     }
 
     private fun deleteByTables(tables: Array<String>, phaser: Phaser, systemId: String) {
@@ -187,7 +188,7 @@ class ScannerReportingController(
     private fun cleanSqlFile(tables: Array<String>) {
         cleanInsertSqlFile(tables)
         cleanUpdateSqlFile(tables)
-        SqlExecuteThreadPool.close()
+        // SqlExecuteThreadPool.close()
     }
 
     private fun cleanInsertSqlFile(tables: Array<String>) {

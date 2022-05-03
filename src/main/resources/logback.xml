@@ -1,0 +1,20 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread{12}] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="info"/>
+
+    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="java.sql" level="DEBUG"/>
+    <logger name="org.jdbi.v3" level="DEBUG"/>
+
+    <logger name="org.archguard.scanner" level="DEBUG"/>
+    <logger name="com.thoughtworks.archguard.infrastructure" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

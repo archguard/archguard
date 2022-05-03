@@ -28,6 +28,10 @@ object RemoteFileLoader {
         logger.debug("downloading finished in $cost ms")
     }
 
+    fun load(fileName: String, downloadUrl: String) {
+        if (!isInstalled(fileName)) install(fileName, downloadUrl)
+    }
+
     fun load(workspace: File, fileName: String, downloadUrl: String) {
         if (!isInstalled(fileName)) install(fileName, downloadUrl)
         copy2Workspace(workspace, fileName)

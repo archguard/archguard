@@ -25,6 +25,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
             caller.demands.map { saveDemand(it, serviceId, caller.name) }.toTypedArray()
             caller.resources.map { saveResource(it, serviceId, caller.name) }.toTypedArray()
         }
+        batch.execute()
     }
 
     private fun saveMainServices(): String {
