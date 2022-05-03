@@ -17,23 +17,23 @@ class ArchitectureDetect() {
 
         // 1. load project dependencies
 
-        // 2. identify web, data, like
         val markup = FrameworkMarkup.byLanguage("Java")
         if (markup != null) {
-            detectAppType(markup, workspace.projectDependencies)
+            inferenceExecArchByDependencies(markup, workspace.projectDependencies)
         }
-
-        // 3. analysis protocol
 
         // 4. load all package name for layered architecture
     }
 
-    fun detectAppType(markup: FrameworkMarkup, dependencies: PackageDependencies): PotentialExecArch {
+    // create execute architecture by dependencies
+    //  - identify appType : web, data, like
+    //  - identify protocol: http, rpc
+    fun inferenceExecArchByDependencies(markup: FrameworkMarkup, packageDeps: PackageDependencies): PotentialExecArch {
         val potentialExecArch = PotentialExecArch()
         val appTypeMap = markup.depAppTypeMap
         val protocols = markup.depProtocolMap
 
-        dependencies.dependencies.forEach { depEntry ->
+        packageDeps.dependencies.forEach { depEntry ->
             appTypeMap.forEach {
                 if(depEntry.name.startsWith(it.key)) {
                     potentialExecArch.appTypes += it.value

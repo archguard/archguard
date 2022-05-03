@@ -23,7 +23,7 @@ internal class SystemArchitectureDetectTest {
             dependencies = listOf(dependencyEntry)
         )
 
-        val potentialExecArch = ArchitectureDetect().detectAppType(markup, packageDependencies)
+        val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
         assertEquals("web", potentialExecArch.appTypes[0])
     }
 
@@ -43,7 +43,7 @@ internal class SystemArchitectureDetectTest {
             dependencies = listOf(dependencyEntry)
         )
 
-        val potentialExecArch = ArchitectureDetect().detectAppType(markup, packageDependencies)
+        val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
         assertEquals("rpc", potentialExecArch.protocols[0])
     }
 }
