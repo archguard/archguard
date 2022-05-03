@@ -5,6 +5,7 @@ class SystemArchitecture(
     val archStyle: ArchitectureStyle,
     // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
     val subSystem: List<SubSystem>,
+    // todo: rename component to Element?
     // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
@@ -48,16 +49,27 @@ class ArchMedataData(
 )
 
 // todo: add Component Layout
+// like http
 class ArchComponent(
     val name: String,
     // like
     val type: ArchComponentType,
+
+    val port: List<Port>,
+
+    val children: List<ArchComponent>
+)
+
+class Port(
+    val protocols: List<Protocol>,
     // link HTTP API, RPC API, CLI API
     val inbounds: List<String>,
     // like database, HTTP Call
     val outbound: List<String>,
+)
 
-    val components: List<ArchComponent>
+class Protocol(
+    val name: String
 )
 
 
