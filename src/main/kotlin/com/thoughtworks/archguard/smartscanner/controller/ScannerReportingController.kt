@@ -214,7 +214,3 @@ class ScannerReportingController(
         }
     }
 }
-
-fun main() {
-    println(Paths.get("asfas").toAbsolutePath())
-}

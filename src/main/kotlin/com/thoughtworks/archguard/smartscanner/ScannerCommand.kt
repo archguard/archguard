@@ -2,6 +2,8 @@ package com.thoughtworks.archguard.smartscanner
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import java.io.File
+import java.nio.file.Paths
+import kotlin.io.path.absolutePathString
 
 data class ScannerCommand(
     val type: AnalyserType,
@@ -18,6 +20,8 @@ data class ScannerCommand(
             "--system-id=$systemId",
             "--server-url=$serverUrl",
             "--path=$path",
+            "--tools-home=${Paths.get("").absolutePathString()}",
+            "--workspace=${workspace.absolutePath}",
         )
         // additional args
         language?.let { arguments.add("--language=$it") }

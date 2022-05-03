@@ -6,6 +6,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
+import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +20,7 @@ class HubExecutorService : DisposableBean {
     private var systemRoot: String = ""
 
     @Autowired
-    private lateinit var manager: ScannerManager
+    private lateinit var executor: StranglerScannerExecutor
 
     @Volatile
     private var isRunning: Boolean = false
@@ -63,7 +64,13 @@ class HubExecutorService : DisposableBean {
         return concurrentSet.contains(id)
     }
 
-    private fun doScan(id: Long, dbUrl: String, scannerVersion: String, memoryConsumer: StreamConsumer, additionArguments: List<String>) {
+    private fun doScan(
+        id: Long,
+        dbUrl: String,
+        scannerVersion: String,
+        memoryConsumer: StreamConsumer,
+        additionArguments: List<String>
+    ) {
         val config = configureRepository.getToolConfigures()
         // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id, memoryConsumer)
@@ -83,8 +90,7 @@ class HubExecutorService : DisposableBean {
                 additionArguments,
                 scannerVersion
             )
-            val hubExecutor = HubExecutor(context, manager)
-            hubExecutor.execute()
+            executor.execute(context)
             systemRoot = context.workspace.parent
         }
     }
