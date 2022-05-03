@@ -28,26 +28,15 @@ include(
     // others
 )
 
-// common for share code repository
-// TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
-include(":common_code_repository")
-
-include(":diff_changes")
-
-include(":doc_generator")
-
+/**
+ *  analysers projects: process the ast or dbschema to extract more information
+ */
 include(":analyser_sca")
 include(":analyser_architecture")
 
-// legacy scanners, should replace by analyser
-include(":scan_git")
-include(":scan_jacoco")
-include(":scan_sourcecode")
-include(":scan_sql")
-include(":scan_test_badsmell")
-include(":scan_bytecode")
-
-// core rule model
+/**
+ * linters projects: a specific set of analysers to detect specific patterns
+ */
 include(":rule_core")
 include(":linter:rule_sql")
 include(":linter:rule_test_code")
@@ -55,5 +44,24 @@ include(":linter:rule_webapi")
 include(":linter:rule_code")
 include(":linter:rule_template")
 
-// adapter for ci
-include(":collector_ci")
+/**
+ * others projects:
+ */
+include(":doc_generator")
+
+/* ------------------------------------------------------------------------------ */
+
+// legacy scanners
+include(":scan_git")
+include(":scan_jacoco")
+include(":scan_sourcecode")
+include(":scan_sql")
+include(":scan_test_badsmell")
+include(":scan_bytecode")
+include(":collector_ci") // adapter for ci
+include(":diff_changes")
+
+// common for share code repository
+// TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
+include(":common_code_repository")
+

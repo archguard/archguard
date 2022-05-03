@@ -82,19 +82,9 @@ allprojects {
 }
 
 dependencies {
-    jacocoAggregation(project(":diff_changes"))
-
     jacocoAggregation(project(":"))
 
-    jacocoAggregation(project(":common_code_repository"))
-
-    jacocoAggregation(project(":rule_core"))
-    jacocoAggregation(project(":linter:rule_sql"))
-    jacocoAggregation(project(":linter:rule_test_code"))
-    jacocoAggregation(project(":linter:rule_webapi"))
-    jacocoAggregation(project(":linter:rule_code"))
-    jacocoAggregation(project(":linter:rule_template"))
-
+    // jacocoAggregation(project(":scanner_core"))
     jacocoAggregation(project(":scanner_cli"))
     jacocoAggregation(project(":scanner_sourcecode:lang_kotlin"))
     jacocoAggregation(project(":scanner_sourcecode:lang_java"))
@@ -109,11 +99,24 @@ dependencies {
     jacocoAggregation(project(":analyser_sca"))
     jacocoAggregation(project(":analyser_architecture"))
 
+    jacocoAggregation(project(":rule_core"))
+    jacocoAggregation(project(":linter:rule_sql"))
+    jacocoAggregation(project(":linter:rule_test_code"))
+    jacocoAggregation(project(":linter:rule_webapi"))
+    jacocoAggregation(project(":linter:rule_code"))
+    jacocoAggregation(project(":linter:rule_template"))
+
+    /* ------------------------------------------------------------------------------ */
+
+    // legacy scanner
     jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":scan_jacoco"))
     jacocoAggregation(project(":scan_sql"))
     jacocoAggregation(project(":scan_test_badsmell"))
     jacocoAggregation(project(":scan_bytecode"))
+    jacocoAggregation(project(":diff_changes"))
+
+    jacocoAggregation(project(":common_code_repository"))
 }
 
 reporting {
