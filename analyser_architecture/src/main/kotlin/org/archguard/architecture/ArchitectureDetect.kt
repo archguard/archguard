@@ -57,7 +57,7 @@ class ArchitectureDetect() {
         val callSources = workspace.dataStructs.flatMap { ds -> ds.FunctionCalls.map { it.NodeName }.toList() }.toList()
         if (callSources.contains("ProcessBuilder")) {
             // todo: add for process builder
-            execArch.connectorTypes += ConnectorType.DataAccess
+            execArch.connectorTypes += ConnectorType.Process
         }
     }
 

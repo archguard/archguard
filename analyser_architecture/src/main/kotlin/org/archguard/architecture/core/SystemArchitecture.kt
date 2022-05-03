@@ -147,6 +147,16 @@ enum class ComponentTypes {
     General
 }
 
+//// 进程间通信
+//enum class IPCType {
+//    Pipe,
+//    Signal,
+//    Semaphore,
+//    MessageQueue,
+//    SharedMemory,
+//    IpcSocket
+//}
+
 enum class ConnectorType {
     Process,
     Pipe,
@@ -155,5 +165,5 @@ enum class ConnectorType {
     RemoteProcedureCall,
     ProcedureCall,
     RTScheduler,
+    Http,
 }
-
