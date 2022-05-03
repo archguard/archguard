@@ -4,6 +4,10 @@ Refs:
 
 - [Architecture Description Language (ADL)](https://cio-wiki.org/wiki/Architecture_Description_Language_(ADL))
 
+## 通过领域生成架构特征
+
+1. 如何识别领域知识？
+
 ## 多个子系统导入
 
 基于 CSV, JSON， Markdown

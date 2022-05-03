@@ -1,0 +1,5 @@
+# Domain
+- domain: GUI
+  characteristics:
+    - WindowManager
+
