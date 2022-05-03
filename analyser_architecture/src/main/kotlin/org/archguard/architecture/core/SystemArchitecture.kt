@@ -147,7 +147,8 @@ enum class ComponentTypes {
     General
 }
 
-enum class ConnectorTypes {
+enum class ConnectorType {
+    Process,
     Pipe,
     DataAccess,
     FileIO,

@@ -7,7 +7,7 @@ import org.archguard.architecture.core.CodeStructureStyle.DDD
 import org.archguard.architecture.core.CodeStructureStyle.MVC
 import org.archguard.architecture.core.CodeStructureStyle.ModuleDDD
 import org.archguard.architecture.core.CodeStructureStyle.UNKNOWN
-import org.archguard.architecture.core.ExecutionArchitecture
+import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
 import org.archguard.architecture.detect.FrameworkMarkup
 import org.archguard.architecture.detect.LayeredIdentify
@@ -16,6 +16,7 @@ import org.archguard.architecture.detect.LayeredIdentify
 data class PotentialExecArch(
     var protocols: List<String> = listOf(),
     var appTypes: List<String> = listOf(),
+    var connectorTypes: List<ConnectorType> = listOf(),
     var stacks: List<String> = listOf()
 )
 
@@ -31,11 +32,7 @@ class ArchitectureDetect() {
         }
 
         // 3. update exec arch from call nodeName
-        val callSources = workspace.dataStructs.flatMap { ds -> ds.FunctionCalls.map { it.NodeName }.toList() }.toList()
-        if (callSources.contains("ProcessBuilder")) {
-            // todo: add for process builder
-            execArch.appTypes += "Process"
-        }
+        fillArchFromSourceCode(workspace, execArch)
 
         // 4. load all package name for layered architecture
         val packages = workspace.dataStructs.map { it.Package }.toList()
@@ -53,6 +50,14 @@ class ArchitectureDetect() {
             }
             CLEAN -> {}
             UNKNOWN -> {}
+        }
+    }
+
+    private fun fillArchFromSourceCode(workspace: Workspace, execArch: PotentialExecArch) {
+        val callSources = workspace.dataStructs.flatMap { ds -> ds.FunctionCalls.map { it.NodeName }.toList() }.toList()
+        if (callSources.contains("ProcessBuilder")) {
+            // todo: add for process builder
+            execArch.connectorTypes += ConnectorType.DataAccess
         }
     }
 
