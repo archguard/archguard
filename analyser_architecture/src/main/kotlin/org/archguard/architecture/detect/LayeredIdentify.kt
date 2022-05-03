@@ -73,6 +73,7 @@ class MvcLayeredIdentify() : LayeredChecker {
 class LayeredIdentify(private val packages: List<String>) {
     private var ddd = DddLayeredChecker();
     private var mvc = MvcLayeredIdentify();
+
     fun identify(): CodeStructureStyle {
         packages.forEach {
             ddd.addToIdentify(it)
