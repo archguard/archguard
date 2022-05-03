@@ -10,9 +10,9 @@ fun main() {
         "--language=kotlin",
         "--features=apicalls",
         "--features=datamap",
-        "--output=json",
-        // "--output=csv",
-        "--output=console",
+        // "--output=json",
+        "--output=http",
+        // "--output=console",
     )
     Runner().main(args)
 }
