@@ -8,6 +8,7 @@ import org.archguard.scanner.core.sourcecode.SourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
 import org.archguard.scanner.ctl.command.ScannerCommand
+import org.slf4j.LoggerFactory
 
 class AnalyserDispatcher {
     fun dispatch(command: ScannerCommand) {
@@ -34,9 +35,16 @@ private class SourceCodeWorker(
     override val context: SourceCodeContext,
     override val analyserSpecs: List<AnalyserSpec>,
 ) : AbstractWorker<SourceCodeContext> {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
-        context.features.asyncMap { getOrInstall<SourceCodeAnalyser>(it).analyse(ast) }
+        context.features.asyncMap {
+            try {
+                getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
+            } catch (e: Exception) {
+                logger.error("Error while analysing feature: $it", e)
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val systemId: String by option(help = "system id").default("0")
     private val serverUrl: String by option(help = "the base url of the archguard api server").default("http://localhost:8080")
 
+    private val workspace by option(help = "the workspace directory").default(".")
     private val path: String by option(help = "the path of target project").default(".")
     private val language: String by option(
         help = "official supported language: Java, Kotlin, TypeScript, CSharp, Python, Golang. You can also input a json to define your own language analyser."
@@ -40,10 +41,11 @@ class Runner : CliktCommand(help = "scanner cli") {
             """
             |type: $type
             |systemId: $systemId
-            |serverUrl: $serverUrl
+            |workspace: $workspace
             |path: $path
             |language: $language
             |features: $features
+            |serverUrl: $serverUrl
            """.trimIndent()
         )
 
