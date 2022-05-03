@@ -3,7 +3,10 @@ package org.archguard.rule.loader
 import org.archguard.rule.core.RuleSetProvider
 import java.util.ServiceLoader
 
-// load ruleSets by classes
+/**
+ * **RuleSetsLoader** is load ruleSets by classes
+ *
+ */
 class RuleSetsLoader {
     // todo: thinking others way.
     fun load(disabledRules: String) {

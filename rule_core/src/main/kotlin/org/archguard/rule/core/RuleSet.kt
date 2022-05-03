@@ -1,5 +1,8 @@
 package org.archguard.rule.core
 
+/**
+ * **RuleSet** contains a set of Rules
+ */
 open class RuleSet(
     var type: RuleType,
     val name: String,
