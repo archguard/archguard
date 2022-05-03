@@ -6,6 +6,28 @@
 
 rootProject.name = "ArchGuard Scanner"
 
+/**
+ *  scanner projects:
+ * scanner projects:
+ * - core: define the core models and apis
+ * - cli: executable command line tools to manage and choregraph
+ */
+include(
+    ":scanner_core",
+    ":scanner_cli",
+    // source code
+    ":scanner_sourcecode:lang_kotlin",
+    ":scanner_sourcecode:lang_java",
+    ":scanner_sourcecode:lang_typescript",
+    ":scanner_sourcecode:lang_python",
+    ":scanner_sourcecode:lang_golang",
+    ":scanner_sourcecode:lang_csharp",
+    ":scanner_sourcecode:lang_scala",
+    ":scanner_sourcecode:feat_apicalls",
+    ":scanner_sourcecode:feat_datamap",
+    // others
+)
+
 // common for share code repository
 // TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
 include(":common_code_repository")
@@ -13,24 +35,6 @@ include(":common_code_repository")
 include(":diff_changes")
 
 include(":doc_generator")
-
-// standard doc model
-include(":scanner_core")
-include(":scanner_cli")
-
-// official analyser implementations
-include(
-    ":analyser_template",
-    ":analyser_sourcecode:lang_kotlin",
-    ":analyser_sourcecode:lang_java",
-    ":analyser_sourcecode:lang_typescript",
-    ":analyser_sourcecode:lang_python",
-    ":analyser_sourcecode:lang_golang",
-    ":analyser_sourcecode:lang_csharp",
-    ":analyser_sourcecode:lang_scala",
-    ":analyser_sourcecode:feat_apicalls",
-    ":analyser_sourcecode:feat_datamap",
-)
 
 include(":analyser_sca")
 include(":analyser_architecture")
