@@ -1,6 +1,6 @@
 package org.archguard.architecture.core
 
-class Architecture(
+class SystemArchitecture(
     // 分层等架构风格
     val archStyle: ArchitectureStyle,
     // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
@@ -8,12 +8,7 @@ class Architecture(
     // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
-    val connections: List<ArchConnection>,
-    // 分析
-    val metadata: ArchMedataData,
-    // 1. generate from libraries
-    // 2. generate from app types domain
-    val ability: List<String>
+    val connections: List<ArchConnection>
 )
 
 class ArchConnection(
@@ -49,11 +44,22 @@ class ArchMedataData(
 
 class ArchComponent(
     val name: String,
+    // like
+    val type: ArchComponentType,
     // link HTTP API, RPC API, CLI API
     val inbounds: List<String>,
     // like database, HTTP Call
-    var outbound: List<String>,
+    val outbound: List<String>,
+
+    val components: List<ArchComponent>
 )
+
+enum class ArchComponentType {
+    SERVICE,
+    MODULE,
+    PACKAGE,
+    CLASSES,
+}
 
 // sub-systems with relations
 class SubSystem(

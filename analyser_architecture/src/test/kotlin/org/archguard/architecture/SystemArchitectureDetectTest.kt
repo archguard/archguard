@@ -6,7 +6,7 @@ import org.archguard.architecture.detect.FrameworkMarkup
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class ArchitectureDetectTest {
+internal class SystemArchitectureDetectTest {
     @Test
     internal fun name() {
         val markup = FrameworkMarkup.byLanguage("Java")!!
