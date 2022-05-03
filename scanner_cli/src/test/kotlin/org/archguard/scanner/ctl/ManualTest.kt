@@ -4,13 +4,13 @@ package org.archguard.scanner.ctl
 fun main() {
     val args = arrayOf(
         "--type=source_code",
-        "--system-id=localtesting",
+        "--system-id=3",
         "--server-url=http://localhost:8080",
-        "--path=/Users/adliao/commit_archguard/archguard_backend",
+        "--path=/var/folders/w8/3_cj5bnx7hqcw5ghz51dn_9h0000gn/T/archguard11450798564056611470",
         "--language=kotlin",
         "--features=apicalls",
-        "--features=datamap",
-        // "--output=json",
+        // "--features=datamap",
+        "--output=json",
         "--output=http",
         // "--output=console",
     )

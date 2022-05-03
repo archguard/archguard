@@ -2,6 +2,7 @@ package org.archguard.scanner.ctl.client
 
 import chapi.domain.core.CodeDataStruct
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -25,8 +26,11 @@ class ArchGuardHttpClient(
         "?language=$language" +
         "&path=$path"
 
+    private fun createClient() = HttpClient(CIO.create { requestTimeout = 0 })
+
+    // create another job to execute this coroutine
     override fun saveDataStructure(codes: List<CodeDataStruct>): Unit = runBlocking {
-        HttpClient().use {
+        createClient().use {
             it.post(buildUrl("class-items")) {
                 contentType(ContentType.Application.Json)
                 setBody(Json.encodeToString(codes))
@@ -35,7 +39,7 @@ class ArchGuardHttpClient(
     }
 
     override fun saveApi(apis: List<ContainerService>): Unit = runBlocking {
-        HttpClient().use {
+        createClient().use {
             it.post(buildUrl("container-services")) {
                 contentType(ContentType.Application.Json)
                 setBody(Json.encodeToString(apis))
@@ -44,7 +48,7 @@ class ArchGuardHttpClient(
     }
 
     override fun saveRelation(records: List<CodeDatabaseRelation>): Unit = runBlocking {
-        HttpClient().use {
+        createClient().use {
             it.post(buildUrl("datamap-relations")) {
                 contentType(ContentType.Application.Json)
                 setBody(Json.encodeToString(records))

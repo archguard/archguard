@@ -107,7 +107,6 @@ class FrontendApiAnalyser {
     class LoopDepth(var index: Int)
 
     fun toContainerServices(): Array<ContainerService> {
-        File("component.inbounds.json").writeText(Json.encodeToString(componentInbounds))
         var componentCalls: Array<ContainerService> = arrayOf()
 
         componentInbounds.forEach { inbound ->
