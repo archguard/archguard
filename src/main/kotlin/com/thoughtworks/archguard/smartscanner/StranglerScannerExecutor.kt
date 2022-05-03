@@ -16,7 +16,7 @@ class StranglerScannerExecutor(
     @Autowired private val scanners: List<Scanner>,
     @Autowired private val scannerClient: ScannerClient,
 ) {
-    @Value("\${server.port}")
+    @Value("\${server.port:8080}")
     private val serverPort: String = "8080"
 
     private val log = LoggerFactory.getLogger(this.javaClass)
