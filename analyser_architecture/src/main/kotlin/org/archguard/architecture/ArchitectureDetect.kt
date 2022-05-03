@@ -30,12 +30,18 @@ class ArchitectureDetect() {
 
     fun detectAppType(markup: FrameworkMarkup, dependencies: PackageDependencies): PotentialExecArch {
         val potentialExecArch = PotentialExecArch()
-        val appTypeMap = markup.depToAppType()
+        val appTypeMap = markup.depAppTypeMap
+        val protocols = markup.depProtocolMap
 
         dependencies.dependencies.forEach { depEntry ->
             appTypeMap.forEach {
                 if(depEntry.name.startsWith(it.key)) {
                     potentialExecArch.appTypes += it.value
+                }
+            }
+            protocols.forEach {
+                if(depEntry.name.startsWith(it.key)) {
+                    potentialExecArch.protocols += it.value
                 }
             }
         }

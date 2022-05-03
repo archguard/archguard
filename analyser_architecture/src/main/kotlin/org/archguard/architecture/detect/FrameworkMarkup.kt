@@ -18,14 +18,21 @@ class FrameworkMarkup(
     var protocolMapping: HashMap<String, List<String>> = hashMapOf(),
     val extends: String = "",
 ) {
-    fun depToAppType(): HashMap<String, String> {
-        val mapping: HashMap<String, String> = hashMapOf()
+    val depAppTypeMap: HashMap<String, String> = hashMapOf()
+    val depProtocolMap: HashMap<String, String> = hashMapOf()
+
+    init {
         appTypeMapping.forEach { appType ->
             appType.value.forEach {
-               mapping[it] = appType.key
-           }
+                depAppTypeMap[it] = appType.key
+            }
         }
-        return mapping
+
+        protocolMapping.forEach { protocol ->
+            protocol.value.forEach {
+                depProtocolMap[it] = protocol.key
+            }
+        }
     }
 
     companion object {

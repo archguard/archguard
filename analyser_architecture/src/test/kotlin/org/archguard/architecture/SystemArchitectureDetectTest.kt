@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 
 internal class SystemArchitectureDetectTest {
     @Test
-    internal fun name() {
+    internal fun basic_app_type() {
         val markup = FrameworkMarkup.byLanguage("Java")!!
         val dependencyEntry = DependencyEntry(
             name = "org.springframework.boot:spring-boot-starter-jdbc",
@@ -25,5 +25,25 @@ internal class SystemArchitectureDetectTest {
 
         val potentialExecArch = ArchitectureDetect().detectAppType(markup, packageDependencies)
         assertEquals("web", potentialExecArch.appTypes[0])
+    }
+
+    @Test
+    internal fun basic_protocol() {
+        val markup = FrameworkMarkup.byLanguage("Java")!!
+        val dependencyEntry = DependencyEntry(
+            name = "org.apache.dubbo:dubbo",
+            group = "dubbo",
+            artifact = "org.apache.dubbo:dubbo",
+            version = ""
+        )
+        val packageDependencies = PackageDependencies(
+            name = "",
+            version = "",
+            packageManager = "Gradle",
+            dependencies = listOf(dependencyEntry)
+        )
+
+        val potentialExecArch = ArchitectureDetect().detectAppType(markup, packageDependencies)
+        assertEquals("rpc", potentialExecArch.protocols[0])
     }
 }
