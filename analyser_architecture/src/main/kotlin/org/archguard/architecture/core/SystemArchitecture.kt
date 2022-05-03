@@ -8,10 +8,15 @@ class SystemArchitecture(
     // 对于单体系统来说，它可以是一些模块
     var components: List<ArchComponent>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
-    val connections: List<ArchConnection>
+    val connections: List<Connection>,
+    // 分析
+    val metadata: ArchMedataData,
+    // 1. generate from libraries
+    // 2. generate from app types domain
+    val ability: List<String>
 )
 
-class ArchConnection(
+class Connection(
     val connectors: String,
     // `qualifiedName`
     val source: String,
@@ -42,6 +47,7 @@ class ArchMedataData(
     val lineCounts: List<String>,
 )
 
+// todo: add Component Layout
 class ArchComponent(
     val name: String,
     // like
@@ -53,6 +59,7 @@ class ArchComponent(
 
     val components: List<ArchComponent>
 )
+
 
 enum class ArchComponentType {
     SERVICE,
