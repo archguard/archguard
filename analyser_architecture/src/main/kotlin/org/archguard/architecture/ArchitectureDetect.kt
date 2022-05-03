@@ -21,7 +21,7 @@ data class PotentialExecArch(
 )
 
 class ArchitectureDetect() {
-    fun ident(workspace: Workspace) {
+    fun identPotential(workspace: Workspace): PotentialExecArch {
         // 1. setup
 
         var execArch = PotentialExecArch()
@@ -51,13 +51,24 @@ class ArchitectureDetect() {
             CLEAN -> {}
             UNKNOWN -> {}
         }
+
+
+        return execArch
     }
 
     private fun fillArchFromSourceCode(workspace: Workspace, execArch: PotentialExecArch) {
-        val callSources = workspace.dataStructs.flatMap { ds -> ds.FunctionCalls.map { it.NodeName }.toList() }.toList()
-        if (callSources.contains("ProcessBuilder")) {
-            // todo: add for process builder
-            execArch.connectorTypes += ConnectorType.Process
+        workspace.dataStructs.forEach { struct ->
+            struct.Imports.forEach {
+                if (it.Source == "java.io.File") {
+                    execArch.connectorTypes += ConnectorType.FileIO
+                }
+            }
+
+            struct.FunctionCalls.forEach {
+                if (it.NodeName == "ProcessBuilder") {
+                    execArch.connectorTypes += ConnectorType.Process
+                }
+            }
         }
     }
 

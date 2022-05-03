@@ -1,12 +1,17 @@
 package org.archguard.architecture
 
+import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeImport
 import org.archguard.analyser.sca.model.DependencyEntry
 import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.architecture.core.ConnectorType
+import org.archguard.architecture.core.Workspace
 import org.archguard.architecture.detect.FrameworkMarkup
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
-internal class SystemArchitectureDetectTest {
+internal class ArchitectureDetectTest {
     @Test
     internal fun basic_app_type() {
         val markup = FrameworkMarkup.byLanguage("Java")!!
@@ -24,7 +29,7 @@ internal class SystemArchitectureDetectTest {
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
-        assertEquals("web", potentialExecArch.appTypes[0])
+        Assertions.assertEquals("web", potentialExecArch.appTypes[0])
     }
 
     @Test
@@ -44,6 +49,17 @@ internal class SystemArchitectureDetectTest {
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
-        assertEquals("rpc", potentialExecArch.protocols[0])
+        Assertions.assertEquals("rpc", potentialExecArch.protocols[0])
+    }
+
+    @Test
+    fun exec_arch_from_source_code() {
+        val struct = CodeDataStruct(
+            Imports = arrayOf(CodeImport(Source = "java.io.File"))
+        )
+        val execArch = ArchitectureDetect().identPotential(Workspace(listOf(struct)))
+
+        assertEquals(1, execArch.connectorTypes.size)
+        assertEquals(ConnectorType.FileIO, execArch.connectorTypes[0])
     }
 }
