@@ -17,7 +17,7 @@ data class PotentialExecArch(
     var protocols: List<String> = listOf(),
     var appTypes: List<String> = listOf(),
     var connectorTypes: List<ConnectorType> = listOf(),
-    var stacks: List<String> = listOf()
+    var coreStacks: List<String> = listOf()
 )
 
 class ArchitectureDetect() {
@@ -72,23 +72,37 @@ class ArchitectureDetect() {
         }
     }
 
-    // create execute architecture by dependencies
-    //  - identify appType : web, data, like
-    //  - identify protocol: http, rpc
+    /**
+     *  create execute architecture by dependencies
+     *  - identify appType : web, data, like
+     *  - identify protocol: http, rpc
+     *  - identify core stacks
+     */
     fun inferenceExecArchByDependencies(markup: FrameworkMarkup, packageDeps: PackageDependencies): PotentialExecArch {
         val potentialExecArch = PotentialExecArch()
         val appTypeMap = markup.depAppTypeMap
         val protocols = markup.depProtocolMap
+        val coreStacks = markup.coreStacks
 
         packageDeps.dependencies.forEach { depEntry ->
+            // app types
             appTypeMap.forEach {
                 if (depEntry.name.startsWith(it.key)) {
                     potentialExecArch.appTypes += it.value
                 }
             }
+
+            // protocols
             protocols.forEach {
                 if (depEntry.name.startsWith(it.key)) {
                     potentialExecArch.protocols += it.value
+                }
+            }
+
+            // core stacks
+            coreStacks.forEach {
+                if (depEntry.name.startsWith(it)) {
+                    potentialExecArch.coreStacks += it
                 }
             }
         }

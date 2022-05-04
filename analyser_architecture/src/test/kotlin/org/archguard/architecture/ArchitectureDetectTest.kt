@@ -62,4 +62,25 @@ internal class ArchitectureDetectTest {
         assertEquals(1, execArch.connectorTypes.size)
         assertEquals(ConnectorType.FileIO, execArch.connectorTypes[0])
     }
+
+    @Test
+    internal fun core_stacks() {
+        val markup = FrameworkMarkup.byLanguage("Java")!!
+        val dependencyEntry = DependencyEntry(
+            name = "org.springframework.boot:spring-boot-starter-jdbc",
+            group = "org.springframework.boot",
+            artifact = "spring-boot-starter-jdbc",
+            version = ""
+        )
+        val packageDependencies = PackageDependencies(
+            name = "",
+            version = "",
+            packageManager = "Gradle",
+            dependencies = listOf(dependencyEntry)
+        )
+
+        val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
+        Assertions.assertEquals("org.springframework.boot", potentialExecArch.coreStacks[0])
+    }
+
 }
