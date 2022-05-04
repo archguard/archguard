@@ -102,7 +102,6 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
             values["source_method"] = demand.source_caller
         }
 
-
         values["service_id"] = serviceId
         values["system_id"] = systemId
         values["updated_at"] = time

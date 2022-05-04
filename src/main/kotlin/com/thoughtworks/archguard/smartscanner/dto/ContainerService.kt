@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.smartscanner.dto
 
-
 data class ContainerService(
     // component name, only if is a component
     var name: String = "",

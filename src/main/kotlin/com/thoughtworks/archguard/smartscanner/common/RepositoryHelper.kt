@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.smartscanner.common
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 object RepositoryHelper {
     fun generateId(): String {

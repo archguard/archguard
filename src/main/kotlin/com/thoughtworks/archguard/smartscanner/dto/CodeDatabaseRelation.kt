@@ -7,4 +7,3 @@ data class CodeDatabaseRelation(
     val tables: List<String> = listOf(),
     val sqls: List<String> = listOf()
 )
-

@@ -95,7 +95,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveMethodCall(
-        callerId: String, callee: CodeCall, moduleName: String, clzName: String, pkgName: String
+        callerId: String,
+        callee: CodeCall,
+        moduleName: String,
+        clzName: String,
+        pkgName: String
     ) {
         val calleeId: String? = saveOrGetCalleeMethod(callee, moduleName, clzName, pkgName)
         val callees: MutableMap<String, String> = HashMap()
@@ -139,7 +143,10 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun findMethodIdByClzName(
-        m: CodeFunction, clzName: String, funcName: String, pkgName: String
+        m: CodeFunction,
+        clzName: String,
+        funcName: String,
+        pkgName: String
     ): Optional<String?>? {
         return findMethodId(DEFAULT_MODULE_NAME, clzName, m.Parameters, funcName, pkgName)
     }
@@ -159,7 +166,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun findMethodId(
-        moduleName: String, clzName: String, parameters: Array<CodeProperty>, callNodeName: String, pkgName: String
+        moduleName: String,
+        clzName: String,
+        parameters: Array<CodeProperty>,
+        callNodeName: String,
+        pkgName: String
     ): Optional<String?>? {
         val keys: MutableMap<String, String> = HashMap()
         keys["clzname"] = "$pkgName.$clzName"
@@ -233,7 +244,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
                     doSaveClassDependence(clzId, clzDependenceId, sourceName, targetName)
                 }
             } else {
-                val sourceName = "${packageName}.${clzName}"
+                val sourceName = "$packageName.$clzName"
 
                 val importSource = import.Source
                 val clzDependenceId = saveOrGetDependentClass(importSource, DEFAULT_MODULE_NAME)
@@ -264,7 +275,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
             return idOpt.get()
         }
 
-        //third-party
+        // third-party
         idOpt = findClass(name, THIRD_PARTY)
         if (idOpt.isPresent) {
             return idOpt.get()

@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.infrastructure.task.SqlExecuteThreadPool
 import com.thoughtworks.archguard.smartscanner.common.ClassRepository
 import com.thoughtworks.archguard.smartscanner.common.DatamapRepository
 import com.thoughtworks.archguard.smartscanner.dto.CodeDatabaseRelation

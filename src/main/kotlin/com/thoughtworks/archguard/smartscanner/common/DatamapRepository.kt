@@ -30,7 +30,6 @@ class DatamapRepository(systemId: String, language: String, workspace: String) {
                 flush()
                 count.compareAndSet(batchStep, 0)
             }
-
         }
     }
 
