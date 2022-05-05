@@ -17,7 +17,8 @@ data class PotentialExecArch(
     var protocols: List<String> = listOf(),
     var appTypes: List<String> = listOf(),
     var connectorTypes: List<ConnectorType> = listOf(),
-    var coreStacks: List<String> = listOf()
+    var coreStacks: List<String> = listOf(),
+    var concepts: List<CodeDataStruct> = listOf()
 )
 
 class ArchitectureDetect() {
