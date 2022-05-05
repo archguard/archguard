@@ -1,15 +1,13 @@
-package org.archguard.scanner.sql
+package org.archguard.scanner.analyser.database
 
 import mu.KotlinLogging
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.util.TablesNamesFinder
-import org.archguard.scanner.sql.model.SimpleRelation
-
-private val logger = KotlinLogging.logger {}
 
 object MysqlIdentApp {
     private val UPDATE_SQL = "update\\s+([a-zA-Z_]+)".toRegex()
+    private val logger = KotlinLogging.logger {}
 
     fun analysis(sql: String): SimpleRelation? {
         val table = SimpleRelation()

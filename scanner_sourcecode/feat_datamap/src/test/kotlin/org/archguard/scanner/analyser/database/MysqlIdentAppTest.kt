@@ -1,4 +1,4 @@
-package org.archguard.scanner.sql
+package org.archguard.scanner.analyser.database
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import org.junit.jupiter.api.Assertions.assertEquals

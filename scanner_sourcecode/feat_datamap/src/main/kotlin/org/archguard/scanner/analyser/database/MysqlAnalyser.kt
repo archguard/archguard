@@ -3,7 +3,6 @@ package org.archguard.scanner.analyser.database
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.analyser.xml.mybatis.MybatisEntry
-import org.archguard.scanner.sql.MysqlIdentApp
 import org.slf4j.LoggerFactory
 
 class MysqlAnalyser {

@@ -1,4 +1,4 @@
-package org.archguard.scanner.sql.model
+package org.archguard.scanner.analyser.database
 
 class SimpleRelation(
     var tableNames: List<String> = listOf(),

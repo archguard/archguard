@@ -53,7 +53,6 @@ include(":doc_generator")
 
 // legacy scanners
 include(":scan_git")
-include(":scan_sql")
 include(":diff_changes")
 
 // include(":legacy:scan_sourcecode")

@@ -110,10 +110,9 @@ dependencies {
 
     // legacy scanner
     jacocoAggregation(project(":scan_git"))
-    jacocoAggregation(project(":scan_sql"))
     jacocoAggregation(project(":diff_changes"))
 
-//    jacocoAggregation(project(":legac:scan_jacoco"))
+//    jacocoAggregation(project(":legacy:scan_jacoco"))
 //    jacocoAggregation(project(":legacy:scan_test_badsmell"))
 //    jacocoAggregation(project(":legacy:scan_bytecode"))
 
