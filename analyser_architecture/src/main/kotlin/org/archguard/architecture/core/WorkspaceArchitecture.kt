@@ -10,19 +10,18 @@ package org.archguard.architecture.core
  * @property ability -ability from source code
  */
 class WorkspaceArchitecture(
-    val archStyle: ArchitectureStyle,
+    private val archStyle: ArchitectureStyle,
     // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
-    val subSystems: List<SubSystem>,
-    // todo: rename component to Element?
+    private val subSystems: List<SubSystem>,
     // 对于单体系统来说，它可以是一些模块
-    var components: List<ArchComponent>,
+    private var components: List<Component>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
-    val connections: List<Connection>,
+    private val connections: List<Connection>,
     // 分析
-    val metadata: ArchMedataData,
+    private val metadata: ArchMedataData,
     // 1. generate from libraries
     // 2. generate from app types domain
-    val ability: List<String>
+    private val ability: List<String>
 )
 
 /**
@@ -35,7 +34,7 @@ class SubSystem(
     val codeStructureStyle: List<CodeStructureStyle>,
     // examples: org.archguard.domain, org.archguard.infrastructure, org.archguard.interface, org.archguard.application
     val packageStructure: List<String>,
-    val component: List<ArchComponent>,
+    val component: List<Component>,
 )
 
 class Connection(
