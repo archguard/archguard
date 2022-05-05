@@ -1,28 +1,35 @@
 package com.thoughtworks.archguard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import com.thoughtworks.archguard.smartscanner.AnalyserType
 import com.thoughtworks.archguard.smartscanner.ScannerCommand
 import io.mockk.every
 import io.mockk.just
-import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.runs
 import io.mockk.slot
 import io.mockk.unmockkObject
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File
 
+
+class EmptyStreamConsumer : StreamConsumer {
+    override fun consumeLine(line: String) {}
+}
+
 internal class ScannerCliClientTest {
     private val scannerCliClient = ScannerCliClient()
+
+    private val logStream = EmptyStreamConsumer()
+
     private val command = ScannerCommand(
         AnalyserType.SOURCE_CODE,
         "2222",
         "http://localhost:8080",
         ".",
         File("test"),
-        mockk(),
+        logStream,
     ).also {
         it.language = "kotlin"
         it.features = listOf("apicalls", "datamap")
