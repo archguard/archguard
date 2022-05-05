@@ -2,11 +2,7 @@ package org.archguard.architecture
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.architecture.core.CodeStructureStyle.CLEAN
-import org.archguard.architecture.core.CodeStructureStyle.DDD
-import org.archguard.architecture.core.CodeStructureStyle.MVC
-import org.archguard.architecture.core.CodeStructureStyle.ModuleDDD
-import org.archguard.architecture.core.CodeStructureStyle.UNKNOWN
+import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
 import org.archguard.architecture.detect.FrameworkMarkup
@@ -14,6 +10,7 @@ import org.archguard.architecture.detect.LayeredIdentify
 
 // 可能的执行架构元素
 data class PotentialExecArch(
+    var layeredStyle: CodeStructureStyle = CodeStructureStyle.UNKNOWN,
     var protocols: List<String> = listOf(),
     var appTypes: List<String> = listOf(),
     var connectorTypes: List<ConnectorType> = listOf(),
@@ -38,19 +35,19 @@ class ArchitectureDetect() {
         // 4. load all package name for layered architecture
         val packages = workspace.dataStructs.map { it.Package }.toList()
         val layeredStyle = LayeredIdentify(packages).identify()
+        execArch.layeredStyle = layeredStyle
 
         // 5. create concepts domain
-        var concepts: List<CodeDataStruct> = listOf()
         when (layeredStyle) {
-            MVC -> {}
-            ModuleDDD,
-            DDD -> {
-                concepts = workspace.dataStructs.filter {
+            CodeStructureStyle.MVC -> {}
+            CodeStructureStyle.ModuleDDD,
+            CodeStructureStyle.DDD -> {
+                execArch.concepts = workspace.dataStructs.filter {
                     it.Package.contains("domain") && !it.NodeName.contains("Factory")
                 }
             }
-            CLEAN -> {}
-            UNKNOWN -> {}
+            CodeStructureStyle.CLEAN -> {}
+            CodeStructureStyle.UNKNOWN -> {}
         }
 
 
