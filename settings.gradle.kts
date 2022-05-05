@@ -53,13 +53,13 @@ include(":doc_generator")
 
 // legacy scanners
 include(":scan_git")
-include(":scan_jacoco")
-include(":scan_sourcecode")
 include(":scan_sql")
-include(":scan_test_badsmell")
-include(":scan_bytecode")
-include(":collector_ci") // adapter for ci
 include(":diff_changes")
+
+// include(":legacy:scan_sourcecode")
+// include(":legacy:scan_jacoco")
+// include(":legacy:scan_test_badsmell")
+// include(":legacy:scan_bytecode")
 
 // common for share code repository
 // TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3

@@ -13,7 +13,7 @@ jobs:
         assets:
           - scan_git/build/libs/scan*-all.jar
 #          - scan_jacoco/build/libs/scan*-all.jar
-          - scan_test_badsmell/build/libs/scan*-all.jar
+#          - scan_test_badsmell/build/libs/scan*-all.jar
           - diff_changes/build/libs/diff_changes*-all.jar
           - analyser_sca/build/libs/analyser_sca*-all.jar
           - scanner_cli/build/libs/scanner_cli*-all.jar
