@@ -1,5 +1,6 @@
 // based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 // SPDX-License-Identifier: MIT OR Unlicense
+// `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 
 package com.thoughtworks.archguard.language
 
