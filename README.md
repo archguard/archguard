@@ -8,21 +8,28 @@ Requirements: JDK 12
 
 Scanner:
 
-* scan_git - Git commit history scan
-* scan_jacoco - Jacoco scan
-* scan_bytecode - for JVM languages
-  * known issues: Bytecode not support for API analysis.
-* scan_sourcecode - Code analysis
-  * SQL Analyser
-  * Http Api Analyser
-  * Database Analyser
-* scan_test_badsmell - Test code badsmell 
-    * [x] Java (based on [https://github.com/phodal/chapi-tbs](https://github.com/phodal/chapi-tbs))
-* code_repository - share repository code for `scan_bytecode` and `scan_sourcecode`, can be for such as scan_llvm
-  * [x] ContainerRepository
-  * [x] CodeRepository
 * diff_change - diff change between commits
-* collector_ci [TBD] - collector CI/CD information
+* scan_git - Git commit history scan
+* analyser_architecture - analysis architecture
+* scan_sourcecode - Code analysis
+  * scanner_sourcecode
+       * feat_apicalls
+       * feat_datamap
+       * lang_csharp
+       * lang_golang
+       * lang_java
+       * lang_kotlin
+       * lang_python
+       * lang_scala
+       * lang_typescript
+  * scanner_cli
+  * scanner_core
+* linter
+  * rule_code
+  * rule_sql
+  * rule_test_code
+  * rule_webapi
+* rule_core
 
 ## Inspires
 
