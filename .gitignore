@@ -50,3 +50,4 @@ scan_bytecode/src/main/java/org/archguard/scanner/bytecode/generics/*
 dependencies
 localtesting_*.json
 localtesting_*.csv
+!legacy/scan_jacoco/src/main/resources/db/migration/ddl.sql
