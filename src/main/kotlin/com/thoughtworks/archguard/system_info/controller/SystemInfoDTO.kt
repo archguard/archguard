@@ -20,7 +20,7 @@ data class SystemInfoDTO(
     val updatedTime: Long? = null,
     val badSmellThresholdSuiteId: Long? = null,
     val branch: String? = "master",
-    val language: String? = "jvm",
+    val language: String? = "java",
     val codePath: String? = "",
     val repoAuthType: RepoAuthType = RepoAuthType.UsernameAndPassword,
     val sshKeyString: String? = ""

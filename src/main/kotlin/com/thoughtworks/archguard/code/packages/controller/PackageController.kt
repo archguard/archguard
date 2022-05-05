@@ -15,7 +15,7 @@ class PackageController(val packageService: PackageService) {
     @GetMapping("/dependencies")
     fun getPackageDependencies(
         @PathVariable("systemId") systemId: Long,
-        @RequestParam(value = "language", required = false, defaultValue = "jvm") language: String,
+        @RequestParam(value = "language", required = false, defaultValue = "java") language: String,
     ): List<ModulePackage> {
         return packageService.getPackageDependencies(systemId, language)
     }

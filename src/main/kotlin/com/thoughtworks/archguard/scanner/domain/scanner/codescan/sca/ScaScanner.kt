@@ -16,7 +16,7 @@ class ScaScanner(@Autowired val scaAnalyserRepo: ScaAnalyserRepo) : Scanner {
     }
 
     override fun canScan(context: ScanContext): Boolean {
-        return context.language != "jvm"
+        return true
     }
 
     override fun scan(context: ScanContext) {

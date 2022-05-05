@@ -16,7 +16,7 @@ data class SystemInfo(
     val updatedTime: Timestamp? = null,
     val badSmellThresholdSuiteId: Long? = null,
     val branch: String? = "master",
-    val language: String? = "jvm",
+    val language: String? = "java",
     // for TypeScript/JavaScript, if some code is in subdiretory
     val codePath: String? = "",
     // git clone target directory

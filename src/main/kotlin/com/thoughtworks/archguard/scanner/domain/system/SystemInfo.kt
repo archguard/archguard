@@ -9,7 +9,7 @@ class SystemInfo(
     val sql: String = "",
     val username: String = "",
     val password: String = "",
-    val language: String = "jvm",
+    val language: String = "java",
     val codePath: String = "",
     var scanned: ScannedType = ScannedType.NONE,
     val repoType: String = "GIT",
