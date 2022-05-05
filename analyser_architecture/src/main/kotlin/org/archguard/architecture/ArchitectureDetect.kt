@@ -57,19 +57,16 @@ class ArchitectureDetect() {
     }
 
     private fun fillArchFromSourceCode(workspace: Workspace, execArch: PotentialExecArch) {
-        val langs = workspace.languages
-        if (langs.contains("Java") || langs.contains("Kotlin")) {
-            workspace.dataStructs.forEach { struct ->
-                struct.Imports.forEach {
-                    if (it.Source == "java.io.File") {
-                        execArch.connectorTypes += ConnectorType.FileIO
-                    }
+        workspace.dataStructs.forEach { struct ->
+            struct.Imports.forEach {
+                if (it.Source == "java.io.File") {
+                    execArch.connectorTypes += ConnectorType.FileIO
                 }
+            }
 
-                struct.FunctionCalls.forEach {
-                    if (it.NodeName == "ProcessBuilder") {
-                        execArch.connectorTypes += ConnectorType.Process
-                    }
+            struct.FunctionCalls.forEach {
+                if (it.NodeName == "ProcessBuilder") {
+                    execArch.connectorTypes += ConnectorType.Process
                 }
             }
         }
