@@ -13,7 +13,6 @@ import io.mockk.unmockkObject
 import org.junit.jupiter.api.Test
 import java.io.File
 
-
 class EmptyStreamConsumer : StreamConsumer {
     override fun consumeLine(line: String) {}
 }
