@@ -24,7 +24,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(3, results.size)
         assertEquals("EmptyTest", results[0].name)
@@ -44,7 +44,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(2, results.size)
         assertEquals("RedundantPrintTest", results[0].name)
@@ -66,7 +66,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(1, results.size)
         assertEquals("SleepyTest", results[0].name)
@@ -90,7 +90,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(1, results.size)
         assertEquals("RedundantAssertionTest", results[0].name)
@@ -114,7 +114,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(1, results.size)
         assertEquals("UnknownTest", results[0].name)
@@ -138,7 +138,7 @@ internal class TestSmellVisitorProviderTestRule {
         val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
-            .visitor(listOf(provider.get()), ds)
+            .visitor(listOf(provider.get()))
 
         assertEquals(1, results.size)
         assertEquals("DuplicateAssertTest", results[0].name)

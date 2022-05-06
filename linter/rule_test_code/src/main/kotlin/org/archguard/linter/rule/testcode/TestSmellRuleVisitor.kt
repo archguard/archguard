@@ -30,19 +30,22 @@ class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisi
         return callMethodMap
     }
 
-    fun visitor(ruleSets: Iterable<RuleSet>, rootNode: CodeDataStruct): Array<Issue> {
-        var results: Array<Issue> = arrayOf()
-        ruleSets.forEach { ruleSet ->
-            ruleSet.rules.forEach {
-                it.visit(rootNode, this.context, fun(rule: Rule, position: IssuePosition) {
-                    results += Issue(
-                        position,
-                        ruleId = rule.key,
-                        name = rule.name,
-                        detail = rule.description,
-                        ruleType = RuleType.TEST_CODE_SMELL
-                    )
-                })
+    override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
+        val results: MutableList<Issue> = mutableListOf()
+
+        this.structs.forEach { struct ->
+            ruleSets.forEach { ruleSet ->
+                ruleSet.rules.forEach {
+                    it.visit(struct, this.context, fun(rule: Rule, position: IssuePosition) {
+                        results += Issue(
+                            position,
+                            ruleId = rule.key,
+                            name = rule.name,
+                            detail = rule.description,
+                            ruleType = RuleType.TEST_CODE_SMELL
+                        )
+                    })
+                }
             }
         }
 

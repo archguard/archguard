@@ -10,8 +10,8 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 
 class SqlRuleVisitor(private val statements: List<Statement>) : RuleVisitor(statements) {
-    fun visitor(ruleSets: Iterable<RuleSet>): Array<Issue> {
-        var results: Array<Issue> = arrayOf()
+    override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
+        val results: MutableList<Issue> = mutableListOf()
         val context = RuleContext()
 
         ruleSets.forEach { ruleSet ->
