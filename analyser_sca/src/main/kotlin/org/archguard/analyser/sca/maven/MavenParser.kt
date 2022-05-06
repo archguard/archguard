@@ -4,7 +4,7 @@ import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.analyser.sca.model.DependencyEntry
-import org.archguard.analyser.sca.parser.Parser
+import org.archguard.analyser.sca.base.Parser
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList

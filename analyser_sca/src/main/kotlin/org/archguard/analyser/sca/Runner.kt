@@ -9,7 +9,6 @@ import org.archguard.analyser.sca.helper.Bean2Sql
 import org.archguard.analyser.sca.helper.CompositionDependency
 import org.archguard.analyser.sca.maven.MavenFinder
 import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.processor.JavaFinder
 import org.archguard.analyser.sca.npm.NpmFinder
 import java.io.File
 import java.util.*

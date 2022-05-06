@@ -1,11 +1,10 @@
-package org.archguard.analyser.sca.processor
+package org.archguard.analyser.sca.base
 
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.parser.Parser
 import java.io.File
 
-abstract class ScaFinder {
+abstract class Finder {
     abstract val parser: Parser
 
     open fun isMatch(it: File): Boolean {

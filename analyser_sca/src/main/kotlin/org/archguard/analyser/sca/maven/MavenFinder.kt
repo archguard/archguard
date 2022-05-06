@@ -1,10 +1,10 @@
 package org.archguard.analyser.sca.maven
 
-import org.archguard.analyser.sca.parser.Parser
-import org.archguard.analyser.sca.processor.ScaFinder
+import org.archguard.analyser.sca.base.Parser
+import org.archguard.analyser.sca.base.Finder
 import java.io.File
 
-class MavenFinder: ScaFinder() {
+class MavenFinder: Finder() {
     override val parser: Parser = MavenParser()
 
     override fun isMatch(it: File): Boolean {

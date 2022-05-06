@@ -1,10 +1,10 @@
 package org.archguard.analyser.sca.gradle
 
-import org.archguard.analyser.sca.parser.Parser
-import org.archguard.analyser.sca.processor.ScaFinder
+import org.archguard.analyser.sca.base.Parser
+import org.archguard.analyser.sca.base.Finder
 import java.io.File
 
-class GradleFinder: ScaFinder() {
+class GradleFinder: Finder() {
     override val parser: Parser = GradleParser()
 
     override fun isMatch(it: File): Boolean {

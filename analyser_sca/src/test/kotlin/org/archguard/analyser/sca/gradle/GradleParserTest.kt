@@ -1,6 +1,5 @@
-package org.archguard.analyser.sca.parser
+package org.archguard.analyser.sca.gradle
 
-import org.archguard.analyser.sca.gradle.GradleParser
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.junit.jupiter.api.Test
