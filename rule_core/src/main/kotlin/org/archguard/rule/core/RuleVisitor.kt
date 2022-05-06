@@ -1,5 +1,5 @@
 package org.archguard.rule.core
 
-interface RuleVisitor {
+abstract class RuleVisitor(val data: Iterable<Any>) {
 
 }
