@@ -1,4 +1,4 @@
-package org.archguard.rule.loader
+package org.archguard.scanner.ctl.loader
 
 import org.archguard.rule.core.RuleSetProvider
 import java.util.ServiceLoader

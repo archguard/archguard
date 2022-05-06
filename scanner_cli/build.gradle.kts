@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":scanner_core"))
+    implementation(project(":rule_core"))
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
