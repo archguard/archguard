@@ -6,7 +6,9 @@ import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
 
-// 可能的执行架构元素
+/**
+ * 潜在的架构元素，后续需要根据这个继续分析
+ */
 data class PotentialExecArch(
     var layeredStyle: CodeStructureStyle = CodeStructureStyle.UNKNOWN,
     var protocols: List<String> = listOf(),

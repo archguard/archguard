@@ -19,3 +19,52 @@ Refs:
 1. Spring Boot => 微服务架构
 2. Equinox => OSGI
 3. Flink, Kafka => Data => ServiceBased
+
+## Arch
+
+```yaml
+# 分析态输出
+- langauge: java
+  conceptualArch:
+    domains: [ "" ]
+    styles:
+      layeredStyle: [""]
+  moduleArch:
+    systems: [ "" ]
+    subSystems: [ "" ]
+    # from Gradle or maven
+    modules: [ "" ]
+    layers: [ "" ]
+    interfaces: [ "" ]
+    changeImpact: [ "" ]
+  executionArch:
+    # Interface description language
+    interfaceDescriptionLanguage: [ "proto" ]
+    messageQueue: [ "RabbitMQ", "Kafka" ]
+    # hasProcesses
+    processes: [ "ProcessBuilder" ]
+    # thread
+    # kotlin.concurrent.thread
+    servers: [ "" ]
+  codeArch:
+    # from CLOC
+    languages: [ "" ]
+    # packageManager
+    developmentTools: [ "" ]
+    libraries: [ "" ]
+    packages: [ "" ]
+    directories: [ "" ]
+    files: [ "" ]
+```
+
+## 案例库
+
+```yaml
+# Domain
+- domain: GUI
+  characteristics:
+    - WindowManager
+- domain: finance
+  characteristics:
+    - 并发
+```

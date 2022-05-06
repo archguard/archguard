@@ -1,7 +1,0 @@
-# Domain
-- domain: GUI
-  characteristics:
-    - WindowManager
-- domain: finance
-  characteristics:
-    - 并发
