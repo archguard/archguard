@@ -1,5 +1,7 @@
 package org.archguard.rule.core
 
-interface RuleSetProvider {
+import java.io.Serializable
+
+interface RuleSetProvider: Serializable {
     fun get(): RuleSet
 }
