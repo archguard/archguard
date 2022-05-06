@@ -4,12 +4,14 @@ import org.archguard.rule.core.RuleSetProvider
 import java.util.ServiceLoader
 
 /**
- * **RuleSetsLoader** is load ruleSets by classes
- *
+ * **RuleLoader** is load ruleSets by classes
  */
-class RuleSetsLoader {
-    // todo: thinking others way.
-    fun load(disabledRules: String) {
+class RuleLoader {
+    fun load() {
+
+    }
+
+    fun loadRules(disabledRules: String) {
         // 1. load classes from jar
         val loader: ServiceLoader<RuleSetProvider> = ServiceLoader.load(RuleSetProvider::class.java)
         for (service in loader) {

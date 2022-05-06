@@ -10,6 +10,7 @@ interface Context {
 
 enum class AnalyserType {
     SOURCE_CODE,
+    RULE,
     GIT,
     JACOCO,
     ;
