@@ -2,6 +2,7 @@ package org.archguard.architecture.core
 
 /**
  * **Component** is a abstract for all types components.
+ * everything is component
  */
 abstract class Component(
     val name: String,
@@ -12,6 +13,7 @@ abstract class Component(
 
 enum class ArchComponentType {
     SERVICE,
+    PLUGIN,
     MODULE,
     PACKAGE,
     CLASSES,

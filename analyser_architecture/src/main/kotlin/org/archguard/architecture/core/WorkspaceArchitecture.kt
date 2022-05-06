@@ -13,7 +13,7 @@ class WorkspaceArchitecture(
     private val archStyle: ArchitectureStyle,
     // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
     private val subSystems: List<SubSystem>,
-    // 对于单体系统来说，它可以是一些模块
+    // 对于单体系统来说，它可以是一些模块。系统可能是一个组件。
     private var components: List<Component>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
     private val connections: List<Connection>,
@@ -39,9 +39,9 @@ class SubSystem(
 
 class Connection(
     val connectors: String,
-    // `qualifiedName`
+    // `qualifiedName`, component id
     val source: String,
-    // `qualifiedName`
+    // `qualifiedName`, component id
     val target: String,
     var connectionType: ConnectionType,
     val connectorStyles: ConnectorStyle,
@@ -51,14 +51,6 @@ class Connection(
 enum class ConnectionType {
     STATIC,
     DYNAMIC
-}
-
-enum class ConnectorStyle {
-    HttpApi,
-    RPC,
-    SQLLink,
-    Protocol,
-    DependencyInjection,
 }
 
 class ArchOverview(
@@ -117,7 +109,6 @@ enum class ArchitectureStyle {
 // from file name: like repository, controller, services
 enum class CodeStructureStyle {
     MVC,
-
     // examples: https://github.com/domain-driven-design/ddd-lite-example
     ModuleDDD,
     DDD,
@@ -146,6 +137,16 @@ enum class ComponentTypes {
 //    IpcSocket
 //}
 
+// 多个组件间的交互
+enum class ConnectorStyle {
+    HttpApi,
+    RPC,
+    SQLLink,
+    Protocol,
+    DependencyInjection,
+}
+
+// 包含多个组件的交互，组件的输入输出
 enum class ConnectorType {
     Process,
     Pipe,
