@@ -6,7 +6,7 @@ package org.archguard.architecture.core
  * @property subSystems the sub-systems, a sub system contains components
  * @property components the component sets
  * @property connections the relations of sub-systems or components
- * @property metadata the summary of other data
+ * @property overview the summary of other data
  * @property ability -ability from source code
  */
 class WorkspaceArchitecture(
@@ -17,8 +17,8 @@ class WorkspaceArchitecture(
     private var components: List<Component>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
     private val connections: List<Connection>,
-    // 分析
-    private val metadata: ArchMedataData,
+    // 数据
+    private val overview: ArchOverview,
     // 1. generate from libraries
     // 2. generate from app types domain
     private val ability: List<String>
@@ -61,7 +61,7 @@ enum class ConnectorStyle {
     DependencyInjection,
 }
 
-class ArchMedataData(
+class ArchOverview(
     // tech stacks, like Spring, Redis, Kafka, MyBatis, Dubbo
     val techStacks: List<String>,
     // language summary ?
