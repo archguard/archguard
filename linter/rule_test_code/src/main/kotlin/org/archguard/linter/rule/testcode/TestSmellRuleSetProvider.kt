@@ -10,12 +10,11 @@ import org.archguard.linter.rule.testcode.rules.UnknownTestRule
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleType
-import org.archguard.rule.common.CasingRule
 
 /*
  * Low level provider
  */
-class TestSmellProvider: RuleSetProvider {
+class TestSmellRuleSetProvider: RuleSetProvider {
     override fun get(): RuleSet {
         return RuleSet(
             RuleType.CHANGE_SMELL,

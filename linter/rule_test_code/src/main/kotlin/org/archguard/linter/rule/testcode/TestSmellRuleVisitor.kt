@@ -12,7 +12,7 @@ import org.archguard.rule.core.RuleType
 
 class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext() {}
 
-class TestSmellVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor {
+class TestSmellRuleVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor {
     private var context: TestSmellContext
 
     init {

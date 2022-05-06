@@ -5,7 +5,7 @@ import org.archguard.doc.generator.render.DocHeader
 import org.archguard.doc.generator.render.DocPage
 import org.archguard.doc.generator.render.DocText
 import org.archguard.linter.rule.sql.SqlRuleSetProvider
-import org.archguard.linter.rule.testcode.TestSmellProvider
+import org.archguard.linter.rule.testcode.TestSmellRuleSetProvider
 import org.archguard.linter.rule.webapi.WebApiRuleSetProvider
 import org.archguard.rule.core.Rule
 import java.io.File
@@ -21,7 +21,7 @@ class RuleDocGenerator {
 
         val apiStr = listOf(
             CustomJekyllFrontMatter(title = "Test smell", navOrder = 2, permalink = "test-smell").toMarkdown(),
-            this.toMarkdown(this.nodeFromRules(TestSmellProvider().get().rules))
+            this.toMarkdown(this.nodeFromRules(TestSmellRuleSetProvider().get().rules))
         ).joinToString("\n")
 
         File("build" + File.separator + "test-smell.md").writeText(apiStr)

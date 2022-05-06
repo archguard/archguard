@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.ast
+package org.archguard.linter.rule.code
 
 import chapi.domain.core.CodeAnnotation
 import chapi.domain.core.CodeDataStruct

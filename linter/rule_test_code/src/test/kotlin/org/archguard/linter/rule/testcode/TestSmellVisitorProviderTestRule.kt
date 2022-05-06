@@ -8,10 +8,10 @@ import chapi.domain.core.CodeProperty
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class TestSmellVisitorProviderTest {
+internal class TestSmellVisitorProviderTestRule {
     @Test
     internal fun empty_test() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
@@ -21,7 +21,7 @@ internal class TestSmellVisitorProviderTest {
             )
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -33,7 +33,7 @@ internal class TestSmellVisitorProviderTest {
 
     @Test
     internal fun redundant_print() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
@@ -41,7 +41,7 @@ internal class TestSmellVisitorProviderTest {
             FunctionCalls = arrayOf(CodeCall(NodeName = "System.out", FunctionName = "println"))
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -52,7 +52,7 @@ internal class TestSmellVisitorProviderTest {
 
     @Test
     internal fun sleepy() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
@@ -63,7 +63,7 @@ internal class TestSmellVisitorProviderTest {
             )
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -74,7 +74,7 @@ internal class TestSmellVisitorProviderTest {
 
     @Test
     internal fun redundant_assertion() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val parameters: Array<CodeProperty> = arrayOf(
             CodeProperty(TypeValue = "true", TypeType = "Boolean"),
@@ -87,7 +87,7 @@ internal class TestSmellVisitorProviderTest {
             FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters))
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -98,7 +98,7 @@ internal class TestSmellVisitorProviderTest {
 
     @Test
     internal fun unknown_test() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val parameters: Array<CodeProperty> = arrayOf(
             CodeProperty(TypeValue = "true", TypeType = "Boolean"),
@@ -111,7 +111,7 @@ internal class TestSmellVisitorProviderTest {
             FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "demo", Parameters = parameters))
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -122,7 +122,7 @@ internal class TestSmellVisitorProviderTest {
 
     @Test
     internal fun duplicate_asserts() {
-        val provider = TestSmellProvider()
+        val provider = TestSmellRuleSetProvider()
 
         val parameters: Array<CodeProperty> = arrayOf(CodeProperty(TypeValue = "true", TypeType = "Boolean"))
 
@@ -135,7 +135,7 @@ internal class TestSmellVisitorProviderTest {
             )
         )
 
-        val visitor = TestSmellVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(arrayOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)

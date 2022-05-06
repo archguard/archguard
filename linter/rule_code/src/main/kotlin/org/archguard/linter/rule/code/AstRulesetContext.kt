@@ -1,4 +1,4 @@
-package org.archguard.rule.impl.ast
+package org.archguard.linter.rule.code
 
 class AstPath(
     // like
