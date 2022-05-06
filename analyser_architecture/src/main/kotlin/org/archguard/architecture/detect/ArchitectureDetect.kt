@@ -24,6 +24,7 @@ class ArchitectureDetect {
         // 2. create exec arch
         val markup = FrameworkMarkup.byLanguage("Java")
         if (markup != null) {
+            // todo: cache
             execArch = inferenceExecArchByDependencies(markup, workspace.projectDependencies)
         }
 
@@ -31,13 +32,18 @@ class ArchitectureDetect {
         fillArchFromSourceCode(workspace, execArch)
 
         // 4. load all package name for layered architecture
+        // todo: refactor
         val packages = workspace.dataStructs.map { it.Package }.toList()
         val layeredStyle = LayeredIdentify(packages).identify()
         execArch.layeredStyle = layeredStyle
 
         // 5. create concepts domain
         when (layeredStyle) {
-            CodeStructureStyle.MVC -> {}
+            CodeStructureStyle.MVC -> {
+                execArch.concepts = workspace.dataStructs.filter {
+                    it.NodeName.contains("Entity")
+                }
+            }
             CodeStructureStyle.ModuleDDD,
             CodeStructureStyle.DDD -> {
                 execArch.concepts = workspace.dataStructs.filter {
@@ -47,7 +53,6 @@ class ArchitectureDetect {
             CodeStructureStyle.CLEAN -> {}
             CodeStructureStyle.UNKNOWN -> {}
         }
-
 
         return execArch
     }

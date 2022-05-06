@@ -15,6 +15,7 @@ interface LayeredChecker {
     fun canMarked(): Boolean
 }
 
+// todo: change to real-case
 class DddLayeredChecker() : LayeredChecker {
     private var hasDomain: Boolean = false
     private var hasInfra: Boolean = false
@@ -71,8 +72,8 @@ class MvcLayeredIdentify() : LayeredChecker {
 }
 
 class LayeredIdentify(private val packages: List<String>) {
-    private var ddd = DddLayeredChecker();
-    private var mvc = MvcLayeredIdentify();
+    private var ddd = DddLayeredChecker()
+    private var mvc = MvcLayeredIdentify()
 
     fun identify(): CodeStructureStyle {
         packages.forEach {

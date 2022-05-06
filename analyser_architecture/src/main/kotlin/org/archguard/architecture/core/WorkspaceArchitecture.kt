@@ -11,8 +11,6 @@ package org.archguard.architecture.core
  */
 class WorkspaceArchitecture(
     private val archStyle: ArchitectureStyle,
-    // 对应现有的 System 相关模型，正好对应到子系统这个概念上。
-    private val subSystems: List<SubSystem>,
     // 对于单体系统来说，它可以是一些模块。系统可能是一个组件。
     private var components: List<Component>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
@@ -21,7 +19,7 @@ class WorkspaceArchitecture(
     private val overview: ArchOverview,
     // 1. generate from libraries
     // 2. generate from app types domain
-    private val ability: List<String>
+    // private val ability: List<String>
 )
 
 /**
