@@ -1,6 +1,6 @@
 package org.archguard.linter.rule.webapi
 
-import org.archguard.linter.rule.webapi.model.ContainerResource
+import org.archguard.scanner.core.client.dto.ContainerResource
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
