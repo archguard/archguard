@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":rule_core"))
+    api(project(":rule_core"))
 
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
