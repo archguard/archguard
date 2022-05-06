@@ -1,12 +1,10 @@
-package org.archguard.architecture
+package org.archguard.architecture.detect
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
-import org.archguard.architecture.detect.FrameworkMarkup
-import org.archguard.architecture.detect.LayeredIdentify
 
 // 可能的执行架构元素
 data class PotentialExecArch(
@@ -18,7 +16,7 @@ data class PotentialExecArch(
     var concepts: List<CodeDataStruct> = listOf()
 )
 
-class ArchitectureDetect() {
+class ArchitectureDetect {
     fun identPotential(workspace: Workspace): PotentialExecArch {
         // 1. setup
 
