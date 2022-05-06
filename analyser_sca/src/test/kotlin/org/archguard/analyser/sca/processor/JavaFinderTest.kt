@@ -1,4 +1,4 @@
-package org.archguard.analyser.sca
+package org.archguard.analyser.sca.processor
 
 import org.junit.jupiter.api.Test
 import java.io.File

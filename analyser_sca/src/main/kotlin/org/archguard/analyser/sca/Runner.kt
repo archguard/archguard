@@ -2,10 +2,13 @@ package org.archguard.analyser.sca
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import org.archguard.analyser.sca.helper.Bean2Sql
 import org.archguard.analyser.sca.helper.CompositionDependency
 import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.analyser.sca.processor.JavaFinder
+import org.archguard.analyser.sca.processor.JavaScriptFinder
 import java.io.File
 import java.util.*
 
@@ -13,6 +16,8 @@ class Runner : CliktCommand() {
     private val path: String by option(help = "the path of target project").default(".")
     private val systemId: String by option(help = "system id").default("0")
     private val language: String by option(help = "language").default("")
+    // suit for multiple languages
+    private val multiLanguages: Boolean by option(help = "multiple languages").flag(default = false)
 
     override fun run() {
         val bean2Sql = Bean2Sql()
@@ -27,7 +32,7 @@ class Runner : CliktCommand() {
                 File("output.sql").writeText(string)
             }
             "javascript", "typescript" -> {
-                val depDeclarations = JavaScriptFinder().find(path)
+                val depDeclarations = JavaScriptFinder().process(path)
                 val deps = depDeclarations.flatMap {
                     it.toCompositionDependency(systemId)
                 }.toList()

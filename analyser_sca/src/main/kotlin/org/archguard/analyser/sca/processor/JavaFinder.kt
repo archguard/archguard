@@ -1,4 +1,4 @@
-package org.archguard.analyser.sca
+package org.archguard.analyser.sca.processor
 
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.PackageDependencies

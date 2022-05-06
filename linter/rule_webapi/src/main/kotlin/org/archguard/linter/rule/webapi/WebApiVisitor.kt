@@ -17,9 +17,9 @@ class WebApiVisitor(private val resources: Array<ContainerResource>) : RuleVisit
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach { rule ->
                 // todo: cast by plugins
-                val rule = rule as WebApiRule
+                val apiRule = rule as WebApiRule
                 resources.map {
-                    rule.visitResources(this.resources, context, fun(rule: Rule, position: IssuePosition) {
+                    apiRule.visitResources(this.resources, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(
                             position,
                             ruleId = rule.key,
