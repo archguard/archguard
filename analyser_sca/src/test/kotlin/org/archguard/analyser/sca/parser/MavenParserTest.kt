@@ -1,5 +1,6 @@
 package org.archguard.analyser.sca.parser
 
+import org.archguard.analyser.sca.maven.MavenParser
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.junit.jupiter.api.Test

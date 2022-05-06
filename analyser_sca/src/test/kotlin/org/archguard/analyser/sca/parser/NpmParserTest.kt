@@ -2,6 +2,7 @@ package org.archguard.analyser.sca.parser
 
 import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
+import org.archguard.analyser.sca.npm.NpmParser
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

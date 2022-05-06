@@ -4,11 +4,13 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import org.archguard.analyser.sca.gradle.GradleFinder
 import org.archguard.analyser.sca.helper.Bean2Sql
 import org.archguard.analyser.sca.helper.CompositionDependency
+import org.archguard.analyser.sca.maven.MavenFinder
 import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.analyser.sca.processor.JavaFinder
-import org.archguard.analyser.sca.processor.JavaScriptFinder
+import org.archguard.analyser.sca.npm.NpmFinder
 import java.io.File
 import java.util.*
 
@@ -23,7 +25,9 @@ class Runner : CliktCommand() {
         val bean2Sql = Bean2Sql()
         when (language.lowercase()) {
             "java", "kotlin" -> {
-                val depDeclarations = JavaFinder().find(path)
+                val depDeclarations = GradleFinder().process(path).toMutableList()
+                depDeclarations += MavenFinder().process(path)
+
                 val deps = depDeclarations.flatMap {
                     it.toCompositionDependency(systemId)
                 }.toList()
@@ -32,7 +36,7 @@ class Runner : CliktCommand() {
                 File("output.sql").writeText(string)
             }
             "javascript", "typescript" -> {
-                val depDeclarations = JavaScriptFinder().process(path)
+                val depDeclarations = NpmFinder().process(path)
                 val deps = depDeclarations.flatMap {
                     it.toCompositionDependency(systemId)
                 }.toList()

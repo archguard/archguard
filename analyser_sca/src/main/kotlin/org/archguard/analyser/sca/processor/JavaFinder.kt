@@ -1,42 +1,10 @@
 package org.archguard.analyser.sca.processor
 
 import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.parser.GradleParser
-import org.archguard.analyser.sca.parser.MavenParser
 import java.io.File
 
 class JavaFinder {
     private fun isGradleFile(it: File) = it.isFile && it.name == "build.gradle" || it.name == "build.gradle.kts"
-    private fun isPomFile(it: File) = it.isFile && it.name == "pom.xml"
-
-    fun find(path: String): List<PackageDependencies> {
-        val declarations = byGradleFiles(path).toMutableList()
-        declarations += byMavenFiles(path)
-        return declarations
-    }
-
-    fun byGradleFiles(path: String): List<PackageDependencies> {
-        return File(path).walk(FileWalkDirection.BOTTOM_UP)
-            .filter {
-                isGradleFile(it)
-            }
-            .flatMap {
-                val file = DeclFileTree(filename = it.name, path = it.canonicalPath, content = it.readText())
-                GradleParser().lookupSource(file)
-            }.toList()
-    }
-
-    fun byMavenFiles(path: String): List<PackageDependencies> {
-        return File(path).walk(FileWalkDirection.BOTTOM_UP)
-            .filter {
-                isPomFile(it)
-            }
-            .flatMap {
-                val file = DeclFileTree(filename = it.name, path = it.canonicalPath, content = it.readText())
-                MavenParser().lookupSource(file)
-            }.toList()
-    }
 
     fun buildDeclTree(path: String): DeclFileTree? {
         val dirPaths = File(path).walk(FileWalkDirection.BOTTOM_UP)

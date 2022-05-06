@@ -1,4 +1,4 @@
-package org.archguard.analyser.sca.parser
+package org.archguard.analyser.sca.npm
 
 import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
@@ -8,6 +8,7 @@ import org.archguard.analyser.sca.model.DEP_SCOPE
 import org.archguard.analyser.sca.model.DeclFileTree
 import org.archguard.analyser.sca.model.PackageDependencies
 import org.archguard.analyser.sca.model.DependencyEntry
+import org.archguard.analyser.sca.parser.Parser
 
 class NpmParser : Parser() {
     val conf: Configuration = Configuration.builder().options(Option.SUPPRESS_EXCEPTIONS).build()
