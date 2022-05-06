@@ -1,7 +1,7 @@
 package org.archguard.scanner.ctl.loader.rule
 
 import org.archguard.rule.core.RuleSetProvider
-import org.archguard.rule.core.RuleVisitor
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.URLClassLoader
 import java.util.ServiceLoader
@@ -9,6 +9,7 @@ import kotlin.test.assertEquals
 
 internal class RuleLoaderTest {
     @Test
+    @Disabled
     internal fun load() {
         val jar = this.javaClass.classLoader.getResource("kotlin/testonly-rule_webapi-1.7.0.jar")!!
 

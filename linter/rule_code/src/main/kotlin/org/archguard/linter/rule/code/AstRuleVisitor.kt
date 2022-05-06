@@ -7,8 +7,8 @@ import org.archguard.rule.core.RuleVisitor
 /*
  * Low level provider
  */
-class AstRuleVisitor: RuleVisitor {
-    fun visitor(rootNode: List<CodeDataStruct>, ruleSets: List<RuleSet>) {
+class AstRuleVisitor(rootNode: List<CodeDataStruct>): RuleVisitor(rootNode) {
+    fun visitor(ruleSets: List<RuleSet>) {
 
     }
 }

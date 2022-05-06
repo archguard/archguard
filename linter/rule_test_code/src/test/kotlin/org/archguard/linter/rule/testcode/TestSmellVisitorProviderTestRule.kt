@@ -21,7 +21,7 @@ internal class TestSmellVisitorProviderTestRule {
             )
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -41,7 +41,7 @@ internal class TestSmellVisitorProviderTestRule {
             FunctionCalls = arrayOf(CodeCall(NodeName = "System.out", FunctionName = "println"))
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -63,7 +63,7 @@ internal class TestSmellVisitorProviderTestRule {
             )
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -87,7 +87,7 @@ internal class TestSmellVisitorProviderTestRule {
             FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters))
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -111,7 +111,7 @@ internal class TestSmellVisitorProviderTestRule {
             FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "demo", Parameters = parameters))
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)
@@ -135,7 +135,7 @@ internal class TestSmellVisitorProviderTestRule {
             )
         )
 
-        val visitor = TestSmellRuleVisitor(arrayOf(ds))
+        val visitor = TestSmellRuleVisitor(listOf(ds))
 
         val results = visitor
             .visitor(listOf(provider.get()), ds)

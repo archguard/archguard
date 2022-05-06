@@ -10,16 +10,16 @@ import org.archguard.rule.core.RuleVisitor
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleType
 
-class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext() {}
+class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext()
 
-class TestSmellRuleVisitor(private val structs: Array<CodeDataStruct>) : RuleVisitor {
+class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisitor(structs) {
     private var context: TestSmellContext
 
     init {
         this.context = TestSmellContext(this.buildCallMethodMap(this.structs))
     }
 
-    private fun buildCallMethodMap(nodes: Array<CodeDataStruct>): MutableMap<String, CodeFunction> {
+    private fun buildCallMethodMap(nodes: List<CodeDataStruct>): MutableMap<String, CodeFunction> {
         val callMethodMap: MutableMap<String, CodeFunction> = mutableMapOf()
         for (node in nodes) {
             for (method in node.Functions) {

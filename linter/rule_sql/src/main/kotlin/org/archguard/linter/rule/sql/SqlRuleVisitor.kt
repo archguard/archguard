@@ -9,7 +9,7 @@ import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 
-class SqlRuleVisitor(val statements: List<Statement>) : RuleVisitor {
+class SqlRuleVisitor(private val statements: List<Statement>) : RuleVisitor(statements) {
     fun visitor(ruleSets: Iterable<RuleSet>): Array<Issue> {
         var results: Array<Issue> = arrayOf()
         val context = RuleContext()
