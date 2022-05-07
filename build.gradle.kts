@@ -106,6 +106,9 @@ dependencies {
     jacocoAggregation(project(":linter:rule_code"))
     jacocoAggregation(project(":linter:rule_template"))
 
+    jacocoAggregation(project(":doc_executor"))
+    jacocoAggregation(project(":doc_generator"))
+
     /* ------------------------------------------------------------------------------ */
 
     // legacy scanner

@@ -48,6 +48,7 @@ include(":linter:rule_template")
  * others projects:
  */
 include(":doc_generator")
+include(":doc_executor")
 
 /* ------------------------------------------------------------------------------ */
 
