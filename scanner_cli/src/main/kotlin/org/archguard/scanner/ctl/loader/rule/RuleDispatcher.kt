@@ -8,7 +8,7 @@ import org.archguard.scanner.ctl.command.ScannerCommand
 /**
  * **RuleDispatcher** is to load rules
  */
-object RuleDispatcher {
+class RuleDispatcher {
     fun dispatch(command: ScannerCommand) {
 
     }
