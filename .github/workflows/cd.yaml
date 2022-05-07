@@ -17,6 +17,10 @@ jobs:
           - diff_changes/build/libs/diff_changes*-all.jar
           - analyser_sca/build/libs/analyser_sca*-all.jar
           - scanner_cli/build/libs/scanner_cli*-all.jar
+          # rules
+          - linter/rule_sql/build/libs/rule_sql*.jar
+          - linter/rule_webapi/build/libs/rule_webapi*.jar
+          - linter/rule_test_code/build/libs/rule_test_code*.jar
 #          - sourcecode scanner
           - scanner_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
           - scanner_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar
