@@ -38,11 +38,10 @@ include(":analyser_architecture")
  * linters projects: a specific set of analysers to detect specific patterns
  */
 include(":rule_core")
-include(":linter:rule_sql")
-include(":linter:rule_test_code")
-include(":linter:rule_webapi")
-include(":linter:rule_code")
-include(":linter:rule_template")
+include(":rule_linter:rule_sql")
+include(":rule_linter:rule_test_code")
+include(":rule_linter:rule_webapi")
+include(":rule_linter:rule_code")
 
 /**
  * others projects:

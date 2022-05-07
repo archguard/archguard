@@ -27,10 +27,6 @@ object RuleLoader {
         return visitor to ruleSetProviders
     }
 
-    fun getRuleSetProvidersByFeatSpecs() {
-
-    }
-
     fun loadRules(disabledRules: String) {
         // 1. load classes from jar
         val loader: ServiceLoader<RuleSetProvider> = ServiceLoader.load(RuleSetProvider::class.java)

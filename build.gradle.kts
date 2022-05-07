@@ -100,11 +100,10 @@ dependencies {
     jacocoAggregation(project(":analyser_architecture"))
 
     jacocoAggregation(project(":rule_core"))
-    jacocoAggregation(project(":linter:rule_sql"))
-    jacocoAggregation(project(":linter:rule_test_code"))
-    jacocoAggregation(project(":linter:rule_webapi"))
-    jacocoAggregation(project(":linter:rule_code"))
-    jacocoAggregation(project(":linter:rule_template"))
+    jacocoAggregation(project(":rule_linter:rule_sql"))
+    jacocoAggregation(project(":rule_linter:rule_test_code"))
+    jacocoAggregation(project(":rule_linter:rule_webapi"))
+    jacocoAggregation(project(":rule_linter:rule_code"))
 
     jacocoAggregation(project(":doc_executor"))
     jacocoAggregation(project(":doc_generator"))
