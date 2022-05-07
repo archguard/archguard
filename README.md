@@ -32,6 +32,54 @@ Scanner:
   * [ ] rule_layer
 * rule_core
 
+```mermaid
+flowchart TB
+    subgraph ast
+    lang_java-->AST
+    lang_kotlin-->AST
+    lang_typescript-->AST
+    lang_csharp-->AST
+    lang_python-->AST
+    lang_others[...]-->AST
+    end
+
+    AST --> Backend
+
+    AST --> feat_datamap --> Backend
+    AST --> feat_apicalls --> Backend
+
+    
+    subgraph deps
+    gradle --> sca
+    maven --> sca
+    npm --> sca
+    others[...] --> sca
+    end
+
+    sca --> Backend
+
+    subgraph Linter
+    AST --> rule_sql --> Issue
+    AST --> rule_test_code --> Issue
+    AST --> rule_webapi --> Issue
+    end
+
+    Issue --> Backend
+
+    scan_git --> Backend
+    diff_changes --> Backend
+
+    feat_apicalls --> arch
+
+    subgraph archteicture
+    AST --> arch
+    sca --> arch
+    code --> arch
+    end
+
+    archteicture --> Backend
+```
+
 ## TechDebt
 
 - [ ] diff_changes ???
