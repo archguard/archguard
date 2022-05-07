@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.client.dto.GitLogs
 
 open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClient {
     private fun buildFileName(topic: String): String = systemId + "_" + topic + ".json"
@@ -26,5 +27,11 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
         println("==============================================================")
         println("Output database relationships to console")
         println(Json.encodeToString(records))
+    }
+
+    override fun saveGitLogs(gitLogs: GitLogs) {
+        println("==============================================================")
+        println("Output git logs to console")
+        println(Json.encodeToString(gitLogs))
     }
 }

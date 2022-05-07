@@ -12,6 +12,7 @@ import org.archguard.scanner.ctl.client.ArchGuardCsvClient
 import org.archguard.scanner.ctl.client.ArchGuardHttpClient
 import org.archguard.scanner.ctl.client.ArchGuardJsonClient
 import org.archguard.scanner.ctl.client.ChainedArchGuardClient
+import org.archguard.scanner.ctl.impl.CliGitContext
 import org.archguard.scanner.ctl.impl.CliSourceCodeContext
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
@@ -29,6 +30,11 @@ data class ScannerCommand(
     val language: Any? = null,
     val features: List<Any> = emptyList(),
     val output: List<String> = emptyList(),
+
+    // for git analysing
+    val repoId: String? = null,
+    val branch: String = "master",
+    val startedAt: Long = 0,
 ) {
     private val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
     private val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }
@@ -69,4 +75,17 @@ data class ScannerCommand(
     }
 
     fun getAnalyserSpecs(): List<AnalyserSpec> = listOfNotNull(languageSpec) + featureSpecs
+
+    fun buildGitContext(): CliGitContext {
+        assert(type == AnalyserType.GIT)
+
+        return CliGitContext(
+            client = buildClient(),
+            path = path,
+            repoId = repoId!!,
+            branch = branch,
+            startedAt = startedAt,
+            systemId = systemId,
+        )
+    }
 }

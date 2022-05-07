@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.client.dto.GitLogs
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.net.http.HttpClient
@@ -58,5 +59,9 @@ class ArchGuardHttpClient(
 
     override fun saveRelation(records: List<CodeDatabaseRelation>) {
         process("datamap-relations", records)
+    }
+
+    override fun saveGitLogs(gitLogs: GitLogs) {
+        TODO("Not yet implemented")
     }
 }

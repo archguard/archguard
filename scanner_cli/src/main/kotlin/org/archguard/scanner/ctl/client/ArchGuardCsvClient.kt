@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.client.dto.GitLogs
 import java.io.FileWriter
 
 class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
@@ -33,5 +34,11 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveRelation(records: List<CodeDatabaseRelation>) {
         writeCsvFile(records, buildFileName("databases"))
+    }
+
+    override fun saveGitLogs(gitLogs: GitLogs) {
+        writeCsvFile(gitLogs.commitLog, buildFileName("gitlogs-commit"))
+        writeCsvFile(gitLogs.changeEntry, buildFileName("gitlogs-change-entry"))
+        writeCsvFile(gitLogs.pathChangeCount, buildFileName("gitlogs-change-count"))
     }
 }
