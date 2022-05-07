@@ -18,7 +18,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
-    implementation("io.ktor:ktor-client-cio:2.0.1")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
     implementation("ch.qos.logback:logback-core:1.3.0-alpha14")
 
@@ -36,5 +35,10 @@ tasks {
             attributes(Pair("Main-Class", "org.archguard.scanner.ctl.RunnerKt"))
         }
         // minimize()
+        dependencies {
+            exclude(dependency("org.junit.jupiter:.*:.*"))
+            exclude(dependency("org.junit:.*:.*"))
+            exclude(dependency("junit:.*:.*"))
+        }
     }
 }

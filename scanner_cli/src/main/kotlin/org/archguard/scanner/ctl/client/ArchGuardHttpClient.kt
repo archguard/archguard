@@ -1,18 +1,18 @@
 package org.archguard.scanner.ctl.client
 
 import chapi.domain.core.CodeDataStruct
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
+import org.slf4j.LoggerFactory
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpRequest.BodyPublishers.ofString
+import java.net.http.HttpResponse
+import java.time.Duration
 
 // 通过http api回写分析数据
 class ArchGuardHttpClient(
@@ -21,38 +21,42 @@ class ArchGuardHttpClient(
     private val systemId: String,
     private val path: String
 ) : ArchGuardClient {
-    private fun buildUrl(topic: String) = serverUrl +
-        "/api/scanner/$systemId/reporting/$topic" +
-        "?language=$language" +
-        "&path=$path"
 
-    private fun createClient() = HttpClient(CIO.create { requestTimeout = 0 })
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+    private val client: HttpClient by lazy {
+        HttpClient.newBuilder()
+            .connectTimeout(Duration.ofMinutes(2))
+            .build()
+    }
+
+    private fun buildUrl(topic: String) =
+        "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=$path"
+
+    private inline fun <reified T> process(topic: String, body: T) {
+        val request = HttpRequest.newBuilder(URI(buildUrl(topic)))
+            .POST(ofString(Json.encodeToString(body)))
+            .header("Content-Type", "application/json")
+            .build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+
+        logger.info(
+            """
+                response status: ${response.statusCode()}
+                response body: ${response.body()}
+            """.trimIndent()
+        )
+    }
 
     // create another job to execute this coroutine
-    override fun saveDataStructure(codes: List<CodeDataStruct>): Unit = runBlocking {
-        createClient().use {
-            it.post(buildUrl("class-items")) {
-                contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(codes))
-            }
-        }
+    override fun saveDataStructure(codes: List<CodeDataStruct>) {
+        process("class-items", codes)
     }
 
-    override fun saveApi(apis: List<ContainerService>): Unit = runBlocking {
-        createClient().use {
-            it.post(buildUrl("container-services")) {
-                contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(apis))
-            }
-        }
+    override fun saveApi(apis: List<ContainerService>) {
+        process("container-services", apis)
     }
 
-    override fun saveRelation(records: List<CodeDatabaseRelation>): Unit = runBlocking {
-        createClient().use {
-            it.post(buildUrl("datamap-relations")) {
-                contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(records))
-            }
-        }
+    override fun saveRelation(records: List<CodeDatabaseRelation>) {
+        process("datamap-relations", records)
     }
 }
