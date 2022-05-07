@@ -8,7 +8,6 @@ import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.slf4j.LoggerFactory
-import java.io.File
 
 class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser {
     private val client = context.client
@@ -23,11 +22,8 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 logger.info("start analysis frontend api ---- $language")
 
                 val feApiAnalyser = FrontendApiAnalyser()
-                // save class first, and can query dependencies for later
-                val absPath = File(path).absolutePath
-
                 input.forEach { data ->
-                    feApiAnalyser.analysisByNode(data, absPath)
+                    feApiAnalyser.analysisByNode(data, path)
                 }
 
                 feApiAnalyser.toContainerServices()
