@@ -167,7 +167,6 @@ subprojects {
 dependencies {
     jacocoAggregation(project(":"))
 
-    // jacocoAggregation(project(":scanner_core"))
     jacocoAggregation(project(":scanner_cli"))
     jacocoAggregation(project(":scanner_sourcecode:lang_kotlin"))
     jacocoAggregation(project(":scanner_sourcecode:lang_java"))
@@ -178,6 +177,7 @@ dependencies {
     jacocoAggregation(project(":scanner_sourcecode:lang_scala"))
     jacocoAggregation(project(":scanner_sourcecode:feat_apicalls"))
     jacocoAggregation(project(":scanner_sourcecode:feat_datamap"))
+    jacocoAggregation(project(":scanner_git"))
 
     jacocoAggregation(project(":analyser_sca"))
     jacocoAggregation(project(":analyser_architecture"))
@@ -194,13 +194,7 @@ dependencies {
     /* ------------------------------------------------------------------------------ */
 
     // legacy scanner
-    jacocoAggregation(project(":scan_git"))
     jacocoAggregation(project(":diff_changes"))
-
-//    jacocoAggregation(project(":legacy:scan_jacoco"))
-//    jacocoAggregation(project(":legacy:scan_test_badsmell"))
-//    jacocoAggregation(project(":legacy:scan_bytecode"))
-
     jacocoAggregation(project(":common_code_repository"))
 }
 

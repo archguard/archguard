@@ -25,6 +25,8 @@ include(
     ":scanner_sourcecode:lang_scala",
     ":scanner_sourcecode:feat_apicalls",
     ":scanner_sourcecode:feat_datamap",
+    // git logs
+    ":scanner_git",
     // others
 )
 
@@ -52,13 +54,7 @@ include(":archdoc:doc-executor")
 /* ------------------------------------------------------------------------------ */
 
 // legacy scanners
-include(":scan_git")
 include(":diff_changes")
-
-// include(":legacy:scan_sourcecode")
-// include(":legacy:scan_jacoco")
-// include(":legacy:scan_test_badsmell")
-// include(":legacy:scan_bytecode")
 
 // common for share code repository
 // TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
