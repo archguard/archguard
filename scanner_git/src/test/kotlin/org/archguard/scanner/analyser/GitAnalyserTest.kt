@@ -1,9 +1,10 @@
-package com.thoughtworks.archguard.analyser
+package org.archguard.scanner.analyser
 
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import org.archguard.scanner.analyser.GitAnalyser
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.git.GitContext
 import org.assertj.core.api.Assertions.assertThat

@@ -1,6 +1,5 @@
-package com.thoughtworks.archguard.analyser
+package org.archguard.scanner.analyser
 
-import com.thoughtworks.archguard.analyser.adapter.ScannerService
 import org.archguard.scanner.core.client.dto.GitLogs
 import org.archguard.scanner.core.git.GitContext
 

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.analyser.adapter.language
+package org.archguard.scanner.analyser.language
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

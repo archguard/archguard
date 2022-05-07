@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.analyser.adapter
+package org.archguard.scanner.analyser
 
 import org.archguard.scanner.core.client.dto.ChangeEntry
 import org.archguard.scanner.core.client.dto.CommitLog

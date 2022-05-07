@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.analyser.adapter
+package org.archguard.scanner.analyser
 
-import com.thoughtworks.archguard.analyser.adapter.language.LanguageService
-import com.thoughtworks.archguard.analyser.adapter.language.LineCounter
+import org.archguard.scanner.analyser.language.LanguageService
+import org.archguard.scanner.analyser.language.LineCounter
 import org.archguard.scanner.core.client.dto.ChangeEntry
 import org.archguard.scanner.core.client.dto.GitLogs
 import org.archguard.scanner.core.client.dto.PathChangeCount

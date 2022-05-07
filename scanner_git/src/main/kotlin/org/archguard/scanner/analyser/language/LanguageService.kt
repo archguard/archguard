@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Unlicense
 // `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 
-package com.thoughtworks.archguard.analyser.adapter.language
+package org.archguard.scanner.analyser.language
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

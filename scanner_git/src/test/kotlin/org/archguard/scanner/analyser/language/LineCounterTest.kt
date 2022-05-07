@@ -1,7 +1,6 @@
-package com.thoughtworks.archguard.analyser.adapter.language
+package org.archguard.scanner.analyser.language
 
-import com.thoughtworks.archguard.analyser.adapter.language.LineCounter
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 
@@ -11,6 +10,6 @@ internal class LineCounterTest {
         val resource = this.javaClass.classLoader.getResource("gbkfiles/hello.go")!!
         val path = Paths.get(resource.toURI()).toFile().absolutePath
 
-        assertEquals(9, LineCounter.byPath(path))
+        Assertions.assertEquals(9, LineCounter.byPath(path))
     }
 }

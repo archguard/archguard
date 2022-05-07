@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.analyser.adapter.language
+package org.archguard.scanner.analyser.language
 
 import java.io.BufferedReader
 import java.io.File
