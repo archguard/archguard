@@ -11,6 +11,7 @@ Scanner:
 * diff_change - diff change between commits
 * scan_git - Git commit history scan
 * analyser_architecture - analysis architecture
+* analyser_sca - analysis software composition
 * scan_sourcecode - Code analysis
   * scanner_sourcecode
        * feat_apicalls
