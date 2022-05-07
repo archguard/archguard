@@ -25,11 +25,16 @@ Scanner:
   * scanner_cli
   * scanner_core
 * linter
-  * rule_code
-  * rule_sql
-  * rule_test_code
-  * rule_webapi
+  * [x] rule_sql
+  * [x] rule_test_code
+  * [x] rule_webapi
+  * [ ] rule_layer
 * rule_core
+
+## TechDebt
+
+- [ ] diff_changes ???
+- [ ] split language analysis from scan_git
 
 ## Inspires
 
