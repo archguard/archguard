@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.language
+package com.thoughtworks.archguard.analyser.adapter.language
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,4 +30,4 @@ data class Language(
     val fileNames: List<String>? = listOf(),
     @SerialName("shebangs")
     val sheBangs: List<String>? = listOf(),
-) 
+)

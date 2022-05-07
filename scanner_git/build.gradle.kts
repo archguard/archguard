@@ -1,28 +1,29 @@
 plugins {
     application
-
     kotlin("jvm") version "1.6.10"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
     kotlin("plugin.serialization") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 dependencies {
-    implementation("com.github.ajalt.clikt:clikt:3.4.0")
+    api(project(":scanner_core"))
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation("org.assertj:assertj-core:3.22.0")
 }
 
 application {
-    mainClass.set("com.thoughtworks.archguard.git.scanner.RunnerKt")
+    mainClass.set("org.archguard.scanner.core.AnalyserKt")
 }
 
-tasks{
+tasks {
     shadowJar {
-        manifest {
-            attributes(Pair("Main-Class", "com.thoughtworks.archguard.git.scanner.RunnerKt"))
+        dependencies {
+            exclude(dependency("org.jetbrains.kotlin:.*:.*"))
+            exclude(dependency("org.jetbrains.kotlinx:.*:.*"))
         }
+        minimize()
     }
 }

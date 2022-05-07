@@ -1,5 +1,6 @@
-package com.thoughtworks.archguard.language
+package com.thoughtworks.archguard.analyser.adapter.language
 
+import com.thoughtworks.archguard.analyser.adapter.language.LineCounter
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
