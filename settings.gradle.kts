@@ -42,11 +42,11 @@ include(":rule_linter:rule_sql")
 include(":rule_linter:rule_test_code")
 include(":rule_linter:rule_webapi")
 include(":rule_linter:rule_code")
+include(":rule-doc-generator")
 
 /**
  * others projects:
  */
-include(":doc_generator")
 include(":doc_executor")
 
 /* ------------------------------------------------------------------------------ */

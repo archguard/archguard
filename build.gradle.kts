@@ -189,7 +189,7 @@ dependencies {
     jacocoAggregation(project(":rule_linter:rule_code"))
 
     jacocoAggregation(project(":doc_executor"))
-    jacocoAggregation(project(":doc_generator"))
+    jacocoAggregation(project(":rule-doc-generator"))
 
     /* ------------------------------------------------------------------------------ */
 
