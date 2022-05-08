@@ -37,11 +37,11 @@ include(":analyser_architecture")
 /**
  * linters projects: a specific set of analysers to detect specific patterns
  */
-include(":rule_core")
-include(":rule_linter:rule_sql")
-include(":rule_linter:rule_test_code")
-include(":rule_linter:rule_webapi")
-include(":rule_linter:rule_code")
+include(":rule-core")
+include(":rule-linter:rule-sql")
+include(":rule-linter:rule-test-code")
+include(":rule-linter:rule-webapi")
+include(":rule-linter:rule-code")
 include(":rule-doc-generator")
 
 /**

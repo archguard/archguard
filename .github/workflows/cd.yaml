@@ -18,9 +18,9 @@ jobs:
           - analyser_sca/build/libs/analyser_sca*-all.jar
           - scanner_cli/build/libs/scanner_cli*-all.jar
           # rules
-          - rule_linter/rule_sql/build/libs/rule_sql*.jar
-          - rule_linter/rule_webapi/build/libs/rule_webapi*.jar
-          - rule_linter/rule_test_code/build/libs/rule_test_code*.jar
+          - rule-linter/rule-sql/build/libs/rule-sql*.jar
+          - rule-linter/rule-webapi/build/libs/rule-webapi*.jar
+          - rule-linter/rule-test-code/build/libs/rule-test-code*.jar
 #          - sourcecode scanner
           - scanner_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
           - scanner_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar

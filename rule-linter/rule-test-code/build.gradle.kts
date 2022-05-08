@@ -4,9 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule_core"))
-    // todo: thinking remove
-    api(project(":scanner_core"))
+    api(project(":rule-core"))
 
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 

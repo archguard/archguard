@@ -30,7 +30,7 @@ Scanner:
   * [x] rule_test_code
   * [x] rule_webapi
   * [ ] rule_layer
-* rule_core
+* rule-core
 
 ```mermaid
 flowchart TB

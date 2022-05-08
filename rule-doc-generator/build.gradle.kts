@@ -6,11 +6,11 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule_core"))
-    api(project(":rule_linter:rule_code"))
-    api(project(":rule_linter:rule_sql"))
-    api(project(":rule_linter:rule_test_code"))
-    api(project(":rule_linter:rule_webapi"))
+    api(project(":rule-core"))
+    api(project(":rule-linter:rule-code"))
+    api(project(":rule-linter:rule-sql"))
+    api(project(":rule-linter:rule-test-code"))
+    api(project(":rule-linter:rule-webapi"))
 
     api("org.jetbrains.kotlin:kotlin-compiler:1.6.10")
 
