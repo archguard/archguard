@@ -4,6 +4,12 @@ plugins {
     id("jacoco-report-aggregation")
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jetbrains.dokka") version "1.6.20"
+
+    id("java-library")
+    id("maven-publish")
+    publishing
+    signing
+
 }
 
 jacoco {
@@ -15,7 +21,7 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.jetbrains.dokka")
 
-    group = "com.thoughtworks.archguard"
+    group = "org.archguard"
     version = "1.7.0"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
@@ -80,6 +86,75 @@ allprojects {
         }
     }
 }
+
+subprojects {
+    apply(plugin = "java-library")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
+    apply(plugin = "publishing")
+
+    publishing {
+        publications {
+            create<MavenPublication>("mavenJava") {
+                from(components["java"])
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+                pom {
+                    name.set("Chapi")
+                    description.set(" ArchGuard is a architecture governance tool which can analysis architecture in container, component, code level, create architecture fitness functions, and anaysis system dependencies.. ")
+                    url.set("https://archguard.org/")
+                    licenses {
+                        license {
+                            name.set("MIT")
+                            url.set("https://raw.githubusercontent.com/archguard/archguard/master/LICENSE")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("Modernizing")
+                            name.set("Modernizing Team")
+                            email.set("h@phodal.com")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/archguard/scanner.git")
+                        developerConnection.set("scm:git:ssh://github.com/archguard/scanner.git")
+                        url.set("https://github.com/archguard/scanner/")
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+
+                credentials {
+                    username = (if (project.findProperty("sonatypeUsername") != null) project.findProperty("sonatypeUsername") else System.getenv("MAVEN_USERNAME")).toString()
+                    password = (if (project.findProperty("sonatypePassword") != null) project.findProperty("sonatypePassword") else System.getenv("MAVEN_PASSWORD")).toString()
+                }
+            }
+        }
+    }
+
+    signing {
+        sign(publishing.publications["mavenJava"])
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
 
 dependencies {
     jacocoAggregation(project(":"))
