@@ -47,7 +47,7 @@ include(":rule-doc-generator")
 /**
  * others projects:
  */
-include(":doc_executor")
+include(":archdoc:doc-executor")
 
 /* ------------------------------------------------------------------------------ */
 
