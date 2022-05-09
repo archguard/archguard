@@ -1,5 +1,7 @@
 package org.archguard.scanner.core.client.dto
 
+import java.time.Instant
+
 data class GitLogs(
     val commitLog: List<CommitLog>,
     val changeEntry: List<ChangeEntry>,
@@ -25,6 +27,13 @@ data class ChangeEntry(
     val committer: String,
     val lineAdded: Int,
     val lineDeleted: Int
+)
+
+// todo: update branch info
+data class GitBranch (
+    val name: String,
+    val lastModified: String = "",
+    val lastRead: String = "",
 )
 
 data class PathChangeCount(

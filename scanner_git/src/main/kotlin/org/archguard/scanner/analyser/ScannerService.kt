@@ -9,7 +9,7 @@ import java.io.File
 import java.util.UUID
 
 class ScannerService {
-    private val adapter = JGitAdapter()
+    private val adapter = JGitLogAdapter()
     private val languageService: LanguageService = LanguageService()
 
     fun scan(path: String, branch: String, startedAt: Long, repoId: String): GitLogs {
