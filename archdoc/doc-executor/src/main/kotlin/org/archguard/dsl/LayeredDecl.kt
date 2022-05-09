@@ -1,9 +1,5 @@
 package org.archguard.dsl
 
-
-@DslMarker
-annotation class LayeredDslMarker
-
 interface Element
 
 class ComponentDecl(val name: String) : Element {
@@ -18,12 +14,7 @@ class ComponentDecl(val name: String) : Element {
     }
 }
 
-@LayeredDslMarker
-abstract class Decl : Element {
-
-}
-
-class Layered : Decl() {
+class LayeredDecl : Decl() {
     private var componentDecls: HashMap<String, ComponentDecl> = hashMapOf()
 
     private var prefix: String = ""
@@ -47,8 +38,8 @@ class Layered : Decl() {
     }
 }
 
-fun layered(init: Layered.() -> Unit): Layered {
-    val layered = Layered()
-    layered.init()
-    return layered
+fun layered(init: LayeredDecl.() -> Unit): LayeredDecl {
+    val layeredDecl = LayeredDecl()
+    layeredDecl.init()
+    return layeredDecl
 }

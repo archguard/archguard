@@ -3,7 +3,7 @@ package org.archguard.dsl
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class LayeredTest {
+internal class DslTest {
     @Test
     internal fun simple_layered() {
         val mvc = layered {
@@ -15,5 +15,15 @@ internal class LayeredTest {
 
         assertEquals(3, mvc.components().size)
         assertEquals("controller", mvc.components()[0].name)
+    }
+
+    @Test
+    internal fun web_api() {
+        api("Blog") {
+            inbound {
+                key("title", String::class)
+                key("description", "Blog")
+            }
+        }
     }
 }
