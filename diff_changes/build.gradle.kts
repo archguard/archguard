@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":common_code_repository"))
+    api(project(":common-code-repository"))
     implementation("org.jdbi:jdbi3-core:3.8.2")
 
     implementation("com.github.ajalt.clikt:clikt:3.4.0")

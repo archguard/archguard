@@ -9,7 +9,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":common_code_repository"))
+    api(project(":common-code-repository"))
     api(project(":scanner_sourcecode:feat_apicalls"))
 
     implementation("io.netty:netty-all:4.1.42.Final")

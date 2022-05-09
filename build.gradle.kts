@@ -195,7 +195,7 @@ dependencies {
 
     // legacy scanner
     jacocoAggregation(project(":diff_changes"))
-    jacocoAggregation(project(":common_code_repository"))
+    jacocoAggregation(project(":common-code-repository"))
 }
 
 reporting {

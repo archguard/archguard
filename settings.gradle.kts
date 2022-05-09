@@ -58,4 +58,4 @@ include(":diff_changes")
 
 // common for share code repository
 // TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
-include(":common_code_repository")
+include(":common-code-repository")
