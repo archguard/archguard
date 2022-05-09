@@ -1,6 +1,6 @@
 # ArchGuard ArchDoc
 
-ArchDoc is architecture as code for ArchGuard
+ArchDoc is interactive architecture as code tools.
 
 DSL for ArchGuard
 
@@ -53,4 +53,30 @@ module.name.should "casing"
 - [ ] 允许存在重复的 assertion (#redundant-assertion) 
 
 ## Basic Blocks: Components and Artifacts
+
+
+? Architecture DSL ?
+
+## Code Engine
+
+like: [https://github.com/Kotlin/kotlin-jupyter](https://github.com/Kotlin/kotlin-jupyter)
+
+## Include Syntax
+
+- `@file:DependsOn(<coordinates>)`
+- `@file:Repository(<absolute-path>)`
+
+## Arch Syntax 
+
+Context API ?
+
+Query API:
+
+```
+var a = class("Lookbook").name
+```
+
+```
+linter("webapi").lint(a)
+```
 
