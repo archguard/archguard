@@ -76,8 +76,8 @@ API: /blog/sample
 ```kotlin
 layered {
     prefixId("org.archguard")
-    component("controller").dependentOn component("service")
-    component("service").dependentOn component("repository")
+    component("controller") dependentOn component("service")
+    组件("service") 依赖于 组件("repository")
 }
 ```
 

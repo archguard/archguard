@@ -10,7 +10,7 @@ internal class LayeredTest {
             prefixId("org.archguard")
 
             component("controller") dependentOn component("service")
-            component("service") dependentOn component("repository")
+            组件("service") 依赖于 组件("repository")
         }
 
         assertEquals(3, mvc.components().size)
