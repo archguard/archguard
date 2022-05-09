@@ -16,17 +16,17 @@ include(
     ":scanner_core",
     ":scanner_cli",
     // source code
-    ":scanner_sourcecode:lang_kotlin",
-    ":scanner_sourcecode:lang_java",
-    ":scanner_sourcecode:lang_typescript",
-    ":scanner_sourcecode:lang_python",
-    ":scanner_sourcecode:lang_golang",
-    ":scanner_sourcecode:lang_csharp",
-    ":scanner_sourcecode:lang_scala",
-    ":scanner_sourcecode:feat_apicalls",
-    ":scanner_sourcecode:feat_datamap",
+    ":analyser_sourcecode:lang_kotlin",
+    ":analyser_sourcecode:lang_java",
+    ":analyser_sourcecode:lang_typescript",
+    ":analyser_sourcecode:lang_python",
+    ":analyser_sourcecode:lang_golang",
+    ":analyser_sourcecode:lang_csharp",
+    ":analyser_sourcecode:lang_scala",
+    ":analyser_sourcecode:feat_apicalls",
+    ":analyser_sourcecode:feat_datamap",
     // git logs
-    ":scanner_git",
+    ":analyser_git",
     // others
 )
 
