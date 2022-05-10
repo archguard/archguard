@@ -26,4 +26,14 @@ internal class DslTest {
             }
         }
     }
+
+    @Test
+    internal fun archguard_repos() {
+        val decls = repos {
+            repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
+            repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
+        }
+
+        assertEquals(2, decls.repos.size)
+    }
 }

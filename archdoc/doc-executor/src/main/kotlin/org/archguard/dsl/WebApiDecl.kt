@@ -12,7 +12,6 @@ class WebApiDecl(name: String): Element {
     }
 }
 
-
 fun api(name: String, init: WebApiDecl.() -> Unit): WebApiDecl {
     val webapiDecl = WebApiDecl(name)
     webapiDecl.init()
