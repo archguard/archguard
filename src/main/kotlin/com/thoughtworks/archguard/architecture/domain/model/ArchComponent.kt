@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.architecture.domain
+package com.thoughtworks.archguard.architecture.domain.model
 
 data class ArchComponent(
     var id: String,
