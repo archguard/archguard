@@ -20,7 +20,7 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.jetbrains.dokka")
 
-    group = "org.archguard"
+    group = "org.archguard.scanner"
     version = "1.7.0"
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
