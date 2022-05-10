@@ -105,7 +105,7 @@ subprojects {
                     }
                 }
                 pom {
-                    name.set("Chapi")
+                    name.set("ArchGuard")
                     description.set(" ArchGuard is a architecture governance tool which can analysis architecture in container, component, code level, create architecture fitness functions, and anaysis system dependencies.. ")
                     url.set("https://archguard.org/")
                     licenses {
