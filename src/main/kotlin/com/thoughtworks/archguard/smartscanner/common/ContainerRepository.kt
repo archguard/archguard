@@ -3,9 +3,9 @@ package org.archguard.scanner.common
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.currentTime
 import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.generateId
-import com.thoughtworks.archguard.smartscanner.dto.ContainerDemand
-import com.thoughtworks.archguard.smartscanner.dto.ContainerResource
-import com.thoughtworks.archguard.smartscanner.dto.ContainerService
+import org.archguard.scanner.core.client.dto.ContainerDemand
+import org.archguard.scanner.core.client.dto.ContainerResource
+import org.archguard.scanner.core.client.dto.ContainerService
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
@@ -52,7 +52,11 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return serviceId
     }
 
-    private fun saveResource(it: ContainerResource, serviceId: String, name: String): String {
+    private fun saveResource(
+        it: ContainerResource,
+        serviceId: String,
+        name: String
+    ): String {
         val time: String = currentTime
         val resourceId = generateId()
         val values: MutableMap<String, String> = HashMap()
@@ -76,7 +80,11 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return resourceId
     }
 
-    private fun saveDemand(demand: ContainerDemand, serviceId: String, name: String): String {
+    private fun saveDemand(
+        demand: ContainerDemand,
+        serviceId: String,
+        name: String
+    ): String {
         val time: String = currentTime
         val demandId = generateId()
         val values: MutableMap<String, String> = HashMap()

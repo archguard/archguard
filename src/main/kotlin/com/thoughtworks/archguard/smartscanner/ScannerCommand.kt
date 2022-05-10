@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.smartscanner
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
+import org.archguard.scanner.core.context.AnalyserType
 import java.io.File
 
 data class ScannerCommand(
@@ -34,19 +35,4 @@ data class ScannerCommand(
 
     // TODO configurable output format
     var outputs = listOf("http")
-}
-
-data class AnalyserSpec(
-    val identifier: String,
-    val host: String,
-    val version: String,
-    val jar: String,
-    val className: String,
-)
-
-enum class AnalyserType {
-    SOURCE_CODE,
-    GIT,
-    JACOCO,
-    ;
 }

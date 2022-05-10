@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.codescan.sourcecode.Sou
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.archguard.scanner.core.context.AnalyserType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -30,7 +31,7 @@ class StranglerScannerExecutor(
     private fun Scanner.scanWith(context: ScanContext) {
         when (this) {
             is SourceCodeScanner -> this@StranglerScannerExecutor.scan(context)
-            else -> scan(context)
+            else -> if (canScan(context)) scan(context)
         }
     }
 

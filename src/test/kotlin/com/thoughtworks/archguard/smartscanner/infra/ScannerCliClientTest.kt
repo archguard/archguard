@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
-import com.thoughtworks.archguard.smartscanner.AnalyserType
 import com.thoughtworks.archguard.smartscanner.ScannerCommand
 import io.mockk.every
 import io.mockk.just
@@ -10,6 +9,7 @@ import io.mockk.mockkObject
 import io.mockk.runs
 import io.mockk.slot
 import io.mockk.unmockkObject
+import org.archguard.scanner.core.context.AnalyserType
 import org.junit.jupiter.api.Test
 import java.io.File
 
