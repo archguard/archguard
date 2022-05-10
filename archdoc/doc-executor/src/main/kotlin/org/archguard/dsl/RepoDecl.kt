@@ -13,5 +13,8 @@ class ReposDecl : Element {
 fun repos(init: ReposDecl.() -> Unit): ReposDecl {
     val reposDecl = ReposDecl()
     reposDecl.init()
+
+    archdoc.reposDecl = reposDecl
+
     return reposDecl
 }

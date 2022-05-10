@@ -41,5 +41,8 @@ class LayeredDecl : Decl() {
 fun layered(init: LayeredDecl.() -> Unit): LayeredDecl {
     val layeredDecl = LayeredDecl()
     layeredDecl.init()
+
+    archdoc.layeredDecl = layeredDecl
+
     return layeredDecl
 }
