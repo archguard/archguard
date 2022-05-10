@@ -4,8 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule-core"))
-
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("com.phodal.chapi:chapi-domain:1.5.6")
