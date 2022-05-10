@@ -14,4 +14,3 @@ class ChainedArchGuardClient(
     override fun saveRelation(records: List<CodeDatabaseRelation>) = clients.forEach { it.saveRelation(records) }
     override fun saveGitLogs(gitLogs: GitLogs) = clients.forEach { it.saveGitLogs(gitLogs) }
 }
-

@@ -37,12 +37,13 @@ internal class AnalyserDispatcherTest {
 
         private fun stubCommand() {
             every { command.type } returns AnalyserType.SOURCE_CODE
-            every { command.buildSourceCodeContext() } returns context
-            every { command.getAnalyserSpecs() } returns listOf(
-                mockk { every { identifier } returns "kotlin" },
+            every { command.languageSpec } returns mockk { every { identifier } returns "kotlin" }
+            every { command.featureSpecs } returns listOf(
                 mockk { every { identifier } returns "feature1" },
                 mockk { every { identifier } returns "feature2" },
             )
+            every { command.path } returns "."
+            every { command.buildClient() } returns mockk()
         }
 
         private fun stubContext() {
@@ -52,7 +53,7 @@ internal class AnalyserDispatcherTest {
 
         private fun stubLoad() {
             every {
-                AnalyserLoader.load(context, any())
+                AnalyserLoader.load(any(), any())
             } returns (languageAnalyser as Analyser<Context>) andThen (feature1Analyser as Analyser<Context>) andThen (feature2Analyser as Analyser<Context>)
         }
 

@@ -23,9 +23,20 @@ enum class OfficialAnalyserSpecs(
     // features
     APICALLS("ApiCallAnalyser", false),
     DATAMAP("DataMapAnalyser", false),
+
+    // git
+    GIT("GitAnalyser", false),
     ;
 
     fun spec(): AnalyserSpec {
+        if (this == GIT) return AnalyserSpec(
+            identifier = "git",
+            host = RELEASE_REPO_URL,
+            version = VERSION,
+            jar = "analyser_git-$VERSION-all.jar",
+            className = "GitAnalyser"
+        )
+
         val identifier = name.lowercase()
         val prefix = if (isLanguage) "lang" else "feat"
         val jar = "${prefix}_$identifier-$VERSION-all.jar"

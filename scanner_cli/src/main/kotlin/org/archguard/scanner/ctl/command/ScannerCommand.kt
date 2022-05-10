@@ -12,8 +12,6 @@ import org.archguard.scanner.ctl.client.ArchGuardCsvClient
 import org.archguard.scanner.ctl.client.ArchGuardHttpClient
 import org.archguard.scanner.ctl.client.ArchGuardJsonClient
 import org.archguard.scanner.ctl.client.ChainedArchGuardClient
-import org.archguard.scanner.ctl.impl.CliGitContext
-import org.archguard.scanner.ctl.impl.CliSourceCodeContext
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
 // this class is the 'controller' of the scanner
@@ -22,22 +20,20 @@ data class ScannerCommand(
     val type: AnalyserType,
     val systemId: String,
     val serverUrl: String,
-
-    // TODO support git url as well?? move 'git clone' logic in cli
     val path: String,
+    val output: List<String> = emptyList(),
 
     // for source code analysing, may be Map, String or AnalyserSpec
     val language: Any? = null,
     val features: List<Any> = emptyList(),
-    val output: List<String> = emptyList(),
 
     // for git analysing
     val repoId: String? = null,
     val branch: String = "master",
     val startedAt: Long = 0,
 ) {
-    private val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
-    private val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }
+    val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
+    val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }
 
     private fun parseIdentifierOrSpec(identifier: Any) = when (identifier) {
         is AnalyserSpec -> identifier
@@ -48,22 +44,10 @@ data class ScannerCommand(
         else -> throw IllegalArgumentException("Unknown identifier: ${identifier.javaClass}")
     }
 
-    fun buildSourceCodeContext(): CliSourceCodeContext {
-        assert(type == AnalyserType.SOURCE_CODE)
-
-        return CliSourceCodeContext(
-            language = languageSpec!!.identifier,
-            features = featureSpecs.map { it.identifier },
-            client = buildClient(),
-            path = path,
-            systemId = systemId,
-        )
-    }
-
-    private fun buildClient(): ArchGuardClient {
+    fun buildClient(): ArchGuardClient {
         val clients = mutableListOf<ArchGuardClient>()
         if (output.contains("http"))
-            clients.add(ArchGuardHttpClient(languageSpec!!.identifier, serverUrl, systemId, path))
+            clients.add(ArchGuardHttpClient(languageSpec?.identifier ?: "", serverUrl, systemId, path))
         if (output.contains("json"))
             clients.add(ArchGuardJsonClient(systemId))
         if (output.contains("csv"))
@@ -72,20 +56,5 @@ data class ScannerCommand(
             clients.add(ArchGuardConsoleClient(systemId))
 
         return ChainedArchGuardClient(clients)
-    }
-
-    fun getAnalyserSpecs(): List<AnalyserSpec> = listOfNotNull(languageSpec) + featureSpecs
-
-    fun buildGitContext(): CliGitContext {
-        assert(type == AnalyserType.GIT)
-
-        return CliGitContext(
-            client = buildClient(),
-            path = path,
-            repoId = repoId!!,
-            branch = branch,
-            startedAt = startedAt,
-            systemId = systemId,
-        )
     }
 }
