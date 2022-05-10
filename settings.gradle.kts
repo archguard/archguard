@@ -25,16 +25,11 @@ include(
     ":analyser_sourcecode:lang_scala",
     ":analyser_sourcecode:feat_apicalls",
     ":analyser_sourcecode:feat_datamap",
-    // git logs
     ":analyser_git",
-    // others
+    ":analyser_diff_changes",
+    ":analyser_sca",
+    ":analyser_architecture",
 )
-
-/**
- *  analysers projects: process the ast or dbschema to extract more information
- */
-include(":analyser_sca")
-include(":analyser_architecture")
 
 /**
  * linters projects: a specific set of analysers to detect specific patterns
@@ -50,12 +45,3 @@ include(":rule-doc-generator")
  * others projects:
  */
 include(":archdoc:doc-executor")
-
-/* ------------------------------------------------------------------------------ */
-
-// legacy scanners
-include(":diff_changes")
-
-// common for share code repository
-// TODO need to refactor as http, related https://github.com/archguard/archguard/issues/43, https://github.com/archguard/scanner/issues/3
-include(":common-code-repository")

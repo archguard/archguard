@@ -178,7 +178,7 @@ dependencies {
     jacocoAggregation(project(":analyser_sourcecode:feat_apicalls"))
     jacocoAggregation(project(":analyser_sourcecode:feat_datamap"))
     jacocoAggregation(project(":analyser_git"))
-
+    jacocoAggregation(project(":analyser_diff_changes"))
     jacocoAggregation(project(":analyser_sca"))
     jacocoAggregation(project(":analyser_architecture"))
 
@@ -190,12 +190,6 @@ dependencies {
     jacocoAggregation(project(":rule-doc-generator"))
 
     jacocoAggregation(project(":archdoc:doc-executor"))
-
-    /* ------------------------------------------------------------------------------ */
-
-    // legacy scanner
-    jacocoAggregation(project(":diff_changes"))
-    jacocoAggregation(project(":common-code-repository"))
 }
 
 reporting {
