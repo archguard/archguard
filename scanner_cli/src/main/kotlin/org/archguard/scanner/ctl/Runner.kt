@@ -5,9 +5,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import org.archguard.scanner.core.AnalyserSpec
+import com.github.ajalt.clikt.parameters.types.long
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
@@ -17,17 +15,21 @@ import org.slf4j.LoggerFactory
 // parse the cli inputs as the standard command (controller), build the context and dispatch to run
 class Runner : CliktCommand(help = "scanner cli") {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val type: AnalyserType by option().enum<AnalyserType>(ignoreCase = true).default(AnalyserType.SOURCE_CODE)
-    private val systemId: String by option(help = "system id").default("0")
-    private val serverUrl: String by option(help = "the base url of the archguard api server").default("http://localhost:8080")
 
+    // cli parameters
+    private val type by option().enum<AnalyserType>(ignoreCase = true).default(AnalyserType.SOURCE_CODE)
+    private val systemId by option(help = "system id").default("0")
+    private val serverUrl by option(help = "the base url of the archguard api server").default("http://localhost:8080")
     private val workspace by option(help = "the workspace directory").default(".")
-    private val path: String by option(help = "the path of target project").default(".")
-    private val language: String by option(
-        help = "official supported language: Java, Kotlin, TypeScript, CSharp, Python, Golang. You can also input a json to define your own language analyser."
-    ).default("Java")
-    private val features: List<String> by option(help = "features: API_CALLS, DB. You can also input a json to define your own feature analyser.").multiple()
-    private val output: List<String> by option(help = "http, csv, json, console").multiple()
+    private val path by option(help = "the path of target project").default(".")
+    private val output by option(help = "http, csv, json, console").multiple()
+
+    // additional parameters
+    private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang. Or override via json.")
+    private val features by option(help = "features: apicalls, datamap. Or override via json.").multiple()
+    private val repoId by option(help = "repository id used for git analysing")
+    private val branch by option(help = "repository branch").default("master")
+    private val startedAt by option(help = "the start date of the scanned commit").long().default(0L)
 
     /**
      *  --language=java
@@ -40,25 +42,27 @@ class Runner : CliktCommand(help = "scanner cli") {
     override fun run() {
         logger.debug(
             """
+            <cli parameters>
             |type: $type
             |systemId: $systemId
+            |serverUrl: $serverUrl
             |workspace: $workspace
             |path: $path
+            |output: $output
+            <additional parameters>
             |language: $language
             |features: $features
-            |serverUrl: $serverUrl
+            |repoId: $repoId
+            |branch: $branch
+            |startedAt: $startedAt
            """.trimIndent()
         )
 
         val command = ScannerCommand(
-            type, systemId, serverUrl, path, language,
-            features.map {
-                when {
-                    it.startsWith("{") -> Json.decodeFromString<AnalyserSpec>(it)
-                    else -> it
-                }
-            },
-            output,
+            // cli parameters
+            type, systemId, serverUrl, path, output,
+            // additional parameters
+            language, features, repoId, branch, startedAt
         )
         AnalyserDispatcher().dispatch(command)
         RuleDispatcher().dispatch(command)
