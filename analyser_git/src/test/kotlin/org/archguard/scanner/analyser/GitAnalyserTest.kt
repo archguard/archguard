@@ -1,19 +1,16 @@
 package org.archguard.scanner.analyser
 
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
-import org.archguard.scanner.analyser.GitAnalyser
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.git.GitContext
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.jgit.api.Git
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
