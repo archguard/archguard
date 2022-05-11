@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.architecture.domain.service
 
 import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class ArchSystemService {
