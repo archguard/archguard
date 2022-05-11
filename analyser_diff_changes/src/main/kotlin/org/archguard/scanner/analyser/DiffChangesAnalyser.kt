@@ -17,8 +17,8 @@ class DiffChangesAnalyser(
     override fun analyse(): List<ChangedCall> = with(context) {
         logger.info("diff from $since to $until on branch: $branch with path: $path")
         val differ = GitDiffer(path, branch, depth)
-        val sinceRev = since.drop(SHORT_ID_LENGTH)
-        val untilRev = until.drop(SHORT_ID_LENGTH)
+        val sinceRev = since.substring(0, minOf(SHORT_ID_LENGTH, since.length))
+        val untilRev = until.substring(0, minOf(SHORT_ID_LENGTH, until.length))
         val changedCalls = differ.countBetween(sinceRev, untilRev)
 
         client.saveDiffs(changedCalls)
