@@ -16,6 +16,10 @@ Chinese: ArchGuard 是一个架构治理工具，用于管理和分析组织级�
 
 Document: [https://archguard.org/](https://archguard.org/)
 
+Roadmap: [Roadmap](https://github.com/archguard/archguard/discussions/5)
+
+Contribute: [Contribute to Archguard](https://archguard.org/contribution)
+
 Others:
 
 - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
