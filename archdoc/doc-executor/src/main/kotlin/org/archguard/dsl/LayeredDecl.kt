@@ -1,7 +1,5 @@
 package org.archguard.dsl
 
-interface Element
-
 class ComponentDecl(val name: String) : Element {
     private var dependents: List<ComponentDecl> = listOf()
 
