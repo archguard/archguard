@@ -13,5 +13,6 @@ enum class AnalyserType {
     RULE,
     GIT,
     JACOCO,
+    DIFF_CHANGES,
     ;
 }

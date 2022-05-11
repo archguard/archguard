@@ -1,27 +1,25 @@
-package org.archguard.diff.changes
+package org.archguard.scanner.analyser.diffchanges
 
-import chapi.app.analyser.JavaAnalyserApp
-import chapi.app.analyser.KotlinAnalyserApp
-import chapi.app.analyser.support.AbstractFile
-import chapi.app.analyser.support.BaseAnalyser
+import chapi.ast.kotlinast.AnalysisMode
+import chapi.domain.core.CodeDataStruct
+import kotlinx.serialization.Serializable
+import org.archguard.scanner.core.client.dto.ChangeRelation
+import org.archguard.scanner.core.client.dto.ChangedCall
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.diff.DiffEntry
+import org.eclipse.jgit.diff.DiffFormatter
+import org.eclipse.jgit.diff.RawTextComparator
 import org.eclipse.jgit.dircache.DirCacheIterator
 import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.jgit.lib.ObjectLoader
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.FileTreeIterator
 import org.eclipse.jgit.treewalk.TreeWalk
+import org.eclipse.jgit.util.io.DisabledOutputStream
 import java.io.File
 import java.nio.charset.StandardCharsets
-import chapi.domain.core.CodeDataStruct
-import kotlinx.serialization.Serializable
-import org.eclipse.jgit.diff.DiffEntry
-import org.eclipse.jgit.diff.DiffFormatter
-import org.eclipse.jgit.diff.RawTextComparator
-import org.eclipse.jgit.util.io.DisabledOutputStream
 
 @Serializable
 class DifferFile(
@@ -44,20 +42,6 @@ class ChangedList(
     val classes: List<ChangedEntry> = arrayListOf(),
     // if it had parameter changed, function call changed, make it as Function level
     val functions: List<ChangedEntry> = arrayListOf(),
-)
-
-@Serializable
-class ChangedCall(
-    val path: String,
-    val packageName: String,
-    val className: String,
-    val relations: List<ChangeRelation>
-)
-
-@Serializable
-class ChangeRelation(
-    val source: String,
-    val target: String
 )
 
 class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
@@ -181,7 +165,6 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         }
     }
 
-
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {
         val diffFormatter = DiffFormatter(DisabledOutputStream.INSTANCE).config(repository)
         diffFormatter.scan(getParent(revCommit)?.tree, revCommit.tree)
@@ -234,7 +217,6 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
                         }
                     }
                 }
-
             }
         } catch (ex: Exception) {
             throw ex
@@ -288,39 +270,39 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         return files
     }
 
+    // TODO get the data structure from the file or cache while already got from language analyser
     private fun diffFileFromBlob(
         repository: Repository,
         blobId: ObjectId,
         pathString: String,
         extension: String
     ): Array<CodeDataStruct> {
-        val analyserApp: BaseAnalyser = when (extension) {
+        val fileName = File(pathString).name
+        val content = repository.newObjectReader().use { objectReader ->
+            String(objectReader.open(blobId).bytes, StandardCharsets.UTF_8)
+        }
+        return when (extension) {
             "kt" -> {
-                KotlinAnalyserApp()
+                val analyser = chapi.ast.kotlinast.KotlinAnalyser()
+                analyser.analysis(content, fileName, AnalysisMode.Full).run {
+                    DataStructures.map { it.apply { it.FilePath = pathString } }
+                }.toTypedArray()
             }
             "java" -> {
-                JavaAnalyserApp()
+                val analyser = chapi.ast.javaast.JavaAnalyser()
+                val basicNodes = analyser.identBasicInfo(content, fileName).run {
+                    DataStructures.map { ds -> ds.apply { ds.Imports = Imports } }
+                }.toTypedArray()
+                val classes = basicNodes.map { it.getClassFullName() }.toTypedArray()
+                analyser.identFullInfo(content, fileName, classes, basicNodes).run {
+                    DataStructures.map { ds -> ds.apply { ds.Imports = Imports } }
+                }.toTypedArray()
             }
-            else -> {
-                return arrayOf()
-            }
+            else -> emptyArray()
         }
-
-
-        val content = repository.newObjectReader().use { objectReader ->
-            val objectLoader: ObjectLoader = objectReader.open(blobId)
-            val bytes: ByteArray = objectLoader.bytes
-            val content = String(bytes, StandardCharsets.UTF_8)
-            content
-        }
-
-        val file = AbstractFile(File(pathString).name, pathString, true, pathString, content)
-        return analyserApp.analysisByFiles(arrayOf(file))
     }
 
-    private fun Git.specifyBranch(branch: String): Git {
+    private fun Git.specifyBranch(branch: String): Git = apply {
         checkout().setName(branch).call()
-        return this
     }
-
 }

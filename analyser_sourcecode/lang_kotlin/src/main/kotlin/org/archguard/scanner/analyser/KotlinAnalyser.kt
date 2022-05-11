@@ -23,10 +23,7 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {
-        fun postProcess(it: CodeDataStruct): CodeDataStruct = it.apply { it.FilePath = file.absolutePath }
-
-        val codeContainer = impl.analysis(file.readContent(), file.name, AnalysisMode.Full)
-
-        return codeContainer.DataStructures.map(::postProcess)
+        return impl.analysis(file.readContent(), file.name, AnalysisMode.Full).DataStructures
+            .map { it.apply { it.FilePath = file.absolutePath } }
     }
 }

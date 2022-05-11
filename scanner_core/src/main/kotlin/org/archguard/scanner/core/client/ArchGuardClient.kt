@@ -1,6 +1,7 @@
 package org.archguard.scanner.core.client
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.scanner.core.client.dto.ChangedCall
 import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
 import org.archguard.scanner.core.client.dto.ContainerService
 import org.archguard.scanner.core.client.dto.GitLogs
@@ -11,4 +12,5 @@ interface ArchGuardClient {
     fun saveApi(apis: List<ContainerService>)
     fun saveRelation(records: List<CodeDatabaseRelation>)
     fun saveGitLogs(gitLogs: GitLogs)
+    fun saveDiffs(calls: List<ChangedCall>)
 }
