@@ -1,4 +1,4 @@
-package org.archguard.analyser.sca.model
+package org.archguard.scanner.core.sca
 
 /*
  * file for save content ?

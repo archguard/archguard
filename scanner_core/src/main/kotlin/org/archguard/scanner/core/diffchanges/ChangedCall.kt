@@ -1,4 +1,4 @@
-package org.archguard.scanner.core.client.dto
+package org.archguard.scanner.core.diffchanges
 
 import kotlinx.serialization.Serializable
 

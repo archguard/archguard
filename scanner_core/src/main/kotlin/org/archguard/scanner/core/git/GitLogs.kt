@@ -1,13 +1,15 @@
-package org.archguard.scanner.core.client.dto
+package org.archguard.scanner.core.git
 
-import java.time.Instant
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GitLogs(
     val commitLog: List<CommitLog>,
     val changeEntry: List<ChangeEntry>,
     val pathChangeCount: List<PathChangeCount>
 )
 
+@Serializable
 data class CommitLog(
     val id: String,
     val commitTime: Long,
@@ -17,6 +19,7 @@ data class CommitLog(
     val repositoryId: String,
 )
 
+@Serializable
 data class ChangeEntry(
     val oldPath: String,
     val newPath: String,
@@ -30,12 +33,14 @@ data class ChangeEntry(
 )
 
 // todo: update branch info
-data class GitBranch (
+@Serializable
+data class GitBranch(
     val name: String,
     val lastModified: String = "",
     val lastRead: String = "",
 )
 
+@Serializable
 data class PathChangeCount(
     val id: String,
     val path: String,
