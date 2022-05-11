@@ -7,7 +7,7 @@ import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.stereotype.Repository
 
 @Repository
-class ArchSystemRepositoryImpl(val influxDBClient: InfluxDBClient) : ArchSystemRepository {
+class ArchSystemRepositoryImpl() : ArchSystemRepository {
 
     override fun getArchSystem(id: String): ArchSystemPO {
         TODO("Not yet implemented")

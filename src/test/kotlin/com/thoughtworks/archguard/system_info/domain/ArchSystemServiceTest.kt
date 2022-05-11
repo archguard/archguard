@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @DBRider
 @SpringBootTest
-internal class SystemInfoServiceTest {
+internal class ArchSystemServiceTest {
 
     @Autowired
     lateinit var systemInfoService: SystemInfoService
