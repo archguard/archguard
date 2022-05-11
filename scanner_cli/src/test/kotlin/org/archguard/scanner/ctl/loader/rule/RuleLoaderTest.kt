@@ -1,13 +1,13 @@
 package org.archguard.scanner.ctl.loader.rule
 
-import org.archguard.scanner.core.client.dto.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerResource
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class RuleLoaderTest {
     @Test
     internal fun load() {
-        val jar = this.javaClass.classLoader.getResource("kotlin/testonly-rule_webapi-1.7.0.jar")!!
+        val jar = this.javaClass.classLoader.getResource("kotlin/testonly-rule-webapi-2.0.0-alpha.2.jar")!!
 
         val resource = ContainerResource(sourceUrl = "api/book/delete/{bookId}")
         val ruleName = "org.archguard.linter.rule.webapi.WebApiRuleVisitor"

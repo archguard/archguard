@@ -2,8 +2,8 @@ package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import org.archguard.scanner.core.client.dto.ContainerResource
-import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 class CSharpApiAnalyser {
     var resources: List<ContainerResource> = listOf()

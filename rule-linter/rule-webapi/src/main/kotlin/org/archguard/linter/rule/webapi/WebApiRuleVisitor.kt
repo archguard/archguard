@@ -1,6 +1,6 @@
 package org.archguard.linter.rule.webapi
 
-import org.archguard.scanner.core.client.dto.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerResource
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule

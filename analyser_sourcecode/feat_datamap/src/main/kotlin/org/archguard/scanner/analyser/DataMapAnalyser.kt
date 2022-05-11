@@ -3,7 +3,7 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.database.MysqlAnalyser
 import org.archguard.scanner.analyser.xml.XmlParser
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory

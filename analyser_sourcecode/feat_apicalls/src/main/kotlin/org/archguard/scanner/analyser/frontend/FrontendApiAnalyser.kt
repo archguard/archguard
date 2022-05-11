@@ -7,16 +7,13 @@ import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 import chapi.domain.core.DataStructType
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.analyser.frontend.identify.AxiosHttpIdentify
 import org.archguard.scanner.analyser.frontend.identify.UmiHttpIdentify
 import org.archguard.scanner.analyser.frontend.naming
 import org.archguard.scanner.analyser.frontend.path.ecmaImportConvert
 import org.archguard.scanner.analyser.frontend.path.relativeRoot
-import org.archguard.scanner.core.client.dto.ContainerDemand
-import org.archguard.scanner.core.client.dto.ContainerService
-import java.io.File
+import org.archguard.scanner.core.sourcecode.ContainerDemand
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 @Serializable
 data class ApiCodeCall(val ApiType: String = "") : CodeCall() {

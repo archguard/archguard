@@ -3,7 +3,7 @@ package org.archguard.linter.rule.webapi
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.scanner.core.client.dto.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerResource
 
 open class WebApiRule : Rule() {
     open fun visitResources(resources: List<ContainerResource>, context: RuleContext, callback: IssueEmit) {

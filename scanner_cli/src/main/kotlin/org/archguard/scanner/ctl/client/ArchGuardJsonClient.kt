@@ -4,9 +4,11 @@ import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
-import org.archguard.scanner.core.client.dto.ContainerService
-import org.archguard.scanner.core.client.dto.GitLogs
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.sca.CompositionDependency
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.ContainerService
 import java.io.File
 
 open class ArchGuardJsonClient(private val systemId: String) : ArchGuardClient {
@@ -31,5 +33,13 @@ open class ArchGuardJsonClient(private val systemId: String) : ArchGuardClient {
         writeJsonFile(gitLogs.commitLog, buildFileName("gitlogs-commit"))
         writeJsonFile(gitLogs.changeEntry, buildFileName("gitlogs-change-entry"))
         writeJsonFile(gitLogs.pathChangeCount, buildFileName("gitlogs-change-count"))
+    }
+
+    override fun saveDiffs(calls: List<ChangedCall>) {
+        writeJsonFile(calls, buildFileName("diff-changes"))
+    }
+
+    override fun saveDependencies(dependencies: List<CompositionDependency>) {
+        writeJsonFile(dependencies, buildFileName("sca-dependencies"))
     }
 }

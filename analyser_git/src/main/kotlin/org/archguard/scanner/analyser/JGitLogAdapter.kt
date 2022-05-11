@@ -1,8 +1,8 @@
 package org.archguard.scanner.analyser
 
-import org.archguard.scanner.core.client.dto.ChangeEntry
-import org.archguard.scanner.core.client.dto.CommitLog
-import org.archguard.scanner.core.client.dto.GitBranch
+import org.archguard.scanner.core.git.ChangeEntry
+import org.archguard.scanner.core.git.CommitLog
+import org.archguard.scanner.core.git.GitBranch
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.diff.DiffEntry

@@ -3,8 +3,8 @@ package org.archguard.scanner.analyser.diffchanges
 import chapi.ast.kotlinast.AnalysisMode
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
-import org.archguard.scanner.core.client.dto.ChangeRelation
-import org.archguard.scanner.core.client.dto.ChangedCall
+import org.archguard.scanner.core.diffchanges.ChangeRelation
+import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter

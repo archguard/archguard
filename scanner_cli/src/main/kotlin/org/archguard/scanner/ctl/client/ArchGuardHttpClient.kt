@@ -4,9 +4,11 @@ import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
-import org.archguard.scanner.core.client.dto.ContainerService
-import org.archguard.scanner.core.client.dto.GitLogs
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.sca.CompositionDependency
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.ContainerService
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.net.http.HttpClient
@@ -62,6 +64,14 @@ class ArchGuardHttpClient(
     }
 
     override fun saveGitLogs(gitLogs: GitLogs) {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveDiffs(calls: List<ChangedCall>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveDependencies(dependencies: List<CompositionDependency>) {
         TODO("Not yet implemented")
     }
 }

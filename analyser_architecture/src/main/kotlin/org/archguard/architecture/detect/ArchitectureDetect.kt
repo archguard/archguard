@@ -1,7 +1,7 @@
 package org.archguard.architecture.detect
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace

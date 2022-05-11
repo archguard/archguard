@@ -1,14 +1,15 @@
-package org.archguard.scanner.diffchanges
+package org.archguard.scanner.analyser
 
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
-import org.archguard.scanner.analyser.DiffChangesAnalyser
+import io.mockk.verify
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.diffchanges.DiffChangesContext
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.jgit.api.Git
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -33,6 +34,11 @@ internal class DiffChangesAnalyserTest {
                 .setDirectory(targetRepo)
                 .call()
         }
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        verify { mockClient.saveDiffs(any()) }
     }
 
     @Test

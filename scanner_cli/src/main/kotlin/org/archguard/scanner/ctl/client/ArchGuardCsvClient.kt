@@ -4,9 +4,11 @@ import chapi.domain.core.CodeDataStruct
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.archguard.scanner.core.client.ArchGuardClient
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
-import org.archguard.scanner.core.client.dto.ContainerService
-import org.archguard.scanner.core.client.dto.GitLogs
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.sca.CompositionDependency
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.ContainerService
 import java.io.FileWriter
 
 class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
@@ -40,5 +42,13 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
         writeCsvFile(gitLogs.commitLog, buildFileName("gitlogs-commit"))
         writeCsvFile(gitLogs.changeEntry, buildFileName("gitlogs-change-entry"))
         writeCsvFile(gitLogs.pathChangeCount, buildFileName("gitlogs-change-count"))
+    }
+
+    override fun saveDiffs(calls: List<ChangedCall>) {
+        writeCsvFile(calls, buildFileName("diff-changes"))
+    }
+
+    override fun saveDependencies(dependencies: List<CompositionDependency>) {
+        writeCsvFile(dependencies, buildFileName("sca-dependencies"))
     }
 }

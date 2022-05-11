@@ -4,9 +4,11 @@ import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
-import org.archguard.scanner.core.client.dto.ContainerService
-import org.archguard.scanner.core.client.dto.GitLogs
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.sca.CompositionDependency
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClient {
     private fun buildFileName(topic: String): String = systemId + "_" + topic + ".json"
@@ -33,5 +35,17 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
         println("==============================================================")
         println("Output git logs to console")
         println(Json.encodeToString(gitLogs))
+    }
+
+    override fun saveDiffs(calls: List<ChangedCall>) {
+        println("==============================================================")
+        println("Output git diffs to console")
+        println(Json.encodeToString(calls))
+    }
+
+    override fun saveDependencies(dependencies: List<CompositionDependency>) {
+        println("==============================================================")
+        println("Output project dependencies to console")
+        println(Json.encodeToString(dependencies))
     }
 }

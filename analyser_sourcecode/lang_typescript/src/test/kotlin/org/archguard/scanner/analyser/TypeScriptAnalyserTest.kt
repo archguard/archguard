@@ -1,14 +1,18 @@
 package org.archguard.scanner.analyser
 
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import io.mockk.verify
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -19,6 +23,11 @@ internal class TypeScriptAnalyserTest {
     }
     private val mockContext = mockk<SourceCodeContext> {
         every { client } returns mockClient
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        verify { mockClient.saveDataStructure(any()) }
     }
 
     @Test
