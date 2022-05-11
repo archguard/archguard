@@ -1,7 +1,7 @@
-package org.archguard.analyser.sca
+package org.archguard.scanner.analyser
 
-import org.archguard.analyser.sca.gradle.GradleFinder
-import org.archguard.analyser.sca.maven.MavenFinder
+import org.archguard.scanner.analyser.sca.gradle.GradleFinder
+import org.archguard.scanner.analyser.sca.maven.MavenFinder
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -13,10 +13,5 @@ internal class RunnerTest {
         deps += MavenFinder().process(path)
 
         assert(deps.size >= 2)
-    }
-
-    @Test
-    fun run() {
-        Runner().main(arrayOf("--path=..", "--system-id=1", "--language=java"))
     }
 }

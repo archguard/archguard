@@ -1,7 +1,7 @@
-package org.archguard.analyser.sca.base
+package org.archguard.scanner.analyser.sca.base
 
-import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.PackageDependencies
+import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.PackageDependencies
 
 abstract class Parser {
     open fun lookupSource(file: DeclFileTree): List<PackageDependencies> {

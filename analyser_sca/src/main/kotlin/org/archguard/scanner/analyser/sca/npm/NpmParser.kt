@@ -1,14 +1,14 @@
-package org.archguard.analyser.sca.npm
+package org.archguard.scanner.analyser.sca.npm
 
 import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.JsonPath.using
 import com.jayway.jsonpath.Option
-import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.model.DependencyEntry
-import org.archguard.analyser.sca.base.Parser
+import org.archguard.scanner.core.sca.DEP_SCOPE
+import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.scanner.core.sca.DependencyEntry
+import org.archguard.scanner.analyser.sca.base.Parser
 
 class NpmParser : Parser() {
     val conf: Configuration = Configuration.builder().options(Option.SUPPRESS_EXCEPTIONS).build()
@@ -26,12 +26,14 @@ class NpmParser : Parser() {
             createDepByType(it, file.content)
         }.toList()
 
-        return listOf(PackageDependencies(
+        return listOf(
+            PackageDependencies(
             name,
             version,
             "npm",
             deps
-        ))
+        )
+        )
     }
 
     private fun createDepByType(

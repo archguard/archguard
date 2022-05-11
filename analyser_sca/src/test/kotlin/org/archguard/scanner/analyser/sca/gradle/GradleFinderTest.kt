@@ -1,6 +1,6 @@
-package org.archguard.analyser.sca.gradle
+package org.archguard.scanner.analyser.sca.gradle
 
-import org.archguard.analyser.sca.maven.MavenFinder
+import org.archguard.scanner.analyser.sca.maven.MavenFinder
 import org.junit.jupiter.api.Test
 import java.io.File
 

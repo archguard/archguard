@@ -1,10 +1,10 @@
-package org.archguard.analyser.sca.maven
+package org.archguard.scanner.analyser.sca.maven
 
-import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.model.DependencyEntry
-import org.archguard.analyser.sca.base.Parser
+import org.archguard.scanner.core.sca.DEP_SCOPE
+import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.scanner.core.sca.DependencyEntry
+import org.archguard.scanner.analyser.sca.base.Parser
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList

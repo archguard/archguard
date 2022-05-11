@@ -1,6 +1,6 @@
 ## scanner core
 
-扩展scanner时需要的核心类, 单独创建一个github template project
+所有静态扫描都来自于scanner, 数据来源包括但不限于: 源文件, git, ci, logs, etc.
 
 ### roadmap
 

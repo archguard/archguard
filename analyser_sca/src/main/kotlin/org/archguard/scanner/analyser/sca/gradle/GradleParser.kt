@@ -1,10 +1,10 @@
-package org.archguard.analyser.sca.gradle
+package org.archguard.scanner.analyser.sca.gradle
 
-import org.archguard.analyser.sca.model.DEP_SCOPE
-import org.archguard.analyser.sca.model.DeclFileTree
-import org.archguard.analyser.sca.model.PackageDependencies
-import org.archguard.analyser.sca.model.DependencyEntry
-import org.archguard.analyser.sca.base.Parser
+import org.archguard.scanner.core.sca.DEP_SCOPE
+import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.scanner.core.sca.DependencyEntry
+import org.archguard.scanner.analyser.sca.base.Parser
 
 private val GRADLE_SHORT_IMPL_REGEX =
     // implementation "joda-time:joda-time:2.2"

@@ -1,7 +1,7 @@
-package org.archguard.analyser.sca.npm
+package org.archguard.scanner.analyser.sca.npm
 
-import org.archguard.analyser.sca.base.Parser
-import org.archguard.analyser.sca.base.Finder
+import org.archguard.scanner.analyser.sca.base.Parser
+import org.archguard.scanner.analyser.sca.base.Finder
 import java.io.File
 
 class NpmFinder: Finder() {

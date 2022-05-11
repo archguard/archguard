@@ -1,7 +1,7 @@
-package org.archguard.analyser.sca.maven
+package org.archguard.scanner.analyser.sca.maven
 
-import org.archguard.analyser.sca.base.Parser
-import org.archguard.analyser.sca.base.Finder
+import org.archguard.scanner.analyser.sca.base.Parser
+import org.archguard.scanner.analyser.sca.base.Finder
 import java.io.File
 
 class MavenFinder: Finder() {
