@@ -22,6 +22,7 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
         classes = basicNodes.map { it.getClassFullName() }.toTypedArray()
 
         files.asyncMap { analysisFullInfoByFile(it) }.flatten().toList()
+            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisBasicInfoByFile(file: File): List<CodeDataStruct> {
