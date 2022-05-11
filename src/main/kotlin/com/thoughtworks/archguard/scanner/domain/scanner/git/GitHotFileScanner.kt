@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+@Deprecated("Deprecated features, will be removed in future")
 @Service
 class GitHotFileScanner(val gitHotFileRepo: ScannerGitHotFileRepo, val jClassRepository: JClassRepository) : Scanner {
 

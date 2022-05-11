@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import org.springframework.stereotype.Service
 
+// TODO remove this class, use
 @Service
 class SourceCodeScanner : Scanner {
     override fun getScannerName(): String {

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+@Deprecated("Deprecated features, use StrangleScannerExecutor instead, will be removed in future")
 @Service
 class ByteCodeScanner(@Autowired val byteCodeScanRepo: ByteCodeScanRepo) : Scanner {
     private val log = LoggerFactory.getLogger(ByteCodeScanner::class.java)

@@ -14,6 +14,7 @@ import java.util.UUID
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+@Deprecated("Deprecated features, will be removed in future")
 @Service
 class StyleScanner : Scanner {
 

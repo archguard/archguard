@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
 
+@Deprecated("Deprecated features, will be removed in future")
 @Component
 class JacocoScanner(@Autowired val sqlScriptRunner: SqlScriptRunner) : Scanner {
     private val DELETE_BUNDLE = "delete from test_coverage_bundle where 1=1"

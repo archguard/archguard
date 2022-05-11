@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.File
 
+@Deprecated("Deprecated features, will be removed in future")
 @Service
 class PmdScanner(@Autowired val pmdRepository: PmdRepository) : Scanner {
     val log: Logger = LoggerFactory.getLogger(PmdScanner::class.java)

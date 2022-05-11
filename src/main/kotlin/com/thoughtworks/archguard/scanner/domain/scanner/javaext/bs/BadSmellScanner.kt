@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Deprecated("Deprecated features, will be removed in future")
 @Service
 class BadSmellScanner(@Autowired val badSmellRepo: BadSmellRepo) : Scanner {
 
