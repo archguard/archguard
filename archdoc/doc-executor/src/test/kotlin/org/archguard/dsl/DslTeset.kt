@@ -37,4 +37,12 @@ internal class DslTest {
         assertEquals(2, archdoc.reposDecl!!.repos.size)
         assertEquals(2, decls.repos.size)
     }
+
+    @Test
+    internal fun reactive_action() {
+        val action = graph().show(LayeredDecl(), "sample")
+        assertEquals("graph", action.actionType)
+        assertEquals("org.archguard.dsl.LayeredDecl", action.className)
+        assertEquals("sample", action.graphType)
+    }
 }
