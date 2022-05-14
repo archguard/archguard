@@ -1,5 +1,8 @@
 package org.archguard.dsl
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class RepoDecl(val name: String, val language: String, val scmUrl: String) : Element
 
 class ReposDecl : Element {

@@ -1,12 +1,13 @@
 package org.archguard.dsl
 
+import kotlinx.serialization.Serializable
+
 class ReactiveActionDecl : Element {
 
 }
 
-
-class Action(
-    // graph or else?
+@Serializable
+data class Action(
     val actionType: String,
     val className: String,
     val graphType: String
