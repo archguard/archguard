@@ -65,17 +65,17 @@ internal class DslTest {
 
     @Test
     internal fun layered_decl() {
-        val mvc = layered {
+        val layer = layered {
             prefixId("org.archguard")
-
-            component("controller") dependentOn component("service")
-            组件("service") 依赖于 组件("repository")
-            组件("service") 依赖于 组件("infrastructure")
+            component("controller") dependentOn component("application")
+            组件("application") 依赖于 组件("domain")
+            组件("controller") 依赖于 组件("domain")
+            组件("repository") 依赖于 组件("domain")
         }
 
-        val action = graph().show(mvc.relations(), "sample")
+        val action = graph().show(layer.relations())
         assertEquals(
-            "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}, {\"source\":\"service\",\"target\":\"infrastructure\"}]",
+            "[{\"source\":\"controller\",\"target\":\"application\"}, {\"source\":\"controller\",\"target\":\"domain\"}, {\"source\":\"application\",\"target\":\"domain\"}, {\"source\":\"repository\",\"target\":\"domain\"}]",
             action.data
         )
     }
