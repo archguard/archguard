@@ -31,9 +31,10 @@ data class ScannerCommand(
     val repoId: String? = null,
     val branch: String = "master",
     val startedAt: Long = 0,
-
-    // TODO for diff changes
-    // TODO for sca
+    // for diff changes analysing
+    val since: String? = null,
+    val until: String? = null,
+    val depth: Int = 7,
 ) {
     val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
     val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }

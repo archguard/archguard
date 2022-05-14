@@ -90,4 +90,76 @@ internal class RunnerTest {
             }
         }
     }
+
+    @Test
+    fun `should save the result to client when calling diff changes analyser`() {
+        val args = arrayOf(
+            "--type=diff_changes",
+            "--system-id=2222",
+            "--server-url=http://localhost:8080",
+            "--path=.",
+            "--output=json",
+            "--output=csv",
+            "--output=console",
+            "--branch=main",
+            "--since=5952edc",
+            "--until=f3fb4e2",
+            "--depth=5",
+        )
+
+        mockkConstructor(AnalyserDispatcher::class) {
+            every { anyConstructed<AnalyserDispatcher>().dispatch(any()) } just runs
+
+            Runner().main(args)
+
+            verify {
+                anyConstructed<AnalyserDispatcher>().dispatch(
+                    ScannerCommand(
+                        type = AnalyserType.DIFF_CHANGES,
+                        systemId = "2222",
+                        serverUrl = "http://localhost:8080",
+                        path = ".",
+                        output = listOf("json", "csv", "console"),
+                        branch = "main",
+                        since = "5952edc",
+                        until = "f3fb4e2",
+                        depth = 5,
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `should save the result to client when calling sca changes analyser`() {
+        val args = arrayOf(
+            "--type=sca",
+            "--system-id=2222",
+            "--server-url=http://localhost:8080",
+            "--path=.",
+            "--output=json",
+            "--output=csv",
+            "--output=console",
+            "--language=kotlin",
+        )
+
+        mockkConstructor(AnalyserDispatcher::class) {
+            every { anyConstructed<AnalyserDispatcher>().dispatch(any()) } just runs
+
+            Runner().main(args)
+
+            verify {
+                anyConstructed<AnalyserDispatcher>().dispatch(
+                    ScannerCommand(
+                        type = AnalyserType.SCA,
+                        systemId = "2222",
+                        serverUrl = "http://localhost:8080",
+                        path = ".",
+                        output = listOf("json", "csv", "console"),
+                        language = "kotlin",
+                    )
+                )
+            }
+        }
+    }
 }

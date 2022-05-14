@@ -3,13 +3,19 @@ package org.archguard.scanner.ctl.loader
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
+import org.archguard.scanner.core.diffchanges.DiffChangesAnalyser
+import org.archguard.scanner.core.diffchanges.DiffChangesContext
 import org.archguard.scanner.core.git.GitAnalyser
 import org.archguard.scanner.core.git.GitContext
+import org.archguard.scanner.core.sca.ScaAnalyser
+import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
 import org.archguard.scanner.ctl.command.ScannerCommand
+import org.archguard.scanner.ctl.impl.CliDiffChangesContext
 import org.archguard.scanner.ctl.impl.CliGitContext
+import org.archguard.scanner.ctl.impl.CliScaContext
 import org.archguard.scanner.ctl.impl.CliSourceCodeContext
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 import org.slf4j.LoggerFactory
@@ -19,6 +25,8 @@ class AnalyserDispatcher {
         when (command.type) {
             AnalyserType.SOURCE_CODE -> SourceCodeWorker(command)
             AnalyserType.GIT -> GitWorker(command)
+            AnalyserType.DIFF_CHANGES -> DiffChangesWorker(command)
+            AnalyserType.SCA -> ScaWorker(command)
             else -> TODO("not implemented yet")
         }.run()
     }
@@ -58,7 +66,7 @@ private class SourceCodeWorker(command: ScannerCommand) : Worker<SourceCodeConte
 }
 
 private class GitWorker(command: ScannerCommand) : Worker<GitContext> {
-    private val analyserSpec = command.languageSpec ?: OfficialAnalyserSpecs.GIT.spec()
+    private val analyserSpec = OfficialAnalyserSpecs.GIT.spec()
     private val context = CliGitContext(
         client = command.buildClient(),
         path = command.path,
@@ -69,5 +77,35 @@ private class GitWorker(command: ScannerCommand) : Worker<GitContext> {
 
     override fun run() {
         (AnalyserLoader.load(context, analyserSpec) as GitAnalyser).analyse()
+    }
+}
+
+private class DiffChangesWorker(command: ScannerCommand) : Worker<DiffChangesContext> {
+    private val analyserSpec = OfficialAnalyserSpecs.DIFF_CHANGES.spec()
+    private val context = CliDiffChangesContext(
+        client = command.buildClient(),
+        path = command.path,
+        branch = command.branch,
+        since = command.since!!,
+        until = command.until!!,
+        depth = command.depth,
+    )
+
+    override fun run() {
+        (AnalyserLoader.load(context, analyserSpec) as DiffChangesAnalyser).analyse()
+    }
+}
+
+private class ScaWorker(command: ScannerCommand) : Worker<ScaContext> {
+    private val analyserSpec = OfficialAnalyserSpecs.SCA.spec()
+    private val context = CliScaContext(
+        client = command.buildClient(),
+        path = command.path,
+        // TODO split the analyser config and the language
+        language = command.language.toString(),
+    )
+
+    override fun run() {
+        (AnalyserLoader.load(context, analyserSpec) as ScaAnalyser).analyse()
     }
 }

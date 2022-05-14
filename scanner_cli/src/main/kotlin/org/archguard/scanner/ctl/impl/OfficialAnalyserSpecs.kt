@@ -8,7 +8,6 @@ private const val RELEASE_REPO_URL = "https://github.com/archguard/scanner/relea
 
 enum class OfficialAnalyserSpecs(
     private val className: String,
-    private val isLanguage: Boolean = true,
 ) {
     // languages
     CSHARP("CSharpAnalyser"),
@@ -21,27 +20,24 @@ enum class OfficialAnalyserSpecs(
     JAVASCRIPT(TYPESCRIPT.className),
 
     // features
-    APICALLS("ApiCallAnalyser", false),
-    DATAMAP("DataMapAnalyser", false),
+    APICALLS("ApiCallAnalyser"),
+    DATAMAP("DataMapAnalyser"),
 
-    // git
-    GIT("GitAnalyser", false),
+    GIT("GitAnalyser"),
+    SCA("ScaAnalyser"),
+    DIFF_CHANGES("DiffChangesAnalyser"),
     ;
 
-    fun spec(): AnalyserSpec {
-        if (this == GIT) return AnalyserSpec(
-            identifier = "git",
-            host = RELEASE_REPO_URL,
-            version = VERSION,
-            jar = "analyser_git-$VERSION-all.jar",
-            className = "GitAnalyser"
-        )
-
-        val identifier = name.lowercase()
-        val prefix = if (isLanguage) "lang" else "feat"
-        val jar = "${prefix}_$identifier-$VERSION-all.jar"
-
-        return AnalyserSpec(identifier, RELEASE_REPO_URL, VERSION, jar, className)
+    fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, VERSION, jarFileName(), className)
+    private fun identifier() = name.lowercase()
+    private fun jarFileName(): String {
+        val identifier = identifier()
+        val prefix = when (this) {
+            GIT, SCA, DIFF_CHANGES -> "analyser_$identifier"
+            DATAMAP, APICALLS -> "feat_$identifier"
+            else -> "lang_$identifier"
+        }
+        return "${prefix}_$identifier-$VERSION-all.jar"
     }
 
     companion object {

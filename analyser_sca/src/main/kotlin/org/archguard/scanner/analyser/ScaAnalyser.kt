@@ -12,7 +12,7 @@ class ScaAnalyser(override val context: ScaContext) : org.archguard.scanner.core
     private val client = context.client
     private val path = context.path
 
-    override fun analyser(): List<CompositionDependency> {
+    override fun analyse(): List<CompositionDependency> {
         return when (context.language) {
             "java", "kotlin" -> {
                 val depDeclarations = GradleFinder().process(path).toMutableList()

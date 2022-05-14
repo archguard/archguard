@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
+import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
@@ -29,7 +30,10 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val features by option(help = "features: apicalls, datamap. Or override via json.").multiple()
     private val repoId by option(help = "repository id used for git analysing")
     private val branch by option(help = "repository branch").default("master")
-    private val startedAt by option(help = "the start date of the scanned commit").long().default(0L)
+    private val startedAt by option(help = "TIMESTAMP, the start date of the scanned commit").long().default(0L)
+    private val since by option(help = "COMMIT ID, the specific revision of the baseline")
+    private val until by option(help = "COMMIT ID, the specific revision of the target")
+    private val depth by option(help = "INTEGER, the max loop depth").int().default(7)
 
     /**
      *  --language=java
@@ -55,6 +59,9 @@ class Runner : CliktCommand(help = "scanner cli") {
             |repoId: $repoId
             |branch: $branch
             |startedAt: $startedAt
+            |since: $since
+            |until: $until
+            |depth: $depth
            """.trimIndent()
         )
 
@@ -62,7 +69,7 @@ class Runner : CliktCommand(help = "scanner cli") {
             // cli parameters
             type, systemId, serverUrl, path, output,
             // additional parameters
-            language, features, repoId, branch, startedAt
+            language, features, repoId, branch, startedAt, since, until, depth
         )
         AnalyserDispatcher().dispatch(command)
         RuleDispatcher().dispatch(command)

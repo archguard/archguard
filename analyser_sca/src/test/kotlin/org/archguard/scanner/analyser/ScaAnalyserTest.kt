@@ -28,7 +28,7 @@ internal class ScaAnalyserTest {
         every { mockContext.path } returns "."
         every { mockContext.language } returns "kotlin"
         val analyser = ScaAnalyser(mockContext)
-        val deps = analyser.analyser()
+        val deps = analyser.analyse()
 
         assert(deps.size >= 2)
     }
