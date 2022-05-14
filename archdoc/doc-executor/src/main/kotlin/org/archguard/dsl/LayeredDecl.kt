@@ -1,6 +1,8 @@
 package org.archguard.dsl
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class ComponentDecl(val name: String) : Element {
     var dependents: List<ComponentDecl> = listOf()
@@ -16,7 +18,11 @@ class ComponentDecl(val name: String) : Element {
 
 
 @Serializable
-data class LayeredRelation(val source: String, val target: String) {}
+data class LayeredRelation(val source: String, val target: String) {
+    override fun toString(): String {
+        return Json.encodeToString(this)
+    }
+}
 
 class LayeredDecl : Decl() {
     private var componentDecls: HashMap<String, ComponentDecl> = hashMapOf()

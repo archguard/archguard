@@ -1,6 +1,8 @@
 package org.archguard.dsl
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class ReactiveActionDecl : Element {
 
@@ -11,7 +13,11 @@ data class Action(
     val actionType: String,
     val className: String,
     val graphType: String
-)
+) {
+    override fun toString(): String {
+        return Json.encodeToString(this)
+    }
+}
 
 class ReactiveAction : Element {
     fun show(decl: Element, graphType: String = "archdoc"): Action {
