@@ -28,77 +28,6 @@ internal class ScannerCommandTest {
         path = ".",
     )
 
-    @Nested
-    inner class AnalyserSpecOverwriteTest {
-        @Test
-        fun `should parse the language spec when given the identifier`() {
-            val command = fixture.copy(
-                language = "kotlin",
-                features = listOf("apicalls"),
-            )
-
-            assertThat(command.languageSpec).isEqualTo(OfficialAnalyserSpecs.KOTLIN.spec())
-            assertThat(command.featureSpecs).containsOnly(
-                OfficialAnalyserSpecs.APICALLS.spec(),
-            )
-        }
-
-        @Test
-        fun `should parse the language spec when given the analyser spec`() {
-            val command = fixture.copy(
-                language = "kotlin",
-                features = listOf(OfficialAnalyserSpecs.APICALLS.spec()),
-            )
-
-            assertThat(command.languageSpec).isEqualTo(OfficialAnalyserSpecs.KOTLIN.spec())
-            assertThat(command.featureSpecs).containsOnly(
-                OfficialAnalyserSpecs.APICALLS.spec(),
-            )
-        }
-
-        @Test
-        fun `should parse the language spec when given the customized analyser spec`() {
-            val customized = AnalyserSpec(
-                identifier = "identifier",
-                host = "host",
-                version = "version",
-                jar = "jar",
-                className = "className",
-            )
-            val command = fixture.copy(
-                language = "kotlin",
-                features = listOf("APICALLS", customized),
-            )
-
-            assertThat(command.languageSpec).isEqualTo(OfficialAnalyserSpecs.KOTLIN.spec())
-            assertThat(command.featureSpecs).containsOnly(
-                OfficialAnalyserSpecs.APICALLS.spec(),
-                customized
-            )
-        }
-
-        @Test
-        fun `should parse the language spec when given the json map`() {
-            val customized = AnalyserSpec(
-                identifier = "identifier",
-                host = "host",
-                version = "version",
-                jar = "jar",
-                className = "className",
-            )
-            val command = fixture.copy(
-                language = "KOTLIN",
-                features = listOf("APICALLS", Json.encodeToString(customized)),
-            )
-
-            assertThat(command.languageSpec).isEqualTo(OfficialAnalyserSpecs.KOTLIN.spec())
-            assertThat(command.featureSpecs).containsOnly(
-                OfficialAnalyserSpecs.APICALLS.spec(),
-                customized
-            )
-        }
-    }
-
     @AfterEach
     internal fun tearDown() {
         clearAllMocks()
@@ -106,7 +35,6 @@ internal class ScannerCommandTest {
 
     @Nested
     inner class BuildClientTest {
-
         @Test
         fun `should build the console client as default`() {
             mockkConstructor(ArchGuardConsoleClient::class)

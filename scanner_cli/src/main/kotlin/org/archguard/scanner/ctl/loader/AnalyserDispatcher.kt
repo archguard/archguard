@@ -33,24 +33,24 @@ class AnalyserDispatcher {
 }
 
 private interface Worker<T : Context> {
+    val command: ScannerCommand
+    val context: T
     fun run()
+
+    fun <T> getOrInstall(spec: OfficialAnalyserSpecs): T = getOrInstall(spec.name.lowercase())
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getOrInstall(identifier: String): T = AnalyserLoader.load(context, command.getAnalyserSpec(identifier)) as T
 }
 
-private class SourceCodeWorker(command: ScannerCommand) : Worker<SourceCodeContext> {
+private class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCodeContext> {
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val analyserSpecs = listOfNotNull(command.languageSpec) + command.featureSpecs
-    private val context = CliSourceCodeContext(
-        language = command.languageSpec!!.identifier,
-        features = command.featureSpecs.map { it.identifier },
+    override val context = CliSourceCodeContext(
         client = command.buildClient(),
         path = command.path,
+        language = command.language!!,
+        features = command.features,
     )
-
-    private fun <T> getOrInstall(identifier: String): T {
-        val theOne = analyserSpecs.find { identifier == it.identifier }
-            ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
-        return AnalyserLoader.load(context, theOne) as T
-    }
 
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
@@ -65,9 +65,8 @@ private class SourceCodeWorker(command: ScannerCommand) : Worker<SourceCodeConte
     }
 }
 
-private class GitWorker(command: ScannerCommand) : Worker<GitContext> {
-    private val analyserSpec = OfficialAnalyserSpecs.GIT.spec()
-    private val context = CliGitContext(
+private class GitWorker(override val command: ScannerCommand) : Worker<GitContext> {
+    override val context = CliGitContext(
         client = command.buildClient(),
         path = command.path,
         repoId = command.repoId!!,
@@ -76,13 +75,12 @@ private class GitWorker(command: ScannerCommand) : Worker<GitContext> {
     )
 
     override fun run() {
-        (AnalyserLoader.load(context, analyserSpec) as GitAnalyser).analyse()
+        getOrInstall<GitAnalyser>(OfficialAnalyserSpecs.GIT).analyse()
     }
 }
 
-private class DiffChangesWorker(command: ScannerCommand) : Worker<DiffChangesContext> {
-    private val analyserSpec = OfficialAnalyserSpecs.DIFF_CHANGES.spec()
-    private val context = CliDiffChangesContext(
+private class DiffChangesWorker(override val command: ScannerCommand) : Worker<DiffChangesContext> {
+    override val context = CliDiffChangesContext(
         client = command.buildClient(),
         path = command.path,
         branch = command.branch,
@@ -92,20 +90,18 @@ private class DiffChangesWorker(command: ScannerCommand) : Worker<DiffChangesCon
     )
 
     override fun run() {
-        (AnalyserLoader.load(context, analyserSpec) as DiffChangesAnalyser).analyse()
+        getOrInstall<DiffChangesAnalyser>(OfficialAnalyserSpecs.DIFF_CHANGES).analyse()
     }
 }
 
-private class ScaWorker(command: ScannerCommand) : Worker<ScaContext> {
-    private val analyserSpec = OfficialAnalyserSpecs.SCA.spec()
-    private val context = CliScaContext(
+private class ScaWorker(override val command: ScannerCommand) : Worker<ScaContext> {
+    override val context = CliScaContext(
         client = command.buildClient(),
         path = command.path,
-        // TODO split the analyser config and the language
-        language = command.language.toString(),
+        language = command.language!!,
     )
 
     override fun run() {
-        (AnalyserLoader.load(context, analyserSpec) as ScaAnalyser).analyse()
+        getOrInstall<ScaAnalyser>(OfficialAnalyserSpecs.SCA).analyse()
     }
 }

@@ -1,9 +1,5 @@
 package org.archguard.scanner.ctl.command
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.context.AnalyserType
@@ -22,10 +18,11 @@ data class ScannerCommand(
     val serverUrl: String,
     val path: String,
     val output: List<String> = emptyList(),
+    val customizedAnalyserSpecs: List<AnalyserSpec> = emptyList(),
 
     // for source code analysing, may be Map, String or AnalyserSpec
-    val language: Any? = null,
-    val features: List<Any> = emptyList(),
+    val language: String? = null,
+    val features: List<String> = emptyList(),
 
     // for git analysing
     val repoId: String? = null,
@@ -36,22 +33,14 @@ data class ScannerCommand(
     val until: String? = null,
     val depth: Int = 7,
 ) {
-    val languageSpec: AnalyserSpec? by lazy { language?.let { parseIdentifierOrSpec(it) } }
-    val featureSpecs: List<AnalyserSpec> by lazy { features.map { parseIdentifierOrSpec(it) } }
-
-    private fun parseIdentifierOrSpec(identifier: Any) = when (identifier) {
-        is AnalyserSpec -> identifier
-        is Map<*, *> -> Json.decodeFromJsonElement(Json.encodeToJsonElement(identifier))
-        is String ->
-            if (identifier.startsWith("{")) Json.decodeFromString(identifier)
-            else OfficialAnalyserSpecs.specs().first { it.identifier == identifier.toString().lowercase() }
-        else -> throw IllegalArgumentException("Unknown identifier: ${identifier.javaClass}")
-    }
+    private val allAnalyserSpecs = customizedAnalyserSpecs + OfficialAnalyserSpecs.specs()
+    fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier }
+        ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
 
     fun buildClient(): ArchGuardClient {
         val clients = mutableListOf<ArchGuardClient>()
         if (output.contains("http"))
-            clients.add(ArchGuardHttpClient(languageSpec?.identifier ?: "", serverUrl, systemId, path))
+            clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path))
         if (output.contains("json"))
             clients.add(ArchGuardJsonClient(systemId))
         if (output.contains("csv"))

@@ -6,10 +6,14 @@ import io.mockk.just
 import io.mockk.mockkConstructor
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class RunnerTest {
@@ -159,6 +163,62 @@ internal class RunnerTest {
                         language = "kotlin",
                     )
                 )
+            }
+        }
+    }
+
+    @Nested
+    inner class AnalyserSpecOverwriteTest {
+        private val argsTemplate = arrayOf(
+            "--type=sca",
+            "--system-id=2222",
+            "--server-url=http://localhost:8080",
+            "--path=.",
+        )
+        private val command = ScannerCommand(
+            type = AnalyserType.SCA,
+            systemId = "2222",
+            serverUrl = "http://localhost:8080",
+            path = ".",
+        )
+
+        @Test
+        fun `should return empty customized analyser specs when given no input option`() {
+            val args = argsTemplate
+            mockkConstructor(AnalyserDispatcher::class) {
+                every { anyConstructed<AnalyserDispatcher>().dispatch(any()) } just runs
+
+                Runner().main(args)
+
+                verify {
+                    anyConstructed<AnalyserDispatcher>().dispatch(
+                        command.copy(customizedAnalyserSpecs = emptyList())
+                    )
+                }
+            }
+        }
+
+        @Test
+        fun `should parse the customized analyser specs when given input json`() {
+            val customized = AnalyserSpec(
+                identifier = "identifier",
+                host = "host",
+                version = "version",
+                jar = "jar",
+                className = "className",
+            )
+
+            val args = argsTemplate + arrayOf("--analyser-spec=${Json.encodeToString(customized)}")
+            mockkConstructor(AnalyserDispatcher::class) {
+                every { anyConstructed<AnalyserDispatcher>().dispatch(any()) } just runs
+
+                Runner().main(args)
+
+                verify {
+                    anyConstructed<AnalyserDispatcher>().dispatch(
+                        command.copy(customizedAnalyserSpecs = listOf(customized))
+                    )
+                }
             }
         }
     }

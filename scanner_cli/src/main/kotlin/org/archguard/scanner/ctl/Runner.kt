@@ -7,6 +7,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
@@ -26,8 +28,11 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val output by option(help = "http, csv, json, console").multiple()
 
     // additional parameters
-    private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang. Or override via json.")
-    private val features by option(help = "features: apicalls, datamap. Or override via json.").multiple()
+    private val analyserSpec by option(help = "Override the analysers via json.").multiple()
+    private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang.")
+
+    // TODO refactor as DAG (analyser - dependencies[analyser, analyser])
+    private val features by option(help = "features: apicalls, datamap.").multiple()
     private val repoId by option(help = "repository id used for git analysing")
     private val branch by option(help = "repository branch").default("master")
     private val startedAt by option(help = "TIMESTAMP, the start date of the scanned commit").long().default(0L)
@@ -53,6 +58,8 @@ class Runner : CliktCommand(help = "scanner cli") {
             |workspace: $workspace
             |path: $path
             |output: $output
+            <customized analysers>
+            |analyzerSpec: $analyserSpec
             <additional parameters>
             |language: $language
             |features: $features
@@ -67,7 +74,7 @@ class Runner : CliktCommand(help = "scanner cli") {
 
         val command = ScannerCommand(
             // cli parameters
-            type, systemId, serverUrl, path, output,
+            type, systemId, serverUrl, path, output, analyserSpec.map { Json.decodeFromString(it) },
             // additional parameters
             language, features, repoId, branch, startedAt, since, until, depth
         )

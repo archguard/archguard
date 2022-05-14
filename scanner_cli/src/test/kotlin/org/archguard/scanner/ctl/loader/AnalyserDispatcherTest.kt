@@ -37,13 +37,11 @@ internal class AnalyserDispatcherTest {
 
         private fun stubCommand() {
             every { command.type } returns AnalyserType.SOURCE_CODE
-            every { command.languageSpec } returns mockk { every { identifier } returns "kotlin" }
-            every { command.featureSpecs } returns listOf(
-                mockk { every { identifier } returns "feature1" },
-                mockk { every { identifier } returns "feature2" },
-            )
             every { command.path } returns "."
+            every { command.language } returns "kotlin"
+            every { command.features } returns listOf("feature1", "feature2")
             every { command.buildClient() } returns mockk()
+            every { command.getAnalyserSpec(any()) } returns mockk()
         }
 
         private fun stubContext() {
