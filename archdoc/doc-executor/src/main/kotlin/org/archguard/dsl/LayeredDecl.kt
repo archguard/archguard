@@ -12,7 +12,7 @@ class ComponentDecl(val name: String) : Element {
     }
 
     infix fun `依赖于`(component: ComponentDecl) {
-        this.dependents += component
+        this.dependentOn(component)
     }
 }
 
@@ -33,9 +33,7 @@ class LayeredDecl : Decl() {
         this.prefix = id
     }
 
-    fun `组件`(name: String): ComponentDecl {
-        return this.component(name)
-    }
+    fun `组件`(name: String): ComponentDecl = this.component(name)
 
     fun component(name: String): ComponentDecl {
         val componentDecl = if(this.componentDeclMap[name] != null) {
