@@ -1,7 +1,9 @@
 package org.archguard.dsl
 
+import kotlinx.serialization.Serializable
+
 class ComponentDecl(val name: String) : Element {
-    private var dependents: List<ComponentDecl> = listOf()
+    var dependents: List<ComponentDecl> = listOf()
 
     infix fun dependentOn(component: ComponentDecl) {
         this.dependents += component
@@ -11,6 +13,10 @@ class ComponentDecl(val name: String) : Element {
         this.dependents += component
     }
 }
+
+
+@Serializable
+data class LayeredRelation(val source: String, val target: String) {}
 
 class LayeredDecl : Decl() {
     private var componentDecls: HashMap<String, ComponentDecl> = hashMapOf()
@@ -33,6 +39,14 @@ class LayeredDecl : Decl() {
 
     fun components(): List<ComponentDecl> {
         return componentDecls.map { it.value }
+    }
+
+    fun relations(): List<LayeredRelation> {
+        return componentDecls.flatMap {
+            it.value.dependents.map { comp ->
+                LayeredRelation(it.key, comp.name)
+            }.toList()
+        }
     }
 }
 

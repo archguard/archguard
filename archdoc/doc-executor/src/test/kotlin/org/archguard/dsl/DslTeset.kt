@@ -18,6 +18,18 @@ internal class DslTest {
     }
 
     @Test
+    internal fun layered_relations() {
+        val mvc = layered {
+            prefixId("org.archguard")
+
+            component("controller") dependentOn component("service")
+            组件("service") 依赖于 组件("repository")
+        }
+
+        assertEquals(2, mvc.relations().size)
+    }
+
+    @Test
     internal fun web_api() {
         api("Blog") {
             inbound {
