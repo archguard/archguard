@@ -4,28 +4,21 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class DslTest {
+    private val mvc = layered {
+        prefixId("org.archguard")
+
+        component("controller") dependentOn component("service")
+        组件("service") 依赖于 组件("repository")
+    }
+
     @Test
     internal fun simple_layered() {
-        val mvc = layered {
-            prefixId("org.archguard")
-
-            component("controller") dependentOn component("service")
-            组件("service") 依赖于 组件("repository")
-        }
-
         assertEquals(3, mvc.components().size)
         assertEquals("controller", mvc.components()[0].name)
     }
 
     @Test
     internal fun layered_relations() {
-        val mvc = layered {
-            prefixId("org.archguard")
-
-            component("controller") dependentOn component("service")
-            组件("service") 依赖于 组件("repository")
-        }
-
         assertEquals(2, mvc.relations().size)
     }
 
@@ -56,5 +49,14 @@ internal class DslTest {
         assertEquals("graph", action.actionType)
         assertEquals("org.archguard.dsl.LayeredDecl", action.className)
         assertEquals("sample", action.graphType)
+    }
+
+    @Test
+    internal fun reactive_action_list() {
+        val action = graph().show(mvc.relations(), "sample")
+        assertEquals("graph", action.actionType)
+        assertEquals("java.util.ArrayList", action.className)
+        assertEquals("sample", action.graphType)
+        assertEquals("[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]", action.data)
     }
 }

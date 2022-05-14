@@ -12,7 +12,8 @@ class ReactiveActionDecl : Element {
 data class Action(
     val actionType: String,
     val className: String,
-    val graphType: String
+    val graphType: String,
+    val data: String
 ) {
     override fun toString(): String {
         return Json.encodeToString(this)
@@ -20,8 +21,8 @@ data class Action(
 }
 
 class ReactiveAction : Element {
-    fun show(decl: Element, graphType: String = "archdoc"): Action {
-        return Action(actionType = "graph", className = decl.javaClass.name, graphType = graphType)
+    fun show(decl: Any, graphType: String = "archdoc"): Action {
+        return Action(actionType = "graph", className = decl.javaClass.name, graphType = graphType, decl.toString())
     }
 }
 
