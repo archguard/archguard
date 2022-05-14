@@ -25,7 +25,7 @@ data class LayeredRelation(val source: String, val target: String) {
 }
 
 class LayeredDecl : Decl() {
-    private var componentDecls: HashMap<String, ComponentDecl> = hashMapOf()
+    private var componentDeclMap: HashMap<String, ComponentDecl> = hashMapOf()
 
     private var prefix: String = ""
 
@@ -38,17 +38,23 @@ class LayeredDecl : Decl() {
     }
 
     fun component(name: String): ComponentDecl {
-        val componentDecl = ComponentDecl(name)
-        this.componentDecls[name] = componentDecl
+        val componentDecl = if(this.componentDeclMap[name] != null) {
+            this.componentDeclMap[name]!!
+        } else {
+            ComponentDecl(name)
+        }
+
+
+        this.componentDeclMap[name] = componentDecl
         return componentDecl
     }
 
     fun components(): List<ComponentDecl> {
-        return componentDecls.map { it.value }
+        return componentDeclMap.map { it.value }
     }
 
     fun relations(): List<LayeredRelation> {
-        return componentDecls.flatMap {
+        return componentDeclMap.flatMap {
             it.value.dependents.map { comp ->
                 LayeredRelation(it.key, comp.name)
             }.toList()

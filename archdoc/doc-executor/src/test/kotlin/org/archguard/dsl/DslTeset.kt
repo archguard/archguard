@@ -57,6 +57,26 @@ internal class DslTest {
         assertEquals("graph", action.actionType)
         assertEquals("java.util.ArrayList", action.className)
         assertEquals("sample", action.graphType)
-        assertEquals("[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]", action.data)
+        assertEquals(
+            "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]",
+            action.data
+        )
+    }
+
+    @Test
+    internal fun layered_decl() {
+        val mvc = layered {
+            prefixId("org.archguard")
+
+            component("controller") dependentOn component("service")
+            组件("service") 依赖于 组件("repository")
+            组件("service") 依赖于 组件("infrastructure")
+        }
+
+        val action = graph().show(mvc.relations(), "sample")
+        assertEquals(
+            "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}, {\"source\":\"service\",\"target\":\"infrastructure\"}]",
+            action.data
+        )
     }
 }
