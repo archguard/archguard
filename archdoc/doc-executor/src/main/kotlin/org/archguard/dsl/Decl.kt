@@ -13,9 +13,9 @@ abstract class Decl : Element {
 
 
 class ArchDocContext(
-    var layeredDecl: LayeredDecl? = null,
-    var reposDecl: ReposDecl? = null,
-    var webApiDecl: WebApiDecl? = null
+    var layered: LayeredDecl = LayeredDecl(),
+    var repos: ReposDecl = ReposDecl(),
+    var webapi: WebApiDecl = WebApiDecl()
 )
 
 // todo: find a better way

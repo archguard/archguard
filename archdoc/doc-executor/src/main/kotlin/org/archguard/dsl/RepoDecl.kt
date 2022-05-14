@@ -23,7 +23,7 @@ fun repos(init: ReposDecl.() -> Unit): ReposDecl {
     val reposDecl = ReposDecl()
     reposDecl.init()
 
-    archdoc.reposDecl = reposDecl
+    archdoc.repos = reposDecl
 
     return reposDecl
 }

@@ -6,17 +6,17 @@ class Inbound : Element {
     }
 }
 
-class WebApiDecl(name: String): Element {
+class WebApiDecl() : Element {
     fun inbound(inbound: Inbound.() -> Unit) {
 
     }
 }
 
 fun api(name: String, init: WebApiDecl.() -> Unit): WebApiDecl {
-    val webApiDecl = WebApiDecl(name)
+    val webApiDecl = WebApiDecl()
     webApiDecl.init()
 
-    archdoc.webApiDecl = webApiDecl
+    archdoc.webapi = webApiDecl
 
     return webApiDecl
 }
