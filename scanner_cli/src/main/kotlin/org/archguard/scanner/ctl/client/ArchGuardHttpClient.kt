@@ -64,14 +64,14 @@ class ArchGuardHttpClient(
     }
 
     override fun saveGitLogs(gitLogs: GitLogs) {
-        TODO("Not yet implemented")
+        process("git-logs", gitLogs)
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {
-        TODO("Not yet implemented")
+        process("diff-changes", calls)
     }
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {
-        TODO("Not yet implemented")
+        process("sca-dependencies", dependencies)
     }
 }
