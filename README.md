@@ -51,6 +51,10 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 ### Chat
 
+关注我们：
+
+<img src="https://archguard.org/wechat.jpg" width="380" height="380" alt="wechat">
+
 欢迎加入我们：
 
 <img src="https://archguard.org/qrcode.jpg" width="380" height="480" alt="wechat">
