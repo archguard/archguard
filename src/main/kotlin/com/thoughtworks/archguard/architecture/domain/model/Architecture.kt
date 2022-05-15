@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.architecture.domain.model
 
 data class Architecture(
-    var id: String,
+    var archSystemId: String,
     var style: ArchStyle,
-    var components: ArchComponent,
-    var connections: ArchComponentConnection
+    var components: List<ArchComponent>,
+    var connections: List<ArchComponentConnection>
 )
 
 enum class ArchStyle {

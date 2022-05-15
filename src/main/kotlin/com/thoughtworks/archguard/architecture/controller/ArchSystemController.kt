@@ -14,7 +14,7 @@ class ArchSystemController(val archSystemService: ArchSystemService) {
 
     @PostMapping
     fun createArchSystem(@RequestBody request: ArchSystemCreateRequest): ArchSystemCreateResponse {
-        val archSystem = archSystemService.create(request.name)
-        return ArchSystemCreateResponse(archSystem.id, archSystem.name)
+        val archSystem = archSystemService.create(request.name, request.style)
+        return ArchSystemCreateResponse.from(archSystem)
     }
 }
