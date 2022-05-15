@@ -2,18 +2,24 @@ package com.thoughtworks.archguard.architecture.infrastructure
 
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemPO
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemRepository
-import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.springframework.stereotype.Repository
+import java.util.Optional
 
 @Repository
 class ArchSystemRepositoryImpl : ArchSystemRepository {
+    private var archSystems: Map<String, ArchSystemPO> = HashMap()
 
-    override fun getArchSystem(id: String): ArchSystemPO {
-        TODO("Not yet implemented")
+    override fun getArchSystem(id: String): Optional<ArchSystemPO> {
+        return Optional.ofNullable(archSystems[id])
     }
 
-    @Transaction
-    override fun createArchSystem(archSystemPO: ArchSystemPO): String {
-        TODO("Not yet implemented")
+    override fun createArchSystem(archSystemPO: ArchSystemPO): Boolean {
+        if (archSystems.containsKey(archSystemPO.id)) {
+            return false
+        }
+
+        archSystems.plus(Pair(archSystemPO.id, archSystemPO))
+
+        return true
     }
 }

@@ -1,7 +1,9 @@
 package com.thoughtworks.archguard.architecture.domain.repository
 
-interface ArchSystemRepository {
-    fun getArchSystem(id: String): ArchSystemPO
+import java.util.Optional
 
-    fun createArchSystem(archSystemPO: ArchSystemPO): String
+interface ArchSystemRepository {
+    fun getArchSystem(id: String): Optional<ArchSystemPO>
+
+    fun createArchSystem(archSystemPO: ArchSystemPO): Boolean
 }
