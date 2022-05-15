@@ -9,6 +9,7 @@ import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.scanner.ctl.command.ScannerCommand
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.net.http.HttpClient
@@ -22,7 +23,8 @@ class ArchGuardHttpClient(
     private val language: String,
     private val serverUrl: String,
     private val systemId: String,
-    private val path: String
+    private val path: String,
+    private val command: ScannerCommand,
 ) : ArchGuardClient {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -35,8 +37,8 @@ class ArchGuardHttpClient(
     private fun buildUrl(topic: String) =
         "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=$path"
 
-    private inline fun <reified T> process(topic: String, body: T) {
-        val request = HttpRequest.newBuilder(URI(buildUrl(topic)))
+    private inline fun <reified T> process(uri: URI, body: T) {
+        val request = HttpRequest.newBuilder(uri)
             .POST(ofString(Json.encodeToString(body)))
             .header("Content-Type", "application/json")
             .build()
@@ -48,6 +50,10 @@ class ArchGuardHttpClient(
                 response body: ${response.body()}
             """.trimIndent()
         )
+    }
+
+    private inline fun <reified T> process(topic: String, body: T) {
+        process(URI(buildUrl(topic)), body)
     }
 
     // create another job to execute this coroutine
@@ -68,7 +74,8 @@ class ArchGuardHttpClient(
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {
-        process("diff-changes", calls)
+        val url = buildUrl("diff-changes") + "&since=${command.since}" + "&until=${command.until}"
+        process(URI(url), calls)
     }
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {

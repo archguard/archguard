@@ -7,6 +7,7 @@ import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.scanner.ctl.command.ScannerCommand
 
 class ChainedArchGuardClient(
     private val clients: List<ArchGuardClient>,

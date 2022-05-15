@@ -40,7 +40,7 @@ data class ScannerCommand(
     fun buildClient(): ArchGuardClient {
         val clients = mutableListOf<ArchGuardClient>()
         if (output.contains("http"))
-            clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path))
+            clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path, this))
         if (output.contains("json"))
             clients.add(ArchGuardJsonClient(systemId))
         if (output.contains("csv"))
