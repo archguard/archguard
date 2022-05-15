@@ -22,17 +22,21 @@ data class ScannerCommand(
             "--workspace=${workspace.absolutePath}",
         )
         // additional args
+        outputs.forEach { arguments.add("--output=$it") }
         language?.let { arguments.add("--language=$it") }
         features.forEach { arguments.add("--features=$it") }
-        outputs.forEach { arguments.add("--output=$it") }
+        repoId?.let { arguments.add("--repoId=$it") }
+        additionArguments.forEach(arguments::add)
         return arguments
     }
 
-    // for source code analysing, may be Map, String or AnalyserSpec
-    // TODO support official analyser only, accept config and json to enable customized analyser
-    var language: Any? = null
-    var features: List<Any> = listOf()
-
     // TODO configurable output format
     var outputs = listOf("http")
+
+    // for source code analysing, may be Map, String or AnalyserSpec
+    // TODO support official analyser only, accept config and json to enable customized analyser
+    var language: String? = null
+    var features: List<String> = listOf()
+    var repoId: String? = null
+    var additionArguments: List<String> = emptyList()
 }

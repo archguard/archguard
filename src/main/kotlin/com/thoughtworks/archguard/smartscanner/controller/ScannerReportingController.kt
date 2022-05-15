@@ -3,10 +3,10 @@ package com.thoughtworks.archguard.smartscanner.controller
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.smartscanner.common.ClassRepository
+import com.thoughtworks.archguard.smartscanner.common.ContainerRepository
 import com.thoughtworks.archguard.smartscanner.common.DatamapRepository
-import org.archguard.scanner.common.ContainerRepository
-import org.archguard.scanner.core.client.dto.CodeDatabaseRelation
-import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.scanner.core.sourcecode.ContainerService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.PathVariable

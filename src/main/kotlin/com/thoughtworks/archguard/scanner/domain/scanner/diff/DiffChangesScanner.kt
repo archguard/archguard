@@ -6,26 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class DiffChangesScanner : Scanner {
-    override fun getScannerName(): String {
-        return "DiffChangesScanner"
-    }
-
-    override fun canScan(context: ScanContext): Boolean {
-        return false
-    }
-
-    override fun scan(context: ScanContext) {
-        DiffChangesTool(
-            context.workspace,
-            context.systemId,
-            context.language,
-            context.dbUrl,
-            context.branch,
-            context.logStream,
-            context.additionArguments,
-            context.scannerVersion
-        ).also {
-            it.analyse()
-        }
-    }
+    override fun getScannerName(): String = "DiffChangesScanner"
+    override fun canScan(context: ScanContext): Boolean = false
+    override fun scan(context: ScanContext) =
+        TODO("deprecated, replace with StranglerScannerExecutor.run(context, DIFF_CHANGES)")
 }

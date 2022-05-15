@@ -55,7 +55,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
     // the scanned models
-    implementation("org.archguard:scanner_core:1.7.0")
+    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.6")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")

@@ -1,11 +1,11 @@
-package org.archguard.scanner.common
+package com.thoughtworks.archguard.smartscanner.common
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.currentTime
 import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.generateId
-import org.archguard.scanner.core.client.dto.ContainerDemand
-import org.archguard.scanner.core.client.dto.ContainerResource
-import org.archguard.scanner.core.client.dto.ContainerService
+import org.archguard.scanner.core.sourcecode.ContainerDemand
+import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
