@@ -5,6 +5,10 @@ import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.smartscanner.common.ClassRepository
 import com.thoughtworks.archguard.smartscanner.common.ContainerRepository
 import com.thoughtworks.archguard.smartscanner.common.DatamapRepository
+import com.thoughtworks.archguard.smartscanner.common.GitSourceRepository
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.slf4j.LoggerFactory
@@ -28,6 +32,7 @@ class ScannerReportingController(
     @Value("\${spring.datasource.url}") val dbUrl: String,
     @Value("\${spring.datasource.username}") val username: String,
     @Value("\${spring.datasource.password}") val password: String,
+    private val gitSourceRepository: GitSourceRepository,
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -112,6 +117,55 @@ class ScannerReportingController(
         }
     }
 
+    @PostMapping("/git-logs")
+    fun saveGitLogs(
+        @PathVariable systemId: Long,
+        @RequestBody input: GitLogs
+    ) {
+        gitSourceRepository.saveGitReport(systemId, input)
+    }
+
+    @PostMapping("/diff-changes")
+    fun saveDiffs(
+        @PathVariable systemId: String,
+        @RequestParam language: String,
+        @RequestParam path: String,
+        @RequestBody input: List<ChangedCall>
+    ) {
+        val tables = arrayOf(
+            "data_code_database_relation",
+        )
+
+        try {
+            val repo = DatamapRepository(systemId, language, path)
+            repo.saveRelations(input)
+            execute(systemId, tables)
+        } finally {
+            cleanSqlFile(tables)
+        }
+    }
+
+    @PostMapping("/sca-dependencies")
+    fun saveDependencies(
+        @PathVariable systemId: String,
+        @RequestParam language: String,
+        @RequestParam path: String,
+        @RequestBody input: List<CompositionDependency>
+    ) {
+        val tables = arrayOf(
+            "data_code_database_relation",
+        )
+
+        try {
+            val repo = DatamapRepository(systemId, language, path)
+            repo.saveRelations(input)
+            execute(systemId, tables)
+        } finally {
+            cleanSqlFile(tables)
+        }
+    }
+
+    // TODO refactor: use direct sql or dao to insert the data
     private fun execute(systemId: String, tables: Array<String>) {
         // store.disableForeignCheck()
         // store.initConnectionPool()
