@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.smartscanner.common.ClassRepository
 import com.thoughtworks.archguard.smartscanner.common.ContainerRepository
 import com.thoughtworks.archguard.smartscanner.common.DatamapRepository
+import com.thoughtworks.archguard.smartscanner.common.DiffChangesRepository
 import com.thoughtworks.archguard.smartscanner.common.GitSourceRepository
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
@@ -33,6 +34,7 @@ class ScannerReportingController(
     @Value("\${spring.datasource.username}") val username: String,
     @Value("\${spring.datasource.password}") val password: String,
     private val gitSourceRepository: GitSourceRepository,
+    private val diffChangesRepository: DiffChangesRepository,
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -127,22 +129,12 @@ class ScannerReportingController(
 
     @PostMapping("/diff-changes")
     fun saveDiffs(
-        @PathVariable systemId: String,
-        @RequestParam language: String,
-        @RequestParam path: String,
+        @PathVariable systemId: Long,
+        @RequestParam since: String,
+        @RequestParam until: String,
         @RequestBody input: List<ChangedCall>
     ) {
-        val tables = arrayOf(
-            "data_code_database_relation",
-        )
-
-        try {
-            val repo = DatamapRepository(systemId, language, path)
-            repo.saveRelations(input)
-            execute(systemId, tables)
-        } finally {
-            cleanSqlFile(tables)
-        }
+        diffChangesRepository.saveDiffs(systemId, since, until, input)
     }
 
     @PostMapping("/sca-dependencies")

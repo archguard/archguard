@@ -46,7 +46,7 @@ interface GitSourceDao {
         VALUES (:systemId,:item.oldPath,:item.newPath,:item.commitTime,:item.cognitiveComplexity,:item.changeMode,:item.commitId,:item.committer,:item.lineAdded,:item.lineDeleted)
         """
     )
-    fun saveAllChangeEntry(systemId: Long, @BindBean("changeEntry") changeEntries: List<ChangeEntry>)
+    fun saveAllChangeEntry(systemId: Long, @BindBean("item") changeEntries: List<ChangeEntry>)
 
     @SqlBatch(
         """
@@ -54,7 +54,7 @@ interface GitSourceDao {
         VALUES (:systemId,:item.id,:item.path,:item.changes,:item.lineCount,:item.language)
         """
     )
-    fun saveAllPathChangeCount(systemId: Long, @BindBean("pathChangeCount") pathChangeCounts: List<PathChangeCount>)
+    fun saveAllPathChangeCount(systemId: Long, @BindBean("item") pathChangeCounts: List<PathChangeCount>)
 
     @SqlUpdate("DELETE FROM scm_commit_log WHERE system_id = :systemId")
     fun deleteCommitLogBySystemId(systemId: Long)
