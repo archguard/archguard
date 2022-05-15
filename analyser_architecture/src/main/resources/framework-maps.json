@@ -8,7 +8,8 @@
     ],
     "app_type_mapping": {
       "web": [
-        "org.springframework.boot"
+        "org.springframework.boot",
+        "org.springframework:spring-webmvc"
       ],
       "compiler": [
         "org.antlr:antlr4-runtime"
