@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.generateId
+import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import java.util.concurrent.atomic.AtomicInteger
 

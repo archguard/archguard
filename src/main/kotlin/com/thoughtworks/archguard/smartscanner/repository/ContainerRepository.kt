@@ -1,8 +1,7 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.currentTime
-import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.generateId
+import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerResource
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -23,13 +22,13 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         val serviceId = saveMainServices()
         services.forEach { caller ->
             caller.demands.map { saveDemand(it, serviceId, caller.name) }.toTypedArray()
-            caller.resources.map { saveResource(it, serviceId, caller.name) }.toTypedArray()
+            caller.resources.map { saveResource(it, serviceId) }.toTypedArray()
         }
         batch.execute()
     }
 
     private fun saveMainServices(): String {
-        val time: String = currentTime
+        val time: String = RepositoryHelper.getCurrentTime()
         val serviceId = generateId()
         val values: MutableMap<String, String> = HashMap()
 
@@ -52,12 +51,8 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return serviceId
     }
 
-    private fun saveResource(
-        it: ContainerResource,
-        serviceId: String,
-        name: String
-    ): String {
-        val time: String = currentTime
+    private fun saveResource(it: ContainerResource, serviceId: String): String {
+        val time: String = RepositoryHelper.getCurrentTime()
         val resourceId = generateId()
         val values: MutableMap<String, String> = HashMap()
 
@@ -85,7 +80,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         serviceId: String,
         name: String
     ): String {
-        val time: String = currentTime
+        val time: String = RepositoryHelper.getCurrentTime()
         val demandId = generateId()
         val values: MutableMap<String, String> = HashMap()
 

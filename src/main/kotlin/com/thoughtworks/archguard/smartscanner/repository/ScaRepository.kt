@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.jdbi.v3.core.Jdbi
@@ -36,5 +36,3 @@ interface ScaDao {
     @SqlUpdate("DELETE FROM project_composition_dependencies WHERE system_id = :systemId")
     fun deleteBySystemId(systemId: Long)
 }
-
-

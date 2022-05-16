@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import java.io.File
 
@@ -7,7 +7,7 @@ enum class OS {
 }
 
 fun getOS(): OS? {
-    val os = System.getProperty("os.name").toLowerCase()
+    val os = System.getProperty("os.name").lowercase()
     return when {
         os.contains("win") -> {
             OS.WINDOWS

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import org.archguard.scanner.core.git.ChangeEntry
 import org.archguard.scanner.core.git.CommitLog
@@ -65,5 +65,3 @@ interface GitSourceDao {
     @SqlUpdate("DELETE FROM scm_path_change_count WHERE system_id = :systemId")
     fun deletePathChangeCountBySystemId(systemId: Long)
 }
-
-

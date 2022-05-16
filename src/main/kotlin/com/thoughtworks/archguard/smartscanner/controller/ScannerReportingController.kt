@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.smartscanner.common.ClassRepository
-import com.thoughtworks.archguard.smartscanner.common.ContainerRepository
-import com.thoughtworks.archguard.smartscanner.common.DatamapRepository
-import com.thoughtworks.archguard.smartscanner.common.DiffChangesRepository
-import com.thoughtworks.archguard.smartscanner.common.GitSourceRepository
-import com.thoughtworks.archguard.smartscanner.common.ScaRepository
+import com.thoughtworks.archguard.smartscanner.repository.ClassRepository
+import com.thoughtworks.archguard.smartscanner.repository.ContainerRepository
+import com.thoughtworks.archguard.smartscanner.repository.DatamapRepository
+import com.thoughtworks.archguard.smartscanner.repository.DiffChangesRepository
+import com.thoughtworks.archguard.smartscanner.repository.GitSourceRepository
+import com.thoughtworks.archguard.smartscanner.repository.ScaRepository
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency

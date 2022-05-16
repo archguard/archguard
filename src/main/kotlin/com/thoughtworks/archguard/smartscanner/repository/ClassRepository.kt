@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.common
+package com.thoughtworks.archguard.smartscanner.repository
 
 import chapi.domain.core.AnnotationKeyValue
 import chapi.domain.core.CodeAnnotation
@@ -11,8 +11,7 @@ import chapi.domain.core.CodeImport
 import chapi.domain.core.CodeProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.currentTime
-import com.thoughtworks.archguard.smartscanner.common.RepositoryHelper.generateId
+import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import java.util.Optional
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -122,7 +121,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun doSaveCalleeMethod(m: CodeCall): String {
         val mId = generateId()
-        val time: String = currentTime
+        val time: String = RepositoryHelper.getCurrentTime()
         val values: MutableMap<String, String> = HashMap()
         values["id"] = mId
         values["system_id"] = systemId
@@ -404,7 +403,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String): String {
         val mId = generateId()
-        val time: String = currentTime
+        val time: String = RepositoryHelper.getCurrentTime()
         val values: MutableMap<String, String> = HashMap()
         values["id"] = mId
         values["system_id"] = systemId
@@ -438,7 +437,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     private fun saveClassFields(clzId: String, fields: Array<CodeField>, clzName: String) {
         for (field in fields) {
             val id = generateId()
-            val time: String = currentTime
+            val time: String = RepositoryHelper.getCurrentTime()
             val values: MutableMap<String, String> = HashMap()
 
             val name = field.TypeKey
@@ -497,7 +496,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         packageName: String?,
         className: String
     ): String {
-        val time: String = currentTime
+        val time: String = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
         values["id"] = clzId
@@ -518,7 +517,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     }
 
     private fun saveClass(clz: CodeDataStruct): String {
-        val time = currentTime
+        val time = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
         var pkgName = clz.Package
