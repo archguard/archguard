@@ -25,7 +25,7 @@ data class ScannerCommand(
         outputs.forEach { arguments.add("--output=$it") }
         language?.let { arguments.add("--language=$it") }
         features.forEach { arguments.add("--features=$it") }
-        repoId?.let { arguments.add("--repoId=$it") }
+        repoId?.let { arguments.add("--repo-id=$it") }
         additionArguments.forEach(arguments::add)
         return arguments
     }

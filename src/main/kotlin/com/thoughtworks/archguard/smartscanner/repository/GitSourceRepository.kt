@@ -35,7 +35,7 @@ interface GitSourceDao {
     @SqlBatch(
         """
         INSERT INTO scm_commit_log (system_id,id,commit_time,short_msg,committer_name,committer_email,repo_id)
-        VALUES (:systemId,:item.commitTime,:item.shortMessage,:item.committerName,:item.committerEmail,:item.repositoryId)
+        VALUES (:systemId,:item.id,:item.commitTime,:item.shortMessage,:item.committerName,:item.committerEmail,:item.repositoryId)
         """
     )
     fun saveAllCommitLog(systemId: Long, @BindBean("item") commitLogs: List<CommitLog>)

@@ -122,10 +122,7 @@ class ScannerReportingController(
     }
 
     @PostMapping("/git-logs")
-    fun saveGitLogs(
-        @PathVariable systemId: Long,
-        @RequestBody input: GitLogs
-    ) {
+    fun saveGitLogs(@PathVariable systemId: Long, @RequestBody input: GitLogs) {
         gitSourceRepository.saveGitReport(systemId, input)
     }
 
