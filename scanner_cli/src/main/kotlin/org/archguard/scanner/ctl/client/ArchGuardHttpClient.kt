@@ -56,7 +56,6 @@ class ArchGuardHttpClient(
         process(URI(buildUrl(topic)), body)
     }
 
-    // create another job to execute this coroutine
     override fun saveDataStructure(codes: List<CodeDataStruct>) {
         process("class-items", codes)
     }

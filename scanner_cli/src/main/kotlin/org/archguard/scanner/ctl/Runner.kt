@@ -44,9 +44,8 @@ class Runner : CliktCommand(help = "scanner cli") {
      *  --language=java
      *  --features=API,DB
      *
-     *  --language='{identifier: "java", version: "1.0.0" ... }'
-     *  --features=API
-     *  --features='{identifier: "DB", version: "1.0.0" ... }'
+     *  --analyserSpec='{identifier: "java", version: "1.0.0" ... }'
+     *  --analyserSpec='{identifier: "DB", version: "1.0.0" ... }'
      */
     override fun run() {
         logger.debug(
@@ -76,7 +75,7 @@ class Runner : CliktCommand(help = "scanner cli") {
             // cli parameters
             type, systemId, serverUrl, path, output, analyserSpec.map { Json.decodeFromString(it) },
             // additional parameters
-            language, features, repoId, branch, startedAt, since, until, depth
+            language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth
         )
         AnalyserDispatcher().dispatch(command)
         RuleDispatcher().dispatch(command)

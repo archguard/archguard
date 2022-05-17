@@ -34,7 +34,7 @@ data class ScannerCommand(
     val depth: Int = 7,
 ) {
     private val allAnalyserSpecs = customizedAnalyserSpecs + OfficialAnalyserSpecs.specs()
-    fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier }
+    fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier.lowercase() }
         ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
 
     fun buildClient(): ArchGuardClient {

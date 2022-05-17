@@ -30,16 +30,16 @@ open class ArchGuardJsonClient(private val systemId: String) : ArchGuardClient {
     }
 
     override fun saveGitLogs(gitLogs: GitLogs) {
-        writeJsonFile(gitLogs.commitLog, buildFileName("gitlogs-commit"))
-        writeJsonFile(gitLogs.changeEntry, buildFileName("gitlogs-change-entry"))
-        writeJsonFile(gitLogs.pathChangeCount, buildFileName("gitlogs-change-count"))
+        writeJsonFile(gitLogs.commitLog, "gitlogs-commit")
+        writeJsonFile(gitLogs.changeEntry, "gitlogs-change-entry")
+        writeJsonFile(gitLogs.pathChangeCount, "gitlogs-change-count")
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {
-        writeJsonFile(calls, buildFileName("diff-changes"))
+        writeJsonFile(calls, "diff-changes")
     }
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {
-        writeJsonFile(dependencies, buildFileName("sca-dependencies"))
+        writeJsonFile(dependencies, "sca-dependencies")
     }
 }
