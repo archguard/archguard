@@ -64,4 +64,4 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 License
 ---
 
-This code is distributed under the MPL license. See `LICENSE` in this directory.
+This code is distributed under the MIT license. See `LICENSE` in this directory.
