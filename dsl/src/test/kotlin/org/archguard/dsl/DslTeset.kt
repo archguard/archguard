@@ -39,7 +39,7 @@ internal class DslTest {
             repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
         }
 
-        assertEquals(2, archdoc.repos!!.repos.size)
+        assertEquals(2, archdoc.repos.repos.size)
         assertEquals(2, decls.repos.size)
     }
 

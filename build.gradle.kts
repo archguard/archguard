@@ -168,6 +168,7 @@ dependencies {
     jacocoAggregation(project(":"))
 
     jacocoAggregation(project(":dsl"))
+    jacocoAggregation(project(":repl-api"))
 }
 
 reporting {
