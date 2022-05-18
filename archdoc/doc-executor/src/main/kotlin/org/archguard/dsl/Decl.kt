@@ -7,10 +7,7 @@ annotation class DslMarker
 interface Element
 
 @DslMarker
-abstract class Decl : Element {
-
-}
-
+abstract class Decl : Element
 
 class ArchDocContext(
     var layered: LayeredDecl = LayeredDecl(),
