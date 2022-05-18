@@ -1,4 +1,4 @@
-package org.archguard.archdoc.plugins
+package org.archguard.aaac.plugins
 
 import io.ktor.serialization.kotlinx.*
 import io.ktor.server.application.*
@@ -7,9 +7,9 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.archdoc.CodeEvalContext
-import org.archguard.archdoc.Connection
-import org.archguard.archdoc.repl.ArchdocReplServer
+import org.archguard.aaac.CodeEvalContext
+import org.archguard.aaac.Connection
+import org.archguard.aaac.repl.ArchdocReplServer
 import java.time.Duration
 import java.util.*
 

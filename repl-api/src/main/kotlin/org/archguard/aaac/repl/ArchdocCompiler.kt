@@ -1,4 +1,4 @@
-package org.archguard.archdoc.repl
+package org.archguard.aaac.repl
 
 import org.jetbrains.kotlinx.jupyter.EvalRequestData
 import org.jetbrains.kotlinx.jupyter.ReplForJupyter

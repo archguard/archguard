@@ -1,4 +1,4 @@
-package org.archguard.archdoc.repl
+package org.archguard.aaac.repl
 
 import kotlinx.serialization.Serializable
 import org.archguard.dsl.Action

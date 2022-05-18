@@ -1,4 +1,4 @@
-package org.archguard.archdoc.repl
+package org.archguard.aaac.repl
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test

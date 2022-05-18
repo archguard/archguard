@@ -1,8 +1,8 @@
-package org.archguard.archdoc
+package org.archguard.aaac
 
 import io.ktor.server.application.*
-import org.archguard.archdoc.plugins.configureRouting
-import org.archguard.archdoc.plugins.configureSockets
+import org.archguard.aaac.plugins.configureRouting
+import org.archguard.aaac.plugins.configureSockets
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 

@@ -1,4 +1,4 @@
-package org.archguard.archdoc
+package org.archguard.aaac
 
 import java.util.concurrent.atomic.*
 
