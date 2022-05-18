@@ -9,11 +9,11 @@ import java.util.Optional
 class ArchitectureRepositoryImpl : ArchitectureRepository {
     private var architectures: Map<String, ArchitecturePO> = HashMap()
 
-    override fun getArchitecture(archSystemId: String): Optional<ArchitecturePO> {
+    override fun getByArchSystemId(archSystemId: String): Optional<ArchitecturePO> {
         return Optional.ofNullable(architectures[archSystemId])
     }
 
-    override fun saveArchitecture(architecturePO: ArchitecturePO): ArchitecturePO {
+    override fun save(architecturePO: ArchitecturePO): ArchitecturePO {
         architectures.plus(Pair(architecturePO.archSystemId, architecturePO))
 
         return architecturePO

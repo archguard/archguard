@@ -23,8 +23,8 @@ class ArchSystemService(
 
         archSystem.architecture = architecture
 
-        archSystemRepository.createArchSystem(ArchSystemPO.from(archSystem))
-        architectureRepository.saveArchitecture(ArchitecturePO.from(architecture))
+        archSystemRepository.create(ArchSystemPO.from(archSystem))
+        architectureRepository.save(ArchitecturePO.from(architecture))
 
         return archSystem
     }

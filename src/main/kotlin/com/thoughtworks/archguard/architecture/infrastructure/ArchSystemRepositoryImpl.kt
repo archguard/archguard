@@ -9,11 +9,11 @@ import java.util.Optional
 class ArchSystemRepositoryImpl : ArchSystemRepository {
     private var archSystems: Map<String, ArchSystemPO> = HashMap()
 
-    override fun getArchSystem(id: String): Optional<ArchSystemPO> {
+    override fun getById(id: String): Optional<ArchSystemPO> {
         return Optional.ofNullable(archSystems[id])
     }
 
-    override fun createArchSystem(archSystemPO: ArchSystemPO): Boolean {
+    override fun create(archSystemPO: ArchSystemPO): Boolean {
         if (archSystems.containsKey(archSystemPO.id)) {
             return false
         }
