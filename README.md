@@ -1,5 +1,9 @@
 # Architecture as Code
 
+[![Java CI](https://github.com/archguard/architecture-as-code/actions/workflows/ci.yaml/badge.svg)](https://github.com/archguard/architecture-as-code/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/archguard/architecture-as-code/branch/master/graph/badge.svg?token=RSAOWTRFMT)](https://codecov.io/gh/archguard/architecture-as-code)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/archguard/architecture-as-code)
+
 > 架构即代码，是一种架构设计和治理的思想，它围绕于架构的一系列模式，将架构元素、特征进行组合与呈现，并将架构决策与设计原则等紧密的与系统相结合。
 
 core concepts see in 《[架构即代码：编码下一代企业（应用）架构体系](https://www.phodal.com/blog/architecture-as-code/)》
