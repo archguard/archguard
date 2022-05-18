@@ -80,11 +80,6 @@ flowchart TB
     archteicture --> Backend
 ```
 
-## TechDebt
-
-- [ ] diff_changes ???
-- [ ] split language analysis from scan_git
-
 ## Inspires
 
 ArchGuard Scanner is inspired by a lot of projects.
