@@ -40,8 +40,3 @@ include(":rule-linter:rule-test-code")
 include(":rule-linter:rule-webapi")
 include(":rule-linter:rule-code")
 include(":rule-doc-generator")
-
-/**
- * others projects:
- */
-include(":archdoc:doc-executor")
