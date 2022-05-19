@@ -1,7 +1,6 @@
 package org.archguard.aaac.repl
 
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DslTest {
@@ -14,13 +13,12 @@ internal class DslTest {
         res.resultValue shouldBe 6
     }
 
-    @Disabled
     @Test
     internal fun local_file() {
         compiler.eval(
             """
-            @file:DependsOn("org.archguard.scanner:doc-executor:2.0.0-alpha.2")
             import org.archguard.dsl.*
+
             var layer = layered {
                 prefixId("org.archguard")
                 component("controller") dependentOn component("service")

@@ -1,5 +1,6 @@
 package org.archguard.aaac.repl
 
+import org.archguard.dsl.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.EvalRequestData
 import org.jetbrains.kotlinx.jupyter.ReplForJupyter
 import org.jetbrains.kotlinx.jupyter.ReplForJupyterImpl
@@ -8,15 +9,19 @@ import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
 import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
 import java.io.File
 
-
 class ArchdocCompiler {
     private fun makeEmbeddedRepl(): ReplForJupyter {
         val resolutionInfoProvider = EmptyResolutionInfoProvider
 
-        val embeddedClasspath: List<File> =
-            System.getProperty("java.class.path").split(File.pathSeparator).map(::File)
+        val embeddedClasspath: MutableList<File> =
+            System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList();
+
+        embeddedClasspath += getArchdocDslPath()
+
         return ReplForJupyterImpl(resolutionInfoProvider, embeddedClasspath, isEmbedded = true)
     }
+
+    private fun getArchdocDslPath() = File(ReactiveAction::class.java.protectionDomain.codeSource.location.toURI().path)
 
     private val repl = makeEmbeddedRepl()
 
