@@ -5,5 +5,11 @@ package org.archguard.architecture.core.module.view.concept
  * So it should be a CComponent or a CConnector.
  * If it has more than one identity，may need be divided to more than one module.
  */
-class ConceptArchitecture(val type: ConceptType, val reliability: Float, val desc: String, val comment: String)
+class ConceptArchitecture(
+    val type: ConceptType,
+    val domainModels: List<DomainModel>,
+    val reliability: Float,
+    val desc: String,
+    val comment: String
+)
 
