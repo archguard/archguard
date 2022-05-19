@@ -6,7 +6,6 @@ import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.dsl.model.ReactiveAction
-import org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
 
 class ArchdocInterpreter : InterpreterService {

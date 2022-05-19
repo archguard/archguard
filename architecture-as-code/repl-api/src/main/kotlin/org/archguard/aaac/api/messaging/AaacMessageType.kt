@@ -20,21 +20,20 @@ enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
     val type: String get() = name.lowercase()
 }
 
-
 @Serializable
-abstract class AaacContent
+sealed class AaacContent
 
 @Serializable
 abstract class MessageReplyContent(val status: DocStatus) : AaacContent()
 
 @Serializable
-abstract class ArchGuardGraph(val isGraph: Boolean = true, val graphType: String = "") : AaacContent()
-
-@Serializable
 class NoneContent : MessageReplyContent(DocStatus.ABORT)
 
 @Serializable
-class ErrorContent(val exception: String = "", val message: String = "") : MessageReplyContent(DocStatus.ABORT)
+class ErrorContent(val exception: String = "", val message: String = "") : AaacContent()
+
+@Serializable
+class ArchGuardGraph(val isGraph: Boolean = true, val graphType: String = "") : AaacContent()
 
 @Serializable
 enum class DocStatus {
@@ -47,7 +46,6 @@ enum class DocStatus {
     @SerialName("abort")
     ABORT;
 }
-
 
 object ArchdocMessageTypeSerializer : KSerializer<AaacMessageType> {
     private val cache: MutableMap<String, AaacMessageType> = hashMapOf()
