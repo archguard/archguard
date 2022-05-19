@@ -1,15 +1,17 @@
 package org.archguard.aaac.repl
 
+import org.archguard.aaac.client.EvalRequest
 import org.archguard.aaac.client.ExecuteResult
+import org.archguard.aaac.client.ReplService
 import org.archguard.dsl.Action
 
 // todo: setup websocket server
-class ArchdocReplServer {
+class ArchdocReplService: ReplService {
     private val compiler: ArchdocCompiler = ArchdocCompiler()
 
-    fun eval(code: String, id: Int): ExecuteResult {
+    override fun eval(evalRequest: EvalRequest): ExecuteResult {
         // todo: return error results
-        val result = compiler.eval(code, null, id)
+        val result = compiler.eval(evalRequest.code, null, evalRequest.id)
         val resultValue = result.resultValue
         val executeResult = ExecuteResult(
             resultValue.toString()

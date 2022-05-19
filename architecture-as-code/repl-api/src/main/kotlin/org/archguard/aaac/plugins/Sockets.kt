@@ -9,13 +9,12 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.aaac.client.EvalRequest
 import org.archguard.aaac.Connection
-import org.archguard.aaac.repl.ArchdocReplServer
+import org.archguard.aaac.repl.ArchdocReplService
 import java.time.Duration
 import java.util.*
 
 fun Application.configureSockets() {
-    val replServer = ArchdocReplServer()
-    var id = 0
+    val replServer = ArchdocReplService()
 
     install(WebSockets) {
         contentConverter = KotlinxWebsocketSerializationConverter(Json)
@@ -30,10 +29,11 @@ fun Application.configureSockets() {
         webSocket("/") {
             val thisConnection = Connection()
             connections += thisConnection
-            id += 1
+
             try {
                 val evalRequest = receiveDeserialized<EvalRequest>()
-                val result = replServer.eval(evalRequest.code, id)
+                val result = replServer.eval(evalRequest)
+
                 send(Json.encodeToString(result))
             } catch (e: Exception) {
                 println(e.localizedMessage)
