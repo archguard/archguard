@@ -1,5 +1,6 @@
 package org.archguard.dsl
 
+import org.archguard.dsl.arch.LayeredDecl
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -39,7 +40,7 @@ internal class DslTest {
             repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
         }
 
-        assertEquals(2, archdoc.repos.repos.size)
+        assertEquals(2, context.repos.repos.size)
         assertEquals(2, decls.repos.size)
     }
 
@@ -47,7 +48,7 @@ internal class DslTest {
     internal fun reactive_action() {
         val action = graph().show(LayeredDecl(), "sample")
         assertEquals("graph", action.actionType)
-        assertEquals("org.archguard.dsl.LayeredDecl", action.className)
+        assertEquals("org.archguard.dsl.arch.LayeredDecl", action.className)
         assertEquals("sample", action.graphType)
     }
 

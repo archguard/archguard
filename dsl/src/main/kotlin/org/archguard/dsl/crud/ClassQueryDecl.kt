@@ -1,4 +1,6 @@
-package org.archguard.dsl
+package org.archguard.dsl.crud
+
+import org.archguard.dsl.base.Element
 
 /**
  * for all query

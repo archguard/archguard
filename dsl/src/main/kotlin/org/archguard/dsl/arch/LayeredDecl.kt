@@ -1,5 +1,7 @@
-package org.archguard.dsl
+package org.archguard.dsl.arch
 
+import org.archguard.dsl.base.Decl
+import org.archguard.dsl.base.Element
 import org.archguard.dsl.model.LayeredRelation
 
 class ComponentDecl(val name: String) : Element {
@@ -48,13 +50,4 @@ class LayeredDecl : Decl() {
             }.toList()
         }
     }
-}
-
-fun layered(init: LayeredDecl.() -> Unit): LayeredDecl {
-    val layeredDecl = LayeredDecl()
-    layeredDecl.init()
-
-    archdoc.layered = layeredDecl
-
-    return layeredDecl
 }

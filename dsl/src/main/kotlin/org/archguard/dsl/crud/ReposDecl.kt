@@ -1,5 +1,6 @@
-package org.archguard.dsl
+package org.archguard.dsl.crud
 
+import org.archguard.dsl.base.Element
 import org.archguard.dsl.model.Repository
 
 class ReposDecl : Element {
@@ -8,13 +9,4 @@ class ReposDecl : Element {
     fun repo(name: String, language: String, scmUrl: String) {
         this.repos += Repository(name, language, scmUrl)
     }
-}
-
-fun repos(init: ReposDecl.() -> Unit): ReposDecl {
-    val reposDecl = ReposDecl()
-    reposDecl.init()
-
-    archdoc.repos = reposDecl
-
-    return reposDecl
 }

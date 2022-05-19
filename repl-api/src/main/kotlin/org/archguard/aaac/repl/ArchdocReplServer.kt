@@ -1,28 +1,11 @@
 package org.archguard.aaac.repl
 
-import kotlinx.serialization.Serializable
+import org.archguard.aaac.model.ReplResult
 import org.archguard.dsl.Action
-
-@Serializable
-data class ReplResult(
-    var resultValue: String,
-    var isArchdocApi: Boolean = false,
-    var className: String = "",
-    var actionData: String = "",
-    var action: Action? = null
-)
 
 // todo: setup websocket server
 class ArchdocReplServer {
     private val compiler: ArchdocCompiler = ArchdocCompiler()
-
-    fun interpret(code: String, context: ReplContext) {
-        runWithOutput(code, context.out)
-    }
-
-    private fun runWithOutput(code: String, out: ReplOutput) {
-        this.eval(code, 0)
-    }
 
     fun eval(code: String, id: Int): ReplResult {
         // todo: return error results
