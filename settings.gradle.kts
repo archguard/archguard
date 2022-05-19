@@ -40,3 +40,9 @@ include(":rule-linter:rule-test-code")
 include(":rule-linter:rule-webapi")
 include(":rule-linter:rule-code")
 include(":rule-doc-generator")
+
+/**
+ * architecture as code repos
+ */
+include(":architecture-as-code:dsl")
+include(":architecture-as-code:repl-api")

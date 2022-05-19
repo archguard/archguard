@@ -188,6 +188,9 @@ dependencies {
     jacocoAggregation(project(":rule-linter:rule-webapi"))
     jacocoAggregation(project(":rule-linter:rule-code"))
     jacocoAggregation(project(":rule-doc-generator"))
+
+    jacocoAggregation(project(":architecture-as-code:dsl"))
+    jacocoAggregation(project(":architecture-as-code:repl-api"))
 }
 
 reporting {
