@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import org.archguard.dsl.Action
 
 @Serializable
-data class ExecuteResult(
+data class InterpreterResult(
     var resultValue: String,
     var className: String = "",
 

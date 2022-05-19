@@ -7,14 +7,14 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.aaac.client.EvalRequest
+import org.archguard.aaac.client.InterpreterRequest
 import org.archguard.aaac.Connection
-import org.archguard.aaac.repl.ArchdocReplService
+import org.archguard.aaac.repl.ArchdocInterpreter
 import java.time.Duration
 import java.util.*
 
 fun Application.configureSockets() {
-    val replServer = ArchdocReplService()
+    val replServer = ArchdocInterpreter()
 
     install(WebSockets) {
         contentConverter = KotlinxWebsocketSerializationConverter(Json)
@@ -31,8 +31,8 @@ fun Application.configureSockets() {
             connections += thisConnection
 
             try {
-                val evalRequest = receiveDeserialized<EvalRequest>()
-                val result = replServer.eval(evalRequest)
+                val interpreterRequest = receiveDeserialized<InterpreterRequest>()
+                val result = replServer.eval(interpreterRequest)
 
                 send(Json.encodeToString(result))
             } catch (e: Exception) {
