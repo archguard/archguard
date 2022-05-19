@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 @Serializable(ArchdocMessageTypeSerializer::class)
 enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
     NONE(NoneContent::class),
-    ERROR(NoneContent::class),
+    ERROR(ErrorContent::class),
     ARCHGUARD_GRAPH(ArchGuardGraph::class);
 
     val type: String get() = name.lowercase()
@@ -32,6 +32,9 @@ abstract class ArchGuardGraph(val isGraph: Boolean = true, val graphType: String
 
 @Serializable
 class NoneContent : MessageReplyContent(DocStatus.ABORT)
+
+@Serializable
+class ErrorContent(val exception: String = "", val message: String = "") : MessageReplyContent(DocStatus.ABORT)
 
 @Serializable
 enum class DocStatus {

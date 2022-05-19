@@ -2,6 +2,7 @@ package org.archguard.aaac.repl
 
 import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.api.InterpreterService
+import org.archguard.aaac.api.messaging.ErrorContent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -66,6 +67,9 @@ layered []
         val result = interpreter.eval(request)
 
         assertEquals("error", result.msgType.type)
-        assertEquals("org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter-kts (2:10 - 10) Expecting an index element", result.resultValue)
+        val errorMsg =
+            "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter-kts (2:10 - 10) Expecting an index element"
+        assertEquals(errorMsg, (result.content as ErrorContent).message)
+        assertEquals("org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException", (result.content as ErrorContent).exception)
     }
 }
