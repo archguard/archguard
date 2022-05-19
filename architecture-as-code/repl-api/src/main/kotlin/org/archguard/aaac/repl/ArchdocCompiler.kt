@@ -16,12 +16,23 @@ class ArchdocCompiler {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList();
 
-        embeddedClasspath += getArchdocDslPath()
+        embeddedClasspath += addArchGuardDsl()
 
-        return ReplForJupyterImpl(resolutionInfoProvider, embeddedClasspath, isEmbedded = true)
+        val lib = "archguard" to """
+{
+        "imports": [
+            "org.archguard.dsl.*"
+        ],
+        "init": []
+    }
+        """.trimIndent()
+
+        val dslLibS = listOf(lib).toLibraries()
+        return ReplForJupyterImpl(resolutionInfoProvider, embeddedClasspath, isEmbedded = true, libraryResolver = dslLibS)
     }
 
-    private fun getArchdocDslPath() = File(ReactiveAction::class.java.protectionDomain.codeSource.location.toURI().path)
+    // looking for dep path to add files
+    private fun addArchGuardDsl() = File(ReactiveAction::class.java.protectionDomain.codeSource.location.toURI().path)
 
     private val repl = makeEmbeddedRepl()
 

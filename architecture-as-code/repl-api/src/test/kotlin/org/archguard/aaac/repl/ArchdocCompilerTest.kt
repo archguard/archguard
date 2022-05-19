@@ -16,8 +16,7 @@ internal class DslTest {
     @Test
     internal fun local_file() {
         compiler.eval(
-            """
-            import org.archguard.dsl.*
+            """%use archguard
 
             var layer = layered {
                 prefixId("org.archguard")
