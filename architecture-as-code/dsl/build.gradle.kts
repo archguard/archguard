@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10"
 }
 
-group = "org.archguard.dsl"
+group = "org.archguard.aaac"
 
 dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

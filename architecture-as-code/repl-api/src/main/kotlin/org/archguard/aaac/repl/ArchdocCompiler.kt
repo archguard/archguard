@@ -16,10 +16,12 @@ class ArchdocCompiler {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList();
 
+        // load same ArchGuard DSL version
         embeddedClasspath += addArchGuardDsl()
 
+        // setup archguard magic
         val lib = "archguard" to """
-{
+    {
         "imports": [
             "org.archguard.dsl.*"
         ],
