@@ -27,14 +27,14 @@ buildscript {
 }
 
 dependencies {
+    api(project(":architecture-as-code:dsl"))
+
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-89-1")
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
-
-    implementation("org.archguard.scanner:doc-executor:2.0.0-alpha.6")
 
     implementation("ch.qos.logback:logback-classic:1.2.11")
 

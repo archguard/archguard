@@ -1,7 +1,7 @@
 package org.archguard.aaac.api
 
 import kotlinx.serialization.Serializable
-import org.archguard.dsl.Action
+import org.archguard.dsl.model.ReactiveAction
 
 @Serializable
 data class InterpreterResult(
@@ -12,7 +12,7 @@ data class InterpreterResult(
     var isArchGuardAaac: Boolean = false,
     var actionData: String = "",
     var actionType: String = "",
-    var action: Action? = null
+    var action: ReactiveAction? = null
 
     // for error?
 )

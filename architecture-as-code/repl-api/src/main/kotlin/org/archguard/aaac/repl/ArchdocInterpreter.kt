@@ -3,7 +3,7 @@ package org.archguard.aaac.repl
 import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.api.InterpreterResult
 import org.archguard.aaac.api.InterpreterService
-import org.archguard.dsl.Action
+import org.archguard.dsl.model.ReactiveAction
 
 class ArchdocInterpreter : InterpreterService {
     private val compiler: ArchdocCompiler = ArchdocCompiler()
@@ -18,7 +18,7 @@ class ArchdocInterpreter : InterpreterService {
 
         // handle action data
         when (resultValue) {
-            is Action -> {
+            is ReactiveAction -> {
                 interpreterResult.action = resultValue
                 interpreterResult.actionData = resultValue.data
             }
