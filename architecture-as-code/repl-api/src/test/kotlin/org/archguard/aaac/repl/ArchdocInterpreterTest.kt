@@ -30,7 +30,7 @@ layered {
         )
         val result = interpreter.eval(request)
 
-        assert(result.isArchGuardAaac)
+        assertEquals("archguard_graph", result.msgType.type)
     }
 
     @Test
@@ -49,7 +49,7 @@ context.layered.relations()
         )
         val result = interpreter.eval(request)
 
-        assertFalse(result.isArchGuardAaac)
+        assertEquals("none", result.msgType.type)
         assertEquals(
             "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]",
             result.resultValue

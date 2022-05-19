@@ -1,18 +1,13 @@
-package org.archguard.aaac.api
+package org.archguard.aaac.api.messaging
 
 import kotlinx.serialization.Serializable
 import org.archguard.dsl.model.ReactiveAction
 
 @Serializable
-data class InterpreterResult(
+data class Message(
     var resultValue: String,
     var className: String = "",
+    var msgType: AaacMessageType = AaacMessageType.NONE,
 
-    // for success
-    var isArchGuardAaac: Boolean = false,
-    var actionData: String = "",
-    var actionType: String = "",
     var action: ReactiveAction? = null
-
-    // for error?
 )
