@@ -5,7 +5,6 @@ import org.archguard.aaac.api.InterpreterService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 
 internal class ArchdocInterpreterTest {
     private lateinit var interpreter: InterpreterService;
@@ -54,5 +53,19 @@ context.layered.relations()
             "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]",
             result.resultValue
         )
+    }
+
+    @Test
+    internal fun handle_error() {
+        val request = InterpreterRequest(
+            code = """%use archguard
+layered []
+
+        """.trimIndent()
+        )
+        val result = interpreter.eval(request)
+
+        assertEquals("error", result.msgType.type)
+        assertEquals("org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter-kts (2:10 - 10) Expecting an index element", result.resultValue)
     }
 }

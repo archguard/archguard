@@ -14,9 +14,8 @@ import kotlin.reflect.KClass
 @Serializable(ArchdocMessageTypeSerializer::class)
 enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
     NONE(NoneContent::class),
-    ARCHGUARD_GRAPH(ArchGuardGraph::class)
-    ;
-
+    ERROR(NoneContent::class),
+    ARCHGUARD_GRAPH(ArchGuardGraph::class);
 
     val type: String get() = name.lowercase()
 }
