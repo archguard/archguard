@@ -16,21 +16,19 @@ class ArchdocReplServer {
         )
 
         // handle action data
-        when(resultValue) {
+        when (resultValue) {
             is Action -> {
                 executeResult.action = resultValue
                 executeResult.actionData = resultValue.data
             }
         }
 
-        // todo: return callback action
         val className: String = resultValue?.javaClass?.name.orEmpty()
         if (className.startsWith("org.archguard.dsl")) {
-            executeResult.isArchdocApi = true
+            executeResult.isAaacCode = true
         }
 
         executeResult.className = className
-
         return executeResult
     }
 }
