@@ -7,7 +7,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.aaac.CodeEvalContext
+import org.archguard.aaac.client.EvalRequest
 import org.archguard.aaac.Connection
 import org.archguard.aaac.repl.ArchdocReplServer
 import java.time.Duration
@@ -32,8 +32,8 @@ fun Application.configureSockets() {
             connections += thisConnection
             id += 1
             try {
-                val codeEvalContext = receiveDeserialized<CodeEvalContext>()
-                val result = replServer.eval(codeEvalContext.code, id)
+                val evalRequest = receiveDeserialized<EvalRequest>()
+                val result = replServer.eval(evalRequest.code, id)
                 send(Json.encodeToString(result))
             } catch (e: Exception) {
                 println(e.localizedMessage)
