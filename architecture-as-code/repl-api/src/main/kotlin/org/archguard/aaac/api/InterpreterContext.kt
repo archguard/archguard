@@ -1,4 +1,4 @@
-package org.archguard.aaac.client
+package org.archguard.aaac.api
 
 // todo: handle for request
 class InterpreterContext {

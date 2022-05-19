@@ -7,7 +7,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.aaac.client.InterpreterRequest
+import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.Connection
 import org.archguard.aaac.repl.ArchdocInterpreter
 import java.time.Duration

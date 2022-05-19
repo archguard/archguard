@@ -27,16 +27,26 @@ buildscript {
 }
 
 dependencies {
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    api(project(":architecture-as-code:repl-api"))
 
-    implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-89-1")
-    implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
     implementation("org.archguard.scanner:doc-executor:2.0.0-alpha.6")
 
+    implementation("io.ktor:ktor-server-core:2.0.1")
+    implementation("io.ktor:ktor-server-netty:2.0.1")
+    implementation("io.ktor:ktor-server-websockets:2.0.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+
     implementation("ch.qos.logback:logback-classic:1.2.11")
+
+    implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-89-1")
+    implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
+
+    implementation("io.ktor:ktor-server-netty:1.6.7")
+    implementation("io.ktor:ktor-html-builder:1.6.7")
 
     implementation(kotlin("stdlib"))
     // test

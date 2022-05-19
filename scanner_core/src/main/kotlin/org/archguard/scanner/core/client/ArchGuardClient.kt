@@ -7,7 +7,7 @@ import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 
-// client of the archguard, scanner can communicate to server via this client with limited functions
+// api of the archguard, scanner can communicate to server via this api with limited functions
 interface ArchGuardClient {
     fun saveDataStructure(codes: List<CodeDataStruct>)
     fun saveApi(apis: List<ContainerService>)

@@ -141,7 +141,7 @@ internal class ByteCodeParserTest {
 
         assertEquals(5, ds.Imports.size)
 
-        assertEquals("org.springframework.web.client.RestTemplate," +
+        assertEquals("org.springframework.web.api.RestTemplate," +
                 "com.thoughtworks.archguard.report.infrastructure.QualityGateClientImpl," +
                 "com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate," +
                 "com.thoughtworks.archguard.report.domain.qualitygate.QualityGateClient," +

@@ -1,4 +1,4 @@
-package org.archguard.aaac.client
+package org.archguard.aaac.api
 
 import kotlinx.serialization.Serializable
 import org.archguard.dsl.Action

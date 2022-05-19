@@ -1,8 +1,8 @@
 package org.archguard.aaac.repl
 
-import org.archguard.aaac.client.InterpreterRequest
-import org.archguard.aaac.client.InterpreterResult
-import org.archguard.aaac.client.InterpreterService
+import org.archguard.aaac.api.InterpreterRequest
+import org.archguard.aaac.api.InterpreterResult
+import org.archguard.aaac.api.InterpreterService
 import org.archguard.dsl.Action
 
 class ArchdocInterpreter : InterpreterService {

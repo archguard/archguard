@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate
 
 
 @Component
-class QualityGateClientImpl(@Value("\${client.host}") val baseUrl: String) : QualityGateClient {
+class QualityGateClientImpl(@Value("\${api.host}") val baseUrl: String) : QualityGateClient {
     override fun getQualityGate(qualityGateName: String): CouplingQualityGate {
         val couplingQualityGate = RestTemplate().getForObject("$baseUrl/api/quality-gate-profile/$qualityGateName", CouplingQualityGate::class.java)
         return couplingQualityGate ?: CouplingQualityGate(null, qualityGateName, emptyList(), null, null)
@@ -42,7 +42,7 @@ public class QualityGateClientImpl implements QualityGateClient {
   @NotNull
   private final String baseUrl;
   
-  public QualityGateClientImpl(@Value("${client.host}") @NotNull String baseUrl) {
+  public QualityGateClientImpl(@Value("${api.host}") @NotNull String baseUrl) {
     this.baseUrl = baseUrl;
   }
   
