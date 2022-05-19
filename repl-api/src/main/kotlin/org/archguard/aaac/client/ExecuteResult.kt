@@ -7,8 +7,8 @@ import org.archguard.dsl.Action
 data class ExecuteResult(
     var resultValue: String,
     var className: String = "",
-    var isAaacCode: Boolean = false,
 
+    var isArchGuardAaac: Boolean = false,
     var actionData: String = "",
     var actionType: String = "",
     var action: Action? = null

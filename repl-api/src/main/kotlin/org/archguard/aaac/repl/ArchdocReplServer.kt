@@ -25,7 +25,7 @@ class ArchdocReplServer {
 
         val className: String = resultValue?.javaClass?.name.orEmpty()
         if (className.startsWith("org.archguard.dsl")) {
-            executeResult.isAaacCode = true
+            executeResult.isArchGuardAaac = true
         }
 
         executeResult.className = className
