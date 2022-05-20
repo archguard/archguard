@@ -17,7 +17,9 @@ DSL design:
 
 REPL API:
 
-- [ ] REPL Server
+- [ ] REPL API request-response
+- [x] REPL Server
+- [x] `% archguard` magics
 
 CI：
 
