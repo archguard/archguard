@@ -1,4 +1,4 @@
-package org.archguard.dsl.analyser
+package org.archguard.dsl.governance
 
 import org.archguard.dsl.base.Element
 

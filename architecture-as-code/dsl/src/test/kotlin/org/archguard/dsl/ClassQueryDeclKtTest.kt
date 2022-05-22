@@ -1,7 +1,7 @@
 package org.archguard.dsl
 
-import org.archguard.dsl.crud.clazz
-import org.archguard.dsl.crud.implementation
+import org.archguard.dsl.governance.clazz
+import org.archguard.dsl.governance.implementation
 import org.junit.jupiter.api.Test
 
 internal class ClassQueryDeclKtTest {

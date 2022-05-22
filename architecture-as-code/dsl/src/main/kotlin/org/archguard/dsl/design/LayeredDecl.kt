@@ -1,4 +1,4 @@
-package org.archguard.dsl.arch
+package org.archguard.dsl.design
 
 import org.archguard.dsl.base.Decl
 import org.archguard.dsl.base.Element
