@@ -14,7 +14,7 @@ import org.archguard.aaac.api.messaging.AaacContent
 import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.repl.ArchdocInterpreter
-import org.archguard.dsl.model.ReactiveAction
+import org.archguard.dsl.base.model.ReactiveAction
 import java.time.Duration
 import java.util.*
 

@@ -1,7 +1,7 @@
-package org.archguard.dsl.governance
+package org.archguard.dsl.evolution
 
 import org.archguard.dsl.base.Element
-import org.archguard.dsl.model.Repository
+import org.archguard.dsl.base.model.Repository
 
 class ReposDecl : Element {
     var repos: List<Repository> = listOf()

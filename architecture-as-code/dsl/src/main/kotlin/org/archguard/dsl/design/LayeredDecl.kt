@@ -2,7 +2,7 @@ package org.archguard.dsl.design
 
 import org.archguard.dsl.base.Decl
 import org.archguard.dsl.base.Element
-import org.archguard.dsl.model.LayeredRelation
+import org.archguard.dsl.base.model.LayeredRelation
 
 class ComponentDecl(val name: String) : Element {
     var dependents: List<ComponentDecl> = listOf()

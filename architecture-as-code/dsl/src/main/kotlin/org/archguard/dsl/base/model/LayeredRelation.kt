@@ -1,4 +1,4 @@
-package org.archguard.dsl.model
+package org.archguard.dsl.base.model
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

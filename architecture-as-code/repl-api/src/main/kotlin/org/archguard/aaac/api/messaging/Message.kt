@@ -1,7 +1,7 @@
 package org.archguard.aaac.api.messaging
 
 import kotlinx.serialization.Serializable
-import org.archguard.dsl.model.ReactiveAction
+import org.archguard.dsl.base.model.ReactiveAction
 
 @Serializable
 data class Message(

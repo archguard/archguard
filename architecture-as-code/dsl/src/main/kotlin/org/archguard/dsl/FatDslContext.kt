@@ -1,9 +1,9 @@
 package org.archguard.dsl
 
 import org.archguard.dsl.action.ReactiveActionDecl
-import org.archguard.dsl.governance.WebApiDecl
+import org.archguard.dsl.evolution.WebApiDecl
 import org.archguard.dsl.design.LayeredDecl
-import org.archguard.dsl.governance.ReposDecl
+import org.archguard.dsl.evolution.ReposDecl
 
 class FatDslContext(
     var layered: LayeredDecl = LayeredDecl(),

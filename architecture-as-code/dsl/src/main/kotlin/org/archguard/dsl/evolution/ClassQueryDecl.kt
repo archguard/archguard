@@ -1,4 +1,4 @@
-package org.archguard.dsl.governance
+package org.archguard.dsl.evolution
 
 import org.archguard.dsl.base.Element
 
