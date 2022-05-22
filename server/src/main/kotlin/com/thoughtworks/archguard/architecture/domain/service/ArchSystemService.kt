@@ -17,7 +17,7 @@ class ArchSystemService(
 ) {
 
     fun create(name: String, style: ArchStyle): ArchSystem {
-        val archSystem = ArchSystem(UUID.randomUUID().toString(), name, null, ArrayList())
+        val archSystem = ArchSystem(UUID.randomUUID().toString(), name, null)
 
         val architecture = Architecture(archSystem.id, style, ArrayList(), ArrayList())
 
