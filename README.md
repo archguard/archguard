@@ -93,4 +93,4 @@ License
 
 `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 
-@2020~2022 Thoughtworks. This code is distributed under the MPL license. See `LICENSE` in this directory.
+@2020~2022 Thoughtworks. This code is distributed under the MIT license. See `LICENSE` in this directory.
