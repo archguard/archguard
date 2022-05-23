@@ -1,5 +1,8 @@
 rootProject.name = "archguard"
 
+include(":")
+include(":model")
+
 pluginManagement {
     repositories {
         maven {
