@@ -6,9 +6,9 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class ReactiveAction(
-    val actionType: String,
+    val actionType: ActionType,
     val className: String,
-    val graphType: String,
+    val graphType: GraphType,
     val data: String
 ) {
     override fun toString(): String {

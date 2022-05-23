@@ -1,5 +1,7 @@
 package org.archguard.dsl
 
+import org.archguard.dsl.base.model.ActionType
+import org.archguard.dsl.base.model.GraphType
 import org.archguard.dsl.design.LayeredDecl
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -46,18 +48,18 @@ internal class DslTest {
 
     @Test
     internal fun reactive_action() {
-        val action = diagram().show(LayeredDecl(), "sample")
-        assertEquals("graph", action.actionType)
+        val action = diagram().show(LayeredDecl(), GraphType.UML)
+        assertEquals(ActionType.GRAPH, action.actionType)
         assertEquals("org.archguard.dsl.design.LayeredDecl", action.className)
-        assertEquals("sample", action.graphType)
+        assertEquals(GraphType.UML, action.graphType)
     }
 
     @Test
     internal fun reactive_action_list() {
-        val action = diagram().show(mvc.relations(), "sample")
-        assertEquals("graph", action.actionType)
+        val action = diagram().show(mvc.relations(), GraphType.ARCHDOC)
+        assertEquals(ActionType.GRAPH, action.actionType)
         assertEquals("java.util.ArrayList", action.className)
-        assertEquals("sample", action.graphType)
+        assertEquals(GraphType.ARCHDOC, action.graphType)
         assertEquals(
             "[{\"source\":\"controller\",\"target\":\"service\"}, {\"source\":\"service\",\"target\":\"repository\"}]",
             action.data

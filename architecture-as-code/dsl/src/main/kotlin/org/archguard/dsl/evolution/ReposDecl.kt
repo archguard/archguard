@@ -9,4 +9,8 @@ class ReposDecl : Element {
     fun repo(name: String, language: String, scmUrl: String) {
         this.repos += Repository(name, language, scmUrl)
     }
+
+    fun save() {
+
+    }
 }
