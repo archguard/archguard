@@ -1,26 +1,13 @@
 package org.archguard.dsl.evolution
 
 import org.archguard.dsl.base.Element
+import org.archguard.dsl.evolution.linq.ClassQueryDecl
+import org.archguard.dsl.evolution.linq.ImplementationDecl
 
 /**
  * for all query
  */
 open class QueryConditionDecl: Element {}
-
-class ClassQueryDecl(condition: QueryConditionDecl) : Element {
-    // todo: re
-    fun filter(function: () -> List<Unit>) {
-
-    }
-
-    fun map(function: () -> Unit) {
-
-    }
-}
-
-class ImplementationDecl(expr: String) : QueryConditionDecl() {
-
-}
 
 fun implementation(expr: String): ImplementationDecl {
     return ImplementationDecl(expr)
