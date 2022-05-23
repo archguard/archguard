@@ -1,4 +1,4 @@
-package org.archguard.architecture.core.module.view.module
+package org.archguard.architecture.core.module.view.module.layer
 
 /**
  * Layer in Module Level, one layer should contain one or more components

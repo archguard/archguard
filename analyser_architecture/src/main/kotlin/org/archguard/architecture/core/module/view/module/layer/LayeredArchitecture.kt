@@ -1,4 +1,6 @@
-package org.archguard.architecture.core.module.view.module
+package org.archguard.architecture.core.module.view.module.layer
+
+import org.archguard.architecture.core.module.view.module.ModuleArchitecture
 
 /**
  * we assume a module in maven or gradle should be a subsystem.
