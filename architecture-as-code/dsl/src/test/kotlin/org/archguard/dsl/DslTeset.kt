@@ -82,4 +82,15 @@ internal class DslTest {
             action.data
         )
     }
+
+    @Test
+    internal fun create_repo() {
+        val decls = repos {
+            repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
+            repo(name = "Backend", language = "Kotlin", scmUrl = "https://github.com/archguard/archguard")
+        }
+
+        val action = decls.create()
+        assertEquals(ActionType.CREATE_REPOS, action.actionType)
+    }
 }

@@ -10,4 +10,7 @@ enum class GraphType {
 
     @SerialName("uml")
     UML,
+
+    @SerialName("null")
+    NULL,
 }

@@ -9,5 +9,5 @@ enum class ActionType {
     GRAPH,
 
     @SerialName("create_repo")
-    CREATE_REPO
+    CREATE_REPOS
 }
