@@ -1,7 +1,7 @@
 rootProject.name = "archguard"
 
 include(":")
-include(":model")
+include(":domain")
 
 pluginManagement {
     repositories {
