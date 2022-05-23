@@ -46,7 +46,7 @@ internal class DslTest {
 
     @Test
     internal fun reactive_action() {
-        val action = graph().show(LayeredDecl(), "sample")
+        val action = diagram().show(LayeredDecl(), "sample")
         assertEquals("graph", action.actionType)
         assertEquals("org.archguard.dsl.design.LayeredDecl", action.className)
         assertEquals("sample", action.graphType)
@@ -54,7 +54,7 @@ internal class DslTest {
 
     @Test
     internal fun reactive_action_list() {
-        val action = graph().show(mvc.relations(), "sample")
+        val action = diagram().show(mvc.relations(), "sample")
         assertEquals("graph", action.actionType)
         assertEquals("java.util.ArrayList", action.className)
         assertEquals("sample", action.graphType)
@@ -74,7 +74,7 @@ internal class DslTest {
             组件("repository") 依赖于 组件("domain")
         }
 
-        val action = graph().show(layer.relations())
+        val action = diagram().show(layer.relations())
         assertEquals(
             "[{\"source\":\"controller\",\"target\":\"application\"}, {\"source\":\"controller\",\"target\":\"domain\"}, {\"source\":\"application\",\"target\":\"domain\"}, {\"source\":\"repository\",\"target\":\"domain\"}]",
             action.data

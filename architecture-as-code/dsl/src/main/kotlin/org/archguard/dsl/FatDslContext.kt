@@ -21,7 +21,7 @@ fun layered(init: LayeredDecl.() -> Unit): LayeredDecl {
     return layeredDecl
 }
 
-fun graph(): ReactiveActionDecl {
+fun diagram(): ReactiveActionDecl {
     return ReactiveActionDecl()
 }
 
