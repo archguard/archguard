@@ -1,4 +1,4 @@
-package org.archguard.backend.aac
+package com.thoughtworks.archguard.aac
 
 import com.thoughtworks.archguard.common.exception.DuplicateResourceException
 import com.thoughtworks.archguard.system_info.controller.SystemInfoDTO
@@ -32,7 +32,6 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
                 successName += it.name
             } catch (e: Exception) {
                 failureName += it.name
-                throw DuplicateResourceException("There is already system info")
             }
         }
 
