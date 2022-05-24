@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.aac
 
+import com.thoughtworks.archguard.aac.model.AsCodeResponse
+import com.thoughtworks.archguard.aac.model.RepoStatus
 import com.thoughtworks.archguard.system_info.controller.SystemInfoDTO
 import com.thoughtworks.archguard.system_info.controller.SystemInfoMapper
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
@@ -11,15 +13,14 @@ import org.springframework.web.bind.annotation.RestController
 
 class AsCodeRepositoryDTO(val name: String, val language: String, val scmUrl: String)
 
-class RepoStatus(val success: List<String>, val failure: List<String>)
-
+// todo: thinking in move to websocket?
 @RestController
 @RequestMapping("/api/ascode")
 class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoMapper: SystemInfoMapper) {
     private val logger = LoggerFactory.getLogger(AsCodeController::class.java)
 
     @PutMapping("/repos")
-    fun createRepos(@RequestBody repos: List<AsCodeRepositoryDTO>): RepoStatus {
+    fun createRepos(@RequestBody repos: List<AsCodeRepositoryDTO>): AsCodeResponse {
         val successName = mutableListOf<String>()
         val failureName = mutableListOf<String>()
 
@@ -39,6 +40,8 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
             }
         }
 
-        return RepoStatus(successName, failureName)
+        return AsCodeResponse(
+            content = RepoStatus(successName, failureName)
+        )
     }
 }

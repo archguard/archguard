@@ -6,9 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class AsCodeContent
 
-
-@kotlinx.serialization.Serializable
-class RepoStatus(val success: List<String>, val failure: List<String>) : AsCodeContent() {}
+@Serializable
+class RepoStatus(val success: List<String>, val failure: List<String>) : AsCodeContent()
 
 @Serializable
 enum class ServerMessageType {
@@ -20,6 +19,4 @@ enum class ServerMessageType {
 class AsCodeResponse(
     var msgType: ServerMessageType = ServerMessageType.NORMAL,
     var content: AsCodeContent,
-) {
-
-}
+)
