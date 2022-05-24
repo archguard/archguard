@@ -5,8 +5,10 @@ plugins {
 }
 
 application {
-    mainClass.set("org.archguard.archdoc.ApplicationKt")
+    mainClass.set("org.archguard.aaac.ApplicationKt")
 }
+
+group = "org.archguard.aaac"
 
 dependencies {
     api(project(":architecture-as-code:repl-api"))

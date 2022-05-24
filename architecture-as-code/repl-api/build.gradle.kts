@@ -1,13 +1,10 @@
 plugins {
-    application
     id("org.jetbrains.kotlin.jupyter.api") version "0.11.0-89-1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
 }
 
-application {
-    mainClass.set("org.archguard.archdoc.ApplicationKt")
-}
+group = "org.archguard.aaac"
 
 repositories {
     mavenCentral()
