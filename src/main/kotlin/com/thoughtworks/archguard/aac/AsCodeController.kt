@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.aac
 
-import com.thoughtworks.archguard.common.exception.DuplicateResourceException
 import com.thoughtworks.archguard.system_info.controller.SystemInfoDTO
 import com.thoughtworks.archguard.system_info.controller.SystemInfoMapper
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
@@ -25,7 +24,12 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
         val failureName = mutableListOf<String>()
 
         repos.forEach {
-            val systemInfoDTO = SystemInfoDTO(systemName = it.name, repo = listOf(it.scmUrl), language = it.language)
+            val systemInfoDTO = SystemInfoDTO(
+                systemName = it.name,
+                repo = listOf(it.scmUrl),
+                language = it.language,
+                qualityGateProfileId = 1
+            )
             val systemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
             try {
                 systemInfoService.addSystemInfo(systemInfo)
