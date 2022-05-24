@@ -20,11 +20,6 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
         return calculateServiceByIds(allSystems)
     }
 
-    fun allContainerServices(): List<ContainerServiceResponse> {
-        val allSystems = repo.findAllSystemIdName()
-        return calculateServiceByIds(allSystems)
-    }
-
     private fun calculateServiceByIds(allSystems: List<ContainerServiceDO>): List<ContainerServiceResponse> {
         return allSystems.map { system ->
             val demands = repo.findDemandBySystemId(system.id).map {
@@ -49,6 +44,7 @@ class ServicesMapService(val repo: ContainerServiceRepo) {
 
     private val FRONTEND_PARA = "\\$\\{[a-zA-Z.]+\\}".toRegex()
     private val SPRING_PARA = "\\{[a-zA-Z.]+\\}".toRegex()
+
     // such as: `$baseUrl/api/quality-gate-profile/$qualityGateName`
     private val KOTLIN_LINE_STR_REF = "\\$[a-zA-Z]+".toRegex()
 

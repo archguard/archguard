@@ -20,9 +20,4 @@ class ContainerServiceController(val service: ServicesMapService) {
     fun getSystemByIds(@RequestParam(name = "system") ids: List<String>): List<ContainerServiceResponse> {
         return service.findAllServiceByIds(ids)
     }
-
-    @GetMapping("/flare")
-    fun getAllContainerServices(): List<ContainerServiceResponse> {
-        return service.allContainerServices()
-    }
 }
