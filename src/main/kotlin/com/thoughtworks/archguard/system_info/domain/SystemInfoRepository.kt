@@ -9,7 +9,7 @@ interface SystemInfoRepository {
 
     fun addSystemInfo(systemInfo: SystemInfo): Long
 
-    fun queryBysystemName(systemName: String): Int
+    fun queryBySystemName(systemName: String): Int
 
     fun deleteSystemInfo(id: Long): Int
 

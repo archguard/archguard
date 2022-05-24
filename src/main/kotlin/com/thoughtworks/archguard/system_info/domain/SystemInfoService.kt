@@ -36,7 +36,7 @@ class SystemInfoService(
 
     @Transactional
     fun addSystemInfo(systemInfo: SystemInfo): Long {
-        if (systemInfoRepository.queryBysystemName(systemInfo.systemName) == 0) {
+        if (systemInfoRepository.queryBySystemName(systemInfo.systemName) == 0) {
             val id = systemInfoRepository.addSystemInfo(systemInfo)
             analysisClientProxy.refreshThresholdCache()
             return id
