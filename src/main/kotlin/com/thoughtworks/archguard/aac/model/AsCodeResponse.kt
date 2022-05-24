@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 sealed class AsCodeContent
 
 @Serializable
-class RepoStatus(val success: List<String>, val failure: List<String>) : AsCodeContent()
+class RepoStatus(val success: List<String>, val existed: List<String>) : AsCodeContent()
 
 @Serializable
 enum class ServerMessageType {

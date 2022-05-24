@@ -21,8 +21,8 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
 
     @PutMapping("/repos")
     fun createRepos(@RequestBody repos: List<AsCodeRepositoryDTO>): AsCodeResponse {
-        val successName = mutableListOf<String>()
-        val failureName = mutableListOf<String>()
+        val successes = mutableListOf<String>()
+        val exists = mutableListOf<String>()
 
         repos.forEach {
             val systemInfoDTO = SystemInfoDTO(
@@ -34,14 +34,14 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
             val systemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
             try {
                 systemInfoService.addSystemInfo(systemInfo)
-                successName += it.name
+                successes += it.name
             } catch (e: Exception) {
-                failureName += it.name
+                exists += it.name
             }
         }
 
         return AsCodeResponse(
-            content = RepoStatus(successName, failureName)
+            content = RepoStatus(successes, exists)
         )
     }
 }
