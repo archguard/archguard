@@ -19,7 +19,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "select id, system_name systemName, repo repo, sql_table `sql`," +
                         " username username, password password, repo_type repoType, scanned scanned," +
                         " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language," +
-                        "code_path codePath, workdir workdir, " +
+                        " code_path codePath, workdir workdir," +
                         " threshold_suite_id badSmellThresholdSuiteId, branch from system_info where id = :id"
             )
                 .bind("id", id)
