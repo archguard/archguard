@@ -191,7 +191,6 @@ dependencies {
 
     jacocoAggregation(project(":architecture-as-code:dsl"))
     jacocoAggregation(project(":architecture-as-code:repl-api"))
-    jacocoAggregation(project(":architecture-as-code:repl-server"))
 }
 
 reporting {

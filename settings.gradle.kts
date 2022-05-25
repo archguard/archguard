@@ -46,4 +46,3 @@ include(":rule-doc-generator")
  */
 include(":architecture-as-code:dsl")
 include(":architecture-as-code:repl-api")
-include(":architecture-as-code:repl-server")
