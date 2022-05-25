@@ -18,8 +18,7 @@ import javax.annotation.Resource
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DBRider
-class SystemtInfoApiATest {
-
+class SystemInfoApiATest {
     @Autowired
     lateinit var jdbi: Jdbi
 
