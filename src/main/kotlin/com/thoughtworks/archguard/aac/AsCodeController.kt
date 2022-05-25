@@ -29,7 +29,7 @@ class AsCodeController(val systemInfoService: SystemInfoService, val systemInfoM
                 systemName = it.name,
                 repo = listOf(it.scmUrl),
                 language = it.language,
-                qualityGateProfileId = 1
+                badSmellThresholdSuiteId = 1
             )
             val systemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
             try {
