@@ -1,6 +1,5 @@
 plugins {
     base
-    java
     id("jacoco-report-aggregation")
     id("org.jetbrains.dokka") version "1.6.21"
 
@@ -39,8 +38,8 @@ allprojects {
         implementation(kotlin("test"))
         implementation(kotlin("test-junit"))
 
-        testImplementation("org.junit.jupiter:junit-jupiter:5.9.0-M1")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0-M1")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     }
 
     tasks.getByName<Test>("test") {
