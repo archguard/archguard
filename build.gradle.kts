@@ -56,11 +56,13 @@ dependencies {
 
     // the scanned models
     implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
+    implementation("org.archguard.aaac:repl-api:2.0.0-alpha.7")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     // cache for overview api
     implementation("org.springframework.boot:spring-boot-starter-cache")
 
