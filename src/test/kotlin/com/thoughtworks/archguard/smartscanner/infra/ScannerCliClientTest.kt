@@ -29,7 +29,7 @@ internal class ScannerCliClientTest {
         ".",
         File("test"),
         logStream,
-        context.branch,
+        "main",
     ).also {
         it.language = "kotlin"
         it.features = listOf("apicalls", "datamap")
