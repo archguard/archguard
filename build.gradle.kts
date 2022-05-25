@@ -164,9 +164,6 @@ subprojects {
 }
 
 dependencies {
-    implementation(kotlin("test"))
-    implementation(kotlin("test-junit"))
-
     jacocoAggregation(project(":server"))
 
     jacocoAggregation(project(":scanner_cli"))
