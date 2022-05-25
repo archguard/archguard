@@ -3,11 +3,11 @@ plugins {
     kotlin("plugin.serialization") version "1.6.21"
 }
 
-group = "org.archguard.aaac"
+group = "com.thoughtworks.aac"
 
 dependencies {
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")

@@ -12,6 +12,8 @@ plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
+    
+    id("org.jetbrains.dokka") version "1.6.21"
 
     jacoco
 
@@ -92,8 +94,16 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+
 allprojects {
     apply(plugin = "java")
+    apply(plugin = "jacoco")
+    apply(plugin = "org.jetbrains.dokka")
+
+    group = "org.archguard.scanner"
+    version = "2.0.0-alpha.7"
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
+    java.targetCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
         mavenCentral()
@@ -102,13 +112,59 @@ allprojects {
 
     dependencies {
         implementation(kotlin("stdlib"))
-        implementation(kotlin("stdlib-jdk8"))
 
+        // log
+        implementation("io.github.microutils:kotlin-logging:2.1.21")
+
+        // test
         implementation(kotlin("test"))
         implementation(kotlin("test-junit"))
+
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    }
+
+    tasks.getByName<Test>("test") {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    tasks.test {
+        finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+    }
+
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test) // tests are required to run before generating the report
+    }
+
+    tasks.jacocoTestReport {
+        reports {
+            xml.required.set(true)
+            csv.required.set(false)
+            html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+        }
+    }
+
+    tasks.withType<JacocoReport> {
+        afterEvaluate {
+            classDirectories.setFrom(
+                files(
+                    classDirectories.files.map {
+                        fileTree(it).apply {
+                            exclude("dev.evolution")
+                        }
+                    }
+                )
+            )
+        }
     }
 }
-
 
 subprojects {
     apply(plugin = "java-library")

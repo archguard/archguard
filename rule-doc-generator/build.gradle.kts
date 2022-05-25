@@ -1,8 +1,8 @@
 plugins {
     id("application")
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    kotlin("plugin.serialization") version "1.6.10"
+    kotlin("plugin.serialization") version "1.6.21"
 }
 
 dependencies {
@@ -12,7 +12,7 @@ dependencies {
     api(project(":rule-linter:rule-test-code"))
     api(project(":rule-linter:rule-webapi"))
 
-    api("org.jetbrains.kotlin:kotlin-compiler:1.6.10")
+    api("org.jetbrains.kotlin:kotlin-compiler:1.6.21")
 
     implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation("com.github.ajalt.clikt:clikt:3.4.0")
