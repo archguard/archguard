@@ -13,10 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import java.io.File
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Disabled
-internal class TestBadSmellScannerTest(@Autowired val testBadSmellScanner: TestBadSmellScanner, @Autowired val jdbi: Jdbi) {
+internal class TestBadSmellScannerTest(
+    @Autowired val testBadSmellScanner: TestBadSmellScanner,
+    @Autowired val jdbi: Jdbi
+) {
 
     @Test
     fun should_get_test_bad_smell_report() {

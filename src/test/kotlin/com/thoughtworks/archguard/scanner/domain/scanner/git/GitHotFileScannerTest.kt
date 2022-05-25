@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 internal class GitHotFileScannerTest(@Autowired val gitHotFileRepo: ScannerGitHotFileRepo) {
 

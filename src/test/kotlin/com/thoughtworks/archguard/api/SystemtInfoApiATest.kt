@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import javax.annotation.Resource
 
-@SpringBootTest
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DBRider
 class SystemtInfoApiATest {
 
@@ -46,8 +45,8 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -66,8 +65,8 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
+                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
         assertEquals(200, status)
         assertEquals(except, content)
     }
