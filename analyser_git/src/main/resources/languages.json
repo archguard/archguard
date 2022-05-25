@@ -1,0 +1,8034 @@
+[
+  {
+    "name": "Ruby",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "rb"
+    ],
+    "multi_line": [
+      [
+        "=begin",
+        "=end"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "ruby"
+    ]
+  },
+  {
+    "name": "ATS",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "if ",
+      "if(",
+      " then ",
+      " else ",
+      "case+ ",
+      "ifcase",
+      "let ",
+      "and "
+    ],
+    "extensions": [
+      "dats",
+      "sats",
+      "ats",
+      "hats"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ],
+      [
+        "(*",
+        "*)"
+      ],
+      [
+        "////",
+        "THISSHOULDNEVERAPPEARWEHOPE"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Coq",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "v"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "keywords": [
+      "Require",
+      "Hypothesis",
+      "Inductive",
+      "Remark",
+      "Lemma",
+      "Proof",
+      "Definition",
+      "Theorem",
+      "Class",
+      "Instance",
+      "Module",
+      "Context",
+      "Section",
+      "Notation",
+      "End",
+      "Fixpoint",
+      "From Coq"
+    ]
+  },
+  {
+    "name": "Robot Framework",
+    "extensions": [
+      "robot"
+    ]
+  },
+  {
+    "name": "Flow9",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "if ",
+      "if(",
+      "else ",
+      "else{",
+      "fori ",
+      "fori(",
+      "switch ",
+      "switch(",
+      "fold ",
+      "fold(",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== ",
+      "|\u003e "
+    ],
+    "extensions": [
+      "flow"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "JSONL",
+    "extensions": [
+      "jsonl"
+    ]
+  },
+  {
+    "name": "Jinja",
+    "complexitychecks": [
+      "{% for ",
+      "{%- for ",
+      "{% if ",
+      "{%- if ",
+      "{% else ",
+      "{%- else ",
+      "{% elif ",
+      "{% macro ",
+      "{%- macro ",
+      "{% call ",
+      "{%- call ",
+      "{% filter ",
+      "{%- filter ",
+      "{% set ",
+      "{% include ",
+      "{% from ",
+      "{% extends ",
+      "{% with "
+    ],
+    "extensions": [
+      "jinja",
+      "j2",
+      "jinja2"
+    ],
+    "multi_line": [
+      [
+        "{#",
+        "#}"
+      ]
+    ]
+  },
+  {
+    "name": "Vala",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vala"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Cogent",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cogent"
+    ]
+  },
+  {
+    "name": "GN",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "if(",
+      "if (",
+      "else if(",
+      "else if (",
+      "else(",
+      "else (",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "gn",
+      "gni"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "SystemVerilog",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "| ",
+      "\u0026 ",
+      "!= ",
+      "!== ",
+      "== ",
+      "foreach ",
+      "foreach(",
+      "case ",
+      "case(",
+      "casex ",
+      "casex(",
+      "casez ",
+      "casez(",
+      "casexz ",
+      "casexz(",
+      "fork ",
+      " ? ",
+      "inside",
+      "with",
+      "event "
+    ],
+    "extensions": [
+      "sv",
+      "svh"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "keywords": [
+      "endmodule",
+      "posedge",
+      "edge",
+      "always",
+      "wire"
+    ]
+  },
+  {
+    "name": "Zsh",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "zsh",
+      "zshenv",
+      "zlogin",
+      "zlogout",
+      "zprofile",
+      "zshrc"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      ".zshenv",
+      ".zlogin",
+      ".zlogout",
+      ".zprofile",
+      ".zshrc"
+    ],
+    "shebangs": [
+      "zsh"
+    ]
+  },
+  {
+    "name": "CMake",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cmake",
+      "cmakelists.txt"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "DOT",
+    "line_comment": [
+      "//",
+      "#"
+    ],
+    "extensions": [
+      "dot",
+      "gv"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Stata",
+    "line_comment": [
+      "//",
+      "*"
+    ],
+    "complexitychecks": [
+      "foreach",
+      "forvalues",
+      "if",
+      "else",
+      "while",
+      "switch",
+      "|",
+      "\u0026",
+      "!=",
+      "=="
+    ],
+    "extensions": [
+      "do",
+      "ado"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "`\"",
+        "end": "\"'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Zig",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "while ",
+      "for ",
+      "if ",
+      "else ",
+      "defer ",
+      "switch",
+      "||",
+      "\u0026\u0026",
+      "!=",
+      "=="
+    ],
+    "extensions": [
+      "zig"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\\",
+        "end": "\n",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Gemfile",
+    "line_comment": [
+      "#"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      "gemfile"
+    ]
+  },
+  {
+    "name": "HAML",
+    "line_comment": [
+      "-#"
+    ],
+    "extensions": [
+      "haml"
+    ]
+  },
+  {
+    "name": "Razor",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cshtml",
+      "razor"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ],
+      [
+        "@*",
+        "*@"
+      ]
+    ]
+  },
+  {
+    "name": "Futhark",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "if ",
+      "else ",
+      "then ",
+      "for ",
+      "loop ",
+      "while ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "\u003e= ",
+      "\u003c= "
+    ],
+    "extensions": [
+      "fut"
+    ]
+  },
+  {
+    "name": "Julius",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "julius"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "QML",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "qml"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "YAML",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "yaml",
+      "yml"
+    ]
+  },
+  {
+    "name": "COBOL",
+    "line_comment": [
+      "*"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cob",
+      "cbl",
+      "ccp",
+      "cobol",
+      "cpy"
+    ]
+  },
+  {
+    "name": "Closure Template",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== ",
+      "\u003e= ",
+      "\u003c= ",
+      "?: ",
+      "? : "
+    ],
+    "extensions": [
+      "soy"
+    ],
+    "multi_line": [
+      [
+        "/**",
+        "*/"
+      ],
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Docker ignore",
+    "line_comment": [
+      "#",
+      "//"
+    ],
+    "filenames": [
+      ".dockerignore"
+    ]
+  },
+  {
+    "name": "ColdFusion",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cfm"
+    ],
+    "multi_line": [
+      [
+        "\u003c!---",
+        "---\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Extensible Stylesheet Language Transformations",
+    "extensions": [
+      "xslt",
+      "xsl"
+    ]
+  },
+  {
+    "name": "MQL Header",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mqh"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Ruby HTML",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "rhtml",
+      "erb"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Scons",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "csig",
+      "sconstruct",
+      "sconscript"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "C Header",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "h"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "JSON",
+    "extensions": [
+      "json"
+    ]
+  },
+  {
+    "name": "Java",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "java"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ASP.NET",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "asax",
+      "ascx",
+      "asmx",
+      "aspx",
+      "master",
+      "sitemap",
+      "webinfo"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ],
+      [
+        "\u003c%--",
+        "--\u003e"
+      ]
+    ]
+  },
+  {
+    "name": "MSBuild",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "csproj",
+      "vbproj",
+      "fsproj",
+      "props",
+      "targets"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "gitignore",
+    "line_comment": [
+      "#"
+    ],
+    "filenames": [
+      ".gitignore"
+    ]
+  },
+  {
+    "name": "Visual Basic for Applications",
+    "line_comment": [
+      "'"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "elseif ",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cls"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Haskell",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "hs"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ]
+  },
+  {
+    "name": "Mako",
+    "line_comment": [
+      "##"
+    ],
+    "complexitychecks": [
+      "% for ",
+      "% if ",
+      "% else ",
+      "% elif ",
+      "\u003c% include ",
+      "\u003c%def ",
+      "\u003c%page ",
+      "\u003c%def ",
+      "\u003c%block ",
+      "\u003c%namespace ",
+      "\u003c%inherit "
+    ],
+    "extensions": [
+      "mako",
+      "mao"
+    ],
+    "multi_line": [
+      [
+        "\u003c%doc\u003e",
+        "\u003c/%doc\u003e"
+      ]
+    ]
+  },
+  {
+    "name": "VHDL",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vhd",
+      "vhdl"
+    ],
+    "keywords": [
+      "abs",
+      "access",
+      "after",
+      "alias",
+      "all",
+      "and",
+      "architecture",
+      "array",
+      "assert",
+      "attribute",
+      "begin",
+      "block",
+      "body",
+      "buffer",
+      "bus",
+      "case",
+      "component",
+      "configuration",
+      "constant",
+      "disconnect",
+      "downto",
+      "else",
+      "elsif",
+      "end",
+      "entity",
+      "exit",
+      "file",
+      "for",
+      "function",
+      "generate",
+      "generic",
+      "group",
+      "guarded",
+      "if",
+      "impure",
+      "in",
+      "inertial",
+      "inout",
+      "is",
+      "label",
+      "library",
+      "linkage",
+      "literal",
+      "loop",
+      "map",
+      "mod",
+      "nand",
+      "new",
+      "next",
+      "nor",
+      "not",
+      "null",
+      "of",
+      "on",
+      "open",
+      "or",
+      "others",
+      "out",
+      "package",
+      "port",
+      "postponed",
+      "procedure",
+      "process",
+      "pure",
+      "range",
+      "record",
+      "register",
+      "reject",
+      "rem",
+      "report",
+      "return",
+      "rol",
+      "ror",
+      "select",
+      "severity",
+      "shared",
+      "signal",
+      "sla",
+      "sll",
+      "sra",
+      "srl",
+      "subtype",
+      "then",
+      "to",
+      "transport",
+      "type",
+      "unaffected",
+      "units",
+      "until",
+      "use",
+      "variable",
+      "wait",
+      "when",
+      "while",
+      "with",
+      "xnor",
+      "xor"
+    ]
+  },
+  {
+    "name": "Nim",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "nim"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "QCL",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "qcl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Sieve",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "if",
+      "if ",
+      "elsif",
+      "elsif ",
+      "allof",
+      "allof ",
+      "anyof",
+      "anyof ",
+      "allof(",
+      "anyof("
+    ],
+    "extensions": [
+      "sieve"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Smarty Template",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== ",
+      "include "
+    ],
+    "extensions": [
+      "tpl"
+    ],
+    "multi_line": [
+      [
+        "{*",
+        "*}"
+      ]
+    ]
+  },
+  {
+    "name": "Crystal",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cr"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "FORTRAN Legacy",
+    "line_comment": [
+      "c",
+      "C",
+      "!",
+      "*"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "f",
+      "for",
+      "ftn",
+      "f77",
+      "pfo"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Pascal",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "pas"
+    ],
+    "multi_line": [
+      [
+        "{",
+        "}"
+      ],
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Ur/Web",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ur",
+      "urs"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "m4",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "m4"
+    ]
+  },
+  {
+    "name": "Just",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "justfile"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "MQL4",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mq4"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ReStructuredText",
+    "extensions": [
+      "rst"
+    ]
+  },
+  {
+    "name": "Modula3",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "m3",
+      "mg",
+      "ig",
+      "i3"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "SKILL",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "il"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Nushell",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "do { ",
+      "each {",
+      "if ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "nu"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "nu"
+    ]
+  },
+  {
+    "name": "Varnish Configuration",
+    "line_comment": [
+      "#",
+      "//"
+    ],
+    "extensions": [
+      "vcl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Ceylon",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ceylon"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Go Template",
+    "complexitychecks": [
+      "{{if ",
+      "{{ if ",
+      "{{else",
+      "{{ else",
+      "{{range ",
+      "{{ range ",
+      "{{with",
+      "{{ with"
+    ],
+    "extensions": [
+      "tmpl",
+      "gohtml",
+      "gotxt"
+    ],
+    "multi_line": [
+      [
+        "{{/*",
+        "*/}}"
+      ]
+    ]
+  },
+  {
+    "name": "MQL5",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mq5"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Cassius",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cassius"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "XML",
+    "extensions": [
+      "xml"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Emacs Dev Env",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ede"
+    ]
+  },
+  {
+    "name": "LESS",
+    "line_comment": [
+      "//"
+    ],
+    "extensions": [
+      "less"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Shell",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sh"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      ".tcshrc"
+    ],
+    "shebangs": [
+      "sh"
+    ]
+  },
+  {
+    "name": "Spice Netlist",
+    "line_comment": [
+      "*"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ckt"
+    ]
+  },
+  {
+    "name": "Vue",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vue"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ],
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Bitbucket Pipeline",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "bitbucket-pipelines.yml"
+    ]
+  },
+  {
+    "name": "FXML",
+    "extensions": [
+      "fxml"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Mustache",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mustache"
+    ],
+    "multi_line": [
+      [
+        "{{!",
+        "}}"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Terraform",
+    "line_comment": [
+      "#",
+      "//"
+    ],
+    "complexitychecks": [
+      "count",
+      "for",
+      "for_each",
+      "if",
+      ": ",
+      "? ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "\u003e ",
+      "\u003e= ",
+      "\u003c ",
+      "\u003c= ",
+      "== "
+    ],
+    "extensions": [
+      "tf",
+      "tf.json"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Visual Basic",
+    "line_comment": [
+      "'"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "elseif ",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vb"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "nuspec",
+    "extensions": [
+      "nuspec"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Alchemist",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "+",
+      "-\u003e",
+      "!"
+    ],
+    "extensions": [
+      "crn"
+    ]
+  },
+  {
+    "name": "Bosque",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "if ",
+      "if(",
+      "switch ",
+      "match ",
+      "case ",
+      "| ",
+      "|| ",
+      "\u0026 ",
+      "\u0026\u0026 ",
+      "!= ",
+      "!== ",
+      "== ",
+      "=== "
+    ],
+    "extensions": [
+      "bsq"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Systemd",
+    "extensions": [
+      "automount",
+      "device",
+      "link",
+      "mount",
+      "path",
+      "scope",
+      "service",
+      "slice",
+      "socket",
+      "swap",
+      "target",
+      "timer"
+    ]
+  },
+  {
+    "name": "CoffeeScript",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "coffee"
+    ],
+    "multi_line": [
+      [
+        "###",
+        "###"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Fragment Shader File",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "fsh"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Haxe",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "hx"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Objective C++",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mm"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "PSL Assertion",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "psl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Arvo",
+    "extensions": [
+      "avdl",
+      "avpr",
+      "avsc"
+    ]
+  },
+  {
+    "name": "Bazel",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "bzl",
+      "build.bazel",
+      "build",
+      "workspace"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "CSV",
+    "extensions": [
+      "csv"
+    ]
+  },
+  {
+    "name": "Vim Script",
+    "line_comment": [
+      "\"",
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vim",
+      "vimrc",
+      "gvimrc"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      "_vimrc",
+      ".vimrc",
+      "_gvimrc",
+      ".gvimrc",
+      "vimrc",
+      "gvimrc"
+    ]
+  },
+  {
+    "name": "Specman e",
+    "line_comment": [
+      "--",
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "e"
+    ],
+    "multi_line": [
+      [
+        "'\u003e",
+        "\u003c'"
+      ]
+    ]
+  },
+  {
+    "name": "ignore",
+    "line_comment": [
+      "#"
+    ],
+    "filenames": [
+      ".ignore"
+    ]
+  },
+  {
+    "name": "FORTRAN Modern",
+    "line_comment": [
+      "!"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "f03",
+      "f08",
+      "f90",
+      "f95"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Gherkin Specification",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "given",
+      "when",
+      "then",
+      "and"
+    ],
+    "extensions": [
+      "feature"
+    ]
+  },
+  {
+    "name": "PKGBUILD",
+    "extensions": [
+      "pkgbuild"
+    ]
+  },
+  {
+    "name": "Opalang",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "opa"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "SAS",
+    "line_comment": [
+      "*"
+    ],
+    "complexitychecks": [
+      "do",
+      "%do",
+      "if",
+      "%if",
+      "else",
+      "%else",
+      "case",
+      "or",
+      "and",
+      "^=",
+      "¬=",
+      "~=",
+      "ne",
+      "eq"
+    ],
+    "extensions": [
+      "sas"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Ur/Web Project",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "urp"
+    ]
+  },
+  {
+    "name": "Idris",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "idr",
+      "lidr"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Jade",
+    "line_comment": [
+      "//-"
+    ],
+    "complexitychecks": [
+      "if ",
+      "else if ",
+      "unless "
+    ],
+    "extensions": [
+      "jade"
+    ]
+  },
+  {
+    "name": "Kotlin",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "kt",
+      "kts"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Dhall",
+    "line_comment": [
+      "--"
+    ],
+    "extensions": [
+      "dhall"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Module-Definition",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "def"
+    ]
+  },
+  {
+    "name": "Scheme",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "scm",
+      "ss"
+    ],
+    "multi_line": [
+      [
+        "#|",
+        "|#"
+      ]
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Document Type Definition",
+    "extensions": [
+      "dtd"
+    ]
+  },
+  {
+    "name": "Gradle",
+    "line_comment": [
+      "//"
+    ],
+    "extensions": [
+      "gradle"
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Protocol Buffers",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "proto"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Report Definition Language",
+    "extensions": [
+      "rdl"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Vertex Shader File",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vsh"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Expect",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "exp"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Jenkins Buildfile",
+    "extensions": [
+      "jenkinsfile"
+    ]
+  },
+  {
+    "name": "Lucius",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "lucius"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ClojureScript",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cljs"
+    ]
+  },
+  {
+    "name": "BuildStream",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "bst"
+    ]
+  },
+  {
+    "name": "JAI",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "jai"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Objective C",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "m"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Processing",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "pde"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "GDScript",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "gd"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "SRecode Template",
+    "line_comment": [
+      ";;"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "srt"
+    ]
+  },
+  {
+    "name": "TeX",
+    "line_comment": [
+      "%"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "tex",
+      "sty"
+    ]
+  },
+  {
+    "name": "Svelte",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "svelte"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ],
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "V",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "v"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "`",
+        "end": "`",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true,
+    "keywords": [
+      "break",
+      "const ",
+      "continue",
+      "defer",
+      "else ",
+      "enum",
+      "fn ",
+      "goto",
+      "import ",
+      "in ",
+      "interface",
+      "match",
+      "mut",
+      "println",
+      "pub",
+      "return",
+      "struct ",
+      "type "
+    ]
+  },
+  {
+    "name": "Luna",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "luna"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ASP",
+    "line_comment": [
+      "'",
+      "REM"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "asa",
+      "asp"
+    ]
+  },
+  {
+    "name": "Swift",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "swift"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "C++ Header",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "hh",
+      "hpp",
+      "hxx",
+      "inl",
+      "ipp"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ColdFusion CFScript",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cfc"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Unreal Script",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "uc",
+      "uci",
+      "upkg"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Standard ML (SML)",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sml"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Erlang",
+    "line_comment": [
+      "%"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "erl",
+      "hrl"
+    ],
+    "shebangs": [
+      "escript"
+    ]
+  },
+  {
+    "name": "LEX",
+    "extensions": [
+      "l"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Org",
+    "line_comment": [
+      "# "
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "org"
+    ]
+  },
+  {
+    "name": "PHP",
+    "line_comment": [
+      "#",
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "php"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "php",
+      "php5"
+    ]
+  },
+  {
+    "name": "Pony",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "if ",
+      "match ",
+      "repeat",
+      "while ",
+      "else ",
+      "elseif ",
+      "| ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "pony"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "APL",
+    "line_comment": [
+      "⍝"
+    ],
+    "complexitychecks": [
+      ":For ",
+      ":If ",
+      ":Case ",
+      ":CaseList ",
+      ":While ",
+      ":Repeat ",
+      ":Else ",
+      "∨",
+      "∧",
+      "≠",
+      "~",
+      "¨",
+      "="
+    ],
+    "extensions": [
+      "apl",
+      "aplf",
+      "apln",
+      "aplc"
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Macromedia eXtensible Markup Language",
+    "extensions": [
+      "mxml"
+    ]
+  },
+  {
+    "name": "Monkey C",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mc"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "TaskPaper",
+    "extensions": [
+      "taskpaper"
+    ]
+  },
+  {
+    "name": "Verilog",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vg",
+      "vh",
+      "v"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "keywords": [
+      "module",
+      "endmodule",
+      "timescale",
+      "input",
+      "output",
+      "reg",
+      "wire",
+      "posedge",
+      "negedge",
+      "always",
+      "begin",
+      "switch",
+      "case",
+      "end",
+      "endcase",
+      "else",
+      "localparam",
+      "initial",
+      "signed",
+      "assign",
+      "generate",
+      "genvar"
+    ]
+  },
+  {
+    "name": "CloudFormation (JSON)",
+    "complexitychecks": [
+      "!GetAtt",
+      "!Sub",
+      "!Select",
+      "!Equals",
+      "!If",
+      "DependsOn:",
+      "!Select",
+      "!Equals",
+      "!If",
+      "Fn::If",
+      "Fn::And",
+      "Fn::Equals",
+      "Fn::Not",
+      "Fn::Or",
+      "Fn::Base64",
+      "Fn::Cidr",
+      "Fn::FindInMap",
+      "Fn::GetAtt",
+      "Fn::GetAZs",
+      "Fn::ImportValue",
+      "Fn::Join",
+      "Fn::Select",
+      "Fn::Split",
+      "Fn::Sub",
+      "Fn::Transform"
+    ],
+    "extensions": [
+      "json"
+    ],
+    "keywords": [
+      "\"AWSTemplateFormatVersion\"",
+      "AWS::",
+      "!GetAtt",
+      "!Sub",
+      "\"DependsOn\"",
+      "!Select",
+      "!Equals",
+      "!If",
+      "Fn::If",
+      "Fn::And",
+      "Fn::Equals",
+      "Fn::Not",
+      "Fn::Or",
+      "Fn::Base64",
+      "Fn::Cidr",
+      "Fn::FindInMap",
+      "Fn::GetAtt",
+      "Fn::GetAZs",
+      "Fn::ImportValue",
+      "Fn::Join",
+      "Fn::Select",
+      "Fn::Split",
+      "Fn::Sub",
+      "Fn::Transform"
+    ]
+  },
+  {
+    "name": "AWK",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "awk"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "awk",
+      "gawk",
+      "mawk"
+    ]
+  },
+  {
+    "name": "CodeQL",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "and ",
+      "or ",
+      "implies ",
+      "if ",
+      "else ",
+      "not ",
+      "instanceof ",
+      "in ",
+      "exists(",
+      "forall( ",
+      "avg(",
+      "concat(",
+      "count(",
+      "max(",
+      "min(",
+      "rank(",
+      "strictconcat(",
+      "strictcount(",
+      "strictsum(",
+      "sum("
+    ],
+    "extensions": [
+      "ql",
+      "qll"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "TCL",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "tcl"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "tcl"
+    ]
+  },
+  {
+    "name": "Elixir",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ex",
+      "exs"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Perl",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "pl",
+      "pm"
+    ],
+    "multi_line": [
+      [
+        "=pod",
+        "=cut"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "perl",
+      "perl5",
+      "perl6"
+    ]
+  },
+  {
+    "name": "Softbridge Basic",
+    "line_comment": [
+      "'"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "elseif ",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sbl"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "BASH",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "bash",
+      "bash_login",
+      "bash_logout",
+      "bash_profile",
+      "bashrc"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      ".bash_login",
+      ".bash_logout",
+      ".bash_profile",
+      ".bashrc"
+    ],
+    "shebangs": [
+      "bash"
+    ]
+  },
+  {
+    "name": "Lean",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "lean",
+      "hlean"
+    ],
+    "multi_line": [
+      [
+        "/-",
+        "-/"
+      ]
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "PL/SQL",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "and ",
+      "and(",
+      "else ",
+      "else(",
+      "elseif ",
+      "elseif(",
+      "if ",
+      "if(",
+      "loop ",
+      "not ",
+      "not(",
+      "or ",
+      "or(",
+      "\u003c\u003e ",
+      "\u003c\u003e(",
+      "= ",
+      "=("
+    ],
+    "extensions": [
+      "fnc",
+      "pkb",
+      "pks",
+      "prc",
+      "trg",
+      "vw"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "GLSL",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "vert",
+      "tesc",
+      "tese",
+      "geom",
+      "frag",
+      "comp"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Solidity",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== ",
+      "assembly ",
+      "assembly{",
+      "unchecked ",
+      "unchecked{"
+    ],
+    "extensions": [
+      "sol"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Brainfuck",
+    "complexitychecks": [
+      "[",
+      "]",
+      "\u003c",
+      "\u003e",
+      "+",
+      "-",
+      ".",
+      ","
+    ],
+    "extensions": [
+      "bf"
+    ]
+  },
+  {
+    "name": "Clojure",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "(for ",
+      "(when ",
+      "(loop ",
+      "(doseq ",
+      "(cond ",
+      "(if",
+      "(if-not ",
+      "(and ",
+      "(or ",
+      "(not ",
+      "(= ",
+      "(not= ",
+      "(recur "
+    ],
+    "extensions": [
+      "clj",
+      "cljc"
+    ]
+  },
+  {
+    "name": "Ada",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ada",
+      "adb",
+      "ads",
+      "pad"
+    ]
+  },
+  {
+    "name": "Go",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "go ",
+      "defer ",
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "go"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "`",
+        "end": "`",
+        "ignoreEscape": true,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Rakefile",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "multi_line": [
+      [
+        "=begin",
+        "=end"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      "rake",
+      "rakefile"
+    ]
+  },
+  {
+    "name": "Xtend",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "xtend"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "sed",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "and ",
+      "or ",
+      "not ",
+      "in "
+    ],
+    "extensions": [
+      "sed"
+    ],
+    "shebangs": [
+      "sed"
+    ]
+  },
+  {
+    "name": "Fish",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "fish"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "fish"
+    ]
+  },
+  {
+    "name": "MUMPS",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mps"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Powershell",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "while ",
+      "while(",
+      "until ",
+      "until(",
+      "for ",
+      "for(",
+      "foreach ",
+      "foreach(",
+      "if ",
+      "elseif ",
+      "else ",
+      "switch",
+      "switch(",
+      "-gt",
+      "-lt",
+      "-eq",
+      "-ne",
+      "-ge",
+      "-le",
+      "-in",
+      "-notin",
+      "-contains",
+      "-notcontains"
+    ],
+    "extensions": [
+      "ps1",
+      "psm1"
+    ],
+    "multi_line": [
+      [
+        "\u003c#",
+        "#\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "C",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "c",
+      "ec",
+      "pgc"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Elm",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "case ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "elm"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Handlebars",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "hbs",
+      "handlebars"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ],
+      [
+        "{{!",
+        "}}"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "XAML",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "xaml"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "AsciiDoc",
+    "extensions": [
+      "adoc"
+    ]
+  },
+  {
+    "name": "C#",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cs",
+      "csx"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "@\"",
+        "end": "\"",
+        "ignoreEscape": true,
+        "docString": false
+      },
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Isabelle",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "thy"
+    ],
+    "multi_line": [
+      [
+        "{*",
+        "*}"
+      ],
+      [
+        "(*",
+        "*)"
+      ],
+      [
+        "‹",
+        "›"
+      ],
+      [
+        "\\\\\u003copen\u003e",
+        "\\\\\u003cclose\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "''",
+        "end": "''",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Cython",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "and ",
+      "or ",
+      "not ",
+      "in "
+    ],
+    "extensions": [
+      "pyx",
+      "pxi",
+      "pxd"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "FIDL",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "fidl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Janet",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "(if ",
+      "(for ",
+      "(for ",
+      "(cond ",
+      "(switch ",
+      "(when ",
+      "(while ",
+      "(loop ",
+      "(case "
+    ],
+    "extensions": [
+      "janet"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "``",
+        "end": "``",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "@\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "JavaServer Pages",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "jsp"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Jupyter",
+    "extensions": [
+      "ipynb",
+      "jpynb"
+    ]
+  },
+  {
+    "name": "LLVM IR",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "llvm.loop",
+      "br ",
+      "switch ",
+      "indirectbr ",
+      "invoke ",
+      "callbr ",
+      "resume ",
+      "catchswitch ",
+      "catchret ",
+      "cleanupret ",
+      "shl ",
+      "lshr ",
+      "ashr ",
+      "and ",
+      "or ",
+      "xor "
+    ],
+    "extensions": [
+      "ll"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Puppet",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "pp"
+    ],
+    "multi_line": [
+      [
+        "=begin",
+        "=end"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ABAP",
+    "line_comment": [
+      "*",
+      "\\\""
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "abap"
+    ]
+  },
+  {
+    "name": "Device Tree",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "dts",
+      "dtsi"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Groovy",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "groovy",
+      "grt",
+      "gtpl",
+      "gvy"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Web Services Description Language",
+    "extensions": [
+      "wsdl"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Basic",
+    "line_comment": [
+      "'"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "elseif ",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "bas"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Makefile",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "makefile",
+      "mak",
+      "mk",
+      "bp"
+    ],
+    "filenames": [
+      "makefile"
+    ]
+  },
+  {
+    "name": "Properties File",
+    "line_comment": [
+      "#"
+    ],
+    "extensions": [
+      "properties"
+    ]
+  },
+  {
+    "name": "XML Schema",
+    "extensions": [
+      "xsd"
+    ]
+  },
+  {
+    "name": "Yarn",
+    "complexitychecks": [
+      "\u003c\u003cif ",
+      "\u003c\u003celseif ",
+      "\u003c\u003celse ",
+      " eq ",
+      " == ",
+      " neq ",
+      " ! ",
+      " gt ",
+      " \u003e ",
+      " lt ",
+      " \u003c ",
+      " lte ",
+      " \u003c= ",
+      " gte ",
+      " \u003e= ",
+      " xor ",
+      " ^ ",
+      " and ",
+      " \u0026\u0026 ",
+      " || ",
+      " or "
+    ],
+    "extensions": [
+      "yarn"
+    ]
+  },
+  {
+    "name": "Assembly",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "s",
+      "asm"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "CSS",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "css"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "R",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "r"
+    ]
+  },
+  {
+    "name": "Cabal",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cabal"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ]
+  },
+  {
+    "name": "Racket",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "(if",
+      "(cond",
+      "[else",
+      "(and",
+      "(or",
+      "(for",
+      "#:when",
+      "#:unless",
+      "#:break",
+      "#:final",
+      "(do",
+      "(when",
+      "(unless",
+      "(shared",
+      "(case"
+    ],
+    "extensions": [
+      "rkt"
+    ],
+    "multi_line": [
+      [
+        "|#",
+        "#|"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true,
+    "shebangs": [
+      "racket"
+    ]
+  },
+  {
+    "name": "Thrift",
+    "line_comment": [
+      "//",
+      "#"
+    ],
+    "extensions": [
+      "thrift"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "ActionScript",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "as"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "AutoHotKey",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ahk"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "Boo",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "if ",
+      "elif ",
+      "unless ",
+      " and ",
+      "for ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "boo"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\"\"\"",
+        "end": "\"\"\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Meson",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "foreach ",
+      "if ",
+      "elif ",
+      "unless ",
+      "and ",
+      "or ",
+      "else "
+    ],
+    "extensions": [
+      "meson.build",
+      "meson_options.txt"
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Hamlet",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "hamlet"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "JSX",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "jsx"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Markdown",
+    "extensions": [
+      "md",
+      "markdown"
+    ]
+  },
+  {
+    "name": "Game Maker Project",
+    "extensions": [
+      "yyp"
+    ]
+  },
+  {
+    "name": "Batch",
+    "line_comment": [
+      "REM",
+      "::"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "bat",
+      "btm",
+      "cmd"
+    ]
+  },
+  {
+    "name": "PureScript",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "purs"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ]
+  },
+  {
+    "name": "Stylus",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "if ",
+      "unless ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "styl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Xcode Config",
+    "line_comment": [
+      "//"
+    ],
+    "extensions": [
+      "xcconfig"
+    ]
+  },
+  {
+    "name": "Android Interface Definition Language",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "aidl"
+    ],
+    "multi_line": [
+      [
+        "/**",
+        "*/"
+      ],
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Dockerfile",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "dockerfile"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      "dockerfile"
+    ]
+  },
+  {
+    "name": "LOLCODE",
+    "line_comment": [
+      "BTW"
+    ],
+    "complexitychecks": [
+      "AWSUM THX ",
+      "O NOES ",
+      "PLZ OPEN FILE ",
+      "IM IN YR ",
+      "O RLY?",
+      "O RLY? ",
+      "WTF?",
+      "WTF? "
+    ],
+    "extensions": [
+      "lol",
+      "lols"
+    ],
+    "multi_line": [
+      [
+        "OBTW",
+        "TLDR"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "HTML",
+    "extensions": [
+      "html",
+      "htm"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Madlang",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "mad"
+    ],
+    "multi_line": [
+      [
+        "{#",
+        "#}"
+      ]
+    ]
+  },
+  {
+    "name": "SVG",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "svg"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Autoconf",
+    "line_comment": [
+      "#",
+      "dnl"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "in"
+    ]
+  },
+  {
+    "name": "C Shell",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "csh"
+    ],
+    "filenames": [
+      ".cshrc"
+    ],
+    "shebangs": [
+      "csh",
+      "tcsh"
+    ]
+  },
+  {
+    "name": "Creole",
+    "extensions": [
+      "creole"
+    ]
+  },
+  {
+    "name": "Lua",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "lua"
+    ],
+    "multi_line": [
+      [
+        "--[[",
+        "]]"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "lua"
+    ]
+  },
+  {
+    "name": "Oz",
+    "line_comment": [
+      "%"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "oz"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Python",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "while ",
+      "while(",
+      "if ",
+      "if(",
+      "elif ",
+      "elif(",
+      "else ",
+      "else:",
+      "match ",
+      "match(",
+      "try ",
+      "try:",
+      "except ",
+      "except(",
+      "finally ",
+      "finally:",
+      "with ",
+      "with (",
+      "and ",
+      "and(",
+      "or ",
+      "or("
+    ],
+    "extensions": [
+      "py"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\"\"\"",
+        "end": "\"\"\"",
+        "ignoreEscape": false,
+        "docString": true
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": true
+      }
+    ],
+    "shebangs": [
+      "python",
+      "python2",
+      "python3"
+    ]
+  },
+  {
+    "name": "Rust",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "rs"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Scala",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sc",
+      "scala"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Alex",
+    "extensions": [
+      "x"
+    ]
+  },
+  {
+    "name": "C++",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "cc",
+      "cpp",
+      "cxx",
+      "c++",
+      "pcc",
+      "ino"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Dart",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "dart"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "TL",
+    "line_comment": [
+      "//",
+      "///"
+    ],
+    "extensions": [
+      "tl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "DM",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "switch(",
+      "while ",
+      "while(",
+      "else ",
+      "||",
+      "\u0026\u0026",
+      "!=",
+      "\u003c\u003e",
+      "==",
+      "in "
+    ],
+    "extensions": [
+      "dm"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "Intel HEX",
+    "extensions": [
+      "ihex"
+    ]
+  },
+  {
+    "name": "LD Script",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "lds"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Forth",
+    "line_comment": [
+      "\\\\"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "4th",
+      "forth",
+      "fr",
+      "frt",
+      "fth",
+      "f83",
+      "fb",
+      "fpm",
+      "e4",
+      "rx",
+      "ft"
+    ],
+    "multi_line": [
+      [
+        "( ",
+        ")"
+      ]
+    ]
+  },
+  {
+    "name": "SPDX",
+    "extensions": [
+      "spdx"
+    ]
+  },
+  {
+    "name": "ReasonML",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "re",
+      "rei"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "TOML",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "toml"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'''",
+        "end": "'''",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Wolfram",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "nb",
+      "wl"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Wren",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "wren"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "IDL",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "idl",
+      "webidl",
+      "widl"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Lisp",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "lisp",
+      "lsp"
+    ],
+    "multi_line": [
+      [
+        "#|",
+        "|#"
+      ]
+    ],
+    "nestedmultiline": true,
+    "shebangs": [
+      "sbcl"
+    ]
+  },
+  {
+    "name": "Patch",
+    "extensions": [
+      "patch"
+    ]
+  },
+  {
+    "name": "Q#",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "repeat ",
+      "repeat{",
+      "until (",
+      "until(",
+      "if ",
+      "if(",
+      "elif ",
+      "elif{",
+      "else ",
+      "else{",
+      "||| ",
+      "\u0026\u0026\u0026 ",
+      "\u003c\u003c\u003c",
+      "\u003e\u003e\u003e",
+      "^^^",
+      "~~~",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "qs"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "TypeScript",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "| ",
+      "|| ",
+      "\u0026 ",
+      "\u0026\u0026 ",
+      "!= ",
+      "!== ",
+      "== ",
+      "=== ",
+      "foreach(",
+      "case ",
+      "case(",
+      "casex ",
+      "casex(",
+      "casez ",
+      "casez(",
+      "casexz ",
+      "casexz(",
+      "fork",
+      "?",
+      ":",
+      "inside",
+      "with"
+    ],
+    "extensions": [
+      "ts",
+      "tsx"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "D",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "d"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ],
+      [
+        "/+",
+        "+/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true,
+    "shebangs": [
+      "rdmd"
+    ]
+  },
+  {
+    "name": "HEX",
+    "extensions": [
+      "hex"
+    ]
+  },
+  {
+    "name": "Happy",
+    "extensions": [
+      "y",
+      "ly"
+    ]
+  },
+  {
+    "name": "Alloy",
+    "line_comment": [
+      "//",
+      "--"
+    ],
+    "complexitychecks": [
+      "implies ",
+      "else ",
+      "for ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== ",
+      "\u003c= ",
+      "\u003e= "
+    ],
+    "extensions": [
+      "als"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ]
+  },
+  {
+    "name": "OCaml",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ml",
+      "mli"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Verilog Args File",
+    "extensions": [
+      "irunargs",
+      "xrunargs"
+    ]
+  },
+  {
+    "name": "Prolog",
+    "line_comment": [
+      "%"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "p",
+      "pro"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Sass",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sass",
+      "scss"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Twig Template",
+    "complexitychecks": [
+      "{% for ",
+      "{% if ",
+      "{% else ",
+      "{% elseif "
+    ],
+    "extensions": [
+      "twig"
+    ]
+  },
+  {
+    "name": "TypeScript Typings",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "| ",
+      "|| ",
+      "\u0026 ",
+      "\u0026\u0026 ",
+      "!= ",
+      "!== ",
+      "== ",
+      "=== ",
+      "foreach(",
+      "case ",
+      "case(",
+      "casex ",
+      "casex(",
+      "casez ",
+      "casez(",
+      "casexz ",
+      "casexz(",
+      "fork",
+      "?",
+      ":",
+      "inside",
+      "with"
+    ],
+    "extensions": [
+      "d.ts"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Bitbake",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "bb",
+      "bbappend",
+      "bbclass"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Emacs Lisp",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "el"
+    ]
+  },
+  {
+    "name": "Julia",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "jl"
+    ],
+    "multi_line": [
+      [
+        "#=",
+        "=#"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "\\\"\\\"\\\"",
+        "end": "\\\"\\\"\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "nestedmultiline": true
+  },
+  {
+    "name": "LaTeX",
+    "line_comment": [
+      "%"
+    ],
+    "extensions": [
+      "tex"
+    ]
+  },
+  {
+    "name": "Plain Text",
+    "extensions": [
+      "text",
+      "txt"
+    ]
+  },
+  {
+    "name": "Swig",
+    "extensions": [
+      "i"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "CloudFormation (YAML)",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "!GetAtt",
+      "!Sub",
+      "!Select",
+      "!Equals",
+      "!If",
+      "DependsOn:",
+      "!Select",
+      "!Equals",
+      "!If",
+      "Fn::If",
+      "Fn::And",
+      "Fn::Equals",
+      "Fn::Not",
+      "Fn::Or",
+      "Fn::Base64",
+      "Fn::Cidr",
+      "Fn::FindInMap",
+      "Fn::GetAtt",
+      "Fn::GetAZs",
+      "Fn::ImportValue",
+      "Fn::Join",
+      "Fn::Select",
+      "Fn::Split",
+      "Fn::Sub",
+      "Fn::Transform"
+    ],
+    "extensions": [
+      "yaml",
+      "yml"
+    ],
+    "keywords": [
+      "Resources:",
+      "AWSTemplateFormatVersion:",
+      "Description:",
+      "AWS::",
+      "Properties:",
+      "Name:",
+      "Type:",
+      "!GetAtt",
+      "!Sub",
+      "Statement:",
+      "Ref:",
+      "DependsOn:",
+      "!Select",
+      "!Equals",
+      "!If",
+      "Fn::If",
+      "Fn::And",
+      "Fn::Equals",
+      "Fn::Not",
+      "Fn::Or",
+      "Fn::Base64",
+      "Fn::Cidr",
+      "Fn::FindInMap",
+      "Fn::GetAtt",
+      "Fn::GetAZs",
+      "Fn::ImportValue",
+      "Fn::Join",
+      "Fn::Select",
+      "Fn::Split",
+      "Fn::Sub",
+      "Fn::Transform"
+    ]
+  },
+  {
+    "name": "F*",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "fst"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Game Maker Language",
+    "line_comment": [
+      "//",
+      "///"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "repeat ",
+      "repeat(",
+      "|| ",
+      "or ",
+      "\u0026\u0026 ",
+      "and ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "gml"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "JavaScript",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "js",
+      "mjs"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "shebangs": [
+      "node"
+    ]
+  },
+  {
+    "name": "Korn Shell",
+    "line_comment": [
+      "#"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ksh"
+    ],
+    "quotes": [
+      {
+        "start": "\\\"",
+        "end": "\\\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ],
+    "filenames": [
+      ".kshrc"
+    ],
+    "shebangs": [
+      "ksh"
+    ]
+  },
+  {
+    "name": "Polly",
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "polly"
+    ],
+    "multi_line": [
+      [
+        "\u003c!--",
+        "--\u003e"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Agda",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "agda"
+    ],
+    "multi_line": [
+      [
+        "{-",
+        "-}"
+      ]
+    ]
+  },
+  {
+    "name": "F#",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "match ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "fs",
+      "fsi",
+      "fsx",
+      "fsscript"
+    ],
+    "multi_line": [
+      [
+        "(*",
+        "*)"
+      ]
+    ]
+  },
+  {
+    "name": "Freemarker Template",
+    "complexitychecks": [
+      "\u003c#list ",
+      "\u003c#assign ",
+      "\u003c#if ",
+      "\u003c#elseif ",
+      "\u003c#else\u003e",
+      "\u003c#else\u003e ",
+      "\u003c#switch  ",
+      "\u003c#case ",
+      "\u003c#default\u003e",
+      "\u003c#default\u003e ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "ftl"
+    ],
+    "multi_line": [
+      [
+        "\u003c#--",
+        "--\u003e"
+      ]
+    ]
+  },
+  {
+    "name": "SQL",
+    "line_comment": [
+      "--"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "sql",
+      "dml",
+      "ddl",
+      "dql"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "'",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "Fennel",
+    "line_comment": [
+      ";"
+    ],
+    "complexitychecks": [
+      "(for",
+      "(each",
+      "(if",
+      "(when",
+      "(while",
+      "(switch",
+      "(do",
+      "(..",
+      "(=",
+      "(and",
+      "(or"
+    ],
+    "extensions": [
+      "fnl"
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      },
+      {
+        "start": ",",
+        "end": "'",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  },
+  {
+    "name": "License",
+    "filenames": [
+      "license",
+      "licence",
+      "copying",
+      "copying3",
+      "unlicense",
+      "unlicence",
+      "license-mit",
+      "licence-mit",
+      "copyright"
+    ]
+  },
+  {
+    "name": "Nix",
+    "line_comment": [
+      "//"
+    ],
+    "complexitychecks": [
+      "for ",
+      "for(",
+      "if ",
+      "if(",
+      "switch ",
+      "while ",
+      "else ",
+      "|| ",
+      "\u0026\u0026 ",
+      "!= ",
+      "== "
+    ],
+    "extensions": [
+      "nix"
+    ],
+    "multi_line": [
+      [
+        "/*",
+        "*/"
+      ]
+    ],
+    "quotes": [
+      {
+        "start": "\"",
+        "end": "\"",
+        "ignoreEscape": false,
+        "docString": false
+      }
+    ]
+  }
+]
