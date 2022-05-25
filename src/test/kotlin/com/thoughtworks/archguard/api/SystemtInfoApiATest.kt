@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
-import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -45,8 +44,8 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "[{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
+            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}]"
 
         assertEquals(200, status)
         assertEquals(except, content)
@@ -65,8 +64,8 @@ class SystemtInfoApiATest {
         val status = result.response.status
 
         val except = "{\"id\":1,\"systemName\":\"systemName1\",\"repo\":[\"repo1\"],\"sql\":\"sql1\"" +
-                ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
-                "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
+            ",\"username\":\"username1\",\"password\":\"WCA5RH/O9J4yxgU40Z+thg==\",\"scanned\":\"NONE\"," +
+            "\"qualityGateProfileId\":1,\"repoType\":\"GIT\",\"updatedTime\":1603250641000,\"badSmellThresholdSuiteId\":1,\"branch\":\"master\"}"
         assertEquals(200, status)
         assertEquals(except, content)
     }
