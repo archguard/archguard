@@ -69,20 +69,6 @@ allprojects {
             html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
         }
     }
-
-    tasks.withType<JacocoReport> {
-        afterEvaluate {
-            classDirectories.setFrom(
-                files(
-                    classDirectories.files.map {
-                        fileTree(it).apply {
-                            exclude("dev.evolution")
-                        }
-                    }
-                )
-            )
-        }
-    }
 }
 
 subprojects {
