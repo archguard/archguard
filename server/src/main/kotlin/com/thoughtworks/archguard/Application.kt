@@ -25,13 +25,12 @@ import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
-import springfox.documentation.oas.annotations.EnableOpenApi
-import java.util.TimeZone
+import java.util.*
 import java.util.function.Consumer
 import javax.sql.DataSource
 
 @SpringBootApplication
-@EnableOpenApi
+//@EnableOpenApi
 @EnableCaching
 class Application {
     @Bean

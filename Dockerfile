@@ -14,7 +14,7 @@ WORKDIR /home/spring
 ARG SCAN_VERSION_ARG=1.6.2
 ENV SCAN_VERSION=$SCAN_VERSION_ARG
 
-ARG JAR_FILE=./build/libs/*.jar
+ARG JAR_FILE=./server/build/libs/*.jar
 
 COPY ${JAR_FILE} /home/spring/app.jar
 

@@ -2,7 +2,7 @@ val ktlint by configurations.creating
 
 plugins {
     // springfox not support spring boot 2.6, see in https://github.com/springfox/springfox/issues/3462
-    id("org.springframework.boot") version "2.5.10"
+    id("org.springframework.boot") version "2.7.0"
 
     // flyway 7.0 require spring .boot > 2.4
     id("org.flywaydb.flyway").version("7.15.0")
@@ -65,16 +65,16 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.28.0")
 
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
-    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+//    implementation("io.springfox:springfox-boot-starter:3.0.0")
+//    implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.5.10")
+    implementation("org.springframework.boot:spring-boot-starter-web:2.5.10")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:2.5.10")
+    implementation("org.springframework.boot:spring-boot-starter-validation:2.5.10")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:2.5.10")
     // cache for overview api
-    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-cache:2.5.10")
 
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("com.alibaba:druid-spring-boot-starter:1.2.8")
@@ -84,7 +84,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("mysql:mysql-connector-java:8.0.29")
 
     implementation("org.flywaydb:flyway-core:7.15.0")
     testImplementation("io.mockk:mockk:1.12.3")
@@ -119,8 +119,8 @@ allprojects {
         implementation(kotlin("test"))
         implementation(kotlin("test-junit"))
 
-        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.9.0-M1")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0-M1")
     }
 //
 //    tasks.getByName<Test>("test") {

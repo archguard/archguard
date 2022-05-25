@@ -39,8 +39,8 @@ allprojects {
         implementation(kotlin("test"))
         implementation(kotlin("test-junit"))
 
-        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.9.0-M1")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0-M1")
     }
 
     tasks.getByName<Test>("test") {
@@ -164,7 +164,10 @@ subprojects {
 }
 
 dependencies {
-    jacocoAggregation(project(":"))
+    implementation(kotlin("test"))
+    implementation(kotlin("test-junit"))
+
+    jacocoAggregation(project(":server"))
 
     jacocoAggregation(project(":scanner_cli"))
     jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))

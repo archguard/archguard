@@ -44,6 +44,6 @@ dependencies {
 
     testImplementation("io.kotest:kotest-assertions-core:5.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0-M1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0-M1")
 }

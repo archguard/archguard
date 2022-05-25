@@ -1,4 +1,4 @@
-rootProject.name = "archguard"
+rootProject.name = "Archguard"
 
 // backend
 include(":server")
@@ -45,13 +45,3 @@ include(":rule-linter:rule-test-code")
 include(":rule-linter:rule-webapi")
 include(":rule-linter:rule-code")
 include(":rule-doc-generator")
-
-
-pluginManagement {
-    repositories {
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-        gradlePluginPortal()
-    }
-}
