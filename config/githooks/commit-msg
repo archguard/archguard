@@ -8,11 +8,11 @@ current_branch="$(git rev-parse --abbrev-ref HEAD)"
 [ "$current_branch" != "$develop_branch" ] && exit 0
 
 # regex to validate in commit msg
-commit_regex="^(feature|refactor|fix|docs|style|test|chore): .+$"
+commit_regex="^(feat|refactor|fix|docs|style|test|chore): .+$"
 
 error_msg="Aborting commit. The format of commit message is incorrect.
 Commit message should be like: [TYPE: your commit description]
-TYPE can be one of feature, refactor, fix, docs, style, test, chore"
+TYPE can be one of feat, refactor, fix, docs, style, test, chore"
 
 if ! grep -iqE "$commit_regex" "$1"; then
     echo "$error_msg" >&2
