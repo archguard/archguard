@@ -24,7 +24,8 @@ internal class ArchitectureDetectTest {
             name = "",
             version = "",
             packageManager = "Gradle",
-            dependencies = listOf(dependencyEntry)
+            dependencies = listOf(dependencyEntry),
+            ""
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
@@ -44,7 +45,8 @@ internal class ArchitectureDetectTest {
             name = "",
             version = "",
             packageManager = "Gradle",
-            dependencies = listOf(dependencyEntry)
+            dependencies = listOf(dependencyEntry),
+            ""
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
@@ -75,7 +77,8 @@ internal class ArchitectureDetectTest {
             name = "",
             version = "",
             packageManager = "Gradle",
-            dependencies = listOf(dependencyEntry)
+            dependencies = listOf(dependencyEntry),
+            ""
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceExecArchByDependencies(markup, packageDependencies)
