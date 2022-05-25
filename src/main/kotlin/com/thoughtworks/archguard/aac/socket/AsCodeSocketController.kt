@@ -24,7 +24,6 @@ class AsCodeSocketController {
 
     @OnClose
     fun onClose(session: Session) {
-
     }
 
     @OnMessage
@@ -37,5 +36,4 @@ class AsCodeSocketController {
     @OnError
     fun onError(session: Session?, error: Throwable) {
     }
-
 }
