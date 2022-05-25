@@ -12,6 +12,7 @@ data class ScannerCommand(
     // for archguard usage
     val workspace: File,
     val logStream: StreamConsumer,
+    val branch: String,
 ) {
     fun toArguments(): List<String> {
         val arguments = mutableListOf(
@@ -20,6 +21,7 @@ data class ScannerCommand(
             "--server-url=$serverUrl",
             "--path=${workspace.resolve(path).absolutePath}",
             "--workspace=${workspace.absolutePath}",
+            "--workspace=${branch}",
         )
         // additional args
         outputs.forEach { arguments.add("--output=$it") }

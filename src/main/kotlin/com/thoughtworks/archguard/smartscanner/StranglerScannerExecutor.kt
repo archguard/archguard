@@ -69,6 +69,7 @@ class StranglerScannerExecutor(
                 path = codePath,
                 workspace = workspace,
                 logStream = logStream,
+                branch = context.branch
             )
         }
 
