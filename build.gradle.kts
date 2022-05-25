@@ -9,15 +9,21 @@ plugins {
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
     id("com.avast.gradle.docker-compose") version "0.15.2"
 
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.spring") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
 
     jacoco
+
+    // for maven publish
+    id("java-library")
+    id("maven-publish")
+    publishing
+    signing
 }
 
 group = "com.thoughtworks.archguard"
-version = "1.6.2"
+version = "2.0.0-alpha.7"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -84,6 +90,100 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+allprojects {
+    apply(plugin = "java")
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        implementation(kotlin("stdlib"))
+        implementation(kotlin("stdlib-jdk8"))
+    }
+}
+
+
+subprojects {
+    apply(plugin = "java-library")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
+    apply(plugin = "publishing")
+
+    publishing {
+        publications {
+            create<MavenPublication>("mavenJava") {
+                from(components["java"])
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+                pom {
+                    name.set("ArchGuard")
+                    description.set(" ArchGuard is a architecture governance tool which can analysis architecture in container, component, code level, create architecture fitness functions, and anaysis system dependencies.. ")
+                    url.set("https://archguard.org/")
+                    licenses {
+                        license {
+                            name.set("MIT")
+                            url.set("https://raw.githubusercontent.com/archguard/archguard/master/LICENSE")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("Modernizing")
+                            name.set("Modernizing Team")
+                            email.set("h@phodal.com")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/archguard/scanner.git")
+                        developerConnection.set("scm:git:ssh://github.com/archguard/scanner.git")
+                        url.set("https://github.com/archguard/scanner/")
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+
+                credentials {
+                    username =
+                        (
+                                if (project.findProperty("sonatypeUsername") != null) project.findProperty("sonatypeUsername") else System.getenv(
+                                    "MAVEN_USERNAME"
+                                )
+                                ).toString()
+                    password =
+                        (
+                                if (project.findProperty("sonatypePassword") != null) project.findProperty("sonatypePassword") else System.getenv(
+                                    "MAVEN_PASSWORD"
+                                )
+                                ).toString()
+                }
+            }
+        }
+    }
+
+    signing {
+        sign(publishing.publications["mavenJava"])
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
+
 configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6")
@@ -100,10 +200,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-//
-//tasks.test {
-//    finalizedBy(tasks.jacocoTestCoverageVerification)
-//}
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)

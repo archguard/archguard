@@ -1,7 +1,14 @@
 rootProject.name = "archguard"
 
 include(":")
-include(":domain")
+
+/**
+ * architecture as code repos
+ */
+
+include(":architecture-as-code:domain")
+include(":architecture-as-code:dsl")
+include(":architecture-as-code:repl-api")
 
 pluginManagement {
     repositories {
