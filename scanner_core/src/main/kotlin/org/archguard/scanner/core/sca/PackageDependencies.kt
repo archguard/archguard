@@ -19,6 +19,8 @@ class PackageDependencies(
     val packageManager: String,
     // requirements in maven
     val dependencies: List<DependencyEntry>,
+    // file path
+    val path: String,
     // child dependencies
     val childrens: List<PackageDependencies> = listOf(),
 )

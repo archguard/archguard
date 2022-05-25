@@ -28,11 +28,12 @@ class NpmParser : Parser() {
 
         return listOf(
             PackageDependencies(
-            name,
-            version,
-            "npm",
-            deps
-        )
+                name,
+                version,
+                "npm",
+                deps,
+                path = file.path
+            )
         )
     }
 

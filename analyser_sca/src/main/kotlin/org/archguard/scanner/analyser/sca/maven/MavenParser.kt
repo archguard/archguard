@@ -32,7 +32,8 @@ class MavenParser : Parser() {
                 name = "$groupId:$artifactId",
                 version = "$version",
                 packageManager = "maven",
-                dependencies = lookupDependencies(xPath, xmlDocument)
+                dependencies = lookupDependencies(xPath, xmlDocument),
+                path = file.path
             )
         )
     }

@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class CompositionDependency(
     val id: String,
     val name: String,
+    val path: String,
     val version: String,
     val parentId: String,
     val packageManager: String,

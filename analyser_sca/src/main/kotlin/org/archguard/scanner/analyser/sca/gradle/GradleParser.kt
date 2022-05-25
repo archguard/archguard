@@ -32,7 +32,8 @@ class GradleParser : Parser() {
                 name = "",
                 version = "",
                 packageManager = "gradle",
-                dependencies = deps
+                dependencies = deps,
+                path = file.path
             )
         )
     }

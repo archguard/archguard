@@ -5,10 +5,11 @@ import org.archguard.scanner.analyser.sca.maven.MavenFinder
 import org.archguard.scanner.analyser.sca.npm.NpmFinder
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.scanner.core.sca.ScaAnalyser
 import org.archguard.scanner.core.sca.ScaContext
 import java.util.UUID
 
-class ScaAnalyser(override val context: ScaContext) : org.archguard.scanner.core.sca.ScaAnalyser {
+class ScaAnalyser(override val context: ScaContext) : ScaAnalyser {
     private val client = context.client
     private val path = context.path
 
@@ -39,6 +40,7 @@ class ScaAnalyser(override val context: ScaContext) : org.archguard.scanner.core
             name = this.name,
             version = this.version,
             parentId = "",
+            path = this.path,
             packageManager = this.packageManager,
             depName = it.name,
             depArtifact = it.artifact,
