@@ -12,7 +12,7 @@ plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
-    
+
     id("org.jetbrains.dokka") version "1.6.21"
 
     jacoco
@@ -94,7 +94,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-
 allprojects {
     apply(plugin = "java")
     apply(plugin = "jacoco")
@@ -123,10 +122,10 @@ allprojects {
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     }
-
-    tasks.getByName<Test>("test") {
-        useJUnitPlatform()
-    }
+//
+//    tasks.getByName<Test>("test") {
+//        useJUnitPlatform()
+//    }
 
     tasks.withType<Test> {
         useJUnitPlatform()
@@ -250,53 +249,53 @@ configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtensio
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6")
     }
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
-
-tasks.jacocoTestReport {
-    reports {
-        xml.required.set(true)
-        csv.required.set(false)
-        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
-    }
-}
-
-tasks.jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                counter = "LINE"
-                value = "COVEREDRATIO"
-                minimum = "0.25".toBigDecimal()
-            }
-        }
-
-        rule {
-            limit {
-                counter = "BRANCH"
-                value = "COVEREDRATIO"
-                minimum = "0.3".toBigDecimal()
-            }
-        }
-    }
-}
-
-tasks.jacocoTestCoverageVerification {
-    dependsOn(tasks.jacocoTestReport)
-}
+//
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+//    kotlinOptions {
+//        freeCompilerArgs = listOf("-Xjsr305=strict")
+//        jvmTarget = "1.8"
+//    }
+//}
+//
+//tasks.withType<Test> {
+//    useJUnitPlatform()
+//}
+//
+//tasks.jacocoTestReport {
+//    dependsOn(tasks.test)
+//}
+//
+//tasks.jacocoTestReport {
+//    reports {
+//        xml.required.set(true)
+//        csv.required.set(false)
+//        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+//    }
+//}
+//
+//tasks.jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            limit {
+//                counter = "LINE"
+//                value = "COVEREDRATIO"
+//                minimum = "0.25".toBigDecimal()
+//            }
+//        }
+//
+//        rule {
+//            limit {
+//                counter = "BRANCH"
+//                value = "COVEREDRATIO"
+//                minimum = "0.3".toBigDecimal()
+//            }
+//        }
+//    }
+//}
+//
+//tasks.jacocoTestCoverageVerification {
+//    dependsOn(tasks.jacocoTestReport)
+//}
 
 val outputDir = "${project.buildDir}/reports/ktlint/"
 val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
