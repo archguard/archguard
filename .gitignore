@@ -41,6 +41,8 @@ out/
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 *.sql
+!server/**/*.sql
+!server/**/*.jar
 **/bs.json
 apis.json
 nodes.json
