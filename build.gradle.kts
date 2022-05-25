@@ -35,6 +35,12 @@ repositories {
 }
 
 dependencies {
+    // architecture as code part
+    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
+
+    api(project(":architecture-as-code:dsl"))
+    api(project(":architecture-as-code:repl-api"))
+
     ktlint("com.pinterest:ktlint:0.44.0") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
@@ -59,10 +65,6 @@ dependencies {
 
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
-
-    // the scanned models
-    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
-    implementation("org.archguard.aaac:repl-api:2.0.0-alpha.7")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
