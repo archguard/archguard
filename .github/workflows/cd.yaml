@@ -8,6 +8,28 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        assets:
+          # analysers:
+          - analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar
+          - analyser_git/build/libs/analyser_git*-all.jar
+          - analyser_sca/build/libs/analyser_sca*-all.jar
+          - analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
+          - analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar
+          - analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar
+          - analyser_sourcecode/lang_golang/build/libs/lang_golang*-all.jar
+          - analyser_sourcecode/lang_java/build/libs/lang_java*-all.jar
+          - analyser_sourcecode/lang_kotlin/build/libs/lang_kotlin*-all.jar
+          - analyser_sourcecode/lang_python/build/libs/lang_python*-all.jar
+          - analyser_sourcecode/lang_scala/build/libs/lang_scala*-all.jar
+          - analyser_sourcecode/lang_typescript/build/libs/lang_typescript*-all.jar
+          # cli:
+          - scanner_cli/build/libs/scanner_cli*-all.jar
+          # rules:
+          - rule-linter/rule-sql/build/libs/rule-sql*.jar
+          - rule-linter/rule-webapi/build/libs/rule-webapi*.jar
+          - rule-linter/rule-test-code/build/libs/rule-test-code*.jar
     permissions:
       contents: write
       packages: write
@@ -24,11 +46,20 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
+      - name: Upload asserts to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.assets }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
       - name: Upload archguard to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/libs/archguard*.jar
+          file: server/build/libs/archguard*.jar
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true

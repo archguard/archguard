@@ -1,7 +1,7 @@
 rootProject.name = "archguard"
 
 // backend
-include(":")
+include(":server")
 
 /**
  * architecture as code repos
