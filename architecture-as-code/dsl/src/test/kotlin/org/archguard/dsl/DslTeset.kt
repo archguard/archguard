@@ -110,5 +110,8 @@ internal class DslTest {
         assertEquals(listOf("api"), model.specs)
         assertEquals(listOf("java", "kotlin"), model.languages)
         assertEquals(listOf("sample"), model.features)
+
+        val scan2 = scan("Backend2").create()
+        assertEquals("Backend2", scan2.systemName)
     }
 }

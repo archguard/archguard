@@ -10,7 +10,7 @@ class FatDslContext(
     var layered: LayeredDecl = LayeredDecl(),
     var repos: ReposDecl = ReposDecl(),
     var webapi: WebApiDecl = WebApiDecl(),
-    var scan: ScanModelDecl? = null
+    var scan: ScanModelDecl? = null,
 )
 
 // todo: find a better way
@@ -41,7 +41,7 @@ fun api(name: String, init: WebApiDecl.() -> Unit): WebApiDecl {
     return webApiDecl
 }
 
-fun scan(name: String, init: ScanModelDecl.() -> Unit): ScanModelDecl {
+fun scan(name: String, init: ScanModelDecl.() -> Unit = {}): ScanModelDecl {
     val scanDecl = ScanModelDecl(name)
     scanDecl.init()
     context.scan = scanDecl
