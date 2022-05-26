@@ -96,12 +96,19 @@ internal class DslTest {
 
     @Test
     internal fun test_scan() {
-        scan("Backend") {
+        val scan = scan("Backend") {
             languages("java")
             languages += "kotlin"
-
-            specs("a", "afs")
             spec("api")
+            feature("sample")
+            branch("master")
         }
+
+        val model = scan.create()
+        assertEquals("Backend", model.systemName)
+        assertEquals("master", model.branch)
+        assertEquals(listOf("api"), model.specs)
+        assertEquals(listOf("java", "kotlin"), model.languages)
+        assertEquals(listOf("sample"), model.features)
     }
 }
