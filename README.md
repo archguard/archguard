@@ -1,6 +1,6 @@
 # ArchGuard backend
 
-[![CI](https://github.com/archguard/archguard/actions/workflows/ci.yml/badge.svg)](https://github.com/archguard/archguard/actions/workflows/ci.yml)
+[![CI](https://github.com/archguard/archguard/actions/workflows/ci.yaml/badge.svg)](https://github.com/archguard/archguard/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/archguard/archguard/branch/master/graph/badge.svg?token=QS5H866CWH)](https://codecov.io/gh/archguard/archguard)
 [![GitHub release](https://img.shields.io/github/v/release/archguard/archguard?logo=git&logoColor=white)](https://github.com/archguard/archguard/releases)
 [![languages](https://img.shields.io/badge/language-kotlin-blueviolet?logo=kotlin&logoColor=white)](https://www.kotlincn.net/)
