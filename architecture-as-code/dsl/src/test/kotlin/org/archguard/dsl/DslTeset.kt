@@ -109,13 +109,13 @@ internal class DslTest {
 
         val reactiveAction = scan.create()
         val model: ScanModel = Json.decodeFromString(reactiveAction.data)
-        assertEquals("Backend", model.systemName)
+        assertEquals("Backend", model.name)
         assertEquals("master", model.branch)
         assertEquals(listOf("api"), model.specs)
         assertEquals(listOf("java", "kotlin"), model.languages)
         assertEquals(listOf("sample"), model.features)
 
         val scan2: ScanModel = Json.decodeFromString(scan("Backend2").create().data)
-        assertEquals("Backend2", scan2.systemName)
+        assertEquals("Backend2", scan2.name)
     }
 }

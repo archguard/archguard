@@ -10,7 +10,7 @@ import org.archguard.dsl.base.model.ReactiveAction
 
 @Serializable
 class ScanModel(
-    val systemName: String,
+    val name: String,
     val branch: String,
     val features: MutableList<String>,
     val languages: MutableList<String>,
