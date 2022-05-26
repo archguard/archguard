@@ -13,10 +13,14 @@ import javax.websocket.OnOpen
 import javax.websocket.Session
 import javax.websocket.server.ServerEndpoint
 
+object ReplService {
+    var interpreter: ArchdocInterpreter = ArchdocInterpreter()
+}
+
 @ServerEndpoint(value = "/ascode")
 @Controller
 class AsCodeSocketController {
-    val replServer: ArchdocInterpreter = ArchdocInterpreter()
+    final val replServer: ArchdocInterpreter = ReplService.interpreter
 
     @OnOpen
     fun onOpen(session: Session) {
