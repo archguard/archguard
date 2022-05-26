@@ -10,6 +10,9 @@ sealed class AsCodeContent
 class RepoStatus(val success: List<String>, val existed: List<String>) : AsCodeContent()
 
 @Serializable
+class PlaceHolder() : AsCodeContent()
+
+@Serializable
 enum class ServerMessageType {
     @SerialName("normal")
     NORMAL,

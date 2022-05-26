@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.system_info.domain
 
 interface SystemInfoRepository {
-    fun getSystemInfo(id: Long): SystemInfo?
+    fun getById(id: Long): SystemInfo?
 
     fun getSystemInfoList(): List<SystemInfo>
 
@@ -14,4 +14,6 @@ interface SystemInfoRepository {
     fun deleteSystemInfo(id: Long): Int
 
     fun deleteSystemInfoRelated()
+
+    fun getByName(name: String): SystemInfo?
 }

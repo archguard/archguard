@@ -10,14 +10,19 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SystemInfoService(
     val systemInfoRepository: SystemInfoRepository,
-    var analysisClientProxy: AnalysisClientProxy
+    var analysisClientProxy: AnalysisClientProxy,
 ) {
 
     val logger: Logger = LoggerFactory.getLogger(SystemInfoService::class.java)
 
     fun getSystemInfo(id: Long): SystemInfo {
-        return systemInfoRepository.getSystemInfo(id)
+        return systemInfoRepository.getById(id)
             ?: throw EntityNotFoundException(SystemInfo::class.java, id)
+    }
+
+    fun getSystemInfoByName(name: String): SystemInfo {
+        return systemInfoRepository.getByName(name)
+            ?: throw EntityNotFoundException(SystemInfo::class.java, name)
     }
 
     fun getAllSystemInfo(): List<SystemInfo> {

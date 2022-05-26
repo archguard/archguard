@@ -16,7 +16,7 @@ class DiffChangeController(
     val systemInfoService: SystemInfoService,
 ) {
     @GetMapping("/influence/history")
-    fun historyInfluence(@PathVariable("systemId") systemId: Long,): List<DiffChange> {
+    fun historyInfluence(@PathVariable("systemId") systemId: Long, ): List<DiffChange> {
         return diffChangeService.findBySystemId(systemId)
     }
 
@@ -25,6 +25,7 @@ class DiffChangeController(
         @PathVariable("systemId") systemId: Long,
         @RequestParam(value = "since", required = true) since: String,
         @RequestParam(value = "until", required = true) until: String,
+        // todo: refactor version
         @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
     ): List<DiffChange> {
         val systemInfo = systemInfoService.getSystemInfo(systemId)
