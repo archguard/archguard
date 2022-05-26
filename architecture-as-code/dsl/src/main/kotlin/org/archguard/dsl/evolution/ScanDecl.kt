@@ -1,7 +1,12 @@
 package org.archguard.dsl.evolution
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.dsl.base.Element
+import org.archguard.dsl.base.model.ActionType
+import org.archguard.dsl.base.model.GraphType
+import org.archguard.dsl.base.model.ReactiveAction
 
 @Serializable
 class ScanModel(
@@ -46,13 +51,20 @@ class ScanModelDecl(val name: String) : Element {
         this.specs += specs.toMutableList()
     }
 
-    fun create(): ScanModel {
-        return ScanModel(
+    fun create(): ReactiveAction {
+        val scanModel = ScanModel(
             name,
             branch,
             features,
             languages,
             specs
+        )
+
+        return ReactiveAction(
+            ActionType.CREATE_SCAN,
+            scanModel.javaClass.name,
+            GraphType.NULL,
+            Json.encodeToString(scanModel)
         )
     }
 }

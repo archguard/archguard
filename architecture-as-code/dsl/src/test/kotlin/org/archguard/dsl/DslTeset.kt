@@ -1,8 +1,11 @@
 package org.archguard.dsl
 
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.archguard.dsl.base.model.ActionType
 import org.archguard.dsl.base.model.GraphType
 import org.archguard.dsl.design.LayeredDecl
+import org.archguard.dsl.evolution.ScanModel
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -104,14 +107,15 @@ internal class DslTest {
             branch("master")
         }
 
-        val model = scan.create()
+        val reactiveAction = scan.create()
+        val model: ScanModel = Json.decodeFromString(reactiveAction.data)
         assertEquals("Backend", model.systemName)
         assertEquals("master", model.branch)
         assertEquals(listOf("api"), model.specs)
         assertEquals(listOf("java", "kotlin"), model.languages)
         assertEquals(listOf("sample"), model.features)
 
-        val scan2 = scan("Backend2").create()
+        val scan2: ScanModel = Json.decodeFromString(scan("Backend2").create().data)
         assertEquals("Backend2", scan2.systemName)
     }
 }

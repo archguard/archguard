@@ -1,10 +1,10 @@
 package org.archguard.aaac.repl
 
 import org.archguard.aaac.api.InterpreterRequest
-import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.ErrorContent
+import org.archguard.aaac.api.messaging.Message
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
 
@@ -37,7 +37,7 @@ class ArchdocInterpreter : InterpreterService {
             }
         }
 
-        if (className.startsWith("org.archguard.dsl")) {
+        if (className.startsWith("org.archguard.dsl.design")) {
             message.msgType = AaacMessageType.ARCHGUARD_GRAPH
         }
 

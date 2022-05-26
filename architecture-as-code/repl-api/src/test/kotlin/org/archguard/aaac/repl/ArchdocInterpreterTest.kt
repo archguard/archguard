@@ -70,6 +70,26 @@ layered []
         val errorMsg =
             "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter-kts (2:10 - 10) Expecting an index element"
         assertEquals(errorMsg, (result.content as ErrorContent).message)
-        assertEquals("org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException", (result.content as ErrorContent).exception)
+        assertEquals(
+            "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException",
+            (result.content as ErrorContent).exception
+        )
+    }
+
+    @Test
+    internal fun handle_scan() {
+        val request = InterpreterRequest(
+            code = """%use archguard
+
+scan("Backend").create()
+        """.trimIndent()
+        )
+        val result = interpreter.eval(request)
+
+        assertEquals("none", result.msgType.type)
+        assertEquals(
+            "{\"systemName\":\"Backend\",\"branch\":\"master\",\"features\":[],\"languages\":[],\"specs\":[]}",
+            result.action!!.data
+        )
     }
 }

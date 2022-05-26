@@ -15,7 +15,8 @@ import kotlin.reflect.KClass
 enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
     NONE(NoneContent::class),
     ERROR(ErrorContent::class),
-    ARCHGUARD_GRAPH(ArchGuardGraph::class);
+    ARCHGUARD_GRAPH(ArchGuardGraph::class),
+    ARCHGUARD_EVOLUTION(ArchguardEvolution::class);
 
     val type: String get() = name.lowercase()
 }
@@ -34,6 +35,9 @@ class ErrorContent(val exception: String = "", val message: String = "") : AaacC
 
 @Serializable
 class ArchGuardGraph(val isGraph: Boolean = true, val graphType: String = "") : AaacContent()
+
+@Serializable
+class ArchguardEvolution(val actionType: String = "") : AaacContent()
 
 @Serializable
 enum class DocStatus {
