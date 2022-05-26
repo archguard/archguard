@@ -93,4 +93,15 @@ internal class DslTest {
         val action = decls.create()
         assertEquals(ActionType.CREATE_REPOS, action.actionType)
     }
+
+    @Test
+    internal fun test_scan() {
+        scan("Backend") {
+            languages("java")
+            languages += "kotlin"
+
+            specs("a", "afs")
+            spec("api")
+        }
+    }
 }
