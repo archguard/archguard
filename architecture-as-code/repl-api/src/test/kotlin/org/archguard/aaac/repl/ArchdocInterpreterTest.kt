@@ -88,7 +88,7 @@ scan("Backend").create()
 
         assertEquals("none", result.msgType.type)
         assertEquals(
-            "{\"systemName\":\"Backend\",\"branch\":\"master\",\"features\":[],\"languages\":[],\"specs\":[]}",
+            "{\"name\":\"Backend\",\"branch\":\"master\",\"features\":[],\"languages\":[],\"specs\":[]}",
             result.action!!.data
         )
     }
