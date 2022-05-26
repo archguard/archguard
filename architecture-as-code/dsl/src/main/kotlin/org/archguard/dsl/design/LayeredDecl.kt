@@ -1,5 +1,7 @@
 package org.archguard.dsl.design
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.dsl.base.Decl
 import org.archguard.dsl.base.Element
 import org.archguard.dsl.base.model.LayeredRelation
@@ -28,7 +30,7 @@ class LayeredDecl : Decl() {
     fun `组件`(name: String): ComponentDecl = this.component(name)
 
     fun component(name: String): ComponentDecl {
-        val componentDecl = if(this.componentDeclMap[name] != null) {
+        val componentDecl = if (this.componentDeclMap[name] != null) {
             this.componentDeclMap[name]!!
         } else {
             ComponentDecl(name)
@@ -49,5 +51,9 @@ class LayeredDecl : Decl() {
                 LayeredRelation(it.key, comp.name)
             }.toList()
         }
+    }
+
+    override fun toString(): String {
+        return Json.encodeToString(this.relations())
     }
 }

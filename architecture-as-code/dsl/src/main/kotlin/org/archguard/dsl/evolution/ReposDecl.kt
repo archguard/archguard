@@ -23,4 +23,8 @@ class ReposDecl : Element {
             Json.encodeToString(this.repos)
         )
     }
+
+    override fun toString(): String {
+        return Json.encodeToString(this.repos)
+    }
 }

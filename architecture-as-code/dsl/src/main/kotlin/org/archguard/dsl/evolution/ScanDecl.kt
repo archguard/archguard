@@ -52,13 +52,7 @@ class ScanModelDecl(val name: String) : Element {
     }
 
     fun create(): ReactiveAction {
-        val scanModel = ScanModel(
-            name,
-            branch,
-            features,
-            languages,
-            specs
-        )
+        val scanModel = model()
 
         return ReactiveAction(
             ActionType.CREATE_SCAN,
@@ -66,5 +60,17 @@ class ScanModelDecl(val name: String) : Element {
             GraphType.NULL,
             Json.encodeToString(scanModel)
         )
+    }
+
+    private fun model() = ScanModel(
+        name,
+        branch,
+        features,
+        languages,
+        specs
+    )
+
+    override fun toString(): String {
+        return Json.encodeToString(this.model())
     }
 }
