@@ -30,6 +30,9 @@ jobs:
           - rule-linter/rule-sql/build/libs/rule-sql*.jar
           - rule-linter/rule-webapi/build/libs/rule-webapi*.jar
           - rule-linter/rule-test-code/build/libs/rule-test-code*.jar
+          # server:
+          - server/build/libs/server*.jar
+
     permissions:
       contents: write
       packages: write
@@ -44,22 +47,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       - name: Upload assets to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ matrix.assets }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload archguard to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: server/build/libs/server*.jar
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
