@@ -29,7 +29,7 @@ class ArchitectureDependencyAnalysis(
     val hubService: HubExecutorService,
     val systemInfoRepository: SystemInfoRepository,
     val analysisModuleClient: AnalysisModuleClient,
-    val scanner2Client: Scanner2Client
+    val scanner2Client: Scanner2Client,
 ) {
     private val log = LoggerFactory.getLogger(ArchitectureDependencyAnalysis::class.java)
     private val runningSystemIdSet = CopyOnWriteArraySet<Long>()
@@ -101,10 +101,10 @@ class ArchitectureDependencyAnalysis(
         log.info(" Finished level 2 analysis metrics")
         log.info("************************************")
 
-        analysisModuleClient.badSmellDashboard(systemId)
-        log.info("************************************")
-        log.info(" Finished bad smell dashboard")
-        log.info("************************************")
+//        analysisModuleClient.badSmellDashboard(systemId)
+//        log.info("************************************")
+//        log.info(" Finished bad smell dashboard")
+//        log.info("************************************")
 
         try {
             File(workdir.resolve("archguard.log").toString()).writeText(memoryConsumer.toString())
