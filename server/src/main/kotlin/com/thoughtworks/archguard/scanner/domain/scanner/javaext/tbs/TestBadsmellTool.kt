@@ -10,7 +10,7 @@ import java.net.URL
 
 class TestBadsmellTool(val systemRoot: File, val logStream: StreamConsumer, val scannerVersion: String) :
     TestBadSmellReport {
-    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
     private val log = LoggerFactory.getLogger(TestBadsmellTool::class.java)
     private val SCAN_TEST_BADSMELL_JAR = "scan_test_badsmell-$scannerVersion-all.jar"
 

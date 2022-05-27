@@ -11,7 +11,7 @@ import java.nio.file.StandardCopyOption
 
 class DesigniteJavaTool(val systemRoot: File, val logStream: StreamConsumer) {
     private val log = LoggerFactory.getLogger(DesigniteJavaTool::class.java)
-    private val host = "https://github.com/archguard/archguard/releases/download/v1.1.3"
+    private val host = "https://github.com/archguard/scanner/releases/download/v1.1.3"
     private val SCAN_DESIGNITE_JAR = "DesigniteJava.jar"
 
     fun readReport(designiteJavaReportType: DesigniteJavaReportType): List<String> {

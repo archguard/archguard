@@ -16,7 +16,7 @@ class ByteCodeTool(
 ) {
 
     private val log = LoggerFactory.getLogger(ByteCodeTool::class.java)
-    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
     private val SCAN_JAVA_BYTECODE_JAR = "scan_java_bytecode-$scannerVersion-all.jar"
 
     fun analyse() {

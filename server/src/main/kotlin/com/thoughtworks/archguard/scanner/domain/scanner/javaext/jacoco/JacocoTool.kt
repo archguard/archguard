@@ -16,7 +16,7 @@ class JacocoTool(
     val scannerVersion: String,
 ) {
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
-    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
     private val SCAN_JACOCO_JAR = "scan_jacoco-$scannerVersion-all.jar"
 
     fun execToSql(): File? {
