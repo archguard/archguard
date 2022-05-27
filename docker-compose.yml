@@ -25,6 +25,8 @@ services:
       test: curl -f http://localhost:8080/actuator/health || exit 1
       timeout: 10s
       retries: 5
+    ports:
+      - "11081:8080"
     networks:
       - dependence_network
     restart: on-failure:10
