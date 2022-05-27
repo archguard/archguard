@@ -4,6 +4,7 @@ import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.ErrorContent
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -76,8 +77,11 @@ layered []
         )
     }
 
+    @Disabled
     @Test
     internal fun handle_scan() {
+        interpreter = ArchdocInterpreter()
+
         val request = InterpreterRequest(
             code = """%use archguard
 

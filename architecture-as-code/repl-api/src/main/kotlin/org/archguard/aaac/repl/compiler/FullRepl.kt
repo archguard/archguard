@@ -9,9 +9,13 @@ import org.jetbrains.kotlinx.jupyter.api.Code
 import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
 import org.jetbrains.kotlinx.jupyter.libraries.LibraryResolver
 import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
+import org.slf4j.LoggerFactory
 import java.io.File
+import kotlin.script.experimental.jvm.util.classpathFromClassloader
 
 class FullRepl : BaseRepl() {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     private val repl: ReplForJupyter
     private val replRuntimeProperties = RuntimeKernelProperties(
         mapOf(
@@ -19,7 +23,7 @@ class FullRepl : BaseRepl() {
             "currentBranch" to "stable-kotlin",
             "currentSha" to "3c9c34dae3d4a334809d3bb078012b743b2bd618",
             "librariesFormatVersion" to "2",
-            "jvmTargetForSnippets" to "12"
+            "jvmTargetForSnippets" to "11"
         )
     )
 
@@ -31,8 +35,24 @@ class FullRepl : BaseRepl() {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList()
 
-        val dslLibS = resolveArchGuardLibs()
+        val cl = ClassLoader.getSystemClassLoader()
+        val cp = classpathFromClassloader(cl)
 
+//        val classpath = scriptCompilationClasspathFromContext(
+//            "lib",
+//            "api",
+//            "shared-compiler",
+//            "kotlin-stdlib",
+//            "kotlin-reflect",
+//            "kotlin-script-runtime",
+//            classLoader = DependsOn::class.java.classLoader
+//        )
+
+        logger.info("embeddedClasspath: $embeddedClasspath")
+        logger.info("classLoader: $cp")
+//        logger.info("classpath: $classpath")
+
+        val dslLibS = resolveArchGuardLibs()
         val config = KernelConfig(
             ports = listOf(8080),
             transport = "tcp",

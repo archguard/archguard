@@ -37,7 +37,6 @@ class AsCodeSocketController {
 
     @OnMessage
     fun onMessage(message: String, session: Session) {
-        logger.info("onMessage: $message")
         val request: InterpreterRequest = Json.decodeFromString(message)
         val result = replServer.eval(request)
         session.asyncRemote.sendText(Json.encodeToString(result))

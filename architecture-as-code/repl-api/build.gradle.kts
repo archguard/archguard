@@ -34,7 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
 
     // todo: thinking in resolve self
-//    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
