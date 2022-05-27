@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 val ktlint by configurations.creating
 
 plugins {
@@ -12,6 +15,17 @@ plugins {
     id("com.avast.gradle.docker-compose") version "0.15.2"
 
     id("org.jetbrains.dokka") version "1.6.21"
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
+}
+
+tasks.withType<BootJar> {
+    requiresUnpack("**/kotlin-compiler-*.jar")
 }
 
 repositories {
