@@ -12,7 +12,7 @@ internal class ArchdocInterpreterTest {
 
     @BeforeEach
     internal fun setUp() {
-        interpreter = ArchdocInterpreter(false)
+        interpreter = ArchdocInterpreter()
     }
 
     @Test

@@ -12,15 +12,15 @@ class FullRepl : BaseRepl() {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList();
 
-        // load same ArchGuard DSL version
-        embeddedClasspath += this.setupArchGuardLibs()
         val dslLibS = resolveArchGuardLibs()
 
         return ReplForJupyterImpl(
             resolutionInfoProvider,
             embeddedClasspath,
             isEmbedded = true,
-            libraryResolver = dslLibS
+            libraryResolver = dslLibS,
+            runtimeProperties = this.replRuntimeProperties
+
         )
     }
 }

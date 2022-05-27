@@ -7,21 +7,10 @@ import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.repl.compiler.BaseRepl
 import org.archguard.aaac.repl.compiler.FullRepl
-import org.archguard.aaac.repl.compiler.SlimRepl
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
 
-class ArchdocInterpreter(isFullRepl: Boolean = true) : InterpreterService {
-    private var compiler: BaseRepl
-
-    init {
-        if (isFullRepl) {
-            this.compiler = FullRepl()
-        } else {
-            this.compiler = SlimRepl()
-        }
-    }
-
+class ArchdocInterpreter(private var compiler: BaseRepl = FullRepl()) : InterpreterService {
     override fun eval(interpreterRequest: InterpreterRequest): Message {
         try {
             val result = compiler.eval(interpreterRequest.code, null, interpreterRequest.id)

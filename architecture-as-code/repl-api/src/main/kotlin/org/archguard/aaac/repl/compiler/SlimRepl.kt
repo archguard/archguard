@@ -24,11 +24,11 @@ class SlimRepl : BaseRepl() {
 //            classLoader = DependsOn::class.java.classLoader
 //        )
 
-        embeddedClasspath += this.setupArchGuardLibs()
         val dslLibS = resolveArchGuardLibs()
 
         return ReplForJupyterImpl(
-            resolutionInfoProvider, embeddedClasspath, isEmbedded = true, libraryResolver = dslLibS
+            resolutionInfoProvider, embeddedClasspath, isEmbedded = true, libraryResolver = dslLibS,
+            runtimeProperties = this.replRuntimeProperties
         )
     }
 }
