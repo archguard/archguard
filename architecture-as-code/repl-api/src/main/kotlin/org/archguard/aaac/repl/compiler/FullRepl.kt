@@ -11,7 +11,6 @@ import org.jetbrains.kotlinx.jupyter.libraries.LibraryResolver
 import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
 import org.slf4j.LoggerFactory
 import java.io.File
-import kotlin.script.experimental.jvm.util.classpathFromClassloader
 
 class FullRepl : BaseRepl() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -35,9 +34,6 @@ class FullRepl : BaseRepl() {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList()
 
-        val cl = ClassLoader.getSystemClassLoader()
-        val cp = classpathFromClassloader(cl)
-
 //        val classpath = scriptCompilationClasspathFromContext(
 //            "lib",
 //            "api",
@@ -48,9 +44,7 @@ class FullRepl : BaseRepl() {
 //            classLoader = DependsOn::class.java.classLoader
 //        )
 
-        logger.info("embeddedClasspath: $embeddedClasspath")
-        logger.info("classLoader: $cp")
-//        logger.info("classpath: $classpath")
+        logger.info("classpath: $embeddedClasspath")
 
         val dslLibS = resolveArchGuardLibs()
         val config = KernelConfig(
@@ -61,6 +55,7 @@ class FullRepl : BaseRepl() {
             scriptClasspath = embeddedClasspath,
             homeDir = File(""),
             libraryResolver = dslLibS,
+            embedded = true,
             resolutionInfoProvider = EmptyResolutionInfoProvider,
         )
 
