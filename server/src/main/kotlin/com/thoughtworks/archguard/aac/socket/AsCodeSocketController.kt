@@ -20,10 +20,11 @@ object ReplService {
 @ServerEndpoint(value = "/ascode")
 @Controller
 class AsCodeSocketController {
-    final val replServer: ArchdocInterpreter = ReplService.interpreter
+    private lateinit var replServer: ArchdocInterpreter
 
     @OnOpen
     fun onOpen(session: Session) {
+        replServer = ReplService.interpreter
     }
 
     @OnClose
