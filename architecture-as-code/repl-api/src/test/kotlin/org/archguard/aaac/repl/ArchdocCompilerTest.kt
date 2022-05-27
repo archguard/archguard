@@ -1,11 +1,11 @@
 package org.archguard.aaac.repl
 
 import io.kotest.matchers.shouldBe
-import org.archguard.aaac.repl.compiler.ArchdocCompiler
+import org.archguard.aaac.repl.compiler.FullRepl
 import org.junit.jupiter.api.Test
 
 internal class DslTest {
-    private val compiler: ArchdocCompiler = ArchdocCompiler()
+    private val compiler: FullRepl = FullRepl()
 
     @Test
     internal fun simple_eval() {

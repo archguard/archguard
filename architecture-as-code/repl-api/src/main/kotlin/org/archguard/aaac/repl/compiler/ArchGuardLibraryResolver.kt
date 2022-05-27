@@ -1,4 +1,4 @@
-package org.archguard.aaac.repl
+package org.archguard.aaac.repl.compiler
 
 import org.jetbrains.kotlinx.jupyter.api.libraries.LibraryDefinition
 import org.jetbrains.kotlinx.jupyter.api.libraries.LibraryReference
