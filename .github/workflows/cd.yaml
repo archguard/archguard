@@ -46,7 +46,7 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: Upload asserts to release
+      - name: Upload assets to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -59,7 +59,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: server/build/libs/archguard*.jar
+          file: server/build/libs/server*.jar
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
