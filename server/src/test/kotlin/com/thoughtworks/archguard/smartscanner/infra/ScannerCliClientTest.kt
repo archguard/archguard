@@ -10,6 +10,7 @@ import io.mockk.runs
 import io.mockk.slot
 import io.mockk.unmockkObject
 import org.archguard.scanner.core.context.AnalyserType
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -35,6 +36,7 @@ internal class ScannerCliClientTest {
         it.features = listOf("apicalls", "datamap")
     }
 
+    @Disabled
     @Test
     fun `should execute the scan command with java jar command`() {
         mockkObject(RemoteFileLoader)
