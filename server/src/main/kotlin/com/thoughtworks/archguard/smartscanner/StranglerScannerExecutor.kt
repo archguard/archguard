@@ -79,7 +79,7 @@ class StranglerScannerExecutor(
                 it.features = listOf("apicalls", "datamap")
             }
             AnalyserType.SCA -> baseline.also {
-                it.language = context.language
+                it.language = context.language.lowercase()
             }
             AnalyserType.DIFF_CHANGES -> baseline.also {
                 it.language = context.language
