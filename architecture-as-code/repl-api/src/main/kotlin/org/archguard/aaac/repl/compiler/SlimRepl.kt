@@ -12,6 +12,18 @@ class SlimRepl : BaseRepl() {
         val embeddedClasspath: MutableList<File> =
             System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList()
 
+// todo: make classpath slim
+
+//        val classpath = scriptCompilationClasspathFromContext(
+//            "lib",
+//            "api",
+//            "shared-compiler",
+//            "kotlin-stdlib",
+//            "kotlin-reflect",
+//            "kotlin-script-runtime",
+//            classLoader = DependsOn::class.java.classLoader
+//        )
+
         embeddedClasspath += this.setupArchGuardLibs()
         val dslLibS = resolveArchGuardLibs()
 
