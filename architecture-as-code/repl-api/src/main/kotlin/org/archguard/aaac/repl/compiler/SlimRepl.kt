@@ -6,7 +6,7 @@ import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
 import java.io.File
 
 class SlimRepl : BaseRepl() {
-    override fun makeEmbeddedRepl(): ReplForJupyter {
+    fun makeEmbeddedRepl(): ReplForJupyter {
         val resolutionInfoProvider = EmptyResolutionInfoProvider
 
         val embeddedClasspath: MutableList<File> =
@@ -24,11 +24,7 @@ class SlimRepl : BaseRepl() {
 //            classLoader = DependsOn::class.java.classLoader
 //        )
 
-        val dslLibS = resolveArchGuardLibs()
 
-        return ReplForJupyterImpl(
-            resolutionInfoProvider, embeddedClasspath, isEmbedded = true, libraryResolver = dslLibS,
-            runtimeProperties = this.replRuntimeProperties
-        )
+        return ReplForJupyterImpl(resolutionInfoProvider, embeddedClasspath)
     }
 }

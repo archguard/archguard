@@ -1,26 +1,65 @@
 package org.archguard.aaac.repl.compiler
 
+import org.jetbrains.kotlinx.jupyter.EvalRequestData
+import org.jetbrains.kotlinx.jupyter.KernelConfig
 import org.jetbrains.kotlinx.jupyter.ReplForJupyter
 import org.jetbrains.kotlinx.jupyter.ReplForJupyterImpl
+import org.jetbrains.kotlinx.jupyter.RuntimeKernelProperties
+import org.jetbrains.kotlinx.jupyter.api.Code
 import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
+import org.jetbrains.kotlinx.jupyter.libraries.LibraryResolver
+import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
 import java.io.File
 
 class FullRepl : BaseRepl() {
-    override fun makeEmbeddedRepl(): ReplForJupyter {
-        val resolutionInfoProvider = EmptyResolutionInfoProvider
+    private val repl: ReplForJupyter
+    private val replRuntimeProperties = RuntimeKernelProperties(
+        mapOf(
+            "version" to "0.11.0.89.dev1",
+            "currentBranch" to "stable-kotlin",
+            "currentSha" to "3c9c34dae3d4a334809d3bb078012b743b2bd618",
+            "librariesFormatVersion" to "2",
+            "jvmTargetForSnippets" to "12"
+        )
+    )
 
+    init {
+        this.repl = this.makeEmbeddedRepl()
+    }
+
+    fun makeEmbeddedRepl(): ReplForJupyter {
         val embeddedClasspath: MutableList<File> =
-            System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList();
+            System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList()
 
         val dslLibS = resolveArchGuardLibs()
 
-        return ReplForJupyterImpl(
-            resolutionInfoProvider,
-            embeddedClasspath,
-            isEmbedded = true,
+        val config = KernelConfig(
+            ports = listOf(8080),
+            transport = "tcp",
+            signatureScheme = "hmac1-sha256",
+            signatureKey = "",
+            scriptClasspath = embeddedClasspath,
+            homeDir = File(""),
             libraryResolver = dslLibS,
-            runtimeProperties = this.replRuntimeProperties
-
+            resolutionInfoProvider = EmptyResolutionInfoProvider,
         )
+
+        return ReplForJupyterImpl(config, this.replRuntimeProperties)
+    }
+
+    fun eval(code: Code, displayHandler: DisplayHandler? = null, jupyterId: Int = -1, storeHistory: Boolean = true) =
+        repl.eval(EvalRequestData(code, displayHandler, jupyterId, storeHistory))
+
+    private fun resolveArchGuardLibs(): LibraryResolver {
+        val lib = "archguard" to """
+        {
+            "imports": [
+                "org.archguard.dsl.*"
+            ],
+            "init": []
+        }
+            """.trimIndent()
+
+        return listOf(lib).toLibraries()
     }
 }

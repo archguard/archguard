@@ -5,12 +5,11 @@ import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.aaac.api.messaging.Message
-import org.archguard.aaac.repl.compiler.BaseRepl
 import org.archguard.aaac.repl.compiler.FullRepl
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
 
-class ArchdocInterpreter(private var compiler: BaseRepl = FullRepl()) : InterpreterService {
+class ArchdocInterpreter(private var compiler: FullRepl = FullRepl()) : InterpreterService {
     override fun eval(interpreterRequest: InterpreterRequest): Message {
         try {
             val result = compiler.eval(interpreterRequest.code, null, interpreterRequest.id)
