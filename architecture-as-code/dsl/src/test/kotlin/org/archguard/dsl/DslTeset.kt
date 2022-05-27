@@ -105,6 +105,7 @@ internal class DslTest {
             spec("api")
             feature("sample")
             branch("master")
+            type("")
         }
 
         val reactiveAction = scan.create()

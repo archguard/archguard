@@ -15,9 +15,11 @@ class ScanModel(
     val features: MutableList<String>,
     val languages: MutableList<String>,
     val specs: MutableList<String>,
+    val types: MutableList<String>,
 )
 
 class ScanModelDecl(val name: String) : Element {
+    var types: MutableList<String> = mutableListOf()
     var languages: MutableList<String> = mutableListOf()
     var features: MutableList<String> = mutableListOf()
     var specs: MutableList<String> = mutableListOf()
@@ -51,6 +53,14 @@ class ScanModelDecl(val name: String) : Element {
         this.specs += specs.toMutableList()
     }
 
+    fun type(type: String) {
+        this.types += type
+    }
+
+    fun types(vararg types: String) {
+        this.types += types.toMutableList()
+    }
+
     fun create(): ReactiveAction {
         val scanModel = model()
 
@@ -67,7 +77,8 @@ class ScanModelDecl(val name: String) : Element {
         branch,
         features,
         languages,
-        specs
+        specs,
+        types
     )
 
     override fun toString(): String {
