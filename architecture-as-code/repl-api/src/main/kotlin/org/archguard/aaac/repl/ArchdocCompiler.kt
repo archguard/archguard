@@ -9,7 +9,7 @@ import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
 import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
 import java.io.File
 
-class ArchdocCompiler {
+class ArchdocCompiler : BaseCompiler {
     private fun makeEmbeddedRepl(): ReplForJupyter {
         val resolutionInfoProvider = EmptyResolutionInfoProvider
 
@@ -30,7 +30,12 @@ class ArchdocCompiler {
         """.trimIndent()
 
         val dslLibS = listOf(lib).toLibraries()
-        return ReplForJupyterImpl(resolutionInfoProvider, embeddedClasspath, isEmbedded = true, libraryResolver = dslLibS)
+        return ReplForJupyterImpl(
+            resolutionInfoProvider,
+            embeddedClasspath,
+            isEmbedded = true,
+            libraryResolver = dslLibS
+        )
     }
 
     // looking for dep path to add files
@@ -38,6 +43,6 @@ class ArchdocCompiler {
 
     private val repl = makeEmbeddedRepl()
 
-    fun eval(code: Code, displayHandler: DisplayHandler? = null, jupyterId: Int = -1, storeHistory: Boolean = true) =
+    override fun eval(code: Code, displayHandler: DisplayHandler?, jupyterId: Int, storeHistory: Boolean) =
         repl.eval(EvalRequestData(code, displayHandler, jupyterId, storeHistory))
 }
