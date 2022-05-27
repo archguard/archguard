@@ -1,4 +1,4 @@
-package org.archguard.aaac.repl
+package org.archguard.aaac.repl.compiler
 
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.EvalRequestData

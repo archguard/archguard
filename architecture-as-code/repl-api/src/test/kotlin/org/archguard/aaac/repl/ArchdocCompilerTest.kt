@@ -1,6 +1,7 @@
 package org.archguard.aaac.repl
 
 import io.kotest.matchers.shouldBe
+import org.archguard.aaac.repl.compiler.ArchdocCompiler
 import org.junit.jupiter.api.Test
 
 internal class DslTest {

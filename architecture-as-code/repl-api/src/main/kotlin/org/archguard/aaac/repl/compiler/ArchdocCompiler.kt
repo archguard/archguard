@@ -1,5 +1,6 @@
-package org.archguard.aaac.repl
+package org.archguard.aaac.repl.compiler
 
+import org.archguard.aaac.repl.toLibraries
 import org.jetbrains.kotlinx.jupyter.ReplForJupyter
 import org.jetbrains.kotlinx.jupyter.ReplForJupyterImpl
 import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
