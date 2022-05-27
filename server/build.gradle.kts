@@ -19,6 +19,13 @@ repositories {
     mavenLocal()
 }
 
+tasks.withType<Javadoc>().all { enabled = false }
+tasks.getByName("javadocJar") { enabled = false }
+tasks.getByName("sourcesJar") { enabled = false }
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
+
 configurations {
     all {
         exclude(group = "junit", module = "junit")
