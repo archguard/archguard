@@ -24,7 +24,8 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-// alllow script to unpack
+// allow script to unpack
+// when spring boot start, those packages will unpack to some dir, so we can call it REPL.
 tasks.withType<BootJar> {
     requiresUnpack("**/kotlin-compiler-*.jar")
     requiresUnpack("**/kotlin-script-*.jar")

@@ -34,7 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
 
     // tips: don't add follow deps to project will cause issues
-//    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
+    compileOnly("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
 //    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
     implementation("ch.qos.logback:logback-classic:1.2.11")

@@ -11,6 +11,7 @@ import org.jetbrains.kotlinx.jupyter.libraries.LibraryResolver
 import org.jetbrains.kotlinx.jupyter.messaging.DisplayHandler
 import org.slf4j.LoggerFactory
 import java.io.File
+import kotlin.script.experimental.jvm.util.KotlinJars
 
 class FullRepl : BaseRepl() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -34,22 +35,22 @@ class FullRepl : BaseRepl() {
         val property = System.getProperty("java.class.path")
         var embeddedClasspath: MutableList<File> = property.split(File.pathSeparator).map(::File).toMutableList()
 
-//        val isInRuntime = embeddedClasspath.size == 1
-//        if (isInRuntime) {
-//            System.setProperty("kotlin.script.classpath", property)
-//
-//            val compiler = KotlinJars.compilerClasspath
-//            if (compiler.isNotEmpty()) {
-//                embeddedClasspath = mutableListOf()
-//                val tempdir = compiler[0].parent
-//                File(tempdir).walk(FileWalkDirection.BOTTOM_UP).sortedBy { it.isDirectory }.forEach {
-//                    embeddedClasspath += it
-//                }
-//            }
-//        }
-//
-//        embeddedClasspath = embeddedClasspath.distinctBy { it.name } as MutableList<File>
-//        logger.info("classpath: $embeddedClasspath")
+        val isInRuntime = embeddedClasspath.size == 1
+        if (isInRuntime) {
+            System.setProperty("kotlin.script.classpath", property)
+
+            val compiler = KotlinJars.compilerClasspath
+            if (compiler.isNotEmpty()) {
+                embeddedClasspath = mutableListOf()
+                val tempdir = compiler[0].parent
+                File(tempdir).walk(FileWalkDirection.BOTTOM_UP).sortedBy { it.isDirectory }.forEach {
+                    embeddedClasspath += it
+                }
+            }
+        }
+
+        embeddedClasspath = embeddedClasspath.distinctBy { it.name } as MutableList<File>
+        logger.info("classpath: $embeddedClasspath")
 
         val config = KernelConfig(
             ports = listOf(8080),
@@ -66,7 +67,12 @@ class FullRepl : BaseRepl() {
         return ReplForJupyterImpl(config, this.replRuntimeProperties)
     }
 
-    fun eval(code: Code, displayHandler: DisplayHandler? = null, jupyterId: Int = -1, storeHistory: Boolean = true) =
+    fun eval(
+        code: Code,
+        displayHandler: DisplayHandler? = null,
+        jupyterId: Int = -1,
+        storeHistory: Boolean = true,
+    ) =
         repl.eval(EvalRequestData(code, displayHandler, jupyterId, storeHistory))
 
     private fun resolveArchGuardLibs(): LibraryResolver {
