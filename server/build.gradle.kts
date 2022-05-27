@@ -24,8 +24,12 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+// alllow script to unpack
 tasks.withType<BootJar> {
     requiresUnpack("**/kotlin-compiler-*.jar")
+    requiresUnpack("**/kotlin-script-*.jar")
+    requiresUnpack("**/kotlin-jupyter-*.jar")
+    requiresUnpack("**/dsl-*.jar")
 }
 
 repositories {

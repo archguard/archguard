@@ -31,30 +31,34 @@ class FullRepl : BaseRepl() {
     }
 
     fun makeEmbeddedRepl(): ReplForJupyter {
-        val embeddedClasspath: MutableList<File> =
-            System.getProperty("java.class.path").split(File.pathSeparator).map(::File).toMutableList()
+        val property = System.getProperty("java.class.path")
+        var embeddedClasspath: MutableList<File> = property.split(File.pathSeparator).map(::File).toMutableList()
 
-//        val classpath = scriptCompilationClasspathFromContext(
-//            "lib",
-//            "api",
-//            "shared-compiler",
-//            "kotlin-stdlib",
-//            "kotlin-reflect",
-//            "kotlin-script-runtime",
-//            classLoader = DependsOn::class.java.classLoader
-//        )
+//        val isInRuntime = embeddedClasspath.size == 1
+//        if (isInRuntime) {
+//            System.setProperty("kotlin.script.classpath", property)
+//
+//            val compiler = KotlinJars.compilerClasspath
+//            if (compiler.isNotEmpty()) {
+//                embeddedClasspath = mutableListOf()
+//                val tempdir = compiler[0].parent
+//                File(tempdir).walk(FileWalkDirection.BOTTOM_UP).sortedBy { it.isDirectory }.forEach {
+//                    embeddedClasspath += it
+//                }
+//            }
+//        }
+//
+//        embeddedClasspath = embeddedClasspath.distinctBy { it.name } as MutableList<File>
+//        logger.info("classpath: $embeddedClasspath")
 
-        logger.info("classpath: $embeddedClasspath")
-
-        val dslLibS = resolveArchGuardLibs()
         val config = KernelConfig(
             ports = listOf(8080),
             transport = "tcp",
             signatureScheme = "hmac1-sha256",
             signatureKey = "",
             scriptClasspath = embeddedClasspath,
-            homeDir = File(""),
-            libraryResolver = dslLibS,
+            homeDir = null,
+            libraryResolver = resolveArchGuardLibs(),
             embedded = true,
             resolutionInfoProvider = EmptyResolutionInfoProvider,
         )

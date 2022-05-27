@@ -8,10 +8,18 @@ import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.repl.compiler.FullRepl
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class ArchdocInterpreter(private var compiler: FullRepl = FullRepl()) : InterpreterService {
-    private val logger = LoggerFactory.getLogger(this.javaClass)
+class ArchdocInterpreter : InterpreterService {
+    private var compiler: FullRepl
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
+    init {
+        this.logger.info("init ArchdocInterpreter")
+        this.compiler = FullRepl()
+    }
+
 
     override fun eval(interpreterRequest: InterpreterRequest): Message {
         try {
