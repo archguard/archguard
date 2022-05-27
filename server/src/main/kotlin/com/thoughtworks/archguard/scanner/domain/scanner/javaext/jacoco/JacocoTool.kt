@@ -8,9 +8,15 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: BuildTool, val logStream: StreamConsumer, val scannerVersion: String) {
+class JacocoTool(
+    val workspace: File,
+    val systemRoot: File,
+    val buildTool: BuildTool,
+    val logStream: StreamConsumer,
+    val scannerVersion: String,
+) {
     private val log = LoggerFactory.getLogger(JacocoTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
     private val SCAN_JACOCO_JAR = "scan_jacoco-$scannerVersion-all.jar"
 
     fun execToSql(): File? {
@@ -57,7 +63,9 @@ class JacocoTool(val workspace: File, val systemRoot: File, val buildTool: Build
     }
 
     private fun download() {
-        if (File(SCAN_JACOCO_JAR).exists()) { return }
+        if (File(SCAN_JACOCO_JAR).exists()) {
+            return
+        }
         val jarLink = "$host/$SCAN_JACOCO_JAR"
 
         log.info("start download scan_jacoco tool")

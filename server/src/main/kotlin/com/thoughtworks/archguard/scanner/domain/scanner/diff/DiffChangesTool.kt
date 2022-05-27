@@ -15,10 +15,10 @@ class DiffChangesTool(
     val branch: String,
     val logStream: StreamConsumer,
     val additionArguments: List<String>,
-    val scannerVersion: String
+    val scannerVersion: String,
 ) {
     private val log = LoggerFactory.getLogger(DiffChangesTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
     private val SCAN_SOURCECODE_JAR = "diff_changes-$scannerVersion-all.jar"
 
     fun analyse() {

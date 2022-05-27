@@ -2,9 +2,9 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-private const val VERSION = "2.0.0-alpha.7"
+private const val VERSION = "2.0.0-alpha.10"
 private const val TAG = "v$VERSION"
-private const val RELEASE_REPO_URL = "https://github.com/archguard/scanner/releases/download/$TAG"
+private const val RELEASE_REPO_URL = "https://github.com/archguard/archguard/releases/download/$TAG"
 
 enum class OfficialAnalyserSpecs(
     private val className: String,

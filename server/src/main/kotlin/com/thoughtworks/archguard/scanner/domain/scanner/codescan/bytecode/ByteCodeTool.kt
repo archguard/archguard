@@ -7,15 +7,34 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
 
-class ByteCodeTool(val systemRoot: File, val dbUrl: String, val systemId: Long, val logStream: StreamConsumer, val scannerVersion: String) {
+class ByteCodeTool(
+    val systemRoot: File,
+    val dbUrl: String,
+    val systemId: Long,
+    val logStream: StreamConsumer,
+    val scannerVersion: String,
+) {
 
     private val log = LoggerFactory.getLogger(ByteCodeTool::class.java)
-    private val host = "https://github.com/archguard/scanner/releases/download/v$scannerVersion"
+    private val host = "https://github.com/archguard/archguard/releases/download/v$scannerVersion"
     private val SCAN_JAVA_BYTECODE_JAR = "scan_java_bytecode-$scannerVersion-all.jar"
 
     fun analyse() {
         prepareTool()
-        scan(listOf("java", "-jar", "-Ddburl=$dbUrl?useSSL=false", "scan_java_bytecode.jar", "-i", ".", "-xml", "false", "-id", "$systemId"))
+        scan(
+            listOf(
+                "java",
+                "-jar",
+                "-Ddburl=$dbUrl?useSSL=false",
+                "scan_java_bytecode.jar",
+                "-i",
+                ".",
+                "-xml",
+                "false",
+                "-id",
+                "$systemId"
+            )
+        )
     }
 
     private fun prepareTool() {

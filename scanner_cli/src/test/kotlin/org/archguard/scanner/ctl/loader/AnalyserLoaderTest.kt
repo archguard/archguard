@@ -39,7 +39,7 @@ internal class AnalyserLoaderTest {
 
     @Test
     fun `should load the analyser from remote jar via http url`() {
-        val url = "https://github.com/archguard/scanner/raw/master/scanner_cli/src/test/resources/kotlin"
+        val url = "https://github.com/archguard/archguard/raw/master/scanner_cli/src/test/resources/kotlin"
         val analyser = AnalyserLoader.load(context, spec.copy(host = url))
 
         val kClass = analyser::class
