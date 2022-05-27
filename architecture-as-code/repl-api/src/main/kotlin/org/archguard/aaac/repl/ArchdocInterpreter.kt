@@ -3,6 +3,7 @@ package org.archguard.aaac.repl
 import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.AaacMessageType
+import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.repl.compiler.FullRepl
 import org.archguard.dsl.base.model.ReactiveAction
