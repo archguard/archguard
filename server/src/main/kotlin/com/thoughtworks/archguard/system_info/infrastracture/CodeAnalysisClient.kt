@@ -13,7 +13,8 @@ class CodeAnalysisClient(@Value("\${client.host}") val baseUrl: String) : Analys
 
     override fun refreshThresholdCache() {
         try {
-            RestTemplate().postForLocation("$baseUrl/api/bad-smell-threshold/reload", null, null)
+            val map: Map<String, String> = HashMap()
+            RestTemplate().postForLocation("$baseUrl/api/bad-smell-threshold/reload", null, map)
             log.info("Auto refresh threshold cache in code-analysis")
         } catch (ex: Exception) {
             log.error("HTTP exception when trigger threshold auto refresh. {}", ex)
