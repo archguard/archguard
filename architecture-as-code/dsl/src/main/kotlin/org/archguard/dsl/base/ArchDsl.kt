@@ -7,4 +7,4 @@ annotation class DslMarker
 interface Element {}
 
 @DslMarker
-abstract class Decl : Element
+abstract class ArchDsl : Element

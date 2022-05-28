@@ -4,7 +4,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.archguard.dsl.base.model.ActionType
 import org.archguard.dsl.base.model.GraphType
-import org.archguard.dsl.design.LayeredDecl
+import org.archguard.dsl.design.LayeredArchDsl
 import org.archguard.dsl.evolution.ScanModel
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -51,9 +51,9 @@ internal class DslTest {
 
     @Test
     internal fun reactive_action() {
-        val action = diagram().show(LayeredDecl(), GraphType.UML)
+        val action = diagram().show(LayeredArchDsl(), GraphType.UML)
         assertEquals(ActionType.GRAPH, action.actionType)
-        assertEquals("org.archguard.dsl.design.LayeredDecl", action.className)
+        assertEquals("org.archguard.dsl.design.LayeredArchDsl", action.className)
         assertEquals(GraphType.UML, action.graphType)
     }
 

@@ -1,13 +1,13 @@
 package org.archguard.dsl
 
 import org.archguard.dsl.action.ReactiveActionDecl
-import org.archguard.dsl.design.LayeredDecl
+import org.archguard.dsl.design.LayeredArchDsl
 import org.archguard.dsl.evolution.ReposDecl
 import org.archguard.dsl.evolution.ScanModelDecl
 import org.archguard.dsl.evolution.WebApiDecl
 
 class FatDslContext(
-    var layered: LayeredDecl = LayeredDecl(),
+    var layered: LayeredArchDsl = LayeredArchDsl(),
     var repos: ReposDecl = ReposDecl(),
     var webapi: WebApiDecl = WebApiDecl(),
     var scan: ScanModelDecl? = null,
@@ -16,8 +16,8 @@ class FatDslContext(
 // todo: find a better way
 val context = FatDslContext()
 
-fun layered(init: LayeredDecl.() -> Unit): LayeredDecl {
-    val layeredDecl = LayeredDecl()
+fun layered(init: LayeredArchDsl.() -> Unit): LayeredArchDsl {
+    val layeredDecl = LayeredArchDsl()
     layeredDecl.init()
     context.layered = layeredDecl
     return layeredDecl

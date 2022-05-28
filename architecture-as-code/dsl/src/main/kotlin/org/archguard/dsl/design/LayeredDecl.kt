@@ -2,7 +2,6 @@ package org.archguard.dsl.design
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.dsl.base.Decl
 import org.archguard.dsl.base.Element
 import org.archguard.dsl.base.model.LayeredRelation
 
@@ -18,7 +17,7 @@ class ComponentDecl(val name: String) : Element {
     }
 }
 
-class LayeredDecl : Decl() {
+class LayeredArchDsl : Element {
     private var componentDeclMap: HashMap<String, ComponentDecl> = hashMapOf()
 
     private var prefix: String = ""
