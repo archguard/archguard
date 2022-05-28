@@ -40,11 +40,9 @@ class KotlinReplWrapper {
 
             val compiler = KotlinJars.compilerClasspath
             if (compiler.isNotEmpty()) {
-                embeddedClasspath = mutableListOf()
                 val tempdir = compiler[0].parent
-                File(tempdir).walk(FileWalkDirection.BOTTOM_UP).sortedBy { it.isDirectory }.forEach {
-                    embeddedClasspath += it
-                }
+                embeddedClasspath =
+                    File(tempdir).walk(FileWalkDirection.BOTTOM_UP).sortedBy { it.isDirectory }.toMutableList()
             }
         }
 
