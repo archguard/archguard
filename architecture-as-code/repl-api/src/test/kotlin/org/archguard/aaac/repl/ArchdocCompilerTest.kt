@@ -1,17 +1,17 @@
 package org.archguard.aaac.repl
 
 import io.kotest.matchers.shouldBe
-import org.archguard.aaac.repl.compiler.FullRepl
+import org.archguard.aaac.repl.compiler.KotlinReplWrapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class DslTest {
-    private lateinit var compiler: FullRepl
+    private lateinit var compiler: KotlinReplWrapper
 
 
     @BeforeEach
     internal fun setUp() {
-        this.compiler = FullRepl()
+        this.compiler = KotlinReplWrapper()
     }
 
     @Test

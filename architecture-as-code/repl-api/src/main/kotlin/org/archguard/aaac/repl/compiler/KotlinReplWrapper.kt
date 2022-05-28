@@ -13,9 +13,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.script.experimental.jvm.util.KotlinJars
 
-class FullRepl : BaseRepl() {
+class KotlinReplWrapper {
     private val logger = LoggerFactory.getLogger(this.javaClass)
-
     private val repl: ReplForJupyter
     private val replRuntimeProperties = RuntimeKernelProperties(
         mapOf(

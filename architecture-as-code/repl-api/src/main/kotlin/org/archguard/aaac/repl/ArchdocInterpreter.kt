@@ -5,21 +5,15 @@ import org.archguard.aaac.api.InterpreterService
 import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.aaac.api.messaging.Message
-import org.archguard.aaac.repl.compiler.FullRepl
+import org.archguard.aaac.repl.compiler.KotlinReplWrapper
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class ArchdocInterpreter : InterpreterService {
-    private var compiler: FullRepl
+    private var compiler: KotlinReplWrapper = KotlinReplWrapper()
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-
-    init {
-        this.logger.info("init ArchdocInterpreter")
-        this.compiler = FullRepl()
-    }
-
 
     override fun eval(interpreterRequest: InterpreterRequest): Message {
         try {
