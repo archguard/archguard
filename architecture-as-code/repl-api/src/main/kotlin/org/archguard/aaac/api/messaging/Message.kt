@@ -8,7 +8,7 @@ data class Message(
     var id: Int = -1,
     var resultValue: String,
     var className: String = "",
-    var msgType: AaacMessageType = AaacMessageType.NONE,
-    var content: AaacContent? = null,
-    var action: ReactiveAction? = null
+    var msgType: MessageType = MessageType.NONE,
+    var content: MessageContent? = null,
+    var action: ReactiveAction? = null,
 )

@@ -2,9 +2,9 @@ package org.archguard.aaac.repl
 
 import org.archguard.aaac.api.InterpreterRequest
 import org.archguard.aaac.api.InterpreterService
-import org.archguard.aaac.api.messaging.AaacMessageType
 import org.archguard.aaac.api.messaging.ErrorContent
 import org.archguard.aaac.api.messaging.Message
+import org.archguard.aaac.api.messaging.MessageType
 import org.archguard.aaac.repl.compiler.KotlinReplWrapper
 import org.archguard.dsl.base.model.ReactiveAction
 import org.jetbrains.kotlinx.jupyter.repl.EvalResult
@@ -22,7 +22,7 @@ class ArchdocInterpreter : InterpreterService {
         } catch (e: Exception) {
             logger.error(e.toString())
             val content = ErrorContent(e.javaClass.name, e.toString())
-            return Message(interpreterRequest.id, "", "", AaacMessageType.ERROR, content = content)
+            return Message(interpreterRequest.id, "", "", MessageType.ERROR, content = content)
         }
     }
 
@@ -43,7 +43,7 @@ class ArchdocInterpreter : InterpreterService {
         }
 
         if (className.startsWith("org.archguard.dsl.design")) {
-            message.msgType = AaacMessageType.ARCHGUARD_GRAPH
+            message.msgType = MessageType.ARCHGUARD_GRAPH
         }
 
         return message

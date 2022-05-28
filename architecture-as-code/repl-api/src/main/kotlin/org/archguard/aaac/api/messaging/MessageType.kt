@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlin.reflect.KClass
 
 @Serializable(ArchdocMessageTypeSerializer::class)
-enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
+enum class MessageType(val contentClass: KClass<out MessageContent>) {
     NONE(NoneContent::class),
     ERROR(ErrorContent::class),
     ARCHGUARD_GRAPH(ArchGuardGraph::class),
@@ -22,22 +22,22 @@ enum class AaacMessageType(val contentClass: KClass<out AaacContent>) {
 }
 
 @Serializable
-sealed class AaacContent
+sealed class MessageContent
 
 @Serializable
-abstract class MessageReplyContent(val status: DocStatus) : AaacContent()
+abstract class MessageReplyContent(val status: DocStatus) : MessageContent()
 
 @Serializable
 class NoneContent : MessageReplyContent(DocStatus.ABORT)
 
 @Serializable
-class ErrorContent(val exception: String = "", val message: String = "") : AaacContent()
+class ErrorContent(val exception: String = "", val message: String = "") : MessageContent()
 
 @Serializable
-class ArchGuardGraph(val isGraph: Boolean = true, val graphType: String = "") : AaacContent()
+class ArchGuardGraph(val graphType: String = "") : MessageContent()
 
 @Serializable
-class ArchguardEvolution(val actionType: String = "") : AaacContent()
+class ArchguardEvolution(val actionType: String = "") : MessageContent()
 
 @Serializable
 enum class DocStatus {
@@ -51,27 +51,25 @@ enum class DocStatus {
     ABORT;
 }
 
-object ArchdocMessageTypeSerializer : KSerializer<AaacMessageType> {
-    private val cache: MutableMap<String, AaacMessageType> = hashMapOf()
+object ArchdocMessageTypeSerializer : KSerializer<MessageType> {
+    private val cache: MutableMap<String, MessageType> = hashMapOf()
 
-    private fun getMessageType(type: String): AaacMessageType {
+    private fun getMessageType(type: String): MessageType {
         return cache.computeIfAbsent(type) { newType ->
-            AaacMessageType.values().firstOrNull { it.type == newType }
+            MessageType.values().firstOrNull { it.type == newType }
                 ?: throw SerializationException("Unknown message type: $newType")
         }
     }
 
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor(
-            AaacMessageType::class.qualifiedName!!,
-            PrimitiveKind.STRING
-        )
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        MessageType::class.qualifiedName!!, PrimitiveKind.STRING
+    )
 
-    override fun deserialize(decoder: Decoder): AaacMessageType {
+    override fun deserialize(decoder: Decoder): MessageType {
         return getMessageType(decoder.decodeString())
     }
 
-    override fun serialize(encoder: Encoder, value: AaacMessageType) {
+    override fun serialize(encoder: Encoder, value: MessageType) {
         encoder.encodeString(value.type)
     }
 }
