@@ -60,7 +60,7 @@ class EvaluationApiATest {
 
         val evaluation = jsonArray.getJSONObject(0)
 
-        assertEquals(evaluation.getString("name"), "质量评估")
+        assertEquals("质量评估", evaluation.getString("name"))
     }
 
     @Test
@@ -77,7 +77,7 @@ class EvaluationApiATest {
 
         val evaluation = JSONObject(result.response.contentAsString)
 
-        assertEquals(evaluation.getString("name"), "质量评估")
+        assertEquals("质量评估", evaluation.getString("name"))
     }
 
     @Test
@@ -93,8 +93,8 @@ class EvaluationApiATest {
             .andReturn()
 
         assertEquals(
-            result.response.contentAsString,
-            "{\"changeImpactReportDetail\":{\"scatteredCommits\":[],\"allCommits\":[],\"scatteredPercent\":\"NaN\"},\"codeStyleReportDetail\":null,\"dbCouplingReportDetail\":null,\"layerReportDetail\":null,\"moduleCouplingReportDetail\":{\"latestQualityList\":[],\"moduleInstabilityAverage\":\"NaN\",\"count8\":0,\"count8To6\":0,\"count6\":0},\"testProtectionReportDetail\":{\"testBs\":[],\"totalTest\":0,\"hotSpotTest\":[],\"hotSpotTestBadSmell\":[],\"classCoverageByFiles\":[],\"hotSpotFile\":[],\"classCoverageByModules\":[],\"hotSpotModule\":[],\"uselessTest\":0,\"latestUselessTest\":0,\"uselessPercent\":0.0,\"latestTestCoverage\":\"NaN\",\"latestModuleTestCoverage\":\"NaN\",\"testCoverage\":\"NaN\",\"modelCoverage\":\"NaN\"}}"
+            "{\"changeImpactReportDetail\":{\"scatteredCommits\":[],\"allCommits\":[],\"scatteredPercent\":\"NaN\"},\"codeStyleReportDetail\":null,\"dbCouplingReportDetail\":null,\"layerReportDetail\":null,\"moduleCouplingReportDetail\":{\"latestQualityList\":[],\"moduleInstabilityAverage\":\"NaN\",\"count8\":0,\"count8To6\":0,\"count6\":0},\"testProtectionReportDetail\":{\"testBs\":[],\"totalTest\":0,\"hotSpotTest\":[],\"hotSpotTestBadSmell\":[],\"classCoverageByFiles\":[],\"hotSpotFile\":[],\"classCoverageByModules\":[],\"hotSpotModule\":[],\"uselessTest\":0,\"latestUselessTest\":0,\"uselessPercent\":0.0,\"latestTestCoverage\":\"NaN\",\"latestModuleTestCoverage\":\"NaN\",\"testCoverage\":\"NaN\",\"modelCoverage\":\"NaN\"}}",
+            result.response.contentAsString
         )
     }
 }
