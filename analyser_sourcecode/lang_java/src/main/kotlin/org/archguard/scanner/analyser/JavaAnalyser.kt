@@ -3,6 +3,7 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.core.sourcecode.LanguageSourceCodeAnalyser
+import org.archguard.scanner.core.sourcecode.ModuleIdentify
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
 import java.io.File
@@ -21,7 +22,8 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
         basicNodes = files.asyncMap { analysisBasicInfoByFile(it) }.flatten().toTypedArray()
         classes = basicNodes.map { it.getClassFullName() }.toTypedArray()
 
-        files.asyncMap { analysisFullInfoByFile(it) }.flatten().toList()
+        val basepath = File(context.path)
+        files.asyncMap { analysisFullInfoByFile(it, basepath) }.flatten().toList()
             .also { client.saveDataStructure(it) }
     }
 
@@ -30,8 +32,14 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
         return codeContainer.DataStructures.map { ds -> ds.apply { ds.Imports = codeContainer.Imports } }
     }
 
-    private fun analysisFullInfoByFile(file: File): List<CodeDataStruct> {
+    private fun analysisFullInfoByFile(file: File, basepath: File): List<CodeDataStruct> {
+        val moduleName = ModuleIdentify.lookupModuleName(file, basepath)
         val codeContainer = impl.identFullInfo(file.readContent(), file.name, classes, basicNodes)
-        return codeContainer.DataStructures.map { ds -> ds.apply { ds.Imports = codeContainer.Imports } }
+        return codeContainer.DataStructures.map { ds ->
+            ds.apply {
+                ds.Module = moduleName
+                ds.Imports = codeContainer.Imports
+            }
+        }
     }
 }

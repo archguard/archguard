@@ -1,6 +1,5 @@
 package org.archguard.scanner.analyser
 
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -12,7 +11,6 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
