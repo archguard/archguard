@@ -20,9 +20,9 @@ class TestBadSmellScanner(@Autowired val testBadSmellRepo: TestBadSmellRepo) : S
         return "TestBadSmell"
     }
 
+    // todo: set to disabled for codes
     override fun canScan(context: ScanContext): Boolean {
-        return context.language.lowercase() == "java" ||
-                context.language.lowercase() == "kotlin"
+        return false
     }
 
     override fun scan(context: ScanContext) {
