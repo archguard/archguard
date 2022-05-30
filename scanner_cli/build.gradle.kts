@@ -11,7 +11,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("com.phodal.chapi:chapi-domain:1.5.6")
+    implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.4")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
