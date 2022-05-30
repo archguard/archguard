@@ -31,7 +31,7 @@ class AasDslRepositoryImpl : AasDslRepository {
     override fun update(model: AacDslCodeModel): Int {
         return jdbi.withHandle<Int, Nothing> {
             it.createUpdate(
-                "update aac_dsl set content = content where id = :id"
+                "update aac_dsl set content = :content where id = :id"
             )
                 .bindBean(model)
                 .execute()

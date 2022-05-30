@@ -85,8 +85,8 @@ class AsCodeController(
     }
 
     @GetMapping("/dsl-code/{id}")
-    fun getCode(@RequestBody code: String, @PathVariable id: Long): Long? {
-        return aacDslRepository.save(AacDslCodeModel(id, content = code))
+    fun getCode(@PathVariable id: Long): AacDslCodeModel? {
+        return aacDslRepository.getById(id)
     }
 
     @PutMapping("/scan")
