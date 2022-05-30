@@ -69,4 +69,18 @@ class ModuleIdentify {
             false
         }
     }
+
+    companion object {
+        private const val SEPARATOR = ":"
+
+        fun moduleName(path: File, base: File): String {
+            if (path.absolutePath == base.absolutePath) {
+                return SEPARATOR
+            }
+
+            val relativePath = path.relativeTo(base)
+            val split = relativePath.path.split(File.separator)
+            return SEPARATOR + split.joinToString(SEPARATOR)
+        }
+    }
 }

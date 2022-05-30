@@ -2,6 +2,7 @@ package org.archguard.scanner.core.sourcecode
 
 import org.junit.jupiter.api.Test
 import java.io.File
+import kotlin.test.assertEquals
 
 class ModuleIdentifyTest {
     @Test
@@ -17,7 +18,6 @@ class ModuleIdentifyTest {
         val rootProject = currentDir.parentFile
         val moduleIdentifier = ModuleIdentify()
 
-
         val toList = rootProject
             .walk(FileWalkDirection.TOP_DOWN)
             .filter {
@@ -25,5 +25,17 @@ class ModuleIdentifyTest {
             }.toList()
 
         assert(toList.contains(currentDir))
+    }
+
+    @Test
+    fun path_to_name() {
+        val currentDir = File("").absoluteFile
+        val rootProject = currentDir.parentFile
+
+        assertEquals(":scanner_core", ModuleIdentify.moduleName(currentDir, rootProject))
+        assertEquals(":", ModuleIdentify.moduleName(rootProject, rootProject))
+
+        val lang = File(File(currentDir.parentFile, "analyser_sourcecode"), "lang_golang")
+        assertEquals(":analyser_sourcecode:lang_golang", ModuleIdentify.moduleName(lang, rootProject))
     }
 }
