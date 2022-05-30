@@ -5,14 +5,25 @@ import java.io.File
 object ModuleIdentify {
     private const val SEPARATOR = ":"
 
-    fun moduleName(path: File, base: File): String {
-        if (path.absolutePath == base.absolutePath) {
+    // todo: set file cache for all files
+    fun lookupModuleName(file: File, base: File): String {
+        val srcSplit = file.path.split("src" + File.separator)
+        val srcPath = File(srcSplit[0])
+        if (isRootModule(srcPath)) {
             return SEPARATOR
         }
 
-        val relativePath = path.relativeTo(base)
-        val split = relativePath.path.split(File.separator)
-        return SEPARATOR + split.joinToString(SEPARATOR)
+        if (file.absolutePath == base.absolutePath) {
+            return SEPARATOR
+        }
+
+        if (isSubModule(srcPath)) {
+            val relativePath = srcPath.relativeTo(base)
+            val split = relativePath.path.split(File.separator)
+            return SEPARATOR + split.joinToString(SEPARATOR)
+        }
+
+        return SEPARATOR
     }
 
     private val SETTINGS_FILES = arrayOf("settings.gradle", "settings.gradle.kts")

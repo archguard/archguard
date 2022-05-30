@@ -28,10 +28,18 @@ class ModuleIdentifyTest {
         val currentDir = File("").absoluteFile
         val rootProject = currentDir.parentFile
 
-        assertEquals(":scanner_core", ModuleIdentify.moduleName(currentDir, rootProject))
-        assertEquals(":", ModuleIdentify.moduleName(rootProject, rootProject))
+        assertEquals(":scanner_core", ModuleIdentify.lookupModuleName(currentDir, rootProject))
+        assertEquals(":", ModuleIdentify.lookupModuleName(rootProject, rootProject))
 
         val lang = File(File(currentDir.parentFile, "analyser_sourcecode"), "lang_golang")
-        assertEquals(":analyser_sourcecode:lang_golang", ModuleIdentify.moduleName(lang, rootProject))
+        assertEquals(":analyser_sourcecode:lang_golang", ModuleIdentify.lookupModuleName(lang, rootProject))
+    }
+
+    @Test
+    fun file_module_name() {
+        val analysisFile = File("src/main/kotlin/org/archguard/scanner/core/Analyser.kt").absoluteFile
+        val rootProject = File("").absoluteFile.parentFile
+
+        assertEquals(":scanner_core", ModuleIdentify.lookupModuleName(analysisFile, rootProject))
     }
 }
