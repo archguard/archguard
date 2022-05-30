@@ -36,18 +36,12 @@ COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "analyser_sourcecode/lang_python/build/libs/lang_python*-all.jar",                \
 "analyser_sourcecode/lang_scala/build/libs/lang_scala*-all.jar",                   \
 "analyser_sourcecode/lang_typescript/build/libs/lang_typescript*-all.jar",          \
-"rule-linter/rule-sql/build/libs/rule-sql*.jar",                                        \
-"rule-linter/rule-webapi/build/libs/rule-webapi*.jar",                                   \
-"rule-linter/rule-test-code/build/libs/rule-test-code*.jar",                              \
-
+"rule-linter/rule-sql/build/libs/rule-sql*.jar",                                     \
+"rule-linter/rule-webapi/build/libs/rule-webapi*.jar",                                \
+"rule-linter/rule-test-code/build/libs/rule-test-code*.jar",                           \
 # target directory
 "/home/spring/dependencies/analysers/"]
 
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/analyser_sca-${SCAN_VERSION}-all.jar .
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/diff_changes-${SCAN_VERSION}-all.jar .
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_git-${SCAN_VERSION}-all.jar .
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_sourcecode-${SCAN_VERSION}-all.jar .
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_jacoco-${SCAN_VERSION}-all.jar .
-#ADD --chown=spring:spring https://github.com/archguard/scanner/releases/download/v${SCAN_VERSION}/scan_test_badsmell-${SCAN_VERSION}-all.jar .
+RUN chown -R spring:spring /home/spring/dependencies/analysers/
 
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
