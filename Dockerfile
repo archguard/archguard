@@ -23,6 +23,10 @@ COPY ["scanner_cli/build/libs/scanner_cli*-all.jar", "/home/spring/"]
 # the really scanner jar
 COPY ["scanner_cli/build/libs/scanner_cli*-all.jar", "/home/spring/scanner_cli.jar"]
 
+RUN ["mkdir", "-p", "/home/spring/dependencies/analysers/"]
+
+RUN chown -R spring:spring /home/spring/dependencies/analysers/
+
 # copy features & langs & rules
 COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "analyser_git/build/libs/analyser_git*-all.jar",                          \
@@ -41,7 +45,5 @@ COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "rule-linter/rule-test-code/build/libs/rule-test-code*.jar",                           \
 # target directory
 "/home/spring/dependencies/analysers/"]
-
-RUN chown -R spring:spring /home/spring/dependencies/analysers/
 
 ENTRYPOINT ["java","-jar","/home/spring/app.jar","--spring.profiles.active=${app_env}"]
