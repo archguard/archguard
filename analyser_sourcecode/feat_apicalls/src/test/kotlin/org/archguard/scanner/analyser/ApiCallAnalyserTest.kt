@@ -1,7 +1,6 @@
 package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -14,7 +13,6 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -33,7 +31,7 @@ internal class ApiCallAnalyserTest {
 
     private fun loadNodes(source: String): List<CodeDataStruct> {
         val file = File(this.javaClass.classLoader.getResource(source)!!.file)
-        return Json.decodeFromString(file.readText())
+        return Json { ignoreUnknownKeys = true }.decodeFromString(file.readText())
     }
 
     @Test

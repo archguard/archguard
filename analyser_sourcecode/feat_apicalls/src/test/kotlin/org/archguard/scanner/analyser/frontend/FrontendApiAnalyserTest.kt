@@ -14,7 +14,7 @@ internal class FrontendApiAnalyserTest {
 
     private fun loadNodes(source: String): Pair<String, Array<CodeDataStruct>> {
         val file = File(this.javaClass.classLoader.getResource(source)!!.file)
-        return file.absolutePath to Json.decodeFromString(file.readText())
+        return file.absolutePath to Json { ignoreUnknownKeys = true }.decodeFromString(file.readText())
     }
 
     @Test

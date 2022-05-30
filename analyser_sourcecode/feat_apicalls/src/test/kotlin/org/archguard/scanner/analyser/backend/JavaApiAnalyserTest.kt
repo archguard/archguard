@@ -10,7 +10,7 @@ import java.io.File
 
 internal class JavaApiAnalyserTest {
     private fun loadNodes(source: String): List<CodeDataStruct> {
-        return Json.decodeFromString(
+        return Json { ignoreUnknownKeys = true }.decodeFromString(
             File(this.javaClass.classLoader.getResource(source)!!.file).readText()
         )
     }
