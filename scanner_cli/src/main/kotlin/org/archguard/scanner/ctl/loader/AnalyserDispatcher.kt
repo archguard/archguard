@@ -56,6 +56,7 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
+        // hook and slots for source code ?
         context.features.asyncMap {
             try {
                 getOrInstall<SourceCodeAnalyser>(it).analyse(ast)

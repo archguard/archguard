@@ -1,5 +1,8 @@
 rootProject.name = "Archguard"
 
+// meta type
+include(":meta")
+
 // backend
 include(":server")
 

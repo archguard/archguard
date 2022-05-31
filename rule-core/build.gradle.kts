@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":meta"))
+
     testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
     testImplementation("org.reflections:reflections:0.10.2")
 

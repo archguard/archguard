@@ -13,7 +13,6 @@ import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -166,41 +165,6 @@ internal class RunnerTest {
                 )
             }
         }
-    }
-
-    @Disabled
-    @Test
-    fun `should save the result to client when calling rule changes analyser`() {
-        val args = arrayOf(
-            "--type=rule",
-            "--system-id=2222",
-            "--server-url=http://localhost:8080",
-            "--path=.",
-            "--output=json",
-            "--output=csv",
-            "--output=console",
-            "--language=kotlin",
-        )
-
-        Runner().main(args)
-//        mockkConstructor(AnalyserDispatcher::class) {
-//            every { anyConstructed<AnalyserDispatcher>().dispatch(any()) } just runs
-//
-//            Runner().main(args)
-//
-//            verify {
-//                anyConstructed<AnalyserDispatcher>().dispatch(
-//                    ScannerCommand(
-//                        type = AnalyserType.RULE,
-//                        systemId = "2222",
-//                        serverUrl = "http://localhost:8080",
-//                        path = ".",
-//                        output = listOf("json", "csv", "console"),
-//                        language = "kotlin",
-//                    )
-//                )
-//            }
-//        }
     }
 
     @Nested

@@ -1,10 +1,9 @@
 package org.archguard.rule.core
 
+import org.archguard.meta.Slot
 
-abstract class RuleVisitor(val data: Iterable<Any>) {
-    /* for analysis with source code */
-    abstract fun requiredDataType(): List<String>
 
+abstract class RuleVisitor(val data: Iterable<Any>) : Slot {
     abstract fun visitor(ruleSets: Iterable<RuleSet>): List<Issue>
     // for disabled rules, we can set in backend.
     // abstract fun concurrentVisitor(enabledRules: Map<String, Rule>, ruleSets: Iterable<RuleSet>): List<Issue>

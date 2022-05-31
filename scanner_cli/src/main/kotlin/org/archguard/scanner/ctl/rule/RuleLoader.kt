@@ -4,7 +4,7 @@ import org.archguard.rule.core.RuleSetProvider
 import org.archguard.rule.core.RuleVisitor
 import java.io.File
 import java.net.URLClassLoader
-import java.util.ServiceLoader
+import java.util.*
 
 
 data class LinterSpec(
