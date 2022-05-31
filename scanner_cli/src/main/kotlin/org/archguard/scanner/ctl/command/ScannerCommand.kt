@@ -10,8 +10,10 @@ import org.archguard.scanner.ctl.client.ArchGuardJsonClient
 import org.archguard.scanner.ctl.client.ChainedArchGuardClient
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
-// this class is the 'controller' of the scanner
-// put all input parameters in and build the context out
+/**
+ * this class is the 'controller' of the scanner
+ * put all input parameters in and build the context out
+ **/
 data class ScannerCommand(
     val type: AnalyserType,
     val systemId: String,
@@ -32,6 +34,12 @@ data class ScannerCommand(
     val since: String? = null,
     val until: String? = null,
     val depth: Int = 7,
+
+    /**
+     * slot is for plugins after analyser
+     * relate to [org.archguard.meta.Slot]
+     **/
+    val slots: List<AnalyserSpec> = emptyList(),
 ) {
     private val allAnalyserSpecs = customizedAnalyserSpecs + OfficialAnalyserSpecs.specs()
     fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier.lowercase() }

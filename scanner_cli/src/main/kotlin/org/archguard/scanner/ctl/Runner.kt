@@ -14,7 +14,9 @@ import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 import org.slf4j.LoggerFactory
 
-// parse the cli inputs as the standard command (controller), build the context and dispatch to run
+/**
+ * parse the cli inputs as the standard command (controller), build the context and dispatch to run
+ **/
 class Runner : CliktCommand(help = "scanner cli") {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -42,10 +44,9 @@ class Runner : CliktCommand(help = "scanner cli") {
     /**
      *  --language=java
      *  --features=API,DB
-     *
      *  --analyserSpec='{identifier: "java", version: "1.0.0" ... }'
      *  --analyserSpec='{identifier: "DB", version: "1.0.0" ... }'
-     */
+     **/
     override fun run() {
         logger.debug(
             """
