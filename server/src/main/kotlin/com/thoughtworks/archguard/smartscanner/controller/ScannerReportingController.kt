@@ -83,14 +83,13 @@ class ScannerReportingController(
         @PathVariable systemId: String,
         @RequestParam language: String,
         @RequestParam path: String,
-        @RequestBody input: List<ContainerService>
+        @RequestBody input: List<ContainerService>,
     ) {
         val tables = arrayOf(
             "container_demand",
             "container_resource",
             "container_service",
         )
-        logger.info(input.toString())
 
         try {
             val repo = ContainerRepository(systemId, language, path)
@@ -106,7 +105,7 @@ class ScannerReportingController(
         @PathVariable systemId: String,
         @RequestParam language: String,
         @RequestParam path: String,
-        @RequestBody input: List<CodeDatabaseRelation>
+        @RequestBody input: List<CodeDatabaseRelation>,
     ) {
         val tables = arrayOf(
             "data_code_database_relation",
@@ -131,7 +130,7 @@ class ScannerReportingController(
         @PathVariable systemId: Long,
         @RequestParam since: String,
         @RequestParam until: String,
-        @RequestBody input: List<ChangedCall>
+        @RequestBody input: List<ChangedCall>,
     ) {
         diffChangesRepository.saveDiffs(systemId, since, until, input)
     }
@@ -139,7 +138,7 @@ class ScannerReportingController(
     @PostMapping("/sca-dependencies")
     fun saveDependencies(
         @PathVariable systemId: Long,
-        @RequestBody input: List<CompositionDependency>
+        @RequestBody input: List<CompositionDependency>,
     ) {
         scaRepository.saveDependencies(systemId, input)
     }
