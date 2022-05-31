@@ -1,8 +1,8 @@
 package org.archguard.architecture.core
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.scanner.core.architecture.CodeLanguage
 import org.archguard.scanner.core.sca.PackageDependencies
-import org.archguard.scanner.core.archtecture.CodeLanguage
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 /**
@@ -18,5 +18,5 @@ class Workspace(
     val dataStructs: List<CodeDataStruct> = listOf(),
     val projectDependencies: PackageDependencies = PackageDependencies("", "", "", listOf(), ""),
     val port: ContainerService = ContainerService(),
-    val languages: List<CodeLanguage> = listOf()
+    val languages: List<CodeLanguage> = listOf(),
 )
