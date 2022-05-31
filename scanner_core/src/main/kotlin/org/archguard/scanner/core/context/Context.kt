@@ -14,6 +14,7 @@ enum class AnalyserType {
     DIFF_CHANGES,
     SCA,
     RULE,
+    ARCHITECTURE,
     ;
 }
 
