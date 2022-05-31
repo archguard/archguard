@@ -1,4 +1,4 @@
-package org.archguard.scanner.ctl.loader.rule
+package org.archguard.scanner.ctl.rule
 
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSetProvider

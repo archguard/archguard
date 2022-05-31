@@ -27,6 +27,7 @@ class AnalyserDispatcher {
             AnalyserType.GIT -> GitWorker(command)
             AnalyserType.DIFF_CHANGES -> DiffChangesWorker(command)
             AnalyserType.SCA -> ScaWorker(command)
+            AnalyserType.RULE -> RuleWorker(command)
             else -> TODO("not implemented yet")
         }.run()
     }
@@ -103,5 +104,17 @@ private class ScaWorker(override val command: ScannerCommand) : Worker<ScaContex
 
     override fun run() {
         getOrInstall<ScaAnalyser>(OfficialAnalyserSpecs.SCA).analyse()
+    }
+}
+
+private class RuleWorker(override val command: ScannerCommand) : Worker<ScaContext> {
+    override val context = CliScaContext(
+        client = command.buildClient(),
+        path = command.path,
+        language = command.language!!,
+    )
+
+    override fun run() {
+        getOrInstall<RuleAnalyser>(OfficialAnalyserSpecs.Rule).analyse()
     }
 }

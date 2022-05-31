@@ -12,7 +12,6 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
-import org.archguard.scanner.ctl.loader.rule.RuleDispatcher
 import org.slf4j.LoggerFactory
 
 // parse the cli inputs as the standard command (controller), build the context and dispatch to run
@@ -78,7 +77,6 @@ class Runner : CliktCommand(help = "scanner cli") {
             language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth
         )
         AnalyserDispatcher().dispatch(command)
-        RuleDispatcher().dispatch(command)
     }
 }
 

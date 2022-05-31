@@ -1,6 +1,8 @@
 package org.archguard.scanner.ctl.loader.rule
 
 import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.ctl.rule.LinterSpec
+import org.archguard.scanner.ctl.rule.RuleLoader
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
