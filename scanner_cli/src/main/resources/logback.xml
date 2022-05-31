@@ -1,9 +1,15 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[SCANNER] %msg%n</pattern>
+            <!-- logger for disabled log when need  -->
+            <pattern>[SCANNER] %logger{36} %msg%n</pattern>
         </encoder>
     </appender>
+
+    <logger name="org.eclipse.jgit.internal.storage.file.FileSnapshot" level="OFF"/>
+    <logger name="org.eclipse.jgit.internal.storage.file.Pack" level="OFF"/>
+    <logger name="org.eclipse.jgit.util.FS" level="OFF"/>
+    <logger name="org.eclipse.jgit.util.SystemReader" level="OFF"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>
