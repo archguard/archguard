@@ -91,6 +91,7 @@ class ArchitectureDependencyAnalysis(
         log.info(" Finished level 1 scanners")
         log.info("************************************")
 
+        // todo: split to another api
         analysisModuleClient.autoDefine(systemId)
         log.info("************************************")
         log.info(" Finished logic module auto define")
