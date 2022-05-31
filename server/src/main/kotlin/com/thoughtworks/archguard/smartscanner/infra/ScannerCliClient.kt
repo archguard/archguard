@@ -17,7 +17,7 @@ class ScannerCliClient : ScannerClient {
         val cmd = mutableListOf("java", "-jar", FILE_NAME) + command.toArguments()
         logger.debug("cmd: $cmd")
 
-        RemoteFileLoader.load(FILE_NAME, DOWNLOAD_URL)
+        RemoteFileLoader.load(FILE_NAME, DOWNLOAD_URL, command.logStream)
         executeWithLogsAndAppendToFile(ProcessBuilder(cmd), command.logStream)
     }
 

@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
+import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
+import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
+import org.jetbrains.annotations.TestOnly
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
@@ -13,27 +16,44 @@ import kotlin.system.measureTimeMillis
 object RemoteFileLoader {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private fun isInstalled(fileName: String): Boolean = Paths.get(fileName).exists()
-    private fun install(fileName: String, downloadUrl: String) {
+    private fun install(fileName: String, downloadUrl: String, consumer: StreamConsumer) {
         val sourceUrl = URL(downloadUrl)
         val targetPath = Paths.get(fileName)
 
-        logger.debug("downloading...")
-        logger.debug("| $sourceUrl -> $targetPath |")
+        log(consumer, "downloading...")
 
+        var isDownloaded = false
+
+        log(consumer, "| $sourceUrl -> $targetPath |")
         val cost = measureTimeMillis {
-            sourceUrl.openStream().use {
-                Files.copy(it, targetPath, StandardCopyOption.REPLACE_EXISTING)
+            try {
+                sourceUrl.openStream().use {
+                    Files.copy(it, targetPath, StandardCopyOption.REPLACE_EXISTING)
+                }
+
+                isDownloaded = true
+            } catch (e: Exception) {
+                log(consumer, e.message.toString())
             }
         }
-        logger.debug("downloading finished in $cost ms")
+
+        if (isDownloaded) {
+            log(consumer, "downloading finished in $cost ms")
+        }
     }
 
-    fun load(fileName: String, downloadUrl: String) {
-        if (!isInstalled(fileName)) install(fileName, downloadUrl)
+    private fun log(streamLog: StreamConsumer, information: String) {
+        this.logger.debug(information)
+        streamLog.consumeLine(information)
     }
 
+    fun load(fileName: String, downloadUrl: String, logger: StreamConsumer) {
+        if (!isInstalled(fileName)) install(fileName, downloadUrl, logger)
+    }
+
+    @TestOnly
     fun load(workspace: File, fileName: String, downloadUrl: String) {
-        if (!isInstalled(fileName)) install(fileName, downloadUrl)
+        if (!isInstalled(fileName)) install(fileName, downloadUrl, InMemoryConsumer())
         copy2Workspace(workspace, fileName)
     }
 
