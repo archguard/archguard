@@ -4,23 +4,24 @@ import java.io.File
 
 object ModuleIdentify {
     private const val SEPARATOR = ":"
+    private const val ROOT = "root"
 
     // todo: set file cache for all files
     fun lookupModuleName(file: File, base: File): String {
         val srcSplit = file.path.split("src" + File.separator)
         val srcPath = File(srcSplit[0])
         if (isRootModule(srcPath)) {
-            return SEPARATOR
+            return ROOT
         }
 
         if (file.absolutePath == base.absolutePath) {
-            return SEPARATOR
+            return ROOT
         }
 
         if (isSubModule(srcPath)) {
             val relativePath = srcPath.relativeTo(base)
             val split = relativePath.path.split(File.separator)
-            return SEPARATOR + split.joinToString(SEPARATOR)
+            return ROOT + SEPARATOR + split.joinToString(SEPARATOR)
         }
 
         return SEPARATOR
