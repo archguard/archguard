@@ -27,6 +27,7 @@ jobs:
           # cli:
           - scanner_cli/build/libs/scanner_cli*-all.jar
           # rules:
+          - rule-core/build/libs/rule-core*.jar
           - rule-linter/rule-sql/build/libs/rule-sql*.jar
           - rule-linter/rule-webapi/build/libs/rule-webapi*.jar
           - rule-linter/rule-test-code/build/libs/rule-test-code*.jar
