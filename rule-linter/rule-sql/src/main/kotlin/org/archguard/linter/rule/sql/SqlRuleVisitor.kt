@@ -10,6 +10,10 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 
 class SqlRuleVisitor(private val statements: List<Statement>) : RuleVisitor(statements) {
+    override fun requiredDataType(): List<String> {
+        return listOf(String.Companion::class.java.name)
+    }
+
     override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
         val results: MutableList<Issue> = mutableListOf()
         val context = RuleContext()

@@ -1,6 +1,5 @@
 package org.archguard.linter.rule.webapi
 
-import org.archguard.scanner.core.sourcecode.ContainerResource
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
@@ -8,8 +7,13 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
+import org.archguard.scanner.core.sourcecode.ContainerResource
 
 class WebApiRuleVisitor(private val resources: List<ContainerResource>) : RuleVisitor(resources) {
+    override fun requiredDataType(): List<String> {
+        return listOf(ContainerResource.Companion::class.java.name)
+    }
+
     override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
         val results: MutableList<Issue> = mutableListOf()
         val context = RuleContext()

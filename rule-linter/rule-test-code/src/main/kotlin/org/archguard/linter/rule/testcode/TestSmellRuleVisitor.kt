@@ -2,13 +2,13 @@ package org.archguard.linter.rule.testcode
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.rule.core.Issue
+import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
 import org.archguard.rule.core.RuleContext
-import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
-import org.archguard.rule.core.RuleVisitor
-import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleType
+import org.archguard.rule.core.RuleVisitor
 
 class TestSmellContext(val methodMap: MutableMap<String, CodeFunction>) : RuleContext()
 
@@ -17,6 +17,10 @@ class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisi
 
     init {
         this.context = TestSmellContext(this.buildCallMethodMap(this.structs))
+    }
+
+    override fun requiredDataType(): List<String> {
+        return listOf(CodeDataStruct.Companion::class.java.name)
     }
 
     private fun buildCallMethodMap(nodes: List<CodeDataStruct>): MutableMap<String, CodeFunction> {
