@@ -18,7 +18,13 @@ interface Slot {
     abstract fun ticket(): Coin
 
     /**
-     * pass data then return response
+     * prepare some data, like prepare [org.archguard.rule.core.RuleSet]
+     */
+    abstract fun prepare(items: List<Any>): List<Any>
+
+    /**
+     * process data
+     * examples: process [org.archguard.rule.core.RuleSet] to generate [org.archguard.rule.core.Issue]
      */
     abstract fun process(items: List<Any>): List<Any>
 }
