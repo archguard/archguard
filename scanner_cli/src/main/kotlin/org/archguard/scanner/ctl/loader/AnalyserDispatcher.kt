@@ -1,6 +1,8 @@
 package org.archguard.scanner.ctl.loader
 
 import kotlinx.coroutines.runBlocking
+import org.archguard.meta.Slot
+import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.diffchanges.DiffChangesAnalyser
@@ -44,6 +46,11 @@ private interface Worker<T : Context> {
     fun <T> getOrInstall(identifier: String): T = AnalyserLoader.load(context, command.getAnalyserSpec(identifier)) as T
 }
 
+data class SourceCodeSlot(
+    val define: AnalyserSpec,
+    val clz: Slot,
+)
+
 private class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCodeContext> {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     override val context = CliSourceCodeContext(
@@ -54,28 +61,52 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         slots = command.slots
     )
 
+    val slotTypes: MutableMap<String, SourceCodeSlot> = mutableMapOf()
+
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
-        // setup slot
-        context.slots.filter {
-            it.slotType == "rule"
-        }.map {
-            val loadSlot = AnalyserLoader.loadSlot(it)
-            loadSlot
-        }
 
+        setupSlots()
+        // checkInAs
+        maybePlugSlot(ast)
+
+        // TODO: support for multiple feature collections
         context.features.asyncMap {
             try {
-                val output = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
-                if (output?.isNotEmpty() == true) {
-                    println(output[0]::class.java.name)
-                }
-
-                output
+                val data = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
+                maybePlugSlot(data)
             } catch (e: Exception) {
                 logger.error("Error while analysing feature: $it", e)
             }
+        }
+    }
+
+    private fun maybePlugSlot(data: List<Any>?) {
+        if (data?.isNotEmpty() != true) return
+
+        val outputType = data[0]::class.java.name
+        val slot = slotTypes[outputType] ?: return
+
+        plugSlot(slot, data)
+    }
+
+    private fun plugSlot(slot: SourceCodeSlot, data: List<Any>) {
+        val output = slot.clz.process(data)
+        when (slot.define.slotType) {
+            "rule" -> {
+                // todo: save output
+            }
+        }
+    }
+
+    private fun setupSlots() {
+        context.slots.filter {
+            it.slotType == "rule"
+        }.map {
+            val slotInstance = AnalyserLoader.loadSlot(it)
+            val coin = slotInstance.ticket()[0]
+            slotTypes[coin] = SourceCodeSlot(it, slotInstance)
         }
     }
 }
