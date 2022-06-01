@@ -10,3 +10,11 @@
 
 接收HTTP的扫描请求, 以实现分布式运行
 拆分和规整已有的scanner
+
+## Sample CLI
+
+test for api calls
+
+```
+java -jar scanner_cli.jar --language=Kotlin --features=apicalls --output=json --path=server --slot-spec='{"identifier": "rule", "host": "https://github.com/archguard/archguard/releases/download/v2.0.0-alpha.16", "version": "2.0.0-alpha.16", "jar": "rule-webapi-2.0.0-alpha.16-all.jar", "className": "org.archguard.linter.rule.webapi.WebApiRuleSlot", "slotType": "rule"}' 
+```

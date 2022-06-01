@@ -5,14 +5,14 @@ import org.archguard.meta.Materials
 import org.archguard.meta.Slot
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 class WebApiRuleSlot : Slot {
     override var material: Materials = listOf()
     override var outClass: String = Issue.Companion::class.java.name
 
     override fun ticket(): Coin {
-        return listOf(ContainerResource::class.java.name)
+        return listOf(ContainerService::class.java.name)
     }
 
     override fun prepare(items: List<Any>): List<Any> {
@@ -22,6 +22,6 @@ class WebApiRuleSlot : Slot {
     }
 
     override fun process(items: List<Any>): List<Any> {
-        return WebApiRuleVisitor(items as List<ContainerResource>).visitor(this.material as Iterable<RuleSet>)
+        return WebApiRuleVisitor(items as List<ContainerService>).visitor(this.material as Iterable<RuleSet>)
     }
 }

@@ -8,8 +8,17 @@ import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerService
 
-class WebApiRuleVisitor(private val resources: List<ContainerResource>) : RuleVisitor(resources) {
+class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services) {
+    private var resources: List<ContainerResource>
+
+    init {
+        resources = services.flatMap {
+            it.resources
+        }
+    }
+
     override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
         val results: MutableList<Issue> = mutableListOf()
         val context = RuleContext()

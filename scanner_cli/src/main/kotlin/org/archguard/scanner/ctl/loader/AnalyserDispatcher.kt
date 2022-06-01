@@ -21,6 +21,7 @@ import org.archguard.scanner.ctl.impl.CliScaContext
 import org.archguard.scanner.ctl.impl.CliSourceCodeContext
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 import org.slf4j.LoggerFactory
+import java.io.File
 
 class AnalyserDispatcher {
     fun dispatch(command: ScannerCommand) {
@@ -91,16 +92,22 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         if (items.isEmpty()) return
 
         val outputType = items[0]::class.java.name
+        logger.info("found output type: $outputType")
+
         val slot = slotTypes[outputType] ?: return
 
         plugSlot(slot, items)
     }
 
     private fun plugSlot(slot: SourceCodeSlot, data: List<Any>) {
+        slot.clz.prepare(emptyList())
         val output = slot.clz.process(data)
+        logger.info("try plug slot for: ${slot.clz}")
+
+        // todo: move api process in slot
         when (slot.define.slotType) {
             "rule" -> {
-                // todo: save output
+                File("slot.json").writeText(output.toString())
             }
         }
     }
