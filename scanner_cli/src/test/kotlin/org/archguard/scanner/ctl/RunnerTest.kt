@@ -236,7 +236,7 @@ internal class RunnerTest {
             )
 
             val customized = OfficialAnalyserSpecs.Rule.spec()
-            customized.jar = "rule-webapi-" + OfficialAnalyserSpecs.Rule.version() + ".jar"
+            customized.jar = "rule-webapi-" + OfficialAnalyserSpecs.Rule.version() + "-all.jar"
             customized.slotType = "rule"
 
             val args = argsTemplate + arrayOf("--slot-spec=${Json.encodeToString(customized)}")
