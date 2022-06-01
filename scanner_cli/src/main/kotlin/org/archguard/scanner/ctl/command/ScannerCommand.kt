@@ -41,7 +41,7 @@ data class ScannerCommand(
      **/
     val slots: List<AnalyserSpec> = emptyList(),
 ) {
-    private val allAnalyserSpecs = customizedAnalyserSpecs + OfficialAnalyserSpecs.specs()
+    private val allAnalyserSpecs = customizedAnalyserSpecs + slots + OfficialAnalyserSpecs.specs()
     fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier.lowercase() }
         ?: throw IllegalArgumentException("No analyser found for identifier: $identifier")
 

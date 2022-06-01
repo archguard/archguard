@@ -30,6 +30,7 @@ class Runner : CliktCommand(help = "scanner cli") {
 
     // additional parameters
     private val analyserSpec by option(help = "Override the analysers via json.").multiple()
+    private val slotSpec by option(help = "Override the slot via json.").multiple()
     private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang.")
 
     // TODO refactor as DAG (analyser - dependencies[analyser, analyser])
@@ -59,6 +60,7 @@ class Runner : CliktCommand(help = "scanner cli") {
             |output: $output
             <customized analysers>
             |analyzerSpec: $analyserSpec
+            |slotSpec: $slotSpec
             <additional parameters>
             |language: $language
             |features: $features
@@ -75,7 +77,8 @@ class Runner : CliktCommand(help = "scanner cli") {
             // cli parameters
             type, systemId, serverUrl, path, output, analyserSpec.map { Json.decodeFromString(it) },
             // additional parameters
-            language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth
+            language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth,
+            slotSpec.map { Json.decodeFromString(it) },
         )
         AnalyserDispatcher().dispatch(command)
     }

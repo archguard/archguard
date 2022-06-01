@@ -11,8 +11,10 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
+import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -220,6 +222,25 @@ internal class RunnerTest {
                     )
                 }
             }
+        }
+
+        @Disabled
+        @Test
+        fun `should parse the slot analyser specs when given input json`() {
+            val argsTemplate = arrayOf(
+                "--type=source_code",
+                "--system-id=2222",
+                "--server-url=http://localhost:8080",
+                "--path=.",
+                "--language=Kotlin",
+            )
+
+            val customized = OfficialAnalyserSpecs.Rule.spec()
+            customized.jar = "rule-webapi-" + OfficialAnalyserSpecs.Rule.version() + ".jar"
+            customized.slotType = "rule"
+
+            val args = argsTemplate + arrayOf("--slot-spec=${Json.encodeToString(customized)}")
+            Runner().main(args)
         }
     }
 }

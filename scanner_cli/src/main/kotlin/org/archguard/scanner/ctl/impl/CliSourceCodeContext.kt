@@ -1,5 +1,6 @@
 package org.archguard.scanner.ctl.impl
 
+import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
@@ -8,4 +9,5 @@ data class CliSourceCodeContext(
     override val features: List<String>,
     override val client: ArchGuardClient,
     override val path: String,
+    val slots: List<AnalyserSpec> = emptyList(),
 ) : SourceCodeContext

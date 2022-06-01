@@ -30,6 +30,8 @@ enum class OfficialAnalyserSpecs(
     ;
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, VERSION, jarFileName(), className)
+    fun version() = VERSION
+
     private fun identifier() = name.lowercase()
     private fun jarFileName(): String {
         val identifier = identifier()

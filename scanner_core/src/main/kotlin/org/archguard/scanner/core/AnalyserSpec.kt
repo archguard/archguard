@@ -7,6 +7,8 @@ data class AnalyserSpec(
     val identifier: String,
     val host: String,
     val version: String,
-    val jar: String,
+    var jar: String,
     val className: String, // calculate via identifier??
+    // additional type for slot
+    var slotType: String = "",
 )
