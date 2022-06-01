@@ -25,7 +25,6 @@ class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services
 
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach { rule ->
-                // todo: cast by plugins
                 val apiRule = rule as WebApiRule
                 resources.map {
                     apiRule.visitResource(it, context, fun(rule: Rule, position: IssuePosition) {
@@ -36,7 +35,7 @@ class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services
                             detail = rule.description,
                             ruleType = RuleType.HTTP_API_SMELL,
                             fullName = "${it.packageName}:${it.className}:${it.methodName}",
-                            source = it.sourceUrl
+                            source = "${it.sourceHttpMethod} ${it.sourceUrl}"
                         )
                     })
                 }
