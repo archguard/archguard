@@ -1,13 +1,13 @@
 package org.archguard.scanner.ctl.client
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
-import org.archguard.scanner.ctl.command.ScannerCommand
 
 class ChainedArchGuardClient(
     private val clients: List<ArchGuardClient>,
@@ -19,4 +19,8 @@ class ChainedArchGuardClient(
     override fun saveDiffs(calls: List<ChangedCall>) = clients.forEach { it.saveDiffs(calls) }
     override fun saveDependencies(dependencies: List<CompositionDependency>) =
         clients.forEach { it.saveDependencies(dependencies) }
+
+    override fun saveRuleIssues(issues: List<Issue>) {
+        clients.forEach { it.saveRuleIssues(issues) }
+    }
 }

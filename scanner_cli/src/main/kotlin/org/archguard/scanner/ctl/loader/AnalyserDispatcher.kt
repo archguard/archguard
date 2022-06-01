@@ -2,6 +2,7 @@ package org.archguard.scanner.ctl.loader
 
 import kotlinx.coroutines.runBlocking
 import org.archguard.meta.Slot
+import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
@@ -108,7 +109,7 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         // todo: move api process in slot
         when (slot.define.slotType) {
             "rule" -> {
-                File("slot.json").writeText(output.toString())
+                context.client.saveRuleIssues(output as List<Issue>)
             }
         }
     }

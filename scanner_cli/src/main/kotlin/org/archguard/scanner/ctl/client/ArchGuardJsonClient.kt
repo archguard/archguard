@@ -3,6 +3,7 @@ package org.archguard.scanner.ctl.client
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
@@ -41,5 +42,9 @@ open class ArchGuardJsonClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {
         writeJsonFile(dependencies, "sca-dependencies")
+    }
+
+    override fun saveRuleIssues(issues: List<Issue>) {
+        writeJsonFile(issues, "issues")
     }
 }

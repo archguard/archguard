@@ -3,6 +3,7 @@ package org.archguard.scanner.ctl.client
 import chapi.domain.core.CodeDataStruct
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
@@ -50,5 +51,9 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {
         writeCsvFile(dependencies, buildFileName("sca-dependencies"))
+    }
+
+    override fun saveRuleIssues(issues: List<Issue>) {
+        writeCsvFile(issues, buildFileName("issues"))
     }
 }
