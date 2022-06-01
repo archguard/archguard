@@ -13,7 +13,7 @@ class TestSmellRuleSlot : Slot {
     override var outClass: String = Issue.Companion::class.java.name
 
     override fun ticket(): Coin {
-        return listOf(CodeDataStruct.Companion::class.java.name)
+        return listOf(CodeDataStruct::class.java.name)
     }
 
     override fun prepare(items: List<Any>): List<Any> {

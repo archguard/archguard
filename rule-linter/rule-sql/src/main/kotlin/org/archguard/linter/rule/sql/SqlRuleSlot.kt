@@ -12,7 +12,7 @@ class SqlRuleSlot : Slot {
     override var outClass: String = Issue.Companion::class.java.name
 
     override fun ticket(): Coin {
-        return listOf(String.Companion::class.java.name)
+        return listOf(String::class.java.name)
     }
 
     override fun prepare(items: List<Any>): List<Any> {

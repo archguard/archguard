@@ -7,7 +7,7 @@ import kotlin.streams.toList
 
 // 重载函数, 实现细粒度的接口定义
 interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
-    override fun analyse(input: Any?): Any? = analyse()
+    override fun analyse(input: Any?): List<Any>? = analyse()
 
     fun analyse(): List<CodeDataStruct>
 

@@ -67,7 +67,12 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
 
         context.features.asyncMap {
             try {
-                getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
+                val output = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
+                if (output?.isNotEmpty() == true) {
+                    println(output[0]::class.java.name)
+                }
+
+                output
             } catch (e: Exception) {
                 logger.error("Error while analysing feature: $it", e)
             }

@@ -12,7 +12,7 @@ class WebApiRuleSlot : Slot {
     override var outClass: String = Issue.Companion::class.java.name
 
     override fun ticket(): Coin {
-        return listOf(ContainerResource.Companion::class.java.name)
+        return listOf(ContainerResource::class.java.name)
     }
 
     override fun prepare(items: List<Any>): List<Any> {

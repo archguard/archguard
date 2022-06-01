@@ -8,7 +8,7 @@ typealias OutputType = List<Any>
 typealias Materials = List<Any>
 
 /**
- * Slot Type is design for plug slot in source code analysis
+ * Slot is like an extension point, we design it for analysis pipeline, after analyser output data.
  * Slot is a data consumer after analyser analysis data.
  * can be use for:
  * - linter
