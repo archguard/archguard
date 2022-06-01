@@ -28,7 +28,7 @@ class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services
                 // todo: cast by plugins
                 val apiRule = rule as WebApiRule
                 resources.map {
-                    apiRule.visitResources(this.resources, context, fun(rule: Rule, position: IssuePosition) {
+                    apiRule.visitResource(it, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(
                             position,
                             ruleId = rule.key,

@@ -92,4 +92,16 @@ internal class WebApiRuleVisitorTest {
         assertEquals(1, results.size)
         assertEquals("MinFeature", results[0].name)
     }
+
+    @Test
+    fun multiple_api_should_only_return_one_item() {
+        val res = ContainerResource(sourceUrl = "/api/book-with-author/")
+        val res2 = ContainerResource(sourceUrl = "/api/normal/")
+        val visitor = WebApiRuleVisitor(listOf(ContainerService(resources = listOf(res, res2))))
+        val ruleSetProvider = WebApiRuleSetProvider()
+
+        val results = visitor.visitor(listOf(ruleSetProvider.get()))
+        assertEquals(1, results.size)
+        assertEquals("MinFeature", results[0].name)
+    }
 }
