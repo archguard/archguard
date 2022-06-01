@@ -18,10 +18,6 @@ class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisi
     init {
         this.context = TestSmellContext(this.buildCallMethodMap(this.structs))
     }
-//
-//    override fun ticket(): List<String> {
-//        return listOf(CodeDataStruct.Companion::class.java.name)
-//    }
 
     private fun buildCallMethodMap(nodes: List<CodeDataStruct>): MutableMap<String, CodeFunction> {
         val callMethodMap: MutableMap<String, CodeFunction> = mutableMapOf()

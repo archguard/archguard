@@ -10,10 +10,6 @@ import org.archguard.rule.core.RuleVisitor
 import org.archguard.scanner.core.sourcecode.ContainerResource
 
 class WebApiRuleVisitor(private val resources: List<ContainerResource>) : RuleVisitor(resources) {
-    //    override fun ticket(): List<String> {
-//        return listOf(ContainerResource.Companion::class.java.name)
-//    }
-//
     override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
         val results: MutableList<Issue> = mutableListOf()
         val context = RuleContext()

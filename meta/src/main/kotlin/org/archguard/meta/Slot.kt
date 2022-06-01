@@ -3,6 +3,10 @@ package org.archguard.meta
 // just for fun
 typealias Coin = List<String>
 
+typealias OutputType = List<Any>
+
+typealias Materials = List<Any>
+
 /**
  * Slot Type is design for plug slot in source code analysis
  * Slot is a data consumer after analyser analysis data.
@@ -12,6 +16,12 @@ typealias Coin = List<String>
  * - custom api analysis
  **/
 interface Slot {
+    /**
+     *
+     */
+    var material: Materials
+    var outClass: String
+
     /**
      * The required data type for search in Element, for example: WebAPI require ContainResource
      */
@@ -26,5 +36,5 @@ interface Slot {
      * process data
      * examples: process [org.archguard.rule.core.RuleSet] to generate [org.archguard.rule.core.Issue]
      */
-    abstract fun process(items: List<Any>): List<Any>
+    abstract fun process(items: List<Any>): OutputType
 }
