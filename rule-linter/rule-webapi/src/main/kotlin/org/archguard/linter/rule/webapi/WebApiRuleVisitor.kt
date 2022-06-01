@@ -34,7 +34,9 @@ class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services
                             ruleId = rule.key,
                             name = rule.name,
                             detail = rule.description,
-                            ruleType = RuleType.HTTP_API_SMELL
+                            ruleType = RuleType.HTTP_API_SMELL,
+                            fullName = "${it.packageName}:${it.className}:${it.methodName}",
+                            source = it.sourceUrl
                         )
                     })
                 }

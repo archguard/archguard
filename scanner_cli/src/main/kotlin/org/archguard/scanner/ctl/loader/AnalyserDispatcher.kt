@@ -100,9 +100,10 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
     }
 
     private fun plugSlot(slot: SourceCodeSlot, data: List<Any>) {
+        logger.info("try plug slot for: ${slot.clz}")
+
         slot.clz.prepare(emptyList())
         val output = slot.clz.process(data)
-        logger.info("try plug slot for: ${slot.clz}")
 
         // todo: move api process in slot
         when (slot.define.slotType) {

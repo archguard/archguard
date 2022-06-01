@@ -39,7 +39,8 @@ class SqlRuleVisitor(inputs: List<String>) : RuleVisitor(inputs) {
                         ruleId = rule.key,
                         name = rule.name,
                         detail = rule.description,
-                        ruleType = RuleType.HTTP_API_SMELL
+                        ruleType = RuleType.HTTP_API_SMELL,
+                        source = statements.toString()
                     )
                 })
             }

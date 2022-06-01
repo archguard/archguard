@@ -42,7 +42,9 @@ class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisi
                             ruleId = rule.key,
                             name = rule.name,
                             detail = rule.description,
-                            ruleType = RuleType.TEST_CODE_SMELL
+                            ruleType = RuleType.TEST_CODE_SMELL,
+                            fullName = "${struct.Module}:${struct.Package}:${struct.NodeName}",
+                            source = struct.FilePath
                         )
                     })
                 }
