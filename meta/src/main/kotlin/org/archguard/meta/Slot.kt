@@ -1,5 +1,8 @@
 package org.archguard.meta
 
+// just for fun
+typealias Coin = List<String>
+
 /**
  * Slot Type is design for plug slot in source code analysis
  * Slot is a data consumer after analyser analysis data.
@@ -9,6 +12,13 @@ package org.archguard.meta
  * - custom api analysis
  **/
 interface Slot {
-    abstract fun requires(): List<String>
+    /**
+     * The required data type for search in Element, for example: WebAPI require ContainResource
+     */
+    abstract fun ticket(): Coin
+
+    /**
+     * pass data then return response
+     */
     abstract fun process(items: List<Any>): List<Any>
 }

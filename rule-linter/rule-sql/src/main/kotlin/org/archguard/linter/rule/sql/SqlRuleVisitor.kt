@@ -10,7 +10,7 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 
 class SqlRuleVisitor(private val statements: List<Statement>) : RuleVisitor(statements) {
-    override fun requires(): List<String> {
+    override fun ticket(): List<String> {
         return listOf(String.Companion::class.java.name)
     }
 

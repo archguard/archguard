@@ -10,7 +10,7 @@ import org.archguard.rule.core.RuleVisitor
 import org.archguard.scanner.core.sourcecode.ContainerResource
 
 class WebApiRuleVisitor(private val resources: List<ContainerResource>) : RuleVisitor(resources) {
-    override fun requires(): List<String> {
+    override fun ticket(): List<String> {
         return listOf(ContainerResource.Companion::class.java.name)
     }
 

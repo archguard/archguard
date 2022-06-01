@@ -9,7 +9,7 @@ import org.archguard.rule.core.RuleVisitor
  * Low level provider
  */
 class AstRuleVisitor(rootNode: List<CodeDataStruct>) : RuleVisitor(rootNode) {
-    override fun requires(): List<String> {
+    override fun ticket(): List<String> {
         return listOf(CodeDataStruct.Companion::class.java.name)
     }
 

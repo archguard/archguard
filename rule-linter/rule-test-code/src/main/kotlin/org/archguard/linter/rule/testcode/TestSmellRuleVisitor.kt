@@ -19,7 +19,7 @@ class TestSmellRuleVisitor(private val structs: List<CodeDataStruct>) : RuleVisi
         this.context = TestSmellContext(this.buildCallMethodMap(this.structs))
     }
 
-    override fun requires(): List<String> {
+    override fun ticket(): List<String> {
         return listOf(CodeDataStruct.Companion::class.java.name)
     }
 
