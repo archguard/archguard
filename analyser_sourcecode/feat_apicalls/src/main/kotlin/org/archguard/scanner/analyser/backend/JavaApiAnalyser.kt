@@ -137,8 +137,8 @@ class JavaApiAnalyser {
         }
     }
 
-    fun toContainerServices(): Array<ContainerService> {
-        var componentCalls: Array<ContainerService> = arrayOf()
+    fun toContainerServices(): List<ContainerService> {
+        val componentCalls: MutableList<ContainerService> = mutableListOf()
 
         val componentRef = ContainerService(name = "")
         componentRef.resources = this.resources

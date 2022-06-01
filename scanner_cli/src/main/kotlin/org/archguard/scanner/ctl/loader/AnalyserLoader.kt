@@ -1,5 +1,6 @@
 package org.archguard.scanner.ctl.loader
 
+import org.archguard.meta.Slot
 import org.archguard.scanner.core.Analyser
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.Context
@@ -84,5 +85,15 @@ object AnalyserLoader {
         return Class.forName(spec.getFullClassName(), true, cl)
             .declaredConstructors[0]
             .newInstance(context) as Analyser<Context>
+    }
+
+    fun loadSlot(spec: AnalyserSpec): Slot {
+        if (!spec.isInstalled()) spec.install()
+        val jarUrl = spec.getLocalPath().toUri().toURL()
+        val cl = URLClassLoader(arrayOf(jarUrl), this.javaClass.classLoader)
+
+        return Class.forName(spec.getFullClassName(), true, cl)
+            .declaredConstructors[0]
+            .newInstance() as Slot
     }
 }

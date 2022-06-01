@@ -45,7 +45,7 @@ class FrontendApiAnalyser {
     // 1. first create Component with FunctionCall maps based on Import
     // 2. build axios/umi-request to an API call method
     // 3. mapping for results
-    fun analysisByPath(nodes: Array<CodeDataStruct>, workspace: String): Array<ContainerService> {
+    fun analysisByPath(nodes: Array<CodeDataStruct>, workspace: String): List<ContainerService> {
         nodes.forEach { node ->
             analysisByNode(node, workspace)
         }
@@ -103,8 +103,8 @@ class FrontendApiAnalyser {
 
     class LoopDepth(var index: Int)
 
-    fun toContainerServices(): Array<ContainerService> {
-        var componentCalls: Array<ContainerService> = arrayOf()
+    fun toContainerServices(): List<ContainerService> {
+        val componentCalls: MutableList<ContainerService> = mutableListOf()
 
         componentInbounds.forEach { inbound ->
             val componentRef = ContainerService(name = inbound.key)

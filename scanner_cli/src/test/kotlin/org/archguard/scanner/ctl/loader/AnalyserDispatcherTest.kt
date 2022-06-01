@@ -40,6 +40,7 @@ internal class AnalyserDispatcherTest {
             every { command.path } returns "."
             every { command.language } returns "kotlin"
             every { command.features } returns listOf("feature1", "feature2")
+            every { command.slots } returns listOf()
             every { command.buildClient() } returns mockk()
             every { command.getAnalyserSpec(any()) } returns mockk()
         }

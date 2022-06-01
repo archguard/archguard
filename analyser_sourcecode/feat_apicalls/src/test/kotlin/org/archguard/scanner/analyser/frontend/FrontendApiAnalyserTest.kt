@@ -21,7 +21,7 @@ internal class FrontendApiAnalyserTest {
     fun shouldSupportIdentifyComponentApi() {
         val (path, nodes) = loadNodes("frontend/structs_apicall.json")
 
-        val componentCalls: Array<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
+        val componentCalls: List<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
         File("api.json").writeText(Json.encodeToString(componentCalls))
 
         assertEquals(1, componentCalls.size)
@@ -39,7 +39,7 @@ internal class FrontendApiAnalyserTest {
     internal fun shouldCorrectComponentName() {
         val (path, nodes) = loadNodes("frontend/structs_interface-error.json")
 
-        val componentCalls: Array<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
+        val componentCalls: List<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
         File("api.json").writeText(Json.encodeToString(componentCalls))
     }
 
@@ -47,7 +47,7 @@ internal class FrontendApiAnalyserTest {
     internal fun shouldSaveApiAdapter() {
         val (path, nodes) = loadNodes("frontend/structs_api-adapter.json")
 
-        val componentCalls: Array<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
+        val componentCalls: List<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
         assertEquals(4, componentCalls[0].demands.size)
     }
 
@@ -55,7 +55,7 @@ internal class FrontendApiAnalyserTest {
     internal fun testForUmi() {
         val (path, nodes) = loadNodes("frontend/structs_js-umi-request.json")
 
-        val componentCalls: Array<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
+        val componentCalls: List<ContainerService> = FrontendApiAnalyser().analysisByPath(nodes, path)
         val apiRef = componentCalls[0].demands
 
         assertEquals(1, apiRef.size)
