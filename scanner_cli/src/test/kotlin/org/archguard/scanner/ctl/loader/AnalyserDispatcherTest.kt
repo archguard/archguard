@@ -58,6 +58,9 @@ internal class AnalyserDispatcherTest {
 
         private fun mockAnalysers() {
             val ast = mockk<List<CodeDataStruct>>()
+
+            every { ast.isEmpty() } returns true
+
             every { languageAnalyser.analyse(null) } returns ast
             every { feature1Analyser.analyse(ast) } returns null
             every { feature2Analyser.analyse(ast) } returns null

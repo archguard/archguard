@@ -68,7 +68,6 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
 
         setupSlots()
-        // checkInAs
         maybePlugSlot(ast)
 
         // TODO: support for multiple feature collections
@@ -82,13 +81,19 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         }
     }
 
-    private fun maybePlugSlot(data: List<Any>?) {
-        if (data?.isNotEmpty() != true) return
+    private fun maybePlugSlot(data: Any?) {
+        if (data == null) return
 
-        val outputType = data[0]::class.java.name
+        // for handle old versions plugin
+        if (data !is List<*>) return
+
+        val items = data as List<Any>
+        if (items.isEmpty()) return
+
+        val outputType = items[0]::class.java.name
         val slot = slotTypes[outputType] ?: return
 
-        plugSlot(slot, data)
+        plugSlot(slot, items)
     }
 
     private fun plugSlot(slot: SourceCodeSlot, data: List<Any>) {
