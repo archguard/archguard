@@ -64,14 +64,15 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
 
     private val slogHub = SlotHub(context)
 
+    init {
+        slogHub.register(context.slots)
+    }
+
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
-
-        slogHub.register(context.slots)
         slogHub.maybePlugSlot(ast)
 
-        // TODO: support for multiple feature collections
         context.features.asyncMap {
             try {
                 val data = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)

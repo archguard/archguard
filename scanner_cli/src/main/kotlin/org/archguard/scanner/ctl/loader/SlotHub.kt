@@ -5,8 +5,12 @@ import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.Context
 import org.slf4j.LoggerFactory
 
+/**
+ * TODO: in order to support for multiple feature collections, need to refactor to pub/sub mod
+ * SlotHub
+ */
 class SlotHub(val context: Context) {
-    val slotTypes: MutableMap<String, SourceCodeSlot> = mutableMapOf()
+    private val slotInstanceByType: MutableMap<String, SourceCodeSlot> = mutableMapOf()
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     fun register(analyserSpecs: List<AnalyserSpec>) {
@@ -15,7 +19,8 @@ class SlotHub(val context: Context) {
         }.map {
             val slotInstance = AnalyserLoader.loadSlot(it)
             val coin = slotInstance.ticket()[0]
-            slotTypes[coin] = SourceCodeSlot(it, slotInstance)
+
+            slotInstanceByType[coin] = SourceCodeSlot(it, slotInstance)
         }
     }
 
@@ -31,12 +36,12 @@ class SlotHub(val context: Context) {
         val outputType = items[0]::class.java.name
         logger.info("found output type: $outputType")
 
-        val slot = slotTypes[outputType] ?: return
+        val slot = slotInstanceByType[outputType] ?: return
 
-        plugSlot(slot, items)
+        plug(slot, items)
     }
 
-    fun plugSlot(slot: SourceCodeSlot, data: List<Any>) {
+    fun plug(slot: SourceCodeSlot, data: List<Any>) {
         logger.info("try plug slot for: ${slot.clz}")
 
         slot.clz.prepare(emptyList())
