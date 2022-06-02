@@ -12,3 +12,5 @@ data class AnalyserSpec(
     // additional type for slot
     var slotType: String = "",
 )
+
+typealias SlotSpec = AnalyserSpec;
