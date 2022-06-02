@@ -7,7 +7,10 @@ import com.thoughtworks.archguard.smartscanner.repository.ContainerRepository
 import com.thoughtworks.archguard.smartscanner.repository.DatamapRepository
 import com.thoughtworks.archguard.smartscanner.repository.DiffChangesRepository
 import com.thoughtworks.archguard.smartscanner.repository.GitSourceRepository
+import com.thoughtworks.archguard.smartscanner.repository.IssueDto
+import com.thoughtworks.archguard.smartscanner.repository.IssueRepository
 import com.thoughtworks.archguard.smartscanner.repository.ScaRepository
+import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
@@ -37,6 +40,7 @@ class ScannerReportingController(
     private val gitSourceRepository: GitSourceRepository,
     private val diffChangesRepository: DiffChangesRepository,
     private val scaRepository: ScaRepository,
+    private val issueRepository: IssueRepository,
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -141,6 +145,18 @@ class ScannerReportingController(
         @RequestBody input: List<CompositionDependency>,
     ) {
         scaRepository.saveDependencies(systemId, input)
+    }
+
+    @PostMapping("/issues")
+    fun saveIssues(
+        @PathVariable systemId: Long,
+        @RequestBody input: List<Issue>,
+    ) {
+        if(input.isNotEmpty()) {
+            issueRepository.saveIssues(systemId, input.map {
+                IssueDto.from(it)
+            }, input[0].ruleType.toString())
+        }
     }
 
     // TODO refactor: use direct sql or dao to insert the data

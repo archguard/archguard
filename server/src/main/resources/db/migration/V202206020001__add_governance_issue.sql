@@ -8,7 +8,7 @@ CREATE TABLE `governance_issue`
     `detail`     MEDIUMTEXT    NOT NULL DEFAULT '',
     `rule_type`  VARCHAR(1024) NOT NULL DEFAULT '',
     `severity`   VARCHAR(1024) NOT NULL DEFAULT '',
-    `fullName`   VARCHAR(1024) NOT NULL DEFAULT '',
+    `full_name`   VARCHAR(1024) NOT NULL DEFAULT '',
     `source`     VARCHAR(1024) NOT NULL DEFAULT '',
     `created_at` TIMESTAMP(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `publish_at` TIMESTAMP(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
