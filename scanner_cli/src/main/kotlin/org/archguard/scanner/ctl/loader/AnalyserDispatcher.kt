@@ -61,21 +61,21 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         slots = command.slots
     )
 
-    private val slogHub = SlotHubImpl(context)
+    private val slotHub = SlotHubImpl(context)
 
     init {
-        slogHub.register(context.slots)
+        slotHub.register(context.slots)
     }
 
     override fun run(): Unit = runBlocking {
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
-        slogHub.maybePlugSlot(ast)
+        slotHub.maybePlugSlot(ast)
 
         context.features.asyncMap {
             try {
                 val data = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
-                slogHub.maybePlugSlot(data)
+                slotHub.maybePlugSlot(data)
             } catch (e: Exception) {
                 logger.error("Error while analysing feature: $it", e)
             }
