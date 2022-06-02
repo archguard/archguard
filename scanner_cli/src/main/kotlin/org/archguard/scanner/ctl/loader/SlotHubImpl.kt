@@ -15,10 +15,8 @@ class SlotHubImpl(val context: Context) : SlotHub {
     private val slotInstanceByType: MutableMap<String, SourceCodeSlot> = mutableMapOf()
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun register(analyserSpecs: List<SlotSpec>) {
-        analyserSpecs.filter {
-            it.slotType == "rule"
-        }.map {
+    fun register(specs: List<SlotSpec>) {
+        specs.forEach {
             val slotInstance = AnalyserLoader.loadSlot(it)
             val coin = slotInstance.ticket()[0]
 
@@ -54,7 +52,7 @@ class SlotHubImpl(val context: Context) : SlotHub {
         // check is output in register
         checkOutputCanPlug(output, data)
 
-        // todo: move api process in slot
+        // TODO: thinking in custom flow for rule output
         when (slot.define.slotType) {
             "rule" -> {
                 context.client.saveRuleIssues(output as List<Issue>)

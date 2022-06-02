@@ -15,7 +15,7 @@ class ChainedArchGuardClient(
     override fun saveDataStructure(codes: List<CodeDataStruct>) = clients.forEach { it.saveDataStructure(codes) }
     override fun saveApi(apis: List<ContainerService>) = clients.forEach { it.saveApi(apis) }
     override fun saveRelation(records: List<CodeDatabaseRelation>) = clients.forEach { it.saveRelation(records) }
-    override fun saveGitLogs(gitLogs: GitLogs) = clients.forEach { it.saveGitLogs(gitLogs) }
+    override fun saveGitLogs(gitLogs: List<GitLogs>) = clients.forEach { it.saveGitLogs(gitLogs) }
     override fun saveDiffs(calls: List<ChangedCall>) = clients.forEach { it.saveDiffs(calls) }
     override fun saveDependencies(dependencies: List<CompositionDependency>) =
         clients.forEach { it.saveDependencies(dependencies) }

@@ -39,10 +39,11 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
         writeCsvFile(records, buildFileName("databases"))
     }
 
-    override fun saveGitLogs(gitLogs: GitLogs) {
-        writeCsvFile(gitLogs.commitLog, buildFileName("gitlogs-commit"))
-        writeCsvFile(gitLogs.changeEntry, buildFileName("gitlogs-change-entry"))
-        writeCsvFile(gitLogs.pathChangeCount, buildFileName("gitlogs-change-count"))
+    override fun saveGitLogs(gitLogs: List<GitLogs>) {
+        val logs = gitLogs[0]
+        writeCsvFile(logs.commitLog, buildFileName("gitlogs-commit"))
+        writeCsvFile(logs.changeEntry, buildFileName("gitlogs-change-entry"))
+        writeCsvFile(logs.pathChangeCount, buildFileName("gitlogs-change-count"))
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {

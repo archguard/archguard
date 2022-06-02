@@ -183,7 +183,7 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
 
             val blobId = treeWalk.getObjectId(0)
 
-            var newDataStructs: Array<CodeDataStruct> = arrayOf()
+            val newDataStructs: Array<CodeDataStruct>
 
             val extension = File(filePath).extension
             newDataStructs = diffFileFromBlob(repository, blobId, filePath, extension)
@@ -247,7 +247,7 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         tw.addTree(DirCacheIterator(repository.readDirCache()))
         tw.addTree(FileTreeIterator(repository))
 
-        tw.isRecursive = true;
+        tw.isRecursive = true
 
         val files: MutableList<DifferFile> = mutableListOf()
         while (tw.next()) {

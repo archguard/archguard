@@ -69,7 +69,7 @@ class ArchGuardHttpClient(
         process("datamap-relations", records)
     }
 
-    override fun saveGitLogs(gitLogs: GitLogs) {
+    override fun saveGitLogs(gitLogs: List<GitLogs>) {
         process("git-logs", gitLogs)
     }
 

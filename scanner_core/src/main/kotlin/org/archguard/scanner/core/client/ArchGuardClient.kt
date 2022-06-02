@@ -13,7 +13,7 @@ interface ArchGuardClient {
     fun saveDataStructure(codes: List<CodeDataStruct>)
     fun saveApi(apis: List<ContainerService>)
     fun saveRelation(records: List<CodeDatabaseRelation>)
-    fun saveGitLogs(gitLogs: GitLogs)
+    fun saveGitLogs(gitLogs: List<GitLogs>)
     fun saveDiffs(calls: List<ChangedCall>)
     fun saveDependencies(dependencies: List<CompositionDependency>)
     fun saveRuleIssues(issues: List<Issue>)

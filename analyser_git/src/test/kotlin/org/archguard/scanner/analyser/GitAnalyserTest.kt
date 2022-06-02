@@ -49,7 +49,7 @@ internal class GitAnalyserTest {
         every { mockContext.startedAt } returns 0
 
         val analyser = GitAnalyser(mockContext)
-        val gitLogs = analyser.analyse()
+        val gitLogs = analyser.analyse()[0]
 
         assertThat(gitLogs.commitLog).hasSize(5)
         assertThat(gitLogs.changeEntry).hasSize(62)

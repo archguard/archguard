@@ -8,7 +8,9 @@ class GitAnalyser(override val context: GitContext) : org.archguard.scanner.core
 
     override fun analyse(): List<GitLogs> {
         val gitLogs = with(context) { service.scan(path, branch, startedAt, repoId) }
-        context.client.saveGitLogs(gitLogs)
-        return listOf(gitLogs)
+        val logs = listOf(gitLogs)
+
+        context.client.saveGitLogs(logs)
+        return logs
     }
 }

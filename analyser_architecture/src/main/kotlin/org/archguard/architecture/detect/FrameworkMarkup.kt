@@ -71,7 +71,7 @@ class FrameworkMarkup(
         }
 
         private fun loadFrameworkMaps(): Array<FrameworkMarkup> {
-            val fileContent = this.javaClass.classLoader.getResource("framework-maps.json").readText()
+            val fileContent = this::class.java.classLoader.getResource("framework-maps.json").readText()
             return Json.decodeFromString(fileContent)
         }
     }
