@@ -6,6 +6,8 @@ import org.archguard.scanner.core.client.ArchGuardClient
 interface Context {
     val type: AnalyserType
     val client: ArchGuardClient
+    // TODO: add slot
+//    val slotHub: SlotHub
 }
 
 enum class AnalyserType {
