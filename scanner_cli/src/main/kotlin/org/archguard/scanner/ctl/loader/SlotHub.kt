@@ -49,6 +49,8 @@ class SlotHub(val context: Context) {
         slot.clz.prepare(emptyList())
         val output = slot.clz.process(data)
 
+        logger.info("done plug slot for: ${slot.clz}")
+
         // todo: move api process in slot
         when (slot.define.slotType) {
             "rule" -> {

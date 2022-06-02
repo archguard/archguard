@@ -1,7 +1,7 @@
 package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
-import net.sf.jsqlparser.statement.Statement
+import net.sf.jsqlparser.statement.Statements
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
@@ -11,21 +11,24 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 
-class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(relations) {
-    private var statements: List<Statement>
+data class CodeSqlStmt(
+    val packageName: String = "",
+    val className: String = "",
+    val functionName: String = "",
+    val statements: List<Statements> = listOf()
+)
 
-    init {
-        this.statements = relations.flatMap { relation ->
-            relation.sqls.mapNotNull {
-                try {
-                    CCJSqlParserUtil.parseStatements(it)
-                } catch (e: Exception) {
-                    null
-                }
-            }.flatMap {
-                it.statements
+class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(relations) {
+    private val codeSqlStmts: List<CodeSqlStmt> = relations.map { relation ->
+        val stmts = relation.sqls.mapNotNull {
+            try {
+                CCJSqlParserUtil.parseStatements(it)
+            } catch (e: Exception) {
+                null
             }
         }
+
+        CodeSqlStmt(relation.packageName, relation.className, relation.functionName, stmts)
     }
 
     override fun visitor(ruleSets: Iterable<RuleSet>): List<Issue> {
@@ -36,16 +39,20 @@ class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(rel
             ruleSet.rules.forEach { rule ->
                 // todo: cast by plugins
                 val sqlRule = rule as SqlRule
-                sqlRule.visit(statements, context, fun(rule: Rule, position: IssuePosition) {
-                    results += Issue(
-                        position,
-                        ruleId = rule.key,
-                        name = rule.name,
-                        detail = rule.description,
-                        ruleType = RuleType.HTTP_API_SMELL,
-                        source = statements.toString()
-                    )
-                })
+
+                codeSqlStmts.map {
+                    sqlRule.visit(it.statements, context, fun(rule: Rule, position: IssuePosition) {
+                        results += Issue(
+                            position,
+                            ruleId = rule.key,
+                            name = rule.name,
+                            detail = rule.description,
+                            ruleType = RuleType.HTTP_API_SMELL,
+                            fullName = "${it.packageName}:${it.className}:${it.functionName}",
+                            source = it.toString()
+                        )
+                    })
+                }
             }
         }
 
