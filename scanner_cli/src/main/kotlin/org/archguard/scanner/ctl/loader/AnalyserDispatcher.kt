@@ -58,13 +58,12 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
         path = command.path,
         language = command.language!!,
         features = command.features,
-        slots = command.slots
     )
 
     private val slotHub = SlotHubImpl(context)
 
     init {
-        slotHub.register(context.slots)
+        slotHub.register(command.slots)
     }
 
     override fun run(): Unit = runBlocking {

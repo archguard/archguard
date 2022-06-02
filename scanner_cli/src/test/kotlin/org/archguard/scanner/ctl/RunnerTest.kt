@@ -222,26 +222,5 @@ internal class RunnerTest {
                 }
             }
         }
-
-        //        @Disabled
-        @Test
-        fun `should parse the slot analyser specs when given input json`() {
-            val argsTemplate = arrayOf(
-                "--type=source_code",
-                "--system-id=2222",
-                "--server-url=http://localhost:8080",
-                "--path=../server/main/kotlin",
-                "--language=Kotlin",
-                "--features=apicalls",
-            )
-
-            val customized = OfficialAnalyserSpecs.Rule.spec()
-            customized.jar = "rule-webapi-" + OfficialAnalyserSpecs.Rule.version() + "-all.jar"
-            customized.slotType = "rule"
-            customized.className = "org.archguard.linter.rule.webapi.WebApiRuleSlot"
-
-            val args = argsTemplate + arrayOf("--slot-spec=${Json.encodeToString(customized)}")
-            Runner().main(args)
-        }
     }
 }

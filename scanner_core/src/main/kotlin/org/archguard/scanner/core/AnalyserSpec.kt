@@ -7,10 +7,10 @@ data class AnalyserSpec(
     val identifier: String,
     val host: String,
     val version: String,
-    var jar: String,
-    var className: String, // calculate via identifier??
+    val jar: String,
+    val className: String, // calculate via identifier??
     // additional type for slot
-    var slotType: String = "",
+    val slotType: String = "",
 )
 
 typealias SlotSpec = AnalyserSpec;

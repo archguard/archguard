@@ -1,5 +1,6 @@
 package org.archguard.scanner.ctl.loader
 
+import kotlinx.coroutines.flow.flow
 import org.archguard.meta.OutputType
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.SlotSpec
@@ -18,12 +19,15 @@ class SlotHubImpl(val context: Context) : SlotHub {
     fun register(specs: List<SlotSpec>) {
         specs.forEach {
             val slotInstance = AnalyserLoader.loadSlot(it)
+
+            // todo: support for multiple ticket
             val coin = slotInstance.ticket()[0]
 
             slotInstanceByType[coin] = SourceCodeSlot(it, slotInstance)
         }
     }
 
+    // when receive data
     fun maybePlugSlot(data: Any?) {
         if (data == null) return
 
