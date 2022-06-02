@@ -1,6 +1,7 @@
 package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
+import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.Statements
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
@@ -15,7 +16,7 @@ data class CodeSqlStmt(
     val packageName: String = "",
     val className: String = "",
     val functionName: String = "",
-    val statements: List<Statements> = listOf()
+    val statements: List<Statement> = listOf()
 )
 
 class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(relations) {
@@ -26,6 +27,8 @@ class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(rel
             } catch (e: Exception) {
                 null
             }
+        }.flatMap {
+            it.statements
         }
 
         CodeSqlStmt(relation.packageName, relation.className, relation.functionName, stmts)
@@ -37,9 +40,7 @@ class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(rel
 
         ruleSets.forEach { ruleSet ->
             ruleSet.rules.forEach { rule ->
-                // todo: cast by plugins
                 val sqlRule = rule as SqlRule
-
                 codeSqlStmts.map {
                     sqlRule.visit(it.statements, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(
@@ -47,7 +48,7 @@ class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(rel
                             ruleId = rule.key,
                             name = rule.name,
                             detail = rule.description,
-                            ruleType = RuleType.HTTP_API_SMELL,
+                            ruleType = RuleType.SQL_SMELL,
                             fullName = "${it.packageName}:${it.className}:${it.functionName}",
                             source = it.toString()
                         )

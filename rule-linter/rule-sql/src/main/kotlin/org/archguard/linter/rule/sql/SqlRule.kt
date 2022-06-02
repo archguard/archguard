@@ -14,7 +14,7 @@ import org.archguard.rule.core.RuleContext
 
 open class SqlRule: Rule() {
     fun visit(stmts: List<Statement>, context: RuleContext, callback: IssueEmit) {
-        stmts.forEach {
+        stmts.map {
             when(it) {
                 is CreateTable -> {
                     this.visitCreateTable(it, context, callback)
