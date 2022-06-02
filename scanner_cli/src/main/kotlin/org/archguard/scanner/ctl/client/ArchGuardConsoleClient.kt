@@ -35,7 +35,7 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
     override fun saveGitLogs(gitLogs: List<GitLogs>) {
         println("==============================================================")
         println("Output git logs to console")
-        println(Json.encodeToString(gitLogs[0]))
+        println(Json.encodeToString(gitLogs))
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {

@@ -125,8 +125,10 @@ class ScannerReportingController(
     }
 
     @PostMapping("/git-logs")
-    fun saveGitLogs(@PathVariable systemId: Long, @RequestBody input: GitLogs) {
-        gitSourceRepository.saveGitReport(systemId, input)
+    fun saveGitLogs(@PathVariable systemId: Long, @RequestBody input: List<GitLogs>) {
+        if(input.isNotEmpty()) {
+            gitSourceRepository.saveGitReport(systemId, input[0])
+        }
     }
 
     @PostMapping("/diff-changes")
