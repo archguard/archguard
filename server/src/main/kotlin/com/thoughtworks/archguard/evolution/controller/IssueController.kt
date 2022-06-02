@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/issue")
+@RequestMapping("/api/systems/")
 class IssueController(val issueServices: IssueService) {
 
-    @GetMapping("/{id}")
-    fun getAllIssue(@PathVariable("id") id: Long): List<IssueModel> {
-        return issueServices.getAllIssues(id)
+    @GetMapping("/{systemId}/issue")
+    fun getAllIssue(@PathVariable("systemId") systemId: Long): List<IssueModel> {
+        return issueServices.getAllIssues(systemId)
     }
 }
