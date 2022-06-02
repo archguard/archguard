@@ -7,6 +7,7 @@ import org.archguard.meta.OutputType
 import org.archguard.meta.Slot
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
+import java.io.File
 
 class TestSmellRuleSlot : Slot {
     override var material: Materials = listOf()
@@ -23,6 +24,11 @@ class TestSmellRuleSlot : Slot {
     }
 
     override fun process(items: List<Any>): OutputType {
-        return TestSmellRuleVisitor(items as List<CodeDataStruct>).visitor(this.material as Iterable<RuleSet>)
+        val testPath = "src" + File.separatorChar + "test"
+        val dataStructs = (items as List<CodeDataStruct>).filter {
+            it.FilePath.contains(testPath)
+        }
+
+        return TestSmellRuleVisitor(dataStructs).visitor(this.material as Iterable<RuleSet>)
     }
 }
