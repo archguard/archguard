@@ -13,6 +13,8 @@ class SlotHub(val context: Context) {
     private val slotInstanceByType: MutableMap<String, SourceCodeSlot> = mutableMapOf()
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    private val outCount: Int = 0
+
     fun register(analyserSpecs: List<AnalyserSpec>) {
         analyserSpecs.filter {
             it.slotType == "rule"

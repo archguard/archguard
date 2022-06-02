@@ -55,5 +55,6 @@ localtesting_*.csv
 !legacy/scan_jacoco/src/main/resources/db/migration/ddl.sql
 *_apis.json
 *_codes.json
-0_issues.json
+*_databases.json
+*_issues.json
 slot.json

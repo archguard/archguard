@@ -1,1 +1,2 @@
 org.archguard.linter.rule.sql.SqlRuleSlot
+org.archguard.linter.rule.sql.DatamapRuleSlot

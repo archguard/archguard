@@ -1,6 +1,6 @@
 package org.archguard.linter.rule.sql
 
-import net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatements
+import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statement
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
@@ -9,19 +9,22 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
+import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 
-class SqlRuleVisitor(inputs: List<String>) : RuleVisitor(inputs) {
+class DatamapRuleVisitor(relations: List<CodeDatabaseRelation>): RuleVisitor(relations) {
     private var statements: List<Statement>
 
     init {
-        this.statements = inputs.mapNotNull {
-            try {
-                parseStatements(it)
-            } catch (e: Exception) {
-                null
+        this.statements = relations.flatMap { relation ->
+            relation.sqls.mapNotNull {
+                try {
+                    CCJSqlParserUtil.parseStatements(it)
+                } catch (e: Exception) {
+                    null
+                }
+            }.flatMap {
+                it.statements
             }
-        }.flatMap {
-            it.statements
         }
     }
 

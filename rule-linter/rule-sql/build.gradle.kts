@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     api(project(":rule-core"))
+    api(project(":scanner_core"))
 
     implementation("com.github.jsqlparser:jsqlparser:4.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
