@@ -30,7 +30,7 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
             .map {
                 it.apply {
                     it.Module = moduleName
-                    it.FilePath = file.absolutePath
+                    it.FilePath = file.relativeTo(basepath).toString()
                 }
             }
     }

@@ -38,6 +38,7 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
         return codeContainer.DataStructures.map { ds ->
             ds.apply {
                 ds.Module = moduleName
+                ds.FilePath = file.relativeTo(basepath).toString()
                 ds.Imports = codeContainer.Imports
             }
         }

@@ -17,6 +17,8 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
     private val ignoreMinFile = true
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
+        val basepath = File(context.path)
+
         getFilesByPath(context.path) {
             val path = it.absolutePath
 
@@ -29,18 +31,20 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
             if (ignoreMinFile) isNormalFile && !isNotMinFile
             else isNormalFile
         }
-            .map { async { analysisByFile(it) } }.awaitAll()
+            .map { async {
+                analysisByFile(it, basepath) } }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }
     }
 
-    private fun analysisByFile(file: File): List<CodeDataStruct> {
+    private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
         val workspace = File(context.path)
         val codeContainer = impl.analysis(file.readContent(), file.toRelativeString(workspace))
         return codeContainer.DataStructures.map {
             it.apply {
                 if (it.Type != DataStructType.INTERFACE) {
                     it.Imports = codeContainer.Imports
+                    it.FilePath = file.relativeTo(basepath).toString()
                 }
             }
         }

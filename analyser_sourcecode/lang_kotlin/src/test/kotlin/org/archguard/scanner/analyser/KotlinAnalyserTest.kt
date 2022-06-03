@@ -35,7 +35,7 @@ internal class KotlinAnalyserTest {
         val result = KotlinAnalyser(mockContext).analyse()
 
         assertThat(result).hasSize(2)
-        assertThat(result[0].FilePath.replace("\\", "/")).endsWith("resources/test/kotlin/Hello.kt")
+        assertThat(result[0].FilePath.replace("\\", "/")).endsWith("Hello.kt")
     }
 
     // print these files and copy to analyser [feat_apicalls/backend] to finish the contract tests
