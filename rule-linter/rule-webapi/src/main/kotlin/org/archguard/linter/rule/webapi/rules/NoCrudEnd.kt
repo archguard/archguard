@@ -5,7 +5,7 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.WebApiRule
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 
 class NoCrudEndRule: WebApiRule() {
     init {
@@ -16,7 +16,7 @@ class NoCrudEndRule: WebApiRule() {
         this.severity = Severity.WARN
     }
 
-    override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
+    override fun visitResource(resource: ContainerSupply, context: RuleContext, callback: IssueEmit) {
         val split = resource.sourceUrl.split("/")
         if(CRUD.contains(split.last().lowercase())) {
             callback(this, IssuePosition())

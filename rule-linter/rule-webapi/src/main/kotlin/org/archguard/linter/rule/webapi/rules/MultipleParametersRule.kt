@@ -5,7 +5,7 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.WebApiRule
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 
 class MultipleParametersRule : WebApiRule() {
     init {
@@ -16,7 +16,7 @@ class MultipleParametersRule : WebApiRule() {
         this.severity = Severity.INFO
     }
 
-    override fun visitResource(resource: ContainerResource, context: RuleContext, callback: IssueEmit) {
+    override fun visitResource(resource: ContainerSupply, context: RuleContext, callback: IssueEmit) {
         var paramsCount = 0
         resource.sourceUrl.split("/").forEach {
             if(it.startsWith("{") && it.endsWith("}")) {

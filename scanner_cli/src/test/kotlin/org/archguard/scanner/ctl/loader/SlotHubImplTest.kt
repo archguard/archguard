@@ -99,7 +99,7 @@ internal class SlotHubImplTest {
             slotHubImpl.register(listOf(customized))
 
             val codeDataStruct = CodeDataStruct()
-            slotHubImpl.maybePlugSlot(listOf(codeDataStruct))
+            slotHubImpl.consumer(listOf(codeDataStruct))
         }
     }
 }

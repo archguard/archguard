@@ -7,11 +7,11 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services) {
-    private var resources: List<ContainerResource>
+    private var resources: List<ContainerSupply>
 
     init {
         resources = services.flatMap {

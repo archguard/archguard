@@ -7,7 +7,7 @@ data class ContainerService(
     // component name, only if is a component
     var name: String = "",
     var demands: List<ContainerDemand> = listOf(),
-    var resources: List<ContainerResource> = listOf()
+    var resources: List<ContainerSupply> = listOf()
 )
 
 @Serializable
@@ -21,7 +21,7 @@ data class ContainerDemand(
 )
 
 @Serializable
-data class ContainerResource(
+data class ContainerSupply(
     var sourceUrl: String = "",
     var sourceHttpMethod: String = "",
     var packageName: String = "",

@@ -2,11 +2,11 @@ package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 class CSharpApiAnalyser {
-    var resources: List<ContainerResource> = listOf()
+    var resources: List<ContainerSupply> = listOf()
 
     fun analysisByNode(node: CodeDataStruct, _workspace: String) {
         val routeAnnotation = node.filterAnnotations("RoutePrefix", "Route")
@@ -40,7 +40,7 @@ class CSharpApiAnalyser {
                 route = "/${route}"
             }
 
-            resources = resources + ContainerResource(
+            resources = resources + ContainerSupply(
                 sourceUrl = route,
                 sourceHttpMethod = httpMethod,
                 packageName = node.Package,

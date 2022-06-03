@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.smartscanner.repository
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.archguard.scanner.core.sourcecode.ContainerDemand
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
@@ -51,7 +51,7 @@ class ContainerRepository(systemId: String, language: String, workspace: String)
         return serviceId
     }
 
-    private fun saveResource(it: ContainerResource, serviceId: String): String {
+    private fun saveResource(it: ContainerSupply, serviceId: String): String {
         val time: String = RepositoryHelper.getCurrentTime()
         val resourceId = generateId()
         val values: MutableMap<String, String> = HashMap()

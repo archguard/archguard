@@ -3,12 +3,12 @@ package org.archguard.scanner.analyser.backend
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.archguard.scanner.core.sourcecode.ContainerDemand
-import org.archguard.scanner.core.sourcecode.ContainerResource
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 class JavaApiAnalyser {
     var demands: List<ContainerDemand> = listOf()
-    var resources: List<ContainerResource> = listOf()
+    var resources: List<ContainerSupply> = listOf()
 
     fun analysisByNode(node: CodeDataStruct, _workspace: String) {
         val routeAnnotation = node.filterAnnotations("RestController", "Controller", "RequestMapping")
@@ -127,7 +127,7 @@ class JavaApiAnalyser {
 
             route.replace("//", "/")
 
-            resources = resources + ContainerResource(
+            resources = resources + ContainerSupply(
                 sourceUrl = route,
                 sourceHttpMethod = httpMethod,
                 packageName = node.Package,
