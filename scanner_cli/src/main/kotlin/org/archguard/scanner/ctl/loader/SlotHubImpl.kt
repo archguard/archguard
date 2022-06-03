@@ -1,6 +1,7 @@
 package org.archguard.scanner.ctl.loader
 
 import org.archguard.meta.OutputType
+import org.archguard.meta.Slot
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.SlotSpec
 import org.archguard.scanner.core.context.Context
@@ -18,15 +19,21 @@ class SlotHubImpl(val context: Context) : SlotHub {
     fun register(specs: List<SlotSpec>) {
         specs.forEach {
             val slotInstance = AnalyserLoader.loadSlot(it)
-
-            // todo: support for multiple ticket
-            val coin = slotInstance.ticket()[0]
-
-            slotInstanceByType[coin] = SourceCodeSlot(it, slotInstance)
+            registerSlotBySpec(it, slotInstance)
         }
     }
 
-    // when receive data
+    // todo: support for multiple tickets
+    private fun registerSlotBySpec(spec: SlotSpec, instance: Slot) {
+        val coin = instance.ticket()[0]
+        slotInstanceByType[coin] = SourceCodeSlot(spec, instance)
+    }
+
+    private fun lookupSlot(outputType: String): SourceCodeSlot? {
+        // todo: find a better way to save last type data
+        return slotInstanceByType[outputType]
+    }
+
     fun consumer(data: Any?) {
         if (data == null) return
 
@@ -39,22 +46,30 @@ class SlotHubImpl(val context: Context) : SlotHub {
         val outputType = items[0]::class.java.name
         logger.info("found output type: $outputType")
 
-        val slot = slotInstanceByType[outputType] ?: return
-        execute(slot, items)
+        val slot = lookupSlot(outputType) ?: return
+
+        executeWithData(slot, items)
     }
 
-    private fun execute(slot: SourceCodeSlot, data: List<Any>) {
+    private fun executeWithData(slot: SourceCodeSlot, data: List<Any>) {
+        val output = execute(slot, data)
+
+        maybeOutputCanConsume(output, data)
+
+        handleForOfficialSlot(slot, output)
+    }
+
+    private fun execute(slot: SourceCodeSlot, data: List<Any>): OutputType {
         logger.info("try plug slot for: ${slot.clz}")
 
         slot.clz.prepare(emptyList())
         val output = slot.clz.process(data)
 
         logger.info("done plug slot for: ${slot.clz}")
+        return output
+    }
 
-        // check is output in register
-        mayOutputConsumer(output, data)
-
-        // TODO: thinking in custom flow for rule output
+    private fun handleForOfficialSlot(slot: SourceCodeSlot, output: OutputType) {
         when (slot.define.slotType) {
             "rule" -> {
                 context.client.saveRuleIssues(output as List<Issue>)
@@ -62,12 +77,12 @@ class SlotHubImpl(val context: Context) : SlotHub {
         }
     }
 
-    private fun mayOutputConsumer(output: OutputType, data: List<Any>) {
-        if (output.isNotEmpty()) {
-            val isSameType = output[0].javaClass.name == data[0].javaClass.name
-            if (!isSameType) {
-                consumer(output)
-            }
-        }
+    private fun maybeOutputCanConsume(output: OutputType, data: List<Any>) {
+        if (output.isEmpty()) return
+
+        val isSameType = output[0].javaClass.name == data[0].javaClass.name
+        if (isSameType) return
+
+        consumer(output)
     }
 }
