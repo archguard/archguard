@@ -28,6 +28,13 @@ interface Slot {
     abstract fun ticket(): Coin
 
     /**
+     * TODO: not impl
+     * Is a slot can be working like a event-based architecture.
+     * If a slot is flowable, it can use like a data streaming analysis which is one by one.
+      */
+    fun flowable(): Boolean = false
+
+    /**
      * prepare some data, like prepare [org.archguard.rule.core.RuleSet]
      */
     abstract fun prepare(items: List<Any>): List<Any>
