@@ -1,9 +1,9 @@
-package com.thoughtworks.archguard.evolution.domain
+package com.thoughtworks.archguard.issue
 
 import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
 
-data class IssueModel
+data class EvoIssueModel
 @JdbiConstructor
 constructor(
     val ruleId: String,
