@@ -350,6 +350,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                 "and ( module like '%${filter.module}%' " +
                 "and class_name like '%${filter.className}%' " +
                 "and package_name like '%${filter.packageName}%' " +
+                "and package_name != '' " +
+
                 "and `name` like '%${filter.name}%' ) "
 
             println("sql :   $sql")
@@ -371,6 +373,8 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                 "and ( module like '%${filter.module}%' " +
                 "and class_name like '%${filter.className}%' " +
                 "and package_name like '%${filter.packageName}%' " +
+                "and package_name != '' " +
+
                 "and `name` like '%${filter.name}%' ) " +
                 "and is_test=false " +
                 "order by loc desc " +
@@ -396,6 +400,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                 "and ( module like '%${filter.module}%' " +
                 "and class_name like '%${filter.className}%' " +
                 "and package_name like '%${filter.packageName}%' ) " +
+                "and package_name != '' " +
 
                 "and is_test=false " +
                 "order by loc desc " +
@@ -421,6 +426,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                 "and ( module like '%${filter.module}%' " +
                 "and class_name like '%${filter.className}%' " +
                 "and package_name like '%${filter.packageName}%' ) " +
+                "and package_name != '' " +
 
                 "and loc is not NULL " +
                 "group by module, class_name, package_name " +
@@ -534,7 +540,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                 "and ( module like '%${filter.module}%' " +
                 "and class_name like '%${filter.className}%' " +
                 "and package_name like '%${filter.packageName}%' ) " +
-
+                "and package_name != '' " +
                 "and is_test=false " +
                 "and loc is not NULL  " +
                 "group by class_name " +
