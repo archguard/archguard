@@ -15,7 +15,7 @@ data class IssueDto(
     val position: String,
     val ruleId: String,
     val name: String,
-    val detail: String,
+    val detail: String = "",
     val ruleType: String,
     val severity: String,
     val fullName: String = "",
