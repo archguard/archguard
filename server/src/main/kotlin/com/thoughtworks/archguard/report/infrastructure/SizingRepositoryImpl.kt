@@ -427,7 +427,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                         "and package_name like '%${filter.packageName}%' ) ";
             }
 
-            val sql = "select uuid() as id, count(name) as count, module,system_id, class_name, package_name " +
+            val sql = "select id, count(distinct name) as count, module,system_id, class_name, package_name " +
                 "from code_method " +
                 "where system_id = :systemId " +
                 "and is_test=false " +
@@ -539,12 +539,19 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
     }
 
     override fun getClassSizingListAboveMethodCountThresholdCount(systemId: Long, threshold: Int, filter: FilterSizingPO): Long {
+        var additionCondition =  ""
+
+        if (filter.module.isNotEmpty() && filter.className.isNotEmpty() && filter.packageName.isNotEmpty()) {
+            additionCondition = "and ( module like '%${filter.module}%' " +
+                    "and class_name like '%${filter.className}%' " +
+                    "and package_name like '%${filter.packageName}%' ) ";
+        }
+
         return jdbi.withHandle<Long, Exception> {
-            val table = "select count(name) as count from code_method " +
+            val table = "select count(distinct name) as count from code_method " +
                 "where system_id = :systemId " +
-                "and ( module like '%${filter.module}%' " +
-                "and class_name like '%${filter.className}%' " +
-                "and package_name like '%${filter.packageName}%' ) " +
+                additionCondition +
+
                 "and package_name != '' " +
                 "and is_test=false " +
                 "and loc is not NULL  " +
