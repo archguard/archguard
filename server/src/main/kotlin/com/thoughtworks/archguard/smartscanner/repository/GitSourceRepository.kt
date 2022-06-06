@@ -34,16 +34,18 @@ class GitSourceRepository(private val jdbi: Jdbi) {
 interface GitSourceDao {
     @SqlBatch(
         """
-        INSERT IGNORE INTO scm_commit_log (system_id,id,commit_time,short_msg,committer_name,committer_email,repo_id)
+        INSERT INTO scm_commit_log (system_id,id,commit_time,short_msg,committer_name,committer_email,repo_id)
         VALUES (:systemId,:item.id,:item.commitTime,:item.shortMessage,:item.committerName,:item.committerEmail,:item.repositoryId)
+        ON DUPLICATE KEY UPDATE id=id
         """
     )
     fun saveAllCommitLog(systemId: Long, @BindBean("item") commitLogs: List<CommitLog>)
 
     @SqlBatch(
         """
-        INSERT IGNORE INTO scm_change_entry (system_id,old_path,new_path,commit_time,cognitive_complexity,change_mode,commit_id,committer,line_added,line_deleted)
+        INSERT INTO scm_change_entry (system_id,old_path,new_path,commit_time,cognitive_complexity,change_mode,commit_id,committer,line_added,line_deleted)
         VALUES (:systemId,:item.oldPath,:item.newPath,:item.commitTime,:item.cognitiveComplexity,:item.changeMode,:item.commitId,:item.committer,:item.lineAdded,:item.lineDeleted)
+        ON DUPLICATE KEY UPDATE commit_id=commit_id
         """
     )
     fun saveAllChangeEntry(systemId: Long, @BindBean("item") changeEntries: List<ChangeEntry>)
@@ -52,6 +54,7 @@ interface GitSourceDao {
         """
         INSERT IGNORE INTO scm_path_change_count (system_id,id,path,changes,line_count,language)
         VALUES (:systemId,:item.id,:item.path,:item.changes,:item.lineCount,:item.language)
+        ON DUPLICATE KEY UPDATE id=id
         """
     )
     fun saveAllPathChangeCount(systemId: Long, @BindBean("item") pathChangeCounts: List<PathChangeCount>)
