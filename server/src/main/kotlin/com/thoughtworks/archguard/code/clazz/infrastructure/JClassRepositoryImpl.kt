@@ -144,7 +144,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     override fun getAllBySystemId(systemId: Long): List<JClass> {
         // todo: origin conditions is with ` and loc is not null`, when loc failure will not get results, so change it without loc.
         val sql = "SELECT id, name, module, loc, access FROM code_class where system_id = :systemId and is_test = false " +
-            "and is_thirdparty = false"
+            "and is_thirdparty = false and loc is not null"
 
         return jdbi.withHandle<List<JClassDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
