@@ -24,6 +24,18 @@ class AnalysisController(@Autowired val dependencyAnalysis: ArchitectureDependen
             ResponseEntity.badRequest().body(e.message)
         }
     }
+    @PostMapping("/dependency-analyses/post-analyse")
+    fun postAnalyse(
+        @PathVariable("systemId") systemId: Long,
+        @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
+    ): ResponseEntity<String> {
+        return try {
+            dependencyAnalysis.postAnalyse(systemId, scannerVersion)
+            ResponseEntity.ok("")
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(e.message)
+        }
+    }
 
     @PostMapping("/dependency-analyses/cancel")
     fun cancelAnalyseDependency(@PathVariable("systemId") systemId: Long): ResponseEntity<String> {

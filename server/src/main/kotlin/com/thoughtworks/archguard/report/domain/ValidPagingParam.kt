@@ -15,9 +15,7 @@ object ValidPagingParam {
     }
 
     fun validFilterParam(requestFilter: FilterSizingDto): FilterSizingDto {
-
         println("入参： requestFilter $requestFilter")
-
         return FilterSizingDto(
             requestFilter.currentPageNumber,
             requestFilter.numberPerPage,

@@ -23,8 +23,8 @@ class GitSourceRepository(private val jdbi: Jdbi) {
         dao.deletePathChangeCountBySystemId(systemId)
 
         log.debug("save new data for systemId: $systemId")
-        dao.saveAllCommitLog(systemId, input.commitLog)
-        dao.saveAllChangeEntry(systemId, input.changeEntry)
+        dao.saveAllCommitLog(systemId, input.commitLog.distinctBy { it.id })
+        dao.saveAllChangeEntry(systemId, input.changeEntry.distinctBy { it.commitId })
         dao.saveAllPathChangeCount(systemId, input.pathChangeCount)
 
         log.debug("save new data for systemId: $systemId done")

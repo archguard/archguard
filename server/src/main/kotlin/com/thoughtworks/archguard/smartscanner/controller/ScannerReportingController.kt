@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.RestTemplate
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -37,6 +38,7 @@ class ScannerReportingController(
     @Value("\${spring.datasource.url}") val dbUrl: String,
     @Value("\${spring.datasource.username}") val username: String,
     @Value("\${spring.datasource.password}") val password: String,
+    @Value("\${client.host}") val url: String,
     private val gitSourceRepository: GitSourceRepository,
     private val diffChangesRepository: DiffChangesRepository,
     private val scaRepository: ScaRepository,
@@ -77,6 +79,16 @@ class ScannerReportingController(
             input.forEach { data -> repo.saveClassItem(data) }
             input.forEach { data -> repo.saveClassBody(data) }
             execute(systemId, tables)
+
+            // todo: post
+            val params = HashMap<String, Any>()
+            params["systemId"] = systemId
+            try {
+                RestTemplate().postForLocation("$url/api/scanner/systems/{systemId}/dependency-analyses/post-analyse", null, params)
+            } catch (ex: Exception) {
+                throw ex
+            }
+
         } finally {
             cleanSqlFile(tables)
         }
@@ -125,9 +137,9 @@ class ScannerReportingController(
     }
 
     @PostMapping("/git-logs")
-    fun saveGitLogs(@PathVariable systemId: Long, @RequestBody input: List<GitLogs>) {
-        if(input.isNotEmpty()) {
-            gitSourceRepository.saveGitReport(systemId, input[0])
+    fun saveGitLogs(@PathVariable systemId: Long, @RequestBody inputs: List<GitLogs>) {
+        if(inputs.isNotEmpty()) {
+            gitSourceRepository.saveGitReport(systemId, inputs[0])
         }
     }
 

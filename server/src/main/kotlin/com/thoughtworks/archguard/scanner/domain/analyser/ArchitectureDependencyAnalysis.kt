@@ -55,7 +55,6 @@ class ArchitectureDependencyAnalysis(
 
                 startScanSystem(systemInfo)
                 analyse(systemId, systemInfo.language, scannerVersion, workdir)
-                stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
                 stopScanSystem(systemInfo, ScannedType.FAILED)
@@ -87,8 +86,34 @@ class ArchitectureDependencyAnalysis(
         val url = dbUrl.replace("://", "://$username:$password@")
 
         hubService.doScanIfNotRunning(systemId, url, scannerVersion, memoryConsumer)
+        File(workdir.resolve("archguard.log").toString()).writeText(memoryConsumer.toString())
+    }
+
+    fun postAnalyse(systemId: Long, scannerVersion: String) {
+        executor.execute {
+            val systemInfo = getSystemInfo(systemId)
+            try {
+                val workdir = createWorkingDirectoryIfNotExist(systemInfo)
+                postMetrics(systemId, workdir)
+
+                stopScanSystem(systemInfo, ScannedType.SCANNED)
+            } catch (e: Exception) {
+                log.error("Exception in asyncAnalyse: {}", e)
+                stopScanSystem(systemInfo, ScannedType.FAILED)
+            }
+        }
+    }
+
+    fun postMetrics(systemId: Long, workdir: Path) {
+        val memoryConsumer = InMemoryConsumer()
+
         log.info("************************************")
         log.info(" Finished level 1 scanners")
+        log.info("************************************")
+
+        scanner2Client.level2MetricsAnalysis(systemId)
+        log.info("************************************")
+        log.info(" Finished level 2 analysis metrics")
         log.info("************************************")
 
         // todo: split to another api
@@ -97,15 +122,10 @@ class ArchitectureDependencyAnalysis(
         log.info(" Finished logic module auto define")
         log.info("************************************")
 
-        scanner2Client.level2MetricsAnalysis(systemId)
+        analysisModuleClient.badSmellDashboard(systemId)
         log.info("************************************")
-        log.info(" Finished level 2 analysis metrics")
+        log.info(" Finished bad smell dashboard")
         log.info("************************************")
-
-//        analysisModuleClient.badSmellDashboard(systemId)
-//        log.info("************************************")
-//        log.info(" Finished bad smell dashboard")
-//        log.info("************************************")
 
         try {
             File(workdir.resolve("archguard.log").toString()).writeText(memoryConsumer.toString())
