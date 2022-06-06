@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/api/systems/{systemId}/logic-modules")
+@RequestMapping("/api/systems/{systemId}/logic-module")
 class LogicModuleController(
     val logicModuleService: LogicModuleService,
     val dependencyService: DependencyService,

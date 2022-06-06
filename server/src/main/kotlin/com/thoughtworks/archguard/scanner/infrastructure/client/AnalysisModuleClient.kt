@@ -14,7 +14,7 @@ class AnalysisModuleClient(@Value("\${client.host}") val url: String) {
         val params = HashMap<String, Any>()
         params["systemId"] = systemId
         try {
-            RestTemplate().postForLocation("$url/api/systems/{systemId}/logic-modules/auto-define", null, params)
+            RestTemplate().postForLocation("$url/api/systems/{systemId}/logic-module/auto-define", null, params)
             log.info("Auto-define request to module-analysis for system {}", systemId)
         } catch (ex: Exception) {
             log.error("HTTP exception when trigger auto-define logic module. {}", ex)
