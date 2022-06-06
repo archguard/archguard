@@ -418,16 +418,21 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
 
     override fun getClassSizingListAboveMethodCountThresholdByRequestSizing(systemId: Long, threshold: Int, filter: FilterSizingPO): List<ClassSizingWithMethodCount> {
         return jdbi.withHandle<List<ClassSizingWithMethodCount>, Exception> {
+
+            var additionCondition =  ""
+
+            if (filter.module.isNotEmpty() && filter.className.isNotEmpty() && filter.packageName.isNotEmpty()) {
+                additionCondition = "and ( module like '%${filter.module}%' " +
+                        "and class_name like '%${filter.className}%' " +
+                        "and package_name like '%${filter.packageName}%' ) ";
+            }
+
             val sql = "select uuid() as id, count(name) as count, module,system_id, class_name, package_name " +
                 "from code_method " +
                 "where system_id = :systemId " +
                 "and is_test=false " +
-
-                "and ( module like '%${filter.module}%' " +
-                "and class_name like '%${filter.className}%' " +
-                "and package_name like '%${filter.packageName}%' ) " +
+                additionCondition +
                 "and package_name != '' " +
-
                 "and loc is not NULL " +
                 "group by module, class_name, package_name " +
                 "having count>:threshold order by count desc " +
