@@ -1,4 +1,87 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.12...v) (2022-05-28)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.17...v) (2022-06-06)
+
+
+
+# [2.0.0-alpha.17](https://github.com/archguard/archguard/compare/v2.0.0-alpha.16...v2.0.0-alpha.17) (2022-06-06)
+
+
+### Bug Fixes
+
+* fix count method name issues ([5e96f78](https://github.com/archguard/archguard/commit/5e96f786b0cd1d511e503e03f473da9c689c5036))
+* fix DatamapSlot type issues ([be6854d](https://github.com/archguard/archguard/commit/be6854d0fdbfa123259ee4c5e2bbb72046f8bb5d))
+* fix duplidate entry issue for Git ([fa9766e](https://github.com/archguard/archguard/commit/fa9766ea06412da1e3e5e035b47175d7ae37015b))
+* fix issue url design issue ([d54b0a6](https://github.com/archguard/archguard/commit/d54b0a6ac9716274554142a623663f1e05347ab9))
+* fix type issues for DatamapRuleSlot ([387c461](https://github.com/archguard/archguard/commit/387c4616f5466232c73f2afd1db0ed580d491227))
+* ignore package_name for kotlin ([88b19a9](https://github.com/archguard/archguard/commit/88b19a9b9b1e9039e574880103b54c7c00608c10))
+* **rule:** fix api loop issue ([c04c393](https://github.com/archguard/archguard/commit/c04c39357221108d1106c0d6e45013928b82c0c9))
+
+
+### Features
+
+* **rule:** add api call working with slots ([9589b03](https://github.com/archguard/archguard/commit/9589b03f289a072b33b743f362189dea9f05b3ba))
+* **rule:** add filter for test code ([0f56bca](https://github.com/archguard/archguard/commit/0f56bca3608de380404a753ac036fec2d46a2ad8))
+* **rule:** add get issue from api ([84b4914](https://github.com/archguard/archguard/commit/84b4914b47077cf47766a4fa6f17544afb05512e))
+* **rule:** add source & fullName for project ([6d8c2ec](https://github.com/archguard/archguard/commit/6d8c2ec8bb0e71892d090842895ed69efecf1daa))
+* **rule:** init backend issue api ([3782384](https://github.com/archguard/archguard/commit/37823844d143e6479862807664819dd54ada1c9f))
+* **rule:** init governance issue table ([a6a7d06](https://github.com/archguard/archguard/commit/a6a7d0627eac46efd71c2a00bd5f4c54ecf6e7b2))
+* **rule:** make rule can sent to backend ([42f54d0](https://github.com/archguard/archguard/commit/42f54d08b58dfbca4df67afa735520336968c871))
+* **slot:** add flowable API ([21be71a](https://github.com/archguard/archguard/commit/21be71a53eff95b08552d010368baf9d7ae4ccc4))
+
+
+
+# [2.0.0-alpha.16](https://github.com/archguard/archguard/compare/v2.0.0-alpha.15...v2.0.0-alpha.16) (2022-06-01)
+
+
+### Bug Fixes
+
+* add support for old version plugin return types ([2ee09ea](https://github.com/archguard/archguard/commit/2ee09ea4a324747e362313d3932d54446c41f214))
+* **build:** update regex ([7c594b5](https://github.com/archguard/archguard/commit/7c594b5af3284d05780232ddc7fc69edb6dc59b5))
+* fix cli typos for brnach ([94bac0f](https://github.com/archguard/archguard/commit/94bac0f9da18a61082fef0e9032f8c6508b42686))
+* fix rename issues ([5d022d2](https://github.com/archguard/archguard/commit/5d022d2904dec0d84c885477efca10537ac4e7aa))
+
+
+### Features
+
+* add identify for root & child projects ([ab60d12](https://github.com/archguard/archguard/commit/ab60d12ba272460f4df92fb577940fb33ce64257))
+* add log consumer for new logs ([f340e66](https://github.com/archguard/archguard/commit/f340e6652ffeebd4992270d5af8a6d534ee11998))
+* add module name support for kotlin/java ([fc584f2](https://github.com/archguard/archguard/commit/fc584f241174bde07b83aa65ed9a967068921ddc))
+* add path name convert ([8d20c02](https://github.com/archguard/archguard/commit/8d20c02f845463d76a82dc83caeb405f0964fe31))
+* init rule for scanner ([03a429f](https://github.com/archguard/archguard/commit/03a429f18dfb83010ddc3a58c8dfd64895260e9a))
+* **meta:** init to save commons types ([fef9191](https://github.com/archguard/archguard/commit/fef919127f84b43aca1f94e3b26c1bd807c1c012))
+* refactor to lookup by paths ([9119776](https://github.com/archguard/archguard/commit/9119776c85740ebf5d36dbfd358a218cc2419e71))
+* **rule:** add lint for slot ([7863c61](https://github.com/archguard/archguard/commit/7863c61171446759b3981bb9d57be64fb81296ed))
+* **rule:** add slot to spec ([f57a173](https://github.com/archguard/archguard/commit/f57a1731d9ececb71ee0fc41ba19e3584f10213a))
+* **slot:** impl slot in RuleVisitor ([465d0ce](https://github.com/archguard/archguard/commit/465d0cedcc4a7926ac39b6898564505ce49c6c84))
+
+
+
+# [2.0.0-alpha.15](https://github.com/archguard/archguard/compare/v2.0.0-alpha.14...v2.0.0-alpha.15) (2022-05-30)
+
+
+### Bug Fixes
+
+* fix not mkdir issues ([fa2f2f6](https://github.com/archguard/archguard/commit/fa2f2f6589f56a09866efb63c72c27274775728e))
+
+
+
+# [2.0.0-alpha.14](https://github.com/archguard/archguard/compare/v2.0.0-alpha.13...v2.0.0-alpha.14) (2022-05-30)
+
+
+
+# [2.0.0-alpha.13](https://github.com/archguard/archguard/compare/v2.0.0-alpha.12...v2.0.0-alpha.13) (2022-05-30)
+
+
+### Bug Fixes
+
+* fix cli copy in error path ([ad32a6f](https://github.com/archguard/archguard/commit/ad32a6f6c011c01b05d6516367bed5f60c7c0b8d))
+* fix dockerfile issue ([6acb289](https://github.com/archguard/archguard/commit/6acb289d7db2e9bc9532bf28d7c2a9994b96eea1))
+* fix serial issues ([a0ffe73](https://github.com/archguard/archguard/commit/a0ffe73302fe712377a5e1b37a42f86a820d3bf5))
+
+
+### Features
+
+* add get code support [#68](https://github.com/archguard/archguard/issues/68) ([ec92be0](https://github.com/archguard/archguard/commit/ec92be00b67d42cb1ed014b9448896f57259e8ff))
+* init save code funs [#68](https://github.com/archguard/archguard/issues/68) ([2d51e98](https://github.com/archguard/archguard/commit/2d51e98ab4ed328086459b621ed9d008bad3ef9d))
 
 
 
