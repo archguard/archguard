@@ -32,8 +32,6 @@ class StranglerScannerExecutor(
         scanners.filter { it.canScan(context) }.forEach { legacyScanner ->
             GlobalScope.launch { legacyScanner.scanWith(context) }
         }
-
-        // todo: call level 2 scanner after finish in ArchitectureDependencyAnalysis.analyse
     }
 
     private fun Scanner.scanWith(context: ScanContext) {
