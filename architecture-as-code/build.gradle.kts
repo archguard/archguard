@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.21"
 }
 
-group = "com.thoughtworks.aac"
+group = "com.archguard.aaac"
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
