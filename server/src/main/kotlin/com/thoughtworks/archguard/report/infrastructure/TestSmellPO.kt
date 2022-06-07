@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import org.archguard.rule.core.IssuePosition
 
 @Serializable
 data class TestSmellPO(
@@ -9,6 +12,7 @@ data class TestSmellPO(
     val moduleName: String = "",
     val packageName: String = "",
     val typeName: String = "",
+    val methodName: String = "",
     val detail: String,
     val position: String,
 ) {
@@ -29,6 +33,9 @@ data class TestSmellPO(
 //            moduleName = split.joinToString(":")
         }
 
-        return TestSmellPO(name, fullName, moduleName, packageName, className, detail, position)
+        val issuePosition = Json.decodeFromString<IssuePosition>(position)
+        val methodName = issuePosition.additions.get("methodName").orEmpty()
+
+        return TestSmellPO(name, fullName, moduleName, packageName, className, methodName, detail, position)
     }
 }
