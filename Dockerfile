@@ -43,7 +43,7 @@ COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "rule-core/build/libs/rule-core*.jar",                                               \
 "rule-linter/rule-sql/build/libs/rule-sql*.jar",                                      \
 "rule-linter/rule-webapi/build/libs/rule-webapi*.jar",                                 \
-"rule-linter/rule-test-code/build/libs/rule-test-code*.jar",                            \
+"rule-linter/rule-test-code/build/libs/rule-test*.jar",                            \
 # target directory
 "/home/spring/dependencies/analysers/"]
 
