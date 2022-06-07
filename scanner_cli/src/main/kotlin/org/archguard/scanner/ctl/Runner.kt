@@ -32,7 +32,6 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val analyserSpec by option(help = "Override the analysers via json.").multiple()
     private val slotSpec by option(help = "Override the slot via json.").multiple()
     private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang.")
-//    private val rules by option(help = "webapi, test, sql")
 
     // TODO refactor as DAG (analyser - dependencies[analyser, analyser])
     private val features by option(help = "features: apicalls, datamap.").multiple()
