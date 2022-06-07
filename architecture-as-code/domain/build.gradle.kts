@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.21"
 }
 
-group = "com.archguard.aaac"
+group = "org.archguard.aaac"
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
