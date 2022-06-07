@@ -180,7 +180,7 @@ dependencies {
 
     jacocoAggregation(project(":rule-core"))
     jacocoAggregation(project(":rule-linter:rule-sql"))
-    jacocoAggregation(project(":rule-linter:rule-test-code"))
+    jacocoAggregation(project(":rule-linter:rule-test"))
     jacocoAggregation(project(":rule-linter:rule-webapi"))
     jacocoAggregation(project(":rule-linter:rule-code"))
     jacocoAggregation(project(":rule-doc-generator"))

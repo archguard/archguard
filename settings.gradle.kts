@@ -44,7 +44,7 @@ include(
  */
 include(":rule-core")
 include(":rule-linter:rule-sql")
-include(":rule-linter:rule-test-code")
+include(":rule-linter:rule-test")
 include(":rule-linter:rule-webapi")
 include(":rule-linter:rule-code")
 include(":rule-doc-generator")
