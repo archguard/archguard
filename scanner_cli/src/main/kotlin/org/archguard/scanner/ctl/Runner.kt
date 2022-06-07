@@ -9,9 +9,11 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
+import org.archguard.scanner.ctl.rule.RuleSlot
 import org.slf4j.LoggerFactory
 
 /**
@@ -32,6 +34,7 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val analyserSpec by option(help = "Override the analysers via json.").multiple()
     private val slotSpec by option(help = "Override the slot via json.").multiple()
     private val language by option(help = "language: Java, Kotlin, TypeScript, CSharp, Python, Golang.")
+    private val rules by option(help = "rules: webapi, test, sql").multiple()
 
     // TODO refactor as DAG (analyser - dependencies[analyser, analyser])
     private val features by option(help = "features: apicalls, datamap.").multiple()
@@ -70,15 +73,21 @@ class Runner : CliktCommand(help = "scanner cli") {
             |since: $since
             |until: $until
             |depth: $depth
+            |rules: $rules
            """.trimIndent()
         )
+
+        val slotsFromJson = slotSpec.map<String, AnalyserSpec> { Json.decodeFromString(it) }.toMutableList()
+        slotsFromJson += rules.mapNotNull {
+            RuleSlot.fromName(it)
+        }
 
         val command = ScannerCommand(
             // cli parameters
             type, systemId, serverUrl, path, output, analyserSpec.map { Json.decodeFromString(it) },
             // additional parameters
             language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth,
-            slotSpec.map { Json.decodeFromString(it) },
+            slotsFromJson,
         )
         AnalyserDispatcher().dispatch(command)
     }

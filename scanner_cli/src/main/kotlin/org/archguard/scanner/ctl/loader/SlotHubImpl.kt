@@ -18,14 +18,20 @@ class SlotHubImpl(val context: Context) : SlotHub {
 
     fun register(specs: List<SlotSpec>) {
         specs.forEach {
-            val slotInstance = AnalyserLoader.loadSlot(it)
-            registerSlotBySpec(it, slotInstance)
+            try {
+                val slotInstance = AnalyserLoader.loadSlot(it)
+                registerSlotBySpec(it, slotInstance)
+            } catch (e: Exception) {
+                logger.warn(e.message.toString())
+            }
         }
     }
 
     // todo: support for multiple tickets
     private fun registerSlotBySpec(spec: SlotSpec, instance: Slot) {
         val coin = instance.ticket()[0]
+
+        logger.info("register slot: ${spec.identifier}")
         slotInstanceByType[coin] = SourceCodeSlot(spec, instance)
     }
 

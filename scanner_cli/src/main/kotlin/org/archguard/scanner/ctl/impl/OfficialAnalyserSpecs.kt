@@ -31,8 +31,8 @@ enum class OfficialAnalyserSpecs(
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, VERSION, jarFileName(), className)
     fun version() = VERSION
+    fun identifier() = name.lowercase()
 
-    private fun identifier() = name.lowercase()
     private fun jarFileName(): String {
         val identifier = identifier()
         val prefix = when (this) {
@@ -46,5 +46,6 @@ enum class OfficialAnalyserSpecs(
 
     companion object {
         fun specs() = values().map(OfficialAnalyserSpecs::spec)
+        fun host() = RELEASE_REPO_URL
     }
 }

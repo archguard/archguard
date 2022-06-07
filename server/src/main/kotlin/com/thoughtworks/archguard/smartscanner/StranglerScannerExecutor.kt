@@ -77,6 +77,7 @@ class StranglerScannerExecutor(
             AnalyserType.SOURCE_CODE -> baseline.also {
                 it.language = context.language
                 it.features = listOf("apicalls", "datamap")
+                it.rules = listOf("webapi", "test", "sql")
             }
             AnalyserType.SCA -> baseline.also {
                 it.language = context.language.lowercase()

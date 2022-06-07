@@ -28,6 +28,7 @@ data class ScannerCommand(
         language?.let { arguments.add("--language=$it") }
         features.forEach { arguments.add("--features=$it") }
         repoId?.let { arguments.add("--repo-id=$it") }
+        rules.forEach { arguments.add("--rules=$it") }
         additionArguments.forEach(arguments::add)
         return arguments
     }
@@ -39,6 +40,7 @@ data class ScannerCommand(
     // TODO support official analyser only, accept config and json to enable customized analyser
     var language: String? = null
     var features: List<String> = listOf()
+    var rules: List<String> = listOf()
     var repoId: String? = null
     var additionArguments: List<String> = emptyList()
 }
