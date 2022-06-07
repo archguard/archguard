@@ -71,7 +71,12 @@ allprojects {
 }
 
 // exclude server publish
-configure(allprojects - project(":server")) {
+configure(allprojects
+        - project(":server")
+        - project(":architecture-as-code")
+        - project(":rule-linter")
+        - project(":rule-doc-generator")
+) {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
