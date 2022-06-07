@@ -21,7 +21,7 @@ object RuleSlot {
             }
             "test" ->  {
                 AnalyserSpec(
-                    "rule-test",
+                    "rule-${name}",
                     url,
                     version,
                     "rule-${name}-${OfficialAnalyserSpecs.Rule.version()}-all.jar",
@@ -31,11 +31,11 @@ object RuleSlot {
             }
             "sql" ->  {
                 AnalyserSpec(
-                    "rule-sql",
+                    "rule-${name}",
                     url,
                     version,
                     "rule-${name}-${OfficialAnalyserSpecs.Rule.version()}-all.jar",
-                    className = "org.archguard.linter.rule.sql.SqlRuleSlot",
+                    className = "org.archguard.linter.rule.sql.DatamapRuleSlot",
                     "rule"
                 )
             }
