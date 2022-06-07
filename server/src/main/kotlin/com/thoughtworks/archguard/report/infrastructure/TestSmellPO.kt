@@ -14,7 +14,7 @@ data class TestSmellPO(
 ) {
     fun toTestSmellPO(): TestSmellPO {
         var split = fullName.split(":")
-        var moduleName = ""
+        val moduleName = "root"
         var packageName = ""
         var className = ""
 
@@ -23,9 +23,10 @@ data class TestSmellPO(
             split = split.dropLast(1)
 
             packageName = split.last()
-            split = split.dropLast(1)
 
-            moduleName = split.joinToString(":")
+            // todo: after refactor module, it need to be flag
+//            split = split.dropLast(1)
+//            moduleName = split.joinToString(":")
         }
 
         return TestSmellPO(name, fullName, moduleName, packageName, className, detail, position)
