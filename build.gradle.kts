@@ -70,7 +70,8 @@ allprojects {
     }
 }
 
-subprojects {
+// exclude server publish
+configure(allprojects - project(":server")) {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
