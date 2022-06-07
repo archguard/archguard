@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class TestUnassertCalculator(val testBadSmellRepository: TestBadSmellRepository) : BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
-        val unassertTestCount = testBadSmellRepository.getUnassertTestMethodIds(systemId).size.toLong()
+        val unassertTestCount = testBadSmellRepository.countTestSmellByType(systemId, "UnknownTest")
         return getBadSmellLevel(unassertTestCount, getLevelRanges())
     }
 

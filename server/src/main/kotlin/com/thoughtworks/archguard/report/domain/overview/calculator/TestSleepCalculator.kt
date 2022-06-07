@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class TestSleepCalculator(val testBadSmellRepository: TestBadSmellRepository) : BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
-        val sleepTestMethodCount = testBadSmellRepository.getSleepTestMethodCount(systemId)
+        val sleepTestMethodCount = testBadSmellRepository.countTestSmellByType(systemId, "SleepyTest")
         return getBadSmellLevel(sleepTestMethodCount, getLevelRanges())
     }
 

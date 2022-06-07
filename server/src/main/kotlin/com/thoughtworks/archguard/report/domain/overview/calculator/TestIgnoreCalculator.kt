@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class TestIgnoreCalculator(val testBadSmellRepository: TestBadSmellRepository) : BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
-        val unassertTestCount = testBadSmellRepository.getIgnoreTestMethodCount(systemId)
+        val unassertTestCount = testBadSmellRepository.countTestSmellByType(systemId, "IgnoreTest")
         return getBadSmellLevel(unassertTestCount, getLevelRanges())
     }
 
