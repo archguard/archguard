@@ -71,11 +71,17 @@ allprojects {
 }
 
 // exclude server publish
-configure(allprojects
-        - project(":server")
-        - project(":architecture-as-code")
-        - project(":rule-linter")
-        - project(":rule-doc-generator")
+configure(
+    allprojects
+            - project(":server")
+            - project(":architecture-as-code")
+            - project(":rule-linter")
+            - project(":rule-doc-generator")
+            - project(":analyser_architecture")
+            - project(":analyser_diff_changes")
+            - project(":analyser_git")
+            - project(":analyser_sca")
+            - project(":analyser_sourcecode")
 ) {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
