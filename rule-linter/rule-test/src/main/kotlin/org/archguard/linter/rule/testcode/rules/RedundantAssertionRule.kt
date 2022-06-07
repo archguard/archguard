@@ -5,6 +5,7 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 
 
@@ -22,7 +23,7 @@ class RedundantAssertionRule : TbsRule() {
         if (isAssert(codeCall)) {
             if (codeCall.Parameters.size == assertParametersSize) {
                 if (codeCall.Parameters[0].TypeValue == codeCall.Parameters[1].TypeValue) {
-                    callback(this, codeCall.Position.smellPosition())
+                    callback(this, function.Position.positionWith(function.Name))
                 }
             }
         }

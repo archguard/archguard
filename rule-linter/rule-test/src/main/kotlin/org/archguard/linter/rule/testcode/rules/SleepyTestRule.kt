@@ -5,6 +5,7 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 
 class SleepyTestRule : TbsRule() {
@@ -21,7 +22,7 @@ class SleepyTestRule : TbsRule() {
 
     override fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: IssueEmit) {
         if (codeCall.FunctionName == "sleep" && codeCall.NodeName == "Thread") {
-            callback(this, codeCall.Position.smellPosition())
+            callback(this, function.Position.positionWith(function.Name))
         }
     }
 }

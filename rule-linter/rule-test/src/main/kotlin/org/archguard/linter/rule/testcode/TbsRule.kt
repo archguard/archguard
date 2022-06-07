@@ -21,6 +21,16 @@ fun CodePosition.smellPosition(): IssuePosition {
     )
 }
 
+fun CodePosition.positionWith(funcName: String): IssuePosition {
+    return IssuePosition(
+        startLine = this.StartLine,
+        startColumn = this.StartLinePosition,
+        endLine = this.StopLine,
+        endColumn = this.StopLinePosition,
+        additions = mapOf("methodName" to funcName)
+    )
+}
+
 
 val ASSERTION_LIST = arrayOf(
     "assert",

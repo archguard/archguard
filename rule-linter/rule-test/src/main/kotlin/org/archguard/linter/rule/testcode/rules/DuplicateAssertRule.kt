@@ -2,6 +2,7 @@ package org.archguard.linter.rule.testcode.rules
 
 import chapi.domain.core.CodeFunction
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.Severity
@@ -22,7 +23,7 @@ class DuplicateAssertRule : TbsRule() {
         if (function.FunctionCalls.isNotEmpty()) {
             val asserts = function.FunctionCalls.filter { isAssert(it) }.toList()
             if (asserts.size >= MAX_ASSERTS) {
-                callback(this, function.Position.smellPosition())
+                callback(this, function.Position.positionWith(function.Name))
             }
         }
     }

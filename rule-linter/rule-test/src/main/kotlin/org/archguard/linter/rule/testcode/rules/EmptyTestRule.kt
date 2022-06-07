@@ -4,6 +4,7 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 
 class EmptyTestRule: TbsRule() {
@@ -17,7 +18,7 @@ class EmptyTestRule: TbsRule() {
 
     override fun visitFunction(function: CodeFunction, index: Int, callback: IssueEmit) {
         if(function.isJUnitTest() && function.FunctionCalls.isEmpty()) {
-            callback(this, function.Position.smellPosition())
+            callback(this, function.Position.positionWith(function.Name))
         }
     }
 }

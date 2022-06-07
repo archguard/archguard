@@ -5,6 +5,7 @@ import chapi.domain.core.CodeFunction
 import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 
 class NoIgnoreTestRule : TbsRule() {
@@ -19,7 +20,7 @@ class NoIgnoreTestRule : TbsRule() {
 
     override fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: IssueEmit) {
         if (annotation.Name == "Ignore" || annotation.Name == "Disabled") {
-            callback(this, function.Position.smellPosition())
+            callback(this, function.Position.positionWith(function.Name))
         }
     }
 }

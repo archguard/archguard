@@ -6,6 +6,7 @@ import org.archguard.rule.core.Severity
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.common.Language
 import org.archguard.linter.rule.testcode.TbsRule
+import org.archguard.linter.rule.testcode.positionWith
 import org.archguard.linter.rule.testcode.smellPosition
 
 class RedundantPrintRule : TbsRule() {
@@ -21,8 +22,10 @@ class RedundantPrintRule : TbsRule() {
     override fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: IssueEmit) {
         when(this.language) {
             Language.JAVA -> {
-                if (codeCall.NodeName == "System.out" && (codeCall.FunctionName == "println" || codeCall.FunctionName == "printf" || codeCall.FunctionName == "print")) {
-                    callback(this, codeCall.Position.smellPosition())
+                val isPrint =
+                    codeCall.FunctionName == "println" || codeCall.FunctionName == "printf" || codeCall.FunctionName == "print"
+                if (codeCall.NodeName == "System.out" && isPrint) {
+                    callback(this, function.Position.positionWith(function.Name))
                 }
             }
             else -> {}
