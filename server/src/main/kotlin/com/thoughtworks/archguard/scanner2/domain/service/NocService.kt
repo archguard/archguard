@@ -27,6 +27,6 @@ class NocService(val jClassRepository: JClassRepository) {
         if (implements.isEmpty()) {
             return 1
         }
-        return implements.map { getNodeCount(systemId, it) }.sum() + 1
+        return implements.sumOf { getNodeCount(systemId, it) } + 1
     }
 }
