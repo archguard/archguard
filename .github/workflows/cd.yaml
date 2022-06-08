@@ -29,7 +29,7 @@ jobs:
           # rules:
           - rule-linter/rule-sql/build/libs/rule-sql*-all.jar
           - rule-linter/rule-webapi/build/libs/rule-webapi*-all.jar
-          - rule-linter/rule-test-code/build/libs/rule-test*-all.jar
+          - rule-linter/rule-test/build/libs/rule-test*-all.jar
           # server:
           - server/build/libs/server*.jar
 
