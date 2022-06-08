@@ -183,6 +183,7 @@ dependencies {
     jacocoAggregation(project(":rule-linter:rule-test"))
     jacocoAggregation(project(":rule-linter:rule-webapi"))
     jacocoAggregation(project(":rule-linter:rule-code"))
+    jacocoAggregation(project(":rule-linter:rule-layer"))
     jacocoAggregation(project(":rule-doc-generator"))
 }
 

@@ -68,4 +68,6 @@ enum class RuleType {
      * for metric team size and others
      */
     ORGANIZATION,
+
+    LAYER,
 }

@@ -42,9 +42,14 @@ include(
 /**
  * linters projects: a specific set of analysers to detect specific patterns
  */
-include(":rule-core")
-include(":rule-linter:rule-sql")
-include(":rule-linter:rule-test")
-include(":rule-linter:rule-webapi")
-include(":rule-linter:rule-code")
-include(":rule-doc-generator")
+include(
+    ":rule-core",
+    ":rule-linter:rule-sql",
+    ":rule-linter:rule-test",
+    ":rule-linter:rule-webapi",
+    ":rule-linter:rule-code",
+    ":rule-linter:rule-layer",
+
+//    generate doc
+    ":rule-doc-generator"
+)
