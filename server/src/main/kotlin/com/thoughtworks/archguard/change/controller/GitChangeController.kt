@@ -34,8 +34,11 @@ class GitChangeController(val gitChangeService: GitChangeService) {
     }
 
     @GetMapping("/unstable-file")
-    fun getHighFrequencyChangeAndLongLines(@PathVariable("systemId") systemId: Long): List<GitPathChangeCount> {
-        return gitChangeService.getUnstableFile(systemId)
+    fun getHighFrequencyChangeAndLongLines(
+        @PathVariable("systemId") systemId: Long,
+        @RequestParam(defaultValue = "50") size: Long,
+    ): List<GitPathChangeCount> {
+        return gitChangeService.getUnstableFile(systemId, size)
     }
 }
 

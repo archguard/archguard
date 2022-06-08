@@ -13,16 +13,12 @@ class GitChangeService(val gitChangeRepo: GitChangeRepo, @Value("\${scm_git_hot_
             .filter { (it.jclassId != null) && (it.modifiedCount >= modifiedCountBaseline) }
     }
 
-    fun getGitFileChanges(systemId: Long): List<GitHotFile> {
-        return gitChangeRepo.findBySystemId(systemId)
-    }
-
     fun getPathChangeCount(systemId: Long): List<GitPathChangeCount> {
         return gitChangeRepo.findCountBySystemId(systemId)
     }
 
-    fun getUnstableFile(systemId: Long): List<GitPathChangeCount> {
-        return gitChangeRepo.findUnstableFile(systemId)
+    fun getUnstableFile(systemId: Long, size: Long): List<GitPathChangeCount> {
+        return gitChangeRepo.findUnstableFile(systemId, size)
     }
 
     fun getChangesByRange(systemId: Long, startTime: String, endTime: String): List<String> {

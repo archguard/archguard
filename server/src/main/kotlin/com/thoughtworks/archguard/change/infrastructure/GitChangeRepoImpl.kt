@@ -16,14 +16,14 @@ class GitChangeRepoImpl(val gitChangeDao: GitChangeDao) : GitChangeRepo {
         return gitChangeDao.findCountBySystemId(systemId)
     }
 
-    override fun findUnstableFile(systemId: Long): List<GitPathChangeCount> {
-        val topLines = gitChangeDao.getTopLinesFile(systemId)
-        val topChanges = gitChangeDao.getTopChangesFile(systemId)
+    override fun findUnstableFile(systemId: Long, size: Long): List<GitPathChangeCount> {
+        val topLines = gitChangeDao.getTopLinesFile(systemId, size)
+        val topChanges = gitChangeDao.getTopChangesFile(systemId, size)
 
         return topLines.filter { line ->
-            topChanges.filter {
+            topChanges.any {
                 it.path == line.path
-            }.isNotEmpty()
+            }
         }.toList()
     }
 
