@@ -8,18 +8,24 @@ data class ScannerCommand(
     val type: AnalyserType,
     val systemId: String,
     val serverUrl: String,
+    // for frontend to resolve relative path usage
     val path: String,
-    // for archguard usage
     val workspace: File,
     val logStream: StreamConsumer,
     val branch: String,
 ) {
     fun toArguments(): List<String> {
+        var workdir = workspace.resolve(path).absolutePath
+        if(this.type == AnalyserType.GIT) {
+            workdir = workspace.absolutePath
+        }
+
         val arguments = mutableListOf(
             "--type=${type.name.lowercase()}",
             "--system-id=$systemId",
             "--server-url=$serverUrl",
-            "--path=${workspace.resolve(path).absolutePath}",
+            // different for git by workspace
+            "--path=${workdir}",
             "--workspace=${workspace.absolutePath}",
             "--branch=$branch",
         )
