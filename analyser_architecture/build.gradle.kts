@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":meta"))
     implementation(project(":scanner_core"))
 
     testImplementation("io.mockk:mockk:1.12.3")
