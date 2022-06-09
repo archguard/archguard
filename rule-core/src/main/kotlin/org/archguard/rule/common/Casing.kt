@@ -9,45 +9,6 @@ val SNAKE_CASING = Regex("[a-z][a-z0-9]*(?:_[a-z0-9]+)*")
 val MACRO_CASING = Regex("[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*")
 
 class Casing {
-    fun checkNaming(list: List<String>): MutableMap<String, MutableList<String>> {
-        val multipleNaming: MutableMap<String, MutableList<String>> = hashMapOf()
-        list.forEach {
-            val isNeedToFlag = it.isNotEmpty() && !isflat(it)
-            if (isNeedToFlag) {
-                if (IsPacal(it)) {
-                    addCasingType(multipleNaming, "pascal", it)
-                }
-                if (`is-kebab`(it)) {
-                    addCasingType(multipleNaming, "kebab", it)
-                }
-                if (`IS-COBOL`(it)) {
-                    addCasingType(multipleNaming, "cobol", it)
-                }
-                if (is_nake(it)) {
-                    addCasingType(multipleNaming, "snake", it)
-                }
-                if (IS_MACRO(it)) {
-                    addCasingType(multipleNaming, "macro", it)
-                }
-                if (isCamel(it)) {
-                    addCasingType(multipleNaming, "camel", it)
-                }
-            }
-        }
-
-        return multipleNaming
-    }
-
-    private fun addCasingType(
-        multipleNaming: MutableMap<String, MutableList<String>>,
-        key: String,
-        it: String
-    ) {
-        val camel = multipleNaming.getOrDefault(key, mutableListOf())
-        camel.add(it)
-        multipleNaming[key] = camel
-    }
-
     companion object {
         // SNAKE-NAMING
         fun `IS-COBOL`(s: String): Boolean {
