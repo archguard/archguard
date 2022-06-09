@@ -1,4 +1,52 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.17...v) (2022-06-06)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.20...v) (2022-06-09)
+
+
+### Bug Fixes
+
+* fix working path issue for typescript relative path ([9d02c68](https://github.com/archguard/archguard/commit/9d02c682ba58c90f796b2928e02e1ec4942afca6))
+
+
+
+# [2.0.0-alpha.20](https://github.com/archguard/archguard/compare/v2.0.0-alpha.19...v2.0.0-alpha.20) (2022-06-08)
+
+
+### Bug Fixes
+
+* fix dockerfile build issues ([7b35d59](https://github.com/archguard/archguard/commit/7b35d590deb6978a9f15339605117ff50d78b8a8))
+
+
+### Features
+
+* **arch:** init slot ([d3d94b2](https://github.com/archguard/archguard/commit/d3d94b26a27a6f1d2446eca62855a705cabd7084))
+* **layer:** add lost slot logic ([2fc3897](https://github.com/archguard/archguard/commit/2fc389750aea50bc1ade8017562e20631f2ab473))
+* **layer:** init layer for concept consistant ([be38040](https://github.com/archguard/archguard/commit/be38040a697ec197f406beae2064e7186ecf3864))
+
+
+
+# [2.0.0-alpha.19](https://github.com/archguard/archguard/compare/v2.0.0-alpha.18...v2.0.0-alpha.19) (2022-06-08)
+
+
+### Bug Fixes
+
+* fix deps issues ([acf192f](https://github.com/archguard/archguard/commit/acf192f2374b8f260ead35e14f6d652757eba55f))
+* fix group issues ([fd3afdb](https://github.com/archguard/archguard/commit/fd3afdb3ea2aaf5ea961b3e423682c666bbded90))
+* fix group issues ([e80b337](https://github.com/archguard/archguard/commit/e80b337b27bf7443996066284b75c2cd8b336586))
+* fix rename issue ([4f025a3](https://github.com/archguard/archguard/commit/4f025a3f7c1baea3be89d7edb327192e085b2cec))
+* **rule:** fix naming issues ([97b6184](https://github.com/archguard/archguard/commit/97b61848558155e5c8ff43c3b375ecb12720c229))
+
+
+### Features
+
+* **rule:** enable rule load to spce ([785361c](https://github.com/archguard/archguard/commit/785361c0badfcc0cc4eeff804440ff97d786c78c))
+
+
+
+# [2.0.0-alpha.18](https://github.com/archguard/archguard/compare/v2.0.0-alpha.17...v2.0.0-alpha.18) (2022-06-06)
+
+
+### Bug Fixes
+
+* fix default value issue in text for [#82](https://github.com/archguard/archguard/issues/82) ([0f36267](https://github.com/archguard/archguard/commit/0f36267d9b2d2f66bdb752a5f59700e7a8f596be))
 
 
 
