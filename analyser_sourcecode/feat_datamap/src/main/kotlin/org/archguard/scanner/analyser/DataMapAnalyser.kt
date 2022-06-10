@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.scanner.analyser.database.MysqlAnalyser
+import org.archguard.scanner.analyser.database.JvmSqlAnalyser
 import org.archguard.scanner.analyser.xml.XmlParser
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
@@ -19,7 +19,7 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
         val relations = when (language) {
             "java", "kotlin" -> {
                 logger.info("start analysis database api ---- ${language.lowercase()}")
-                val sqlAnalyser = MysqlAnalyser()
+                val sqlAnalyser = JvmSqlAnalyser()
                 val records = input.flatMap { data ->
                     sqlAnalyser.analysisByNode(data, "")
                 }

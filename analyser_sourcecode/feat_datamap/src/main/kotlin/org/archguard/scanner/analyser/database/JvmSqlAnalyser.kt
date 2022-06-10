@@ -5,7 +5,7 @@ import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.analyser.xml.mybatis.MybatisEntry
 import org.slf4j.LoggerFactory
 
-class MysqlAnalyser {
+class JvmSqlAnalyser {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     // todo: split by framework
