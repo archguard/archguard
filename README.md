@@ -20,7 +20,62 @@ Chinese: ArchGuard 是一个架构治理工具，用于管理和分析组织级�
     - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
     - [Chapi](https://github.com/modernizing/chapi) source code analysis
 
-Dir:
+
+特性（Features）：
+
+- **设计态**（DOING）
+  - 架构设计、分析与治理 DSL
+- **开发态**
+  - 架构扫描
+    - 扫描配置
+    - 插件化规则定制
+  - 架构可视化
+    - 基于 C4 模型的可视化分析
+      - 上下文：API 服务地图（API 生产者支持语言：Java、Kotlin、C#，API 消费者支持语言：TypeScript/JavaScript、Kotlin、Java 等）
+      - 容器分析。数据库地图（支持 MyBatis、JDBI、JPA）
+      - 组件分析
+      - 代码分析：支持级别模块、包、类、方法四个级别。
+    - 高级分析 + 可视化
+      - 系统不稳定性模块分析。
+      - 容器间：精准测试/变化分析
+  - 架构指标（单体DONE，分布式DOING）
+    - 体量维度：过大的组件
+    - 耦合维度：枢纽组件，过深调用，循环依赖
+    - 内聚维度：霰弹式修改
+    - 冗余维度：冗余元素，过度泛化
+    - 质量维度：测试保护
+  - 持续集成
+- **运行态**
+  - APM（TODO）
+- **架构工作台**（DOING）
+
+Features：
+
+- **Design State** (DOING)
+  - Architecture Design, Analysis and Governance DSL
+- **Development state**
+  - Schema scan
+    - Scan configuration
+    - Plug-in rule customization
+  - Architecture visualization
+    - Visual analysis based on C4 model
+      - Context: API service map (API producer supported languages: Java, Kotlin, C#, API consumer supported languages: TypeScript/JavaScript, Kotlin, Java, etc.)
+      - Container analysis. Database map (support MyBatis, JDBI, JPA)
+      - Component analysis
+      - Code analysis: supports four levels of modules, packages, classes, and methods.
+    - Advanced Analysis + Visualization
+      - System instability module analysis.
+      - Between containers: precise testing/variation analysis
+  - Architecture metrics (single DONE, distributed DOING)
+    - Volume dimension: oversized components
+    - Coupling dimension: hub components, too deep calls, circular dependencies
+    - Cohesive Dimension: Shotgun Modification
+    - Redundant dimensions: redundant elements, overgeneralization
+    - Quality dimension: test protection
+    - Continuous Integration
+- **Running state**
+  - APM (TODO)
+- **Architecture Workbench** (DOING)
 
 Screenshots:
 
