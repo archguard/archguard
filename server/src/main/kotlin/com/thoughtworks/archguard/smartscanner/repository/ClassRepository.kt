@@ -137,7 +137,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["updatedAt"] = time
         values["createdAt"] = time
         values["is_test"] = "false"
-        values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
+        values["loc"] = 0.toString()
         batch.add("code_method", values)
         return mId
     }
