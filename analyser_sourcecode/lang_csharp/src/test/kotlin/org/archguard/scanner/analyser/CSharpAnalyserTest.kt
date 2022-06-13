@@ -2,7 +2,6 @@ package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -11,7 +10,6 @@ import io.mockk.verify
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
