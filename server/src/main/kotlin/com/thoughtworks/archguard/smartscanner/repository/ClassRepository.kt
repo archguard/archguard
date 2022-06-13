@@ -12,6 +12,7 @@ import chapi.domain.core.CodeProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
+import java.io.File
 import java.util.Optional
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -35,7 +36,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
     fun saveClassItem(clz: CodeDataStruct) {
         val clzId = saveClass(clz)
         saveClassFields(clzId, clz.Fields, clz.NodeName)
-        saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package)
+        saveClassMethods(clzId, clz.Functions, clz.NodeName, clz.Package, clz.FilePath)
 
         count.incrementAndGet()
         if (count.get() == batchStep) {
@@ -321,13 +322,19 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         return batch.findId("code_class", keys)
     }
 
-    private fun saveClassMethods(clzId: String, functions: Array<CodeFunction>, clzName: String, pkgName: String) {
+    private fun saveClassMethods(
+        clzId: String,
+        functions: Array<CodeFunction>,
+        clzName: String,
+        pkgName: String,
+        filePath: String
+    ) {
         for (method in functions) {
             if (clzName.isEmpty() && pkgName.isEmpty()) {
                 continue
             }
 
-            val methodId = doSaveMethod(clzName, method, pkgName)
+            val methodId = doSaveMethod(clzName, method, pkgName, filePath)
             doSaveClassMethodRelations(clzId, methodId)
 
             // would not save local vars for JavaScript/TypeScript
@@ -401,7 +408,7 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_annotation_value", values)
     }
 
-    private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String): String {
+    private fun doSaveMethod(clzName: String, m: CodeFunction, pkgName: String, filePath: String): String {
         val mId = generateId()
         val time: String = RepositoryHelper.getCurrentTime()
         val values: MutableMap<String, String> = HashMap()
@@ -427,10 +434,19 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         values["class_name"] = clzName
         values["updatedAt"] = time
         values["createdAt"] = time
-        values["is_test"] = if (m.isJUnitTest()) "true" else "false"
+        values["is_test"] = isTest(m, filePath)
         values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
         batch.add("code_method", values)
         return mId
+    }
+
+    private fun isTest(function: CodeFunction, filePath: String): String {
+        val testPath = arrayOf("src", "test").joinToString(File.separator)
+        if(filePath.contains(testPath)) {
+            return "true"
+        }
+
+        return if (function.isJUnitTest()) "true" else "false"
     }
 
     private val FIELD_NAME = "[a-zA-Z_\$@]+".toRegex()
