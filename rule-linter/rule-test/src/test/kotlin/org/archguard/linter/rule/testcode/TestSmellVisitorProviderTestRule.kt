@@ -143,4 +143,28 @@ internal class TestSmellVisitorProviderTestRule {
         assertEquals(1, results.size)
         assertEquals("DuplicateAssertTest", results[0].name)
     }
+
+    @Test
+    internal fun ignore_clz_ignore() {
+        val provider = TestSmellRuleSetProvider()
+
+        val ds = CodeDataStruct()
+        ds.Annotations += CodeAnnotation(Name = "Ignore")
+
+        ds.Functions += CodeFunction(
+            Annotations = arrayOf(
+                CodeAnnotation(Name = "Test"),
+            )
+        )
+
+        val visitor = TestSmellRuleVisitor(listOf(ds))
+
+        val results = visitor
+            .visitor(listOf(provider.get()))
+
+        assertEquals(3, results.size)
+        assertEquals("EmptyTest", results[0].name)
+        assertEquals("IgnoreTest", results[1].name)
+    }
+
 }

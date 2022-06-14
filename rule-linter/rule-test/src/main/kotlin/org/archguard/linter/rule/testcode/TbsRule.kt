@@ -49,6 +49,10 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
     }
 
     private fun visitRoot(rootNode: CodeDataStruct, context: TestSmellContext, callback: IssueEmit) {
+        rootNode.Annotations.forEachIndexed { index, it ->
+            this.visitStructAnnotation(it, index, callback)
+        }
+
         rootNode.Fields.forEachIndexed { index, it ->
             this.visitField(it, index, callback)
         }
@@ -121,4 +125,6 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
     open fun afterVisitFunction(function: CodeFunction, callback: IssueEmit) {}
 
     open fun visitFunctionCall(function: CodeFunction, codeCall: CodeCall, index: Int, callback: IssueEmit) {}
+
+    open fun visitStructAnnotation(annotation: CodeAnnotation, index: Int, callback: IssueEmit) {}
 }
