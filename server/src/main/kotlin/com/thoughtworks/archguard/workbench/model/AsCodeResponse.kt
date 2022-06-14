@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.aac.model
+package com.thoughtworks.archguard.workbench.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.aac.domain
+package com.thoughtworks.archguard.workbench.domain
 
 
 data class AacDslCodeModel(

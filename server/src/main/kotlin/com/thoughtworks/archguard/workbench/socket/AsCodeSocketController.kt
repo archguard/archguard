@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.aac.socket
+package com.thoughtworks.archguard.workbench.socket
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

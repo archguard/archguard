@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.aac.socket
+package com.thoughtworks.archguard.workbench.socket
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

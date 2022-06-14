@@ -1,10 +1,10 @@
-package com.thoughtworks.archguard.aac
+package com.thoughtworks.archguard.workbench
 
-import com.thoughtworks.archguard.aac.domain.AacDslCodeModel
-import com.thoughtworks.archguard.aac.domain.AasDslRepository
-import com.thoughtworks.archguard.aac.model.AsCodeResponse
-import com.thoughtworks.archguard.aac.model.PlaceHolder
-import com.thoughtworks.archguard.aac.model.RepoStatus
+import com.thoughtworks.archguard.workbench.domain.AacDslCodeModel
+import com.thoughtworks.archguard.workbench.domain.AasDslRepository
+import com.thoughtworks.archguard.workbench.model.AsCodeResponse
+import com.thoughtworks.archguard.workbench.model.PlaceHolder
+import com.thoughtworks.archguard.workbench.model.RepoStatus
 import com.thoughtworks.archguard.common.exception.EntityNotFoundException
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool

@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.aac.infrastructure
+package com.thoughtworks.archguard.workbench.infrastructure
 
-import com.thoughtworks.archguard.aac.domain.AacDslCodeModel
-import com.thoughtworks.archguard.aac.domain.AasDslRepository
+import com.thoughtworks.archguard.workbench.domain.AacDslCodeModel
+import com.thoughtworks.archguard.workbench.domain.AasDslRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.mapTo
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
