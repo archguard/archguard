@@ -112,6 +112,12 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
 （PS：如果群满，请添加微信 `phodal02`，并注明 ArchGuard）
 
+## Thanks
+
+JetBrains support:
+
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
+
 License
 ---
 
