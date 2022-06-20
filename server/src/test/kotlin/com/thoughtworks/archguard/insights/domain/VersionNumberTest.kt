@@ -19,9 +19,14 @@ internal class VersionNumberTest {
 
     @Test
     internal fun should_parse_with_slash() {
-        assertEquals(VersionNumber(1, 0, 0, 0, null), VersionNumber.parse("1-rc1-SNAPSHOT")!!)
-        assertEquals(VersionNumber(1, 2, 0, 0, null), VersionNumber.parse("1.2-rc1-SNAPSHOT")!!)
-        assertEquals(VersionNumber(1, 2, 3, 0, null), VersionNumber.parse("1.2.3-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 0, 0, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 2, 0, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1.2-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 2, 3, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1.2.3-rc1-SNAPSHOT")!!)
         assertEquals(VersionNumber(1, 2, 3, 4, null), VersionNumber.parse("1.2.3_4")!!)
+    }
+
+    @Test
+    internal fun should_parse_with_qualifier() {
+        assertEquals(VersionNumber(1, 2, 3, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!!)
     }
 }

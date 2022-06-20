@@ -24,7 +24,7 @@ class VersionParser(private val versionStr: String) {
     private val length = versionStr.length
 
     fun isDotInNext(): Boolean {
-        if(pos >= length - 1) {
+        if (pos >= length - 1) {
             return false
         }
 
@@ -35,12 +35,12 @@ class VersionParser(private val versionStr: String) {
         return false
     }
 
-    fun next() {
+    fun nextChar() {
         pos++
     }
 
-    fun isSeparator(): Boolean {
-        if(pos >= length - 1) {
+    fun isSeparatorInNext(): Boolean {
+        if (pos >= length - 1) {
             return false
         }
 
@@ -51,12 +51,24 @@ class VersionParser(private val versionStr: String) {
         return false
     }
 
+    fun qualifier(): String? {
+        if (pos == length) return null
+
+        if (versionStr[pos] == dot || versionStr[pos] == '-') {
+            nextChar()
+            return versionStr.substring(pos)
+
+        }
+
+        return null
+    }
+
 }
 
 data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val patch: Int, val qualifier: String?) {
     companion object {
         fun parse(version: String): VersionNumber? {
-            if(version.isEmpty()) return null
+            if (version.isEmpty()) return null
 
             var major = 0
             var minor = 0
@@ -64,27 +76,27 @@ data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val pat
             var patch = 0
 
             val parser = VersionParser(version)
-            if(!parser.startWithDigit()) {
+            if (!parser.startWithDigit()) {
                 return null
             }
 
             major = parser.digit()
-            if(parser.isDotInNext()) {
-                parser.next()
+            if (parser.isDotInNext()) {
+                parser.nextChar()
                 minor = parser.digit()
-                if(parser.isDotInNext()) {
-                    parser.next()
+                if (parser.isDotInNext()) {
+                    parser.nextChar()
                     micro = parser.digit()
 
-                    if(parser.isSeparator()) {
-                        parser.next()
+                    if (parser.isSeparatorInNext()) {
+                        parser.nextChar()
                         patch = parser.digit()
                     }
                 }
 
             }
 
-            return VersionNumber(major, minor, micro, patch, null)
+            return VersionNumber(major, minor, micro, patch, parser.qualifier())
         }
     }
 
