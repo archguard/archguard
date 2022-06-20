@@ -16,4 +16,12 @@ internal class VersionNumberTest {
         assertEquals(VersionNumber(12, 25, 0, 0, null), VersionNumber.parse("12.25")!!)
         assertEquals(VersionNumber(12, 25, 23, 0, null), VersionNumber.parse("12.25.23")!!)
     }
+
+    @Test
+    internal fun should_parse_with_slash() {
+        assertEquals(VersionNumber(1, 0, 0, 0, null), VersionNumber.parse("1-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 2, 0, 0, null), VersionNumber.parse("1.2-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 2, 3, 0, null), VersionNumber.parse("1.2.3-rc1-SNAPSHOT")!!)
+        assertEquals(VersionNumber(1, 2, 3, 4, null), VersionNumber.parse("1.2.3_4")!!)
+    }
 }

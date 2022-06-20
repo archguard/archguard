@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.insights.domain
 
+
 class VersionParser(private val versionStr: String) {
+    private val dot = '.'
+
     var pos = 0
 
     fun startWithDigit(): Boolean {
@@ -25,19 +28,27 @@ class VersionParser(private val versionStr: String) {
             return false
         }
 
-        if (versionStr[pos] != '.') {
-            return false
-        }
+        if (versionStr[pos] == dot) {
+            return versionStr[pos + 1].isDigit()
 
-        if (versionStr[pos + 1].isDigit()) {
-            return true
         }
-
         return false
     }
 
     fun next() {
         pos++
+    }
+
+    fun isSeparator(): Boolean {
+        if(pos >= length - 1) {
+            return false
+        }
+
+        if (versionStr[pos] == dot || versionStr[pos] == '_') {
+            return versionStr[pos + 1].isDigit()
+        }
+
+        return false
     }
 
 }
@@ -50,7 +61,7 @@ data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val pat
             var major = 0
             var minor = 0
             var micro = 0
-            val patch = 0
+            var patch = 0
 
             val parser = VersionParser(version)
             if(!parser.startWithDigit()) {
@@ -64,6 +75,11 @@ data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val pat
                 if(parser.isDotInNext()) {
                     parser.next()
                     micro = parser.digit()
+
+                    if(parser.isSeparator()) {
+                        parser.next()
+                        patch = parser.digit()
+                    }
                 }
 
             }
