@@ -66,6 +66,27 @@ class VersionParser(private val versionStr: String) {
 }
 
 data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val patch: Int, val qualifier: String?) {
+
+    operator fun compareTo(other: VersionNumber): Int {
+        if (major != other.major) {
+            return major - other.major
+        }
+
+        if (minor != other.minor) {
+            return minor - other.minor
+        }
+
+        if (micro != other.micro) {
+            return micro - other.micro
+        }
+
+        if (patch != other.patch) {
+            return patch - other.patch
+        }
+
+        return 0
+    }
+
     companion object {
         fun parse(version: String): VersionNumber? {
             if (version.isEmpty()) return null

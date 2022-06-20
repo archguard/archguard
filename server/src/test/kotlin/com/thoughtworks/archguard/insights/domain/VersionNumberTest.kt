@@ -29,4 +29,10 @@ internal class VersionNumberTest {
     internal fun should_parse_with_qualifier() {
         assertEquals(VersionNumber(1, 2, 3, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!!)
     }
+
+
+    @Test
+    internal fun compare() {
+        assert(VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!! > VersionNumber.parse("1.2.2.rc1-SNAPSHOT")!!)
+    }
 }
