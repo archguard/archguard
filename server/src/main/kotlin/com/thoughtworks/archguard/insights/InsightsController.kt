@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.evolution.domain.BadSmellSuite
+import com.thoughtworks.archguard.insights.domain.ScaCondition
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody

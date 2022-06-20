@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights
+package com.thoughtworks.archguard.insights.domain
 
 data class ScaCondition(
     val type: String,
@@ -17,7 +17,7 @@ enum class Comparison {
 
     companion object {
         fun fromString(symbol: String): Comparison {
-            return when(symbol) {
+            return when (symbol) {
                 ">" -> GreaterThan
                 ">=" -> GreaterThanOrEqual
                 "==" -> Equal
