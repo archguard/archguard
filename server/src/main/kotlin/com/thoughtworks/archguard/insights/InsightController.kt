@@ -15,7 +15,7 @@ data class ScaInsight(
 
 @RestController
 @RequestMapping("/api/insights")
-class InsightsController {
+class InsightController {
     // 1. query by expression with cron config
     // 2. count after DSL with kotlin scripting ?
     // 3. save by expression and to influx db
