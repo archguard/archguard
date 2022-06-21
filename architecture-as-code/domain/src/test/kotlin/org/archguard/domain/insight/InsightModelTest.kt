@@ -1,5 +1,6 @@
 package org.archguard.domain.insight
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -13,6 +14,16 @@ internal class InsightModelTest {
     @Test
     internal fun normal_parse() {
         val model = InsightModel.parse("field:version == 'sample'")!!
+        assertEquals("version", model.field)
+        assertEquals("==", model.valueExpr.comparison)
+        assertEquals("'sample'", model.valueExpr.value)
+    }
+
+    @Test
+    @Disabled
+    internal fun multiple_field() {
+        val model =
+            InsightModel.parse("field:version == 'sample', field:artifact == 'kotlin-logging', field:group == /.*logback/ ")!!
         assertEquals("version", model.field)
         assertEquals("==", model.valueExpr.comparison)
         assertEquals("'sample'", model.valueExpr.value)
