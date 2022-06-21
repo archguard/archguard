@@ -1,30 +1,35 @@
 package com.thoughtworks.archguard.insights
 
 import org.archguard.domain.insight.InsightModel
+import org.archguard.domain.version.VersionComparison
+import org.archguard.domain.version.VersionNumber
 import org.springframework.stereotype.Service
 
 @Service
 class InsightService(val repository: InsightRepository) {
+    private var comparison: VersionComparison? = null
+
     fun byScaArtifact(id: Long, models: List<InsightModel>): List<ScaModelDto> {
-        val mappings = toDbColumns(models)
+        val scaModelDtos = repository.filterByCondition(id)
 
-        return repository.filterByCondition(id, mappings)
-    }
-
-    private fun toDbColumns(models: List<InsightModel>): MutableMap<String, String> {
-        val mappings: MutableMap<String, String> = mutableMapOf()
-
-        models.map {
-            val field = when (it.field) {
-                "group" -> "dep_group"
-                "artifact" -> "dep_artifact"
-                "version" -> "dep_version"
-                else -> it.field
+        models.map { insight ->
+            when (insight.field) {
+                "version" -> {
+                    val versionNumber = VersionNumber.parse(insight.valueExpr.value)
+                    if (versionNumber != null) {
+                        comparison = VersionComparison(versionNumber, insight.valueExpr.comparison)
+                    }
+                }
+                else -> {}
             }
-
-            mappings[field] = it.field
         }
 
-        return mappings
+        if (comparison == null) {
+            return scaModelDtos
+        }
+
+        return scaModelDtos.filter {
+            comparison!!.isFit(it.dep_version)
+        }
     }
 }

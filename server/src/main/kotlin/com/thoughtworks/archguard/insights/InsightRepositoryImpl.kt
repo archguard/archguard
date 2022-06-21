@@ -6,14 +6,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
-    override fun filterByCondition(id: Long, mappings: MutableMap<String, String>): List<ScaModelDto> {
-        var sql =
+    override fun filterByCondition(id: Long): List<ScaModelDto> {
+        val sql =
             "select dep_artifact, dep_group, dep_version" +
-                    " from project_composition_dependencies where system_id = :id "
-
-        mappings.map {
-            sql += " and ${it.key} = ${it.value}"
-        }
+                    " from project_composition_dependencies where system_id = :id " +
+                    " and dep_version != '' "
 
         return jdbi.withHandle<List<ScaModelDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(ScaModelDto::class.java))

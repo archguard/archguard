@@ -3,14 +3,14 @@ package org.archguard.domain.version
 /**
  * for like usage: isFit(">=", "1.2.2")
  */
-class VersionComparison(private val versionNo: VersionNumber) {
-    fun isFit(symbol: String, other: String): Boolean? {
+class VersionComparison(private val versionNo: VersionNumber, val symbol: String) {
+    fun isFit(other: String): Boolean {
         val comparison = Comparison.fromString(symbol)
         if (comparison == Comparison.NotSupport) {
-            return null
+            return false
         }
 
-        val otherVersion = VersionNumber.parse(other) ?: return null
+        val otherVersion = VersionNumber.parse(other) ?: return false
 
         val result = versionNo.compareTo(otherVersion)
 
