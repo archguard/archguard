@@ -5,13 +5,17 @@ import org.archguard.dsl.design.LayeredArchDsl
 import org.archguard.dsl.evolution.ReposDecl
 import org.archguard.dsl.evolution.ScanModelDecl
 import org.archguard.dsl.evolution.WebApiDecl
+import org.archguard.dsl.insight.InsightDecl
 
 class FatDslContext(
     var layered: LayeredArchDsl = LayeredArchDsl(),
     var repos: ReposDecl = ReposDecl(),
     var webapi: WebApiDecl = WebApiDecl(),
     var scan: ScanModelDecl? = null,
-)
+    var insight: InsightDecl? = null
+) {
+
+}
 
 // todo: find a better way
 val context = FatDslContext()
