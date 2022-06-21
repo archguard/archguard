@@ -4,7 +4,6 @@ package org.archguard.domain.version
 val comparisonSymbol = listOf("<", ">", "=")
 
 class VersionComparisonParser(private val text: String) {
-    private val dot = '.'
     private val length = text.length
     private var pos = 0
 
@@ -29,10 +28,7 @@ class VersionComparisonParser(private val text: String) {
 }
 
 
-data class VersionCompare(
-    val comparison: String,
-    val version: String,
-) {
+data class VersionCompare(val comparison: String, val version: String) {
     companion object {
         fun parse(string: String): VersionCompare? {
             if (string.isEmpty()) return null

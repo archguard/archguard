@@ -3,8 +3,10 @@ package org.archguard.domain.version
 
 class VersionParser(private val versionStr: String) {
     private val dot = '.'
+    private val length = versionStr.length
+    private var pos = 0
 
-    var pos = 0
+    private fun isDigitInNext() = pos < length && versionStr[pos].isDigit()
 
     fun startWithDigit(): Boolean {
         return versionStr[0].isDigit()
@@ -18,10 +20,6 @@ class VersionParser(private val versionStr: String) {
 
         return versionStr.substring(start, pos).toInt()
     }
-
-    private fun isDigitInNext() = pos < length && versionStr[pos].isDigit()
-
-    private val length = versionStr.length
 
     fun isDotInNext(): Boolean {
         if (pos >= length - 1) {

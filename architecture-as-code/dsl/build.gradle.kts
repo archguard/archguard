@@ -6,6 +6,8 @@ plugins {
 group = "org.archguard.aaac"
 
 dependencies {
+    api(project(":architecture-as-code:domain"))
+
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
