@@ -5,7 +5,7 @@ data class InsightValueExpr(
     val value: String,
 )
 
-private val ValidInsightRegex = Regex("([a-zA-Z_]+):([a-zA-Z_]+)\\s+([>!=<]+)\\s+(.*)")
+private val ValidInsightRegex = Regex("\\s?([a-zA-Z_]+)\\s?([>!=<]+)\\s?(.*)")
 
 data class InsightModel(
     val field: String,
@@ -13,21 +13,27 @@ data class InsightModel(
     val valueExpr: InsightValueExpr,
 ) {
     companion object {
-        fun parse(str: String): InsightModel? {
+        fun parse(str: String): List<InsightModel> {
+            return str.split("field:").mapIndexedNotNull { index, it ->
+                if (index > 0 && it.endsWith(" ")) {
+                    parseOneModel(it.removeSuffix(" "))
+                } else {
+                    parseOneModel(it)
+                }
+            }
+        }
+
+        private fun parseOneModel(str: String): InsightModel? {
             if (!ValidInsightRegex.matches(str)) return null
 
             val matchResult = ValidInsightRegex.find(str)!!.groups
 
-            if (matchResult.size != 5) return null
-
-            if (matchResult[1]!!.value != "field") {
-                return null
-            }
+            if (matchResult.size != 4) return null
 
             return InsightModel(
-                matchResult[2]!!.value,
+                matchResult[1]!!.value,
                 InsightFieldFilter(),
-                InsightValueExpr(matchResult[3]!!.value, matchResult[4]!!.value)
+                InsightValueExpr(matchResult[2]!!.value, matchResult[3]!!.value)
             )
         }
     }

@@ -20,8 +20,8 @@ class InsightController(val insightService: InsightService) {
     // 3. save by expression and to influx db
     @GetMapping("/sca")
     fun scaInsight(@RequestBody insight: InsightDto): Long {
-        val insightModel = InsightModel.parse(insight.expression) ?: throw RuntimeException("invalid $insight")
-        val count = insightService.byScaArtifact(insight.systemId, insightModel.field)
+        val insightModels = InsightModel.parse(insight.expression) ?: throw RuntimeException("invalid $insight")
+        val count = insightService.byScaArtifact(insight.systemId, insightModels[0].field)
         return count
     }
 }
