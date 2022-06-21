@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.insights
 
 import org.archguard.domain.insight.InsightModel
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -18,10 +18,10 @@ class InsightController(val insightService: InsightService) {
     // 1. query by expression with cron config
     // 2. count after DSL with kotlin scripting ?
     // 3. save by expression and to influx db
-    @GetMapping("/sca")
-    fun scaInsight(@RequestBody insight: InsightDto): Long {
+    @PostMapping("/sca")
+    fun scaInsight(@RequestBody insight: InsightDto): List<ScaModelDto> {
         val insightModels = InsightModel.parse(insight.expression) ?: throw RuntimeException("invalid $insight")
-        val count = insightService.byScaArtifact(insight.systemId, insightModels[0].field)
+        val count = insightService.byScaArtifact(insight.systemId, insightModels)
         return count
     }
 }

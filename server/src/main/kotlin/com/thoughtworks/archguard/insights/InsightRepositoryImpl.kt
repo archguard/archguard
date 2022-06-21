@@ -6,16 +6,21 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
-    override fun filterByCondition(id: Long, artifact: String): Long {
-        val sql =
-            "select count(name) from project_composition_dependencies where system_id = :id and dep_artifact = :artifact"
-        return jdbi.withHandle<Long, Nothing> {
+    override fun filterByCondition(id: Long, mappings: MutableMap<String, String>): List<ScaModelDto> {
+        var sql =
+            "select dep_artifact, dep_group, dep_version" +
+                    " from project_composition_dependencies where system_id = :id "
+
+        mappings.map {
+            sql += " and ${it.key} = ${it.value}"
+        }
+
+        return jdbi.withHandle<List<ScaModelDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ScaModelDto::class.java))
             it.createQuery(sql)
                 .bind("id", id)
-                .bind("artifact", artifact)
-                .mapTo(Long::class.java)
-                .findOne()
-                .orElse(0)
+                .mapTo(ScaModelDto::class.java)
+                .list()
         }
     }
 }
