@@ -50,6 +50,7 @@ dependencies {
 //    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
     api(project(":scanner_core"))
 
+    api(project(":architecture-as-code:domain"))
     api(project(":architecture-as-code:dsl"))
     api(project(":architecture-as-code:repl-api"))
 
