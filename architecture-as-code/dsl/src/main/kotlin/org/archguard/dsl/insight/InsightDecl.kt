@@ -2,14 +2,27 @@ package org.archguard.dsl.insight
 
 import org.archguard.dsl.context
 
+enum class InsightConditionType {
+    // can be String
+    NORMAL,
+    REGEXP,
+}
+
 class InsightCondition(
-    val type: String = "regexp",
+    val type: InsightConditionType = InsightConditionType.REGEXP,
     val value: String = "",
 )
 
 fun regexp(value: String): InsightCondition {
-    return InsightCondition("regex", value)
+    return InsightCondition(InsightConditionType.REGEXP, value)
 }
+
+data class InsightModel(
+    val condType: InsightConditionType,
+    val field: String,
+    val comparison: String,
+    val value: String,
+)
 
 class InsightDecl() {
     private lateinit var _fieldCondition: InsightCondition
@@ -25,9 +38,17 @@ class InsightDecl() {
         this._name = name
     }
 
-    fun field(typeStr: String, function: () -> InsightCondition) {
-        this._field = typeStr
-        this._fieldCondition = function()
+    fun field(type: String, conditionFunc: () -> InsightCondition) {
+        this._field = type
+        this._fieldCondition = conditionFunc()
+    }
+
+    fun field(type: String, string: String) {
+        this._field = type
+        this._fieldCondition = InsightCondition(
+            InsightConditionType.NORMAL,
+            string
+        )
     }
 }
 

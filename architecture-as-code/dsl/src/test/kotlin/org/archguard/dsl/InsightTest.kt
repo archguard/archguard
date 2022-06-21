@@ -6,15 +6,23 @@ import org.junit.jupiter.api.Test
 
 internal class InsightTest {
     @Test
-    internal fun basic_insight() {
+    internal fun basic_insight_with_regex() {
         val insight = insight {
             name("demo")
-            condition(">= 1.2.3")
             field("version") {
                 regexp("org.apache.logging.log4j")
             }
+            condition(">= 1.2.3")
         }
+    }
 
-        println(insight)
+    @Test
+    internal fun basic_insight() {
+        val insight = insight {
+            name("demo")
+            field("version", "org.apache.logging.log4j")
+
+            condition(">= 1.2.3")
+        }
     }
 }
