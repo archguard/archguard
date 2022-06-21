@@ -1,25 +1,28 @@
 package com.thoughtworks.archguard.insights
 
-import com.thoughtworks.archguard.evolution.domain.BadSmellSuite
-import com.thoughtworks.archguard.insights.domain.ScaCondition
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+data class ScaInsight(
+    val systemId: Long?,
+    val name: String,
+    val field: String,
+    val comparison: String,
+    val version: String,
+)
+
 @RestController
 @RequestMapping("/api/insights")
 class InsightsController {
-    // query by expression with cron config
-    // count after DSL with kotlin scripting ?
+    // 1. query by expression with cron config
+    // 2. count after DSL with kotlin scripting ?
+    // 3. save by expression and to influx db
     @GetMapping("/sca")
     fun filterByType(
-        @PathVariable("systemId") systemId: Long,
-        @RequestBody scaCondition: ScaCondition
-    ): List<BadSmellSuite> {
+        @RequestBody insight: ScaInsight,
+    ): List<String> {
         return listOf()
     }
-
-    // save by expression and to influx db
 }

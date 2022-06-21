@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights
+package com.thoughtworks.archguard.insights.domain
 
 import com.thoughtworks.archguard.insights.domain.Comparison
 import org.junit.jupiter.api.Assertions.*
