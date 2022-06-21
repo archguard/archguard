@@ -84,22 +84,22 @@ data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val pat
             return patch - other.patch
         }
 
-        return 0
+        return qualifier?.lowercase().orEmpty().compareTo(other.qualifier?.lowercase().orEmpty())
     }
 
     companion object {
         fun parse(version: String): VersionNumber? {
             if (version.isEmpty()) return null
 
-            var major = 0
-            var minor = 0
-            var micro = 0
-            var patch = 0
-
             val parser = VersionParser(version)
             if (!parser.startWithDigit()) {
                 return null
             }
+
+            var major = 0
+            var minor = 0
+            var micro = 0
+            var patch = 0
 
             major = parser.digit()
             if (parser.isDotInNext()) {

@@ -34,5 +34,7 @@ internal class VersionNumberTest {
     @Test
     internal fun compare() {
         assert(VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!! > VersionNumber.parse("1.2.2.rc1-SNAPSHOT")!!)
+        assert(VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!! > VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!!)
+        assert(VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!! == VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!!)
     }
 }
