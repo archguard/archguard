@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights.domain
+package org.archguard.domain.version
 
 
 class VersionParser(private val versionStr: String) {

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights.domain
+package org.archguard.domain.version
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

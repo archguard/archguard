@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 data class ScaInsight(
     val systemId: Long?,
-    val name: String,
+    val name: String? = "Default",
     val field: String,
     val comparison: String,
     val version: String,
