@@ -18,7 +18,15 @@ class VersionParser(private val versionStr: String) {
             pos++
         }
 
-        return versionStr.substring(start, pos).toInt()
+        val substring = versionStr.substring(start, pos)
+        try {
+            return substring.toInt()
+        } catch (e: Exception) {
+            // like "6.0.0.202111291000-r", move post to before last .
+            pos = start
+            pos--
+            return 0
+        }
     }
 
     fun isDotInNext(): Boolean {
@@ -64,7 +72,6 @@ class VersionParser(private val versionStr: String) {
 }
 
 data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val patch: Int, val qualifier: String?) {
-
     operator fun compareTo(other: VersionNumber): Int {
         if (major != other.major) {
             return major - other.major

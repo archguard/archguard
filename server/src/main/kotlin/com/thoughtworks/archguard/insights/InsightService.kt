@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class InsightService(val repository: InsightRepository) {
-    private var comparison: VersionComparison? = null
+    private var versionComparison: VersionComparison? = null
 
     fun byScaArtifact(id: Long, models: List<InsightModel>): List<ScaModelDto> {
         val scaModelDtos = repository.filterByCondition(id)
@@ -17,19 +17,22 @@ class InsightService(val repository: InsightRepository) {
                 "version" -> {
                     val versionNumber = VersionNumber.parse(insight.valueExpr.value)
                     if (versionNumber != null) {
-                        comparison = VersionComparison(versionNumber, insight.valueExpr.comparison)
+                        versionComparison = VersionComparison(versionNumber, insight.valueExpr.comparison)
                     }
                 }
                 else -> {}
             }
         }
 
-        if (comparison == null) {
+        if (versionComparison == null) {
             return scaModelDtos
         }
 
         return scaModelDtos.filter {
-            comparison!!.isFit(it.dep_version)
+            isSatisfied(it)
         }
     }
+
+    // in here, the dep_version is in right, so it need to reverse
+    private fun isSatisfied(it: ScaModelDto) = !versionComparison!!.isFit(it.dep_version)
 }

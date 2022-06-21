@@ -30,11 +30,15 @@ internal class VersionNumberTest {
         assertEquals(VersionNumber(1, 2, 3, 0, "rc1-SNAPSHOT"), VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!!)
     }
 
-
     @Test
     internal fun compare() {
         assert(VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!! > VersionNumber.parse("1.2.2.rc1-SNAPSHOT")!!)
         assert(VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!! > VersionNumber.parse("1.2.3.rc1-SNAPSHOT")!!)
         assert(VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!! == VersionNumber.parse("1.2.3.rc2-SNAPSHOT")!!)
+    }
+
+    @Test
+    internal fun parse_with_Date() {
+        assertEquals(VersionNumber(6, 0, 0, 0, "202111291000-r"), VersionNumber.parse("6.0.0.202111291000-r")!!)
     }
 }

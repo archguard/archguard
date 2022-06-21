@@ -3,9 +3,10 @@ package org.archguard.domain.version
 /**
  * for like usage: isFit(">=", "1.2.2")
  */
-class VersionComparison(private val versionNo: VersionNumber, val symbol: String) {
+class VersionComparison(private val versionNo: VersionNumber, symbol: String) {
+    val comparison = Comparison.fromString(symbol)
+
     fun isFit(other: String): Boolean {
-        val comparison = Comparison.fromString(symbol)
         if (comparison == Comparison.NotSupport) {
             return false
         }

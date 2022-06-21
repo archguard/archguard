@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test
 internal class VersionComparisonTest {
     @Test
     fun filter_fit_type() {
-        assert(VersionComparison(VersionNumber.parse("1.2.3")!!, "==").isFit("1.2.3"))
-        assert(VersionComparison(VersionNumber.parse("1.2.2")!!, "<").isFit("1.2.3"))
+        val left = VersionNumber.parse("1.2.3")!!
 
-        assert(VersionComparison(VersionNumber.parse("1.2.3")!!, ">=").isFit("1.2.3"))
-        assert(VersionComparison(VersionNumber.parse("1.2.3")!!, ">=").isFit("1.2.2"))
+        assert(VersionComparison(left, "==").isFit("1.2.3"))
+        assert(VersionComparison(left, "<").isFit("1.2.4"))
+        assert(VersionComparison(left, ">=").isFit("1.2.3"))
+        assert(VersionComparison(left, ">=").isFit("1.2.2"))
+
         assert(VersionComparison(VersionNumber.parse("1.2.3-beta")!!, ">=").isFit("1.2.3-alpha"))
     }
 }
