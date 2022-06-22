@@ -8,33 +8,60 @@ import org.springframework.stereotype.Service
 @Service
 class InsightService(val repository: InsightRepository) {
     fun byScaArtifact(id: Long, models: List<InsightModel>): List<ScaModelDto> {
-        var versionFilter: Pair<String, String>? = null
-        val versionComparison = VersionComparison()
-        var nameFilter: InsightFieldFilter? = null
-
         val scaModelDtos = repository.filterByCondition(id)
+
+        val filteredModels = filterByInsight(models, scaModelDtos)
+
+        return filteredModels
+    }
+
+    private fun filterByInsight(
+        models: List<InsightModel>,
+        scaModelDtos: List<ScaModelDto>,
+    ): List<ScaModelDto> {
+        val versionComparison = VersionComparison()
+        var versionFilter: Pair<String, String>? = null
+        var nameFilter: InsightFieldFilter? = null
 
         models.map { insight ->
             when (insight.field) {
                 "version" -> {
                     versionFilter = insight.valueExpr.value to insight.valueExpr.comparison
                 }
+
                 "name" -> {
                     nameFilter = InsightFieldFilter(insight.fieldFilter.type, insight.fieldFilter.value)
                 }
+
                 else -> {}
             }
         }
 
+
+        val filteredModels = scaModelDtos.filter {
+            isVersionValid(versionComparison, it, versionFilter) && isNameValid(nameFilter, it)
+        }
+        return filteredModels
+    }
+
+    private fun isVersionValid(
+        versionComparison: VersionComparison,
+        it: ScaModelDto,
+        versionFilter: Pair<String, String>?,
+    ): Boolean {
         if (versionFilter == null) {
-            return scaModelDtos
+            return true
         }
 
-        return scaModelDtos.filter {
-            val versionFilter = versionComparison.eval(it.dep_version, versionFilter!!.second, versionFilter!!.first)
-            val nameValidate = nameFilter == null || nameFilter!!.validate(it.dep_name)
+        return versionComparison.eval(it.dep_version, versionFilter.second, versionFilter.first)
+    }
 
-            versionFilter && nameValidate
-        }
+    private fun isNameValid(
+        nameFilter: InsightFieldFilter?,
+        it: ScaModelDto,
+    ): Boolean {
+        if (nameFilter == null) return true
+
+        return nameFilter.validate(it.dep_name)
     }
 }
