@@ -12,6 +12,6 @@ internal class InsightFieldFilterTest {
 
     @org.junit.jupiter.api.Test
     fun validate_regex() {
-        assert(InsightFieldFilter(InsightFilterType.REGEXP, "/.*log4j/").validate("log4j:log4j"))
+        assert(InsightFieldFilter(InsightFilterType.REGEXP, ".*log4j").validate("log4j:log4j"))
     }
 }
