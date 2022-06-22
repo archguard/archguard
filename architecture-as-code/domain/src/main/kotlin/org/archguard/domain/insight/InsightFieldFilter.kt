@@ -7,16 +7,13 @@ enum class InsightFilterType {
 }
 
 class InsightFieldFilter(
-    val type: InsightFilterType = InsightFilterType.NORMAL,
-    val value: String = "",
+    var type: InsightFilterType = InsightFilterType.NORMAL,
+    var value: String = "",
 ) {
     fun validate(source: String): Boolean {
         return when(type) {
             InsightFilterType.NORMAL -> source == value
-            InsightFilterType.REGEXP -> {
-                val regex = value.removeSuffix("/").removePrefix("/").toRegex()
-                source.matches(regex)
-            }
+            InsightFilterType.REGEXP -> source.matches(value.toRegex())
         }
     }
 }

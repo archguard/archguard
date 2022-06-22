@@ -21,11 +21,17 @@ internal class InsightModelTest {
     @Test
     internal fun multiple_field() {
         val models =
-            InsightModel.parse("field:version == 'sample' field:artifact == 'kotlin-logging' field:group == /.*logback/")
+            InsightModel.parse("field:version == \"1.2.3\" field:artifact == 'kotlin-logging' field:group == /.*logback/ ")
         assertEquals(3, models.size)
 
-        assertEquals("'sample'", models[0].valueExpr.value)
+        assertEquals("\"1.2.3\"", models[0].valueExpr.value)
+        assertEquals("1.2.3", models[0].fieldFilter.value)
+
         assertEquals("'kotlin-logging'", models[1].valueExpr.value)
+        assertEquals("kotlin-logging", models[1].fieldFilter.value)
+
         assertEquals("/.*logback/", models[2].valueExpr.value)
+        assertEquals(InsightFilterType.REGEXP, models[2].fieldFilter.type)
+        assertEquals(".*logback", models[2].fieldFilter.value)
     }
 }
