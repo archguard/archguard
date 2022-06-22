@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights
+package com.thoughtworks.archguard.insights.domain
 
 data class ScaModelDto(
     val dep_name: String,

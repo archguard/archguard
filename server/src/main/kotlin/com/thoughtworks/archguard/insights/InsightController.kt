@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.insights
 
-import org.archguard.domain.insight.InsightModel
+import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,7 +20,6 @@ class InsightController(val insightService: InsightService) {
     // 3. save by expression and to influx db
     @PostMapping("/sca")
     fun scaInsight(@RequestBody insight: InsightDto): List<ScaModelDto> {
-        val insightModels = InsightModel.parse(insight.expression) ?: throw RuntimeException("invalid $insight")
-        return insightService.byScaArtifact(insight.systemId, insightModels)
+        return insightService.byScaArtifact(insight.systemId, insight.expression)
     }
 }

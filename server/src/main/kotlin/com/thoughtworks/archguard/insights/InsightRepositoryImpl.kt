@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.insights
 
+import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
