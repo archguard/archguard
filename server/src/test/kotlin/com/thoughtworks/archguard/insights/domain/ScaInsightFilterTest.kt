@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 
 internal class ScaInsightFilterTest {
     @Test
-    internal fun should_filter_version_by_condition() {
+    internal fun filter_version_by_condition() {
         val insights = InsightModel.parse("field:name == /.*dubbo/ field:version > 1.12.3")
         val dtos = listOf(
             ScaModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.2"),
@@ -15,5 +15,17 @@ internal class ScaInsightFilterTest {
         )
 
         assertEquals(1, ScaInsightFilter.filterByInsight(insights, dtos).size)
+    }
+
+    @Test
+    internal fun skip_filter_when_version_empty() {
+        val insights = InsightModel.parse("field:name == /.*/ ")
+        val dtos = listOf(
+            ScaModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.2"),
+            ScaModelDto("spring", "spring", "spring", "1.12.4"),
+            ScaModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.4"),
+        )
+
+        assertEquals(3, ScaInsightFilter.filterByInsight(insights, dtos).size)
     }
 }
