@@ -21,7 +21,6 @@ class InsightController(val insightService: InsightService) {
     @PostMapping("/sca")
     fun scaInsight(@RequestBody insight: InsightDto): List<ScaModelDto> {
         val insightModels = InsightModel.parse(insight.expression) ?: throw RuntimeException("invalid $insight")
-        val count = insightService.byScaArtifact(insight.systemId, insightModels)
-        return count
+        return insightService.byScaArtifact(insight.systemId, insightModels)
     }
 }
