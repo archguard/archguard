@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class InsightService(val repository: InsightRepository) {
-    private var versionFilter: Pair<String, String>? = null
-
     fun byScaArtifact(id: Long, models: List<InsightModel>): List<ScaModelDto> {
+        var versionFilter: Pair<String, String>? = null
         val versionComparison = VersionComparison()
         var nameFilter: InsightFieldFilter? = null
 
