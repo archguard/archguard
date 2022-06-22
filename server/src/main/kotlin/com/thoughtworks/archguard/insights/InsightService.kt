@@ -9,7 +9,7 @@ class InsightService(val repository: InsightRepository) {
     private var versionFilter: Pair<String, String>? = null
 
     fun byScaArtifact(id: Long, models: List<InsightModel>): List<ScaModelDto> {
-        val comparison = VersionComparison()
+        val versionComparison = VersionComparison()
         val scaModelDtos = repository.filterByCondition(id)
 
         models.map { insight ->
@@ -26,7 +26,7 @@ class InsightService(val repository: InsightRepository) {
         }
 
         return scaModelDtos.filter {
-            comparison.eval(it.dep_version, versionFilter!!.second, versionFilter!!.first)
+            versionComparison.eval(it.dep_version, versionFilter!!.second, versionFilter!!.first)
         }
     }
 }

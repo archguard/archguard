@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
     override fun filterByCondition(id: Long): List<ScaModelDto> {
         val sql =
-            "select dep_artifact, dep_group, dep_version" +
+            "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies where system_id = :id " +
                     " and dep_version != '' "
 
