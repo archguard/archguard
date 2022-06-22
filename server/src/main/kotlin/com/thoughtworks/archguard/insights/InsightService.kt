@@ -39,29 +39,29 @@ class InsightService(val repository: InsightRepository) {
 
 
         val filteredModels = scaModelDtos.filter {
-            isVersionValid(versionComparison, it, versionFilter) && isNameValid(nameFilter, it)
+            isVersionValid(versionComparison, versionFilter, it.dep_version) && isNameValid(nameFilter, it.dep_name)
         }
+
         return filteredModels
     }
 
     private fun isVersionValid(
         versionComparison: VersionComparison,
-        it: ScaModelDto,
         versionFilter: Pair<String, String>?,
+        leftVersion: String,
     ): Boolean {
         if (versionFilter == null) {
             return true
         }
 
-        return versionComparison.eval(it.dep_version, versionFilter.second, versionFilter.first)
+        val comparison = versionFilter.second
+        val insightVersion = versionFilter.first
+        return versionComparison.eval(leftVersion, comparison, insightVersion)
     }
 
-    private fun isNameValid(
-        nameFilter: InsightFieldFilter?,
-        it: ScaModelDto,
-    ): Boolean {
+    private fun isNameValid(nameFilter: InsightFieldFilter?, name: String): Boolean {
         if (nameFilter == null) return true
 
-        return nameFilter.validate(it.dep_name)
+        return nameFilter.validate(name)
     }
 }
