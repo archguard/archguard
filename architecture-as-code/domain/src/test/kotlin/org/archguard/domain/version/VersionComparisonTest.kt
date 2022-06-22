@@ -7,11 +7,17 @@ internal class VersionComparisonTest {
     fun filter_fit_type() {
         val left = VersionNumber.parse("1.2.3")!!
 
-        assert(VersionComparison(left, "==").isFit("1.2.3"))
-        assert(VersionComparison(left, "<").isFit("1.2.4"))
-        assert(VersionComparison(left, ">=").isFit("1.2.3"))
-        assert(VersionComparison(left, ">=").isFit("1.2.2"))
+        assert(VersionComparison(left, "==").toOther("1.2.3"))
+        assert(VersionComparison(left, "<").toOther("1.2.4"))
+        assert(VersionComparison(left, ">=").toOther("1.2.3"))
+        assert(VersionComparison(left, ">=").toOther("1.2.2"))
 
-        assert(VersionComparison(VersionNumber.parse("1.2.3-beta")!!, ">=").isFit("1.2.3-alpha"))
+        assert(VersionComparison(VersionNumber.parse("1.2.3-beta")!!, ">=").toOther("1.2.3-alpha"))
+    }
+
+    @Test
+    fun compare_to_other() {
+        assert(VersionComparison().eval("1.2.3", "==", "1.2.3"))
+        assert(VersionComparison().eval("1.2.2", "<=", "1.2.3"))
     }
 }
