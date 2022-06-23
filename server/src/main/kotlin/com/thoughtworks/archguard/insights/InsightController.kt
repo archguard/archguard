@@ -34,6 +34,7 @@ class InsightController(val insightService: InsightService, val influxDBClient: 
     fun customInsight(@RequestBody insight: CustomInsight): Int {
         val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
+        // todo: add save insight to db
         influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
         return size
     }
