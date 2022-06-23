@@ -54,6 +54,7 @@ class ArchGuardHttpClient(
     }
 
     private inline fun <reified T> process(topic: String, body: T) {
+        logger.info("process topic: $topic")
         process(URI(buildUrl(topic)), body)
     }
 
