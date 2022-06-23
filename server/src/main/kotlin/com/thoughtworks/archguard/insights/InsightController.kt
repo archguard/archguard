@@ -21,6 +21,7 @@ data class CustomInsight (
     val expression: String,
 )
 
+data class InsightData(val name: String, val date: String, val value: Int)
 
 @RestController
 @RequestMapping("/api/insights")
@@ -37,23 +38,24 @@ class InsightController(val insightService: InsightService, val influxDBClient: 
     fun customInsight(@RequestBody insight: CustomInsight): Int {
         val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
-        influxDBClient.save("insight,system=${insight.systemId} value=$size")
+        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
         return size
     }
 
     private val TIME: String = "1d"
 
     @GetMapping("/custom")
-    fun listInsights(): List<GraphData> {
+    fun listInsights(): List<InsightData> {
         val query = "SELECT * " +
                 "FROM \"insight\" "
 //               + "GROUP BY time($TIME) fill(none)"
 
         val graphData = influxDBClient.query(query).map { it.values }
             .flatten().map {
-                GraphData(
+                InsightData(
                     it[0],
-                    it[1].toDouble().roundToInt()
+                    it[1],
+                    it[2].toDouble().roundToInt()
                 )
             }
 
