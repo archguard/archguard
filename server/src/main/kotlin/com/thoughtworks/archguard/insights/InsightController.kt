@@ -21,7 +21,7 @@ data class CustomInsight (
     val expression: String,
 )
 
-data class InsightData(val name: String, val date: String, val value: Int)
+data class InsightData(val date: String, val name: String?, val value: Int)
 
 @RestController
 @RequestMapping("/api/insights")
