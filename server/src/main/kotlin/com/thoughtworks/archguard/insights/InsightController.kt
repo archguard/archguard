@@ -52,7 +52,7 @@ class InsightController(val insightService: InsightService, val influxDBClient: 
                 InsightData(
                     it[0],
                     it[1],
-                    it[2].toDouble().roundToInt()
+                    it[3].toDouble().roundToInt()
                 )
             }
 
