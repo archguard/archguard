@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
-import com.thoughtworks.archguard.report.application.GraphData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -26,9 +25,6 @@ data class InsightData(val date: String, val name: String?, val value: Int)
 @RestController
 @RequestMapping("/api/insights")
 class InsightController(val insightService: InsightService, val influxDBClient: InfluxDBClient) {
-    // 1. query by expression with cron config
-    // 2. count after DSL with kotlin scripting ?
-    // 3. save by expression and to influx db
     @PostMapping("/sca")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
         return insightService.byScaArtifact(insight.systemId, insight.expression)
