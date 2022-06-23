@@ -2,10 +2,13 @@ package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
+import com.thoughtworks.archguard.report.application.GraphData
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import kotlin.math.roundToInt
 
 data class InsightDto(
     val systemId: Long,
@@ -17,6 +20,7 @@ data class CustomInsight (
     val name: String? = "Default",
     val expression: String,
 )
+
 
 @RestController
 @RequestMapping("/api/insights")
@@ -35,5 +39,24 @@ class InsightController(val insightService: InsightService, val influxDBClient: 
         val size = dtos.size
         influxDBClient.save("insight,system=${insight.systemId} value=$size")
         return size
+    }
+
+    private val TIME: String = "1d"
+
+    @GetMapping("/custom")
+    fun listInsights(): List<GraphData> {
+        val query = "SELECT * " +
+                "FROM \"insight\" "
+//               + "GROUP BY time($TIME) fill(none)"
+
+        val graphData = influxDBClient.query(query).map { it.values }
+            .flatten().map {
+                GraphData(
+                    it[0],
+                    it[1].toDouble().roundToInt()
+                )
+            }
+
+        return graphData
     }
 }
