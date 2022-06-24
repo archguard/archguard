@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.insights
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,7 +38,7 @@ class InsightController(val insightApplicationService: InsightApplicationService
         val dtos = insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
 
-        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId ?: 0L} value=$size")
+        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
         return size
     }
 
@@ -49,12 +50,12 @@ class InsightController(val insightApplicationService: InsightApplicationService
         )
     }
 
-    @GetMapping("/custom-insight/{name}")
-    fun deleteByName(@PathVariable("name") name: String): CustomInsight {
-        return repository.getInsightByName(name) ?:
-        throw ResponseStatusException(
-            HttpStatus.NOT_FOUND, "insight not found: $name"
-        )
+    @DeleteMapping("/custom-insight/{name}")
+    fun deleteByName(@PathVariable("name") name: String): Int {
+        val deleteInsightByName = repository.deleteInsightByName(name)
+        influxDBClient.delete("DELETE FROM \"insight\" WHERE \"name\" = '$name'")
+
+        return deleteInsightByName
     }
 
     @GetMapping("/")

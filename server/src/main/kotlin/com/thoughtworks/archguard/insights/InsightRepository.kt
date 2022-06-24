@@ -7,4 +7,5 @@ interface InsightRepository {
     abstract fun filterByCondition(): List<ScaModelDto>
     abstract fun saveInsight(insight: CustomInsight): Long
     abstract fun getInsightByName(name: String): CustomInsight?
+    abstract fun deleteInsightByName(name: String): Int
 }

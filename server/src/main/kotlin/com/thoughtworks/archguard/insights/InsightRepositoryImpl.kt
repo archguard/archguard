@@ -60,4 +60,12 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
                 .firstOrNull()
         }
     }
+
+    override fun deleteInsightByName(name: String): Int {
+        return jdbi.withHandle<Int, Nothing> {
+            it.createUpdate("delete from insight_custom where name = :name")
+                .bind("name", name)
+                .execute()
+        }
+    }
 }

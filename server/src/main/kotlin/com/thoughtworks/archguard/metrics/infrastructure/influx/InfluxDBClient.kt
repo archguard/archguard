@@ -41,6 +41,19 @@ class InfluxDBClient(@Value("\${influxdb.url}") val url: String) {
         val results = RestTemplate().getForEntity("$url/query?q=$query&db=db0", InfluxDBResponse::class.java).body?.results
         return results?.map { it.series.orEmpty() }?.flatten().orEmpty()
     }
+
+    fun delete(query: String) {
+        try {
+            val results = RestTemplate().getForEntity("$url/query?q=$query&db=db0", InfluxDBResponse::class.java).body?.results
+            log.info("delete results: $results")
+        } catch (sx: HttpServerErrorException) {
+            log.error("Server exception when send metrics to InfluxDB. {}", sx)
+        } catch (cx: HttpClientErrorException) {
+            log.error("Client exception when send metrics to InfluxDB. {}", cx)
+        } catch (ex: Exception) {
+            log.error("Exception when send metrics to InfluxDB. {}", ex)
+        }
+    }
 }
 
 data class InfluxDBResponse(val results: List<InfluxDBResult>)
