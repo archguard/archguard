@@ -30,7 +30,11 @@ class InsightController(val insightService: InsightService, val repository: Insi
 
     @PostMapping("/custom-insight")
     fun customInsight(@RequestBody insight: CustomInsight): Int {
-        repository.saveInsight(insight)
+        val insightByName = repository.getInsightByName(insight.name!!)
+        if (insightByName == null) {
+            repository.saveInsight(insight)
+        }
+
         val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
         influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")

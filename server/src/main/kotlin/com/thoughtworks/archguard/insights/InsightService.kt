@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service
 class InsightService(val repository: InsightRepository) {
     fun byScaArtifact(id: Long, expression: String): List<ScaModelDto> {
         val scaModelDtos = repository.filterByCondition(id)
-
         val models = InsightModel.parse(expression)
-
         return ScaInsightFilter.filterByInsight(models, scaModelDtos)
     }
 }
