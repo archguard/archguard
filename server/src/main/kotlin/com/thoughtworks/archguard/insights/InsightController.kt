@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
-import com.thoughtworks.archguard.scanner.domain.exception.EntityNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -37,7 +36,8 @@ class InsightController(val insightService: InsightService, val repository: Insi
 
         val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
-        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
+
+        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId ?: 0L} value=$size")
         return size
     }
 
