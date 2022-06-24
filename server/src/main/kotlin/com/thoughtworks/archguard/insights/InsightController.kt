@@ -27,7 +27,7 @@ class InsightController(
     val repository: InsightRepository,
     val influxDBClient: InfluxDBClient,
 ) {
-    @PostMapping("/sca")
+    @PostMapping("/snapshot")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
         return insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
     }
