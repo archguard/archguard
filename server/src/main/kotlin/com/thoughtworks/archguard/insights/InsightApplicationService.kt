@@ -6,7 +6,7 @@ import org.archguard.domain.insight.InsightModel
 import org.springframework.stereotype.Service
 
 @Service
-class InsightService(val repository: InsightRepository) {
+class InsightApplicationService(val repository: InsightRepository) {
     fun byScaArtifact(id: Long?, expression: String): List<ScaModelDto> {
         val scaModelDtos: List<ScaModelDto>
 

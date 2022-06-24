@@ -21,10 +21,10 @@ data class InsightData(val date: String, val name: String?, val value: Int)
 
 @RestController
 @RequestMapping("/api/insights")
-class InsightController(val insightService: InsightService, val repository: InsightRepository, val influxDBClient: InfluxDBClient) {
+class InsightController(val insightApplicationService: InsightApplicationService, val repository: InsightRepository, val influxDBClient: InfluxDBClient) {
     @PostMapping("/sca")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
-        return insightService.byScaArtifact(insight.systemId, insight.expression)
+        return insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
     }
 
     @PostMapping("/custom-insight")
@@ -34,7 +34,7 @@ class InsightController(val insightService: InsightService, val repository: Insi
             repository.saveInsight(insight)
         }
 
-        val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
+        val dtos = insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
 
         influxDBClient.save("insight,name=${insight.name},system=${insight.systemId ?: 0L} value=$size")
@@ -43,6 +43,14 @@ class InsightController(val insightService: InsightService, val repository: Insi
 
     @GetMapping("/custom-insight/{name}")
     fun getByName(@PathVariable("name") name: String): CustomInsight {
+        return repository.getInsightByName(name) ?:
+        throw ResponseStatusException(
+            HttpStatus.NOT_FOUND, "insight not found: $name"
+        )
+    }
+
+    @GetMapping("/custom-insight/{name}")
+    fun deleteByName(@PathVariable("name") name: String): CustomInsight {
         return repository.getInsightByName(name) ?:
         throw ResponseStatusException(
             HttpStatus.NOT_FOUND, "insight not found: $name"
