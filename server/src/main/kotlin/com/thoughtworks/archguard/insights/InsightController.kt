@@ -2,11 +2,15 @@ package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
+import com.thoughtworks.archguard.scanner.domain.exception.EntityNotFoundException
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import kotlin.math.roundToInt
 
 data class InsightDto(
@@ -33,9 +37,12 @@ class InsightController(val insightService: InsightService, val repository: Insi
         return size
     }
 
-    @GetMapping("/custom-insight")
-    fun getByName(@RequestBody name: String): CustomInsight {
-        return repository.getInsightByName(name)
+    @GetMapping("/custom-insight/{name}")
+    fun getByName(@PathVariable("name") name: String): CustomInsight {
+        return repository.getInsightByName(name) ?:
+        throw ResponseStatusException(
+            HttpStatus.NOT_FOUND, "insight not found: $name"
+        )
     }
 
     @GetMapping("/")

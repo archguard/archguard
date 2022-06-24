@@ -36,15 +36,15 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
         }
     }
 
-    override fun getInsightByName(name: String): CustomInsight {
+    override fun getInsightByName(name: String): CustomInsight? {
         return jdbi.withHandle<CustomInsight, Nothing> {
             it.createQuery(
                 "select id, system_id as systemId, name, expression, schedule " +
                         "from insight_custom where name = :name"
             )
-                .bindBean("name", name)
+                .bind("name", name)
                 .mapTo(CustomInsight::class.java)
-                .one()
+                .firstOrNull()
         }
     }
 }
