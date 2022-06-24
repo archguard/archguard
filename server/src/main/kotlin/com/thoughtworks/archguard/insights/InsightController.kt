@@ -16,6 +16,7 @@ import kotlin.math.roundToInt
 data class InsightDto(
     val systemId: Long,
     val expression: String,
+    val type: String,
 )
 
 data class InsightData(val date: String, val name: String?, val value: Int)
@@ -29,7 +30,7 @@ class InsightController(
 ) {
     @PostMapping("/snapshot")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
-        return insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
+        return insightApplicationService.byExpression(insight.systemId, insight.expression)
     }
 
     @PostMapping("/custom-insight")
@@ -39,7 +40,7 @@ class InsightController(
             repository.saveInsight(insight)
         }
 
-        val dtos = insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
+        val dtos = insightApplicationService.byExpression(insight.systemId, insight.expression)
         val size = dtos.size
 
         influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")

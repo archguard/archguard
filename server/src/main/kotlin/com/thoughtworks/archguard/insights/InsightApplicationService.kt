@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class InsightApplicationService(val repository: InsightRepository) {
-    fun byScaArtifact(id: Long?, expression: String): List<ScaModelDto> {
+    fun byExpression(id: Long?, expression: String): List<ScaModelDto> {
         val scaModelDtos: List<ScaModelDto>
 
         if (id == null || id == 0L) {
