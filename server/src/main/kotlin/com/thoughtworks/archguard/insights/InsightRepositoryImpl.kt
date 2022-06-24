@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
+import com.thoughtworks.archguard.system_info.domain.SystemInfo
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
@@ -18,6 +19,32 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
                 .bind("id", id)
                 .mapTo(ScaModelDto::class.java)
                 .list()
+        }
+    }
+
+    override fun saveInsight(insight: CustomInsight): Long {
+        return jdbi.withHandle<Long, Nothing> {
+            it.createUpdate(
+                "insert into insight_custom" +
+                        "(id, system_id, name, expression, schedule) " +
+                        "values (:id, :systemId, :name, :expression, :schedule)"
+            )
+                .bindBean(insight)
+                .executeAndReturnGeneratedKeys("id")
+                .mapTo(Long::class.java)
+                .one()
+        }
+    }
+
+    override fun getInsightByName(name: String): CustomInsight {
+        return jdbi.withHandle<CustomInsight, Nothing> {
+            it.createQuery(
+                "select id, system_id as systemId, name, expression, schedule " +
+                        "from insight_custom where name = :name"
+            )
+                .bindBean("name", name)
+                .mapTo(CustomInsight::class.java)
+                .one()
         }
     }
 }

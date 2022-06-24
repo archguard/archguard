@@ -14,34 +14,31 @@ data class InsightDto(
     val expression: String,
 )
 
-data class CustomInsight (
-    val systemId: Long,
-    val name: String? = "Default",
-    val expression: String,
-)
-
 data class InsightData(val date: String, val name: String?, val value: Int)
 
 @RestController
 @RequestMapping("/api/insights")
-class InsightController(val insightService: InsightService, val influxDBClient: InfluxDBClient) {
+class InsightController(val insightService: InsightService, val repository: InsightRepository, val influxDBClient: InfluxDBClient) {
     @PostMapping("/sca")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
         return insightService.byScaArtifact(insight.systemId, insight.expression)
     }
 
-    @PostMapping("/custom")
+    @PostMapping("/custom-insight")
     fun customInsight(@RequestBody insight: CustomInsight): Int {
+        repository.saveInsight(insight)
         val dtos = insightService.byScaArtifact(insight.systemId, insight.expression)
         val size = dtos.size
-        // todo: add save insight to db
         influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
         return size
     }
 
-    private val TIME: String = "1d"
+    @GetMapping("/custom-insight")
+    fun getByName(@RequestBody name: String): CustomInsight {
+        return repository.getInsightByName(name)
+    }
 
-    @GetMapping("/custom")
+    @GetMapping("/")
     fun listInsights(): List<InsightData> {
         val query = "SELECT * " +
                 "FROM \"insight\" "
