@@ -5,5 +5,5 @@ data class CustomInsight (
     val systemId: Long,
     val name: String? = "Default",
     val expression: String,
-    val schedule: String? = "1d",
+    val schedule: String? = "",
 )
