@@ -22,7 +22,11 @@ data class InsightData(val date: String, val name: String?, val value: Int)
 
 @RestController
 @RequestMapping("/api/insights")
-class InsightController(val insightApplicationService: InsightApplicationService, val repository: InsightRepository, val influxDBClient: InfluxDBClient) {
+class InsightController(
+    val insightApplicationService: InsightApplicationService,
+    val repository: InsightRepository,
+    val influxDBClient: InfluxDBClient,
+) {
     @PostMapping("/sca")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
         return insightApplicationService.byScaArtifact(insight.systemId, insight.expression)
@@ -44,8 +48,7 @@ class InsightController(val insightApplicationService: InsightApplicationService
 
     @GetMapping("/custom-insight/{name}")
     fun getByName(@PathVariable("name") name: String): CustomInsight {
-        return repository.getInsightByName(name) ?:
-        throw ResponseStatusException(
+        return repository.getInsightByName(name) ?: throw ResponseStatusException(
             HttpStatus.NOT_FOUND, "insight not found: $name"
         )
     }
@@ -53,16 +56,14 @@ class InsightController(val insightApplicationService: InsightApplicationService
     @DeleteMapping("/custom-insight/{name}")
     fun deleteByName(@PathVariable("name") name: String): Int {
         val deleteInsightByName = repository.deleteInsightByName(name)
-        influxDBClient.delete("DELETE FROM \"insight\" WHERE \"name\" = '$name'")
+        influxDBClient.query("""DELETE FROM "insight" WHERE "name" = '$name'""")
 
         return deleteInsightByName
     }
 
     @GetMapping("/")
     fun listInsights(): List<InsightData> {
-        val query = "SELECT * " +
-                "FROM \"insight\" "
-//               + "GROUP BY time($TIME) fill(none)"
+        val query = """SELECT * FROM "insight""""
 
         val graphData = influxDBClient.query(query).map { it.values }
             .flatten().map {
