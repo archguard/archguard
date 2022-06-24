@@ -11,7 +11,7 @@ internal class InsightModelTest {
     }
 
     @Test
-    internal fun normal_parse() {
+    internal fun sca_normal_parse() {
         val model = InsightModel.parse("field:version == 'sample'")[0]
         assertEquals("version", model.field)
         assertEquals("==", model.valueExpr.comparison)
@@ -19,7 +19,7 @@ internal class InsightModelTest {
     }
 
     @Test
-    internal fun multiple_field() {
+    internal fun sca_multiple_field() {
         val models =
             InsightModel.parse("field:version == \"1.2.3\" field:artifact == 'kotlin-logging' field:group == /.*logback/ ")
         assertEquals(3, models.size)
@@ -33,5 +33,15 @@ internal class InsightModelTest {
         assertEquals("/.*logback/", models[2].valueExpr.value)
         assertEquals(InsightFilterType.REGEXP, models[2].fieldFilter.type)
         assertEquals(".*logback", models[2].fieldFilter.value)
+    }
+
+    @Test
+    internal fun api_multiple_field() {
+        val models =
+            InsightModel.parse("field:method == 'get' field:package == 'com.thoughtworks.archguard'")
+        assertEquals(2, models.size)
+
+        assertEquals("'get'", models[0].valueExpr.value)
+        assertEquals("'com.thoughtworks.archguard'", models[1].valueExpr.value)
     }
 }
