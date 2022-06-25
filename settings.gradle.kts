@@ -5,6 +5,8 @@ include(":meta")
 
 // backend
 include(":server")
+// banckend (tech refactoring)
+include(":serverv2")
 
 /**
  * architecture as code repos
