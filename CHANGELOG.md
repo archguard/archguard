@@ -1,9 +1,59 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.20...v) (2022-06-09)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v) (2022-06-25)
+
+
+
+# [2.0.0-alpha.22](https://github.com/archguard/archguard/compare/v2.0.0-alpha.21...v2.0.0-alpha.22) (2022-06-25)
 
 
 ### Bug Fixes
 
+* fix pos issues for name fitler [#95](https://github.com/archguard/archguard/issues/95) ([071c644](https://github.com/archguard/archguard/commit/071c644fe3fcb51dd57542875a056fc2fc338182))
+* fix tests ([01fe8ef](https://github.com/archguard/archguard/commit/01fe8efcc651d668074a12b42df6ddddceb6308e))
+* **insights:** fix nam issue [#95](https://github.com/archguard/archguard/issues/95) ([1ad2dfb](https://github.com/archguard/archguard/commit/1ad2dfbdf37ff67110ad361eb91fc9e66f8ffa58))
+* **insights:** fix value pos issue [#95](https://github.com/archguard/archguard/issues/95) ([47ff259](https://github.com/archguard/archguard/commit/47ff259c1e379d983011b962af68e6149968b126))
+* **issue:** update source length && fixed [#99](https://github.com/archguard/archguard/issues/99) ([2929bd9](https://github.com/archguard/archguard/commit/2929bd9cdfc5e793023fcb3a40a0eee85d2b9074))
+* **sca:** update name length && fixed [#84](https://github.com/archguard/archguard/issues/84) ([f80cf46](https://github.com/archguard/archguard/commit/f80cf46c9bc1a26f94dc57f0d908e7bf258d11fd))
+
+
+### Features
+
+* **insights:** add compare for qualifier [#95](https://github.com/archguard/archguard/issues/95) ([3f5ea65](https://github.com/archguard/archguard/commit/3f5ea6587b2cc646991a3f6b65d1d520467eeddc))
+* **insights:** add compare support for VersionNumber ([beae933](https://github.com/archguard/archguard/commit/beae933351c56a4f8c78788fe4b9033522e6fd69))
+* **insights:** add comparison for version [#95](https://github.com/archguard/archguard/issues/95) ([cd13e9d](https://github.com/archguard/archguard/commit/cd13e9dcfcb0ee9b20da2a600d0561cacc439746))
+* **insights:** add delete support [#95](https://github.com/archguard/archguard/issues/95) ([8f7b735](https://github.com/archguard/archguard/commit/8f7b73590953140f9d8fd2218129d91625ef19f9))
+* **insights:** add field type support [#95](https://github.com/archguard/archguard/issues/95) ([94ad2eb](https://github.com/archguard/archguard/commit/94ad2ebb5c8fb0f48bd41b77cb7e842a708c7feb))
+* **insights:** add first test for parse error [#95](https://github.com/archguard/archguard/issues/95) ([84b002e](https://github.com/archguard/archguard/commit/84b002e135e39d2809c3173b25caecbe2853857a))
+* **insights:** add get/update API [#95](https://github.com/archguard/archguard/issues/95) ([02842a4](https://github.com/archguard/archguard/commit/02842a415272aa5e14c10a3b1fbf53746f7b1e26))
+* **insights:** add handle with insights ([c8499a8](https://github.com/archguard/archguard/commit/c8499a8a0a2d31a3cb9f06ea0a33834c21c2ba82))
+* **insights:** add multiple field support [#95](https://github.com/archguard/archguard/issues/95) ([63ecd94](https://github.com/archguard/archguard/commit/63ecd94a3164757e6fcb3b727ef2e57e4f0d970c))
+* **insights:** add parse for insight model [#95](https://github.com/archguard/archguard/issues/95) ([1f07e42](https://github.com/archguard/archguard/commit/1f07e42a2650dde07fee430f239d3f09d904c634))
+* **insights:** add patch to project ([00c6db3](https://github.com/archguard/archguard/commit/00c6db3ad91b34cb38b0bf5b6e76256640b4abcf))
+* **insights:** add qualifier support for VersionNumber ([95c57df](https://github.com/archguard/archguard/commit/95c57dfb9e35ef9ef428b1fef792d4de3abc6e3c))
+* **insights:** add support for handle all [#95](https://github.com/archguard/archguard/issues/95) ([d0c52bc](https://github.com/archguard/archguard/commit/d0c52bc659e0849c85dd6db490c983bf1f5f6941))
+* **insights:** design for db table [#95](https://github.com/archguard/archguard/issues/95) ([5fbfb70](https://github.com/archguard/archguard/commit/5fbfb705e5ba2655ffa3c09c7589530a505858ff))
+* **insights:** init controller ([6f6fb01](https://github.com/archguard/archguard/commit/6f6fb01e8f9483608306189b2be498779fc08939))
+* **insights:** init create insight to influxdb [#95](https://github.com/archguard/archguard/issues/95) ([63439ba](https://github.com/archguard/archguard/commit/63439ba1f330900c21214276ed34264290e0bd55))
+* **insights:** init first version DSL [#95](https://github.com/archguard/archguard/issues/95) ([1ef9b7d](https://github.com/archguard/archguard/commit/1ef9b7df22d2181852b2d9d5ca042f6b5f62c3ba))
+* **insights:** init insight controller [#95](https://github.com/archguard/archguard/issues/95) ([3b9ea4d](https://github.com/archguard/archguard/commit/3b9ea4d62f71b3c8baf566e57e3f0940ba55344b))
+* **insights:** init lost name to insight [#95](https://github.com/archguard/archguard/issues/95) ([5b1314e](https://github.com/archguard/archguard/commit/5b1314e4f318b4396f1ea54be35f8f3b31799105))
+* **insights:** init query custom insights [#95](https://github.com/archguard/archguard/issues/95) ([7daf219](https://github.com/archguard/archguard/commit/7daf219f3bfec20abf46f46e047270152147c1d8))
+* **insights:** init version number parser ([efe5e18](https://github.com/archguard/archguard/commit/efe5e18522d6429db9e8f116fd4b6b864e4f7605))
+* **insights:** make api works [#95](https://github.com/archguard/archguard/issues/95) ([71d788c](https://github.com/archguard/archguard/commit/71d788c91d85b59290ca2a1f06077445c26196a3))
+* **insights:** make filter works [#12](https://github.com/archguard/archguard/issues/12) ([cfbcd8d](https://github.com/archguard/archguard/commit/cfbcd8d5c9ec5d63d8c4bf774c06e3c0635f35bd))
+* **insights:** make version basic works [#12](https://github.com/archguard/archguard/issues/12) ([7efe371](https://github.com/archguard/archguard/commit/7efe3718799d835f8ae14b3c0ea5051e78ac1759))
+* **rule:** add print for kotlin ([676a255](https://github.com/archguard/archguard/commit/676a255f7e54d59ba904f2ce5d3c5c0f8ca8da71))
+* **rule:** add support for class level @Ignore test ([cd39cf9](https://github.com/archguard/archguard/commit/cd39cf9fd76db2649b18ffd7b6d50c1e9a0e43c2))
+
+
+
+# [2.0.0-alpha.21](https://github.com/archguard/archguard/compare/v2.0.0-alpha.20...v2.0.0-alpha.21) (2022-06-13)
+
+
+### Bug Fixes
+
+* fix method callee loc error issue ([aa40e13](https://github.com/archguard/archguard/commit/aa40e13bd8a5145a712042daeffd6c8f144e542c))
 * fix working path issue for typescript relative path ([9d02c68](https://github.com/archguard/archguard/commit/9d02c682ba58c90f796b2928e02e1ec4942afca6))
+* **server:** add lost test condition for [#92](https://github.com/archguard/archguard/issues/92) ([2c2252b](https://github.com/archguard/archguard/commit/2c2252b83aff777930f56a5c9b4d3d3d78427f4b))
 
 
 
