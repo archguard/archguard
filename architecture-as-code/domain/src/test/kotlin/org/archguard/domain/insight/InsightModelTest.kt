@@ -50,7 +50,7 @@ internal class InsightModelTest {
         val models = InsightModel.parse("field:method == %get%")
         assertEquals(1, models.size)
 
-        assertEquals("get", models[0].fieldFilter.value)
+        assertEquals("%get%", models[0].fieldFilter.value)
         assertEquals(InsightFilterType.LIKE, models[0].fieldFilter.type)
     }
 

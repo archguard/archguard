@@ -17,7 +17,7 @@ data class InsightModel(
             return models.filter {
                 it.fieldFilter.type == InsightFilterType.LIKE
             }.joinToString(" and ") {
-                "${it.field} like '%${it.fieldFilter.value}%'"
+                "${it.field} like '${it.fieldFilter.value}'"
             }
         }
 
@@ -63,7 +63,7 @@ data class InsightModel(
                     }
                 }
                 isLikeSearch -> {
-                    fieldFilter.value = textValue.removeSurrounding("%")
+                    fieldFilter.value = textValue
                     fieldFilter.type = InsightFilterType.LIKE
                 }
                 isRegex -> {
