@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service
 class InsightApplicationService(val repository: InsightRepository) {
     fun byExpression(id: Long?, expression: String): List<ScaModelDto> {
         val scaModelDtos: List<ScaModelDto>
+        val models = InsightModel.parse(expression)
 
         if (id == null || id == 0L) {
-            scaModelDtos = repository.filterByCondition()
+            scaModelDtos = repository.filterByCondition(models)
         } else {
-            scaModelDtos = repository.filterByConditionWithSystemId(id)
+            scaModelDtos = repository.filterByConditionWithSystemId(id, models)
         }
 
-        val models = InsightModel.parse(expression)
         return ScaInsightFilter.filterByInsight(models, scaModelDtos);
     }
 }

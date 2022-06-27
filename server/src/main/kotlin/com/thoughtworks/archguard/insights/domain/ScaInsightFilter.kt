@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.insights.domain
 
 import org.archguard.domain.insight.InsightFieldFilter
+import org.archguard.domain.insight.InsightFilterType
 import org.archguard.domain.insight.InsightModel
 import org.archguard.domain.version.VersionComparison
 
@@ -35,14 +36,15 @@ object ScaInsightFilter {
 
         models.map { insight ->
             when (insight.field) {
-                "version" -> {
+                "dep_version" -> {
                     versionFilter = insight.valueExpr.value to insight.valueExpr.comparison
                 }
-
-                "name" -> {
-                    nameFilter = InsightFieldFilter(insight.fieldFilter.type, insight.fieldFilter.value)
+                "dep_name" -> {
+                    val isFilterInQuery = insight.fieldFilter.type == InsightFilterType.LIKE
+                    if (!isFilterInQuery) {
+                        nameFilter = InsightFieldFilter(insight.fieldFilter.type, insight.fieldFilter.value)
+                    }
                 }
-
                 else -> {}
             }
         }

@@ -1,9 +1,11 @@
 package org.archguard.domain.insight
 
 enum class InsightFilterType {
-    // can be String
+    // filter after query
     NORMAL,
+    // filter after query
     REGEXP,
+    // filter in query
     LIKE,
 }
 
@@ -14,8 +16,8 @@ class InsightFieldFilter(
     fun validate(source: String): Boolean {
         return when(type) {
             InsightFilterType.NORMAL -> source == value
-            InsightFilterType.LIKE -> source == value
             InsightFilterType.REGEXP -> source.matches(value.toRegex())
+            else -> false
         }
     }
 }
