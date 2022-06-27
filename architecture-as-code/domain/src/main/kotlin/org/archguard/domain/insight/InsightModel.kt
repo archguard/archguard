@@ -17,7 +17,7 @@ data class InsightModel(
             return models.filter {
                 it.fieldFilter.type == InsightFilterType.LIKE
             }.joinToString(" and ") {
-                "${it.field} like '${it.fieldFilter.value}'"
+                "${it.field} like '%${it.fieldFilter.value}%'"
             }
         }
 
@@ -52,9 +52,15 @@ data class InsightModel(
             when {
                 isDoubleString -> {
                     fieldFilter.value = textValue.removeSurrounding("\"")
+                    if (fieldFilter.value.startsWith('%') || fieldFilter.value.endsWith('%')) {
+                        fieldFilter.type = InsightFilterType.LIKE
+                    }
                 }
                 isSingleString -> {
                     fieldFilter.value = textValue.removeSurrounding("'")
+                    if (fieldFilter.value.startsWith('%') || fieldFilter.value.endsWith('%')) {
+                        fieldFilter.type = InsightFilterType.LIKE
+                    }
                 }
                 isLikeSearch -> {
                     fieldFilter.value = textValue.removeSurrounding("%")

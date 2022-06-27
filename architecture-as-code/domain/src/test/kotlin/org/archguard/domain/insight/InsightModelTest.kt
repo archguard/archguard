@@ -55,11 +55,20 @@ internal class InsightModelTest {
     }
 
     @Test
+    internal fun like_in_string() {
+        val models = InsightModel.parse("field:method == 'get%'")
+        assertEquals(1, models.size)
+
+        assertEquals("get%", models[0].fieldFilter.value)
+        assertEquals(InsightFilterType.LIKE, models[0].fieldFilter.type)
+    }
+
+    @Test
     internal fun to_sql_query() {
         val models = InsightModel.parse("field:method == %get%")
-        assertEquals("method like 'get'", InsightModel.toQuery(models))
+        assertEquals("method like '%get%'", InsightModel.toQuery(models))
 
         val multiples = InsightModel.parse("field:method == %get% field:name == %test%")
-        assertEquals("method like 'get' and name like 'test'", InsightModel.toQuery(multiples))
+        assertEquals("method like '%get%' and name like '%test%'", InsightModel.toQuery(multiples))
     }
 }
