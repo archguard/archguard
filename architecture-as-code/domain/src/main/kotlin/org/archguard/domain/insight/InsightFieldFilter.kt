@@ -4,6 +4,7 @@ enum class InsightFilterType {
     // can be String
     NORMAL,
     REGEXP,
+    LIKE,
 }
 
 class InsightFieldFilter(
@@ -13,6 +14,7 @@ class InsightFieldFilter(
     fun validate(source: String): Boolean {
         return when(type) {
             InsightFilterType.NORMAL -> source == value
+            InsightFilterType.LIKE -> source == value
             InsightFilterType.REGEXP -> source.matches(value.toRegex())
         }
     }

@@ -44,4 +44,14 @@ internal class InsightModelTest {
         assertEquals("'get'", models[0].valueExpr.value)
         assertEquals("'com.thoughtworks.archguard'", models[1].valueExpr.value)
     }
+
+    @Test
+    internal fun like_support() {
+        val models =
+            InsightModel.parse("field:method == %get%")
+        assertEquals(1, models.size)
+
+        assertEquals("get", models[0].fieldFilter.value)
+        assertEquals(InsightFilterType.LIKE, models[0].fieldFilter.type)
+    }
 }

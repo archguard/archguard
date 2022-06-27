@@ -7,22 +7,14 @@ data class InsightValueExpr(
 
 private val ValidInsightRegex = Regex("\\s?([a-zA-Z_]+)\\s?([>!=<]+)\\s?(.*)")
 
-enum class ColumnType {
-    // a field provide a value for a specific column
-    FIELD,
-    // search use SQL like syntax to search for a specific column
-    SEARCH
-}
-
 data class InsightModel(
     val field: String,
     val fieldFilter: InsightFieldFilter,
-    val valueExpr: InsightValueExpr,
-    val columnType: ColumnType = ColumnType.FIELD
+    val valueExpr: InsightValueExpr
 ) {
     companion object {
         fun parse(str: String): List<InsightModel> {
-            return str.split("field:", "search:").mapIndexedNotNull { index, it ->
+            return str.split("field:").mapIndexedNotNull { index, it ->
                 if (it == "") null
 
                 if (index > 0 && it.endsWith(" ")) {
@@ -46,6 +38,7 @@ data class InsightModel(
 
             val isDoubleString = textValue.startsWith("\"") && textValue.endsWith("\"")
             val isSingleString = textValue.startsWith("'") && textValue.endsWith("'")
+            val isLikeSearch = textValue.startsWith("%") && textValue.endsWith("%")
             val isRegex = textValue.startsWith("/") && textValue.endsWith("/")
 
             when {
@@ -54,6 +47,10 @@ data class InsightModel(
                 }
                 isSingleString -> {
                     fieldFilter.value = textValue.removeSurrounding("'")
+                }
+                isLikeSearch -> {
+                    fieldFilter.value = textValue.removeSurrounding("%")
+                    fieldFilter.type = InsightFilterType.LIKE
                 }
                 isRegex -> {
                     fieldFilter.type = InsightFilterType.REGEXP
