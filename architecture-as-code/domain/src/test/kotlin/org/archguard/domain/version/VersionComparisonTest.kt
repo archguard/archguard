@@ -20,4 +20,10 @@ internal class VersionComparisonTest {
         assert(VersionComparison().eval("1.2.3", "==", "1.2.3"))
         assert(VersionComparison().eval("1.2.2", "<=", "1.2.3"))
     }
+
+    @Test
+    fun not_equal() {
+        assert(VersionComparison().eval("1.2.3", "!=", "1.2.2"))
+        assert(VersionComparison().eval("1.2.2", "!=", "1.2.4"))
+    }
 }

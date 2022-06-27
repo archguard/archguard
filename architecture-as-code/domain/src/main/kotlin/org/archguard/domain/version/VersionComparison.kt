@@ -57,6 +57,10 @@ class VersionComparison(private val versionNo: VersionNumber = VersionNumber(0, 
                 return true
             }
 
+            result != 0 && comp == Comparison.NotEqual -> {
+                return true
+            }
+
             result > 0 && comp == Comparison.GreaterThan -> {
                 return true
             }
