@@ -7,14 +7,24 @@ data class InsightValueExpr(
 
 private val ValidInsightRegex = Regex("\\s?([a-zA-Z_]+)\\s?([>!=<]+)\\s?(.*)")
 
+enum class ColumnType {
+    // a field provide a value for a specific column
+    FIELD,
+    // search use SQL like syntax to search for a specific column
+    SEARCH
+}
+
 data class InsightModel(
     val field: String,
     val fieldFilter: InsightFieldFilter,
     val valueExpr: InsightValueExpr,
+    val columnType: ColumnType = ColumnType.FIELD
 ) {
     companion object {
         fun parse(str: String): List<InsightModel> {
-            return str.split("field:").mapIndexedNotNull { index, it ->
+            return str.split("field:", "search:").mapIndexedNotNull { index, it ->
+                if (it == "") null
+
                 if (index > 0 && it.endsWith(" ")) {
                     parseOneModel(it.removeSuffix(" "))
                 } else {
