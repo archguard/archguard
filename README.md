@@ -10,8 +10,7 @@
 
 > ArchGuard is an architecture governance tool which can analysis architecture in container, component, code level, database, create architecture fitness functions, and test for architecture rules. 
 
-Chinese: ArchGuard 是一个架构治理工具，用于管理和分析组织级别的软件架构。 结合 [C4 模型](https://c4model.com)，进行依赖分析，含容器级别（服务级别）、组件级别（/模块级别）、代码级别、数据库级别等。 
-同时，可以创建系统的架构适应度函数，度量系统的各项指标。
+Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构工作台/治理工具。它可以帮助架构师、开发人员进行架构自助，自定义架构的洞察、分析系统间的远程服务依赖情况、数据库依赖、API 依赖等。并根据一些架构治理模型，对现有系统提出改进建议。
 
 - Document: [https://archguard.org/](https://archguard.org/)
 - Roadmap: [Roadmap](https://github.com/archguard/archguard/discussions/5)
@@ -19,7 +18,6 @@ Chinese: ArchGuard 是一个架构治理工具，用于管理和分析组织级�
 - SubProjects:
     - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
     - [Chapi](https://github.com/modernizing/chapi) source code analysis
-
 
 特性（Features）：
 
