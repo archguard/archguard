@@ -13,6 +13,14 @@ data class InsightModel(
     val valueExpr: InsightValueExpr
 ) {
     companion object {
+        fun toQuery(models: List<InsightModel>): String {
+            return models.filter {
+                it.fieldFilter.type == InsightFilterType.LIKE
+            }.joinToString(" and ") {
+                "${it.field} like '${it.fieldFilter.value}'"
+            }
+        }
+
         fun parse(str: String): List<InsightModel> {
             return str.split("field:").mapIndexedNotNull { index, it ->
                 if (it == "") null
