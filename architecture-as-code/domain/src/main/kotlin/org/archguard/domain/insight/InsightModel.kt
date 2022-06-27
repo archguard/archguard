@@ -14,11 +14,24 @@ data class InsightModel(
 ) {
     companion object {
         fun toQuery(models: List<InsightModel>): String {
-            return models.filter {
-                it.fieldFilter.type == InsightFilterType.LIKE
-            }.joinToString(" and ") {
-                "${it.field} like '${it.fieldFilter.value}'"
+            return models.mapNotNull {
+                when (it.fieldFilter.type) {
+                    InsightFilterType.NORMAL -> {
+                        when (it.valueExpr.comparison) {
+                            "==" -> "${it.field} = '${it.fieldFilter.value}'"
+                            "!=" -> "${it.field} != '${it.fieldFilter.value}'"
+                            else -> null
+                        }
+                    }
+
+                    InsightFilterType.LIKE -> {
+                        "${it.field} like '${it.fieldFilter.value}'"
+                    }
+
+                    else -> null
+                }
             }
+                .joinToString(" and ")
         }
 
         fun parse(str: String): List<InsightModel> {

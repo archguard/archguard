@@ -71,4 +71,13 @@ internal class InsightModelTest {
         val multiples = InsightModel.parse("field:method == %get% field:name == %test%")
         assertEquals("method like '%get%' and name like '%test%'", InsightModel.toQuery(multiples))
     }
+
+    @Test
+    internal fun not_equal() {
+        val models = InsightModel.parse("field:method != 'sample'")
+        assertEquals("method != 'sample'", InsightModel.toQuery(models))
+
+        val equalModels = InsightModel.parse("field:method == 'sample'")
+        assertEquals("method = 'sample'", InsightModel.toQuery(equalModels))
+    }
 }
