@@ -7,31 +7,26 @@ import org.archguard.domain.insight.ValueValidate
 
 object IssueInsightFilter {
     fun byInsight(filters: List<FieldFilter>, models: List<IssueModelDto>, ): List<IssueModelDto> {
-        var ruleType: Pair<FilterValue, FilterType>? = null
-        var severityFilter: Pair<FilterValue, FilterType>? = null
+        val filterMap: MutableMap<String, Pair<FilterValue, FilterType>> = mutableMapOf()
 
         filters.map { filter ->
             when (filter.name) {
-                "severity" -> {
-                    val isFilterInQuery = filter.type == FilterType.LIKE
-                    if (!isFilterInQuery) {
-                        severityFilter = filter.value to filter.type
-                    }
-                }
+                "name" ,
+                "severity",
                 "rule_type" -> {
                     val isFilterInQuery = filter.type == FilterType.LIKE
                     if (!isFilterInQuery) {
-                        ruleType = filter.value to filter.type
+                        filterMap[filter.name] = filter.value to filter.type
                     }
                 }
                 else -> {}
             }
         }
 
-
         val filteredModels = models.filter {
-            ValueValidate.isValueValid(it.rule_type, ruleType) &&
-            ValueValidate.isValueValid(it.severity, severityFilter)
+            ValueValidate.isValueValid(it.rule_type, filterMap["rule_type"]) &&
+            ValueValidate.isValueValid(it.severity, filterMap["severity"]) &&
+            ValueValidate.isValueValid(it.name, filterMap["name"])
         }
 
         return filteredModels
