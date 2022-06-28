@@ -1,20 +1,28 @@
 package com.thoughtworks.archguard.insights.domain
 
-import org.archguard.domain.insight.InsightFieldFilter
+import org.archguard.domain.comparison.Comparison
 import org.archguard.domain.insight.InsightFilterType
-import org.archguard.domain.insight.InsightFilter
+import org.archguard.domain.insight.FieldFilter
 import org.archguard.domain.version.VersionComparison
 
 object ScaInsightFilter {
-    private fun isNameValid(nameFilter: InsightFieldFilter?, name: String): Boolean {
+    private fun validate(source: String, type: InsightFilterType, value: String): Boolean {
+        return when(type) {
+            InsightFilterType.NORMAL -> source == value
+            InsightFilterType.REGEXP -> source.matches(value.toRegex())
+            else -> false
+        }
+    }
+
+    private fun isValueValid(source: String, nameFilter: Pair<String, InsightFilterType>?): Boolean {
         if (nameFilter == null) return true
 
-        return nameFilter.validate(name)
+        return validate(source, nameFilter.second, nameFilter.first)
     }
 
     private fun isVersionValid(
         versionComparison: VersionComparison,
-        versionFilter: Pair<String, String>?,
+        versionFilter: Pair<String, Comparison>?,
         leftVersion: String,
     ): Boolean {
         if (versionFilter == null) {
@@ -23,26 +31,26 @@ object ScaInsightFilter {
 
         val comparison = versionFilter.second
         val insightVersion = versionFilter.first
-        return versionComparison.eval(leftVersion, comparison, insightVersion)
+        return versionComparison.evalByComp(leftVersion, comparison, insightVersion)
     }
 
     fun filterByInsight(
-        models: List<InsightFilter>,
+        filter: List<FieldFilter>,
         scaModelDtos: List<ScaModelDto>,
     ): List<ScaModelDto> {
         val versionComparison = VersionComparison()
-        var versionFilter: Pair<String, String>? = null
-        var nameFilter: InsightFieldFilter? = null
+        var versionFilter: Pair<String, Comparison>? = null
+        var nameFilter: Pair<String, InsightFilterType>? = null
 
-        models.map { insight ->
-            when (insight.field) {
+        filter.map { insight ->
+            when (insight.name) {
                 "dep_version" -> {
-                    versionFilter = insight.valueExpr.value to insight.valueExpr.symbol
+                    versionFilter = insight.value to insight.comparison
                 }
                 "dep_name" -> {
-                    val isFilterInQuery = insight.filter.type == InsightFilterType.LIKE
+                    val isFilterInQuery = insight.type == InsightFilterType.LIKE
                     if (!isFilterInQuery) {
-                        nameFilter = InsightFieldFilter(insight.filter.type, insight.filter.value)
+                        nameFilter = insight.value to insight.type
                     }
                 }
                 else -> {}
@@ -51,8 +59,7 @@ object ScaInsightFilter {
 
 
         val filteredModels = scaModelDtos.filter {
-            isVersionValid(versionComparison, versionFilter, it.dep_version) &&
-                    isNameValid(nameFilter, it.dep_name)
+            isVersionValid(versionComparison, versionFilter, it.dep_version) && isValueValid(it.dep_name, nameFilter)
         }
 
         return filteredModels

@@ -19,6 +19,10 @@ class VersionComparison(private val versionNo: VersionNumber = VersionNumber(0, 
             return false
         }
 
+        return evalByComp(left, comparison, right)
+    }
+
+    fun evalByComp(left: String,  comparison: Comparison, right: String): Boolean {
         val leftVersion = parseVersion(left) ?: return false
         val rightVersion = parseVersion(right) ?: return false
 

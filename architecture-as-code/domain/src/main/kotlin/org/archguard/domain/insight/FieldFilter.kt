@@ -23,14 +23,6 @@ data class FieldFilter(
     val comparison: Comparison = Comparison.NotSupport,
     var type: InsightFilterType = InsightFilterType.NORMAL,
 ) {
-    fun validate(source: String): Boolean {
-        return when(type) {
-            InsightFilterType.NORMAL -> source == value
-            InsightFilterType.REGEXP -> source.matches(value.toRegex())
-            else -> false
-        }
-    }
-    
     companion object {
         fun toQuery(models: List<FieldFilter>): String {
             return models.mapNotNull {
