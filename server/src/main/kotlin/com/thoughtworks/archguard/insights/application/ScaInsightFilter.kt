@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights.domain
+package com.thoughtworks.archguard.insights.application
 
 import org.archguard.domain.comparison.Comparison
 import org.archguard.domain.insight.FilterType

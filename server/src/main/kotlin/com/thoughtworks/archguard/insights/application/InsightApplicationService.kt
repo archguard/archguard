@@ -1,12 +1,10 @@
-package com.thoughtworks.archguard.insights
+package com.thoughtworks.archguard.insights.application
 
-import com.thoughtworks.archguard.insights.domain.ScaInsightFilter
-import com.thoughtworks.archguard.insights.domain.ScaModelDto
 import org.archguard.domain.insight.FieldFilter
 import org.springframework.stereotype.Service
 
 @Service
-class InsightApplicationService(val repository: InsightRepository) {
+class InsightApplicationService(val repository: ScaInsightRepository) {
     fun byExpression(id: Long?, expression: String): List<ScaModelDto> {
         val scaModelDtos: List<ScaModelDto>
         val models = FieldFilter.parse(expression)

@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.insights
 
-import com.thoughtworks.archguard.insights.domain.ScaModelDto
+import com.thoughtworks.archguard.insights.application.InsightApplicationService
+import com.thoughtworks.archguard.insights.application.ScaModelDto
+import com.thoughtworks.archguard.insights.domain.CustomInsight
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping

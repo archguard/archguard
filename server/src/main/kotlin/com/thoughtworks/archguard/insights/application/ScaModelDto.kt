@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights.domain
+package com.thoughtworks.archguard.insights.application
 
 data class ScaModelDto(
     // name = `artifact.group`

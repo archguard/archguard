@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.insights
+package com.thoughtworks.archguard.insights.domain
 
 data class CustomInsight (
     val id: Long? = null,
