@@ -26,13 +26,13 @@ data class InsightData(val date: String, val name: String?, val value: Int)
 @RestController
 @RequestMapping("/api/insights")
 class InsightController(
-    val insightApplicationService: InsightApplicationService,
+    val appService: InsightApplicationService,
     val repository: InsightRepository,
     val influxDBClient: InfluxDBClient,
 ) {
     @PostMapping("/snapshot")
     fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
-        return insightApplicationService.byExpression(insight.systemId, insight.expression)
+        return appService.byExpression(insight.systemId, insight.expression, insight.type)
     }
 
     @PostMapping("/custom-insight")
@@ -42,10 +42,10 @@ class InsightController(
             repository.saveInsight(insight)
         }
 
-        val dtos = insightApplicationService.byExpression(insight.systemId, insight.expression)
+        val dtos = appService.byExpression(insight.systemId, insight.expression, insight.type)
         val size = dtos.size
 
-        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId} value=$size")
+        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId},type${insight.type} value=$size")
         return size
     }
 

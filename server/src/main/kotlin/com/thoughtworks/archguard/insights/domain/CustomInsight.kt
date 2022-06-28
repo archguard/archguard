@@ -5,5 +5,6 @@ data class CustomInsight (
     val systemId: Long = 0L,
     val name: String? = "Default",
     val expression: String,
+    val type: String = "sca",
     val schedule: String? = "",
 )
