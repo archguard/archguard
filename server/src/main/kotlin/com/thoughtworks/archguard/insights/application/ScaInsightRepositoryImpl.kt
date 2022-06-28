@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ScaInsightRepositoryImpl(val jdbi: Jdbi) : ScaInsightRepository {
-    override fun filterByConditionWithSystemId(id: Long, models: List<FieldFilter>): List<ScaModelDto> {
+    override fun filterByConditionWithSystemId(id: Long, models: List<FieldFilter>): List<InsightModelDto> {
         var sql =
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies where system_id = :id "
@@ -17,16 +17,16 @@ class ScaInsightRepositoryImpl(val jdbi: Jdbi) : ScaInsightRepository {
             sql += additionCondition
         }
 
-        return jdbi.withHandle<List<ScaModelDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ScaModelDto::class.java))
+        return jdbi.withHandle<List<InsightModelDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))
             it.createQuery(sql)
                 .bind("id", id)
-                .mapTo(ScaModelDto::class.java)
+                .mapTo(InsightModelDto::class.java)
                 .list()
         }
     }
 
-    override fun filterByCondition(models: List<FieldFilter>): List<ScaModelDto> {
+    override fun filterByCondition(models: List<FieldFilter>): List<InsightModelDto> {
         var sql =
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies "
@@ -36,10 +36,10 @@ class ScaInsightRepositoryImpl(val jdbi: Jdbi) : ScaInsightRepository {
             sql += "where $additionCondition"
         }
 
-        return jdbi.withHandle<List<ScaModelDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ScaModelDto::class.java))
+        return jdbi.withHandle<List<InsightModelDto>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))
             it.createQuery(sql)
-                .mapTo(ScaModelDto::class.java)
+                .mapTo(InsightModelDto::class.java)
                 .list()
         }
     }

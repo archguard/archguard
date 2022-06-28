@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.application.InsightApplicationService
-import com.thoughtworks.archguard.insights.application.ScaModelDto
+import com.thoughtworks.archguard.insights.application.InsightModel
+import com.thoughtworks.archguard.insights.application.InsightModelDto
 import com.thoughtworks.archguard.insights.domain.CustomInsight
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import org.springframework.http.HttpStatus
@@ -31,7 +32,7 @@ class InsightController(
     val influxDBClient: InfluxDBClient,
 ) {
     @PostMapping("/snapshot")
-    fun demoSca(@RequestBody insight: InsightDto): List<ScaModelDto> {
+    fun demoSca(@RequestBody insight: InsightDto): InsightModel {
         return appService.byExpression(insight.systemId, insight.expression, insight.type)
     }
 
@@ -45,7 +46,8 @@ class InsightController(
         val dtos = appService.byExpression(insight.systemId, insight.expression, insight.type)
         val size = dtos.size
 
-        influxDBClient.save("insight,name=${insight.name},system=${insight.systemId},type${insight.type} value=$size")
+        // todo: refactor request body
+        influxDBClient.save("insights,name=${insight.name},system=${insight.systemId},type=${insight.type} value=$size")
         return size
     }
 
@@ -59,21 +61,21 @@ class InsightController(
     @DeleteMapping("/custom-insight/{name}")
     fun deleteByName(@PathVariable("name") name: String): Int {
         val deleteInsightByName = repository.deleteInsightByName(name)
-        influxDBClient.query("""DELETE FROM "insight" WHERE "name" = '$name'""")
+        influxDBClient.query("""DELETE FROM "insights" WHERE "name" = '$name'""")
 
         return deleteInsightByName
     }
 
     @GetMapping("/")
     fun listInsights(): List<InsightData> {
-        val query = """SELECT * FROM "insight""""
+        val query = """SELECT * FROM "insights""""
 
         val graphData = influxDBClient.query(query).map { it.values }
             .flatten().map {
                 InsightData(
                     it[0],
                     it[1],
-                    it[3].toDouble().roundToInt()
+                    it[4].toDouble().roundToInt()
                 )
             }
 

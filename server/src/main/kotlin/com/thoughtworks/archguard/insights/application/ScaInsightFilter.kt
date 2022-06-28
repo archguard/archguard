@@ -10,8 +10,8 @@ import org.archguard.domain.version.VersionComparison
 object ScaInsightFilter {
     fun filterByInsight(
         filters: List<FieldFilter>,
-        scaModelDtos: List<ScaModelDto>,
-    ): List<ScaModelDto> {
+        insightModelDtos: List<InsightModelDto>,
+    ): List<InsightModelDto> {
         val versionComparison = VersionComparison()
         var versionFilter: Pair<FilterValue, Comparison>? = null
         var nameFilter: Pair<FilterValue, FilterType>? = null
@@ -34,7 +34,7 @@ object ScaInsightFilter {
         }
 
 
-        val filteredModels = scaModelDtos.filter {
+        val filteredModels = insightModelDtos.filter {
             ValValidate.isVersionValid(it.dep_version, versionComparison, versionFilter)
                     && ValValidate.isValueValid(it.dep_name, nameFilter)
         }

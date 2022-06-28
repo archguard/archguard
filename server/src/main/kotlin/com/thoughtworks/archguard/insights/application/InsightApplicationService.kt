@@ -5,22 +5,25 @@ import org.springframework.stereotype.Service
 
 @Service
 class InsightApplicationService(val repository: ScaInsightRepository) {
-    fun byExpression(id: Long?, expression: String, type: String): List<ScaModelDto> {
-        val scaModelDtos: List<ScaModelDto>
+    fun byExpression(id: Long?, expression: String, type: String): InsightModel {
+        val insightModelDtos: List<InsightModelDto>
         val models = FieldFilter.parse(expression)
 
         return when (type) {
             "sca" -> {
-                scaModelDtos = if (id == null || id == 0L) {
+                insightModelDtos = if (id == null || id == 0L) {
                     repository.filterByCondition(models)
                 } else {
                     repository.filterByConditionWithSystemId(id, models)
                 }
 
-                ScaInsightFilter.filterByInsight(models, scaModelDtos)
+                val filtered = ScaInsightFilter.filterByInsight(models, insightModelDtos)
+
+                InsightModel(filtered.size, filtered)
             }
+
             else -> {
-                listOf()
+                InsightModel(0, listOf())
             }
         }
     }
