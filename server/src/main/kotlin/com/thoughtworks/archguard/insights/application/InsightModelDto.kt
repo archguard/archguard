@@ -10,6 +10,14 @@ data class InsightModel(
 @Serializable
 sealed class ModelContent
 
+data class IssueModelDto(
+    val name: String,
+    val rule_id: String,
+    val rule_type: String,
+    val severity: String
+): ModelContent() {
+}
+
 data class InsightModelDto(
     val dep_name: String,
     val dep_group: String,

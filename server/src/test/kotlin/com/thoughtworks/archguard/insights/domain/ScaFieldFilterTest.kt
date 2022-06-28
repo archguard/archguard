@@ -16,7 +16,7 @@ internal class ScaFieldFilterTest {
             InsightModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.4"),
         )
 
-        assertEquals(1, ScaInsightFilter.filterByInsight(insights, dtos).size)
+        assertEquals(1, ScaInsightFilter.byInsight(insights, dtos).size)
     }
 
     @Test
@@ -28,7 +28,7 @@ internal class ScaFieldFilterTest {
             InsightModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.4"),
         )
 
-        assertEquals(3, ScaInsightFilter.filterByInsight(insights, dtos).size)
+        assertEquals(3, ScaInsightFilter.byInsight(insights, dtos).size)
     }
 
     @Test
@@ -40,6 +40,6 @@ internal class ScaFieldFilterTest {
             InsightModelDto("org.apache.dubbo:dubbo", "org.apache.dubbo", "dubbo", "1.12.4"),
         )
 
-        assertEquals(3, ScaInsightFilter.filterByInsight(insights, dtos).size)
+        assertEquals(3, ScaInsightFilter.byInsight(insights, dtos).size)
     }
 }

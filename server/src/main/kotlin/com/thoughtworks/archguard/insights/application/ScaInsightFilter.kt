@@ -4,11 +4,11 @@ import org.archguard.domain.comparison.Comparison
 import org.archguard.domain.insight.FilterType
 import org.archguard.domain.insight.FieldFilter
 import org.archguard.domain.insight.FilterValue
-import org.archguard.domain.insight.ValValidate
+import org.archguard.domain.insight.ValueValidate
 import org.archguard.domain.version.VersionComparison
 
 object ScaInsightFilter {
-    fun filterByInsight(
+    fun byInsight(
         filters: List<FieldFilter>,
         insightModelDtos: List<InsightModelDto>,
     ): List<InsightModelDto> {
@@ -35,8 +35,8 @@ object ScaInsightFilter {
 
 
         val filteredModels = insightModelDtos.filter {
-            ValValidate.isVersionValid(it.dep_version, versionComparison, versionFilter)
-                    && ValValidate.isValueValid(it.dep_name, nameFilter)
+            ValueValidate.isVersionValid(it.dep_version, versionComparison, versionFilter)
+                    && ValueValidate.isValueValid(it.dep_name, nameFilter)
         }
 
         return filteredModels

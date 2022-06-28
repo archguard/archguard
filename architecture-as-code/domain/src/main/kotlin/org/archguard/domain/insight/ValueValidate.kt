@@ -3,7 +3,7 @@ package org.archguard.domain.insight
 import org.archguard.domain.comparison.Comparison
 import org.archguard.domain.version.VersionComparison
 
-object ValValidate {
+object ValueValidate {
     fun isVersionValid(
         leftVersion: String,
         versionComparison: VersionComparison,
