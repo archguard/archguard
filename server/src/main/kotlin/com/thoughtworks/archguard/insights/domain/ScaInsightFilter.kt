@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.insights.domain
 
 import org.archguard.domain.insight.InsightFieldFilter
 import org.archguard.domain.insight.InsightFilterType
-import org.archguard.domain.insight.InsightModel
+import org.archguard.domain.insight.InsightFilter
 import org.archguard.domain.version.VersionComparison
 
 object ScaInsightFilter {
@@ -27,7 +27,7 @@ object ScaInsightFilter {
     }
 
     fun filterByInsight(
-        models: List<InsightModel>,
+        models: List<InsightFilter>,
         scaModelDtos: List<ScaModelDto>,
     ): List<ScaModelDto> {
         val versionComparison = VersionComparison()
@@ -37,12 +37,12 @@ object ScaInsightFilter {
         models.map { insight ->
             when (insight.field) {
                 "dep_version" -> {
-                    versionFilter = insight.valueExpr.value to insight.valueExpr.comparison
+                    versionFilter = insight.valueExpr.value to insight.valueExpr.symbol
                 }
                 "dep_name" -> {
-                    val isFilterInQuery = insight.fieldFilter.type == InsightFilterType.LIKE
+                    val isFilterInQuery = insight.filter.type == InsightFilterType.LIKE
                     if (!isFilterInQuery) {
-                        nameFilter = InsightFieldFilter(insight.fieldFilter.type, insight.fieldFilter.value)
+                        nameFilter = InsightFieldFilter(insight.filter.type, insight.filter.value)
                     }
                 }
                 else -> {}

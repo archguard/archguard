@@ -38,3 +38,7 @@ fun insight(init: InsightDecl.() -> Unit): InsightDecl {
     context.insight = insightDecl
     return insightDecl
 }
+
+fun regexp(value: String): InsightFieldFilter {
+    return InsightFieldFilter(InsightFilterType.REGEXP, value)
+}

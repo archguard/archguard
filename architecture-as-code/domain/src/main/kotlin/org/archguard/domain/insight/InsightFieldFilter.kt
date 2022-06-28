@@ -22,7 +22,3 @@ class InsightFieldFilter(
     }
 }
 
-fun regexp(value: String): InsightFieldFilter {
-    return InsightFieldFilter(InsightFilterType.REGEXP, value)
-}
-

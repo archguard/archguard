@@ -1,40 +1,47 @@
 package org.archguard.domain.insight
 
+/**
+ * @param symbol in `==`、`>`、`<`、`>=`、`<=`、`!=`
+ * @param value in number or string
+ */
 data class InsightValueExpr(
-    val comparison: String,
+    val symbol: String,
     val value: String,
 )
 
 private val ValidInsightRegex = Regex("\\s?([a-zA-Z_]+)\\s?([>!=<]+)\\s?(.*)")
 
-data class InsightModel(
+/**
+ * @param field is field name
+ *
+ */
+data class InsightFilter(
     val field: String,
-    val fieldFilter: InsightFieldFilter,
-    val valueExpr: InsightValueExpr
+    val filter: InsightFieldFilter,
+    val valueExpr: InsightValueExpr,
 ) {
     companion object {
-        fun toQuery(models: List<InsightModel>): String {
+        fun toQuery(models: List<InsightFilter>): String {
             return models.mapNotNull {
-                when (it.fieldFilter.type) {
+                when (it.filter.type) {
                     InsightFilterType.NORMAL -> {
-                        when (it.valueExpr.comparison) {
-                            "==" -> "${it.field} = '${it.fieldFilter.value}'"
-                            "!=" -> "${it.field} != '${it.fieldFilter.value}'"
+                        when (it.valueExpr.symbol) {
+                            "==" -> "${it.field} = '${it.filter.value}'"
+                            "!=" -> "${it.field} != '${it.filter.value}'"
                             else -> null
                         }
                     }
 
                     InsightFilterType.LIKE -> {
-                        "${it.field} like '${it.fieldFilter.value}'"
+                        "${it.field} like '${it.filter.value}'"
                     }
 
                     else -> null
                 }
-            }
-                .joinToString(" and ")
+            }.joinToString(" and ")
         }
 
-        fun parse(str: String): List<InsightModel> {
+        fun parse(str: String): List<InsightFilter> {
             return str.split("field:").mapIndexedNotNull { index, it ->
                 if (it == "") null
 
@@ -46,7 +53,7 @@ data class InsightModel(
             }
         }
 
-        private fun parseOneModel(str: String): InsightModel? {
+        private fun parseOneModel(str: String): InsightFilter? {
             if (!ValidInsightRegex.matches(str)) return null
 
             val matchResult = ValidInsightRegex.find(str)!!.groups
@@ -69,26 +76,30 @@ data class InsightModel(
                         fieldFilter.type = InsightFilterType.LIKE
                     }
                 }
+
                 isSingleString -> {
                     fieldFilter.value = textValue.removeSurrounding("'")
                     if (fieldFilter.value.startsWith('%') || fieldFilter.value.endsWith('%')) {
                         fieldFilter.type = InsightFilterType.LIKE
                     }
                 }
+
                 isLikeSearch -> {
                     fieldFilter.value = textValue
                     fieldFilter.type = InsightFilterType.LIKE
                 }
+
                 isRegex -> {
                     fieldFilter.type = InsightFilterType.REGEXP
                     fieldFilter.value = textValue.removeSurrounding("/")
                 }
+
                 else -> {
                     fieldFilter.value = textValue
                 }
             }
 
-            return InsightModel(
+            return InsightFilter(
                 matchResult[1]!!.value,
                 fieldFilter,
                 InsightValueExpr(matchResult[2]!!.value, textValue)

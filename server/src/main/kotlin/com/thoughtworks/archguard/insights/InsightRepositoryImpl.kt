@@ -1,20 +1,19 @@
 package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.domain.ScaModelDto
-import org.archguard.domain.insight.InsightFilterType
-import org.archguard.domain.insight.InsightModel
+import org.archguard.domain.insight.InsightFilter
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
 
 @Repository
 class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
-    override fun filterByConditionWithSystemId(id: Long, models: List<InsightModel>): List<ScaModelDto> {
+    override fun filterByConditionWithSystemId(id: Long, models: List<InsightFilter>): List<ScaModelDto> {
         var sql =
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies where system_id = :id "
 
-        val additionCondition: String = InsightModel.toQuery(models)
+        val additionCondition: String = InsightFilter.toQuery(models)
         if (additionCondition.isNotEmpty()) {
             sql += additionCondition
         }
@@ -28,12 +27,12 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
         }
     }
 
-    override fun filterByCondition(models: List<InsightModel>): List<ScaModelDto> {
+    override fun filterByCondition(models: List<InsightFilter>): List<ScaModelDto> {
         var sql =
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies "
 
-        val additionCondition: String = InsightModel.toQuery(models)
+        val additionCondition: String = InsightFilter.toQuery(models)
         if (additionCondition.isNotEmpty()) {
             sql += "where $additionCondition"
         }
