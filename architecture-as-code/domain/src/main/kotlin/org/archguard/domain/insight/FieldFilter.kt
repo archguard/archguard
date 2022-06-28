@@ -29,11 +29,7 @@ data class FieldFilter(
             return models.mapNotNull {
                 when (it.type) {
                     FilterType.NORMAL -> {
-                        when (it.comparison) {
-                            Comparison.Equal -> "${it.name} = '${it.value}'"
-                            Comparison.NotEqual -> "${it.name} != '${it.value}'"
-                            else -> null
-                        }
+                        fromComparison(it)
                     }
                     FilterType.LIKE -> {
                         "${it.name} like '${it.value}'"
@@ -42,6 +38,14 @@ data class FieldFilter(
                     else -> null
                 }
             }.joinToString(" and ")
+        }
+
+        private fun fromComparison(it: FieldFilter): String? {
+            return when (it.comparison) {
+                Comparison.Equal -> "${it.name} = '${it.value}'"
+                Comparison.NotEqual -> "${it.name} != '${it.value}'"
+                else -> null
+            }
         }
 
         fun parse(str: String): List<FieldFilter> {

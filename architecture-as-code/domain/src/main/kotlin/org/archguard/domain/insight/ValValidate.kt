@@ -13,22 +13,23 @@ object ValValidate {
             return true
         }
 
-        val comparison = versionFilter.second
-        val insightVersion = versionFilter.first
-        return versionComparison.eval(leftVersion, comparison, insightVersion)
+        return versionComparison.eval(leftVersion, versionFilter.second, versionFilter.first)
     }
 
     private fun validate(source: String, type: FilterType, filterValue: String): Boolean {
         return when (type) {
             FilterType.NORMAL -> source == filterValue
             FilterType.REGEXP -> source.matches(filterValue.toRegex())
-            else -> false
+            FilterType.LIKE -> {
+                // like type was already used in query, **NOT** need to be implemented. If run to here, it's a bug
+                TODO()
+            }
         }
     }
 
-    fun isValueValid(source: String, nameFilter: Pair<FilterValue, FilterType>?): Boolean {
-        if (nameFilter == null) return true
+    fun isValueValid(source: String, filter: Pair<FilterValue, FilterType>?): Boolean {
+        if (filter == null) return true
 
-        return validate(source, nameFilter.second, nameFilter.first)
+        return validate(source, filter.second, filter.first)
     }
 }
