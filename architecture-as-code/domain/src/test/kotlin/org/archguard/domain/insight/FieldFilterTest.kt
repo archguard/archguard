@@ -30,7 +30,7 @@ internal class FieldFilterTest {
         assertEquals("kotlin-logging", models[1].value)
 
         assertEquals(".*logback", models[2].value)
-        assertEquals(InsightFilterType.REGEXP, models[2].type)
+        assertEquals(FilterType.REGEXP, models[2].type)
     }
 
     @Test
@@ -49,7 +49,7 @@ internal class FieldFilterTest {
         assertEquals(1, models.size)
 
         assertEquals("%get%", models[0].value)
-        assertEquals(InsightFilterType.LIKE, models[0].type)
+        assertEquals(FilterType.LIKE, models[0].type)
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class FieldFilterTest {
         assertEquals(1, models.size)
 
         assertEquals("get%", models[0].value)
-        assertEquals(InsightFilterType.LIKE, models[0].type)
+        assertEquals(FilterType.LIKE, models[0].type)
     }
 
     @Test

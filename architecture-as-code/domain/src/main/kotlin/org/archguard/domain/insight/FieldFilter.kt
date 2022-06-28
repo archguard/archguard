@@ -4,8 +4,7 @@ import org.archguard.domain.comparison.Comparison
 
 private val ValidInsightRegex = Regex("\\s?([a-zA-Z_]+)\\s?([>!=<]+)\\s?(.*)")
 
-
-enum class InsightFilterType {
+enum class FilterType {
     // filter after query
     NORMAL,
     // filter after query
@@ -14,27 +13,29 @@ enum class InsightFilterType {
     LIKE,
 }
 
+typealias FilterValue = String
+
 /**
  *
  */
 data class FieldFilter(
     val name: String,
-    val value: String,
+    val value: FilterValue,
     val comparison: Comparison = Comparison.NotSupport,
-    var type: InsightFilterType = InsightFilterType.NORMAL,
+    var type: FilterType = FilterType.NORMAL,
 ) {
     companion object {
         fun toQuery(models: List<FieldFilter>): String {
             return models.mapNotNull {
                 when (it.type) {
-                    InsightFilterType.NORMAL -> {
+                    FilterType.NORMAL -> {
                         when (it.comparison) {
                             Comparison.Equal -> "${it.name} = '${it.value}'"
                             Comparison.NotEqual -> "${it.name} != '${it.value}'"
                             else -> null
                         }
                     }
-                    InsightFilterType.LIKE -> {
+                    FilterType.LIKE -> {
                         "${it.name} like '${it.value}'"
                     }
 
@@ -64,7 +65,7 @@ data class FieldFilter(
 
             val textValue = matchResult[3]!!.value
 
-            var type = InsightFilterType.NORMAL
+            var type = FilterType.NORMAL
             var value: String = textValue;
 
             val isDoubleString = textValue.startsWith("\"") && textValue.endsWith("\"")
@@ -76,24 +77,24 @@ data class FieldFilter(
                 isDoubleString -> {
                     value = textValue.removeSurrounding("\"")
                     if (value.startsWith('%') || value.endsWith('%')) {
-                        type = InsightFilterType.LIKE
+                        type = FilterType.LIKE
                     }
                 }
 
                 isSingleString -> {
                     value = textValue.removeSurrounding("'")
                     if (value.startsWith('%') || value.endsWith('%')) {
-                        type = InsightFilterType.LIKE
+                        type = FilterType.LIKE
                     }
                 }
 
                 isLikeSearch -> {
                     value = textValue
-                    type = InsightFilterType.LIKE
+                    type = FilterType.LIKE
                 }
 
                 isRegex -> {
-                    type = InsightFilterType.REGEXP
+                    type = FilterType.REGEXP
                     value = textValue.removeSurrounding("/")
                 }
 
