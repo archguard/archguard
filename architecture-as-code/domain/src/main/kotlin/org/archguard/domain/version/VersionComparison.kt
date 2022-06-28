@@ -1,5 +1,7 @@
 package org.archguard.domain.version
 
+import org.archguard.domain.comparison.Comparison
+
 /**
  * ("1.2.3", "==").toOther("1.2.3")
  */

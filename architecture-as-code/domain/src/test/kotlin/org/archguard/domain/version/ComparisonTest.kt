@@ -1,5 +1,6 @@
 package org.archguard.domain.version
 
+import org.archguard.domain.comparison.Comparison
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

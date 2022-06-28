@@ -1,11 +1,8 @@
 package org.archguard.dsl.insight
 
-import org.archguard.domain.insight.InsightFieldFilter
-import org.archguard.domain.insight.InsightFilterType
 import org.archguard.dsl.context
 
 class InsightDecl() {
-    private lateinit var _fieldCondition: InsightFieldFilter
     private var _field: String = ""
     private var _name: String = ""
     private var _condition: String = ""
@@ -18,17 +15,12 @@ class InsightDecl() {
         this._name = name
     }
 
-    fun field(type: String, conditionFunc: () -> InsightFieldFilter) {
+    fun field(type: String) {
         this._field = type
-        this._fieldCondition = conditionFunc()
     }
 
     fun field(type: String, string: String) {
         this._field = type
-        this._fieldCondition = InsightFieldFilter(
-            InsightFilterType.NORMAL,
-            string
-        )
     }
 }
 
@@ -37,8 +29,4 @@ fun insight(init: InsightDecl.() -> Unit): InsightDecl {
     insightDecl.init()
     context.insight = insightDecl
     return insightDecl
-}
-
-fun regexp(value: String): InsightFieldFilter {
-    return InsightFieldFilter(InsightFilterType.REGEXP, value)
 }

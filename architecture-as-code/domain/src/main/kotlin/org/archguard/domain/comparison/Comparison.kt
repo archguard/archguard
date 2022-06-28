@@ -1,4 +1,4 @@
-package org.archguard.domain.version
+package org.archguard.domain.comparison
 
 enum class Comparison {
     Equal,

@@ -1,7 +1,6 @@
 package org.archguard.dsl
 
 import org.archguard.dsl.insight.insight
-import org.archguard.dsl.insight.regexp
 import org.junit.jupiter.api.Test
 
 internal class InsightTest {
@@ -9,9 +8,7 @@ internal class InsightTest {
     internal fun basic_insight_with_regex() {
         val insight = insight {
             name("demo")
-            field("version") {
-                regexp("org.apache.logging.log4j")
-            }
+            field("version")
             condition(">= 1.2.3")
         }
     }
