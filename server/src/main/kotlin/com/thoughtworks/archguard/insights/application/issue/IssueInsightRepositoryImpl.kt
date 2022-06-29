@@ -1,5 +1,7 @@
-package com.thoughtworks.archguard.insights.application
+package com.thoughtworks.archguard.insights.application.issue
 
+import com.thoughtworks.archguard.insights.application.InsightModelDto
+import com.thoughtworks.archguard.insights.application.IssueModelDto
 import org.archguard.domain.insight.FieldFilter
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

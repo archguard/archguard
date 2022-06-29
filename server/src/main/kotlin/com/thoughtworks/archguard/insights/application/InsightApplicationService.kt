@@ -1,5 +1,9 @@
 package com.thoughtworks.archguard.insights.application
 
+import com.thoughtworks.archguard.insights.application.issue.IssueInsightFilter
+import com.thoughtworks.archguard.insights.application.issue.IssueInsightRepository
+import com.thoughtworks.archguard.insights.application.sca.ScaInsightFilter
+import com.thoughtworks.archguard.insights.application.sca.ScaInsightRepository
 import org.archguard.domain.insight.FieldFilter
 import org.springframework.stereotype.Service
 

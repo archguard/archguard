@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.insights.application
 
+import com.thoughtworks.archguard.insights.application.sca.ScaInsightFilter
 import org.archguard.domain.insight.FieldFilter
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
