@@ -6,13 +6,17 @@ include(":meta")
 // backend
 include(":server")
 
+include(":doc-generator")
+
 /**
  * architecture as code repos
  */
 
-include(":architecture-as-code:domain")
-include(":architecture-as-code:dsl")
-include(":architecture-as-code:repl-api")
+include(
+    ":architecture-as-code:domain",
+    ":architecture-as-code:dsl",
+    ":architecture-as-code:repl-api"
+)
 
 /**
  *  scanner projects:
@@ -49,7 +53,4 @@ include(
     ":rule-linter:rule-webapi",
     ":rule-linter:rule-code",
     ":rule-linter:rule-layer",
-
-//    generate doc
-    ":rule-doc-generator"
 )

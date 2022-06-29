@@ -70,13 +70,13 @@ allprojects {
     }
 }
 
-// exclude server publish
+// exclude `server` module publish
 configure(
     allprojects
             - project(":server")
             - project(":architecture-as-code")
             - project(":rule-linter")
-            - project(":rule-doc-generator")
+            - project(":doc-generator")
             - project(":analyser_architecture")
             - project(":analyser_diff_changes")
             - project(":analyser_git")
@@ -164,6 +164,8 @@ dependencies {
     jacocoAggregation(project(":server"))
 
     jacocoAggregation(project(":scanner_cli"))
+    jacocoAggregation(project(":scanner_core"))
+
     jacocoAggregation(project(":analyser_sourcecode:lang_kotlin"))
     jacocoAggregation(project(":analyser_sourcecode:lang_java"))
     jacocoAggregation(project(":analyser_sourcecode:lang_typescript"))
@@ -178,13 +180,17 @@ dependencies {
     jacocoAggregation(project(":analyser_sca"))
     jacocoAggregation(project(":analyser_architecture"))
 
+    jacocoAggregation(project(":architecture-as-code:domain"))
+    jacocoAggregation(project(":architecture-as-code:dsl"))
+    jacocoAggregation(project(":architecture-as-code:repl-api"))
+
     jacocoAggregation(project(":rule-core"))
     jacocoAggregation(project(":rule-linter:rule-sql"))
     jacocoAggregation(project(":rule-linter:rule-test"))
     jacocoAggregation(project(":rule-linter:rule-webapi"))
     jacocoAggregation(project(":rule-linter:rule-code"))
     jacocoAggregation(project(":rule-linter:rule-layer"))
-    jacocoAggregation(project(":rule-doc-generator"))
+    jacocoAggregation(project(":doc-generator"))
 }
 
 reporting {
