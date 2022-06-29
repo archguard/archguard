@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.insights
 
 import com.thoughtworks.archguard.insights.application.InsightApplicationService
 import com.thoughtworks.archguard.insights.application.InsightModel
-import com.thoughtworks.archguard.insights.application.InsightModelDto
 import com.thoughtworks.archguard.insights.domain.CustomInsight
+import com.thoughtworks.archguard.insights.domain.InsightData
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import kotlin.math.roundToInt
 
 data class InsightDto(
     val systemId: Long,
     val expression: String,
     val type: String,
 )
-
-data class InsightData(val date: String, val name: String?, val value: Int, val type: String)
 
 @RestController
 @RequestMapping("/api/insights")
@@ -46,10 +43,10 @@ class InsightController(
         val dtos = appService.byExpression(insight.systemId, insight.expression, insight.type)
         val size = dtos.size
 
-        // todo: refactor request body
-        influxDBClient.save("insights,name=${insight.name},system=${insight.systemId},type=${insight.type} value=$size")
+        influxDBClient.save(insight.toInflux(size))
         return size
     }
+
 
     @GetMapping("/custom-insight/{name}")
     fun getByName(@PathVariable("name") name: String): CustomInsight {
@@ -70,16 +67,9 @@ class InsightController(
     fun listInsights(): List<InsightData> {
         val query = """SELECT * FROM "insights""""
 
-        val graphData = influxDBClient.query(query).map { it.values }
-            .flatten().map {
-                InsightData(
-                    it[0],
-                    it[1],
-                    it[4].toDouble().roundToInt(),
-                    it[3]
-                )
-            }
-
-        return graphData
+        return influxDBClient.query(query)
+            .map { it.values }
+            .flatten()
+            .map { InsightData.fromInflux(it) }
     }
 }
