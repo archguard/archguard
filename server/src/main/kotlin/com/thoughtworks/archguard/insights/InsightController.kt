@@ -60,10 +60,10 @@ class InsightController(
     fun deleteByName(@PathVariable("name") name: String): Int {
         val deleteInsightByName = repository.deleteInsightByName(name)
         influxDBClient.query("""DELETE FROM "insights" WHERE "name" = '$name'""")
-
         return deleteInsightByName
     }
 
+    // TODO: it will cause performance issues. when we subscribed lot of data. But before we move to MongoDB, just keep it.
     @GetMapping("/")
     fun listInsights(): List<InsightData> {
         val query = """SELECT * FROM "insights""""
