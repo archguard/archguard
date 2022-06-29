@@ -24,21 +24,34 @@ data class FieldFilter(
     val comparison: Comparison = Comparison.NotSupport,
     var type: FilterType = FilterType.NORMAL,
 ) {
-    companion object {
-        fun toQuery(models: List<FieldFilter>): String {
-            return models.mapNotNull {
-                when (it.type) {
-                    FilterType.NORMAL -> {
-                        fromComparison(it)
-                    }
-                    FilterType.LIKE -> {
-                        "${it.name} like '${it.value}'"
-                    }
 
-                    else -> null
-                }
-            }.joinToString(" and ")
+    companion object {
+        /**
+         * for filter in query
+         * @param operator, sql keyword in query, like `where`, `and`
+          */
+        fun toQuery(models: List<FieldFilter>, operator: String): String {
+            val query = multipleQuery(models)
+            if(query.isEmpty()) {
+                return ""
+            }
+
+            return "$operator $query"
         }
+
+        private fun multipleQuery(models: List<FieldFilter>) = models.mapNotNull {
+            when (it.type) {
+                FilterType.NORMAL -> {
+                    fromComparison(it)
+                }
+
+                FilterType.LIKE -> {
+                    "${it.name} like '${it.value}'"
+                }
+
+                else -> null
+            }
+        }.joinToString(" and ")
 
         private fun fromComparison(it: FieldFilter): String? {
             return when (it.comparison) {

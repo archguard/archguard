@@ -64,18 +64,24 @@ internal class FieldFilterTest {
     @Test
     internal fun to_sql_query() {
         val models = FieldFilter.parse("field:method == %get%")
-        assertEquals("method like '%get%'", FieldFilter.toQuery(models))
+        assertEquals("where method like '%get%'", FieldFilter.toQuery(models, "where"))
 
         val multiples = FieldFilter.parse("field:method == %get% field:name == %test%")
-        assertEquals("method like '%get%' and name like '%test%'", FieldFilter.toQuery(multiples))
+        assertEquals("and method like '%get%' and name like '%test%'", FieldFilter.toQuery(multiples, "and"))
     }
 
     @Test
     internal fun not_equal() {
         val models = FieldFilter.parse("field:method != 'sample'")
-        assertEquals("method != 'sample'", FieldFilter.toQuery(models))
+        assertEquals("and method != 'sample'", FieldFilter.toQuery(models, "and"))
 
         val equalModels = FieldFilter.parse("field:method == 'sample'")
-        assertEquals("method = 'sample'", FieldFilter.toQuery(equalModels))
+        assertEquals("where method = 'sample'", FieldFilter.toQuery(equalModels, "where"))
+    }
+
+    @Test
+    internal fun empty_query() {
+        val models = FieldFilter.parse("field:method <> 'sample'")
+        assertEquals("", FieldFilter.toQuery(models, "and"))
     }
 }

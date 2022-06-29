@@ -12,10 +12,7 @@ class IssueInsightRepositoryImpl(val jdbi: Jdbi) : IssueInsightRepository {
             "select name, rule_id, rule_type, severity " +
                     " from governance_issue where system_id = :id "
 
-        val additionCondition: String = FieldFilter.toQuery(models)
-        if (additionCondition.isNotEmpty()) {
-            sql += additionCondition
-        }
+        sql += FieldFilter.toQuery(models, "and")
 
         return jdbi.withHandle<List<IssueModelDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))
@@ -31,10 +28,7 @@ class IssueInsightRepositoryImpl(val jdbi: Jdbi) : IssueInsightRepository {
             "select name, rule_id, rule_type, severity" +
                     " from governance_issue "
 
-        val additionCondition: String = FieldFilter.toQuery(models)
-        if (additionCondition.isNotEmpty()) {
-            sql += "where $additionCondition"
-        }
+        sql += FieldFilter.toQuery(models, "where")
 
         return jdbi.withHandle<List<IssueModelDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))

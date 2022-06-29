@@ -12,10 +12,7 @@ class ScaInsightRepositoryImpl(val jdbi: Jdbi) : ScaInsightRepository {
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies where system_id = :id "
 
-        val additionCondition: String = FieldFilter.toQuery(models)
-        if (additionCondition.isNotEmpty()) {
-            sql += additionCondition
-        }
+        sql += FieldFilter.toQuery(models, "and")
 
         return jdbi.withHandle<List<InsightModelDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))
@@ -31,10 +28,7 @@ class ScaInsightRepositoryImpl(val jdbi: Jdbi) : ScaInsightRepository {
             "select dep_artifact, dep_group, dep_version, dep_name" +
                     " from project_composition_dependencies "
 
-        val additionCondition: String = FieldFilter.toQuery(models)
-        if (additionCondition.isNotEmpty()) {
-            sql += "where $additionCondition"
-        }
+        sql += FieldFilter.toQuery(models, "where")
 
         return jdbi.withHandle<List<InsightModelDto>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(InsightModelDto::class.java))
