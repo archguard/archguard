@@ -43,7 +43,8 @@ class InsightController(
         val dtos = appService.byExpression(insight.systemId, insight.expression, insight.type)
         val size = dtos.size
 
-        influxDBClient.save(insight.toInflux(size))
+        val data = InsightData.fromCustomInsight(insight).toInflux(size)
+        influxDBClient.save(data)
         return size
     }
 
