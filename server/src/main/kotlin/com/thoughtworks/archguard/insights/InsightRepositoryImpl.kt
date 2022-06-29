@@ -10,8 +10,8 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate(
                 "insert into insight_custom" +
-                        "(id, system_id, name, expression, schedule) " +
-                        "values (:id, :systemId, :name, :expression, :schedule)"
+                        "(id, system_id, name, expression, schedule, type) " +
+                        "values (:id, :systemId, :name, :expression, :schedule, :type)"
             )
                 .bindBean(insight)
                 .executeAndReturnGeneratedKeys("id")
@@ -23,7 +23,7 @@ class InsightRepositoryImpl(val jdbi: Jdbi) : InsightRepository {
     override fun getInsightByName(name: String): CustomInsight? {
         return jdbi.withHandle<CustomInsight, Nothing> {
             it.createQuery(
-                "select id, system_id as systemId, name, expression, schedule " +
+                "select id, system_id as systemId, name, expression, schedule, type " +
                         "from insight_custom where name = :name"
             )
                 .bind("name", name)

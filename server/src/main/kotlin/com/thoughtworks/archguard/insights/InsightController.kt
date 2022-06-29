@@ -22,7 +22,7 @@ data class InsightDto(
     val type: String,
 )
 
-data class InsightData(val date: String, val name: String?, val value: Int)
+data class InsightData(val date: String, val name: String?, val value: Int, val type: String)
 
 @RestController
 @RequestMapping("/api/insights")
@@ -75,7 +75,8 @@ class InsightController(
                 InsightData(
                     it[0],
                     it[1],
-                    it[4].toDouble().roundToInt()
+                    it[4].toDouble().roundToInt(),
+                    it[3]
                 )
             }
 
