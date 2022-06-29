@@ -12,26 +12,28 @@ import java.io.File
 
 class RuleDocGenerator {
     fun execute() {
+        val baseDir = "build" + File.separator
+
         val sqlStr = listOf(
             CustomJekyllFrontMatter(title = "SQL", navOrder = 1, permalink = "sql").toMarkdown(),
             this.toMarkdown(this.nodeFromRules(SqlRuleSetProvider().get().rules))
         ).joinToString("\n")
 
-        File("build" + File.separator + "sql.md").writeText(sqlStr)
+        File(baseDir + "sql.md").writeText(sqlStr)
 
         val apiStr = listOf(
             CustomJekyllFrontMatter(title = "Test smell", navOrder = 2, permalink = "test-smell").toMarkdown(),
             this.toMarkdown(this.nodeFromRules(TestSmellRuleSetProvider().get().rules))
         ).joinToString("\n")
 
-        File("build" + File.separator + "test-smell.md").writeText(apiStr)
+        File(baseDir + "test-smell.md").writeText(apiStr)
 
         val testStr = listOf(
             CustomJekyllFrontMatter(title = "Web API", navOrder = 99, permalink = "web-api").toMarkdown(),
             this.toMarkdown(this.nodeFromRules(WebApiRuleSetProvider().get().rules))
         ).joinToString("\n")
 
-        File("build" + File.separator + "web-api.md").writeText(testStr)
+        File(baseDir + "web-api.md").writeText(testStr)
 
     }
 

@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     api(project(":rule-core"))
+    api(project(":scanner_cli"))
     api(project(":rule-linter:rule-code"))
     api(project(":rule-linter:rule-sql"))
     api(project(":rule-linter:rule-test"))
