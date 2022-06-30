@@ -12,7 +12,7 @@ internal class RuleDocGeneratorTest {
 
         val sqlNodes = ruleDocGenerator.        // 1. load ruleset to maps
 
-            // todo: 2. load test as error cases
+        // todo: 2. load test as error cases
         nodeFromRules(SqlRuleSetProvider().get().rules)
         assert(sqlNodes.content.size > 20)
 
@@ -27,12 +27,12 @@ internal class RuleDocGeneratorTest {
 
         val sqlNodes = ruleDocGenerator.        // 1. load ruleset to maps
 
-            // todo: 2. load test as error cases
+        // todo: 2. load test as error cases
         nodeFromRules(SqlRuleSetProvider().get().rules)
         assert(sqlNodes.content.size > 20)
 
         val node = ruleDocGenerator.nodeFromRules(arrayOf(LikeStartWithoutPercentRule()))
-        val text = ruleDocGenerator.toMarkdown(node)
+        val text = ruleDocGenerator.stringify(node)
         assertEquals("""## like-start-without-percent
 
 className: org.archguard.linter.rule.sql.rules.LikeStartWithoutPercentRule

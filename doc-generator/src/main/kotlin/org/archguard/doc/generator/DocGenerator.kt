@@ -4,26 +4,14 @@ import org.archguard.doc.generator.render.DocHeader
 import org.archguard.doc.generator.render.DocPage
 import org.archguard.doc.generator.render.DocText
 import org.archguard.rule.core.Rule
+import java.io.File
 
-open class DocGenerator {
-    fun nodeFromRules(rules: Array<out Rule>): DocPage {
-        val page = DocPage(content = listOf())
-        rules.forEach {
-            page.content += DocHeader(it.id, listOf(), level = 2)
-            page.content += DocText("className: " + it.key)
-            page.content += DocText("description: " + it.description)
+abstract class DocGenerator {
+    val baseDir = "build" + File.separator
 
-            page.content += DocText("severity: " + it.severity)
+    open fun execute() {}
 
-            if (it.message.isNotEmpty()) {
-                page.content += DocText("suggest: " + it.message)
-            }
-        }
-
-        return page
-    }
-
-    fun toMarkdown(page: DocPage): String {
+    fun stringify(page: DocPage): String {
         var output = ""
         page.content.forEach {
             when (it) {
