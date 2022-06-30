@@ -10,10 +10,15 @@ import org.archguard.linter.rule.webapi.WebApiRuleSetProvider
 import org.archguard.rule.core.Rule
 import java.io.File
 
-class RuleDocGenerator {
+class RuleDocGenerator : DocGenerator() {
     fun execute() {
         val baseDir = "build" + File.separator
 
+        generateForRule(baseDir)
+
+    }
+
+    private fun generateForRule(baseDir: String) {
         val sqlStr = listOf(
             CustomJekyllFrontMatter(title = "SQL", navOrder = 1, permalink = "sql").toMarkdown(),
             this.toMarkdown(this.nodeFromRules(SqlRuleSetProvider().get().rules))
@@ -34,40 +39,6 @@ class RuleDocGenerator {
         ).joinToString("\n")
 
         File(baseDir + "web-api.md").writeText(testStr)
-
     }
 
-    fun nodeFromRules(rules: Array<out Rule>): DocPage {
-        val page = DocPage(content = listOf())
-        rules.forEach {
-            page.content += DocHeader(it.id, listOf(), level = 2)
-            page.content += DocText("className: " + it.key)
-            page.content += DocText("description: " + it.description)
-
-            page.content += DocText("severity: " + it.severity)
-
-            if(it.message.isNotEmpty()) {
-                page.content += DocText("suggest: " + it.message)
-            }
-        }
-
-        return page
-    }
-
-    fun toMarkdown(page: DocPage): String {
-        var output = ""
-        page.content.forEach {
-            when (it) {
-                is DocText -> {
-                    output += "${it.text}\n"
-                }
-                is DocHeader -> {
-                    output += "#".repeat(it.level) + " " + it.title + "\n"
-                }
-            }
-            output += "\n"
-        }
-
-        return output
-    }
 }
