@@ -38,6 +38,17 @@ services:
       - INFLUXDB_ADMIN_USER=admin
       - INFLUXDB_ADMIN_PASSWORD=admin
 
+  archguard-mongodb:
+    image: mongo
+    container_name: archguard-mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      - dependence_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: archguard
+      MONGO_INITDB_ROOT_PASSWORD: archguard
+
 networks:
   dependence_network:
 
