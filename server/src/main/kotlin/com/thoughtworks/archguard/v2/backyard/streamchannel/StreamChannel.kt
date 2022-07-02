@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.v2.backyard.streamchannel
 import org.archguard.scanner.core.event.AnalyserEvent
 import org.archguard.scanner.core.event.AnalyserEventType
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 open class StreamChannel {
     private var subscribers: MutableMap<AnalyserEventType, MutableList<AnalyserEventSubscriber>> = mutableMapOf()
@@ -17,6 +18,7 @@ open class StreamChannel {
 }
 
 // TODO implement stream channel with external MQ
+@Component
 class InMemoryStreamChannel(
     @Autowired private val _subscribers: List<AnalyserEventSubscriber>
 ) : StreamChannel() {
