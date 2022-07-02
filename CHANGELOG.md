@@ -1,4 +1,19 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v) (2022-06-25)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.1...v) (2022-07-02)
+
+
+
+# [2.0.0-beta.1](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v2.0.0-beta.1) (2022-07-02)
+
+
+### Bug Fixes
+
+* **insights:** add lost types [#95](https://github.com/archguard/archguard/issues/95) ([167128e](https://github.com/archguard/archguard/commit/167128ec828c423830387c9fbf2b02fcf54b1c2c))
+
+
+### Features
+
+* **insights:** add like symbol support for query in DSL [#95](https://github.com/archguard/archguard/issues/95) ([2eaa4dd](https://github.com/archguard/archguard/commit/2eaa4ddabbf58cfaf672e02d52eb93ac770426a9))
+* **insights:** add lost NotEqual expression [#95](https://github.com/archguard/archguard/issues/95) ([e102d68](https://github.com/archguard/archguard/commit/e102d681de146fe6583c05db53284b0e204fe6cc))
 
 
 
