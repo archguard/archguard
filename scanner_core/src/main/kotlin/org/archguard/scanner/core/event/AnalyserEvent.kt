@@ -16,5 +16,6 @@ data class AnalyserTopic(
 
 enum class AnalyserEventType {
     CODE_DATA_STRUCT,
+    API_CONTAINERS,
     ;
 }
