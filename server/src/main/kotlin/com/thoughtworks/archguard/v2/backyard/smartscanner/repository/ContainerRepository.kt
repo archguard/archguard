@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.RepositoryHelper.generateId
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService

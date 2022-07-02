@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import org.archguard.scanner.core.git.ChangeEntry
 import org.archguard.scanner.core.git.CommitLog

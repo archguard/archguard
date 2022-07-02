@@ -9,7 +9,7 @@ import com.thoughtworks.archguard.common.exception.EntityNotFoundException
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
-import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
+import com.thoughtworks.archguard.v2.backyard.smartscanner.StranglerScannerExecutor
 import com.thoughtworks.archguard.system_info.controller.SystemInfoDTO
 import com.thoughtworks.archguard.system_info.controller.SystemInfoMapper
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService

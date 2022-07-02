@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

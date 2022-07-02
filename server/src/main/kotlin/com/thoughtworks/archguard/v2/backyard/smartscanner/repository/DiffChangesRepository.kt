@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.archguard.scanner.core.diffchanges.ChangedCall

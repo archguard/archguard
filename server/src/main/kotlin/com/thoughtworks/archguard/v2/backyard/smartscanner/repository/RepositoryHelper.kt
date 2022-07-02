@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

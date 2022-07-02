@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner
+package com.thoughtworks.archguard.v2.backyard.smartscanner
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.archguard.scanner.core.context.AnalyserType

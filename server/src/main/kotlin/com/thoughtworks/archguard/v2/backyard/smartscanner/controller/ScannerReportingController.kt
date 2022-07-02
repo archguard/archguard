@@ -1,15 +1,15 @@
-package com.thoughtworks.archguard.smartscanner.controller
+package com.thoughtworks.archguard.v2.backyard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.smartscanner.repository.ClassRepository
-import com.thoughtworks.archguard.smartscanner.repository.ContainerRepository
-import com.thoughtworks.archguard.smartscanner.repository.DatamapRepository
-import com.thoughtworks.archguard.smartscanner.repository.DiffChangesRepository
-import com.thoughtworks.archguard.smartscanner.repository.GitSourceRepository
-import com.thoughtworks.archguard.smartscanner.repository.IssueDto
-import com.thoughtworks.archguard.smartscanner.repository.IssueRepository
-import com.thoughtworks.archguard.smartscanner.repository.ScaRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ClassRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ContainerRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.DatamapRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.DiffChangesRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.GitSourceRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.IssueDto
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.IssueRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ScaRepository
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs

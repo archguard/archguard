@@ -2,7 +2,9 @@ package com.thoughtworks.archguard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
-import com.thoughtworks.archguard.smartscanner.ScannerCommand
+import com.thoughtworks.archguard.v2.backyard.smartscanner.ScannerCommand
+import com.thoughtworks.archguard.v2.backyard.smartscanner.infra.RemoteFileLoader
+import com.thoughtworks.archguard.v2.backyard.smartscanner.infra.ScannerCliClient
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkObject

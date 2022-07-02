@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.smartscanner.infra
+package com.thoughtworks.archguard.v2.backyard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
-import com.thoughtworks.archguard.smartscanner.ScannerClient
-import com.thoughtworks.archguard.smartscanner.ScannerCommand
+import com.thoughtworks.archguard.v2.backyard.smartscanner.ScannerClient
+import com.thoughtworks.archguard.v2.backyard.smartscanner.ScannerCommand
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.BufferedReader

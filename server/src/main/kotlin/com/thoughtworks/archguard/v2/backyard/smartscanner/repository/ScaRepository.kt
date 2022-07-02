@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.jdbi.v3.core.Jdbi

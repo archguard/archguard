@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.infra
+package com.thoughtworks.archguard.v2.backyard.smartscanner.infra
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
@@ -43,7 +43,7 @@ object RemoteFileLoader {
     }
 
     private fun log(streamLog: StreamConsumer, information: String) {
-        this.logger.debug(information)
+        logger.debug(information)
         streamLog.consumeLine(information)
     }
 

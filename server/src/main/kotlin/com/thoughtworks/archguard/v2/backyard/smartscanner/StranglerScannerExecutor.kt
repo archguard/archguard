@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner
+package com.thoughtworks.archguard.v2.backyard.smartscanner
 
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.scanner.codescan.sca.ScaScanner

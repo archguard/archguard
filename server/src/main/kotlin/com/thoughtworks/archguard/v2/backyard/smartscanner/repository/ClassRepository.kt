@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.v2.backyard.smartscanner.repository
 
 import chapi.domain.core.AnnotationKeyValue
 import chapi.domain.core.CodeAnnotation
@@ -11,7 +11,7 @@ import chapi.domain.core.CodeImport
 import chapi.domain.core.CodeProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.RepositoryHelper.generateId
 import java.io.File
 import java.util.Optional
 import java.util.concurrent.atomic.AtomicInteger

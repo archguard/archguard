@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.client.EvaluationReportClient
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
-import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
+import com.thoughtworks.archguard.v2.backyard.smartscanner.StranglerScannerExecutor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.annotation.Autowired
