@@ -13,7 +13,7 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
-allprojects {
+subprojects {
     apply(plugin = "java")
     apply(plugin = "jacoco")
     apply(plugin = "org.jetbrains.dokka")
