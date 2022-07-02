@@ -1,12 +1,8 @@
-package com.thoughtworks.archguard.clazz.domain
+package com.thoughtworks.archguard.v2.frontier.code.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependencerService
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependenciesService
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassInvokeService
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassMethodCalleesService
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.service.*
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -36,7 +32,13 @@ class ClassServiceTest {
     @BeforeEach
     internal fun setUp() {
         init(this)
-        service = ClassService(classMethodCalleesService, classDependenciesService, classDependencerService, jClassRepository, classInvokeService)
+        service = ClassService(
+            classMethodCalleesService,
+            classDependenciesService,
+            classDependencerService,
+            jClassRepository,
+            classInvokeService
+        )
     }
 
     @Test

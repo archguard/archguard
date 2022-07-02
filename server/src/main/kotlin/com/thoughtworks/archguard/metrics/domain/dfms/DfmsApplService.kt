@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.domain.dfms
 
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.clazz.domain
+package com.thoughtworks.archguard.v2.frontier.clazz.domain
 
 interface JClassRepository {
     fun getJClassBy(systemId: Long, name: String, module: String?): JClass?

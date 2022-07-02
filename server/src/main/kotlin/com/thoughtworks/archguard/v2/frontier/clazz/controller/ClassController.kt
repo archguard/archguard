@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.code.clazz.controller
+package com.thoughtworks.archguard.v2.frontier.clazz.controller
 
-import com.thoughtworks.archguard.code.clazz.domain.CodeTree
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.CodeTree
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.service.ClassService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

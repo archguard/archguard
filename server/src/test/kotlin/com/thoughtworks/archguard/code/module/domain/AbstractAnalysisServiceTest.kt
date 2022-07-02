@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.ClazzType
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.ClazzType
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.PackageVO
 import com.thoughtworks.archguard.code.module.domain.model.SubModule

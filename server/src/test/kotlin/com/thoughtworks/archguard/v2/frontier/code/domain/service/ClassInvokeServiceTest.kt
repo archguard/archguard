@@ -1,11 +1,11 @@
-package com.thoughtworks.archguard.clazz.domain.service
+package com.thoughtworks.archguard.v2.frontier.code.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassConfigService
-import com.thoughtworks.archguard.code.clazz.domain.service.ClassInvokeService
 import com.thoughtworks.archguard.config.domain.ConfigureService
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.ClassRelation
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.service.ClassConfigService
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.service.ClassInvokeService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

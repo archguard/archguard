@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.getModule
@@ -67,7 +67,8 @@ class CouplingServiceImpl(
 
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         val classDependency = dependencyService.getAllClassDependencies(systemId)
-        val classCouplings = classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+        val classCouplings =
+            classesBelongToPackage.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return PackageCoupling.of(packageVO, classCouplings)
     }
 
@@ -87,11 +88,12 @@ class CouplingServiceImpl(
         }
 
         val classDependency = dependencyService.getAllClassDependencies(systemId)
-        val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+        val classCouplings =
+            classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
         return ModuleCoupling.of(logicModule, classCouplings)
     }
 
-//    @Cacheable("allModuleCoupling")
+    //    @Cacheable("allModuleCoupling")
     override fun calculateAllModuleCoupling(systemId: Long): List<ModuleCoupling> {
         val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
@@ -107,7 +109,8 @@ class CouplingServiceImpl(
             if (classDependency.isEmpty()) {
                 classDependency.addAll(dependencyService.getAllClassDependencies(systemId))
             }
-            val classCouplings = classesBelongToModule.map { it.toVO() }.map { getClassCouplingWithData(it, classDependency, logicModules) }
+            val classCouplings = classesBelongToModule.map { it.toVO() }
+                .map { getClassCouplingWithData(it, classDependency, logicModules) }
             moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplings))
         }
         return moduleCouplings

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.common
 
-import com.thoughtworks.archguard.code.clazz.domain.ClazzType
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.method.domain.MethodType
 
 object TypeMap {

@@ -1,12 +1,16 @@
-package com.thoughtworks.archguard.code.clazz.domain.service
+package com.thoughtworks.archguard.v2.frontier.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.stereotype.Service
 
 @Service
-class ClassDependenciesService(val repo: JClassRepository, val configureService: ConfigureService, val classConfigService: ClassConfigService) {
+class ClassDependenciesService(
+    val repo: JClassRepository,
+    val configureService: ConfigureService,
+    val classConfigService: ClassConfigService
+) {
     fun findDependencies(systemId: Long, target: JClass, deep: Int): JClass {
         buildDependencies(systemId, listOf(target), deep)
         return target
@@ -24,7 +28,8 @@ class ClassDependenciesService(val repo: JClassRepository, val configureService:
             container.addAll(pendingClasses)
         } else {
             pendingClasses.forEach {
-                val dependencies = repo.findDependencees(it.id).filter { configureService.isDisplayNode(systemId, it.name) }
+                val dependencies =
+                    repo.findDependencees(it.id).filter { configureService.isDisplayNode(systemId, it.name) }
                 classConfigService.buildJClassColorConfig(dependencies, systemId)
                 it.dependencies = dependencies
             }

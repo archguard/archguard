@@ -1,13 +1,17 @@
-package com.thoughtworks.archguard.code.clazz.domain.service
+package com.thoughtworks.archguard.v2.frontier.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class ClassInvokeService(val repo: JClassRepository, val configureService: ConfigureService, val classConfigService: ClassConfigService) {
+class ClassInvokeService(
+    val repo: JClassRepository,
+    val configureService: ConfigureService,
+    val classConfigService: ClassConfigService
+) {
     private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
 
     fun findInvokes(

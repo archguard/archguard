@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain.graph
 
-import com.thoughtworks.archguard.code.clazz.domain.JField
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JField
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

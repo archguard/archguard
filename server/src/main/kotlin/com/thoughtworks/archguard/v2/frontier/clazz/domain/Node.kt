@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.clazz.domain
+package com.thoughtworks.archguard.v2.frontier.clazz.domain
 
 class Node(var node: String, var type: TypeEnum) {
     var children: HashSet<Node> = HashSet()

@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.clazz.domain.ClazzType
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.ClazzType
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import io.mockk.MockKAnnotations
@@ -46,14 +46,24 @@ class DobboWithXmlPluginTest {
         val methodDependencies = listOf(Dependency(method1, method2))
 
         every { jClassRepository.getJClassesHasModules(systemId) } returns listOf(class2)
-        every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(class3, class4)
-        every { xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, method1.clazz, method2.clazz) } returns listOf(SubModuleDubbo("any", "module3", "any"))
+        every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(
+            class3,
+            class4
+        )
+        every {
+            xmlConfigService.getRealCalleeModuleByXmlConfig(
+                systemId,
+                method1.clazz,
+                method2.clazz
+            )
+        } returns listOf(SubModuleDubbo("any", "module3", "any"))
 
         // when
         val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(systemId, methodDependencies)
 
         // then
         assertEquals(1, fixedMethodDependencies.size)
-        assertThat(fixedMethodDependencies).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(method1, method3)))
+        assertThat(fixedMethodDependencies).usingDefaultElementComparator()
+            .containsExactlyElementsOf(listOf(Dependency(method1, method3)))
     }
 }

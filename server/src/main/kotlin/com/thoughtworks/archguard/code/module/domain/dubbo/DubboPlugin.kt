@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
@@ -20,7 +20,10 @@ class DubboPlugin : AbstractDependPlugin() {
         return PluginType.DUBBO
     }
 
-    override fun fixMethodDependencies(systemId: Long, methodDependencies: List<Dependency<JMethodVO>>): List<Dependency<JMethodVO>> {
+    override fun fixMethodDependencies(
+        systemId: Long,
+        methodDependencies: List<Dependency<JMethodVO>>
+    ): List<Dependency<JMethodVO>> {
         // A -> I, B : I
         // A -> B override
         val interfaces = jClassRepository.getJClassesHasModules(systemId).filter { it.isInterface() }
@@ -31,11 +34,19 @@ class DubboPlugin : AbstractDependPlugin() {
         return interfaces.any { it.getFullName() == jClassVO.getFullName() }
     }
 
-    private fun fixMethodDependency(systemId: Long, methodDependency: Dependency<JMethodVO>, interfaces: List<JClass>): List<Dependency<JMethodVO>> {
+    private fun fixMethodDependency(
+        systemId: Long,
+        methodDependency: Dependency<JMethodVO>,
+        interfaces: List<JClass>
+    ): List<Dependency<JMethodVO>> {
         val caller = methodDependency.caller
         val callee = methodDependency.callee
 
-        if (!isInterface(callee.clazz, interfaces) || caller.clazz.module == callee.clazz.module || caller.clazz.module == null || callee.clazz.module == null) {
+        if (!isInterface(
+                callee.clazz,
+                interfaces
+            ) || caller.clazz.module == callee.clazz.module || caller.clazz.module == null || callee.clazz.module == null
+        ) {
             return listOf(methodDependency)
         }
         return mapCalleeToReal(systemId, caller, callee).map { Dependency(caller, it) }

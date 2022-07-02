@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.code.clazz.domain.service
+package com.thoughtworks.archguard.v2.frontier.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
-import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
@@ -28,13 +28,19 @@ class ClassMethodCalleesService(
         if (target.module == null) {
             return target
         }
-        val methods = methodRepo.findMethodsByModuleAndClass(systemId, target.module, target.name).filter { configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(systemId, it.clazz) }
+        val methods = methodRepo.findMethodsByModuleAndClass(systemId, target.module, target.name).filter {
+            configureService.isDisplayNode(systemId, it.name) && configureService.isDisplayNode(
+                systemId,
+                it.clazz
+            )
+        }
         methodConfigService.buildColorConfig(methods, systemId)
         target.methods = methods
 
         methodCalleesService.buildMethodCallees(systemId, target.methods, calleeDeep, needIncludeImpl)
         if (needParents) {
-            val parents = classRepo.findClassParents(systemId, target.module, target.name).filter { configureService.isDisplayNode(systemId, it.name) }
+            val parents = classRepo.findClassParents(systemId, target.module, target.name)
+                .filter { configureService.isDisplayNode(systemId, it.name) }
             classConfigService.buildJClassColorConfig(parents, systemId)
             (target.parents as MutableList).addAll(parents)
             target.parents.forEach { findClassMethodsCallees(systemId, it, calleeDeep, needIncludeImpl, needParents) }

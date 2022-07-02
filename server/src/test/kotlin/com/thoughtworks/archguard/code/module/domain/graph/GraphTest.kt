@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain.graph
 
-import com.thoughtworks.archguard.code.clazz.domain.JField
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JField
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import org.assertj.core.api.Assertions.assertThat
@@ -17,9 +17,21 @@ class GraphTest {
 
     @Test
     internal fun should_add_nodes_and_edges() {
-        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("submodule1.class")))
-        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("submodule2.class")))
-        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("submodule3.class")))
+        val logicModule1 = LogicModule.createWithOnlyLeafMembers(
+            "id1",
+            "module1",
+            listOf(LogicComponent.createLeaf("submodule1.class"))
+        )
+        val logicModule2 = LogicModule.createWithOnlyLeafMembers(
+            "id2",
+            "module2",
+            listOf(LogicComponent.createLeaf("submodule2.class"))
+        )
+        val logicModule3 = LogicModule.createWithOnlyLeafMembers(
+            "id3",
+            "module3",
+            listOf(LogicComponent.createLeaf("submodule3.class"))
+        )
 
         graphStore.addEdge(logicModule1, logicModule2, 3)
         graphStore.addEdge(logicModule1, logicModule3, 2)
