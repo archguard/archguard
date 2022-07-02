@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
 private const val DEFAULT_MODULE_NAME = "root"
 private const val THIRD_PARTY = "root"
 
-class ClassRepository(systemId: String, language: String, workspace: String) {
+class DeprecatedClassRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100

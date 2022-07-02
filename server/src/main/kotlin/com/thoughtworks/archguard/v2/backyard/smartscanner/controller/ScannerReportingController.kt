@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.v2.backyard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ClassRepository
+import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.DeprecatedClassRepository
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ContainerRepository
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.DatamapRepository
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.DiffChangesRepository
@@ -10,13 +10,16 @@ import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.GitSourceR
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.IssueDto
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.IssueRepository
 import com.thoughtworks.archguard.v2.backyard.smartscanner.repository.ScaRepository
+import com.thoughtworks.archguard.v2.backyard.streamchannel.StreamChannel
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.event.AnalyserEvent
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -43,6 +46,7 @@ class ScannerReportingController(
     private val diffChangesRepository: DiffChangesRepository,
     private val scaRepository: ScaRepository,
     private val issueRepository: IssueRepository,
+    @Autowired private val streamChannel:StreamChannel,
 ) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -75,7 +79,7 @@ class ScannerReportingController(
         )
 
         try {
-            val repo = ClassRepository(systemId, language, path)
+            val repo = DeprecatedClassRepository(systemId, language, path)
             input.forEach { data -> repo.saveClassItem(data) }
             input.forEach { data -> repo.saveClassBody(data) }
             execute(systemId, tables)
@@ -274,5 +278,11 @@ class ScannerReportingController(
                 logger.error("delete {} failed", fileName)
             }
         }
+    }
+
+    // TODO remove other endpoints
+    @PostMapping("/publish")
+    fun publish(@RequestBody event: AnalyserEvent) {
+        streamChannel.publish(event)
     }
 }

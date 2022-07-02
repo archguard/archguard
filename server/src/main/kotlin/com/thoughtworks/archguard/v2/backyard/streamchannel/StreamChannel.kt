@@ -11,8 +11,8 @@ open class StreamChannel {
         subscribers.getOrPut(subscriber.type) { mutableListOf() }.add(subscriber)
     }
 
-    fun publish(raw: AnalyserEvent) {
-        subscribers[raw.type]?.forEach { it.process(raw) }
+    fun publish(event: AnalyserEvent) {
+        subscribers[event.type]?.forEach { it.process(event) }
     }
 }
 
