@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.v2.backyard.persistent.mongo
+package com.thoughtworks.archguard.v2.backyard.persistent.infrastructure.mongo
 
 import com.mongodb.MongoClientSettings
 import com.mongodb.MongoCredential

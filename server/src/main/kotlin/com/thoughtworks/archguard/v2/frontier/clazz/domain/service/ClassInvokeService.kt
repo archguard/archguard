@@ -1,18 +1,19 @@
 package com.thoughtworks.archguard.v2.frontier.clazz.domain.service
 
+import com.thoughtworks.archguard.config.domain.ConfigureService
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class ClassInvokeService(
-    val repo: JClassRepository,
-    val configureService: ConfigureService,
-    val classConfigService: ClassConfigService
+    @Autowired private val repo: JClassRepository,
+    @Autowired private val configureService: ConfigureService,
+    @Autowired private val classConfigService: ClassConfigService,
 ) {
-    private val log = LoggerFactory.getLogger(ClassInvokeService::class.java)
+    private val log = LoggerFactory.getLogger(this.javaClass)
 
     fun findInvokes(
         systemId: Long,
@@ -27,31 +28,21 @@ class ClassInvokeService(
     }
 
     private fun findClassCallees(systemId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {
-        if (deep == 0) {
-            return
-        }
-        if (target.module == null) {
-            return
-        }
-        var implements = listOf<JClass>()
-        if (needIncludeImpl) {
-            implements = repo.findClassImplements(systemId, target.name, target.module)
+        if (deep == 0 || target.module == null) return
+
+        target.implements = if (!needIncludeImpl) emptyList() else {
+            repo.findClassImplements(systemId, target.name, target.module)
                 .filter { configureService.isDisplayNode(systemId, it.name) }
-            classConfigService.buildJClassColorConfig(implements, systemId)
+                .also { classConfigService.buildJClassColorConfig(it, systemId) }
         }
-        target.implements = implements
 
-        val callees = repo.findCallees(systemId, target.name, target.module)
+        target.callees = repo.findCallees(systemId, target.name, target.module)
             .filter { configureService.isDisplayNode(systemId, it.clazz.name) }
-        classConfigService.buildClassRelationColorConfig(callees, systemId)
-        target.callees = callees
+            .also { classConfigService.buildClassRelationColorConfig(it, systemId) }
 
-        if (deep == 1) {
-            return
-        } else {
-            target.implements.map { findClassCallees(systemId, it, deep - 1, needIncludeImpl) }
-            target.callees.map { findClassCallees(systemId, it.clazz, deep - 1, needIncludeImpl) }
-        }
+        if (deep == 1) return
+        target.implements.map { findClassCallees(systemId, it, deep - 1, needIncludeImpl) }
+        target.callees.map { findClassCallees(systemId, it.clazz, deep - 1, needIncludeImpl) }
     }
 
     private fun findClassCallers(systemId: Long, target: JClass, deep: Int, needIncludeImpl: Boolean) {

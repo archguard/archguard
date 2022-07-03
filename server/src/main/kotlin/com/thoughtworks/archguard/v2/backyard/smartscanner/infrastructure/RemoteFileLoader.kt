@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.v2.backyard.smartscanner.infra
+package com.thoughtworks.archguard.v2.backyard.smartscanner.infrastructure
 
 import com.thoughtworks.archguard.scanner.infrastructure.FileOperator
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer

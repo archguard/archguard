@@ -4,15 +4,16 @@ import com.thoughtworks.archguard.v2.frontier.clazz.domain.CodeTree
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.v2.frontier.clazz.exception.ClassNotFountException
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class ClassService(
-    val classMethodCalleesService: ClassMethodCalleesService,
-    val classDependenciesService: ClassDependenciesService,
-    val classDependencerService: ClassDependencerService,
-    val jClassRepository: JClassRepository,
-    val classInvokeService: ClassInvokeService
+    @Autowired private val classMethodCalleesService: ClassMethodCalleesService,
+    @Autowired private val classDependenciesService: ClassDependenciesService,
+    @Autowired private val classDependencerService: ClassDependencerService,
+    @Autowired private val jClassRepository: JClassRepository,
+    @Autowired private val classInvokeService: ClassInvokeService,
 ) {
 
     fun getDependencies(systemId: Long, module: String, name: String, deep: Int): JClass {

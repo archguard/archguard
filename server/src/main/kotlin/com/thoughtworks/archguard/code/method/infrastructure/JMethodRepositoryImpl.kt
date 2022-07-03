@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.method.infrastructure
 
-import com.thoughtworks.archguard.v2.frontier.clazz.domain.JField
-import com.thoughtworks.archguard.v2.frontier.clazz.infrastructure.JClassRepositoryImpl
 import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
+import com.thoughtworks.archguard.v2.backyard.persistent.infrastructure.jdbi.JDBIJClassRepositoryImpl
+import com.thoughtworks.archguard.v2.frontier.clazz.domain.JField
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class JMethodRepositoryImpl(val jdbi: Jdbi) : JMethodRepository {
-    private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
+    private val log = LoggerFactory.getLogger(JDBIJClassRepositoryImpl::class.java)
 
     override fun findMethodFields(id: String): List<JField> {
         val sql =

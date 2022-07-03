@@ -1,34 +1,47 @@
-package com.thoughtworks.archguard.v2.frontier.clazz.infrastructure
+package com.thoughtworks.archguard.v2.backyard.persistent.infrastructure.jdbi
 
+import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
+import com.thoughtworks.archguard.v2.backyard.persistent.po.ClassRelationPo
+import com.thoughtworks.archguard.v2.backyard.persistent.po.JClassPo
+import com.thoughtworks.archguard.v2.backyard.persistent.po.JClassPo.Companion.toJClass
+import com.thoughtworks.archguard.v2.backyard.streamchannel.AnalyserEventSubscriber
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JField
-import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import com.thoughtworks.archguard.common.TypeMap
+import org.archguard.scanner.core.event.AnalyserEvent
+import org.archguard.scanner.core.event.AnalyserEventType
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
-    private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
+class JDBIJClassRepositoryImpl(
+    @Autowired private val jdbi: Jdbi,
+) : JClassRepository, AnalyserEventSubscriber {
+    private val log = LoggerFactory.getLogger(this.javaClass)
+
+    override val type: AnalyserEventType = AnalyserEventType.CODE_DATA_STRUCT
+    override fun process(raw: AnalyserEvent) {
+        TODO("Not yet implemented")
+    }
 
     override fun getJClassBy(systemId: Long, name: String, module: String?): JClass? {
         val sql =
             "select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module"
-        val jClassDto: JClassDto? = jdbi.withHandle<JClassDto, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        val jClassPo: JClassPo? = jdbi.withHandle<JClassPo, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             val jClassDtos = it.createQuery(sql)
                 .bind("systemId", systemId)
                 .bind("name", name)
                 .bind("module", module)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
 
             jClassDtos.findFirst().orElse(null)
         }
-        return jClassDto?.toJClass()
+        return jClassPo?.toJClass()
     }
 
     override fun findClassParents(systemId: Long, module: String, name: String): List<JClass> {
@@ -37,10 +50,10 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           And c.system_id = $systemId" +
                 "           AND c.name = '$name' AND c.module = '$module'"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<List<JClassPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .list()
         }.map { it.toJClass() }
     }
@@ -51,10 +64,10 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "           WHERE c.id = cp.a AND cp.b = p.id" +
                 "           AND c.system_id = $systemId" +
                 "           AND p.name = '$name' AND p.module='$module'"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<List<JClassPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .list()
         }.map { it.toJClass() }
     }
@@ -68,16 +81,16 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                 "                     AND a.system_id = b.system_id" +
                 "                     AND a.system_id = $systemId" +
                 "                     GROUP BY b.clzname, b.module"
-        return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
+        return jdbi.withHandle<List<ClassRelationPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(ClassRelationPo::class.java))
             it.createQuery(sql)
-                .mapTo(ClassRelationDTO::class.java)
+                .mapTo(ClassRelationPo::class.java)
                 .list()
         }.map { toClassRelation(systemId, it) }
     }
 
     override fun findCallers(systemId: Long, name: String, module: String): List<ClassRelation> {
-        return jdbi.withHandle<List<ClassRelationDTO>, Nothing> {
+        return jdbi.withHandle<List<ClassRelationPo>, Nothing> {
             val sql = "SELECT a.clzname as clzname, a.module as module, COUNT(1) as count " +
                     "                     FROM code_method a,`code_ref_method_callees` cl,code_method b" +
                     "                     WHERE a.id = cl.a and b.id = cl.b" +
@@ -86,9 +99,9 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
                     "                     AND a.clzname = '$name' AND a.module = '$module'" +
                     "                     AND b.clzname <> '$name'" +
                     "                     GROUP BY a.clzname, a.module"
-            it.registerRowMapper(ConstructorMapper.factory(ClassRelationDTO::class.java))
+            it.registerRowMapper(ConstructorMapper.factory(ClassRelationPo::class.java))
             it.createQuery(sql)
-                .mapTo(ClassRelationDTO::class.java)
+                .mapTo(ClassRelationPo::class.java)
                 .list()
         }.map { toClassRelation(systemId, it) }
     }
@@ -104,7 +117,7 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
         }
     }
 
-    private fun toClassRelation(systemId: Long, it: ClassRelationDTO): ClassRelation {
+    private fun toClassRelation(systemId: Long, it: ClassRelationPo): ClassRelation {
         val jClassByName = getJClassBy(systemId, it.clzname, it.module)
         return if (jClassByName == null) {
             ClassRelation(JClass(NOT_EXIST_ID, it.clzname, it.module), it.count)
@@ -116,10 +129,10 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     override fun findDependencers(id: String): List<JClass> {
         val sql =
             "select id, name, module, loc, access from code_class where id in (select a from code_ref_class_dependencies where b='$id' and b <> a)"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<List<JClassPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .list()
         }.map { it.toJClass() }
     }
@@ -127,20 +140,20 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     override fun findDependencees(id: String): List<JClass> {
         val sql =
             "select id, name, module, loc, access from code_class where id in (select b from code_ref_class_dependencies where a='$id' and b <> a)"
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<List<JClassPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .list()
         }.map { it.toJClass() }
     }
 
     override fun getJClassById(id: String): JClass? {
         val sql = "select id, name, module, loc, access from code_class where id='$id'"
-        return jdbi.withHandle<JClassDto, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<JClassPo, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .one()
         }.toJClass()
     }
@@ -151,32 +164,16 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
             "SELECT id, name, module, loc, access FROM code_class where system_id = :systemId and is_test = false " +
                     "and is_thirdparty = false and loc is not null"
 
-        return jdbi.withHandle<List<JClassDto>, Nothing> {
-            it.registerRowMapper(ConstructorMapper.factory(JClassDto::class.java))
+        return jdbi.withHandle<List<JClassPo>, Nothing> {
+            it.registerRowMapper(ConstructorMapper.factory(JClassPo::class.java))
             it.createQuery(sql)
                 .bind("systemId", systemId)
-                .mapTo(JClassDto::class.java)
+                .mapTo(JClassPo::class.java)
                 .list()
         }.map { it.toJClass() }
     }
 
     override fun getJClassesHasModules(systemId: Long): List<JClass> {
         return this.getAllBySystemId(systemId).filter { it.module != null }
-    }
-}
-
-data class ClassRelationDTO(val clzname: String, val module: String?, val count: Int)
-
-class JClassDto(val id: String, val name: String, val module: String?, val loc: Int?, val access: String?) {
-    fun toJClass(): JClass {
-        val jClass = JClass(id, name, module)
-        if (access == null) {
-            return jClass
-        }
-        val accessInt = access.toIntOrNull()
-        if (accessInt != null) {
-            TypeMap.getClassType(accessInt).forEach { jClass.addClassType(it) }
-        }
-        return jClass
     }
 }

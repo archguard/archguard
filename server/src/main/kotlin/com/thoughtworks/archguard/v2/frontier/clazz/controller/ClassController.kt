@@ -3,16 +3,14 @@ package com.thoughtworks.archguard.v2.frontier.clazz.controller
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.CodeTree
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.JClass
 import com.thoughtworks.archguard.v2.frontier.clazz.domain.service.ClassService
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/systems/{systemId}/classes")
-class ClassController(val service: ClassService) {
+class ClassController(
+    @Autowired private val service: ClassService
+) {
 
     @GetMapping("/{name}/dependencies")
     fun getDependencies(
@@ -35,9 +33,8 @@ class ClassController(val service: ClassService) {
         @RequestParam(value = "needIncludeImpl", required = false, defaultValue = "true") needIncludeImpl: Boolean?
     ): JClass {
         return service.findInvokes(
-            systemId, module, name, callerDeep ?: deep, calleeDeep ?: deep,
-            needIncludeImpl
-                ?: true
+            systemId, module, name,
+            callerDeep ?: deep, calleeDeep ?: deep, needIncludeImpl ?: true
         )
     }
 
@@ -54,8 +51,7 @@ class ClassController(val service: ClassService) {
     }
 
     @GetMapping("/code-tree")
-    fun getCodeTree(@PathVariable("systemId") systemId: Long): ResponseEntity<CodeTree> {
-        val codeTree = service.initCodeTree(systemId)
-        return ResponseEntity.ok(codeTree)
+    fun getCodeTree(@PathVariable("systemId") systemId: Long): CodeTree {
+        return service.initCodeTree(systemId)
     }
 }

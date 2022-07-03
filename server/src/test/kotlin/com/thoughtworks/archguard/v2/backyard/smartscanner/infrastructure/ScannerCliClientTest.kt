@@ -1,16 +1,9 @@
-package com.thoughtworks.archguard.smartscanner.infra
+package com.thoughtworks.archguard.v2.backyard.smartscanner.infrastructure
 
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import com.thoughtworks.archguard.v2.backyard.smartscanner.ScannerCommand
-import com.thoughtworks.archguard.v2.backyard.smartscanner.infra.RemoteFileLoader
-import com.thoughtworks.archguard.v2.backyard.smartscanner.infra.ScannerCliClient
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockkObject
-import io.mockk.runs
-import io.mockk.slot
-import io.mockk.unmockkObject
+import io.mockk.*
 import org.archguard.scanner.core.context.AnalyserType
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

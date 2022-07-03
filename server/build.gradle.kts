@@ -81,7 +81,7 @@ dependencies {
 
     // mongodb
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+//    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 
     // deprecated: mysql and jdbi
     implementation("org.springframework.boot:spring-boot-starter-jdbc")

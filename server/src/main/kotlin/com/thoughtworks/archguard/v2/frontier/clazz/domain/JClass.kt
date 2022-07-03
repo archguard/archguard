@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 /**
  * JClass is an Entity, so it must have an id.
  */
-open class JClass(val id: String, val name: String, val module: String?) {
+data class JClass(val id: String, val name: String, val module: String?) {
     private val log = LoggerFactory.getLogger(JClass::class.java)
 
     var methods: List<JMethod> = ArrayList()
@@ -36,10 +36,6 @@ open class JClass(val id: String, val name: String, val module: String?) {
         return classType.contains(ClazzType.ABSTRACT_CLASS)
     }
 
-    override fun toString(): String {
-        return "JClass(name='$name', module='$module', callees=$callees, callers=$callers, parents=$parents, implements=$implements, dependencees=$dependencies, dependencers=$dependencers, id=$id, classType=$classType)"
-    }
-
     fun getFullName(): String {
         return "$module.$name"
     }
@@ -48,28 +44,6 @@ open class JClass(val id: String, val name: String, val module: String?) {
         val jClassVO = JClassVO(name, module)
         jClassVO.id = this.id
         return jClassVO
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as JClass
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (module != other.module) return false
-        if (classType != other.classType) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + module.hashCode()
-        result = 31 * result + classType.hashCode()
-        return result
     }
 
     fun buildColorConfigure(configures: List<Configure>) {
