@@ -47,6 +47,8 @@ services:
     volumes:
       - mysql:/var/lib/mysql:rw
 #    user: mysql
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
