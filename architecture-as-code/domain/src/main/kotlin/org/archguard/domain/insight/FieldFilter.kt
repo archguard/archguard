@@ -39,6 +39,9 @@ data class FieldFilter(
             return "$operator $query"
         }
 
+        /**
+         * todo: add `and` and `or` support
+         */
         private fun multipleQuery(models: List<FieldFilter>) = models.mapNotNull {
             when (it.type) {
                 FilterType.NORMAL -> {
