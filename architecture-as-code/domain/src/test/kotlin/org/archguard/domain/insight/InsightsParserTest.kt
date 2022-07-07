@@ -6,6 +6,7 @@ internal class InsightsParserTest {
 
     @Test
     internal fun sample() {
-        InsightsParser().tokenize("field:method != 'sample'")
+        val result = InsightsParser().tokenize("field:method != 'sample'")
+        println()
     }
 }
