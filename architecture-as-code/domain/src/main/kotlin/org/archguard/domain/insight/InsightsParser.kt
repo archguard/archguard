@@ -280,7 +280,7 @@ class InsightsParser(val input: String) {
                         }
 
 
-                        if (text[current + 1] == c) {
+                        if (current + 1 < length && text[current + 1] == c) {
                             current++
                             value += c
                             tokens.add(Token(TokenType.fromChar(c), value, start, ++current))
@@ -306,6 +306,16 @@ class InsightsParser(val input: String) {
                                 Token(TokenType.Unknown, value, start, current)
                             }
                         )
+                    }
+
+                    c == '&' || c == '|' -> {
+                        val start = current
+                        if (current + 1 < length && text[current + 1] == c) {
+                            current += 2
+                            tokens.add(Token(type = TokenType.Combinator, value = "$c$c", start, end = current))
+                        } else {
+                            tokens.add(Token(type = TokenType.Unknown, value = c.toString(), start, end = ++current))
+                        }
                     }
 
                     c == ' ' || c == '\t' -> current++
