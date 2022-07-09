@@ -191,4 +191,11 @@ internal class InsightsParserTest {
 
         assertEquals("Comparator is not presents", exception.message)
     }
+
+    @Test
+    fun toQuery() {
+        val queryString = InsightsParser("a='a' and b=%b% or c!='c' && d>'d' || e=/e/").parse().toString()
+
+        assertEquals("where a = a and b like b or c != c and d > d", queryString)
+    }
 }

@@ -240,7 +240,14 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                         }
                     }
 
-                    else -> { /* TODO: Support Regex query */
+                    QueryMode.RegexMode -> {
+                        // TODO(CGQAQ): Remove this when Regex is supported
+                        val result = sb.removeSuffix(" and ").removeSuffix(" or ")
+                        sb.clear()
+                        sb.append(result)
+                    }
+
+                    else -> { /* TODO(CGQAQ): Support Regex query */
                     }
                 }
             } else {
