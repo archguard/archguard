@@ -1,6 +1,7 @@
 package org.archguard.domain.insight
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 internal class InsightsParserTest {
@@ -97,5 +98,97 @@ internal class InsightsParserTest {
         val tokens = InsightsParser.tokenize("dep")
         assertEquals(1, tokens.size)
         assertEquals(Token(TokenType.Identifier, value = "dep", start = 0, end = 3), tokens[0])
+    }
+
+    @Test
+    fun validQuery() {
+        val query = InsightsParser("dep_name = 'hello'").parse()
+        assertEquals(1, query.data.size)
+        assertEquals(
+            Either.Left(QueryExpression("dep_name", "'hello'", QueryMode.StrictMode, Comparison.Equal)),
+            query.data[0]
+        )
+    }
+
+    @Test
+    fun validMultipleQuery() {
+        val query = InsightsParser("a = 'hello' and b = %b% or c = /c/").parse()
+        assertEquals(5, query.data.size)
+
+        listOf<Either<QueryExpression, QueryCombinator>>(
+            Either.Left(
+                QueryExpression(
+                    left = "a",
+                    right = "hello",
+                    queryMode = QueryMode.StrictMode,
+                    comparison = Comparison.Equal
+                )
+            ),
+            Either.Right(QueryCombinator(value = "and", type = CombinatorType.And)),
+            Either.Left(
+                QueryExpression(
+                    left = "b",
+                    right = "b",
+                    queryMode = QueryMode.LikeMode,
+                    comparison = Comparison.Equal
+                )
+            ),
+            Either.Right(QueryCombinator(value = "or", type = CombinatorType.Or)),
+            Either.Left(
+                QueryExpression(
+                    left = "c",
+                    right = "c",
+                    queryMode = QueryMode.RegexMode,
+                    comparison = Comparison.Equal
+                )
+            )
+        ).forEachIndexed { index, expected ->
+            assertEquals(expected, query.data[index])
+        }
+    }
+
+    @Test
+    fun invalidQueryUnpaired() {
+        val exception = assertThrows<java.lang.IllegalArgumentException> {
+            InsightsParser("a = '").parse()
+        }
+
+        assertEquals("Input is not a valid query", exception.message)
+    }
+
+    @Test
+    fun invalidQueryThatBeginWithCombinator() {
+        val exception = assertThrows<java.lang.IllegalArgumentException> {
+            InsightsParser("and a='5'").parse()
+        }
+
+        assertEquals("Combinator should followed by a full expression", exception.message)
+    }
+
+    @Test
+    fun invalidQueryThatEndWithCombinator() {
+        val exception = assertThrows<java.lang.IllegalArgumentException> {
+            InsightsParser("a='5' and").parse()
+        }
+
+        assertEquals("Combinator should not presents at the end of query", exception.message)
+    }
+
+    @Test
+    fun invalidQueryIdentifierIsNotPresents() {
+        val exception = assertThrows<java.lang.IllegalArgumentException> {
+            InsightsParser("='5'").parse()
+        }
+
+        assertEquals("Identifier is not presents", exception.message)
+    }
+
+    @Test
+    fun invalidQueryComparatorIsNotPresents(){
+        val exception = assertThrows<java.lang.IllegalArgumentException> {
+            InsightsParser("a '5'").parse()
+        }
+
+        assertEquals("Comparator is not presents", exception.message)
     }
 }

@@ -111,6 +111,17 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
 
         return null
     }
+
+    override fun equals(other: Any?) = when (other) {
+        !is Either<*, *> -> false
+        else -> this.innerVal == other.innerVal
+    }
+
+    override fun hashCode(): Int {
+        var result = innerVal.hashCode()
+        result = 31 * result + isA.hashCode()
+        return result
+    }
 }
 
 data class QueryExpression(val left: String, val right: String, val queryMode: QueryMode, val comparison: Comparison)
@@ -152,7 +163,10 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                             result.add(
                                 Either.Left(
                                     QueryExpression(
-                                        left!!, it.value.removeSurrounding("\""), QueryMode.StrictMode, comparison!!
+                                        left!!,
+                                        it.value.removeSurrounding("\"").removeSurrounding("'"),
+                                        QueryMode.StrictMode,
+                                        comparison!!
                                     )
                                 )
                             )
@@ -196,6 +210,11 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                     )
                 }
             }
+
+            if (!result.last().isA) {
+                throw IllegalArgumentException("Combinator should not presents at the end of query")
+            }
+
             return Query(result)
         }
     }
