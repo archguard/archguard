@@ -1,7 +1,10 @@
 package org.archguard.domain.insight
 
+import java.lang.IllegalArgumentException
+import java.lang.StringBuilder
+
 enum class TokenType {
-    Keyword, Operator, Identifier, Separator, StringKind, RegexKind, LikeKind, ComparisonKind, Unknown;
+    Combinator, Identifier, StringKind, RegexKind, LikeKind, ComparisonKind, Unknown;
 
     companion object {
         fun fromChar(ch: Char): TokenType = when (ch) {
@@ -9,6 +12,34 @@ enum class TokenType {
             '/' -> RegexKind
             '%' -> LikeKind
             else -> Unknown
+        }
+    }
+}
+
+enum class QueryMode {
+    StrictMode, RegexMode, LikeMode, Invalid;
+
+    companion object {
+        @Suppress("unused")
+        fun fromTokenType(type: TokenType) {
+            when (type) {
+                TokenType.StringKind -> StrictMode
+                TokenType.RegexKind -> RegexMode
+                TokenType.LikeKind -> LikeMode
+                else -> Invalid
+            }
+        }
+    }
+}
+
+enum class CombinatorType {
+    And, Or, NotSupported;
+
+    companion object {
+        fun fromString(str: String) = when (str) {
+            "and", "&&" -> And
+            "or", "||" -> Or
+            else -> NotSupported
         }
     }
 }
@@ -28,21 +59,22 @@ enum class Comparison {
             else -> NotSupported
         }
     }
+
+    override fun toString() = when (this) {
+        Equal -> "="
+        NotEqual -> "!="
+        GreaterThan -> ">"
+        GreaterThanOrEqual -> ">="
+        LessThan -> "<"
+        LessThanOrEqual -> "<="
+        NotSupported -> "invalid"
+    }
 }
 
-
-// languages keywords
-val INSIGHTS_KEYWORDS = listOf("field")
-
-// todo: load from backend.
-// sca
-val SCA_KEYWORDS = listOf("dep_name", "dep_version")
-
-// issues
-val ISSUE_KEYWORDS = listOf("name", "rule_type", "severity")
-
 // operatorish keywords
-val OP_KEYWORDS = listOf("and", "or", "&&", "||")
+val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||")
+
+val COMPARATOR_KEYWORDS = listOf("=", "==", ">", "<", ">=", "<=", "!=")
 
 val WRAPPER_SYMBOLS = listOf('\'', '"', '`', '/', '%')
 
@@ -51,75 +83,251 @@ val COMPARATOR_REG = Regex("[<>=!]")
 
 data class Token(val type: TokenType, val value: String, val start: Int, val end: Int)
 
-class InsightsParser {
-    fun tokenize(text: String): List<Token> {
-        val length = text.length
-        var current = 0
-        val tokens = mutableListOf<Token>()
+class Either<A, B> private constructor(private val innerVal: Any, val isA: Boolean) {
+    companion object {
+        @Suppress("FunctionName")
+        fun <T : Any, O> Left(a: T): Either<T, O> {
+            return Either(a, true)
+        }
 
-        while (current < length) {
-            val c = text[current]
-            when {
-                CHAR_REG.matches(c.toString()) -> {
-                    val start = current
-                    var value = c.toString()
-                    while (current + 1 < length && CHAR_REG.matches(text[current + 1].toString())) {
-                        value += text[current + 1]
-                        current++
+        @Suppress("FunctionName")
+        fun <T : Any, O> Right(a: T): Either<O, T> {
+            return Either(a, false)
+        }
+    }
+
+    fun getAorNull(): A? {
+        if (isA) {
+            @Suppress("UNCHECKED_CAST") return this.innerVal as A
+        }
+
+        return null
+    }
+
+    fun getBorNull(): B? {
+        if (!isA) {
+            @Suppress("UNCHECKED_CAST") return this.innerVal as B
+        }
+
+        return null
+    }
+}
+
+data class QueryExpression(val left: String, val right: String, val queryMode: QueryMode, val comparison: Comparison)
+data class QueryCombinator(val value: String, val type: CombinatorType)
+
+class Query private constructor(val data: List<Either<QueryExpression, QueryCombinator>>) {
+    companion object {
+        fun fromTokens(tokens: List<Token>): Query {
+            var left: String? = null
+            var comparison: Comparison? = null
+            var valid = false
+            val result: MutableList<Either<QueryExpression, QueryCombinator>> = mutableListOf()
+            tokens.forEach {
+                when (it.type) {
+                    TokenType.Combinator -> {
+                        if (!valid) {
+                            throw IllegalArgumentException("Combinator should followed by a full expression")
+                        }
+                        left = null
+                        comparison = null
+                        valid = false
+                        result.add(Either.Right(QueryCombinator(it.value, CombinatorType.fromString(it.value))))
                     }
 
-                    current++
-
-                    val token = when {
-                        INSIGHTS_KEYWORDS.contains(value) -> Token(TokenType.Keyword, value, start, current)
-                        OP_KEYWORDS.contains(value) -> Token(TokenType.Operator, value, start, current)
-                        else -> Token(TokenType.Identifier, value, start, current)
+                    TokenType.Identifier -> {
+                        left = it.value
                     }
-                    tokens.add(token)
+
+                    TokenType.ComparisonKind -> {
+                        comparison = Comparison.fromString(it.value)
+                    }
+
+                    TokenType.StringKind -> {
+                        if (left == null) {
+                            throw IllegalArgumentException("Identifier is not presents")
+                        } else if (comparison == null) {
+                            throw IllegalArgumentException("Comparator is not presents")
+                        } else {
+                            result.add(
+                                Either.Left(
+                                    QueryExpression(
+                                        left!!, it.value.removeSurrounding("\""), QueryMode.StrictMode, comparison!!
+                                    )
+                                )
+                            )
+                            valid = true
+                        }
+                    }
+                    TokenType.RegexKind -> {
+                        if (left == null) {
+                            throw IllegalArgumentException("Identifier is not presents")
+                        } else if (comparison == null) {
+                            throw IllegalArgumentException("Comparator is not presents")
+                        } else {
+                            result.add(
+                                Either.Left(
+                                    QueryExpression(
+                                        left!!, it.value.removeSurrounding("/"), QueryMode.RegexMode, comparison!!
+                                    )
+                                )
+                            )
+                            valid = true
+                        }
+                    }
+                    TokenType.LikeKind -> {
+                        if (left == null) {
+                            throw IllegalArgumentException("Identifier is not presents")
+                        } else if (comparison == null) {
+                            throw IllegalArgumentException("Comparator is not presents")
+                        } else {
+                            result.add(
+                                Either.Left(
+                                    QueryExpression(
+                                        left!!, it.value.removeSurrounding("%"), QueryMode.LikeMode, comparison!!
+                                    )
+                                )
+                            )
+                            valid = true
+                        }
+                    }
+                    TokenType.Unknown -> /* unreachable if use InsightsParser#parse */ throw IllegalArgumentException(
+                        "Input should not contains unknown type token"
+                    )
                 }
+            }
+            return Query(result)
+        }
+    }
 
-                WRAPPER_SYMBOLS.contains(c) -> {
-                    val endChar = c
-                    var value = c.toString()
-                    val start = current
+    override fun toString(): String {
+        if (data.isEmpty()) {
+            return ""
+        }
 
-                    while (current + 1 <= length && text[current + 1] != endChar) {
-                        value += text[current + 1]
-                        current += 1
+        val sb = StringBuilder()
+        data.forEach {
+            if (it.isA) {
+                val expr = it.getAorNull()!!
+                when (expr.queryMode) {
+                    QueryMode.StrictMode -> {
+                        sb.append("${expr.left} ${expr.comparison} ${expr.right}")
+                    }
+                    QueryMode.LikeMode -> {
+                        if (expr.comparison == Comparison.Equal) {
+                            sb.append("${expr.left} like ${expr.right}")
+                        } else {
+                            sb.append("${expr.left} not like ${expr.right}")
+                        }
                     }
 
-                    if (value != c.toString()) {
-                        current += 1
-                        value += text[current]
-                        tokens.add(Token(TokenType.fromChar(endChar), value, start, ++current))
-                    } else {
-                        current = start
+                    else -> { /* TODO: Support Regex query */
                     }
                 }
-
-                COMPARATOR_REG.matches(c.toString()) -> {
-                    val start = current
-                    var value = c.toString()
-
-                    while (current < length && COMPARATOR_REG.matches(text[current + 1].toString())) {
-                        value += text[current + 1]
-                        current += 1
+            } else {
+                val comb = it.getBorNull()!!
+                when (comb.type) {
+                    CombinatorType.And -> {
+                        sb.append(" and ")
                     }
-                    current++
-
-                    tokens.add(Token(TokenType.ComparisonKind, value, start, current))
-                }
-
-                c == ':' -> tokens.add(Token(TokenType.Separator, c.toString(), current, ++current))
-
-                c == ' ' -> current++
-
-                else -> {
-                    tokens.add(Token(TokenType.Unknown, c.toString(), current, ++current))
+                    CombinatorType.Or -> {
+                        sb.append(" or ")
+                    }
+                    else -> { /* do nothing */
+                    }
                 }
             }
         }
 
-        return tokens
+        return "where $sb"
+    }
+}
+
+class InsightsParser(val input: String) {
+    companion object {
+        fun tokenize(text: String): List<Token> {
+            val length = text.length
+            var current = 0
+            val tokens = mutableListOf<Token>()
+
+            while (current < length) {
+                val c = text[current]
+                when {
+                    CHAR_REG.matches(c.toString()) -> {
+                        val start = current
+                        var value = c.toString()
+                        while (current + 1 < length && CHAR_REG.matches(text[current + 1].toString())) {
+                            value += text[current + 1]
+                            current++
+                        }
+
+                        current++
+
+                        val token = when {
+                            COMBINATOR_KEYWORDS.contains(value) -> Token(TokenType.Combinator, value, start, current)
+                            else -> Token(TokenType.Identifier, value, start, current)
+                        }
+                        tokens.add(token)
+                    }
+
+                    WRAPPER_SYMBOLS.contains(c) -> {
+                        var value = c.toString()
+                        val start = current
+
+                        while (current + 1 < length && text[current + 1] != c) {
+                            value += text[current + 1]
+                            current += 1
+                        }
+
+
+                        if (text[current + 1] == c) {
+                            current++
+                            value += c
+                            tokens.add(Token(TokenType.fromChar(c), value, start, ++current))
+                        } else {
+                            current = start
+                            tokens.add(Token(TokenType.Unknown, c.toString(), start, ++current))
+                        }
+                    }
+
+                    COMPARATOR_REG.matches(c.toString()) -> {
+                        val start = current
+                        var value = c.toString()
+
+                        while (current < length && COMPARATOR_REG.matches(text[current + 1].toString())) {
+                            value += text[current + 1]
+                            current += 1
+                        }
+                        current++
+                        tokens.add(
+                            if (COMPARATOR_KEYWORDS.contains(value)) {
+                                Token(TokenType.ComparisonKind, value, start, current)
+                            } else {
+                                Token(TokenType.Unknown, value, start, current)
+                            }
+                        )
+                    }
+
+                    c == ' ' || c == '\t' -> current++
+
+                    else -> {
+                        tokens.add(Token(TokenType.Unknown, c.toString(), current, ++current))
+                    }
+                }
+            }
+            return tokens
+        }
+    }
+
+    lateinit var query: Query
+
+    fun parse(): Query {
+        val tokens = tokenize(input)
+        if (tokens.any { it.type == TokenType.Unknown }) {
+            throw IllegalArgumentException("Input is not a valid query")
+        }
+
+        query = Query.fromTokens(tokens)
+        return query
     }
 }
