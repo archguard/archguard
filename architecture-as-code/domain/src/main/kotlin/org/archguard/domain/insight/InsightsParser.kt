@@ -239,15 +239,15 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                     }
                     QueryMode.LikeMode -> {
                         if (expr.comparison == Comparison.Equal) {
-                            sb.append("${expr.left} like '${expr.right.replace("'", "''")}'")
+                            sb.append("${expr.left} LIKE '${expr.right.replace("'", "''")}'")
                         } else {
-                            sb.append("${expr.left} not like '${expr.right.replace("'", "''")}'")
+                            sb.append("${expr.left} NOT LIKE '${expr.right.replace("'", "''")}'")
                         }
                     }
 
                     QueryMode.RegexMode -> {
                         // TODO(CGQAQ): Remove this when Regex is supported
-                        val result = sb.removeSuffix(" and ").removeSuffix(" or ")
+                        val result = sb.removeSuffix(" AND ").removeSuffix(" OR ")
                         sb.clear()
                         sb.append(result)
                     }
@@ -259,10 +259,10 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                 val comb = it.getBorNull()!!
                 when (comb.type) {
                     CombinatorType.And -> {
-                        sb.append(" and ")
+                        sb.append(" AND ")
                     }
                     CombinatorType.Or -> {
-                        sb.append(" or ")
+                        sb.append(" OR ")
                     }
                     else -> { /* do nothing */
                     }
@@ -270,7 +270,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
             }
         }
 
-        return "where $sb"
+        return "WHERE $sb"
     }
 }
 
