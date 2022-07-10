@@ -59,10 +59,10 @@ internal class InsightsParserTest {
 
     @Test
     fun likeValue() {
-        val tokens = InsightsParser.tokenize("dep_name = %log4j%")
+        val tokens = InsightsParser.tokenize("dep_name = @%log4j%@")
 
         assertEquals(3, tokens.size)
-        assertEquals(Token(type = TokenType.LikeKind, value = "%log4j%", start = 11, end = 18), tokens[2])
+        assertEquals(Token(type = TokenType.LikeKind, value = "@%log4j%@", start = 11, end = 20), tokens[2])
     }
 
     @Test
@@ -112,7 +112,7 @@ internal class InsightsParserTest {
 
     @Test
     fun validMultipleQuery() {
-        val query = InsightsParser("a = 'hello' and b = %b% or c = /c/").parse()
+        val query = InsightsParser("a = 'hello' and b = @%b%@ or c = /c/").parse()
         assertEquals(5, query.data.size)
 
         listOf<Either<QueryExpression, QueryCombinator>>(
@@ -128,7 +128,7 @@ internal class InsightsParserTest {
             Either.Left(
                 QueryExpression(
                     left = "b",
-                    right = "b",
+                    right = "%b%",
                     queryMode = QueryMode.LikeMode,
                     comparison = Comparison.Equal
                 )
@@ -184,7 +184,7 @@ internal class InsightsParserTest {
     }
 
     @Test
-    fun invalidQueryComparatorIsNotPresents(){
+    fun invalidQueryComparatorIsNotPresents() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
             InsightsParser("a '5'").parse()
         }
@@ -194,8 +194,15 @@ internal class InsightsParserTest {
 
     @Test
     fun toQuery() {
-        val queryString = InsightsParser("a='a' and b=%b% or c!='c' && d>'d' || e=/e/").parse().toString()
+        val queryString = InsightsParser("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").parse().toString()
 
-        assertEquals("where a = a and b like b or c != c and d > d", queryString)
+        assertEquals("WHERE a = 'a' AND b LIKE 'b%' OR c != 'c' AND d > 'd'", queryString)
+    }
+
+    @Test
+    fun toQueryWithEscape() {
+        val queryString = InsightsParser("message = `you're welcome`").parse().toString()
+
+        assertEquals("WHERE message = 'you''re welcome'", queryString)
     }
 }
