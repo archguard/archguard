@@ -112,9 +112,14 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
         return null
     }
 
-    override fun equals(other: Any?) = when (other) {
-        !is Either<*, *> -> false
-        else -> this.innerVal == other.innerVal
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Either<*, *>) return false
+
+        if (innerVal != other.innerVal) return false
+        if (isA != other.isA) return false
+
+        return true
     }
 
     override fun hashCode(): Int {

@@ -105,7 +105,7 @@ internal class InsightsParserTest {
         val query = InsightsParser("dep_name = 'hello'").parse()
         assertEquals(1, query.data.size)
         assertEquals(
-            Either.Left(QueryExpression("dep_name", "'hello'", QueryMode.StrictMode, Comparison.Equal)),
+            Either.Left(QueryExpression("dep_name", "hello", QueryMode.StrictMode, Comparison.Equal)),
             query.data[0]
         )
     }
