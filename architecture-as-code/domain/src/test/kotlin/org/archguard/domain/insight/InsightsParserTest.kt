@@ -184,7 +184,7 @@ internal class InsightsParserTest {
     }
 
     @Test
-    fun invalidQueryComparatorIsNotPresents(){
+    fun invalidQueryComparatorIsNotPresents() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
             InsightsParser("a '5'").parse()
         }
@@ -194,8 +194,15 @@ internal class InsightsParserTest {
 
     @Test
     fun toQuery() {
-        val queryString = InsightsParser("a='a' and b=%b% or c!='c' && d>'d' || e=/e/").parse().toString()
+        val queryString = InsightsParser("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").parse().toString()
 
-        assertEquals("where a = a and b like b or c != c and d > d", queryString)
+        assertEquals("where a = 'a' and b like 'b%' or c != 'c' and d > 'd'", queryString)
+    }
+
+    @Test
+    fun toQueryWithEscape() {
+        val queryString = InsightsParser("message = `you're welcome`").parse().toString()
+
+        assertEquals("where message = 'you''re welcome'", queryString)
     }
 }

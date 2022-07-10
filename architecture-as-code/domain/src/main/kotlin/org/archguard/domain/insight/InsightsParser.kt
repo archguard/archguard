@@ -10,7 +10,7 @@ enum class TokenType {
         fun fromChar(ch: Char): TokenType = when (ch) {
             '\'', '"', '`' -> StringKind
             '/' -> RegexKind
-            '%' -> LikeKind
+            '@' -> LikeKind
             else -> Unknown
         }
     }
@@ -76,7 +76,7 @@ val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||")
 
 val COMPARATOR_KEYWORDS = listOf("=", "==", ">", "<", ">=", "<=", "!=")
 
-val WRAPPER_SYMBOLS = listOf('\'', '"', '`', '/', '%')
+val WRAPPER_SYMBOLS = listOf('\'', '"', '`', '/', '@')
 
 val CHAR_REG = Regex("[a-zA-Z_]")
 val COMPARATOR_REG = Regex("[<>=!]")
@@ -169,7 +169,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                                 Either.Left(
                                     QueryExpression(
                                         left!!,
-                                        it.value.removeSurrounding("\"").removeSurrounding("'"),
+                                        it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
                                         QueryMode.StrictMode,
                                         comparison!!
                                     )
@@ -203,7 +203,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                             result.add(
                                 Either.Left(
                                     QueryExpression(
-                                        left!!, it.value.removeSurrounding("%"), QueryMode.LikeMode, comparison!!
+                                        left!!, it.value.removeSurrounding("@"), QueryMode.LikeMode, comparison!!
                                     )
                                 )
                             )
@@ -235,13 +235,13 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                 val expr = it.getAorNull()!!
                 when (expr.queryMode) {
                     QueryMode.StrictMode -> {
-                        sb.append("${expr.left} ${expr.comparison} ${expr.right}")
+                        sb.append("${expr.left} ${expr.comparison} '${expr.right.replace("'", "''")}'")
                     }
                     QueryMode.LikeMode -> {
                         if (expr.comparison == Comparison.Equal) {
-                            sb.append("${expr.left} like ${expr.right}")
+                            sb.append("${expr.left} like '${expr.right.replace("'", "''")}'")
                         } else {
-                            sb.append("${expr.left} not like ${expr.right}")
+                            sb.append("${expr.left} not like '${expr.right.replace("'", "''")}'")
                         }
                     }
 
