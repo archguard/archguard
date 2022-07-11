@@ -14,13 +14,23 @@ enum class Comparison {
             return when (symbol) {
                 ">" -> GreaterThan
                 ">=" -> GreaterThanOrEqual
-                "==" -> Equal
+                "==", "=" -> Equal
                 "!=" -> NotEqual
                 "<=" -> LessThanOrEqual
                 "<" -> LessThan
                 else -> NotSupport
             }
         }
+    }
+
+    override fun toString() = when (this) {
+        Equal -> "="
+        NotEqual -> "!="
+        GreaterThan -> ">"
+        GreaterThanOrEqual -> ">="
+        LessThan -> "<"
+        LessThanOrEqual -> "<="
+        NotSupport -> "invalid"
     }
 }
 

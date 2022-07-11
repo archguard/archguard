@@ -3,6 +3,8 @@ package org.archguard.domain.insight
 import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 
+import org.archguard.domain.comparison.Comparison
+
 enum class TokenType {
     Combinator, Identifier, StringKind, RegexKind, LikeKind, ComparisonKind, Unknown;
 
@@ -41,33 +43,6 @@ enum class CombinatorType {
             "or", "||" -> Or
             else -> NotSupported
         }
-    }
-}
-
-enum class Comparison {
-    Equal, NotEqual, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotSupported;
-
-    companion object {
-        fun fromString(str: String) = when (str) {
-            "==" -> Equal
-            "=" -> Equal
-            "!=" -> NotEqual
-            ">" -> GreaterThan
-            ">=" -> GreaterThanOrEqual
-            "<" -> LessThan
-            "<=" -> LessThanOrEqual
-            else -> NotSupported
-        }
-    }
-
-    override fun toString() = when (this) {
-        Equal -> "="
-        NotEqual -> "!="
-        GreaterThan -> ">"
-        GreaterThanOrEqual -> ">="
-        LessThan -> "<"
-        LessThanOrEqual -> "<="
-        NotSupported -> "invalid"
     }
 }
 
@@ -225,7 +200,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
         }
     }
 
-    override fun toString(): String {
+    fun toSQL(prefix: String = "WHERE"): String {
         if (data.isEmpty()) {
             return ""
         }
@@ -271,7 +246,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
             }
         }
 
-        return "WHERE $sb"
+        return "$prefix $sb"
     }
 }
 

@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.insights.application.issue.IssueInsightFilter
 import com.thoughtworks.archguard.insights.application.issue.IssueInsightRepository
 import com.thoughtworks.archguard.insights.application.sca.ScaInsightFilter
 import com.thoughtworks.archguard.insights.application.sca.ScaInsightRepository
-import org.archguard.domain.insight.FieldFilter
+import org.archguard.domain.insight.InsightsParser
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,7 +13,7 @@ class InsightApplicationService(
     val scaRepo: ScaInsightRepository
 ) {
     fun byExpression(id: Long?, expression: String, type: String): InsightModel {
-        val models = FieldFilter.parse(expression)
+        val models = InsightsParser.parse(expression)
 
         return when (type) {
             "sca" -> {

@@ -2,31 +2,30 @@ package com.thoughtworks.archguard.insights.application.sca
 
 import com.thoughtworks.archguard.insights.application.InsightModelDto
 import org.archguard.domain.comparison.Comparison
-import org.archguard.domain.insight.FilterType
-import org.archguard.domain.insight.FieldFilter
-import org.archguard.domain.insight.FilterValue
-import org.archguard.domain.insight.ValueValidate
+import org.archguard.domain.insight.*
 import org.archguard.domain.version.VersionComparison
 
 object ScaInsightFilter {
     fun byInsight(
-        filters: List<FieldFilter>,
+        query: Query,
         insightModelDtos: List<InsightModelDto>,
     ): List<InsightModelDto> {
         val versionComparison = VersionComparison()
         var versionFilter: Pair<FilterValue, Comparison>? = null
-        var nameFilter: Pair<FilterValue, FilterType>? = null
+        var nameFilter: Pair<FilterValue, QueryMode>? = null
 
-        filters.map { filter ->
-            when (filter.name) {
+        query.data.map { filter ->
+            when (filter.getLeftOrNull()?.left) {
                 "dep_version" -> {
-                    versionFilter = filter.value to filter.comparison
+                    val expr = filter.getLeftOrNull()!!
+                    versionFilter = expr.right to expr.comparison
                 }
 
                 "dep_name" -> {
-                    val isFilterInQuery = filter.type == FilterType.LIKE
+                    val expr = filter.getLeftOrNull()!!
+                    val isFilterInQuery = expr.queryMode == QueryMode.LikeMode
                     if (!isFilterInQuery) {
-                        nameFilter = filter.value to filter.type
+                        nameFilter = expr.right to expr.queryMode
                     }
                 }
 

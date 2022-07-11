@@ -1,23 +1,21 @@
 package com.thoughtworks.archguard.insights.application.issue
 
 import com.thoughtworks.archguard.insights.application.IssueModelDto
-import org.archguard.domain.insight.FilterType
-import org.archguard.domain.insight.FieldFilter
-import org.archguard.domain.insight.FilterValue
-import org.archguard.domain.insight.ValueValidate
+import org.archguard.domain.insight.*
 
 object IssueInsightFilter {
-    fun byInsight(filters: List<FieldFilter>, models: List<IssueModelDto>, ): List<IssueModelDto> {
-        val filterMap: MutableMap<String, Pair<FilterValue, FilterType>> = mutableMapOf()
+    fun byInsight(filters: Query, models: List<IssueModelDto>): List<IssueModelDto> {
+        val filterMap: MutableMap<String, Pair<FilterValue, QueryMode>> = mutableMapOf()
 
-        filters.map { filter ->
-            when (filter.name) {
+        filters.data.map { filter ->
+            when (filter.getLeftOrNull()?.left) {
                 "name" ,
                 "severity",
                 "rule_type" -> {
-                    val isFilterInQuery = filter.type == FilterType.LIKE
+                    val expr = filter.getLeftOrNull()!!
+                    val isFilterInQuery = expr.queryMode == QueryMode.LikeMode
                     if (!isFilterInQuery) {
-                        filterMap[filter.name] = filter.value to filter.type
+                        filterMap[expr.left] = expr.right to expr.queryMode
                     }
                 }
                 else -> {}

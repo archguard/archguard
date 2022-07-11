@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
+import org.archguard.domain.comparison.Comparison
+
 internal class InsightsParserTest {
 
     @Test
@@ -194,14 +196,14 @@ internal class InsightsParserTest {
 
     @Test
     fun toQuery() {
-        val queryString = InsightsParser.parse("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").toString()
+        val queryString = InsightsParser.parse("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").toSQL()
 
         assertEquals("WHERE a = 'a' AND b LIKE 'b%' OR c != 'c' AND d > 'd'", queryString)
     }
 
     @Test
     fun toQueryWithEscape() {
-        val queryString = InsightsParser.parse("message = `you're welcome`").toString()
+        val queryString = InsightsParser.parse("message = `you're welcome`").toSQL()
 
         assertEquals("WHERE message = 'you''re welcome'", queryString)
     }
