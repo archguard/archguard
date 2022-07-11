@@ -358,6 +358,7 @@ object InsightsParser {
         return tokens
     }
 
+    // todo: add cache for input string
     fun parse(input: String): Query {
         val tokens = tokenize(input)
         if (tokens.any { it.type == TokenType.Unknown }) {
