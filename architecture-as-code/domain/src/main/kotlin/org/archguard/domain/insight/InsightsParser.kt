@@ -96,7 +96,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
         }
     }
 
-    fun getAorNull(): A? {
+    fun getLeftOrNull(): A? {
         if (isA) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as A
         }
@@ -104,7 +104,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
         return null
     }
 
-    fun getBorNull(): B? {
+    fun getRightOrNull(): B? {
         if (!isA) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as B
         }
@@ -159,6 +159,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                         comparison = Comparison.fromString(it.value)
                     }
 
+                    // todo: @CGQAQ merge string, regex, like
                     TokenType.StringKind -> {
                         if (left == null) {
                             throw IllegalArgumentException("Identifier is not presents")
@@ -232,7 +233,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
         val sb = StringBuilder()
         data.forEach {
             if (it.isA) {
-                val expr = it.getAorNull()!!
+                val expr = it.getLeftOrNull()!!
                 when (expr.queryMode) {
                     QueryMode.StrictMode -> {
                         sb.append("${expr.left} ${expr.comparison} '${expr.right.replace("'", "''")}'")
@@ -256,7 +257,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                     }
                 }
             } else {
-                val comb = it.getBorNull()!!
+                val comb = it.getRightOrNull()!!
                 when (comb.type) {
                     CombinatorType.And -> {
                         sb.append(" AND ")
