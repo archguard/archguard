@@ -102,7 +102,7 @@ internal class InsightsParserTest {
 
     @Test
     fun validQuery() {
-        val query = InsightsParser("dep_name = 'hello'").parse()
+        val query = InsightsParser.parse("dep_name = 'hello'")
         assertEquals(1, query.data.size)
         assertEquals(
             Either.Left(QueryExpression("dep_name", "hello", QueryMode.StrictMode, Comparison.Equal)),
@@ -112,7 +112,7 @@ internal class InsightsParserTest {
 
     @Test
     fun validMultipleQuery() {
-        val query = InsightsParser("a = 'hello' and b = @%b%@ or c = /c/").parse()
+        val query = InsightsParser.parse("a = 'hello' and b = @%b%@ or c = /c/")
         assertEquals(5, query.data.size)
 
         listOf<Either<QueryExpression, QueryCombinator>>(
@@ -150,7 +150,7 @@ internal class InsightsParserTest {
     @Test
     fun invalidQueryUnpaired() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
-            InsightsParser("a = '").parse()
+            InsightsParser.parse("a = '")
         }
 
         assertEquals("Input is not a valid query", exception.message)
@@ -159,7 +159,7 @@ internal class InsightsParserTest {
     @Test
     fun invalidQueryThatBeginWithCombinator() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
-            InsightsParser("and a='5'").parse()
+            InsightsParser.parse("and a='5'")
         }
 
         assertEquals("Combinator should followed by a full expression", exception.message)
@@ -168,7 +168,7 @@ internal class InsightsParserTest {
     @Test
     fun invalidQueryThatEndWithCombinator() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
-            InsightsParser("a='5' and").parse()
+            InsightsParser.parse("a='5' and")
         }
 
         assertEquals("Combinator should not presents at the end of query", exception.message)
@@ -177,7 +177,7 @@ internal class InsightsParserTest {
     @Test
     fun invalidQueryIdentifierIsNotPresents() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
-            InsightsParser("='5'").parse()
+            InsightsParser.parse("='5'")
         }
 
         assertEquals("Identifier is not presents", exception.message)
@@ -186,7 +186,7 @@ internal class InsightsParserTest {
     @Test
     fun invalidQueryComparatorIsNotPresents() {
         val exception = assertThrows<java.lang.IllegalArgumentException> {
-            InsightsParser("a '5'").parse()
+            InsightsParser.parse("a '5'")
         }
 
         assertEquals("Comparator is not presents", exception.message)
@@ -194,14 +194,14 @@ internal class InsightsParserTest {
 
     @Test
     fun toQuery() {
-        val queryString = InsightsParser("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").parse().toString()
+        val queryString = InsightsParser.parse("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").toString()
 
         assertEquals("WHERE a = 'a' AND b LIKE 'b%' OR c != 'c' AND d > 'd'", queryString)
     }
 
     @Test
     fun toQueryWithEscape() {
-        val queryString = InsightsParser("message = `you're welcome`").parse().toString()
+        val queryString = InsightsParser.parse("message = `you're welcome`").toString()
 
         assertEquals("WHERE message = 'you''re welcome'", queryString)
     }
