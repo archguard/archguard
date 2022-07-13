@@ -58,7 +58,7 @@ val COMPARATOR_REG = Regex("[<>=!]")
 
 data class Token(val type: TokenType, val value: String, val start: Int, val end: Int)
 
-class Either<A, B> private constructor(private val innerVal: Any, val isA: Boolean) {
+class Either<A, B> private constructor(private val innerVal: Any, val isLeft: Boolean) {
     companion object {
         @Suppress("FunctionName")
         fun <T : Any, O> Left(a: T): Either<T, O> {
@@ -72,7 +72,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
     }
 
     fun getLeftOrNull(): A? {
-        if (isA) {
+        if (isLeft) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as A
         }
 
@@ -80,7 +80,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
     }
 
     fun getRightOrNull(): B? {
-        if (!isA) {
+        if (!isLeft) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as B
         }
 
@@ -92,22 +92,26 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
         if (other !is Either<*, *>) return false
 
         if (innerVal != other.innerVal) return false
-        if (isA != other.isA) return false
+        if (isLeft != other.isLeft) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = innerVal.hashCode()
-        result = 31 * result + isA.hashCode()
+        result = 31 * result + isLeft.hashCode()
         return result
     }
 }
 
 data class QueryExpression(val left: String, val right: String, val queryMode: QueryMode, val comparison: Comparison)
 data class QueryCombinator(val value: String, val type: CombinatorType)
+data class RegexQuery(val field: String, val regex: Regex, val index: Int)
 
-class Query private constructor(val data: List<Either<QueryExpression, QueryCombinator>>) {
+class Query private constructor(
+    val data: List<Either<QueryExpression, QueryCombinator>>,
+    val regexQueries: List<RegexQuery>
+) {
     companion object {
         fun fromTokens(tokens: List<Token>): Query {
             var left: String? = null
@@ -192,11 +196,15 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                 }
             }
 
-            if (!result.last().isA) {
+            if (!result.last().isLeft) {
                 throw IllegalArgumentException("Combinator should not presents at the end of query")
             }
 
-            return Query(result)
+            return Query(result, result.filter {
+                it.isLeft && it.getLeftOrNull()!!.queryMode == QueryMode.RegexMode
+            }.mapIndexed { index, either ->
+                RegexQuery(either.getLeftOrNull()!!.left, Regex(either.getLeftOrNull()!!.right), index)
+            })
         }
     }
 
@@ -207,7 +215,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
 
         val sb = StringBuilder()
         data.forEach {
-            if (it.isA) {
+            if (it.isLeft) {
                 val expr = it.getLeftOrNull()!!
                 when (expr.queryMode) {
                     QueryMode.StrictMode -> {
