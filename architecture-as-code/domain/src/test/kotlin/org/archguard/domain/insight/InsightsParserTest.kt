@@ -215,13 +215,20 @@ internal class InsightsParserTest {
 
         assertEquals(0, query.prequeries.size)
         assertEquals(1, query.postqueries.size)
+
+        assertEquals(0, query2.prequeries.size)
+        assertEquals(1, query2.postqueries.size)
     }
 
     @Test
     fun simpleHybridQuery2() {
         val query = InsightsParser.parse("message = '5' or name = /hello/")
+        val query2 = InsightsParser.parse("name = /hello/ or message = '5'")
 
         assertEquals(1, query.prequeries.size)
         assertEquals(0, query.postqueries.size)
+
+        assertEquals(1, query2.prequeries.size)
+        assertEquals(0, query2.postqueries.size)
     }
 }
