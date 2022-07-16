@@ -70,7 +70,7 @@ internal class InsightsParserTest {
     @Test
     fun expression() {
         val sample = "dep_name = 'log4j'"
-        val tokens = InsightsParser.tokenize(sample);
+        val tokens = InsightsParser.tokenize(sample)
 
         assertEquals(3, tokens.size)
         assertEquals(Token(type = TokenType.ComparisonKind, value = "=", start = 9, end = 10), tokens[1])
@@ -210,27 +210,10 @@ internal class InsightsParserTest {
 
     @Test
     fun simpleHybridQuery() {
-        val query = InsightsParser.parse("message = '5' finally name = /hello/")
-        val query2 = InsightsParser.parse("name = /hello/ then message = '5'")
-        val query3 = InsightsParser.parse("name = /.*l/ then message = '5' finally age = /\\d+/")
+        val query = InsightsParser.parse("message = '5' then name = /hello/")
 
-        assertEquals(0, query.prequeries.size)
+        assertEquals(1, query.query.size)
         assertEquals(1, query.postqueries.size)
-
-        assertEquals(1, query2.prequeries.size)
-        assertEquals(0, query2.postqueries.size)
-
-        assertEquals(1, query3.prequeries.size)
-        assertEquals(1, query3.postqueries.size)
-    }
-
-    @Test
-    fun prequeryOnly() {
-        val query = InsightsParser.parse("name = /hello/");
-
-        assertEquals(0, query.query.size)
-        assertEquals(1, query.prequeries.size)
-        assertEquals(0, query.postqueries.size)
     }
 
     @Test
@@ -238,7 +221,14 @@ internal class InsightsParserTest {
         val query = InsightsParser.parse("name = \"hello\"")
 
         assertEquals(1, query.query.size)
-        assertEquals(0, query.prequeries.size)
         assertEquals(0, query.postqueries.size)
+    }
+
+    @Test
+    fun prequeryOnly() {
+        val query = InsightsParser.parse("name = /hello/")
+
+        assertEquals(0, query.query.size)
+        assertEquals(1, query.postqueries.size)
     }
 }

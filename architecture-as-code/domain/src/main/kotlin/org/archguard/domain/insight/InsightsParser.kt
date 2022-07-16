@@ -35,21 +35,20 @@ enum class QueryMode {
 }
 
 enum class CombinatorType {
-    And, Or, Then, Finally, NotSupported;
+    And, Or, Then, NotSupported;
 
     companion object {
         fun fromString(str: String) = when (str) {
             "and", "&&" -> And
             "or", "||" -> Or
             "then" -> Then
-            "finally" -> Finally
             else -> NotSupported
         }
     }
 }
 
 // operatorish keywords
-val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||", "then", "finally")
+val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||", "then")
 
 val COMPARATOR_KEYWORDS = listOf("=", "==", ">", "<", ">=", "<=", "!=")
 
@@ -118,7 +117,6 @@ data class RegexQuery(val field: String, val regex: Regex, val relation: Combina
 
 class Query private constructor(
     val query: List<Either<QueryExpression, QueryCombinator>>,
-    val prequeries: List<RegexQuery>,
     val postqueries: List<RegexQuery>
 ) {
     companion object {
@@ -209,7 +207,6 @@ class Query private constructor(
                 throw IllegalArgumentException("Combinator should not presents at the end of query")
             }
 
-            val prequeries = mutableListOf<RegexQuery>()
             val postqueries = mutableListOf<RegexQuery>()
 
             val thenIndex = result.indexOfFirst {
@@ -217,21 +214,16 @@ class Query private constructor(
             }
             val hasThen = thenIndex >= 0
 
-            val finallyIndex = result.indexOfFirst {
-                it.getRightOrNull()?.type == CombinatorType.Finally
-            }
-            val hasFinally = finallyIndex >= 0
 
-
-            if (!hasThen && !hasFinally) {
+            if (!hasThen) {
                 return if (result.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }) {
                     for ((index, value) in result.withIndex()) {
                         if (value.isLeft) {
                             val regexQuery = value.getLeftOrNull()!!
                             if (index == 0) {
-                                prequeries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                                postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
                             } else {
-                                prequeries.add(
+                                postqueries.add(
                                     RegexQuery(
                                         regexQuery.left,
                                         Regex(regexQuery.right),
@@ -241,42 +233,19 @@ class Query private constructor(
                             }
                         }
                     }
-                    Query(emptyList(), prequeries, postqueries)
+                    Query(emptyList(), postqueries)
+                } else if (result.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
                 } else {
-                    Query(result, prequeries, postqueries)
+                    Query(result, postqueries)
                 }
-            }
-
-            if (hasThen) {
-                for ((index, value) in result.withIndex()) {
-                    if (value.isLeft) {
-                        val regexQuery = value.getLeftOrNull()!!
-
-                        if (index - 1 > 0 && result[index - 1].getRightOrNull()?.type != CombinatorType.Then) {
-                            prequeries.add(
-                                RegexQuery(
-                                    regexQuery.left,
-                                    Regex(regexQuery.right),
-                                    result[index - 1].getRightOrNull()!!.type
-                                )
-                            )
-                        } else if (index - 1 < 0) {
-                            prequeries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                            break
-                        } else {
-                            throw IllegalArgumentException("Then should not at the query end")
-                        }
-                    }
-                }
-            }
-
-            if (hasFinally) {
+            } else {
                 val resultReversed = result.reversed()
                 for ((index, current) in resultReversed.withIndex()) {
                     if (current.isLeft) {
                         val regexQuery = current.getLeftOrNull()!!
                         val next = resultReversed[index + 1]
-                        if (next.getRightOrNull()?.type == CombinatorType.Finally) {
+                        if (next.getRightOrNull()?.type == CombinatorType.Then) {
                             postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
                             break
                         } else {
@@ -290,9 +259,15 @@ class Query private constructor(
                         }
                     }
                 }
-            }
 
-            return Query(result.slice(thenIndex + 1 until finallyIndex), prequeries, postqueries)
+                val query = result.slice(0 until thenIndex)
+
+                if (query.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+                }
+
+                return Query(query, postqueries)
+            }
         }
     }
 
