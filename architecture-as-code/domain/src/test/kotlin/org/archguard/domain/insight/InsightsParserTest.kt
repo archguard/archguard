@@ -1,10 +1,9 @@
 package org.archguard.domain.insight
 
+import org.archguard.domain.comparison.Comparison
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
-
-import org.archguard.domain.comparison.Comparison
 
 internal class InsightsParserTest {
 
@@ -114,8 +113,9 @@ internal class InsightsParserTest {
 
     @Test
     fun validMultipleQuery() {
-        val query = InsightsParser.parse("a = 'hello' and b = @%b%@ or c = /c/")
-        assertEquals(5, query.query.size)
+        val query = InsightsParser.parse("a = 'hello' and b = @%b%@")
+        assertEquals(3, query.query.size)
+
 
         listOf<Either<QueryExpression, QueryCombinator>>(
             Either.Left(
@@ -135,15 +135,6 @@ internal class InsightsParserTest {
                     comparison = Comparison.Equal
                 )
             ),
-            Either.Right(QueryCombinator(value = "or", type = CombinatorType.Or)),
-            Either.Left(
-                QueryExpression(
-                    left = "c",
-                    right = "c",
-                    queryMode = QueryMode.RegexMode,
-                    comparison = Comparison.Equal
-                )
-            )
         ).forEachIndexed { index, expected ->
             assertEquals(expected, query.query[index])
         }
