@@ -252,7 +252,8 @@ class Query private constructor(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
             postqueries: MutableList<RegexQuery>
         ): Query {
-            val postqueriesIsValid = allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
+            val postqueriesIsValid =
+                allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
             return if (postqueriesIsValid) {
                 for ((index, value) in allQueries.withIndex()) {
                     if (!value.isLeft) continue
@@ -335,15 +336,58 @@ object InsightsParser {
             val c = text[current]
             when {
                 CHAR_REG.matches(c.toString()) -> {
-                    current = parseChars(current, c, length, text, tokens)
+                    val start = current
+                    var value = c.toString()
+                    while (current + 1 < length && CHAR_REG.matches(text[current + 1].toString())) {
+                        value += text[current + 1]
+                        current++
+                    }
+
+                    current++
+
+                    val token = when {
+                        COMBINATOR_KEYWORDS.contains(value) -> Token(TokenType.Combinator, value, start, current)
+                        else -> Token(TokenType.Identifier, value, start, current)
+                    }
+                    tokens.add(token)
                 }
 
                 WRAPPER_SYMBOLS.contains(c) -> {
-                    current = parseWrappings(c, current, length, text, tokens)
+                    var value = c.toString()
+                    val start = current
+
+                    while (current + 1 < length && text[current + 1] != c) {
+                        value += text[current + 1]
+                        current += 1
+                    }
+
+
+                    if (current + 1 < length && text[current + 1] == c) {
+                        current++
+                        value += c
+                        tokens.add(Token(TokenType.fromChar(c), value, start, ++current))
+                    } else {
+                        current = start
+                        tokens.add(Token(TokenType.Unknown, c.toString(), start, ++current))
+                    }
                 }
 
                 COMPARATOR_REG.matches(c.toString()) -> {
-                    current = parseComparators(current, c, length, text, tokens)
+                    val start = current
+                    var value = c.toString()
+
+                    while (current < length && COMPARATOR_REG.matches(text[current + 1].toString())) {
+                        value += text[current + 1]
+                        current += 1
+                    }
+                    current++
+                    tokens.add(
+                        if (COMPARATOR_KEYWORDS.contains(value)) {
+                            Token(TokenType.ComparisonKind, value, start, current)
+                        } else {
+                            Token(TokenType.Unknown, value, start, current)
+                        }
+                    )
                 }
 
                 c == '&' || c == '|' -> {
@@ -364,85 +408,6 @@ object InsightsParser {
             }
         }
         return tokens
-    }
-
-    private fun parseComparators(
-        current: Int,
-        c: Char,
-        length: Int,
-        text: String,
-        tokens: MutableList<Token>
-    ): Int {
-        var current1 = current
-        val start = current1
-        var value = c.toString()
-
-        while (current1 < length && COMPARATOR_REG.matches(text[current1 + 1].toString())) {
-            value += text[current1 + 1]
-            current1 += 1
-        }
-        current1++
-        tokens.add(
-            if (COMPARATOR_KEYWORDS.contains(value)) {
-                Token(TokenType.ComparisonKind, value, start, current1)
-            } else {
-                Token(TokenType.Unknown, value, start, current1)
-            }
-        )
-        return current1
-    }
-
-    private fun parseWrappings(
-        c: Char,
-        current: Int,
-        length: Int,
-        text: String,
-        tokens: MutableList<Token>
-    ): Int {
-        var current1 = current
-        var value = c.toString()
-        val start = current1
-
-        while (current1 + 1 < length && text[current1 + 1] != c) {
-            value += text[current1 + 1]
-            current1 += 1
-        }
-
-
-        if (current1 + 1 < length && text[current1 + 1] == c) {
-            current1++
-            value += c
-            tokens.add(Token(TokenType.fromChar(c), value, start, ++current1))
-        } else {
-            current1 = start
-            tokens.add(Token(TokenType.Unknown, c.toString(), start, ++current1))
-        }
-        return current1
-    }
-
-    private fun parseChars(
-        current: Int,
-        c: Char,
-        length: Int,
-        text: String,
-        tokens: MutableList<Token>
-    ): Int {
-        var current1 = current
-        val start = current1
-        var value = c.toString()
-        while (current1 + 1 < length && CHAR_REG.matches(text[current1 + 1].toString())) {
-            value += text[current1 + 1]
-            current1++
-        }
-
-        current1++
-
-        val token = when {
-            COMBINATOR_KEYWORDS.contains(value) -> Token(TokenType.Combinator, value, start, current1)
-            else -> Token(TokenType.Identifier, value, start, current1)
-        }
-        tokens.add(token)
-        return current1
     }
 
     private val queryCache = HashMap<String, Query>()
