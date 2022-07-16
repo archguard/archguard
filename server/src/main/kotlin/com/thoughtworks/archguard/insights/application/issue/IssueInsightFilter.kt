@@ -1,36 +1,24 @@
 package com.thoughtworks.archguard.insights.application.issue
 
 import com.thoughtworks.archguard.insights.application.IssueModelDto
-import org.archguard.domain.insight.FilterType
-import org.archguard.domain.insight.FieldFilter
-import org.archguard.domain.insight.FilterValue
-import org.archguard.domain.insight.ValueValidate
+import com.thoughtworks.archguard.insights.application.postFilter
+import org.archguard.domain.insight.Query
+import org.archguard.domain.insight.RegexQuery
 
 object IssueInsightFilter {
-    fun byInsight(filters: List<FieldFilter>, models: List<IssueModelDto>, ): List<IssueModelDto> {
-        val filterMap: MutableMap<String, Pair<FilterValue, FilterType>> = mutableMapOf()
+    fun byInsight(query: Query, models: List<IssueModelDto>): List<IssueModelDto> {
+        return postFilter(query, models, ::filterModel)
+    }
 
-        filters.map { filter ->
-            when (filter.name) {
-                "name" ,
-                "severity",
-                "rule_type" -> {
-                    val isFilterInQuery = filter.type == FilterType.LIKE
-                    if (!isFilterInQuery) {
-                        filterMap[filter.name] = filter.value to filter.type
-                    }
-                }
-                else -> {}
-            }
-        }
-
-        val filteredModels = models.filter {
-            ValueValidate.isValueValid(it.rule_type, filterMap["rule_type"]) &&
-            ValueValidate.isValueValid(it.severity, filterMap["severity"]) &&
-            ValueValidate.isValueValid(it.name, filterMap["name"])
-        }
-
-        return filteredModels
+    private fun filterModel(
+        data: IssueModelDto,
+        condition: RegexQuery
+    ) = when (condition.field) {
+        "name" -> data.name.matches(condition.regex)
+        "severity" -> data.severity.matches(condition.regex)
+        "rule_id" -> data.rule_id.matches(condition.regex)
+        "rule_type" -> data.rule_type.matches(condition.regex)
+        else -> true
     }
 }
 

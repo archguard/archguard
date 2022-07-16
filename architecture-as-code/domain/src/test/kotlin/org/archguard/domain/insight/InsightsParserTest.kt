@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
+import org.archguard.domain.comparison.Comparison
+
 internal class InsightsParserTest {
 
     @Test
@@ -68,7 +70,7 @@ internal class InsightsParserTest {
     @Test
     fun expression() {
         val sample = "dep_name = 'log4j'"
-        val tokens = InsightsParser.tokenize(sample);
+        val tokens = InsightsParser.tokenize(sample)
 
         assertEquals(3, tokens.size)
         assertEquals(Token(type = TokenType.ComparisonKind, value = "=", start = 9, end = 10), tokens[1])
@@ -103,17 +105,17 @@ internal class InsightsParserTest {
     @Test
     fun validQuery() {
         val query = InsightsParser.parse("dep_name = 'hello'")
-        assertEquals(1, query.data.size)
+        assertEquals(1, query.query.size)
         assertEquals(
             Either.Left(QueryExpression("dep_name", "hello", QueryMode.StrictMode, Comparison.Equal)),
-            query.data[0]
+            query.query[0]
         )
     }
 
     @Test
     fun validMultipleQuery() {
         val query = InsightsParser.parse("a = 'hello' and b = @%b%@ or c = /c/")
-        assertEquals(5, query.data.size)
+        assertEquals(5, query.query.size)
 
         listOf<Either<QueryExpression, QueryCombinator>>(
             Either.Left(
@@ -143,7 +145,7 @@ internal class InsightsParserTest {
                 )
             )
         ).forEachIndexed { index, expected ->
-            assertEquals(expected, query.data[index])
+            assertEquals(expected, query.query[index])
         }
     }
 
@@ -194,15 +196,41 @@ internal class InsightsParserTest {
 
     @Test
     fun toQuery() {
-        val queryString = InsightsParser.parse("a='a' and b=@b%@ or c!='c' && d>'d' || e=/e/").toString()
+        val queryString = InsightsParser.parse("a='a' and b=@b%@ or c!='c' && d>'d'").toSQL()
 
         assertEquals("WHERE a = 'a' AND b LIKE 'b%' OR c != 'c' AND d > 'd'", queryString)
     }
 
     @Test
     fun toQueryWithEscape() {
-        val queryString = InsightsParser.parse("message = `you're welcome`").toString()
+        val queryString = InsightsParser.parse("message = `you're welcome`").toSQL()
 
         assertEquals("WHERE message = 'you''re welcome'", queryString)
+    }
+
+    @Test
+    fun simpleHybridQuery() {
+        val query = InsightsParser.parse("message = '5' then name = /hello/")
+
+        assertEquals(1, query.query.size)
+        assertEquals(1, query.postqueries.size)
+    }
+
+    @Test
+    fun sqlQueryOnly() {
+        val query = InsightsParser.parse("name = \"hello\"")
+
+        assertEquals(1, query.query.size)
+        assertEquals(0, query.postqueries.size)
+    }
+
+    @Test
+    fun postqueryOnly() {
+        val query = InsightsParser.parse("name = /hello/")
+
+        assertEquals(0, query.query.size)
+        assertEquals(1, query.postqueries.size)
+        // Postquery only mode should generate sql WHERE clause like below
+        assertEquals("WHERE 1=1", query.toSQL())
     }
 }

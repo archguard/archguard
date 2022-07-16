@@ -3,6 +3,8 @@ package org.archguard.domain.insight
 import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 
+import org.archguard.domain.comparison.Comparison
+
 enum class TokenType {
     Combinator, Identifier, StringKind, RegexKind, LikeKind, ComparisonKind, Unknown;
 
@@ -33,46 +35,20 @@ enum class QueryMode {
 }
 
 enum class CombinatorType {
-    And, Or, NotSupported;
+    And, Or, Then, NotSupported;
 
     companion object {
         fun fromString(str: String) = when (str) {
             "and", "&&" -> And
             "or", "||" -> Or
+            "then" -> Then
             else -> NotSupported
         }
-    }
-}
-
-enum class Comparison {
-    Equal, NotEqual, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotSupported;
-
-    companion object {
-        fun fromString(str: String) = when (str) {
-            "==" -> Equal
-            "=" -> Equal
-            "!=" -> NotEqual
-            ">" -> GreaterThan
-            ">=" -> GreaterThanOrEqual
-            "<" -> LessThan
-            "<=" -> LessThanOrEqual
-            else -> NotSupported
-        }
-    }
-
-    override fun toString() = when (this) {
-        Equal -> "="
-        NotEqual -> "!="
-        GreaterThan -> ">"
-        GreaterThanOrEqual -> ">="
-        LessThan -> "<"
-        LessThanOrEqual -> "<="
-        NotSupported -> "invalid"
     }
 }
 
 // operatorish keywords
-val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||")
+val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||", "then")
 
 val COMPARATOR_KEYWORDS = listOf("=", "==", ">", "<", ">=", "<=", "!=")
 
@@ -83,7 +59,7 @@ val COMPARATOR_REG = Regex("[<>=!]")
 
 data class Token(val type: TokenType, val value: String, val start: Int, val end: Int)
 
-class Either<A, B> private constructor(private val innerVal: Any, val isA: Boolean) {
+class Either<A, B> private constructor(private val innerVal: Any, val isLeft: Boolean) {
     companion object {
         @Suppress("FunctionName")
         fun <T : Any, O> Left(a: T): Either<T, O> {
@@ -97,7 +73,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
     }
 
     fun getLeftOrNull(): A? {
-        if (isA) {
+        if (isLeft) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as A
         }
 
@@ -105,7 +81,7 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
     }
 
     fun getRightOrNull(): B? {
-        if (!isA) {
+        if (!isLeft) {
             @Suppress("UNCHECKED_CAST") return this.innerVal as B
         }
 
@@ -117,14 +93,14 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
         if (other !is Either<*, *>) return false
 
         if (innerVal != other.innerVal) return false
-        if (isA != other.isA) return false
+        if (isLeft != other.isLeft) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = innerVal.hashCode()
-        result = 31 * result + isA.hashCode()
+        result = 31 * result + isLeft.hashCode()
         return result
     }
 }
@@ -132,7 +108,17 @@ class Either<A, B> private constructor(private val innerVal: Any, val isA: Boole
 data class QueryExpression(val left: String, val right: String, val queryMode: QueryMode, val comparison: Comparison)
 data class QueryCombinator(val value: String, val type: CombinatorType)
 
-class Query private constructor(val data: List<Either<QueryExpression, QueryCombinator>>) {
+/**
+ * @property field field that will be filtered
+ * @property regex regex that used to filtering field's value
+ * @property relation This is the relation to previous condition
+ */
+data class RegexQuery(val field: String, val regex: Regex, val relation: CombinatorType?)
+
+class Query private constructor(
+    val query: List<Either<QueryExpression, QueryCombinator>>,
+    val postqueries: List<RegexQuery>
+) {
     companion object {
         fun fromTokens(tokens: List<Token>): Query {
             var left: String? = null
@@ -217,22 +203,82 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                 }
             }
 
-            if (!result.last().isA) {
+            if (!result.last().isLeft) {
                 throw IllegalArgumentException("Combinator should not presents at the end of query")
             }
 
-            return Query(result)
+            val postqueries = mutableListOf<RegexQuery>()
+
+            val thenIndex = result.indexOfFirst {
+                it.getRightOrNull()?.type == CombinatorType.Then
+            }
+            val hasThen = thenIndex >= 0
+
+
+            if (!hasThen) {
+                return if (result.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }) {
+                    for ((index, value) in result.withIndex()) {
+                        if (value.isLeft) {
+                            val regexQuery = value.getLeftOrNull()!!
+                            if (index == 0) {
+                                postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                            } else {
+                                postqueries.add(
+                                    RegexQuery(
+                                        regexQuery.left,
+                                        Regex(regexQuery.right),
+                                        result[index - 1].getRightOrNull()!!.type
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    Query(emptyList(), postqueries)
+                } else if (result.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+                } else {
+                    Query(result, postqueries)
+                }
+            } else {
+                val resultReversed = result.reversed()
+                for ((index, current) in resultReversed.withIndex()) {
+                    if (current.isLeft) {
+                        val regexQuery = current.getLeftOrNull()!!
+                        val next = resultReversed[index + 1]
+                        if (next.getRightOrNull()?.type == CombinatorType.Then) {
+                            postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                            break
+                        } else {
+                            postqueries.add(
+                                RegexQuery(
+                                    regexQuery.left,
+                                    Regex(regexQuery.right),
+                                    next.getRightOrNull()!!.type
+                                )
+                            )
+                        }
+                    }
+                }
+
+                val query = result.slice(0 until thenIndex)
+
+                if (query.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+                }
+
+                return Query(query, postqueries)
+            }
         }
     }
 
-    override fun toString(): String {
-        if (data.isEmpty()) {
-            return ""
+    fun toSQL(prefix: String = "WHERE"): String {
+        if (query.isEmpty()) {
+            return "$prefix 1=1"
         }
 
         val sb = StringBuilder()
-        data.forEach {
-            if (it.isA) {
+        query.forEach {
+            if (it.isLeft) {
                 val expr = it.getLeftOrNull()!!
                 when (expr.queryMode) {
                     QueryMode.StrictMode -> {
@@ -247,10 +293,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
                     }
 
                     QueryMode.RegexMode -> {
-                        // TODO(CGQAQ): Remove this when Regex is supported
-                        val result = sb.removeSuffix(" AND ").removeSuffix(" OR ")
-                        sb.clear()
-                        sb.append(result)
+                        throw IllegalArgumentException("SQL query is not support regex mode")
                     }
 
                     else -> { /* TODO(CGQAQ): Support Regex query */
@@ -271,7 +314,7 @@ class Query private constructor(val data: List<Either<QueryExpression, QueryComb
             }
         }
 
-        return "WHERE $sb"
+        return "$prefix $sb"
     }
 }
 
