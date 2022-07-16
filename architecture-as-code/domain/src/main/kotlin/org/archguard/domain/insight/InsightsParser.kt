@@ -1,8 +1,5 @@
 package org.archguard.domain.insight
 
-import java.lang.IllegalArgumentException
-import java.lang.StringBuilder
-
 import org.archguard.domain.comparison.Comparison
 
 enum class TokenType {
@@ -121,6 +118,22 @@ class Query private constructor(
 ) {
     companion object {
         fun fromTokens(tokens: List<Token>): Query {
+            val allQueries = parseQueries(tokens)
+            val postqueries = mutableListOf<RegexQuery>()
+
+            val thenIndex = allQueries.indexOfFirst {
+                it.getRightOrNull()?.type == CombinatorType.Then
+            }
+            val hasThen = thenIndex >= 0
+
+            return if (!hasThen) {
+                queryWithoutThen(allQueries, postqueries)
+            } else {
+                queryWithThen(allQueries, postqueries, thenIndex)
+            }
+        }
+
+        private fun parseQueries(tokens: List<Token>): List<Either<QueryExpression, QueryCombinator>> {
             var left: String? = null
             var comparison: Comparison? = null
             var valid = false
@@ -145,58 +158,11 @@ class Query private constructor(
                         comparison = Comparison.fromString(it.value)
                     }
 
-                    // todo: @CGQAQ merge string, regex, like
-                    TokenType.StringKind -> {
-                        if (left == null) {
-                            throw IllegalArgumentException("Identifier is not presents")
-                        } else if (comparison == null) {
-                            throw IllegalArgumentException("Comparator is not presents")
-                        } else {
-                            result.add(
-                                Either.Left(
-                                    QueryExpression(
-                                        left!!,
-                                        it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
-                                        QueryMode.StrictMode,
-                                        comparison!!
-                                    )
-                                )
-                            )
-                            valid = true
-                        }
+                    TokenType.StringKind, TokenType.RegexKind, TokenType.LikeKind -> {
+                        valid = true
+                        handleWrappingValue(left, comparison, it, result)
                     }
-                    TokenType.RegexKind -> {
-                        if (left == null) {
-                            throw IllegalArgumentException("Identifier is not presents")
-                        } else if (comparison == null) {
-                            throw IllegalArgumentException("Comparator is not presents")
-                        } else {
-                            result.add(
-                                Either.Left(
-                                    QueryExpression(
-                                        left!!, it.value.removeSurrounding("/"), QueryMode.RegexMode, comparison!!
-                                    )
-                                )
-                            )
-                            valid = true
-                        }
-                    }
-                    TokenType.LikeKind -> {
-                        if (left == null) {
-                            throw IllegalArgumentException("Identifier is not presents")
-                        } else if (comparison == null) {
-                            throw IllegalArgumentException("Comparator is not presents")
-                        } else {
-                            result.add(
-                                Either.Left(
-                                    QueryExpression(
-                                        left!!, it.value.removeSurrounding("@"), QueryMode.LikeMode, comparison!!
-                                    )
-                                )
-                            )
-                            valid = true
-                        }
-                    }
+
                     TokenType.Unknown -> /* unreachable if use InsightsParser#parse */ throw IllegalArgumentException(
                         "Input should not contains unknown type token"
                     )
@@ -206,67 +172,109 @@ class Query private constructor(
             if (!result.last().isLeft) {
                 throw IllegalArgumentException("Combinator should not presents at the end of query")
             }
+            return result
+        }
 
-            val postqueries = mutableListOf<RegexQuery>()
-
-            val thenIndex = result.indexOfFirst {
-                it.getRightOrNull()?.type == CombinatorType.Then
-            }
-            val hasThen = thenIndex >= 0
-
-
-            if (!hasThen) {
-                return if (result.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }) {
-                    for ((index, value) in result.withIndex()) {
-                        if (value.isLeft) {
-                            val regexQuery = value.getLeftOrNull()!!
-                            if (index == 0) {
-                                postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                            } else {
-                                postqueries.add(
-                                    RegexQuery(
-                                        regexQuery.left,
-                                        Regex(regexQuery.right),
-                                        result[index - 1].getRightOrNull()!!.type
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    Query(emptyList(), postqueries)
-                } else if (result.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
-                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
-                } else {
-                    Query(result, postqueries)
-                }
+        private fun handleWrappingValue(
+            left: String?,
+            comparison: Comparison?,
+            it: Token,
+            result: MutableList<Either<QueryExpression, QueryCombinator>>
+        ) {
+            if (left == null) {
+                throw IllegalArgumentException("Identifier is not presents")
+            } else if (comparison == null) {
+                throw IllegalArgumentException("Comparator is not presents")
             } else {
-                val resultReversed = result.reversed()
-                for ((index, current) in resultReversed.withIndex()) {
-                    if (current.isLeft) {
-                        val regexQuery = current.getLeftOrNull()!!
-                        val next = resultReversed[index + 1]
-                        if (next.getRightOrNull()?.type == CombinatorType.Then) {
-                            postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                            break
-                        } else {
-                            postqueries.add(
-                                RegexQuery(
-                                    regexQuery.left,
-                                    Regex(regexQuery.right),
-                                    next.getRightOrNull()!!.type
-                                )
-                            )
-                        }
+                val pair = when (it.type) {
+                    TokenType.StringKind ->
+                        Pair(
+                            it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
+                            QueryMode.StrictMode
+                        )
+                    TokenType.LikeKind ->
+                        Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
+                    TokenType.RegexKind ->
+                        Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
+                    else -> {
+                        throw RuntimeException("unexpected else branch")
                     }
                 }
+                result.add(
+                    Either.Left(
+                        QueryExpression(
+                            left,
+                            pair.first,
+                            pair.second,
+                            comparison
+                        )
+                    )
+                )
+            }
+        }
 
-                val query = result.slice(0 until thenIndex)
-
-                if (query.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
-                    throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+        private fun queryWithThen(
+            allQueries: List<Either<QueryExpression, QueryCombinator>>,
+            postqueries: MutableList<RegexQuery>,
+            thenIndex: Int
+        ): Query {
+            val resultReversed = allQueries.reversed()
+            for ((index, current) in resultReversed.withIndex()) {
+                if (current.isLeft) {
+                    val regexQuery = current.getLeftOrNull()!!
+                    val next = resultReversed[index + 1]
+                    if (next.getRightOrNull()?.type == CombinatorType.Then) {
+                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                        break
+                    } else {
+                        postqueries.add(
+                            RegexQuery(
+                                regexQuery.left,
+                                Regex(regexQuery.right),
+                                next.getRightOrNull()!!.type
+                            )
+                        )
+                    }
                 }
+            }
 
-                return Query(query, postqueries)
+            val query = allQueries.slice(0 until thenIndex)
+
+            val queryHasRegex = query.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }
+            if (queryHasRegex) {
+                throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+            }
+
+            return Query(query, postqueries)
+        }
+
+        private fun queryWithoutThen(
+            allQueries: List<Either<QueryExpression, QueryCombinator>>,
+            postqueries: MutableList<RegexQuery>
+        ): Query {
+            val postqueriesIsValid =
+                allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
+            return if (postqueriesIsValid) {
+                for ((index, value) in allQueries.withIndex()) {
+                    if (!value.isLeft) continue
+                    val regexQuery = value.getLeftOrNull()!!
+                    if (index == 0) {
+                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                    } else {
+                        postqueries.add(
+                            RegexQuery(
+                                regexQuery.left,
+                                Regex(regexQuery.right),
+                                allQueries[index - 1].getRightOrNull()!!.type
+                            )
+                        )
+                    }
+                }
+                Query(emptyList(), postqueries)
+            } else if (allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+            } else {
+                Query(allQueries, postqueries)
             }
         }
     }
@@ -402,13 +410,19 @@ object InsightsParser {
         return tokens
     }
 
-    // todo: add cache for input string
+    private val queryCache = HashMap<String, Query>()
     fun parse(input: String): Query {
+        if (queryCache.containsKey(input)) {
+            return queryCache[input]!!
+        }
+
         val tokens = tokenize(input)
         if (tokens.any { it.type == TokenType.Unknown }) {
             throw IllegalArgumentException("Input is not a valid query")
         }
 
-        return Query.fromTokens(tokens)
+        val query = Query.fromTokens(tokens)
+        queryCache[input] = query
+        return query
     }
 }
