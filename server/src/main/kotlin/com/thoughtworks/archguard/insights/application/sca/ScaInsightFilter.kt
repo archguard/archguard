@@ -1,45 +1,24 @@
 package com.thoughtworks.archguard.insights.application.sca
 
 import com.thoughtworks.archguard.insights.application.InsightModelDto
-import org.archguard.domain.comparison.Comparison
-import org.archguard.domain.insight.*
-import org.archguard.domain.version.VersionComparison
+import com.thoughtworks.archguard.insights.application.postFilter
+import org.archguard.domain.insight.Query
+import org.archguard.domain.insight.RegexQuery
 
 object ScaInsightFilter {
-    fun byInsight(
-        query: Query,
-        insightModelDtos: List<InsightModelDto>,
-    ): List<InsightModelDto> {
-        val versionComparison = VersionComparison()
-        var versionFilter: Pair<FilterValue, Comparison>? = null
-        var nameFilter: Pair<FilterValue, QueryMode>? = null
+    fun byInsight(query: Query, models: List<InsightModelDto>): List<InsightModelDto> {
+        return postFilter(query, models, ::filterModel)
+    }
 
-        query.data.map { filter ->
-            when (filter.getLeftOrNull()?.left) {
-                "dep_version" -> {
-                    val expr = filter.getLeftOrNull()!!
-                    versionFilter = expr.right to expr.comparison
-                }
-
-                "dep_name" -> {
-                    val expr = filter.getLeftOrNull()!!
-                    val isFilterInQuery = expr.queryMode == QueryMode.LikeMode
-                    if (!isFilterInQuery) {
-                        nameFilter = expr.right to expr.queryMode
-                    }
-                }
-
-                else -> {}
-            }
-        }
-
-
-        val filteredModels = insightModelDtos.filter {
-            ValueValidate.isVersionValid(it.dep_version, versionComparison, versionFilter)
-                    && ValueValidate.isValueValid(it.dep_name, nameFilter)
-        }
-
-        return filteredModels
+    private fun filterModel(
+        data: InsightModelDto,
+        condition: RegexQuery
+    ) = when (condition.field) {
+        "dep_name" -> data.dep_name.matches(condition.regex)
+        "dep_version" -> data.dep_version.matches(condition.regex)
+        "dep_artifact" -> data.dep_artifact.matches(condition.regex)
+        "dep_group" -> data.dep_group.matches(condition.regex)
+        else -> true
     }
 }
 

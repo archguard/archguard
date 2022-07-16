@@ -273,7 +273,7 @@ class Query private constructor(
 
     fun toSQL(prefix: String = "WHERE"): String {
         if (query.isEmpty()) {
-            return ""
+            return "$prefix 1=1"
         }
 
         val sb = StringBuilder()

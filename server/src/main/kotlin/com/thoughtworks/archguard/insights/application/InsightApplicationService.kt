@@ -13,27 +13,27 @@ class InsightApplicationService(
     val scaRepo: ScaInsightRepository
 ) {
     fun byExpression(id: Long?, expression: String, type: String): InsightModel {
-        val models = InsightsParser.parse(expression)
+        val query = InsightsParser.parse(expression)
 
         return when (type) {
             "sca" -> {
                 val insightModelDtos = if (id == null || id == 0L) {
-                    scaRepo.filterByCondition(models)
+                    scaRepo.filterByCondition(query)
                 } else {
-                    scaRepo.filterByConditionWithSystemId(id, models)
+                    scaRepo.filterByConditionWithSystemId(id, query)
                 }
 
-                val filtered = ScaInsightFilter.byInsight(models, insightModelDtos)
+                val filtered = ScaInsightFilter.byInsight(query, insightModelDtos)
                 InsightModel(filtered.size, filtered)
             }
             "issue" -> {
                 val issueModelDtos = if (id == null || id == 0L) {
-                    issueRepo.filterByCondition(models)
+                    issueRepo.filterByCondition(query)
                 } else {
-                    issueRepo.filterByConditionWithSystemId(id, models)
+                    issueRepo.filterByConditionWithSystemId(id, query)
                 }
 
-                val filtered = IssueInsightFilter.byInsight(models, issueModelDtos)
+                val filtered = IssueInsightFilter.byInsight(query, issueModelDtos)
                 InsightModel(filtered.size, filtered)
             }
             else -> {

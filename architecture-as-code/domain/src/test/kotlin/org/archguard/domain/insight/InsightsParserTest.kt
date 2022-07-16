@@ -225,10 +225,12 @@ internal class InsightsParserTest {
     }
 
     @Test
-    fun prequeryOnly() {
+    fun postqueryOnly() {
         val query = InsightsParser.parse("name = /hello/")
 
         assertEquals(0, query.query.size)
         assertEquals(1, query.postqueries.size)
+        // Postquery only mode should generate sql WHERE clause like below
+        assertEquals("WHERE 1=1", query.toSQL())
     }
 }

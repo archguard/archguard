@@ -16,7 +16,8 @@ data class IssueModelDto(
     val rule_id: String,
     val rule_type: String,
     val severity: String
-): ModelContent()
+) : ModelContent()
+
 
 // TODO: we keep `rule_id` naming in the model for now, but we should remove it in the future.
 data class InsightModelDto(
@@ -24,4 +25,4 @@ data class InsightModelDto(
     val dep_group: String,
     val dep_artifact: String,
     val dep_version: String,
-): ModelContent()
+) : ModelContent()
