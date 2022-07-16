@@ -185,32 +185,32 @@ class Query private constructor(
                 throw IllegalArgumentException("Identifier is not presents")
             } else if (comparison == null) {
                 throw IllegalArgumentException("Comparator is not presents")
-            } else {
-                val pair = when (it.type) {
-                    TokenType.StringKind ->
-                        Pair(
-                            it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
-                            QueryMode.StrictMode
-                        )
-                    TokenType.LikeKind ->
-                        Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
-                    TokenType.RegexKind ->
-                        Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
-                    else -> {
-                        throw RuntimeException("unexpected else branch")
-                    }
+            }
+
+            val pair = when (it.type) {
+                TokenType.StringKind ->
+                    Pair(
+                        it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
+                        QueryMode.StrictMode
+                    )
+                TokenType.LikeKind ->
+                    Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
+                TokenType.RegexKind ->
+                    Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
+                else -> {
+                    throw RuntimeException("unexpected else branch")
                 }
-                result.add(
-                    Either.Left(
-                        QueryExpression(
-                            left,
-                            pair.first,
-                            pair.second,
-                            comparison
-                        )
+            }
+            result.add(
+                Either.Left(
+                    QueryExpression(
+                        left,
+                        pair.first,
+                        pair.second,
+                        comparison
                     )
                 )
-            }
+            )
         }
 
         private fun queryWithThen(
