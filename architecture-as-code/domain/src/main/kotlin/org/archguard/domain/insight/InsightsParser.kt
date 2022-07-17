@@ -114,7 +114,7 @@ data class RegexQuery(val field: String, val regex: Regex, val relation: Combina
 
 class Query private constructor(
     val query: List<Either<QueryExpression, QueryCombinator>>,
-    val postqueries: List<RegexQuery>
+    val postqueries: List<RegexQuery>,
 ) {
     companion object {
         fun fromTokens(tokens: List<Token>): Query {
@@ -179,7 +179,7 @@ class Query private constructor(
             left: String?,
             comparison: Comparison?,
             it: Token,
-            result: MutableList<Either<QueryExpression, QueryCombinator>>
+            result: MutableList<Either<QueryExpression, QueryCombinator>>,
         ) {
             if (left == null) {
                 throw IllegalArgumentException("Identifier is not presents")
@@ -216,7 +216,7 @@ class Query private constructor(
         private fun queryWithThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
             postqueries: MutableList<RegexQuery>,
-            thenIndex: Int
+            thenIndex: Int,
         ): Query {
             val resultReversed = allQueries.reversed()
             for ((index, current) in resultReversed.withIndex()) {
@@ -227,13 +227,8 @@ class Query private constructor(
                         postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
                         break
                     } else {
-                        postqueries.add(
-                            RegexQuery(
-                                regexQuery.left,
-                                Regex(regexQuery.right),
-                                next.getRightOrNull()!!.type
-                            )
-                        )
+                        val regex = RegexQuery(regexQuery.left, Regex(regexQuery.right), next.getRightOrNull()!!.type)
+                        postqueries.add(regex)
                     }
                 }
             }
@@ -250,7 +245,7 @@ class Query private constructor(
 
         private fun queryWithoutThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postqueries: MutableList<RegexQuery>
+            postqueries: MutableList<RegexQuery>,
         ): Query {
             val postqueriesIsValid =
                 allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
@@ -303,8 +298,8 @@ class Query private constructor(
                     QueryMode.RegexMode -> {
                         throw IllegalArgumentException("SQL query is not support regex mode")
                     }
-
-                    else -> { /* TODO(CGQAQ): Support Regex query */
+                    QueryMode.Invalid -> {
+                        // do nothing
                     }
                 }
             } else {
@@ -316,7 +311,10 @@ class Query private constructor(
                     CombinatorType.Or -> {
                         sb.append(" OR ")
                     }
-                    else -> { /* do nothing */
+                    CombinatorType.Then,
+                    CombinatorType.NotSupported,
+                    -> {
+                        // do nothing
                     }
                 }
             }
