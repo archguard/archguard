@@ -45,7 +45,7 @@ enum class CombinatorType {
 }
 
 // operatorish keywords
-val COMBINATOR_KEYWORDS = listOf("and", "or", "&&", "||", "then")
+val COMBINATOR_KEYWORDS = listOf("AND", "and", "OR", "or", "&&", "||", "THEN", "then")
 
 val COMPARATOR_KEYWORDS = listOf("=", "==", ">", "<", ">=", "<=", "!=")
 
