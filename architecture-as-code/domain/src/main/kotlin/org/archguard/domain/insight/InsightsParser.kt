@@ -1,9 +1,16 @@
 package org.archguard.domain.insight
 
 import org.archguard.domain.comparison.Comparison
+import org.archguard.domain.insight.support.InsightIllegalException
 
 enum class TokenType {
-    Combinator, Identifier, StringKind, RegexKind, LikeKind, ComparisonKind, Unknown;
+    Combinator,
+    Identifier,
+    StringKind,
+    RegexKind,
+    LikeKind,
+    ComparisonKind,
+    Unknown;
 
     companion object {
         fun fromChar(ch: Char): TokenType = when (ch) {
@@ -16,7 +23,10 @@ enum class TokenType {
 }
 
 enum class QueryMode {
-    StrictMode, RegexMode, LikeMode, Invalid;
+    StrictMode,
+    RegexMode,
+    LikeMode,
+    Invalid;
 
     companion object {
         @Suppress("unused")
@@ -142,7 +152,7 @@ class Query private constructor(
                 when (it.type) {
                     TokenType.Combinator -> {
                         if (!valid) {
-                            throw IllegalArgumentException("Combinator should followed by a full expression")
+                            throw InsightIllegalException("Combinator should followed by a full expression")
                         }
                         left = null
                         comparison = null
@@ -163,14 +173,15 @@ class Query private constructor(
                         handleWrappingValue(left, comparison, it, result)
                     }
 
-                    TokenType.Unknown -> /* unreachable if use InsightsParser#parse */ throw IllegalArgumentException(
-                        "Input should not contains unknown type token"
-                    )
+                    TokenType.Unknown -> {
+                        // unreachable if use InsightsParser#parse
+                        throw InsightIllegalException("Input should not contains unknown type token")
+                    }
                 }
             }
 
             if (!result.last().isLeft) {
-                throw IllegalArgumentException("Combinator should not presents at the end of query")
+                throw InsightIllegalException("Combinator should not presents at the end of query")
             }
             return result
         }
@@ -182,9 +193,9 @@ class Query private constructor(
             result: MutableList<Either<QueryExpression, QueryCombinator>>,
         ) {
             if (left == null) {
-                throw IllegalArgumentException("Identifier is not presents")
+                throw InsightIllegalException("Identifier is not presents")
             } else if (comparison == null) {
-                throw IllegalArgumentException("Comparator is not presents")
+                throw InsightIllegalException("Comparator is not presents")
             }
 
             val pair = when (it.type) {
@@ -237,7 +248,7 @@ class Query private constructor(
 
             val queryHasRegex = query.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }
             if (queryHasRegex) {
-                throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+                throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
             }
 
             return Query(query, postqueries)
@@ -267,7 +278,7 @@ class Query private constructor(
                 }
                 Query(emptyList(), postqueries)
             } else if (allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
-                throw IllegalArgumentException("SQL Queries should not contains RegexMode conditions")
+                throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
             } else {
                 Query(allQueries, postqueries)
             }
@@ -296,7 +307,7 @@ class Query private constructor(
                     }
 
                     QueryMode.RegexMode -> {
-                        throw IllegalArgumentException("SQL query is not support regex mode")
+                        throw InsightIllegalException("SQL query is not support regex mode")
                     }
                     QueryMode.Invalid -> {
                         // do nothing
@@ -416,7 +427,7 @@ object InsightsParser {
 
         val tokens = tokenize(input)
         if (tokens.any { it.type == TokenType.Unknown }) {
-            throw IllegalArgumentException("Input is not a valid query")
+            throw InsightIllegalException("Input is not a valid query")
         }
 
         val query = Query.fromTokens(tokens)
