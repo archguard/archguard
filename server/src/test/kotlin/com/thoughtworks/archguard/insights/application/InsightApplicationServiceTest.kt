@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.insights.application
 
 import com.thoughtworks.archguard.insights.application.issue.IssueInsightRepository
 import com.thoughtworks.archguard.insights.application.sca.ScaInsightRepository
+import com.thoughtworks.archguard.insights.application.structure.StructureRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -17,6 +18,9 @@ internal class InsightApplicationServiceTest {
     @MockK
     private lateinit var scaRepo: ScaInsightRepository
 
+    @MockK
+    private lateinit var structureRepo: StructureRepository
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -30,7 +34,7 @@ internal class InsightApplicationServiceTest {
         every { issueRepo.filterByCondition(any()) }.returns(listOf())
         every { scaRepo.filterByCondition(any()) }.returns(models)
 
-        val insightApplicationService = InsightApplicationService(issueRepo, scaRepo)
+        val insightApplicationService = InsightApplicationService(issueRepo, scaRepo, structureRepo)
         val insight = insightApplicationService.byExpression(null, "dep_name = /CGQAQ/", "sca");
 
         assertEquals(1, insight.size)
