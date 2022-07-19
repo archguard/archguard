@@ -15,9 +15,6 @@ enum class FilterType {
 
 typealias FilterValue = String
 
-/**
- *
- */
 data class FieldFilter(
     val name: String,
     val value: FilterValue,
@@ -88,22 +85,22 @@ data class FieldFilter(
             var type = FilterType.NORMAL
             var value: String = textValue;
 
-            val isDoubleString = textValue.startsWith("\"") && textValue.endsWith("\"")
-            val isSingleString = textValue.startsWith("'") && textValue.endsWith("'")
-            val isLikeSearch = textValue.startsWith("%") && textValue.endsWith("%")
-            val isRegex = textValue.startsWith("/") && textValue.endsWith("/")
+            val isDoubleString = textValue.startsWith(DOUBLE_QUOTE) && textValue.endsWith(DOUBLE_QUOTE)
+            val isSingleString = textValue.startsWith(SINGLE_QUOTE) && textValue.endsWith(SINGLE_QUOTE)
+            val isLikeSearch = textValue.startsWith(PERCENT) && textValue.endsWith(PERCENT)
+            val isRegex = textValue.startsWith(SLASH) && textValue.endsWith(SLASH)
 
             when {
                 isDoubleString -> {
-                    value = textValue.removeSurrounding("\"")
-                    if (value.startsWith('%') || value.endsWith('%')) {
+                    value = textValue.removeSurrounding(DOUBLE_QUOTE)
+                    if (value.startsWith(PERCENT_CHAR) || value.endsWith(PERCENT_CHAR)) {
                         type = FilterType.LIKE
                     }
                 }
 
                 isSingleString -> {
-                    value = textValue.removeSurrounding("'")
-                    if (value.startsWith('%') || value.endsWith('%')) {
+                    value = textValue.removeSurrounding(SINGLE_QUOTE)
+                    if (value.startsWith(PERCENT_CHAR) || value.endsWith(PERCENT_CHAR)) {
                         type = FilterType.LIKE
                     }
                 }
@@ -115,7 +112,7 @@ data class FieldFilter(
 
                 isRegex -> {
                     type = FilterType.REGEXP
-                    value = textValue.removeSurrounding("/")
+                    value = textValue.removeSurrounding(SLASH)
                 }
 
                 else -> {
