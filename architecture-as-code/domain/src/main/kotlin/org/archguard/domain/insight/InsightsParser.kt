@@ -56,6 +56,8 @@ enum class CombinatorType {
 
 val CHAR_REG = Regex("[a-zA-Z_]")
 val COMPARATOR_REG = Regex("[<>=!]")
+val LOGIC_REG = Regex("[&|]")
+val NEW_LINE = Regex("[ \t\n\r]")
 
 data class Token(val type: TokenType, val value: String, val start: Int, val end: Int)
 
@@ -392,7 +394,7 @@ object InsightsParser {
                     )
                 }
 
-                c == '&' || c == '|' -> {
+                LOGIC_REG.matches(c.toString()) -> {
                     val start = current
                     if (current + 1 < length && text[current + 1] == c) {
                         current += 2
@@ -402,7 +404,7 @@ object InsightsParser {
                     }
                 }
 
-                c == ' ' || c == '\t' -> current++
+                NEW_LINE.matches(c.toString()) -> current++
 
                 else -> {
                     tokens.add(Token(TokenType.Unknown, c.toString(), current, ++current))
