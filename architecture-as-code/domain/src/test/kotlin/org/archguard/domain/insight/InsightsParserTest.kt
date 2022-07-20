@@ -26,7 +26,7 @@ internal class InsightsParserTest {
     }
 
     @Test
-    fun  uppercaseKeywords() {
+    fun uppercaseKeywords() {
         val tokens = InsightsParser.tokenize("""dep_name = "5" AND version = "1.3.7" OR a = "a" THEN b = /b/""")
         assertEquals(15, tokens.size)
     }
