@@ -199,13 +199,10 @@ class Query private constructor(
                         it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
                         QueryMode.StrictMode
                     )
-
                 TokenType.LikeKind ->
                     Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
-
                 TokenType.RegexKind ->
                     Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
-
                 else -> {
                     throw RuntimeException("unexpected else branch")
                 }
@@ -224,7 +221,7 @@ class Query private constructor(
 
         private fun queryWithThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postQueries: MutableList<RegexQuery>,
+            postqueries: MutableList<RegexQuery>,
             thenIndex: Int,
         ): Query {
             val resultReversed = allQueries.reversed()
@@ -233,11 +230,11 @@ class Query private constructor(
                     val regexQuery = current.getLeftOrNull()!!
                     val next = resultReversed[index + 1]
                     if (next.getRightOrNull()?.type == CombinatorType.Then) {
-                        postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
                         break
                     } else {
                         val regex = RegexQuery(regexQuery.left, Regex(regexQuery.right), next.getRightOrNull()!!.type)
-                        postQueries.add(regex)
+                        postqueries.add(regex)
                     }
                 }
             }
@@ -249,45 +246,36 @@ class Query private constructor(
                 throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
             }
 
-            return Query(query, postQueries)
+            return Query(query, postqueries)
         }
 
         private fun queryWithoutThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postQueries: MutableList<RegexQuery>,
+            postqueries: MutableList<RegexQuery>,
         ): Query {
-            val incorrectQuery = allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }
-            if (incorrectQuery) {
-                throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
-            }
-
-            val isPostQueriesValid =
+            val postqueriesIsValid =
                 allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
-
-            when {
-                isPostQueriesValid -> {
-                    allQueries.withIndex().forEach { (index, value) ->
-                        if (!value.isLeft) return@forEach
-                        val regexQuery = value.getLeftOrNull()!!
-
-                        if (index == 0) {
-                            postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                        } else {
-                            postQueries.add(
-                                RegexQuery(
-                                    regexQuery.left,
-                                    Regex(regexQuery.right),
-                                    allQueries[index - 1].getRightOrNull()!!.type
-                                )
+            return if (postqueriesIsValid) {
+                for ((index, value) in allQueries.withIndex()) {
+                    if (!value.isLeft) continue
+                    val regexQuery = value.getLeftOrNull()!!
+                    if (index == 0) {
+                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                    } else {
+                        postqueries.add(
+                            RegexQuery(
+                                regexQuery.left,
+                                Regex(regexQuery.right),
+                                allQueries[index - 1].getRightOrNull()!!.type
                             )
-                        }
+                        )
                     }
-                    return Query(emptyList(), postQueries)
                 }
-
-                else -> {
-                    return Query(allQueries, postQueries)
-                }
+                Query(emptyList(), postqueries)
+            } else if (allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+                throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
+            } else {
+                Query(allQueries, postqueries)
             }
         }
     }
@@ -305,7 +293,6 @@ class Query private constructor(
                     QueryMode.StrictMode -> {
                         sb.append("${expr.left} ${expr.comparison} '${expr.right.replace("'", "''")}'")
                     }
-
                     QueryMode.LikeMode -> {
                         if (expr.comparison == Comparison.Equal) {
                             sb.append("${expr.left} LIKE '${expr.right.replace("'", "''")}'")
@@ -317,7 +304,6 @@ class Query private constructor(
                     QueryMode.RegexMode -> {
                         throw InsightIllegalException("SQL query is not support regex mode")
                     }
-
                     QueryMode.Invalid -> {
                         // do nothing
                     }
@@ -328,11 +314,9 @@ class Query private constructor(
                     CombinatorType.And -> {
                         sb.append(" AND ")
                     }
-
                     CombinatorType.Or -> {
                         sb.append(" OR ")
                     }
-
                     CombinatorType.Then,
                     CombinatorType.NotSupported,
                     -> {
