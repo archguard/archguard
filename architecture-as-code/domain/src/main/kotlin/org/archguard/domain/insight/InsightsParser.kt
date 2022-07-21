@@ -251,31 +251,28 @@ class Query private constructor(
 
         private fun queryWithoutThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postqueries: MutableList<RegexQuery>,
+            postQueries: MutableList<RegexQuery>,
         ): Query {
-            val postqueriesIsValid =
+            val isPostQueriesValid =
                 allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
-            return if (postqueriesIsValid) {
+
+            if (isPostQueriesValid) {
                 for ((index, value) in allQueries.withIndex()) {
                     if (!value.isLeft) continue
                     val regexQuery = value.getLeftOrNull()!!
                     if (index == 0) {
-                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
+                        postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
                     } else {
-                        postqueries.add(
-                            RegexQuery(
-                                regexQuery.left,
-                                Regex(regexQuery.right),
-                                allQueries[index - 1].getRightOrNull()!!.type
-                            )
-                        )
+                        val relation = allQueries[index - 1].getRightOrNull()!!.type
+                        postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), relation))
                     }
                 }
-                Query(emptyList(), postqueries)
-            } else if (allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
+
+                return Query(emptyList(), postQueries)
+            } else return if (allQueries.any { it.getLeftOrNull()?.queryMode == QueryMode.RegexMode }) {
                 throw InsightIllegalException("SQL Queries should not contains RegexMode conditions")
             } else {
-                Query(allQueries, postqueries)
+                Query(allQueries, postQueries)
             }
         }
     }
