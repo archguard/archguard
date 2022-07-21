@@ -194,29 +194,28 @@ class Query private constructor(
             }
 
             val pair = when (it.type) {
-                TokenType.StringKind ->
-                    Pair(
-                        it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`"),
-                        QueryMode.StrictMode
-                    )
+                TokenType.StringKind -> {
+                    val pureString = it.value
+                        .removeSurrounding("\"")
+                        .removeSurrounding("'")
+                        .removeSurrounding("`")
+
+                    Pair(pureString, QueryMode.StrictMode)
+                }
+
                 TokenType.LikeKind ->
                     Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
+
                 TokenType.RegexKind ->
                     Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
+
                 else -> {
                     throw RuntimeException("unexpected else branch")
                 }
             }
-            result.add(
-                Either.Left(
-                    QueryExpression(
-                        left,
-                        pair.first,
-                        pair.second,
-                        comparison
-                    )
-                )
-            )
+
+            val queryExpression = QueryExpression(left, pair.first, pair.second, comparison)
+            result.add(Either.Left(queryExpression))
         }
 
         private fun queryWithThen(
@@ -290,6 +289,7 @@ class Query private constructor(
                     QueryMode.StrictMode -> {
                         sb.append("${expr.left} ${expr.comparison} '${expr.right.replace("'", "''")}'")
                     }
+
                     QueryMode.LikeMode -> {
                         if (expr.comparison == Comparison.Equal) {
                             sb.append("${expr.left} LIKE '${expr.right.replace("'", "''")}'")
@@ -301,6 +301,7 @@ class Query private constructor(
                     QueryMode.RegexMode -> {
                         throw InsightIllegalException("SQL query is not support regex mode")
                     }
+
                     QueryMode.Invalid -> {
                         // do nothing
                     }
@@ -311,9 +312,11 @@ class Query private constructor(
                     CombinatorType.And -> {
                         sb.append(" AND ")
                     }
+
                     CombinatorType.Or -> {
                         sb.append(" OR ")
                     }
+
                     CombinatorType.Then,
                     CombinatorType.NotSupported,
                     -> {
