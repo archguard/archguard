@@ -1,8 +1,8 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.1...v) (2022-07-02)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.2...v) (2022-07-02)
 
 
 
-# [2.0.0-beta.1](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v2.0.0-beta.1) (2022-07-02)
+# [2.0.0-beta.2](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v2.0.0-beta.2) (2022-07-02)
 
 
 ### Bug Fixes
