@@ -1,8 +1,34 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.2...v) (2022-07-02)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.2...v) (2022-07-30)
 
 
 
-# [2.0.0-beta.2](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v2.0.0-beta.2) (2022-07-02)
+# [2.0.0-beta.2](https://github.com/archguard/archguard/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2022-07-30)
+
+
+### Bug Fixes
+
+* **devops:** warning mbind: Operation not permitted after mysql startup ([c542ac5](https://github.com/archguard/archguard/commit/c542ac582c2c3d6eab281d7d9679cd8e1d347156))
+* **insights parser:** toQuery now supports single quote escaping [#109](https://github.com/archguard/archguard/issues/109) ([3506e1e](https://github.com/archguard/archguard/commit/3506e1e08f94069f4574c062a05df300edd9988b))
+
+
+### Features
+
+* add basic class name query support [#113](https://github.com/archguard/archguard/issues/113) ([3fcd892](https://github.com/archguard/archguard/commit/3fcd892e1187efc99ba4a46b29b8ffafa9630145))
+* **insights parser:** parser and toQuery [#109](https://github.com/archguard/archguard/issues/109) ([f6e7211](https://github.com/archguard/archguard/commit/f6e7211c4ab9346e73bfc623477fb580659247ba))
+* **insights parser:** parser tests [#109](https://github.com/archguard/archguard/issues/109) ([50a1c51](https://github.com/archguard/archguard/commit/50a1c51a98dc75cd36c9cb1731f8e5a7eb12d337))
+* **insights parser:** tokenizer [#109](https://github.com/archguard/archguard/issues/109) ([44083b6](https://github.com/archguard/archguard/commit/44083b66df28532273a66cdadd573239b9f4ac86))
+* **insights parser:** tokenizer tests [#109](https://github.com/archguard/archguard/issues/109) ([4c8fe8b](https://github.com/archguard/archguard/commit/4c8fe8b671ecbb5fd82153ebf02e68544c11f0cb))
+* **insights parser:** toQuery tests [#109](https://github.com/archguard/archguard/issues/109) ([52ef42f](https://github.com/archguard/archguard/commit/52ef42f473c0c94f20941265dfe45e753ae21098))
+* reinit parser [#109](https://github.com/archguard/archguard/issues/109) ([c7e01c5](https://github.com/archguard/archguard/commit/c7e01c58406200157740be1ef2e0c77a2a9b199d))
+
+
+### Reverts
+
+* Revert "refactor: remove some code smells" ([c06d716](https://github.com/archguard/archguard/commit/c06d716efd4fe804a1edc590b25bfd385311f2e2))
+
+
+
+# [2.0.0-beta.1](https://github.com/archguard/archguard/compare/v2.0.0-alpha.22...v2.0.0-beta.1) (2022-07-02)
 
 
 ### Bug Fixes
