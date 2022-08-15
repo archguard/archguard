@@ -53,12 +53,13 @@ data class ScannerCommand(
             clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path, this))
         }
 
-        if (output.contains("json")) {
-            clients.add(ArchGuardJsonClient(systemId))
+        // experimental function
+        if (output.contains("protobuf")) {
+            clients.add(ArchGuardProtobufClient(language ?: "", serverUrl, systemId, path, this))
         }
 
-        if (output.contains("protobuf")) {
-            clients.add(ArchGuardProtobufClient(systemId))
+        if (output.contains("json")) {
+            clients.add(ArchGuardJsonClient(systemId))
         }
 
         if (output.contains("csv")) {
