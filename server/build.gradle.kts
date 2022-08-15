@@ -82,6 +82,8 @@ dependencies {
 //    implementation("io.springfox:springfox-boot-starter:3.0.0")
 //    implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
+    implementation("com.google.protobuf:protobuf-java:3.21.5")
+
     implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.0")
     implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")
     implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.0")

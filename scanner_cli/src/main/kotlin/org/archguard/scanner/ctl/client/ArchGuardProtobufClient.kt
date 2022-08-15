@@ -39,7 +39,8 @@ open class ArchGuardProtobufClient(
         "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=$path"
 
     private inline fun process(uri: URI, body: ByteArray) {
-        val request = HttpRequest.newBuilder(uri).header("Content-Type", "application/x-protobuf")
+        val request = HttpRequest.newBuilder(uri)
+            .header("Content-Type", "application/x-protobuf")
             .POST(HttpRequest.BodyPublishers.ofByteArray(body)).build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 

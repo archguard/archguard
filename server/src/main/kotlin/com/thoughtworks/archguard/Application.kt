@@ -24,15 +24,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
+import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
 import java.util.*
 import java.util.function.Consumer
 import javax.sql.DataSource
 
+
 @SpringBootApplication
 //@EnableOpenApi
 @EnableCaching
 class Application {
+    @Bean
+    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter? {
+        return ProtobufHttpMessageConverter()
+    }
+
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {
         val factoryBean = JdbiFactoryBean(ds)

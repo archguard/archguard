@@ -8,6 +8,7 @@ import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,7 +22,11 @@ class ScannerReportingController() {
     @Autowired
     private lateinit var service: ScannerReportingService
 
-    @PostMapping("/class-items")
+    @PostMapping(
+        "/class-items",
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE, "application/x-protobuf"],
+        consumes = [MediaType.APPLICATION_OCTET_STREAM_VALUE, "application/x-protobuf", "application/json"]
+    )
     fun saveClassItems(
         @PathVariable systemId: String,
         @RequestParam language: String,
@@ -31,7 +36,7 @@ class ScannerReportingController() {
         service.processClassItems(systemId, language, path, input)
     }
 
-    @PostMapping("/container-services")
+    @PostMapping("/container-services", consumes = ["application/x-protobuf", "application/json"])
     fun saveContainerServices(
         @PathVariable systemId: String,
         @RequestParam language: String,
@@ -42,7 +47,7 @@ class ScannerReportingController() {
     }
 
 
-    @PostMapping("/datamap-relations")
+    @PostMapping("/datamap-relations", consumes = ["application/x-protobuf", "application/json"])
     fun saveRelations(
         @PathVariable systemId: String,
         @RequestParam language: String,
@@ -52,12 +57,12 @@ class ScannerReportingController() {
         service.processDatamapRelations(systemId, language, path, input)
     }
 
-    @PostMapping("/git-logs")
+    @PostMapping("/git-logs", consumes = ["application/x-protobuf", "application/json"])
     fun saveGitLogs(@PathVariable systemId: Long, @RequestBody inputs: List<GitLogs>) {
         service.processGitLogs(inputs, systemId)
     }
 
-    @PostMapping("/diff-changes")
+    @PostMapping("/diff-changes", consumes = ["application/x-protobuf", "application/json"])
     fun saveDiffs(
         @PathVariable systemId: Long,
         @RequestParam since: String,
@@ -67,12 +72,12 @@ class ScannerReportingController() {
         service.processDiffChanges(systemId, since, until, input)
     }
 
-    @PostMapping("/sca-dependencies")
+    @PostMapping("/sca-dependencies", consumes = ["application/x-protobuf", "application/json"])
     fun saveDependencies(@PathVariable systemId: Long, @RequestBody input: List<CompositionDependency>) {
         service.processScaDependencies(systemId, input)
     }
 
-    @PostMapping("/issues")
+    @PostMapping("/issues", consumes = ["application/x-protobuf", "application/json"])
     fun saveIssues(@PathVariable systemId: Long, @RequestBody input: List<Issue>) {
         service.processIssues(input, systemId)
     }
