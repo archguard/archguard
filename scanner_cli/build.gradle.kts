@@ -14,6 +14,7 @@ dependencies {
     implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.4")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 

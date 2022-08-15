@@ -7,6 +7,7 @@ import org.archguard.scanner.ctl.client.ArchGuardConsoleClient
 import org.archguard.scanner.ctl.client.ArchGuardCsvClient
 import org.archguard.scanner.ctl.client.ArchGuardHttpClient
 import org.archguard.scanner.ctl.client.ArchGuardJsonClient
+import org.archguard.scanner.ctl.client.ArchGuardProtobufClient
 import org.archguard.scanner.ctl.client.ChainedArchGuardClient
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
@@ -47,14 +48,26 @@ data class ScannerCommand(
 
     fun buildClient(): ArchGuardClient {
         val clients = mutableListOf<ArchGuardClient>()
-        if (output.contains("http"))
+
+        if (output.contains("http")) {
             clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path, this))
-        if (output.contains("json"))
+        }
+
+        if (output.contains("json")) {
             clients.add(ArchGuardJsonClient(systemId))
-        if (output.contains("csv"))
+        }
+
+        if (output.contains("protobuf")) {
+            clients.add(ArchGuardProtobufClient(systemId))
+        }
+
+        if (output.contains("csv")) {
             clients.add(ArchGuardCsvClient(systemId))
-        if (output.contains("console") || output.isEmpty())
+        }
+
+        if (output.contains("console") || output.isEmpty()) {
             clients.add(ArchGuardConsoleClient(systemId))
+        }
 
         return ChainedArchGuardClient(clients)
     }
