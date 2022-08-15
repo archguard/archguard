@@ -3,6 +3,18 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val ktlint by configurations.creating
 
+
+buildscript {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.19")
+    }
+}
+
 plugins {
     // springfox not support spring boot 2.6, see in https://github.com/springfox/springfox/issues/3462
     id("org.springframework.boot") version "2.7.0"
@@ -15,6 +27,7 @@ plugins {
     id("com.avast.gradle.docker-compose") version "0.15.2"
 
     id("org.jetbrains.dokka") version "1.6.21"
+    id("com.google.protobuf") version "0.8.19"
 }
 
 tasks.withType<KotlinCompile> {
@@ -83,6 +96,7 @@ dependencies {
 //    implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
     implementation("com.google.protobuf:protobuf-java:3.21.5")
+    implementation("com.googlecode.protobuf-java-format:protobuf-java-format:1.4")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.0")
     implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")

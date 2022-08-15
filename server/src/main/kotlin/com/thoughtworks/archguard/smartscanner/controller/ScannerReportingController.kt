@@ -8,7 +8,6 @@ import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,11 +21,7 @@ class ScannerReportingController() {
     @Autowired
     private lateinit var service: ScannerReportingService
 
-    @PostMapping(
-        "/class-items",
-        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE, "application/x-protobuf"],
-        consumes = [MediaType.APPLICATION_OCTET_STREAM_VALUE, "application/x-protobuf", "application/json"]
-    )
+    @PostMapping("/class-items", produces = ["application/x-protobuf"])
     fun saveClassItems(
         @PathVariable systemId: String,
         @RequestParam language: String,

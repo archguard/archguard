@@ -26,6 +26,7 @@ import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
+import org.springframework.web.client.RestTemplate
 import java.util.*
 import java.util.function.Consumer
 import javax.sql.DataSource
@@ -36,9 +37,11 @@ import javax.sql.DataSource
 @EnableCaching
 class Application {
     @Bean
-    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter? {
-        return ProtobufHttpMessageConverter()
-    }
+    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter = ProtobufHttpMessageConverter()
+
+    @Bean
+    fun restTemplate(protobufHttpMessageConverter: ProtobufHttpMessageConverter?): RestTemplate? =
+        RestTemplate(listOf(protobufHttpMessageConverter))
 
     @Bean
     fun jdbiFactory(@Autowired ds: DataSource): JdbiFactoryBean {

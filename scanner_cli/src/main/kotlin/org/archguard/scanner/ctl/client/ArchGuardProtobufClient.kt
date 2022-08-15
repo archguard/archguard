@@ -13,6 +13,7 @@ import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -42,6 +43,10 @@ open class ArchGuardProtobufClient(
         val request = HttpRequest.newBuilder(uri)
             .header("Content-Type", "application/x-protobuf")
             .POST(HttpRequest.BodyPublishers.ofByteArray(body)).build()
+
+        logger.info(request.toString())
+        logger.info(request.headers().toString())
+
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 
         logger.info(
@@ -54,6 +59,7 @@ open class ArchGuardProtobufClient(
 
     private inline fun process(topic: String, body: ByteArray) {
         logger.info("process topic: $topic")
+        File("$topic.pb").writeBytes(body);
         process(URI(buildUrl(topic)), body)
     }
 

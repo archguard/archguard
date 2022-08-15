@@ -57,3 +57,5 @@ localtesting_*.csv
 *_databases.json
 *_issues.json
 slot.json
+*.proto
+*.pb
