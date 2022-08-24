@@ -112,8 +112,7 @@ internal class InsightsParserTest {
         val query = InsightsParser.parse("dep_name = 'hello'")
         assertEquals(1, query.query.size)
         assertEquals(
-            Either.Left(QueryExpression("dep_name", "hello", QueryMode.StrictMode, Comparison.Equal)),
-            query.query[0]
+            Either.Left(QueryExpression("dep_name", "hello", QueryMode.StrictMode, Comparison.Equal)), query.query[0]
         )
     }
 
@@ -126,19 +125,13 @@ internal class InsightsParserTest {
         listOf<Either<QueryExpression, QueryCombinator>>(
             Either.Left(
                 QueryExpression(
-                    left = "a",
-                    right = "hello",
-                    queryMode = QueryMode.StrictMode,
-                    comparison = Comparison.Equal
+                    left = "a", right = "hello", queryMode = QueryMode.StrictMode, comparison = Comparison.Equal
                 )
             ),
             Either.Right(QueryCombinator(value = "and", type = CombinatorType.And)),
             Either.Left(
                 QueryExpression(
-                    left = "b",
-                    right = "%b%",
-                    queryMode = QueryMode.LikeMode,
-                    comparison = Comparison.Equal
+                    left = "b", right = "%b%", queryMode = QueryMode.LikeMode, comparison = Comparison.Equal
                 )
             ),
         ).forEachIndexed { index, expected ->
@@ -211,6 +204,15 @@ internal class InsightsParserTest {
 
         assertEquals(1, query.query.size)
         assertEquals(1, query.postqueries.size)
+    }
+
+    @Test
+    fun simpleHybridQueryWithVersion() {
+        val query = InsightsParser.parse("message = '5' then dep_version >= 1.2.0-alpha")
+        assertEquals(1, query.query.size)
+        assertEquals("WHERE message = '5'", query.toSQL())
+        assertEquals(1, query.postqueries.size)
+        assertEquals(Either.Right(VersionQuery("dep_version", ">=", "1.2.0-alpha", null)), query.postqueries[0])
     }
 
     @Test
