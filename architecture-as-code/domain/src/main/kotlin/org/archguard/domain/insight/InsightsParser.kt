@@ -4,13 +4,7 @@ import org.archguard.domain.comparison.Comparison
 import org.archguard.domain.insight.support.InsightIllegalException
 
 enum class TokenType {
-    Combinator,
-    Identifier,
-    StringKind,
-    RegexKind,
-    LikeKind,
-    ComparisonKind,
-    Unknown;
+    Combinator, Identifier, StringKind, RegexKind, LikeKind, ComparisonKind, VersionKind, Unknown;
 
     companion object {
         fun fromChar(ch: Char): TokenType = when (ch) {
@@ -23,9 +17,7 @@ enum class TokenType {
 }
 
 enum class QueryMode {
-    StrictMode,
-    RegexMode,
-    LikeMode,
+    StrictMode, RegexMode, LikeMode, SemverMode, // >= 1.0.0
     Invalid;
 
     companion object {
@@ -35,6 +27,7 @@ enum class QueryMode {
                 TokenType.StringKind -> StrictMode
                 TokenType.RegexKind -> RegexMode
                 TokenType.LikeKind -> LikeMode
+                TokenType.VersionKind -> SemverMode
                 else -> Invalid
             }
         }
@@ -54,6 +47,8 @@ enum class CombinatorType {
     }
 }
 
+val VERSION_REG = Regex("""^\d+(\.\d+){0,2}(-\w+)?$""")
+val VERSION_REG_LOOSE = Regex("""^\d[\w.-]*$""")
 val CHAR_REG = Regex("[a-zA-Z_]")
 val COMPARATOR_REG = Regex("[<>=!]")
 val LOGIC_REG = Regex("[&|]")
@@ -117,14 +112,21 @@ data class QueryCombinator(val value: String, val type: CombinatorType)
  */
 data class RegexQuery(val field: String, val regex: Regex, val relation: CombinatorType?)
 
+/**
+ * @property operator `>= | <= | == | > | < | !=`
+ * @property version a valid semver version string
+ * @property relation This is the relation to previous condition
+ */
+data class VersionQuery(val filed: String, val operator: String, val version: String, val relation: CombinatorType?)
+
 class Query private constructor(
     val query: List<Either<QueryExpression, QueryCombinator>>,
-    val postqueries: List<RegexQuery>,
+    val postqueries: List<Either<RegexQuery, VersionQuery>>,
 ) {
     companion object {
         fun fromTokens(tokens: List<Token>): Query {
             val allQueries = parseQueries(tokens)
-            val postqueries = mutableListOf<RegexQuery>()
+            val postqueries = mutableListOf<Either<RegexQuery, VersionQuery>>()
 
             val thenIndex = allQueries.indexOfFirst {
                 it.getRightOrNull()?.type == CombinatorType.Then
@@ -168,6 +170,14 @@ class Query private constructor(
                         handleWrappingValue(left, comparison, it, result)
                     }
 
+                    TokenType.VersionKind -> {
+                        valid = true
+                        if (left == null || comparison == null) {
+                            throw InsightIllegalException("Version query is not valid")
+                        }
+                        result.add(Either.Left(QueryExpression(left!!, it.value, QueryMode.SemverMode, comparison!!)))
+                    }
+
                     TokenType.Unknown -> {
                         // unreachable if use InsightsParser#parse
                         throw InsightIllegalException("Input should not contains unknown type token")
@@ -195,19 +205,14 @@ class Query private constructor(
 
             val pair = when (it.type) {
                 TokenType.StringKind -> {
-                    val pureString = it.value
-                        .removeSurrounding("\"")
-                        .removeSurrounding("'")
-                        .removeSurrounding("`")
+                    val pureString = it.value.removeSurrounding("\"").removeSurrounding("'").removeSurrounding("`")
 
                     Pair(pureString, QueryMode.StrictMode)
                 }
 
-                TokenType.LikeKind ->
-                    Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
+                TokenType.LikeKind -> Pair(it.value.removeSurrounding("@"), QueryMode.LikeMode)
 
-                TokenType.RegexKind ->
-                    Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
+                TokenType.RegexKind -> Pair(it.value.removeSurrounding("/"), QueryMode.RegexMode)
 
                 else -> {
                     throw RuntimeException("unexpected else branch")
@@ -220,21 +225,31 @@ class Query private constructor(
 
         private fun queryWithThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postqueries: MutableList<RegexQuery>,
+            postqueries: MutableList<Either<RegexQuery, VersionQuery>>,
             thenIndex: Int,
         ): Query {
             val resultReversed = allQueries.reversed()
+            var needBreak = false
             for ((index, current) in resultReversed.withIndex()) {
                 if (current.isLeft) {
-                    val regexQuery = current.getLeftOrNull()!!
-                    val next = resultReversed[index + 1]
-                    if (next.getRightOrNull()?.type == CombinatorType.Then) {
-                        postqueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                        break
+                    val postquery = current.getLeftOrNull()!!
+                    val next = if (index < resultReversed.size - 1) {
+                        resultReversed[index + 1]
                     } else {
-                        val regex = RegexQuery(regexQuery.left, Regex(regexQuery.right), next.getRightOrNull()!!.type)
-                        postqueries.add(regex)
+                        null
                     }
+
+                    addToPostQueries(
+                        postquery, postqueries, if (next?.getRightOrNull()?.type == CombinatorType.Then) {
+                            // first one don't have relation to previous one
+                            needBreak = true
+                            null
+                        } else {
+                            next?.getRightOrNull()?.type
+                        }
+                    )
+
+                    if (needBreak) break
                 }
             }
 
@@ -248,23 +263,46 @@ class Query private constructor(
             return Query(query, postqueries)
         }
 
+        private fun addToPostQueries(
+            postquery: QueryExpression,
+            postqueries: MutableList<Either<RegexQuery, VersionQuery>>,
+            combinatorType: CombinatorType?
+        ) {
+            when (postquery.queryMode) {
+                QueryMode.RegexMode -> {
+                    val regexQuery = RegexQuery(postquery.left, Regex(postquery.right), combinatorType)
+                    postqueries.add(Either.Left(regexQuery))
+                }
+
+                QueryMode.SemverMode -> {
+                    val versionQuery = VersionQuery(postquery.left, postquery.comparison.toString(), postquery.right, combinatorType)
+                    postqueries.add(Either.Right(versionQuery))
+                }
+
+                else -> {
+                    throw InsightIllegalException("Illegal query mode inside postqueries")
+                }
+            }
+        }
+
         private fun queryWithoutThen(
             allQueries: List<Either<QueryExpression, QueryCombinator>>,
-            postQueries: MutableList<RegexQuery>,
+            postQueries: MutableList<Either<RegexQuery, VersionQuery>>,
         ): Query {
-            val isPostQueriesValid =
-                allQueries.all { !it.isLeft || (it.getLeftOrNull()?.queryMode == QueryMode.RegexMode) }
+            val isPostQueriesValid = allQueries.all { !it.isLeft || isValidPostqueryMode(it) }
 
             if (isPostQueriesValid) {
                 for ((index, value) in allQueries.withIndex()) {
                     if (!value.isLeft) continue
-                    val regexQuery = value.getLeftOrNull()!!
-                    if (index == 0) {
-                        postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), null))
-                    } else {
-                        val relation = allQueries[index - 1].getRightOrNull()!!.type
-                        postQueries.add(RegexQuery(regexQuery.left, Regex(regexQuery.right), relation))
-                    }
+                    val postquery = value.getLeftOrNull()!!
+                    addToPostQueries(
+                        postquery, postQueries, if (index == 0) {
+                            // first one don't have relation to previous one
+                            null
+                        } else {
+                            allQueries[index - 1].getRightOrNull()!!.type
+                        }
+                    )
                 }
 
                 return Query(emptyList(), postQueries)
@@ -274,6 +312,9 @@ class Query private constructor(
                 Query(allQueries, postQueries)
             }
         }
+
+        private fun isValidPostqueryMode(it: Either<QueryExpression, QueryCombinator>) =
+            it.getLeftOrNull()?.queryMode == QueryMode.RegexMode || it.getLeftOrNull()?.queryMode == QueryMode.SemverMode
     }
 
     fun toSQL(prefix: String = "WHERE"): String {
@@ -300,6 +341,10 @@ class Query private constructor(
 
                     QueryMode.RegexMode -> {
                         throw InsightIllegalException("SQL query is not support regex mode")
+                    }
+
+                    QueryMode.SemverMode -> {
+                        throw InsightIllegalException("SQL query is not support semver mode")
                     }
 
                     QueryMode.Invalid -> {
@@ -335,10 +380,32 @@ object InsightsParser {
         val length = text.length
         var current = 0
         val tokens = mutableListOf<Token>()
+        var maybeVersion = true
 
         while (current < length) {
             val c = text[current]
             when {
+                VERSION_REG_LOOSE.matches(c.toString()) && maybeVersion -> {
+                    var buff = c + ""
+                    val pc = current
+                    while (current < length - 1 && VERSION_REG_LOOSE.matches(buff)) {
+                        buff += text[++current]
+                    }
+
+                    var finalVersion: String
+                    if (current + 1 == length && buff.matches(VERSION_REG)) {
+                        finalVersion = buff
+                    } else if (buff.substring(0, buff.length - 1).matches(VERSION_REG)) {
+                        finalVersion = buff.substring(0, buff.length - 1)
+                    } else {
+                        current = pc
+                        maybeVersion = false
+                        continue
+                    }
+
+                    tokens.add(Token(TokenType.VersionKind, finalVersion, pc, current++))
+                }
+
                 CHAR_REG.matches(c.toString()) -> {
                     val start = current
                     var value = c.toString()
@@ -354,6 +421,7 @@ object InsightsParser {
                         else -> Token(TokenType.Identifier, value, start, current)
                     }
                     tokens.add(token)
+                    maybeVersion = true
                 }
 
                 WRAPPER_SYMBOLS.contains(c) -> {
@@ -374,6 +442,8 @@ object InsightsParser {
                         current = start
                         tokens.add(Token(TokenType.Unknown, c.toString(), start, ++current))
                     }
+
+                    maybeVersion = true
                 }
 
                 COMPARATOR_REG.matches(c.toString()) -> {
@@ -392,6 +462,8 @@ object InsightsParser {
                             Token(TokenType.Unknown, value, start, current)
                         }
                     )
+
+                    maybeVersion = true
                 }
 
                 LOGIC_REG.matches(c.toString()) -> {
@@ -402,12 +474,15 @@ object InsightsParser {
                     } else {
                         tokens.add(Token(type = TokenType.Unknown, value = c.toString(), start, end = ++current))
                     }
+
+                    maybeVersion = true
                 }
 
                 NEW_LINE.matches(c.toString()) -> current++
 
                 else -> {
                     tokens.add(Token(TokenType.Unknown, c.toString(), current, ++current))
+                    maybeVersion = true
                 }
             }
         }
