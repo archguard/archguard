@@ -1,6 +1,7 @@
 plugins {
     base
     id("jacoco-report-aggregation")
+    kotlin("jvm") version "1.6.21"
     id("org.jetbrains.dokka") version "1.6.21"
 
     id("java-library")
@@ -35,8 +36,7 @@ allprojects {
         implementation("io.github.microutils:kotlin-logging:2.1.21")
 
         // test
-        implementation(kotlin("test"))
-        implementation(kotlin("test-junit"))
+        testImplementation(kotlin("test"))
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")

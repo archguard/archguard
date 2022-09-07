@@ -79,8 +79,8 @@ dependencies {
     implementation(kotlin("reflect"))
 
     // test
-    implementation(kotlin("test"))
-    implementation(kotlin("test-junit"))
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
     implementation("org.junit.platform:junit-platform-commons:1.8.2")
 
     // kotlin coroutine

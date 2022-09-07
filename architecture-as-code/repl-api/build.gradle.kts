@@ -14,17 +14,6 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
 }
 
-buildscript {
-    repositories {
-        maven("https://plugins.gradle.org/m2/")
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
-    }
-
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-jupyter-api-gradle-plugin:0.11.0-89-1")
-    }
-}
-
 dependencies {
     api(project(":architecture-as-code:dsl"))
 
@@ -41,8 +30,7 @@ dependencies {
 
     implementation(kotlin("stdlib"))
     // test
-    implementation(kotlin("test"))
-    implementation(kotlin("test-junit"))
+    testImplementation(kotlin("test"))
 
     testImplementation("io.kotest:kotest-assertions-core:5.1.0")
 
