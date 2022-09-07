@@ -54,7 +54,7 @@ class ArchitectureDependencyAnalysis(
                 val workdir = createWorkingDirectoryIfNotExist(systemInfo)
 
                 startScanSystem(systemInfo)
-                analyse(systemId, systemInfo.language, scannerVersion, workdir)
+                analyse(systemId, scannerVersion, workdir)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
                 stopScanSystem(systemInfo, ScannedType.FAILED)
@@ -77,7 +77,7 @@ class ArchitectureDependencyAnalysis(
         return workdir
     }
 
-    fun analyse(systemId: Long, language: String, scannerVersion: String, workdir: Path) {
+    fun analyse(systemId: Long, scannerVersion: String, workdir: Path) {
         val memoryConsumer = InMemoryConsumer()
 
         log.info("************************************")
