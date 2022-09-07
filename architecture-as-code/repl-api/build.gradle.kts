@@ -30,7 +30,8 @@ dependencies {
 
     implementation(kotlin("stdlib"))
     // test
-    testImplementation(kotlin("test"))
+    implementation(kotlin("test"))
+    implementation(kotlin("test-junit"))
 
     testImplementation("io.kotest:kotest-assertions-core:5.1.0")
 
