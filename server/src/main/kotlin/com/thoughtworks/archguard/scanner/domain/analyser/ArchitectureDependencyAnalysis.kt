@@ -64,10 +64,7 @@ class ArchitectureDependencyAnalysis(
 
     private fun createWorkingDirectoryIfNotExist(systemInfo: SystemInfo): Path {
         val workdir: Path
-        if (systemInfo.workdir.isEmpty()) {
-            workdir = createTempDirectory("archguard")
-            systemInfoRepository.setSystemWorkspace(systemInfo.id!!, workdir.pathString)
-        } else if (!File(systemInfo.workdir).exists()) {
+        if (systemInfo.workdir.isEmpty() || !File(systemInfo.workdir).exists()) {
             workdir = createTempDirectory("archguard")
             systemInfoRepository.setSystemWorkspace(systemInfo.id!!, workdir.pathString)
         } else {
