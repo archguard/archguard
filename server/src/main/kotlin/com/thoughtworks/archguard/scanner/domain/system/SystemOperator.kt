@@ -26,15 +26,17 @@ class SystemOperator(
         this.systemInfo.getRepoList()
             .forEach { repo ->
                 if (systemInfo.repoType == "LOCAL") {
-                    scannedProjects.add(ScanProject(
-                        repo,
-                        File(repo),
-                        BuildTool.NONE,
-                        systemInfo.sql,
-                        systemInfo.language,
-                        repo,
-                        systemInfo.branch
-                    ))
+                    scannedProjects.add(
+                        ScanProject(
+                            repo,
+                            File(repo),
+                            BuildTool.NONE,
+                            systemInfo.sql,
+                            systemInfo.language,
+                            repo,
+                            systemInfo.branch
+                        )
+                    )
                 } else {
                     // for archguard 1.0, it need to build to create jvm
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
@@ -46,27 +48,23 @@ class SystemOperator(
             }
     }
 
-    fun cloneAllRepo() {
-        log.info("workSpace is: ${workspace.toPath()}")
-        this.systemInfo.getRepoList()
-            .forEach(this::cloneSingleRepo)
-    }
-
     private fun cloneSingleRepo(repo: String) {
         log.info("workSpace is ${workspace.toPath()} repo is: $repo")
         val exitCode = getSource(workspace, repo)
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        scannedProjects.add(ScanProject(
-            repo,
-            workspace,
-            BuildTool.NONE,
-            this.systemInfo.sql,
-            systemInfo.language,
-            systemInfo.codePath,
-            systemInfo.branch
-        ))
+        scannedProjects.add(
+            ScanProject(
+                repo,
+                workspace,
+                BuildTool.NONE,
+                this.systemInfo.sql,
+                systemInfo.language,
+                systemInfo.codePath,
+                systemInfo.branch
+            )
+        )
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -78,19 +76,21 @@ class SystemOperator(
 
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
-        scannedProjects.add(ScanProject(
-            repo,
-            workspace,
-            buildTool,
-            this.systemInfo.sql,
-            systemInfo.language,
-            systemInfo.codePath,
-            systemInfo.branch
-        ))
+        scannedProjects.add(
+            ScanProject(
+                repo,
+                workspace,
+                buildTool,
+                this.systemInfo.sql,
+                systemInfo.language,
+                systemInfo.codePath,
+                systemInfo.branch
+            )
+        )
     }
 
     private fun getSource(workspace: File, repo: String): Int {
-        val WRONG_REPO_TYPE = -1
+        val wrongRepoType = -1
 
         when (this.systemInfo.repoType) {
             "GIT" -> return cloneByGitCli(workspace, repo)
@@ -98,7 +98,7 @@ class SystemOperator(
             "ZIP" -> return cloneByZip(workspace, repo)
         }
 
-        return WRONG_REPO_TYPE
+        return wrongRepoType
     }
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
@@ -128,7 +128,7 @@ class SystemOperator(
         val gitCommand = GitCommand(workspace, systemInfo.branch, false, arrayListOf(), logStream)
 
         return if (isGitRepository(workspace)) {
-            log.debug("Going to fetch repo: ", workspace)
+            log.debug("Going to fetch repo: {}", workspace)
             gitCommand.pullCode()
         } else {
             if (workspace.exists()) {
@@ -143,14 +143,6 @@ class SystemOperator(
 
     private fun isGitRepository(workingFolder: File): Boolean {
         return File(workingFolder, ".git").isDirectory
-    }
-
-    fun localBranch(): String {
-        return RefSpecHelper.localBranch(systemInfo.branch)
-    }
-
-    fun remoteBranch(): String {
-        return RefSpecHelper.remoteBranch(RefSpecHelper.expandRefSpec(systemInfo.branch))
     }
 
     private fun processGitUrl(repo: String): String {
