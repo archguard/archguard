@@ -75,17 +75,17 @@ class HubExecutorService : DisposableBean {
         // todo: check workspace dir
         val systemOperator = analysisService.getSystemOperator(id, memoryConsumer)
         systemOperator.cloneAndBuildAllRepo()
-        systemOperator.scannedProjects.forEach { (repo, compiledProject) ->
+        systemOperator.scannedProjects.forEach {
             val context = ScanContext(
                 id,
-                repo,
-                compiledProject.buildTool,
-                compiledProject.workspace,
+                it.repo,
+                it.buildTool,
+                it.workspace,
                 dbUrl,
                 config,
-                compiledProject.language,
-                compiledProject.codePath,
-                compiledProject.branch,
+                it.language,
+                it.codePath,
+                it.branch,
                 memoryConsumer,
                 additionArguments,
                 scannerVersion

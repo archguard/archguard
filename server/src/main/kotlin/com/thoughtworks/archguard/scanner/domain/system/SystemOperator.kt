@@ -18,7 +18,7 @@ class SystemOperator(
     val logStream: StreamConsumer,
 ) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
-    val scannedProjects = mutableMapOf<String, ScanProject>()
+    val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
     fun cloneAndBuildAllRepo() {
@@ -26,7 +26,7 @@ class SystemOperator(
         this.systemInfo.getRepoList()
             .forEach { repo ->
                 if (systemInfo.repoType == "LOCAL") {
-                    scannedProjects[repo] = ScanProject(
+                    scannedProjects.add(ScanProject(
                         repo,
                         File(repo),
                         BuildTool.NONE,
@@ -34,7 +34,7 @@ class SystemOperator(
                         systemInfo.language,
                         repo,
                         systemInfo.branch
-                    )
+                    ))
                 } else {
                     // for archguard 1.0, it need to build to create jvm
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
@@ -58,7 +58,7 @@ class SystemOperator(
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        scannedProjects[repo] = ScanProject(
+        scannedProjects.add(ScanProject(
             repo,
             workspace,
             BuildTool.NONE,
@@ -66,7 +66,7 @@ class SystemOperator(
             systemInfo.language,
             systemInfo.codePath,
             systemInfo.branch
-        )
+        ))
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
@@ -78,7 +78,7 @@ class SystemOperator(
 
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
-        scannedProjects[repo] = ScanProject(
+        scannedProjects.add(ScanProject(
             repo,
             workspace,
             buildTool,
@@ -86,7 +86,7 @@ class SystemOperator(
             systemInfo.language,
             systemInfo.codePath,
             systemInfo.branch
-        )
+        ))
     }
 
     private fun getSource(workspace: File, repo: String): Int {
