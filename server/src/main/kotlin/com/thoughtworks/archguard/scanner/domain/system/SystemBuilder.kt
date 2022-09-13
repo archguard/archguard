@@ -11,13 +11,13 @@ import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class SystemOperator(
+class SystemBuilder(
     val systemInfo: SystemInfo,
     val id: Long,
     val workspace: File,
     val logStream: StreamConsumer,
 ) {
-    private val log = LoggerFactory.getLogger(SystemOperator::class.java)
+    private val log = LoggerFactory.getLogger(SystemBuilder::class.java)
     val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
