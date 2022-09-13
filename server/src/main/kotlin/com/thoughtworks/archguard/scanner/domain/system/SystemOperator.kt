@@ -11,9 +11,14 @@ import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: File, val logStream: StreamConsumer) {
+class SystemOperator(
+    val systemInfo: SystemInfo,
+    val id: Long,
+    val workspace: File,
+    val logStream: StreamConsumer,
+) {
     private val log = LoggerFactory.getLogger(SystemOperator::class.java)
-    val scanProjectMap = mutableMapOf<String, ScanProject>()
+    val scannedProjects = mutableMapOf<String, ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
     fun cloneAndBuildAllRepo() {
@@ -21,7 +26,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         this.systemInfo.getRepoList()
             .forEach { repo ->
                 if (systemInfo.repoType == "LOCAL") {
-                    scanProjectMap[repo] = ScanProject(
+                    scannedProjects[repo] = ScanProject(
                         repo,
                         File(repo),
                         BuildTool.NONE,
@@ -53,7 +58,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
         if (exitCode != 0) {
             throw CloneSourceException("Fail to clone source with exitCode $exitCode")
         }
-        scanProjectMap[repo] = ScanProject(
+        scannedProjects[repo] = ScanProject(
             repo,
             workspace,
             BuildTool.NONE,
@@ -73,7 +78,7 @@ class SystemOperator(val systemInfo: SystemInfo, val id: Long, val workspace: Fi
 
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
-        scanProjectMap[repo] = ScanProject(
+        scannedProjects[repo] = ScanProject(
             repo,
             workspace,
             buildTool,
