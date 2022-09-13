@@ -18,7 +18,7 @@ class AnalysisService(@Autowired val systemInfoRepository: SystemInfoRepository)
         val systemInfo = systemInfoRepository.getSystemInfo(id)
             ?: throw EntityNotFoundException(SystemInfo::class.java, id)
         checkAnalysable(systemInfo)
-        return SystemBuilder(systemInfo, id, File(systemInfo.workdir), streamConsumer)
+        return SystemBuilder(systemInfo, File(systemInfo.workdir), streamConsumer)
     }
 
     fun checkAnalysable(systemInfo: SystemInfo) {

@@ -13,7 +13,6 @@ import java.nio.file.Paths
 
 class SystemBuilder(
     val systemInfo: SystemInfo,
-    val id: Long,
     val workspace: File,
     val logStream: StreamConsumer,
 ) {
