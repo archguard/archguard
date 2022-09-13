@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner.domain.system
 
-import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceException
+import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceCodeException
 import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
@@ -48,11 +48,7 @@ class SystemBuilder(
     }
 
     private fun cloneSingleRepo(repo: String) {
-        log.info("workSpace is ${workspace.toPath()} repo is: $repo")
-        val exitCode = getSource(workspace, repo)
-        if (exitCode != 0) {
-            throw CloneSourceException("Fail to clone source with exitCode $exitCode")
-        }
+        cloneSourceCode(repo)
         scannedProjects.add(
             ScanProject(
                 repo,
@@ -67,11 +63,7 @@ class SystemBuilder(
     }
 
     private fun cloneAndBuildSingleRepo(repo: String) {
-        log.info("workSpace is ${workspace.toPath()} repo is: $repo")
-        val exitCode = getSource(workspace, repo)
-        if (exitCode != 0) {
-            throw CloneSourceException("Fail to clone source with exitCode $exitCode")
-        }
+        cloneSourceCode(repo)
 
         val buildTool = getBuildTool(workspace)
         buildSource(workspace, buildTool)
@@ -88,16 +80,17 @@ class SystemBuilder(
         )
     }
 
-    private fun getSource(workspace: File, repo: String): Int {
-        val wrongRepoType = -1
-
-        when (this.systemInfo.repoType) {
-            "GIT" -> return cloneByGitCli(workspace, repo)
-            "SVN" -> return cloneBySvn(workspace, repo)
-            "ZIP" -> return cloneByZip(workspace, repo)
+    private fun cloneSourceCode(repo: String) {
+        log.info("workspace is located at ${workspace.toPath()}, repo is located at: $repo")
+        val exitCode = when (systemInfo.repoType) {
+            "GIT" -> cloneByGitCli(workspace, repo)
+            "SVN" -> cloneBySvn(workspace, repo)
+            "ZIP" -> cloneByZip(workspace, repo)
+            else -> -1
         }
-
-        return wrongRepoType
+        if (exitCode != 0) {
+            throw CloneSourceCodeException("Fail to clone source with exitCode $exitCode")
+        }
     }
 
     private fun buildSource(workspace: File, buildTool: BuildTool) {
