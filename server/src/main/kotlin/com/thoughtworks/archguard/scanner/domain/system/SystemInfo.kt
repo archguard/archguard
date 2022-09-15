@@ -24,8 +24,4 @@ class SystemInfo(
 
     fun getRepoList(): List<String> = repo.split(",")
 
-    fun isNecessaryBuild(): Boolean {
-        return language.lowercase() == "java" ||
-                language.lowercase() == "kotlin"
-    }
 }

@@ -1,10 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.system
 
 import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceCodeException
-import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
-import com.thoughtworks.archguard.scanner.domain.system.BuildTool.GRADLE
-import com.thoughtworks.archguard.scanner.domain.system.BuildTool.MAVEN
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool.NONE
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
@@ -23,39 +20,22 @@ class SystemBuilder(
     val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
-    fun cloneAndBuildAllRepo() {
-        log.info("workSpace is: ${workspace.toPath()}")
+    fun clone() {
+        log.info("workspace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
             .forEach { repo ->
-                if (systemInfo.isNecessaryBuild()) {
-                    cloneSourceCode(repo)
-                    val buildTool = getBuildTool()
-                    buildSourceCode(buildTool)
-                    scannedProjects.add(
-                        ScanProject(
-                            repo,
-                            workspace,
-                            buildTool,
-                            systemInfo.sql,
-                            systemInfo.language,
-                            systemInfo.codePath,
-                            systemInfo.branch
-                        )
+                cloneSourceCode(repo)
+                scannedProjects.add(
+                    ScanProject(
+                        repo,
+                        workspace,
+                        NONE,
+                        systemInfo.sql,
+                        systemInfo.language,
+                        systemInfo.codePath,
+                        systemInfo.branch
                     )
-                } else {
-                    cloneSourceCode(repo)
-                    scannedProjects.add(
-                        ScanProject(
-                            repo,
-                            workspace,
-                            NONE,
-                            systemInfo.sql,
-                            systemInfo.language,
-                            systemInfo.codePath,
-                            systemInfo.branch
-                        )
-                    )
-                }
+                )
             }
     }
 
@@ -71,31 +51,6 @@ class SystemBuilder(
             throw CloneSourceCodeException("Fail to clone source with exitCode $exitCode")
         }
     }
-
-    private fun buildSourceCode(buildTool: BuildTool) {
-        val processBuilder: ProcessBuilder =
-            when (buildTool) {
-                MAVEN -> ProcessBuilder("mvn", "clean", "test", "-DskipTests")
-                GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
-                NONE -> throw CompileException("Fail to identify build tool for compile")
-            }
-
-        Processor.executeWithLogs(processBuilder, workspace, logStream)
-    }
-
-    private fun getBuildTool() = when {
-        isMavenProject(workspace) -> MAVEN
-        isGradleProject(workspace) -> GRADLE
-        else -> NONE
-    }
-
-    private fun isGradleProject(workspace: File) =
-        getElementsName(workspace).any { it.startsWith("build.gradle") }
-
-    private fun isMavenProject(workspace: File) =
-        getElementsName(workspace).any { it == "pom.xml" }
-
-    private fun getElementsName(workspace: File) = workspace.list().orEmpty()
 
     private fun cloneByGitCli(workspace: File, repo: String): Int {
         // todo: display repo with password
