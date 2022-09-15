@@ -23,12 +23,6 @@ class SystemBuilder(
     val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
-    private val buildTool = when {
-        isMavenProject(workspace) -> MAVEN
-        isGradleProject(workspace) -> GRADLE
-        else -> NONE
-    }
-
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
@@ -48,7 +42,8 @@ class SystemBuilder(
                 } else {
                     if (systemInfo.isNecessaryBuild()) {
                         cloneSourceCode(repo)
-                        buildSourceCode()
+                        val buildTool = getBuildTool()
+                        buildSourceCode(buildTool)
                         scannedProjects.add(
                             ScanProject(
                                 repo,
@@ -91,7 +86,7 @@ class SystemBuilder(
         }
     }
 
-    private fun buildSourceCode() {
+    private fun buildSourceCode(buildTool: BuildTool) {
         val processBuilder: ProcessBuilder =
             when (buildTool) {
                 MAVEN -> ProcessBuilder("mvn", "clean", "test", "-DskipTests")
@@ -100,6 +95,12 @@ class SystemBuilder(
             }
 
         Processor.executeWithLogs(processBuilder, workspace, logStream)
+    }
+
+    private fun getBuildTool() = when {
+        isMavenProject(workspace) -> MAVEN
+        isGradleProject(workspace) -> GRADLE
+        else -> NONE
     }
 
     private fun isGradleProject(workspace: File) =
