@@ -48,43 +48,35 @@ class SystemBuilder(
                 } else {
                     // for archguard 1.0, it need to build to create jvm
                     if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
-                        cloneAndBuildSingleRepo(repo)
+                        cloneSourceCode(repo)
+                        buildSourceCode()
+                        scannedProjects.add(
+                            ScanProject(
+                                repo,
+                                workspace,
+                                buildTool,
+                                systemInfo.sql,
+                                systemInfo.language,
+                                systemInfo.codePath,
+                                systemInfo.branch
+                            )
+                        )
                     } else {
-                        cloneSingleRepo(repo)
+                        cloneSourceCode(repo)
+                        scannedProjects.add(
+                            ScanProject(
+                                repo,
+                                workspace,
+                                NONE,
+                                systemInfo.sql,
+                                systemInfo.language,
+                                systemInfo.codePath,
+                                systemInfo.branch
+                            )
+                        )
                     }
                 }
             }
-    }
-
-    private fun cloneSingleRepo(repo: String) {
-        cloneSourceCode(repo)
-        scannedProjects.add(
-            ScanProject(
-                repo,
-                workspace,
-                BuildTool.NONE,
-                this.systemInfo.sql,
-                systemInfo.language,
-                systemInfo.codePath,
-                systemInfo.branch
-            )
-        )
-    }
-
-    private fun cloneAndBuildSingleRepo(repo: String) {
-        cloneSourceCode(repo)
-        buildSourceCode()
-        scannedProjects.add(
-            ScanProject(
-                repo,
-                workspace,
-                buildTool,
-                this.systemInfo.sql,
-                systemInfo.language,
-                systemInfo.codePath,
-                systemInfo.branch
-            )
-        )
     }
 
     private fun cloneSourceCode(repo: String) {
