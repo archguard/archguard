@@ -27,48 +27,34 @@ class SystemBuilder(
         log.info("workSpace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
             .forEach { repo ->
-                if (systemInfo.repoType == "LOCAL") {
+                if (systemInfo.isNecessaryBuild()) {
+                    cloneSourceCode(repo)
+                    val buildTool = getBuildTool()
+                    buildSourceCode(buildTool)
                     scannedProjects.add(
                         ScanProject(
                             repo,
-                            File(repo),
-                            BuildTool.NONE,
+                            workspace,
+                            buildTool,
                             systemInfo.sql,
                             systemInfo.language,
-                            repo,
+                            systemInfo.codePath,
                             systemInfo.branch
                         )
                     )
                 } else {
-                    if (systemInfo.isNecessaryBuild()) {
-                        cloneSourceCode(repo)
-                        val buildTool = getBuildTool()
-                        buildSourceCode(buildTool)
-                        scannedProjects.add(
-                            ScanProject(
-                                repo,
-                                workspace,
-                                buildTool,
-                                systemInfo.sql,
-                                systemInfo.language,
-                                systemInfo.codePath,
-                                systemInfo.branch
-                            )
+                    cloneSourceCode(repo)
+                    scannedProjects.add(
+                        ScanProject(
+                            repo,
+                            workspace,
+                            NONE,
+                            systemInfo.sql,
+                            systemInfo.language,
+                            systemInfo.codePath,
+                            systemInfo.branch
                         )
-                    } else {
-                        cloneSourceCode(repo)
-                        scannedProjects.add(
-                            ScanProject(
-                                repo,
-                                workspace,
-                                NONE,
-                                systemInfo.sql,
-                                systemInfo.language,
-                                systemInfo.codePath,
-                                systemInfo.branch
-                            )
-                        )
-                    }
+                    )
                 }
             }
     }
@@ -78,7 +64,7 @@ class SystemBuilder(
         val exitCode = when (systemInfo.repoType) {
             "GIT" -> cloneByGitCli(workspace, repo)
             "SVN" -> cloneBySvn(workspace, repo)
-            "ZIP" -> cloneByZip(workspace, repo)
+            "LOCAL" -> cloneByCp(workspace, repo)
             else -> -1
         }
         if (exitCode != 0) {
@@ -169,10 +155,8 @@ class SystemBuilder(
         return Processor.executeWithLogs(pb, workspace, logStream)
     }
 
-    private fun cloneByZip(workspace: File, repo: String): Int {
-        // unzip .zip file to workspace
-        // unzip -d /temp test.zip
-        val cmdList = listOf("unzip", repo)
+    private fun cloneByCp(workspace: File, repo: String): Int {
+        val cmdList = listOf("cp", "-r", repo, workspace.path)
         val pb = ProcessBuilder(cmdList)
         return Processor.executeWithLogs(pb, workspace, logStream)
     }
