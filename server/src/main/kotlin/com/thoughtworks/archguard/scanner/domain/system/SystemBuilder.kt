@@ -46,8 +46,7 @@ class SystemBuilder(
                         )
                     )
                 } else {
-                    // for archguard 1.0, it need to build to create jvm
-                    if (systemInfo.isNecessaryBuild() && systemInfo.language.lowercase() == "jvm") {
+                    if (systemInfo.isNecessaryBuild()) {
                         cloneSourceCode(repo)
                         buildSourceCode()
                         scannedProjects.add(

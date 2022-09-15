@@ -25,6 +25,7 @@ class SystemInfo(
     fun getRepoList(): List<String> = repo.split(",")
 
     fun isNecessaryBuild(): Boolean {
-        return repoType != "ZIP"
+        return language.lowercase() == "java" ||
+                language.lowercase() == "kotlin"
     }
 }
