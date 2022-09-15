@@ -21,6 +21,7 @@ services:
     volumes:
       - "~/.m2:/root/.m2"
       - "~/.gradle:/root/.gradle"
+      - "~/local_project_repo:/tmp/local_project_repo"
     healthcheck:
       test: curl -f http://localhost:8080/actuator/health || exit 1
       timeout: 10s
