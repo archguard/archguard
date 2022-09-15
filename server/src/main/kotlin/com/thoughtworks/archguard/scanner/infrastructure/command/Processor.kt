@@ -16,13 +16,14 @@ object Processor {
     fun executeWithLogsAndAppendToFile(
         pb: ProcessBuilder,
         workspace: File,
-        reportPath: String?,
-        consumer: StreamConsumer
+        report: File?,
+        consumer: StreamConsumer,
     ): Int {
         pb.redirectErrorStream(true)
         pb.directory(workspace)
-        if (reportPath != null) {
-            pb.redirectOutput(File(reportPath))
+        if (report != null) {
+            report.createNewFile()
+            pb.redirectOutput(report)
         }
         val p = pb.start()
         val inputStream: InputStream = p.inputStream

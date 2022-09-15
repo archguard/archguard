@@ -26,9 +26,8 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String, val consum
     }
 
     private fun getGitHotFileCommitFile(): File? {
-        val reportPath = "$systemRoot/scm_git_hot_file.txt"
-        scan(listOf("git", "log", branch, "--no-merges", "--name-only", "--oneline", "--pretty=format:"), reportPath)
-        val report = File(reportPath)
+        val report = File("$systemRoot/scm_git_hot_file.txt")
+        scan(listOf("git", "log", branch, "--no-merges", "--name-only", "--oneline", "--pretty=format:"), report)
         return if (report.exists()) {
             report
         } else {
@@ -37,7 +36,7 @@ class GitHotFileScannerTool(val systemRoot: File, val branch: String, val consum
         }
     }
 
-    private fun scan(cmd: List<String>, reportPath: String) {
-        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, reportPath, consumer)
+    private fun scan(cmd: List<String>, report: File) {
+        Processor.executeWithLogsAndAppendToFile(ProcessBuilder(cmd), systemRoot, report, consumer)
     }
 }
