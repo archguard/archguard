@@ -3,6 +3,9 @@ package com.thoughtworks.archguard.scanner.domain.system
 import com.thoughtworks.archguard.scanner.domain.exception.CloneSourceCodeException
 import com.thoughtworks.archguard.scanner.domain.exception.CompileException
 import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
+import com.thoughtworks.archguard.scanner.domain.system.BuildTool.GRADLE
+import com.thoughtworks.archguard.scanner.domain.system.BuildTool.MAVEN
+import com.thoughtworks.archguard.scanner.domain.system.BuildTool.NONE
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
 import org.slf4j.LoggerFactory
@@ -19,6 +22,12 @@ class SystemBuilder(
     private val log = LoggerFactory.getLogger(SystemBuilder::class.java)
     val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
+
+    private val buildTool = when {
+        isMavenProject(workspace) -> MAVEN
+        isGradleProject(workspace) -> GRADLE
+        else -> NONE
+    }
 
     fun cloneAndBuildAllRepo() {
         log.info("workSpace is: ${workspace.toPath()}")
@@ -64,9 +73,7 @@ class SystemBuilder(
 
     private fun cloneAndBuildSingleRepo(repo: String) {
         cloneSourceCode(repo)
-
-        val buildTool = getBuildTool(workspace)
-        buildSource(workspace, buildTool)
+        buildSourceCode()
         scannedProjects.add(
             ScanProject(
                 repo,
@@ -93,23 +100,24 @@ class SystemBuilder(
         }
     }
 
-    private fun buildSource(workspace: File, buildTool: BuildTool) {
-        val pb: ProcessBuilder = when (buildTool) {
-            BuildTool.MAVEN -> ProcessBuilder("mvn", "clean", "test", "-DskipTests")
-            BuildTool.GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
-            BuildTool.NONE -> throw CompileException("Fail to identify build tool for compile")
-        }
+    private fun buildSourceCode() {
+        val processBuilder: ProcessBuilder =
+            when (buildTool) {
+                MAVEN -> ProcessBuilder("mvn", "clean", "test", "-DskipTests")
+                GRADLE -> ProcessBuilder("./gradlew", "clean", "testClasses")
+                NONE -> throw CompileException("Fail to identify build tool for compile")
+            }
 
-        Processor.executeWithLogs(pb, workspace, logStream)
+        Processor.executeWithLogs(processBuilder, workspace, logStream)
     }
 
-    private fun getBuildTool(workspace: File): BuildTool {
-        return when {
-            workspace.listFiles().orEmpty().any { it.name == "pom.xml" } -> BuildTool.MAVEN
-            workspace.listFiles().orEmpty().any { it.name.startsWith("build.gradle") } -> BuildTool.GRADLE
-            else -> BuildTool.NONE
-        }
-    }
+    private fun isGradleProject(workspace: File) =
+        getElementsName(workspace).any { it.startsWith("build.gradle") }
+
+    private fun isMavenProject(workspace: File) =
+        getElementsName(workspace).any { it == "pom.xml" }
+
+    private fun getElementsName(workspace: File) = workspace.list().orEmpty()
 
     private fun cloneByGitCli(workspace: File, repo: String): Int {
         // todo: display repo with password
