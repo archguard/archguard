@@ -11,16 +11,16 @@ import java.io.File
 import java.net.URLEncoder
 import java.nio.file.Paths
 
-class SystemBuilder(
+class SourceCodeExtractor(
     val systemInfo: SystemInfo,
     val workspace: File,
     val logStream: StreamConsumer,
 ) {
-    private val log = LoggerFactory.getLogger(SystemBuilder::class.java)
+    private val log = LoggerFactory.getLogger(SourceCodeExtractor::class.java)
     val scannedProjects = mutableSetOf<ScanProject>()
     val sql: String by lazy { systemInfo.sql }
 
-    fun clone() {
+    fun extract() {
         log.info("workspace is: ${workspace.toPath()}")
         this.systemInfo.getRepoList()
             .forEach { repo ->
