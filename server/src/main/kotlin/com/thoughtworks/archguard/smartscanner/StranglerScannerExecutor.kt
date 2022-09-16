@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
-// replace the { HubExecutor, ScannerManager }
 @Service
 class StranglerScannerExecutor(
     @Autowired private val scanners: List<Scanner>,
@@ -79,18 +78,22 @@ class StranglerScannerExecutor(
                 it.features = listOf("apicalls", "datamap")
                 it.rules = listOf("webapi", "test", "sql")
             }
+
             AnalyserType.SCA -> baseline.also {
                 it.language = context.language.lowercase()
             }
+
             AnalyserType.DIFF_CHANGES -> baseline.also {
                 it.language = context.language
                 it.additionArguments = context.additionArguments
             }
+
             AnalyserType.GIT -> baseline.also {
                 it.language = context.language
                 it.repoId = context.repo
                 it.additionArguments = context.additionArguments
             }
+
             else -> null
         }
     }
