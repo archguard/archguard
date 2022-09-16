@@ -111,8 +111,16 @@ class SourceCodeExtractor(
     }
 
     private fun cloneByCp(workspace: File, repo: String): Int {
-        val cmdList = listOf("cp", "-r", repo, workspace.path)
+        val cmdList = listOf("cp", "-r", addWildcardSuffix(repo), workspace.path)
         val pb = ProcessBuilder(cmdList)
         return Processor.executeWithLogs(pb, workspace, logStream)
+    }
+
+    private fun addWildcardSuffix(repo: String): String {
+        return if (repo.last() == File.separatorChar) {
+            "$repo."
+        } else {
+            repo + File.separator + "."
+        }
     }
 }
