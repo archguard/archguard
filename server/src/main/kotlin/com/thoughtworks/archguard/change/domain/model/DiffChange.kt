@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.change.domain
+package com.thoughtworks.archguard.change.domain.model
 
 class DiffChange(
     val systemId: Long,

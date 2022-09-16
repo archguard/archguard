@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.change.domain
+package com.thoughtworks.archguard.change.domain.model
 
 class GitHotFile(
     val systemId: Long,
@@ -9,5 +9,3 @@ class GitHotFile(
     val modifiedCount: Int,
     val jclassId: String?
 )
-
-class GitPathChangeCount(val systemId: Long, var path: String, val changes: Int, val lineCount: Int)

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.change.controller
 
-import com.thoughtworks.archguard.change.application.DiffChangeService
-import com.thoughtworks.archguard.change.domain.DiffChange
+import com.thoughtworks.archguard.change.application.DiffChangeApplicationService
+import com.thoughtworks.archguard.change.domain.model.DiffChange
 import com.thoughtworks.archguard.system_info.domain.SystemInfoService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/systems/{systemId}/diff")
 class DiffChangeController(
-    val diffChangeService: DiffChangeService,
+    val diffChangeApplicationService: DiffChangeApplicationService,
     val systemInfoService: SystemInfoService,
 ) {
     @GetMapping("/influence/history")
-    fun historyInfluence(@PathVariable("systemId") systemId: Long, ): List<DiffChange> {
-        return diffChangeService.findBySystemId(systemId)
+    fun historyInfluence(@PathVariable("systemId") systemId: Long): List<DiffChange> {
+        return diffChangeApplicationService.findBySystemId(systemId)
     }
 
     @GetMapping("/influence/commit")
@@ -29,7 +29,7 @@ class DiffChangeController(
         @RequestParam(defaultValue = "1.6.2") scannerVersion: String,
     ): List<DiffChange> {
         val systemInfo = systemInfoService.getSystemInfo(systemId)
-        diffChangeService.execute(systemInfo, since, until, scannerVersion)
-        return diffChangeService.findBySystemId(systemId)
+        diffChangeApplicationService.execute(systemInfo, since, until, scannerVersion)
+        return diffChangeApplicationService.findBySystemId(systemId)
     }
 }

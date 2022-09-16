@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.change.application
 
-import com.thoughtworks.archguard.change.domain.DiffChange
-import com.thoughtworks.archguard.change.domain.DiffChangeRepo
+import com.thoughtworks.archguard.change.domain.model.DiffChange
+import com.thoughtworks.archguard.change.domain.repository.DiffChangeRepository
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 @Service
-class DiffChangeService(
-    val diffChangeRepo: DiffChangeRepo,
+class DiffChangeApplicationService(
+    val diffChangeRepository: DiffChangeRepository,
     val scannerExecutor: StranglerScannerExecutor,
 ) {
     fun execute(systemInfo: SystemInfo, since: String, until: String, scannerVersion: String) {
@@ -40,6 +40,6 @@ class DiffChangeService(
     }
 
     fun findBySystemId(id: Long): List<DiffChange> {
-        return diffChangeRepo.findBySystemId(id)
+        return diffChangeRepository.findBySystemId(id)
     }
 }

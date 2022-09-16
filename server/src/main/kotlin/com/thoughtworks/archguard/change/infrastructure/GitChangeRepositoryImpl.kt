@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.change.infrastructure
 
-import com.thoughtworks.archguard.change.domain.GitChangeRepo
-import com.thoughtworks.archguard.change.domain.GitHotFile
-import com.thoughtworks.archguard.change.domain.GitPathChangeCount
+import com.thoughtworks.archguard.change.domain.repository.GitChangeRepository
+import com.thoughtworks.archguard.change.domain.model.GitHotFile
+import com.thoughtworks.archguard.change.domain.model.GitPathChangeCount
 import org.springframework.stereotype.Repository
 
 @Repository
-class GitChangeRepoImpl(val gitChangeDao: GitChangeDao) : GitChangeRepo {
+class GitChangeRepositoryImpl(val gitChangeDao: GitChangeDao) : GitChangeRepository {
 
     override fun findBySystemId(systemId: Long): List<GitHotFile> {
         return gitChangeDao.findBySystemId(systemId)

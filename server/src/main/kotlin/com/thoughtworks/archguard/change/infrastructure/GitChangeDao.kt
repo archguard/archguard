@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.change.infrastructure
 
-import com.thoughtworks.archguard.change.domain.GitHotFile
-import com.thoughtworks.archguard.change.domain.GitPathChangeCount
+import com.thoughtworks.archguard.change.domain.model.GitHotFile
+import com.thoughtworks.archguard.change.domain.model.GitPathChangeCount
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 
 interface GitChangeDao {

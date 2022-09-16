@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.change.infrastructure
 
-import com.thoughtworks.archguard.change.domain.DiffChange
+import com.thoughtworks.archguard.change.domain.model.DiffChange
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 
 interface DiffChangeDao {
