@@ -53,7 +53,7 @@ internal class GitHotFileVOTest {
     internal fun shouldGetNullModuleNameGivenJVMFileInSrcTopDirection() {
         val gitHotFile = GitHotFileVO("src/main/kotlin/com/qicaisheng/parkinglot/HTMLReportVisitor.kt", 10)
 
-        assertNull(gitHotFile.moduleName())
+        assertEquals("root", gitHotFile.moduleName())
     }
 
     @Test
