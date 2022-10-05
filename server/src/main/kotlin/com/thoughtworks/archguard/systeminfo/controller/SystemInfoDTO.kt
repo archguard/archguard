@@ -1,11 +1,7 @@
 package com.thoughtworks.archguard.systeminfo.controller
 
+import com.thoughtworks.archguard.systeminfo.domain.RepoAuthType
 import com.thoughtworks.archguard.systeminfo.domain.ScannedType
-
-enum class RepoAuthType {
-    SshKeyString,
-    UsernameAndPassword
-}
 
 data class SystemInfoDTO(
     var id: Long? = null,

@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.systeminfo.domain
 
-import com.thoughtworks.archguard.systeminfo.controller.RepoAuthType
 import java.sql.Timestamp
 
 data class SystemInfo(
@@ -24,3 +23,12 @@ data class SystemInfo(
     val repoAuthType: RepoAuthType = RepoAuthType.UsernameAndPassword,
     val sshKeyString: String? = ""
 )
+
+enum class ScannedType {
+    NONE, SCANNING, SCANNED, FAILED
+}
+
+enum class RepoAuthType {
+    SshKeyString,
+    UsernameAndPassword
+}
