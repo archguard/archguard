@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.unit
 
-import com.thoughtworks.archguard.system_info.infrastracture.AESCrypt
+import com.thoughtworks.archguard.systeminfo.infrastracture.AESCrypt
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

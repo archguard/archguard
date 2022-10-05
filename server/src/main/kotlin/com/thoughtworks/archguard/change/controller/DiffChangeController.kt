@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.change.controller
 
 import com.thoughtworks.archguard.change.application.DiffChangeApplicationService
 import com.thoughtworks.archguard.change.domain.model.DiffChange
-import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

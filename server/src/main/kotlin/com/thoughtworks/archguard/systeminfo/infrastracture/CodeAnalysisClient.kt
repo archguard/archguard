@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.system_info.infrastracture
+package com.thoughtworks.archguard.systeminfo.infrastracture
 
-import com.thoughtworks.archguard.system_info.domain.AnalysisClientProxy
+import com.thoughtworks.archguard.systeminfo.domain.AnalysisClientProxy
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

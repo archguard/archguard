@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.system_info.infrastracture
+package com.thoughtworks.archguard.systeminfo.infrastracture
 
 import com.thoughtworks.archguard.common.constants.RELATED_TABLES
-import com.thoughtworks.archguard.system_info.domain.SystemInfo
-import com.thoughtworks.archguard.system_info.domain.SystemInfoRepository
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.mapTo
 import org.springframework.beans.factory.annotation.Autowired

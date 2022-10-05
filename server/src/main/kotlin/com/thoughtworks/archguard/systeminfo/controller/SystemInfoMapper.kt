@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.system_info.controller
+package com.thoughtworks.archguard.systeminfo.controller
 
-import com.thoughtworks.archguard.system_info.domain.SystemInfo
-import com.thoughtworks.archguard.system_info.infrastracture.AESCrypt
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
+import com.thoughtworks.archguard.systeminfo.infrastracture.AESCrypt
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.system_info.controller
+package com.thoughtworks.archguard.systeminfo.controller
 
-import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoService
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 

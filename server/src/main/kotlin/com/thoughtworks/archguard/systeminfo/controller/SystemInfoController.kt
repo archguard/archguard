@@ -1,8 +1,8 @@
-package com.thoughtworks.archguard.system_info.controller
+package com.thoughtworks.archguard.systeminfo.controller
 
 import com.thoughtworks.archguard.common.CreateFileUtil
-import com.thoughtworks.archguard.system_info.domain.SystemInfo
-import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus

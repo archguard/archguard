@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.system_info.domain
+package com.thoughtworks.archguard.systeminfo.domain
 
 import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.spring.api.DBRider

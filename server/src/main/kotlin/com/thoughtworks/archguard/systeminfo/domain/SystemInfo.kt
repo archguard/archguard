@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.system_info.domain
+package com.thoughtworks.archguard.systeminfo.domain
 
-import com.thoughtworks.archguard.system_info.controller.RepoAuthType
+import com.thoughtworks.archguard.systeminfo.controller.RepoAuthType
 import java.sql.Timestamp
 
 data class SystemInfo(

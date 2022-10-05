@@ -10,9 +10,9 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
-import com.thoughtworks.archguard.system_info.controller.SystemInfoDTO
-import com.thoughtworks.archguard.system_info.controller.SystemInfoMapper
-import com.thoughtworks.archguard.system_info.domain.SystemInfoService
+import com.thoughtworks.archguard.systeminfo.controller.SystemInfoDTO
+import com.thoughtworks.archguard.systeminfo.controller.SystemInfoMapper
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

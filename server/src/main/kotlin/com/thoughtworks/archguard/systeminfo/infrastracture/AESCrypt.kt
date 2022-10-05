@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.system_info.infrastracture
+package com.thoughtworks.archguard.systeminfo.infrastracture
 
 import org.springframework.stereotype.Component
 import java.util.Base64

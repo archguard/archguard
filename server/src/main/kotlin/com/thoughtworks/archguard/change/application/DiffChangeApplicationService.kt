@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
-import com.thoughtworks.archguard.system_info.domain.SystemInfo
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
 import org.archguard.scanner.core.context.AnalyserType
 import org.springframework.stereotype.Service
 import java.io.File

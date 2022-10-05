@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.system_info.domain
+package com.thoughtworks.archguard.systeminfo.domain
 
 enum class ScannedType {
     NONE, SCANNING, SCANNED, FAILED

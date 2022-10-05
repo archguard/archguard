@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.system_info.controller
+package com.thoughtworks.archguard.systeminfo.controller
 
-import com.thoughtworks.archguard.system_info.domain.ScannedType
+import com.thoughtworks.archguard.systeminfo.domain.ScannedType
 
 enum class RepoAuthType {
     SshKeyString,
