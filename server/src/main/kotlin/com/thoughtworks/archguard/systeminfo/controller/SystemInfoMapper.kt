@@ -17,6 +17,16 @@ class SystemInfoMapper {
         )
     }
 
+    fun fromDTO(dto: SystemInfoCreateDTO): SystemInfo {
+        return SystemInfo(
+            id = null, systemName = dto.systemName, sql = dto.sql, username = dto.username,
+            password = AESCrypt.encrypt(dto.password), repoType = dto.repoType, scanned = dto.scanned,
+            qualityGateProfileId = dto.qualityGateProfileId, language = dto.language, codePath = dto.codePath,
+            repo = dto.repo.joinToString(","), updatedTime = null,
+            badSmellThresholdSuiteId = dto.badSmellThresholdSuiteId, branch = dto.branch
+        )
+    }
+
     fun toDTO(info: SystemInfo): SystemInfoDTO {
         return SystemInfoDTO(
             id = info.id, systemName = info.systemName, sql = info.sql, username = info.username,

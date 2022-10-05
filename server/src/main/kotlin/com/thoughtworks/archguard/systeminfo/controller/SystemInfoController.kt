@@ -64,8 +64,8 @@ class SystemInfoController(
     }
 
     @PostMapping
-    fun addSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO): Long {
-        val systemInfo: SystemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
+    fun addSystemInfo(@RequestBody dto: SystemInfoCreateDTO): Long {
+        val systemInfo: SystemInfo = systemInfoMapper.fromDTO(dto)
         return systemInfoService.addSystemInfo(systemInfo)
     }
 
