@@ -1,6 +1,7 @@
-package com.thoughtworks.archguard.systeminfo.controller
+package com.thoughtworks.archguard.systeminfo.controller.dto
 
-data class SystemInfoCreateDTO(
+data class SystemInfoUpdateDTO(
+    val id: Long,
     val systemName: String = "",
     val repo: List<String> = ArrayList(),
     val username: String = "",

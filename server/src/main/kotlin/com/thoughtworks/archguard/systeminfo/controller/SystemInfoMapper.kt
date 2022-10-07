@@ -1,5 +1,8 @@
 package com.thoughtworks.archguard.systeminfo.controller
 
+import com.thoughtworks.archguard.systeminfo.controller.dto.SystemInfoCreateDTO
+import com.thoughtworks.archguard.systeminfo.controller.dto.SystemInfoDTO
+import com.thoughtworks.archguard.systeminfo.controller.dto.SystemInfoUpdateDTO
 import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
 import com.thoughtworks.archguard.systeminfo.infrastracture.AESCrypt
 import org.springframework.stereotype.Component
@@ -31,7 +34,7 @@ class SystemInfoMapper {
         return SystemInfoDTO(
             id = info.id, systemName = info.systemName, username = info.username,
             password = info.password, repoType = info.repoType, scanned = info.scanned,
-            qualityGateProfileId = info.qualityGateProfileId, language = info.language, codePath = info.codePath,
+            language = info.language, codePath = info.codePath,
             repo = info.repo.split(','), updatedTime = info.updatedTime?.time,
             badSmellThresholdSuiteId = info.badSmellThresholdSuiteId, branch = info.branch
         )
