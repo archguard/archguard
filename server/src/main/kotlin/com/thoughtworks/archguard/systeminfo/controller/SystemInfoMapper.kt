@@ -20,8 +20,8 @@ class SystemInfoMapper {
     fun fromDTO(dto: SystemInfoCreateDTO): SystemInfo {
         return SystemInfo(
             id = null, systemName = dto.systemName, username = dto.username,
-            password = AESCrypt.encrypt(dto.password), repoType = dto.repoType, scanned = dto.scanned,
-            qualityGateProfileId = dto.qualityGateProfileId, language = dto.language, codePath = dto.codePath,
+            password = AESCrypt.encrypt(dto.password), repoType = dto.repoType,
+            language = dto.language, codePath = dto.codePath,
             repo = dto.repo.joinToString(","), updatedTime = null,
             badSmellThresholdSuiteId = dto.badSmellThresholdSuiteId, branch = dto.branch
         )
