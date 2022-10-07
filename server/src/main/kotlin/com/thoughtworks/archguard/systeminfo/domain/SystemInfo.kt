@@ -4,22 +4,21 @@ import com.thoughtworks.archguard.scanner.infrastructure.AESCrypt
 import java.sql.Timestamp
 
 class SystemInfo(
-    var id: Long? = null,
-    val systemName: String = "",
-    val repo: String = "",
-    val username: String = "",
-    val password: String = "",
+    val id: Long? = null,
+    val systemName: String,
+    val repo: String,
+    val username: String,
+    val password: String,
     var scanned: ScannedType = ScannedType.NONE,
     @Deprecated("not used")
     val qualityGateProfileId: Long? = null,
-    val repoType: String = "GIT",
+    val repoType: String,
     val updatedTime: Timestamp? = null,
-    @Deprecated("not used")
-    val badSmellThresholdSuiteId: Long? = null,
-    val branch: String = "master",
-    val language: String = "java",
+    val badSmellThresholdSuiteId: Long?,
+    val branch: String,
+    val language: String,
     // for TypeScript/JavaScript, if some code is in subdiretory
-    val codePath: String = "",
+    val codePath: String,
     // git clone target directory
     val workdir: String = "",
     @Deprecated("not used")

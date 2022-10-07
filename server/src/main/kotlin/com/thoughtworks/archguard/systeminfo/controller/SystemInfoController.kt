@@ -58,8 +58,8 @@ class SystemInfoController(
     }
 
     @PutMapping
-    fun updateSystemInfo(@RequestBody systemInfoDTO: SystemInfoDTO) {
-        val systemInfo: SystemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
+    fun updateSystemInfo(@RequestBody dto: SystemInfoUpdateDTO) {
+        val systemInfo: SystemInfo = systemInfoMapper.fromDTO(dto)
         systemInfoService.updateSystemInfo(systemInfo)
     }
 

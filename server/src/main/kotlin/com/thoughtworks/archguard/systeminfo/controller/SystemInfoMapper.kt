@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component
 @Component
 class SystemInfoMapper {
 
-    fun fromDTO(dto: SystemInfoDTO): SystemInfo {
+    fun fromDTO(dto: SystemInfoCreateDTO): SystemInfo {
         return SystemInfo(
-            id = dto.id, systemName = dto.systemName, username = dto.username,
-            password = AESCrypt.encrypt(dto.password), repoType = dto.repoType, scanned = dto.scanned,
-            qualityGateProfileId = dto.qualityGateProfileId, language = dto.language, codePath = dto.codePath,
-            repo = dto.repo.joinToString(","), updatedTime = null,
+            systemName = dto.systemName, username = dto.username,
+            password = AESCrypt.encrypt(dto.password), repoType = dto.repoType,
+            language = dto.language, codePath = dto.codePath,
+            repo = dto.repo.joinToString(","),
             badSmellThresholdSuiteId = dto.badSmellThresholdSuiteId, branch = dto.branch
         )
     }
 
-    fun fromDTO(dto: SystemInfoCreateDTO): SystemInfo {
+    fun fromDTO(dto: SystemInfoUpdateDTO): SystemInfo {
         return SystemInfo(
-            id = null, systemName = dto.systemName, username = dto.username,
+            id = dto.id, systemName = dto.systemName, username = dto.username,
             password = AESCrypt.encrypt(dto.password), repoType = dto.repoType,
             language = dto.language, codePath = dto.codePath,
-            repo = dto.repo.joinToString(","), updatedTime = null,
+            repo = dto.repo.joinToString(","),
             badSmellThresholdSuiteId = dto.badSmellThresholdSuiteId, branch = dto.branch
         )
     }

@@ -1,18 +1,17 @@
 package com.thoughtworks.archguard.workbench
 
-import com.thoughtworks.archguard.workbench.domain.AacDslCodeModel
-import com.thoughtworks.archguard.workbench.domain.AasDslRepository
-import com.thoughtworks.archguard.workbench.model.AsCodeResponse
-import com.thoughtworks.archguard.workbench.model.PlaceHolder
-import com.thoughtworks.archguard.workbench.model.RepoStatus
 import com.thoughtworks.archguard.common.exception.EntityNotFoundException
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.smartscanner.StranglerScannerExecutor
-import com.thoughtworks.archguard.systeminfo.controller.SystemInfoDTO
-import com.thoughtworks.archguard.systeminfo.controller.SystemInfoMapper
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
 import com.thoughtworks.archguard.systeminfo.domain.SystemInfoService
+import com.thoughtworks.archguard.workbench.domain.AacDslCodeModel
+import com.thoughtworks.archguard.workbench.domain.AasDslRepository
+import com.thoughtworks.archguard.workbench.model.AsCodeResponse
+import com.thoughtworks.archguard.workbench.model.PlaceHolder
+import com.thoughtworks.archguard.workbench.model.RepoStatus
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -39,7 +38,6 @@ class AacCodeDto(val code: String)
 @RequestMapping("/api/ascode")
 class AsCodeController(
     val systemInfoService: SystemInfoService,
-    val systemInfoMapper: SystemInfoMapper,
     val aacDslRepository: AasDslRepository,
     val executor: StranglerScannerExecutor,
 ) {
@@ -51,13 +49,18 @@ class AsCodeController(
         val exists = mutableListOf<String>()
 
         repos.forEach {
-            val systemInfoDTO = SystemInfoDTO(
+            val systemInfo = SystemInfo(
                 systemName = it.name,
-                repo = listOf(it.scmUrl),
+                repo = listOf(it.scmUrl).joinToString(","),
                 language = it.language,
-                badSmellThresholdSuiteId = 1
+                badSmellThresholdSuiteId = 1,
+                branch = "master",
+                repoType = "GIT",
+                username = "",
+                password = "",
+                codePath = ""
             )
-            val systemInfo = systemInfoMapper.fromDTO(systemInfoDTO)
+
             try {
                 systemInfoService.addSystemInfo(systemInfo)
                 successes += it.name
@@ -101,16 +104,16 @@ class AsCodeController(
             systemId = systemInfo.id!!,
             repo = systemInfo.repo,
             buildTool = BuildTool.NONE,
-            workspace = File(systemInfo.workdir!!),
+            workspace = File(systemInfo.workdir),
             dbUrl = "",
             config = listOf(),
-            language = systemInfo.language!!,
-            codePath = systemInfo.codePath!!,
-            branch = systemInfo.branch!!,
+            language = systemInfo.language,
+            codePath = systemInfo.codePath,
+            branch = systemInfo.branch,
             logStream = memoryConsumer,
             scannerVersion = scannerVersion,
             additionArguments = listOf()
-        );
+        )
 
         executor.execute(scanContext)
 
