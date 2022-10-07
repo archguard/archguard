@@ -6,7 +6,6 @@ data class ScanProject(
     val repo: String,
     val workspace: File,
     var buildTool: BuildTool,
-    val sql: String?,
     val language: String,
     val codePath: String,
     val branch: String

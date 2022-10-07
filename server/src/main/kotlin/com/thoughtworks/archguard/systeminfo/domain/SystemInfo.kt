@@ -7,8 +7,6 @@ class SystemInfo(
     var id: Long? = null,
     val systemName: String = "",
     val repo: String = "",
-    @Deprecated("not used")
-    val sql: String = "",
     val username: String = "",
     val password: String = "",
     var scanned: ScannedType = ScannedType.NONE,

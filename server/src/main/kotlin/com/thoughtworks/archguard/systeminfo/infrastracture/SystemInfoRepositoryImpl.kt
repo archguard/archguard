@@ -16,7 +16,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun getById(id: Long): SystemInfo? =
         jdbi.withHandle<SystemInfo, Nothing> {
             it.createQuery(
-                "select id, system_name systemName, repo repo, sql_table `sql`," +
+                "select id, system_name systemName, repo repo," +
                         " username username, password password, repo_type repoType, scanned scanned," +
                         " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language," +
                         " code_path codePath, workdir workdir," +
@@ -30,7 +30,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun getByName(name: String): SystemInfo? =
         jdbi.withHandle<SystemInfo, Nothing> {
             it.createQuery(
-                "select id, system_name systemName, repo repo, sql_table `sql`," +
+                "select id, system_name systemName, repo repo," +
                         " username username, password password, repo_type repoType, scanned scanned," +
                         " quality_gate_profile_id qualityGateProfileId, updated_time updatedTime, language language," +
                         " code_path codePath, workdir workdir," +
@@ -44,7 +44,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
     override fun getSystemInfoList(): List<SystemInfo> =
         jdbi.withHandle<List<SystemInfo>, Nothing> {
             it.createQuery(
-                "select id, system_name systemName, repo repo, sql_table `sql`, username username, " +
+                "select id, system_name systemName, repo repo, username username, " +
                         "password password, scanned scanned, quality_gate_profile_id qualityGateProfileId," +
                         "repo_type repoType, updated_time updatedTime, language language, code_path codePath, " +
                         "workdir workdir, " +
@@ -60,7 +60,6 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                 "update system_info set " +
                         "system_name = :systemName, " +
                         "repo = :repo, " +
-                        "sql_table = :sql, " +
                         "username = :username, " +
                         "password = :password, " +
                         "repo_type = :repoType, " +
@@ -81,11 +80,10 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         return jdbi.withHandle<Long, Nothing> {
             it.createUpdate(
                 "insert into system_info" +
-                        "(id, system_name, repo, sql_table, username, password, repo_type, scanned, quality_gate_profile_id, " +
+                        "(id, system_name, repo, username, password, repo_type, scanned, quality_gate_profile_id, " +
                         " language, code_path, threshold_suite_id, branch, workdir) " +
                         "values (:id, :systemName, " +
                         ":repo, " +
-                        ":sql, " +
                         ":username, " +
                         ":password, " +
                         ":repoType, " +

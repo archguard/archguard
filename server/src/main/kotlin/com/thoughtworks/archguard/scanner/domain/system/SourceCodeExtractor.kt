@@ -19,7 +19,6 @@ class SourceCodeExtractor(
 ) {
     private val log = LoggerFactory.getLogger(SourceCodeExtractor::class.java)
     val scannedProjects = mutableSetOf<ScanProject>()
-    val sql: String by lazy { systemInfo.sql }
 
     fun extract() {
         log.info("workspace is: ${workspace.toPath()}")
@@ -31,7 +30,6 @@ class SourceCodeExtractor(
                         repo,
                         workspace,
                         NONE,
-                        systemInfo.sql,
                         systemInfo.language,
                         systemInfo.codePath,
                         systemInfo.branch

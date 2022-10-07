@@ -6,7 +6,6 @@ import com.thoughtworks.archguard.systeminfo.domain.ScannedType
 data class SystemInfoCreateDTO(
     val systemName: String = "",
     val repo: List<String> = ArrayList(),
-    val sql: String = "",
     val username: String = "",
     val password: String = "",
     val scanned: ScannedType = ScannedType.NONE,
