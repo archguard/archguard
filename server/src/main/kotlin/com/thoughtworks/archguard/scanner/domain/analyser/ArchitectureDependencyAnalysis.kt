@@ -3,12 +3,12 @@ package com.thoughtworks.archguard.scanner.domain.analyser
 import com.thoughtworks.archguard.scanner.domain.exception.AnalysisException
 import com.thoughtworks.archguard.scanner.domain.exception.EntityNotFoundException
 import com.thoughtworks.archguard.scanner.domain.hubexecutor.HubExecutorService
-import com.thoughtworks.archguard.scanner.domain.system.SystemInfoRepository
 import com.thoughtworks.archguard.scanner.infrastructure.client.AnalysisModuleClient
 import com.thoughtworks.archguard.scanner.infrastructure.client.Scanner2Client
 import com.thoughtworks.archguard.scanner.infrastructure.command.InMemoryConsumer
 import com.thoughtworks.archguard.systeminfo.domain.ScannedType
 import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -132,7 +132,7 @@ class ArchitectureDependencyAnalysis(
     }
 
     private fun getSystemInfo(systemId: Long): SystemInfo {
-        return systemInfoRepository.getSystemInfo(systemId)
+        return systemInfoRepository.getById(systemId)
             ?: throw EntityNotFoundException("system info is not exists: $systemId")
     }
 

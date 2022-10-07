@@ -16,4 +16,10 @@ interface SystemInfoRepository {
     fun deleteSystemInfoRelated()
 
     fun getByName(name: String): SystemInfo?
+
+    fun updateScanningSystemToScanFail()
+
+    fun removeNotClearRelatedData(id: Long)
+
+    fun setSystemWorkspace(id: Long, workspace: String)
 }

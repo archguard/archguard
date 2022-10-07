@@ -134,4 +134,38 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
             batch.execute()
         }
     }
+
+    override fun setSystemWorkspace(id: Long, workdir: String) {
+        jdbi.withHandle<Unit, Nothing> {
+            it.createUpdate("update system_info set workdir = :workdir where id = :id ")
+                .bind("workdir", workdir)
+                .bind("id", id)
+                .execute()
+        }
+    }
+
+    override fun updateScanningSystemToScanFail() {
+        jdbi.withHandle<Unit, Nothing> {
+            it.createUpdate(
+                "update system_info s1 set s1.scanned='FAILED' where s1.id in " +
+                        "(select s2.id from (select * from system_info) s2 where s2.scanned='SCANNING') ;"
+            )
+                .execute()
+        }
+    }
+
+    override fun removeNotClearRelatedData(id: Long) {
+        val sqls = mutableListOf<String>()
+        val tables = RELATED_TABLES
+
+        tables.forEach { sqls.add("delete from $it where system_id = $id") }
+
+        jdbi.withHandle<IntArray, Nothing> {
+            val batch = it.createBatch()
+            for (sql in sqls) {
+                batch.add(sql)
+            }
+            batch.execute()
+        }
+    }
 }
