@@ -24,7 +24,7 @@ internal class ArchSystemServiceTest {
     fun add_system_info() {
         systemInfoService.analysisClientProxy = DummyAnalysisClientProxy()
         val info = SystemInfo(
-            null, "addSystemInfo", "repo", "sql",
+            null, "addSystemInfo", "repo",
             "username", "password", ScannedType.SCANNED, 1,
             "GIT", null, 1, "master", "jvm", "", ""
         )
@@ -40,7 +40,7 @@ internal class ArchSystemServiceTest {
         systemInfoService.analysisClientProxy = DummyAnalysisClientProxy()
 
         val info = SystemInfo(
-            1, "systemName1", "repo1", "sql1",
+            1, "systemName1", "repo1",
             "username1", "WCA5RH/O9J4yxgU40Z+thg==", ScannedType.NONE, 1,
             "GIT", null, 2, "master", "jvm", "", "/tmp"
         )
