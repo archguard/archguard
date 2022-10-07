@@ -1,36 +1,43 @@
 package com.thoughtworks.archguard.systeminfo.domain
 
+import com.thoughtworks.archguard.scanner.infrastructure.AESCrypt
 import java.sql.Timestamp
 
-data class SystemInfo(
+class SystemInfo(
     var id: Long? = null,
     val systemName: String = "",
     val repo: String = "",
     @Deprecated("not used")
     val sql: String = "",
-    @Deprecated("not used")
     val username: String = "",
-    @Deprecated("not used")
     val password: String = "",
-    val scanned: ScannedType = ScannedType.NONE,
+    var scanned: ScannedType = ScannedType.NONE,
     @Deprecated("not used")
     val qualityGateProfileId: Long? = null,
-    @Deprecated("not used")
     val repoType: String = "GIT",
     val updatedTime: Timestamp? = null,
     @Deprecated("not used")
     val badSmellThresholdSuiteId: Long? = null,
-    val branch: String? = "master",
-    val language: String? = "java",
+    val branch: String = "master",
+    val language: String = "java",
     // for TypeScript/JavaScript, if some code is in subdiretory
-    val codePath: String? = "",
+    val codePath: String = "",
     // git clone target directory
-    val workdir: String? = "",
+    val workdir: String = "",
     @Deprecated("not used")
     val repoAuthType: RepoAuthType = RepoAuthType.UsernameAndPassword,
     @Deprecated("not used")
     val sshKeyString: String? = ""
-)
+
+) {
+    fun getDeCryptPassword(): String = AESCrypt.decrypt(password)
+
+    fun hasAuthInfo(): Boolean {
+        return username.isNotBlank() && password.isNotBlank()
+    }
+
+    fun getRepoList(): List<String> = repo.split(",")
+}
 
 enum class ScannedType {
     NONE, SCANNING, SCANNED, FAILED

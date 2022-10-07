@@ -5,6 +5,7 @@ import com.thoughtworks.archguard.scanner.domain.scanner.git.GitCommand
 import com.thoughtworks.archguard.scanner.domain.system.BuildTool.NONE
 import com.thoughtworks.archguard.scanner.infrastructure.command.Processor
 import com.thoughtworks.archguard.scanner.infrastructure.command.StreamConsumer
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
 import org.slf4j.LoggerFactory
 import org.springframework.util.FileSystemUtils
 import java.io.File

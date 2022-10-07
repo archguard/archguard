@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.scanner.domain.system
 
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
+
 interface SystemInfoRepository {
     fun getSystemInfo(id: Long): SystemInfo?
     fun updateSystemInfo(systemInfo: SystemInfo): Int

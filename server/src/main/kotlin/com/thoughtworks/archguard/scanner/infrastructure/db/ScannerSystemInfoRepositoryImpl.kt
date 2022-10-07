@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
 import com.thoughtworks.archguard.common.constants.RELATED_TABLES
-import com.thoughtworks.archguard.scanner.domain.system.SystemInfo
 import com.thoughtworks.archguard.scanner.domain.system.SystemInfoRepository
+import com.thoughtworks.archguard.systeminfo.domain.SystemInfo
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.mapTo
 import org.springframework.beans.factory.annotation.Autowired
