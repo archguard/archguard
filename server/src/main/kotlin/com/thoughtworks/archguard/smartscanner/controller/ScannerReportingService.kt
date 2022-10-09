@@ -62,7 +62,7 @@ class ScannerReportingService(
             "code_ref_class_fields",
             "code_ref_class_methods",
             "code_ref_class_parent",
-            "code_ref_class_fields",
+            "code_ref_method_fields",
             "code_ref_method_callees",
             "code_ref_class_dependencies",
         )
