@@ -51,7 +51,7 @@ class ArchitectureDependencyAnalysis(
         executor.execute {
             val systemInfo = getSystemInfo(systemId)
             try {
-                val workdir = createWorkingDirectoryIfNotExist(systemInfo)
+                val workdir = createWorkspace(systemInfo.id, systemInfo.workdir)
 
                 startScanSystem(systemInfo)
                 analyse(systemId, scannerVersion, workdir)
@@ -62,13 +62,13 @@ class ArchitectureDependencyAnalysis(
         }
     }
 
-    private fun createWorkingDirectoryIfNotExist(systemInfo: SystemInfo): Path {
+    private fun createWorkspace(systemId: Long?, workspace: String): Path {
         val workdir: Path
-        if (systemInfo.workdir.isEmpty() || !File(systemInfo.workdir).exists()) {
+        if (workspace.isEmpty() || !File(workspace).exists()) {
             workdir = createTempDirectory("archguard")
-            systemInfoRepository.setSystemWorkspace(systemInfo.id!!, workdir.pathString)
+            systemInfoRepository.setSystemWorkspace(systemId!!, workdir.pathString)
         } else {
-            workdir = File(systemInfo.workdir).toPath()
+            workdir = File(workspace).toPath()
         }
 
         return workdir
@@ -90,7 +90,7 @@ class ArchitectureDependencyAnalysis(
         executor.execute {
             val systemInfo = getSystemInfo(systemId)
             try {
-                val workdir = createWorkingDirectoryIfNotExist(systemInfo)
+                val workdir = createWorkspace(systemInfo.id, systemInfo.workdir)
                 postMetrics(systemId, workdir)
 
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
