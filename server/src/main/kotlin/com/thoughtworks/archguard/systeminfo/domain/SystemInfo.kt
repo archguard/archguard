@@ -20,7 +20,7 @@ class SystemInfo(
     // for TypeScript/JavaScript, if some code is in subdiretory
     val codePath: String,
     // git clone target directory
-    val workdir: String = "",
+    var workdir: String = "",
     @Deprecated("not used")
     val repoAuthType: RepoAuthType = RepoAuthType.UsernameAndPassword,
     @Deprecated("not used")

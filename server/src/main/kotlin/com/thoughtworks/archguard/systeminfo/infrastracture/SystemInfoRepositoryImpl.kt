@@ -133,10 +133,10 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
         }
     }
 
-    override fun setSystemWorkspace(id: Long, workdir: String) {
+    override fun setSystemWorkspace(id: Long, workspace: String) {
         jdbi.withHandle<Unit, Nothing> {
             it.createUpdate("update system_info set workdir = :workdir where id = :id ")
-                .bind("workdir", workdir)
+                .bind("workdir", workspace)
                 .bind("id", id)
                 .execute()
         }

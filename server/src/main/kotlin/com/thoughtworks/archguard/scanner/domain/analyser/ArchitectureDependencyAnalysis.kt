@@ -52,7 +52,7 @@ class ArchitectureDependencyAnalysis(
             val systemInfo = getSystemInfo(systemId)
             try {
                 val workdir = createWorkspace(systemInfo.id, systemInfo.workdir)
-
+                systemInfo.workdir = workdir.pathString
                 startScanSystem(systemInfo)
                 analyse(systemId, scannerVersion, workdir)
             } catch (e: Exception) {
@@ -91,6 +91,7 @@ class ArchitectureDependencyAnalysis(
             val systemInfo = getSystemInfo(systemId)
             try {
                 val workdir = createWorkspace(systemInfo.id, systemInfo.workdir)
+                systemInfo.workdir = workdir.pathString
                 postMetrics(systemId, workdir)
 
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
