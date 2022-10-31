@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.architecture.domain.service
 
-import com.thoughtworks.archguard.architecture.domain.model.ArchStyle
 import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
 import com.thoughtworks.archguard.architecture.domain.model.Architecture
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemPO
@@ -16,10 +15,11 @@ class ArchSystemService(
     var architectureRepository: ArchitectureRepository
 ) {
 
-    fun create(name: String, style: ArchStyle): ArchSystem {
-        val archSystem = ArchSystem(UUID.randomUUID().toString(), name, null)
+    fun create(name: String, style: Architecture.ArchStyle): ArchSystem {
+        val archSystem = ArchSystem(UUID.randomUUID().toString())
+        archSystem.name = name
 
-        val architecture = Architecture(archSystem.id, style, ArrayList(), ArrayList())
+        val architecture = Architecture(archSystem.id)
 
         archSystem.architecture = architecture
 

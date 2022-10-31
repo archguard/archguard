@@ -1,7 +1,6 @@
 package com.thoughtworks.archguard.architecture.domain.model
 
-data class ArchSystem(
-    var id: String,
-    var name: String,
-    var architecture: Architecture?,
-)
+class ArchSystem (val id: String) {
+    var name: String? = null
+    var architecture: Architecture? = null
+}

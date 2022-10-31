@@ -1,12 +1,11 @@
 package com.thoughtworks.archguard.architecture.domain.model
 
-data class Architecture(
-    var archSystemId: String,
-    var style: ArchStyle,
-    var components: List<ArchComponent>,
-    var connections: List<ArchComponentConnection>
-)
+class Architecture (val archSystemId: String) {
+    var style: ArchStyle? = null
+    var components: List<ArchComponent> = ArrayList()
+    var connections: List<ArchComponentConnection> = ArrayList()
 
-enum class ArchStyle {
-    LAYERED
+    enum class ArchStyle {
+        LAYERED
+    }
 }

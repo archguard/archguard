@@ -1,6 +1,3 @@
 package com.thoughtworks.archguard.architecture.domain.model
 
-data class ArchComponentConnection(
-    var source: String,
-    var target: String,
-)
+class ArchComponentConnection(val source: String, val target: String)
