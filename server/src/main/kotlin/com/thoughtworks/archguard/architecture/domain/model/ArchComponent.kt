@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.architecture.domain.model
 
-class ArchComponent private constructor(val archSystemId: String, val id: String) {
+class ArchComponent private constructor(val id: String) {
     var name: String? = null
     var type: ArchComponentType? = null
 
@@ -9,8 +9,8 @@ class ArchComponent private constructor(val archSystemId: String, val id: String
     }
 
     companion object {
-        fun build(archSystemId: String, id: String): ArchComponent {
-            return ArchComponent(archSystemId, id)
+        fun build(id: String): ArchComponent {
+            return ArchComponent(id)
         }
     }
 }
