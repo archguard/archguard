@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.architecture.application.response
 
-import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
+import com.thoughtworks.archguard.architecture.domain.model.analyze.ArchSystem
 
 data class ArchSystemCreateResponse(val id: String, val name: String?) {
     companion object {

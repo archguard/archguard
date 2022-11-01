@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.architecture.infrastructure
 
-import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
+import com.thoughtworks.archguard.architecture.domain.model.analyze.ArchSystem
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemRepository
 import org.springframework.stereotype.Repository
 import java.util.Optional

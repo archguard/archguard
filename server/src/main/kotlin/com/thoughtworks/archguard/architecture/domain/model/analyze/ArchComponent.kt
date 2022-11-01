@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.architecture.domain.model
+package com.thoughtworks.archguard.architecture.domain.model.analyze
 
 class ArchComponent private constructor(val id: String) {
     var name: String? = null

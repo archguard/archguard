@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.architecture.application
 
 import com.thoughtworks.archguard.architecture.application.request.ArchSystemCreateRequest
 import com.thoughtworks.archguard.architecture.application.response.ArchSystemCreateResponse
-import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
+import com.thoughtworks.archguard.architecture.domain.model.analyze.ArchSystem
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemRepository
 import org.springframework.stereotype.Service
 

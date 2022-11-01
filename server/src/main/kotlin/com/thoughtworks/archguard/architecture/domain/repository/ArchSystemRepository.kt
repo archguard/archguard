@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.architecture.domain.repository
 
-import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
+import com.thoughtworks.archguard.architecture.domain.model.analyze.ArchSystem
 import java.util.Optional
 
 interface ArchSystemRepository {
