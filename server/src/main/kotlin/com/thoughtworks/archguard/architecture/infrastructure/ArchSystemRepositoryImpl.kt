@@ -1,25 +1,27 @@
 package com.thoughtworks.archguard.architecture.infrastructure
 
-import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemPO
+import com.thoughtworks.archguard.architecture.domain.model.ArchSystem
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemRepository
 import org.springframework.stereotype.Repository
 import java.util.Optional
 
 @Repository
 class ArchSystemRepositoryImpl : ArchSystemRepository {
-    private var archSystems: Map<String, ArchSystemPO> = HashMap()
+    private var archSystems: MutableMap<String, ArchSystem> = HashMap()
 
-    override fun getById(id: String): Optional<ArchSystemPO> {
+    override fun getById(id: String): Optional<ArchSystem> {
         return Optional.ofNullable(archSystems[id])
     }
 
-    override fun create(archSystemPO: ArchSystemPO): Boolean {
-        if (archSystems.containsKey(archSystemPO.id)) {
-            return false
+    override fun findAll(): List<ArchSystem> {
+        return archSystems.values.toList()
+    }
+
+    override fun create(archSystem: ArchSystem) {
+        if (archSystems.containsKey(archSystem.id)) {
+            throw Exception()
         }
 
-        archSystems.plus(Pair(archSystemPO.id, archSystemPO))
-
-        return true
+        archSystems[archSystem.id] = archSystem
     }
 }
