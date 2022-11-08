@@ -5,7 +5,8 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Serializable
-data class ContainerServiceModel(
+@Document
+data class ContainerService(
     @Id val id: String,
     val systemId: String,
     val language: String,

@@ -1,7 +1,8 @@
 package org.archguard.codedb.code
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.codedb.domain.ContainerServiceModel
+import org.archguard.codedb.domain.CodeDocument
+import org.archguard.codedb.domain.ContainerService
 import org.archguard.codedb.dto.ContainerServiceDto
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
@@ -44,7 +45,7 @@ class CodeController(val eventRepository: CodeRepository, val container: Contain
         @RequestBody inputs: List<ContainerServiceDto>,
     ): Mono<Void> {
         val collect = inputs.stream().map { input ->
-            ContainerServiceModel(
+            ContainerService(
                 UUID.randomUUID().toString(),
                 systemId,
                 language,

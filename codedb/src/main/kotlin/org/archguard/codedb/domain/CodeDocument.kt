@@ -1,4 +1,4 @@
-package org.archguard.codedb.code;
+package org.archguard.codedb.domain;
 
 import chapi.domain.core.CodeDataStruct
 import org.springframework.data.annotation.Id
