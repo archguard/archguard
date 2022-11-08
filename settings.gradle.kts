@@ -41,8 +41,6 @@ include(
     ":analyser_diff_changes",
     ":analyser_sca",
     ":analyser_architecture",
-
-    ":codedb"
 )
 
 /**
