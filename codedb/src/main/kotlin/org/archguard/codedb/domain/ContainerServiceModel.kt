@@ -1,9 +1,15 @@
 package org.archguard.codedb.domain
 
 import kotlinx.serialization.Serializable
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
 @Serializable
-data class ContainerService(
+data class ContainerServiceModel(
+    @Id val id: String,
+    val systemId: String,
+    val language: String,
+    val path: String,
     // component name, only if is a component
     var name: String = "",
     var demands: List<ContainerDemand> = listOf(),

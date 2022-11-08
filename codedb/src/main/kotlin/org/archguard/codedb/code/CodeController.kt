@@ -1,17 +1,16 @@
 package org.archguard.codedb.code
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.codedb.domain.ContainerService
+import org.archguard.codedb.domain.ContainerServiceModel
+import org.archguard.codedb.dto.ContainerServiceDto
 import org.springframework.web.bind.annotation.*
-import reactor.core.Disposable
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
 import java.util.stream.Collectors
 
 @RestController
 @RequestMapping("/api/scanner/{systemId}/reporting")
-class CodeEmitter(val eventRepository: CodeRepository) {
+class CodeController(val eventRepository: CodeRepository, val container: ContainerRepository) {
     @PostMapping(value = ["/class-items"])
     fun save(
         @PathVariable systemId: String,
@@ -32,7 +31,7 @@ class CodeEmitter(val eventRepository: CodeRepository) {
             )
         }.collect(Collectors.toList())
 
-        return eventRepository.deleteCodeDocumentBySystemId(systemId)
+        return eventRepository.deleteAllBySystemId(systemId)
             .thenMany(eventRepository.saveAll(collect))
             .then()
     }
@@ -42,8 +41,22 @@ class CodeEmitter(val eventRepository: CodeRepository) {
         @PathVariable systemId: String,
         @RequestParam language: String,
         @RequestParam path: String,
-        @RequestBody input: List<ContainerService>,
-    ) {
+        @RequestBody inputs: List<ContainerServiceDto>,
+    ): Mono<Void> {
+        val collect = inputs.stream().map { input ->
+            ContainerServiceModel(
+                UUID.randomUUID().toString(),
+                systemId,
+                language,
+                path,
+                input.name,
+                input.demands,
+                input.resources
+            )
+        }.collect(Collectors.toList())
 
+        return container.deleteAllBySystemId(systemId)
+            .thenMany(container.saveAll(collect))
+            .then()
     }
 }
