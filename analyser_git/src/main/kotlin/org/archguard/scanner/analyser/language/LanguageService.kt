@@ -16,7 +16,7 @@ class LanguageService {
     private var languageMap: MutableMap<String, Language> = mutableMapOf()
 
     init {
-        val fileContent = this.javaClass.classLoader.getResource("languages.json").readText()
+        val fileContent = this.javaClass.classLoader.getResource("languages.json")!!.readText()
         val languages = Json.decodeFromString<Array<Language>>(fileContent)
         languages.forEach { entry ->
             languageMap[entry.name] = entry
@@ -49,7 +49,7 @@ class LanguageService {
         return primaryLanguage
     }
 
-    fun detectLanguages(name: String): List<String> {
+    private fun detectLanguages(name: String): List<String> {
         val language: MutableList<String> = mutableListOf()
 
         val dotCount = name.count { it == '.' }

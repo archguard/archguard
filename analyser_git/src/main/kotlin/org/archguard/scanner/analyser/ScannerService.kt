@@ -31,6 +31,7 @@ class ScannerService {
             if (countFile.isFile) {
                 lang = languageService.determineLanguage(countFile.name)
                 if (lang.isNotEmpty()) {
+                    // todo: use language service to count lines
                     lineCounts = LineCounter.byPath(filepath)
                 }
             }
