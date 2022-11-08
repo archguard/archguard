@@ -4,9 +4,13 @@
 
 Todos:
 
-- [ ] search by file name
-- [ ] search by ast
-- [ ] search by regex
+- [ ] align APIs
+  - test cli: `java -jar/scanner_cli.jar --language=Kotlin --features=apicalls --output=http --output=json --path=. --server-url=http://localhost:8084`
+- [ ] new features
+  - [ ] search by file name
+  - [ ] search by ast
+  - [ ] search by regex
+- [ ] feeder  
 
 ## What is it?
 
