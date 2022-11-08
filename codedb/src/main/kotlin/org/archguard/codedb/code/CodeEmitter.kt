@@ -3,6 +3,9 @@ package org.archguard.codedb.code
 import chapi.domain.core.CodeDataStruct
 import org.archguard.codedb.domain.ContainerService
 import org.springframework.web.bind.annotation.*
+import reactor.core.Disposable
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.*
 import java.util.stream.Collectors
 
@@ -15,14 +18,23 @@ class CodeEmitter(val eventRepository: CodeRepository) {
         @RequestParam language: String,
         @RequestParam path: String,
         @RequestBody inputs: List<CodeDataStruct>,
-    ) {
-        inputs.stream()
-            .map { input ->
-                val id = UUID.randomUUID().toString()
-                CodeDocument(id, systemId, language, path, input)
-            }
-            .collect(Collectors.toList())
-            .let { eventRepository.saveAll(it) }
+    ): Mono<Void> {
+        val collect = inputs.stream().map { input ->
+            CodeDocument(
+                UUID.randomUUID().toString(),
+                systemId,
+                language,
+                path,
+                input,
+                input.Package,
+                input.NodeName,
+                input.FilePath,
+            )
+        }.collect(Collectors.toList())
+
+        return eventRepository.deleteCodeDocumentBySystemId(systemId)
+            .thenMany(eventRepository.saveAll(collect))
+            .then()
     }
 
     @PostMapping("/container-services")
