@@ -15,6 +15,7 @@ build/
 
 ### IntelliJ IDEA ###
 .idea
+!.idea/icon.png
 *.iws
 *.iml
 *.ipr
