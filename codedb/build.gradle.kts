@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
 	id("org.springframework.boot") version "2.7.6-SNAPSHOT"
@@ -8,10 +7,11 @@ plugins {
 	kotlin("jvm") version "1.7.20"
 	kotlin("plugin.spring") version "1.7.20"
 	kotlin("plugin.serialization") version "1.7.20"
+
+	id("org.jetbrains.kotlin.jupyter.api") version "0.11.0-178"
 }
 
-group = "org.archguard"
-version = "0.0.1-SNAPSHOT"
+group = "org.archguard.codedb"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -34,10 +34,20 @@ dependencies {
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+	// DSL
+	implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-178")
+	implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-178")
+	compileOnly("org.jetbrains.kotlin:kotlin-scripting-jvm:1.7.20")
+
+	implementation("org.slf4j:slf4j-api:2.0.3")
+//	implementation("ch.qos.logback:logback-classic:1.4.4")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
+	testImplementation("io.kotest:kotest-assertions-core:5.5.4")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 
