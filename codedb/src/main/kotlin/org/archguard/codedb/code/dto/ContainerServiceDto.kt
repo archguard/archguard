@@ -1,8 +1,8 @@
-package org.archguard.codedb.dto
+package org.archguard.codedb.code.dto
 
 import kotlinx.serialization.Serializable
-import org.archguard.codedb.domain.ContainerDemand
-import org.archguard.codedb.domain.ContainerSupply
+import org.archguard.codedb.code.domain.ContainerDemand
+import org.archguard.codedb.code.domain.ContainerSupply
 
 @Serializable
 data class ContainerServiceDto(

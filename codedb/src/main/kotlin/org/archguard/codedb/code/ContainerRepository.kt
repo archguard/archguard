@@ -1,6 +1,6 @@
 package org.archguard.codedb.code
 
-import org.archguard.codedb.domain.ContainerService
+import org.archguard.codedb.code.domain.ContainerService
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import reactor.core.publisher.Mono
 

@@ -1,9 +1,9 @@
 package org.archguard.codedb.code
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.codedb.domain.CodeDocument
-import org.archguard.codedb.domain.ContainerService
-import org.archguard.codedb.dto.ContainerServiceDto
+import org.archguard.codedb.code.domain.CodeDocument
+import org.archguard.codedb.code.domain.ContainerService
+import org.archguard.codedb.code.dto.ContainerServiceDto
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import java.util.*
