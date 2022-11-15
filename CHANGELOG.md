@@ -1,4 +1,33 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.2...v) (2022-07-30)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.3...v) (2022-11-15)
+
+
+
+# [2.0.0-beta.3](https://github.com/archguard/archguard/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2022-11-15)
+
+
+### Bug Fixes
+
+* change calculation position of type of build tool ([90b3426](https://github.com/archguard/archguard/commit/90b342644a9a31f836893932bcf0af1193b9ae05))
+* change condition for whether to execute the build ([5b91efb](https://github.com/archguard/archguard/commit/5b91efbd3eb086a3aba54cc45de67d6663be0541))
+* change one of tables code_ref_class_fields to table code_ref_method_fields when saving metadata ([8b1e872](https://github.com/archguard/archguard/commit/8b1e8723af185fe28c4a4256e12d144f918a2c2d))
+* create report file before appending content ([f711be1](https://github.com/archguard/archguard/commit/f711be1327f3c96e43eee8b65257002eac7de6ce))
+* mount the local specific repo path to backend container ([1c5fde2](https://github.com/archguard/archguard/commit/1c5fde24db4a7a6707b98e934a1c80739c722bf0))
+* temporarily solve the problem of workdir being lost ([bd73d17](https://github.com/archguard/archguard/commit/bd73d175550af43f5537569f0d47f9515cbb4609))
+* test ([bb0375c](https://github.com/archguard/archguard/commit/bb0375c2eae16bbe710012f753ce596d8ddf0b5c))
+
+
+### Features
+
+* add charset [#100](https://github.com/archguard/archguard/issues/100) ([17b607b](https://github.com/archguard/archguard/commit/17b607bb5ea19be98df0ee155ef99f5cb63487d6))
+* add code documents support ([5055927](https://github.com/archguard/archguard/commit/505592709336dc75afe9f7f78fde043030ca11ea))
+* add filejob for [#79](https://github.com/archguard/archguard/issues/79) ([d623a7f](https://github.com/archguard/archguard/commit/d623a7fed3145fa24bb5fb9dbb432e03703c480b))
+* **codedb:** try to resolve jupyter issues ([d076204](https://github.com/archguard/archguard/commit/d07620462ffaabadd92f32c50649b31991bfbe4b))
+* init codedb modules ([f98dae4](https://github.com/archguard/archguard/commit/f98dae44546882de4b3a3509168cf2bdf93a98c3))
+* **insights:** add version condition supports ([1650138](https://github.com/archguard/archguard/commit/16501380b2c04c5b00f72460996350fc8fc03b71))
+* **protobuf:** add basdic client for testing [#97](https://github.com/archguard/archguard/issues/97) ([a4aaea8](https://github.com/archguard/archguard/commit/a4aaea8bd951a8a135cd9ec9d6951167f789568b))
+* **protobuf:** add client for process [#97](https://github.com/archguard/archguard/issues/97) ([3406690](https://github.com/archguard/archguard/commit/3406690242a7ecb1474e27e0f0eb76ca3245b930))
+* **protobuf:** add convert in application [#97](https://github.com/archguard/archguard/issues/97) ([7c01fb5](https://github.com/archguard/archguard/commit/7c01fb57b08a74eaef89fb04b727a5382d27d6a1))
+* try with new API ([b88fa20](https://github.com/archguard/archguard/commit/b88fa20911087f3e95f5f4258453014fb453fea1))
 
 
 
