@@ -2,7 +2,7 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-private const val VERSION = "2.0.0-beta.2"
+private const val VERSION = "2.0.0-beta.3"
 private const val TAG = "v$VERSION"
 private const val RELEASE_REPO_URL = "https://github.com/archguard/archguard/releases/download/$TAG"
 
