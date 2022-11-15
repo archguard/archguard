@@ -30,7 +30,7 @@ dependencies {
 
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
-	implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.4")
+	implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.6")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

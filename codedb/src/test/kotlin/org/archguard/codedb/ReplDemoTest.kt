@@ -16,7 +16,7 @@ class ReplDemoTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     internal fun simple_eval() {
         compiler.eval("val x = 3")
     }
