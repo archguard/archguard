@@ -1,7 +1,6 @@
 package org.archguard.scanner.cost.count
 
 import java.io.File
-import java.lang.Character.isWhitespace
 
 class CodeStateTransition(
     val index: Int = 0,
@@ -90,7 +89,91 @@ class LanguageWorker {
         }
     }
 
-    fun docStringState(fileJob: FileJob, index: Int, endPoint: Int, stringTrie: Trie, endString: ByteArray, currentState: CodeState): CodeStateTransition {
+    fun commentState(
+        fileJob: FileJob,
+        index: Int,
+        endPoint: Int,
+        currentState: CodeState,
+        endComments: ByteArray,
+        endString: ByteArray,
+        langFeatures: LanguageFeature,
+    ): CodeStateTransition {
+        var state = currentState;
+
+        var id = index;
+        while (index < id && id < endPoint) {
+            val curByte = fileJob.content[id]
+
+            if (curByte == '\n'.code.toByte()) {
+                return CodeStateTransition(
+                    index = id,
+                    state = currentState,
+                    endString = endString,
+                    endComments = endComments,
+                )
+            }
+
+            val sliceComments = endComments.slice(0 until endComments.size - 1).toByteArray()
+            if (checkForMatchSingle(curByte, id, endPoint, sliceComments, fileJob)) {
+//                val byte: ByteArray = endComments.slice(0 until endComments.size - 1).toByteArray()
+                val offsetJump = sliceComments.size
+                endComments.slice(0 until endComments.size - 1).toByteArray()
+
+                if (endComments.size == 0) {
+                    // If we started as multiline code switch back to code so we count correctly
+                    // IE i := 1 /* for the lols */
+                    // TODO is that required? Might still be required to count correctly
+                    if (currentState == CodeState.MULTICOMMENT_CODE) {
+                        state = CodeState.CODE // TODO pointless to change here, just set S_MULTICOMMENT_BLANK
+                    } else {
+                        state = CodeState.MULTICOMMENT_BLANK
+                    }
+                }
+
+                id += offsetJump - 1
+                return CodeStateTransition(
+                    index = id,
+                    state = state,
+                    endString = endString,
+                    endComments = endComments,
+                )
+            }
+            // Check if we are entering another multiline comment
+            // This should come below check for match single as it speeds up processing
+            if (langFeatures.nested == true || endComments.isEmpty()) {
+                val (ok, offsetJump, endString) = langFeatures.multiLineComments?.match(fileJob.content.sliceArray(id until endPoint))!!
+//                if (ok != 0) {
+                endComments.plus(endString)
+                id += offsetJump - 1
+
+                return CodeStateTransition(
+                    index = id,
+                    state = currentState,
+                    endString = endString,
+                    endComments = endComments,
+                )
+//                }
+            }
+
+            id += 1
+        }
+
+        return CodeStateTransition(
+            index = id,
+            state = currentState,
+            endString = endString,
+            endComments = endComments,
+        )
+    }
+
+    fun docStringState(
+        fileJob: FileJob,
+        index: Int,
+        endPoint: Int,
+        stringTrie: Trie,
+        endString: ByteArray,
+        currentState: CodeState
+    ): CodeStateTransition {
         // Its not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
         // without checking if it is out of bounds first
         for (i in index until endPoint) {
@@ -100,7 +183,7 @@ class LanguageWorker {
                 return CodeStateTransition(i, currentState)
             }
 
-            if (fileJob.content[i-1] != '\\'.toByte()) {
+            if (fileJob.content[i - 1] != '\\'.toByte()) {
                 val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
                 if (stringTrie.match(rangeContent) != null) {
                     // So we have hit end of docstring at this point in which case check if only whitespace characters till the next
