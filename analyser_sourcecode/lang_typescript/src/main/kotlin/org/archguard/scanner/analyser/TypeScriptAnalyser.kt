@@ -32,6 +32,7 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
             else isNormalFile
         }
             .map { async {
+                println(it.absolutePath)
                 analysisByFile(it, basepath) } }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }

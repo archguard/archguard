@@ -37,7 +37,10 @@ include(
     ":analyser_sourcecode:lang_scala",
     ":analyser_sourcecode:feat_apicalls",
     ":analyser_sourcecode:feat_datamap",
+
+    // external tools
     ":analyser_git",
+    ":analyser_cost",
     ":analyser_diff_changes",
     ":analyser_sca",
     ":analyser_architecture",
