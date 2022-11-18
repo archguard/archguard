@@ -1,9 +1,13 @@
 package org.archguard.scanner.cost.count
 
+import kotlinx.serialization.Serializable
+import java.security.MessageDigest
+
 typealias LineType = Int
 
 typealias FileJobCallback = (job: FileJob, currentLine: Long, lineType: LineType) -> Boolean
 
+@Serializable
 class FileJob(
     var language: String = "",
     var possibleLanguages: List<String> = listOf(),
@@ -19,7 +23,9 @@ class FileJob(
     var blank: Long = 0,
     var complexity: Long = 0,
     var weightedComplexity: Double = 0.0,
-    var hash: String = "",
+    // skip serialisation
+    @kotlinx.serialization.Transient
+    var hash: MessageDigest = MessageDigest.getInstance("SHA-256"),
     var callback: FileJobCallback? = null,
     var binary: Boolean = false,
     var minified: Boolean = false,

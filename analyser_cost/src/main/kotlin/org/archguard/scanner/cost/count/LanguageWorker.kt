@@ -58,8 +58,8 @@ class LanguageWorker {
         )
     }
 
-    fun countStates(fileJob: FileJob) {
-        val langFeatures = languageService.getLanguageFeature(fileJob.language) ?: return
+    fun countStates(fileJob: FileJob): FileJob? {
+        val langFeatures = languageService.getLanguageFeature(fileJob.language) ?: return null
 
         if (langFeatures.complexity == null) langFeatures.complexity = Trie()
         if (langFeatures.singleLineComments == null) langFeatures.singleLineComments = Trie()
@@ -67,28 +67,104 @@ class LanguageWorker {
         if (langFeatures.strings == null) langFeatures.strings = Trie()
         if (langFeatures.tokens == null) langFeatures.tokens = Trie()
 
-        var endPoint = fileJob.bytes - 1
+        val endPoint: Int = (fileJob.bytes - 1).toInt()
         var currentState: CodeState = CodeState.BLANK
-        val endComments = mutableListOf<ByteArray>()
+        var endComments = byteArrayOf()
         var endString = byteArrayOf()
 
         var ignoreEscape = false;
 
-        // for index := checkBomSkip(fileJob); index < int(fileJob.Bytes); index++ { }
-        for (index in checkBomSkip(fileJob) until (fileJob.bytes).toInt()) {
+        val first = checkBomSkip(fileJob)
+        var index = first;
+        while (index in first until fileJob.bytes.toInt()) {
             if (!isWhiteSpace(fileJob.content[index])) {
+                println("$index, $currentState")
                 when (currentState) {
                     CodeState.CODE -> {
-
+                        val codeStateTransition = codeState(
+                            fileJob,
+                            index,
+                            endPoint,
+                            currentState,
+                            endString,
+                            endComments,
+                            langFeatures,
+                            fileJob.hash
+                        )
+                        index = codeStateTransition.index
+                        currentState = codeStateTransition.state
+                        endString = codeStateTransition.endString
+                        endComments = codeStateTransition.endComments
+                        ignoreEscape = codeStateTransition.ignoreEscape
                     }
 
-                    else -> {
-
+                    CodeState.STRING -> {
+                        val stringStateTransition = stringState(
+                            fileJob,
+                            index,
+                            endPoint,
+                            endString,
+                            currentState,
+                            ignoreEscape
+                        )
+                        index = stringStateTransition.index
+                        currentState = stringStateTransition.state
                     }
+
+                    CodeState.DOC_STRING -> {
+                        val docStringStateTransition = docStringState(
+                            fileJob,
+                            index,
+                            endPoint,
+                            endString,
+                            currentState,
+                            langFeatures.strings!!,
+                        )
+                        index = docStringStateTransition.index
+                        currentState = docStringStateTransition.state
+                    }
+
+                    CodeState.MULTICOMMENT, CodeState.MULTICOMMENT_CODE -> {
+                        val commentStateTransition = commentState(
+                            fileJob,
+                            index,
+                            endPoint,
+                            currentState,
+                            endComments,
+                            endString,
+                            langFeatures
+                        )
+                        index = commentStateTransition.index
+                        currentState = commentStateTransition.state
+                        endString = commentStateTransition.endString
+                        endComments = commentStateTransition.endComments
+                    }
+
+                    CodeState.BLANK, CodeState.MULTICOMMENT_BLANK -> {
+                        val blankStateTransition = blankState(
+                            fileJob,
+                            index,
+                            endPoint,
+                            currentState,
+                            endComments,
+                            endString,
+                            langFeatures
+                        )
+                        index = blankStateTransition.index
+                        currentState = blankStateTransition.state
+                        endString = blankStateTransition.endString
+                        endComments = blankStateTransition.endComments
+                        ignoreEscape = blankStateTransition.ignoreEscape
+                    }
+
+                    else -> {}
                 }
-
             }
+
+            index += 1
         }
+
+        return fileJob
     }
 
     var Duplicates = false
@@ -101,7 +177,7 @@ class LanguageWorker {
         endComments: ByteArray,
         langFeatures: LanguageFeature,
         digest: MessageDigest
-    ): Any {
+    ): CodeStateTransition {
         // Hacky fix to
         var endPoint = endPoint
         if (endPoint > fileJob.content.size) {
@@ -113,12 +189,12 @@ class LanguageWorker {
             val curByte = fileJob.content[id]
 
             if (curByte == '\n'.toByte()) {
-                return Triple(id, currentState, endString)
+                return CodeStateTransition(id, currentState, endString)
             }
 
             if (isBinary(id, curByte)) {
                 fileJob.binary = true
-                return Triple(id, currentState, endString)
+                return CodeStateTransition(id, currentState, endString)
             }
 
             if (shouldProcess(curByte, langFeatures.processMask!!)) {
@@ -271,9 +347,9 @@ class LanguageWorker {
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
-        stringTrie: Trie,
         endString: ByteArray,
-        currentState: CodeState
+        currentState: CodeState,
+        stringTrie: Trie
     ): CodeStateTransition {
         // Its not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
         // without checking if it is out of bounds first
@@ -433,7 +509,7 @@ class LanguageWorker {
     }
 
     private fun isWhiteSpace(byte: Byte): Boolean {
-        return byte != ' '.toByte() && byte != '\t'.toByte() && byte != '\n'.toByte() && byte != '\r'.toByte()
+        return byte == ' '.code.toByte() || byte == '\t'.code.toByte() || byte == '\n'.code.toByte() || byte == '\r'.code.toByte()
     }
 
     companion object {
@@ -461,7 +537,9 @@ class LanguageWorker {
             matches: ByteArray,
             fileJob: FileJob
         ): Boolean {
+            if (matches.isEmpty()) return false
             var potentialMatch = true
+
             if (currentByte == matches[0]) {
                 for (j in matches.indices) {
                     if (index + j >= endPoint || matches[j] != fileJob.content[index + j]) {
