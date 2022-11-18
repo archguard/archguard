@@ -36,8 +36,8 @@ class LanguageService {
         }
     }
 
-    fun determineLanguage(name: String): String {
-        val langs = this.detectLanguages(name)
+    fun determineLanguage(filename: String): String {
+        val langs = this.detectLanguages(filename)
         if (langs.size == 1) {
             return langs[0]
         }
@@ -52,17 +52,17 @@ class LanguageService {
         return primaryLanguage
     }
 
-    private fun detectLanguages(name: String): List<String> {
+    fun detectLanguages(filename: String): List<String> {
         val language: MutableList<String> = mutableListOf()
 
-        val dotCount = name.count { it == '.' }
+        val dotCount = filename.count { it == '.' }
 
         // such as `.gitignore` file
-        val isDotFile = name[0] == '.' && dotCount == 1
+        val isDotFile = filename[0] == '.' && dotCount == 1
         val notExtensionName = dotCount == 0
         val ifNeedToCheckFullName = notExtensionName || isDotFile
         if (ifNeedToCheckFullName) {
-            val optFilenameLang = filenameToLanguage[name.lowercase()]
+            val optFilenameLang = filenameToLanguage[filename.lowercase()]
             if (optFilenameLang != null) {
                 return listOf(optFilenameLang)
             }
@@ -72,12 +72,12 @@ class LanguageService {
         }
 
         // Lookup in case the full name matches
-        val fullNameExt = extToLanguages[name.lowercase()]
+        val fullNameExt = extToLanguages[filename.lowercase()]
         if (fullNameExt != null) {
             return fullNameExt
         }
 
-        val ext = this.getExtension(name)
+        val ext = this.getExtension(filename)
         val optLang = extToLanguages[ext.lowercase()]
         if (optLang != null) {
             return optLang
