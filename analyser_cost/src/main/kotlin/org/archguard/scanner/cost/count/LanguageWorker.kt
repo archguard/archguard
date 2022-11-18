@@ -431,7 +431,7 @@ class LanguageWorker {
         langFeatures: LanguageFeature
     ): CodeStateTransition {
         var state = currentState;
-        val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
+        val rangeContent: ByteArray = fileJob.content.sliceArray(index .. endPoint)
         val (tokenType, offsetJump, matchEndString) = langFeatures.tokens?.match(rangeContent)!!
 
         when (tokenType) {
