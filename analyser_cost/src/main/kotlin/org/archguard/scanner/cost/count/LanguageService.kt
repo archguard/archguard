@@ -116,8 +116,8 @@ class LanguageService {
         return extension
     }
 
-    private var Complexity = false
-    private fun processLanguageFeatures(name: String, entry: Language) {
+    private var Complexity = true
+    private fun processLanguageFeatures(name: String, value: Language) {
         val complexityTrie = Trie()
         val slCommentTrie = Trie()
         val mlCommentTrie = Trie()
@@ -130,7 +130,7 @@ class LanguageService {
         var stringMask: Byte = 0
         var processMask: Byte = 0
 
-        entry.complexityChecks?.forEach {
+        value.complexityChecks?.forEach {
             complexityMask = complexityMask or it[0]
             complexityTrie.insert(TokenType.TComplexity, it)
             if (!Complexity) {
@@ -141,21 +141,21 @@ class LanguageService {
             processMask = processMask or complexityMask
         }
 
-        entry.lineComment?.forEach {
+        value.lineComment?.forEach {
             singleLineCommentMask = singleLineCommentMask or it[0]
             slCommentTrie.insert(TokenType.TSlcomment, it)
             tokenTrie.insert(TokenType.TSlcomment, it)
         }
         processMask = processMask or singleLineCommentMask
 
-        entry.multiLine?.forEach {
+        value.multiLine?.forEach {
             multiLineCommentMask = multiLineCommentMask or it[0][0]
             mlCommentTrie.insertClose(TokenType.TMlcomment, it[0], it[1])
             tokenTrie.insertClose(TokenType.TMlcomment, it[0], it[1])
         }
         processMask = processMask or multiLineCommentMask
 
-        entry.quotes?.forEach {
+        value.quotes?.forEach {
             stringMask = stringMask or it.start[0]
             stringTrie.insertClose(TokenType.TString, it.start, it.end)
             tokenTrie.insertClose(TokenType.TString, it.start, it.end)
@@ -163,19 +163,19 @@ class LanguageService {
         processMask = processMask or stringMask
 
         languageFeatures[name] = LanguageFeature(
-            complexityTrie,
+            complexity = complexityTrie,
             mlCommentTrie,
             slCommentTrie,
             stringTrie,
-            tokenTrie,
-            entry.nestedMultiLine,
+            tokens = tokenTrie,
+            value.nestedMultiLine,
             complexityMask,
             multiLineCommentMask,
             singleLineCommentMask,
             stringMask,
             processMask,
-            entry.keywords,
-            entry.quotes
+            value.keywords,
+            value.quotes
         )
     }
 

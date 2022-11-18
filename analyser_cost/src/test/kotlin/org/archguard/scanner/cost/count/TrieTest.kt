@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class TrieTest {
     @Test
-    fun benchmarkCheckComplexity() {
+    fun simple() {
         val matches = Trie()
         matches.insert(TComplexity, "for ")
         matches.insert(TComplexity, "for(")
@@ -20,13 +20,8 @@ class TrieTest {
         matches.insert(TComplexity, "!= ")
         matches.insert(TComplexity, "== ")
 
-        val content = "A little while ago, I passed my first year mark of working for Google. This also marked the ".toByteArray()
-
-        for (i in 0..1000) {
-            for (j in content.indices) {
-                matches.match(content)
-            }
-        }
+        matches.match("for ".toByteArray()).tokenType shouldBe TComplexity
+        matches.match("for ()".toByteArray()).tokenType shouldBe TComplexity
     }
 
     @Test
