@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("io.kotest.multiplatform") version "5.5.4"
 }
 
 dependencies {
@@ -10,6 +11,10 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.4")
 }
 
 application {
