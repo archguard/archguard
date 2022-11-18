@@ -121,6 +121,93 @@ class LanguageWorker {
         return CodeStateTransition(index = id, state = currentState)
     }
 
+    fun blankState(
+        fileJob: FileJob,
+        index: Int,
+        endPoint: Int,
+        currentState: CodeState,
+        endComments: ByteArray,
+        endString: ByteArray,
+        langFeatures: LanguageFeature
+    ): CodeStateTransition {
+        var state = currentState;
+        val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
+        val (tokenType, offsetJump, matchEndString) = langFeatures.tokens?.match(rangeContent)!!
+
+        when (tokenType) {
+            TokenType.TMlcomment -> {
+                if (langFeatures.nested == true || endComments.isEmpty()) {
+                    return CodeStateTransition(
+                        offsetJump - 1,
+                        CodeState.MULTICOMMENT,
+                        matchEndString,
+                        endComments.plus(matchEndString),
+                        false
+                    )
+                }
+            }
+
+            TokenType.TSlcomment -> {
+                return CodeStateTransition(index, CodeState.COMMENT, matchEndString, endComments, false)
+            }
+
+            TokenType.TString -> {
+                val (id, ignoreEscape) = verifyIgnoreEscape(langFeatures, fileJob, index)
+
+                for (v in langFeatures.quotes!!) {
+                    if (v.end == matchEndString.toString() && v.docString == true) {
+                        return CodeStateTransition(
+                            id,
+                            CodeState.DOC_STRING,
+                            matchEndString,
+                            endComments,
+                            ignoreEscape
+                        )
+                    }
+                }
+
+                return CodeStateTransition(id, CodeState.STRING, matchEndString, endComments, ignoreEscape)
+            }
+
+            TokenType.TComplexity -> {
+                if (index == 0 || isWhiteSpace(fileJob.content[index - 1])) {
+                    fileJob.complexity++
+                }
+
+                return CodeStateTransition(index, CodeState.CODE, matchEndString, endComments, false)
+            }
+
+            else -> {
+                state = CodeState.CODE
+            }
+        }
+
+        return CodeStateTransition(index, state, endString, endComments, false)
+    }
+
+    fun verifyIgnoreEscape(langFeatures: LanguageFeature, fileJob: FileJob, index: Int): Pair<Int, Boolean> {
+        var ignoreEscape = false
+
+        for (i in 0 until langFeatures.quotes!!.size) {
+            if (langFeatures.quotes[i].docString == true || langFeatures.quotes[i].ignoreEscape == true) {
+                var isMatch = true
+                for (j in 0 until langFeatures.quotes[i].start.length) {
+                    if (fileJob.content.size <= index + j || fileJob.content[index + j] != langFeatures.quotes[i].start[j].code.toByte()) {
+                        isMatch = false
+                        break
+                    }
+                }
+
+                if (isMatch) {
+                    ignoreEscape = true
+                    index + langFeatures.quotes[i].start.length
+                }
+            }
+        }
+
+        return Pair(index, ignoreEscape)
+    }
+
     private fun isWhiteSpace(byte: Byte): Boolean {
         return byte != ' '.toByte() && byte != '\t'.toByte() && byte != '\n'.toByte() && byte != '\r'.toByte()
     }

@@ -24,19 +24,6 @@ class Trie(
     var close: ByteArray = byteArrayOf(),
     var table: HashSet<Trie>? = hashSetOf(),
 ) {
-    // Insert inserts a string into the trie for matching
-    //func (root *Trie) Insert(tokenType int, token []byte) {
-    //	var node *Trie
-    //
-    //	node = root
-    //	for _, c := range token {
-    //		if node.Table[c] == nil {
-    //			node.Table[c] = &Trie{}
-    //		}
-    //		node = node.Table[c]
-    //	}
-    //	node.Type = tokenType
-    //}
     fun insert(tokenType: TokenType, token: ByteArray) {
         var node: Trie? = this
 
@@ -62,16 +49,16 @@ class Trie(
         node?.close = closeToken
     }
 
-    fun match(token: ByteArray): Triple<TokenType, Int, ByteArray> {
+    fun match(token: ByteArray): TrieMatch {
         var node: Trie = this
         for ((i, c) in token.withIndex()) {
             if (node.table?.find { it.type.toInt() == c } == null) {
-                return Triple(node.type, i, node.close)
+                return TrieMatch(node.type, i, node.close)
             }
             node = node.table?.find { it.type.toInt() == c }!!
         }
 
-        return Triple(node.type, token.size, node.close)
+        return TrieMatch(node.type, token.size, node.close)
     }
 
     fun insert(tokenType: TokenType, token: String) {
@@ -82,3 +69,9 @@ class Trie(
         insertClose(tokenType, openToken.toByteArray(), closeToken.toByteArray())
     }
 }
+
+data class TrieMatch(
+    val tokenType: TokenType,
+    val offsetJump: Int,
+    val endString: ByteArray,
+)
