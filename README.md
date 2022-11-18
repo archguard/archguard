@@ -21,8 +21,9 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
 
 特性（Features）：
 
-- **设计态**（DOING）
+- **设计态**
   - 架构设计、分析与治理 DSL
+  - Feakin: [https://github.com/feakin/fklang](https://github.com/feakin/fklang)
 - **开发态**
   - 架构扫描
     - 扫描配置
@@ -42,7 +43,8 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
     - 内聚维度：霰弹式修改
     - 冗余维度：冗余元素，过度泛化
     - 质量维度：测试保护
-  - 持续集成
+  - 代码分析
+    - CLOCO：代码复杂度 [#79](https://github.com/archguard/archguard/issues/79)
 - **运行态**
   - APM（TODO）
 - **架构工作台**（DOING）
