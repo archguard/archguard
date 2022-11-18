@@ -1,6 +1,7 @@
 package org.archguard.scanner.cost.count
 
 import java.io.File
+import java.lang.Character.isWhitespace
 
 class CodeStateTransition(
     val index: Int = 0,
@@ -87,6 +88,45 @@ class LanguageWorker {
 
             }
         }
+    }
+
+    fun docStringState(fileJob: FileJob, index: Int, endPoint: Int, stringTrie: Trie, endString: ByteArray, currentState: CodeState): CodeStateTransition {
+        // Its not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
+        // without checking if it is out of bounds first
+        for (i in index until endPoint) {
+            val id = i
+
+            if (fileJob.content[i] == '\n'.toByte()) {
+                return CodeStateTransition(i, currentState)
+            }
+
+            if (fileJob.content[i-1] != '\\'.toByte()) {
+                val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
+                if (stringTrie.match(rangeContent) != null) {
+                    // So we have hit end of docstring at this point in which case check if only whitespace characters till the next
+                    // newline and if so we change to a comment otherwise to code
+                    // need to start the loop after ending definition of docstring, therefore adding the length of the string to
+                    // the index
+                    for (j in id + endString.size until endPoint) {
+                        if (fileJob.content[j] == '\n'.toByte()) {
+                            return CodeStateTransition(i, CodeState.COMMENT)
+                        }
+
+                        if (!isWhitespace(fileJob.content[j])) {
+                            return CodeStateTransition(i, CodeState.CODE)
+                        }
+                    }
+
+                    return CodeStateTransition(i, CodeState.CODE)
+                }
+            }
+        }
+
+        return CodeStateTransition(index, currentState)
+    }
+
+    private fun isWhitespace(currentByte: Byte): Boolean {
+        return currentByte == ' '.code.toByte() || currentByte == '\t'.code.toByte() || currentByte == '\n'.code.toByte() || currentByte == '\r'.code.toByte()
     }
 
     fun stringState(
