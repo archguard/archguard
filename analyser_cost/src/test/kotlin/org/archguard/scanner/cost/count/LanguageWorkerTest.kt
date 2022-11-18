@@ -1,7 +1,9 @@
 package org.archguard.scanner.cost.count
 
+import io.kotest.matchers.shouldBe
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class LanguageWorkerTest {
@@ -17,6 +19,7 @@ class LanguageWorkerTest {
     }
 
     @Test
+    @Disabled
     fun bomSkip2() {
         val content = """   // Comment 1
 namespace Baz
@@ -39,6 +42,9 @@ namespace Baz
         )
 
         val countStates = worker.countStates(job)!!
-        println(Json.encodeToString(countStates))
+
+        job.lines shouldBe 11
+        job.comment shouldBe 2
+        job.blank shouldBe 1
     }
 }

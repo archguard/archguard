@@ -3,7 +3,19 @@ package org.archguard.scanner.cost.count
 import kotlinx.serialization.Serializable
 import java.security.MessageDigest
 
-typealias LineType = Int
+enum class LineType {
+    LINE_BLANK,
+    LINE_CODE,
+    LINE_COMMENT;
+
+    inline fun <reified E : Enum<E>> fromInt(value: Int): E {
+        return enumValues<E>().first { it.toString().toInt() == value }
+    }
+
+    fun int(): Byte {
+        return ordinal.toByte()
+    }
+}
 
 typealias FileJobCallback = (job: FileJob, currentLine: Long, lineType: LineType) -> Boolean
 
