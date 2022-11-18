@@ -504,7 +504,6 @@ class LanguageWorker {
             }
 
             else -> {
-                return CodeStateTransition(index, CodeState.CODE, matchEndString, endComments, false)
             }
         }
 

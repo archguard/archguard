@@ -1,9 +1,6 @@
 package org.archguard.scanner.cost.count
 
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class LanguageWorkerTest {
@@ -46,5 +43,45 @@ namespace Baz
         job.code shouldBe 11
         job.comment shouldBe 2
         job.blank shouldBe 1
+    }
+
+    @Test
+    fun checkComplexity() {
+        val content = """for (int i=0; i<100; i++) {""".toByteArray()
+        val job = FileJob(
+            language = "Java",
+            content = content,
+            bytes = content.size.toLong(),
+        )
+        worker.countStates(job)!!
+
+        job.complexity shouldBe 1
+    }
+
+    @Test
+    fun checkComplexity2() {
+        val content = """void sort(int * A) {
+   int i=0;
+   int n=4;
+   int j = 0;
+   while (i < n-1)
+   {
+       j = i +1
+       while (j < n)
+       {
+           if (A[i] < A[j]) swap(A[i], A[j]);
+       }
+       i = i + 1
+   }
+}
+""".toByteArray()
+        val job = FileJob(
+            language = "C",
+            content = content,
+            bytes = content.size.toLong(),
+        )
+        worker.countStates(job)!!
+
+        job.complexity shouldBe 3
     }
 }
