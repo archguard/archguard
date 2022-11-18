@@ -35,6 +35,9 @@ val byteOrderMarks = arrayOf(
     byteArrayOf(132.toByte(), 49, 149.toByte(), 51), // GB-18030
 )
 
+
+data class StringState(val index: Int, val state: CodeState)
+
 class LanguageWorker {
     val languageService: LanguageService = LanguageService()
     fun prepare(file: File): FileJob {
@@ -81,6 +84,38 @@ class LanguageWorker {
         }
     }
 
+    fun stringState(
+        fileJob: FileJob,
+        index: Int,
+        endPoint: Int,
+        stringTrie: Trie,
+        endString: ByteArray,
+        currentState: CodeState,
+        ignoreEscape: Boolean
+    ): Any {
+        var id = index
+        // It's not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
+        // without checking if it is out of bounds first
+        for (i in id until endPoint) {
+            id = i
+
+            // If we hit a newline, return because we want to count the stats but keep
+            // the current state, so we end up back in this loop when the outer
+            // one calls again
+            if (fileJob.content[i] == '\n'.code.toByte()) {
+                return Pair(i, currentState)
+            }
+
+            // If we are in a literal string we want to ignore the \ check OR we aren't checking for special ones
+            if (ignoreEscape || fileJob.content[i - 1] != '\\'.code.toByte()) {
+                if (checkForMatchSingle(fileJob.content[i], id, endPoint, endString, fileJob)) {
+                    return Pair(i, CodeState.CODE)
+                }
+            }
+        }
+
+        return StringState(id, currentState)
+    }
 
     private fun isWhiteSpace(byte: Byte): Boolean {
         return byte != ' '.toByte() && byte != '\t'.toByte() && byte != '\n'.toByte() && byte != '\r'.toByte()
@@ -102,6 +137,30 @@ class LanguageWorker {
             }
 
             return 0
+        }
+
+        fun checkForMatchSingle(
+            currentByte: Byte,
+            index: Int,
+            endPoint: Int,
+            matches: ByteArray,
+            fileJob: FileJob
+        ): Boolean {
+            var potentialMatch = true
+            if (currentByte == matches[0]) {
+                for (j in matches.indices) {
+                    if (index + j >= endPoint || matches[j] != fileJob.content[index + j]) {
+                        potentialMatch = false
+                        break
+                    }
+                }
+
+                if (potentialMatch) {
+                    return true
+                }
+            }
+
+            return false
         }
     }
 }
