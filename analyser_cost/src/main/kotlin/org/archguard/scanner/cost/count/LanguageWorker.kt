@@ -2,6 +2,14 @@ package org.archguard.scanner.cost.count
 
 import java.io.File
 
+class CodeStateTransition(
+    val index: Int = 0,
+    val state: CodeState = CodeState.BLANK,
+    val endString: ByteArray = byteArrayOf(),
+    val endComments: ByteArray = byteArrayOf(),
+    val ignoreEscape: Boolean = false,
+)
+
 enum class CodeState {
     BLANK,
     CODE,
@@ -34,9 +42,6 @@ val byteOrderMarks = arrayOf(
     byteArrayOf(251.toByte(), 238.toByte(), 40), // BOCU-1
     byteArrayOf(132.toByte(), 49, 149.toByte(), 51), // GB-18030
 )
-
-
-data class StringState(val index: Int, val state: CodeState)
 
 class LanguageWorker {
     val languageService: LanguageService = LanguageService()
@@ -88,11 +93,10 @@ class LanguageWorker {
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
-        stringTrie: Trie,
         endString: ByteArray,
         currentState: CodeState,
         ignoreEscape: Boolean
-    ): Any {
+    ): CodeStateTransition {
         var id = index
         // It's not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
         // without checking if it is out of bounds first
@@ -103,18 +107,18 @@ class LanguageWorker {
             // the current state, so we end up back in this loop when the outer
             // one calls again
             if (fileJob.content[i] == '\n'.code.toByte()) {
-                return Pair(i, currentState)
+                return CodeStateTransition(i, currentState)
             }
 
             // If we are in a literal string we want to ignore the \ check OR we aren't checking for special ones
             if (ignoreEscape || fileJob.content[i - 1] != '\\'.code.toByte()) {
                 if (checkForMatchSingle(fileJob.content[i], id, endPoint, endString, fileJob)) {
-                    return Pair(i, CodeState.CODE)
+                    return CodeStateTransition(i, CodeState.CODE)
                 }
             }
         }
 
-        return StringState(id, currentState)
+        return CodeStateTransition(index = id, state = currentState)
     }
 
     private fun isWhiteSpace(byte: Byte): Boolean {
