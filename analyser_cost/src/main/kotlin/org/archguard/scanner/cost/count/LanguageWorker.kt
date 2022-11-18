@@ -1,6 +1,8 @@
 package org.archguard.scanner.cost.count
 
 import java.io.File
+import java.security.MessageDigest
+import kotlin.experimental.and
 
 class CodeStateTransition(
     val index: Int = 0,
@@ -89,6 +91,105 @@ class LanguageWorker {
         }
     }
 
+    var Duplicates = false
+    fun codeState(
+        fileJob: FileJob,
+        index: Int,
+        endPoint: Int,
+        currentState: CodeState,
+        endString: ByteArray,
+        endComments: ByteArray,
+        langFeatures: LanguageFeature,
+        digest: MessageDigest
+    ): Any {
+        // Hacky fix to
+        var endPoint = endPoint
+        if (endPoint > fileJob.content.size) {
+            endPoint--
+        }
+
+        var id = index;
+        while (id in (index + 1) until endPoint) {
+            val curByte = fileJob.content[id]
+
+            if (curByte == '\n'.toByte()) {
+                return Triple(id, currentState, endString)
+            }
+
+            if (isBinary(id, curByte)) {
+                fileJob.binary = true
+                return Triple(id, currentState, endString)
+            }
+
+            if (shouldProcess(curByte, langFeatures.processMask!!)) {
+                if (Duplicates) {
+                    // Technically this is wrong because we skip bytes so this is not a true
+                    // hash of the file contents, but for duplicate files it shouldn't matter
+                    // as both will skip the same way
+                    val digestible = byteArrayOf(fileJob.content[index])
+                    digest.update(digestible)
+                }
+
+                val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
+                val (tokenType, offsetJump, matchEndString) = langFeatures.tokens?.match(rangeContent)!!
+                when (tokenType) {
+                    TokenType.TString -> {
+                        // If we are in string state then check what sort of string so we know if docstring OR ignoreescape string
+                        val (i, ignoreEscape) = verifyIgnoreEscape(langFeatures, fileJob, index)
+
+                        // It is safe to -1 here as to enter the code state we need to have
+                        // transitioned from blank to here hence i should always be >= 1
+                        // This check is to ensure we aren't in a character declaration
+                        // TODO this should use language features
+                        if (fileJob.content[i - 1] != '\\'.toByte()) {
+                            return CodeStateTransition(i, CodeState.STRING, endString)
+                        }
+
+                        return CodeStateTransition(i, currentState, endString)
+                    }
+
+                    TokenType.TSlcomment -> {
+                        return CodeStateTransition(id, CodeState.COMMENT_CODE, endString)
+                    }
+
+                    TokenType.TMlcomment -> {
+                        if (langFeatures.nested == true || endComments.size == 0) {
+                            endComments.plus(endString)
+                            id += offsetJump - 1
+
+                            return CodeStateTransition(id, CodeState.MULTICOMMENT_CODE, endString)
+                        }
+                    }
+
+                    TokenType.TComplexity -> {
+                        if (index == 0 || isWhitespace(fileJob.content[index - 1])) {
+                            fileJob.complexity++
+                        }
+                    }
+                }
+            }
+        }
+
+        return CodeStateTransition(index, currentState, endString, endComments, false)
+    }
+
+    // // Check if this file is binary by checking for nul byte and if so bail out
+    //// this is how GNU Grep, git and ripgrep check for binary files
+    //func isBinary(index int, currentByte byte) bool {
+    //	if index < 10000 && !DisableCheckBinary && currentByte == 0 {
+    //		return true
+    //	}
+    //
+    //	return false
+    //}
+    private fun isBinary(index: Int, currentByte: Byte): Boolean {
+        return index < 10000 && currentByte == 0.toByte()
+    }
+
+    private fun shouldProcess(currentByte: Byte, processBytesMask: Byte): Boolean {
+        return currentByte and processBytesMask == currentByte
+    }
+
     fun commentState(
         fileJob: FileJob,
         index: Int,
@@ -101,7 +202,7 @@ class LanguageWorker {
         var state = currentState;
 
         var id = index;
-        while (index < id && id < endPoint) {
+        while (id in (index + 1) until endPoint) {
             val curByte = fileJob.content[id]
 
             if (curByte == '\n'.code.toByte()) {
