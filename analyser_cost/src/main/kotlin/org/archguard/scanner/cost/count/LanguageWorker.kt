@@ -78,7 +78,6 @@ class LanguageWorker {
         var index = first;
         while (index in first until fileJob.bytes.toInt()) {
             if (!isWhiteSpace(fileJob.content[index])) {
-                println("$index, $currentState")
                 when (currentState) {
                     CodeState.CODE -> {
                         val codeStateTransition = codeState(
@@ -164,9 +163,6 @@ class LanguageWorker {
                 }
             }
 
-            // if fileJob.Content[index] == '\n' || index >= endPoint {
-            //			fileJob.Lines++
-            //		}
             if (fileJob.content[index] == '\n'.code.toByte() || index >= endPoint) {
                 fileJob.lines++
 
@@ -197,17 +193,6 @@ class LanguageWorker {
         return fileJob
     }
 
-    // func resetState(currentState int64) int64 {
-    //	if currentState == SMulticomment || currentState == SMulticommentCode {
-    //		currentState = SMulticomment
-    //	} else if currentState == SString {
-    //		currentState = SString
-    //	} else {
-    //		currentState = SBlank
-    //	}
-    //
-    //	return currentState
-    //}
     private fun resetState(currentState: CodeState): CodeState {
         return when (currentState) {
             CodeState.MULTICOMMENT, CodeState.MULTICOMMENT_CODE -> CodeState.MULTICOMMENT
@@ -292,6 +277,10 @@ class LanguageWorker {
                             fileJob.complexity++
                         }
                     }
+
+                    else -> {
+
+                    }
                 }
             }
         }
@@ -299,15 +288,6 @@ class LanguageWorker {
         return CodeStateTransition(index, currentState, endString, endComments, false)
     }
 
-    // // Check if this file is binary by checking for nul byte and if so bail out
-    //// this is how GNU Grep, git and ripgrep check for binary files
-    //func isBinary(index int, currentByte byte) bool {
-    //	if index < 10000 && !DisableCheckBinary && currentByte == 0 {
-    //		return true
-    //	}
-    //
-    //	return false
-    //}
     private fun isBinary(index: Int, currentByte: Byte): Boolean {
         return index < 10000 && currentByte == 0.toByte()
     }
@@ -340,7 +320,7 @@ class LanguageWorker {
                 )
             }
 
-            if (checkForMatchSingle(curByte, id, endPoint, endComments.sliceArray(endComments.indices), fileJob)) {
+            if (checkForMatchSingle(curByte, index, endPoint, endComments.sliceArray(0 until endComments.size - 1), fileJob)) {
                 // offsetJump := len(endComments[len(endComments)-1])
                 val offsetJump = endComments.sliceArray(endComments.indices).size
                 val newEndComments = endComments.sliceArray(0 until endComments.size - 1)
@@ -522,6 +502,10 @@ class LanguageWorker {
 
                 return CodeStateTransition(index, CodeState.CODE, matchEndString, endComments, false)
             }
+
+            else -> {
+                return CodeStateTransition(index, CodeState.CODE, matchEndString, endComments, false)
+            }
         }
 
         return CodeStateTransition(index, CodeState.CODE, endString, endComments, false)
@@ -579,7 +563,6 @@ class LanguageWorker {
             matches: ByteArray,
             fileJob: FileJob
         ): Boolean {
-            if (matches.isEmpty()) return false
             var potentialMatch = true
 
             if (currentByte == matches[0]) {

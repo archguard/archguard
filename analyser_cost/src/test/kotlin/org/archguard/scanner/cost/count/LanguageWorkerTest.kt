@@ -19,7 +19,6 @@ class LanguageWorkerTest {
     }
 
     @Test
-    @Disabled
     fun bomSkip2() {
         val content = """   // Comment 1
 namespace Baz
@@ -41,9 +40,10 @@ namespace Baz
             bytes = content.size.toLong(),
         )
 
-        val countStates = worker.countStates(job)!!
+        worker.countStates(job)!!
 
-        job.lines shouldBe 11
+        job.lines shouldBe 14
+        job.code shouldBe 11
         job.comment shouldBe 2
         job.blank shouldBe 1
     }

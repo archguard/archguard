@@ -20,7 +20,7 @@ enum class TokenType {
 
 @Serializable
 class Trie(
-    var type: TokenType = TokenType.TString,
+    var type: TokenType? = null,
     var close: ByteArray = byteArrayOf(),
     var table: HashMap<Byte, Trie> = HashMap()
 ) {
@@ -75,7 +75,7 @@ class Trie(
 }
 
 data class TrieMatch(
-    val tokenType: TokenType,
+    val tokenType: TokenType?,
     val offsetJump: Int,
     val endString: ByteArray,
 ) {
