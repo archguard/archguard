@@ -7,6 +7,7 @@ package org.archguard.scanner.cost.count
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
+import kotlin.experimental.or
 
 class LanguageService {
     private val extensionCache: HashMap<String, String> = hashMapOf()
@@ -14,6 +15,7 @@ class LanguageService {
     private var extToLanguages: MutableMap<String, List<String>> = mutableMapOf()
     private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
     private var languageMap: MutableMap<String, Language> = mutableMapOf()
+    private var languageFeatures: MutableMap<String, LanguageFeature> = mutableMapOf()
 
     init {
         val fileContent = this.javaClass.classLoader.getResource("languages.json")!!.readText()
@@ -30,6 +32,7 @@ class LanguageService {
             entry.fileNames?.forEach {
                 filenameToLanguage[it] = entry.name
             }
+            processLanguageFeatures(entry.name, entry)
         }
     }
 
@@ -112,4 +115,72 @@ class LanguageService {
         extensionCache[name] = extension
         return extension
     }
+
+    private var Complexity = false
+    private fun processLanguageFeatures(name: String, entry: Language) {
+        val complexityTrie = Trie()
+        val slCommentTrie = Trie()
+        val mlCommentTrie = Trie()
+        val stringTrie = Trie()
+        val tokenTrie = Trie()
+
+        var complexityMask: Byte = 0
+        var singleLineCommentMask: Byte = 0
+        var multiLineCommentMask: Byte = 0
+        var stringMask: Byte = 0
+        var processMask: Byte = 0
+
+        entry.complexityChecks?.forEach {
+            complexityMask = complexityMask or it[0]
+            complexityTrie.insert(TokenType.TComplexity, it)
+            if (!Complexity) {
+                tokenTrie.insert(TokenType.TComplexity, it)
+            }
+        }
+        if (!Complexity) {
+            processMask = processMask or complexityMask
+        }
+
+        entry.lineComment?.forEach {
+            singleLineCommentMask = singleLineCommentMask or it[0]
+            slCommentTrie.insert(TokenType.TSlcomment, it)
+            tokenTrie.insert(TokenType.TSlcomment, it)
+        }
+        processMask = processMask or singleLineCommentMask
+
+        entry.multiLine?.forEach {
+            multiLineCommentMask = multiLineCommentMask or it[0][0]
+            mlCommentTrie.insertClose(TokenType.TMlcomment, it[0], it[1])
+            tokenTrie.insertClose(TokenType.TMlcomment, it[0], it[1])
+        }
+        processMask = processMask or multiLineCommentMask
+
+        entry.quotes?.forEach {
+            stringMask = stringMask or it.start[0]
+            stringTrie.insertClose(TokenType.TString, it.start, it.end)
+            tokenTrie.insertClose(TokenType.TString, it.start, it.end)
+        }
+        processMask = processMask or stringMask
+
+        languageFeatures[name] = LanguageFeature(
+            complexityTrie,
+            mlCommentTrie,
+            slCommentTrie,
+            stringTrie,
+            tokenTrie,
+            entry.nestedMultiLine,
+            complexityMask,
+            multiLineCommentMask,
+            singleLineCommentMask,
+            stringMask,
+            processMask,
+            entry.keywords,
+            entry.quotes
+        )
+    }
 }
+
+private infix fun Byte.or(c: Char): Byte {
+    return this or c.toByte()
+}
+

@@ -31,3 +31,27 @@ data class Language(
     @SerialName("shebangs")
     val sheBangs: List<String>? = listOf(),
 )
+
+@Serializable
+data class LanguageFeature(
+    val complexity: Trie? = null,
+    @SerialName("multi_line_comments")
+    val multiLineComments: Trie? = null,
+    @SerialName("single_line_comments")
+    val singleLineComments: Trie? = null,
+    val strings: Trie? = null,
+    val tokens: Trie? = null,
+    val nested: Boolean? = false,
+    @SerialName("complexity_check_mask")
+    val complexityCheckMask: Byte? = 0,
+    @SerialName("single_line_comment_mask")
+    val singleLineCommentMask: Byte? = 0,
+    @SerialName("multi_line_comment_mask")
+    val multiLineCommentMask: Byte? = 0,
+    @SerialName("string_check_mask")
+    val stringCheckMask: Byte? = 0,
+    @SerialName("process_mask")
+    val processMask: Byte? = 0,
+    val keywords: List<String>? = listOf(),
+    val quotes: List<Quote>? = listOf(),
+)
