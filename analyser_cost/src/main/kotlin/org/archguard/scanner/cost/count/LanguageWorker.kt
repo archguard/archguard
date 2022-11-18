@@ -18,24 +18,6 @@ enum class CodeState {
     }
 }
 
-// // ByteOrderMarks are taken from https://en.wikipedia.org/wiki/Byte_order_mark#Byte_order_marks_by_encoding
-//// These indicate that we cannot count the file correctly so we can at least warn the user
-//var ByteOrderMarks = [][]byte{
-//	{254, 255},            // UTF-16 BE
-//	{255, 254},            // UTF-16 LE
-//	{0, 0, 254, 255},      // UTF-32 BE
-//	{255, 254, 0, 0},      // UTF-32 LE
-//	{43, 47, 118, 56},     // UTF-7
-//	{43, 47, 118, 57},     // UTF-7
-//	{43, 47, 118, 43},     // UTF-7
-//	{43, 47, 118, 47},     // UTF-7
-//	{43, 47, 118, 56, 45}, // UTF-7
-//	{247, 100, 76},        // UTF-1
-//	{221, 115, 102, 115},  // UTF-EBCDIC
-//	{14, 254, 255},        // SCSU
-//	{251, 238, 40},        // BOCU-1
-//	{132, 49, 149, 51},    // GB-18030
-//}
 val byteOrderMarks = arrayOf(
     byteArrayOf(254.toByte(), 255.toByte()), // UTF-16 BE
     byteArrayOf(255.toByte(), 254.toByte()), // UTF-16 LE
@@ -64,6 +46,44 @@ class LanguageWorker {
             content = fileContent,
             possibleLanguages = languages
         )
+    }
+
+    fun countStates(fileJob: FileJob) {
+        val langFeatures = languageService.getLanguageFeature(fileJob.language) ?: return
+
+        if (langFeatures.complexity == null) langFeatures.complexity = Trie()
+        if (langFeatures.singleLineComments == null) langFeatures.singleLineComments = Trie()
+        if (langFeatures.multiLineComments == null) langFeatures.multiLineComments = Trie()
+        if (langFeatures.strings == null) langFeatures.strings = Trie()
+        if (langFeatures.tokens == null) langFeatures.tokens = Trie()
+
+        var endPoint = fileJob.bytes - 1
+        var currentState: CodeState = CodeState.BLANK
+        val endComments = mutableListOf<ByteArray>()
+        var endString = byteArrayOf()
+
+        var ignoreEscape = false;
+
+        // for index := checkBomSkip(fileJob); index < int(fileJob.Bytes); index++ { }
+        for (index in checkBomSkip(fileJob) until (fileJob.bytes).toInt()) {
+            if (!isWhiteSpace(fileJob.content[index])) {
+                when (currentState) {
+                    CodeState.CODE -> {
+
+                    }
+
+                    else -> {
+
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    private fun isWhiteSpace(byte: Byte): Boolean {
+        return byte != ' '.toByte() && byte != '\t'.toByte() && byte != '\n'.toByte() && byte != '\r'.toByte()
     }
 
     companion object {

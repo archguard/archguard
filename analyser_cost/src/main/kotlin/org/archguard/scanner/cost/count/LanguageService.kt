@@ -178,6 +178,10 @@ class LanguageService {
             entry.quotes
         )
     }
+
+    fun getLanguageFeature(language: String): LanguageFeature? {
+        return languageFeatures[language]
+    }
 }
 
 private infix fun Byte.or(c: Char): Byte {

@@ -34,13 +34,13 @@ data class Language(
 
 @Serializable
 data class LanguageFeature(
-    val complexity: Trie? = null,
+    var complexity: Trie? = null,
     @SerialName("multi_line_comments")
-    val multiLineComments: Trie? = null,
+    var multiLineComments: Trie? = null,
     @SerialName("single_line_comments")
-    val singleLineComments: Trie? = null,
-    val strings: Trie? = null,
-    val tokens: Trie? = null,
+    var singleLineComments: Trie? = null,
+    var strings: Trie? = null,
+    var tokens: Trie? = null,
     val nested: Boolean? = false,
     @SerialName("complexity_check_mask")
     val complexityCheckMask: Byte? = 0,
