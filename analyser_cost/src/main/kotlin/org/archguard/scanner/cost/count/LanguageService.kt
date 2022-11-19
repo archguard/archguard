@@ -19,20 +19,21 @@ class LanguageService {
 
     init {
         val fileContent = this.javaClass.classLoader.getResource("languages.json")!!.readText()
-        val languages = Json.decodeFromString<Array<Language>>(fileContent)
-        languages.forEach { entry ->
-            languageMap[entry.name] = entry
-            entry.extensions.forEach {
+        val languageMap: HashMap<String, Language> = Json.decodeFromString(fileContent)
+
+        languageMap.forEach { (name, lang) ->
+            lang.name = name
+            lang.extensions.forEach {
                 if (extToLanguages[it] == null) {
                     extToLanguages[it] = listOf()
                 }
 
-                extToLanguages[it] = extToLanguages[it]!!.plus(entry.name)
+                extToLanguages[it] = extToLanguages[it]?.plus(lang.name!!)!!
             }
-            entry.fileNames?.forEach {
-                filenameToLanguage[it] = entry.name
+            lang.fileNames?.forEach {
+                filenameToLanguage[it] = lang.name!!
             }
-            processLanguageFeatures(entry.name, entry)
+            processLanguageFeatures(lang.name!!, lang)
         }
     }
 

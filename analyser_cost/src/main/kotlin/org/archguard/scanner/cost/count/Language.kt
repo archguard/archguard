@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 data class Quote(
     val start: String,
     val end: String,
-    val ignoreEscape: Boolean?,
-    val docString: Boolean?
+    val ignoreEscape: Boolean = false,
+    val docString: Boolean = false
 )
 
 @Serializable
 data class Language(
-    val name: String,
+    var name: String? = null,
     @SerialName("line_comment")
     val lineComment: List<String>? = listOf(),
     @SerialName("complexitychecks")

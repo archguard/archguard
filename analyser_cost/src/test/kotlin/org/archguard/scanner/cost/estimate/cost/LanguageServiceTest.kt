@@ -16,7 +16,7 @@ internal class LanguageServiceTest {
         Assertions.assertEquals("License", lang.determineLanguage("LICENSE"))
         Assertions.assertEquals("gitignore", lang.determineLanguage(".gitignore"))
         Assertions.assertEquals("TypeScript Typings", lang.determineLanguage("types.d.ts"))
-        Assertions.assertEquals("YAML", lang.determineLanguage(".travis.yml"))
+        Assertions.assertEquals("CloudFormation (YAML)", lang.determineLanguage(".travis.yml"))
         Assertions.assertEquals("d.ts", lang.getExtension("types.d.ts"))
         Assertions.assertEquals("JSON", lang.determineLanguage("api.json"))
         Assertions.assertEquals("", lang.determineLanguage("logo.png"))
