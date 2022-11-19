@@ -72,11 +72,17 @@ class LanguageWorker {
         var endComments = byteArrayOf()
         var endString = byteArrayOf()
 
+        // TODO needs to be set via langFeatures.Quotes[0].IgnoreEscape for the matching feature
         var ignoreEscape = false;
 
         val first = checkBomSkip(fileJob)
         var index = first;
-        while (index in first until fileJob.bytes.toInt()) {
+        val fileLen = fileJob.bytes.toInt()
+        while (index in first until fileLen) {
+            // Based on our current state determine if the state should change by checking
+            // what the character is. The below is very CPU bound so need to be careful if
+            // changing anything in here and profile/measure afterwards!
+            // NB that the order of the if statements matters and has been set to what in benchmarks is most efficient
             if (!isWhiteSpace(fileJob.content[index])) {
                 when (currentState) {
                     CodeState.CODE -> {
@@ -163,6 +169,17 @@ class LanguageWorker {
                 }
             }
 
+            // We shouldn't normally need this, but unclosed strings or comments
+            // might leave the index past the end of the file when we reach this
+            // point.
+            if (index >= fileLen) return null
+
+            // Only check the first 10000 characters for null bytes indicating a binary file
+            // and if we find it then we return otherwise carry on and ignore binary markers
+            if (index < 10000 && fileJob.binary) return null
+
+            // This means the end of processing the line so calculate the stats according to what state
+            // we are currently in
             if (fileJob.content[index] == '\n'.code.toByte() || index >= endPoint) {
                 fileJob.lines++
 
