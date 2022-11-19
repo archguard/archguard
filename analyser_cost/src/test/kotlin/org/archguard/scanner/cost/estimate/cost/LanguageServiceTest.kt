@@ -27,13 +27,11 @@ internal class LanguageServiceTest {
     }
 
     @Test
-    @Disabled
     fun scan_shebang() {
         lang.scanForSheBang("#!  /usr/bin/env   perl   -w".toByteArray()) shouldBe "perl"
     }
 
     @Test
-    @Disabled
     fun determine_language_with_shebang() {
         val cases = listOf(
             "#!/usr/bin/perl",
@@ -48,7 +46,6 @@ internal class LanguageServiceTest {
         )
 
         for (case in cases) {
-            println(case)
             lang.detectSheBang(case) shouldBe "Perl"
         }
     }

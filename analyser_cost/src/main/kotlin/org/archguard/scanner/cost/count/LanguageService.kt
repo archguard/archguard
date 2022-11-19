@@ -142,36 +142,40 @@ class LanguageService {
                         state = 1
                     }
                 }
+
                 1 -> {
                     if (content[i] == '/'.code.toByte()) {
                         lastSlash = i
                     }
 
                     if (i == content.size - 1) {
-                        candidate1 = String(content.sliceArray(lastSlash + 1..i))
+                        candidate1 = String(content.sliceArray(lastSlash+1..i))
                     }
 
                     if (isWhitespace(content[i])) {
-                        candidate1 = String(content.sliceArray(lastSlash + 1..i))
+                        candidate1 = String(content.sliceArray(lastSlash+1 until i))
                         state = 2
                     }
                 }
+
                 2 -> {
                     if (!isWhitespace(content[i])) {
                         lastSlash = i
                         state = 3
                     }
                 }
+
                 3 -> {
                     if (i == content.size - 1) {
                         candidate2 = String(content.sliceArray(lastSlash..i))
                     }
 
                     if (isWhitespace(content[i])) {
-                        candidate2 = String(content.sliceArray(lastSlash..i))
+                        candidate2 = String(content.sliceArray(lastSlash until i))
                         state = 4
                     }
                 }
+
                 4 -> {
                 }
             }
