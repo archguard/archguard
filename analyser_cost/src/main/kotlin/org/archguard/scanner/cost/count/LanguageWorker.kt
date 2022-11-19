@@ -84,7 +84,7 @@ class LanguageWorker {
             // what the character is. The below is very CPU bound so need to be careful if
             // changing anything in here and profile/measure afterwards!
             // NB that the order of the if statements matters and has been set to what in benchmarks is most efficient
-            if (!isWhiteSpace(fileJob.content[index])) {
+            if (!LanguageService.isWhitespace(fileJob.content[index])) {
                 when (currentState) {
                     CodeState.CODE -> {
                         val codeStateTransition = codeState(
@@ -244,7 +244,7 @@ class LanguageWorker {
                 return CodeStateTransition(id, currentState, endString, endComments, false)
             }
 
-            if (isBinary(id, curByte)) {
+            if (LanguageService.isBinary(id, curByte)) {
                 fileJob.binary = true
                 return CodeStateTransition(id, currentState, endString, endComments, false)
             }
@@ -291,7 +291,7 @@ class LanguageWorker {
                     }
 
                     TokenType.TComplexity -> {
-                        if (index == 0 || isWhitespace(fileJob.content[index - 1])) {
+                        if (index == 0 || LanguageService.isWhitespace(fileJob.content[index - 1])) {
                             fileJob.complexity++
                         }
                     }
@@ -304,10 +304,6 @@ class LanguageWorker {
         }
 
         return CodeStateTransition(index, currentState, endString, endComments, false)
-    }
-
-    private fun isBinary(index: Int, currentByte: Byte): Boolean {
-        return index < 10000 && currentByte == 0.toByte()
     }
 
     private fun shouldProcess(currentByte: Byte, processBytesMask: Byte): Boolean {
@@ -418,7 +414,7 @@ class LanguageWorker {
                         return CodeStateTransition(i, CodeState.COMMENT)
                     }
 
-                    if (!isWhitespace(fileJob.content[j])) {
+                    if (!LanguageService.isWhitespace(fileJob.content[j])) {
                         return CodeStateTransition(i, CodeState.CODE)
                     }
                 }
@@ -428,10 +424,6 @@ class LanguageWorker {
         }
 
         return CodeStateTransition(index, currentState)
-    }
-
-    private fun isWhitespace(currentByte: Byte): Boolean {
-        return currentByte == ' '.code.toByte() || currentByte == '\t'.code.toByte() || currentByte == '\n'.code.toByte() || currentByte == '\r'.code.toByte()
     }
 
     fun stringState(
@@ -514,7 +506,7 @@ class LanguageWorker {
             }
 
             TokenType.TComplexity -> {
-                if (index == 0 || isWhiteSpace(fileJob.content[index - 1])) {
+                if (index == 0 || LanguageService.isWhitespace(fileJob.content[index - 1])) {
                     fileJob.complexity++
                 }
 
@@ -549,10 +541,6 @@ class LanguageWorker {
         }
 
         return Pair(index, ignoreEscape)
-    }
-
-    private fun isWhiteSpace(byte: Byte): Boolean {
-        return byte == ' '.code.toByte() || byte == '\t'.code.toByte() || byte == '\n'.code.toByte() || byte == '\r'.code.toByte()
     }
 
     companion object {

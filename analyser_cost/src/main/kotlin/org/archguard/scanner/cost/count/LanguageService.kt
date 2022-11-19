@@ -14,8 +14,8 @@ class LanguageService {
     private val SHE_BANG: String = "#!"
     private var extToLanguages: MutableMap<String, List<String>> = mutableMapOf()
     private var filenameToLanguage: MutableMap<String, String> = mutableMapOf()
-    private var languageMap: MutableMap<String, Language> = mutableMapOf()
     private var languageFeatures: MutableMap<String, LanguageFeature> = mutableMapOf()
+    private var shebangLookup: MutableMap<String, List<String>> = mutableMapOf()
 
     init {
         val fileContent = this.javaClass.classLoader.getResource("languages.json")!!.readText()
@@ -24,16 +24,18 @@ class LanguageService {
         languageMap.forEach { (name, lang) ->
             lang.name = name
             lang.extensions.forEach {
-                if (extToLanguages[it] == null) {
-                    extToLanguages[it] = listOf()
-                }
-
-                extToLanguages[it] = extToLanguages[it]?.plus(lang.name!!)!!
+                extToLanguages.getOrPut(it) { listOf() }
+                extToLanguages[it] = extToLanguages[it]?.plus(name)!!
             }
             lang.fileNames?.forEach {
-                filenameToLanguage[it] = lang.name!!
+                filenameToLanguage[it] = name
             }
-            processLanguageFeatures(lang.name!!, lang)
+
+            if (lang.sheBangs != null) {
+                shebangLookup[name] = lang.sheBangs
+            }
+
+            processLanguageFeatures(name, lang)
         }
     }
 
@@ -42,8 +44,10 @@ class LanguageService {
         val count: Int,
     )
 
-    // DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
-    // If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
+    /**
+     * DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
+     * If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
+     */
     fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>, content: ByteArray): String {
         // If being called through an API its possible nothing is set here and as
         // such should just return as the Language value should have already been set
@@ -97,6 +101,87 @@ class LanguageService {
         }
 
         return fallbackLanguage
+    }
+
+    fun detectSheBang(content: String): String? {
+        if (!content.startsWith(SHE_BANG)) {
+            return null
+        }
+
+        val index = content.indexOf("\n")
+
+        val shebang = if (index != -1) {
+            content.slice(0..index)
+        } else {
+            content
+        }
+
+        val cmd = scanForSheBang(shebang.toByteArray())
+
+        shebangLookup.forEach { (k, v) ->
+            if (v.contains(cmd)) {
+                return k
+            }
+        }
+
+        return null
+    }
+
+    fun scanForSheBang(content: ByteArray): String {
+        var state = 0
+        var lastSlash = 0
+
+        var candidate1 = ""
+        var candidate2 = ""
+
+        for (i in content.indices) {
+            when (state) {
+                0 -> {
+                    if (content[i] == '/'.code.toByte()) {
+                        lastSlash = i
+                        state = 1
+                    }
+                }
+                1 -> {
+                    if (content[i] == '/'.code.toByte()) {
+                        lastSlash = i
+                    }
+
+                    if (i == content.size - 1) {
+                        candidate1 = String(content.sliceArray(lastSlash + 1..i))
+                    }
+
+                    if (isWhitespace(content[i])) {
+                        candidate1 = String(content.sliceArray(lastSlash + 1..i))
+                        state = 2
+                    }
+                }
+                2 -> {
+                    if (!isWhitespace(content[i])) {
+                        lastSlash = i
+                        state = 3
+                    }
+                }
+                3 -> {
+                    if (i == content.size - 1) {
+                        candidate2 = String(content.sliceArray(lastSlash..i))
+                    }
+
+                    if (isWhitespace(content[i])) {
+                        candidate2 = String(content.sliceArray(lastSlash..i))
+                        state = 4
+                    }
+                }
+                4 -> {
+                }
+            }
+        }
+
+        return when {
+            candidate1 == "env" -> candidate2
+            candidate1 != "" -> candidate1
+            else -> ""
+        }
     }
 
 
@@ -233,9 +318,19 @@ class LanguageService {
     fun getLanguageFeature(language: String): LanguageFeature? {
         return languageFeatures[language]
     }
+
+    companion object {
+        fun isWhitespace(byte: Byte): Boolean {
+            return byte == ' '.code.toByte() || byte == '\t'.code.toByte() || byte == '\n'.code.toByte() || byte == '\r'.code.toByte()
+        }
+
+        fun isBinary(index: Int, currentByte: Byte): Boolean {
+            return index < 10000 && currentByte == 0.toByte()
+        }
+    }
 }
 
 private infix fun Byte.or(c: Char): Byte {
-    return this or c.toByte()
+    return this or c.code.toByte()
 }
 

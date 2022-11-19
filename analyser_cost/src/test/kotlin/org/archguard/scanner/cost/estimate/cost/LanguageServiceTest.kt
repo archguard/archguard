@@ -28,9 +28,29 @@ internal class LanguageServiceTest {
 
     @Test
     @Disabled
+    fun scan_shebang() {
+        lang.scanForSheBang("#!  /usr/bin/env   perl   -w".toByteArray()) shouldBe "perl"
+    }
+
+    @Test
+    @Disabled
     fun determine_language_with_shebang() {
-        lang.determineLanguage("", listOf("Coq", "SystemVerilog"), "#!/usr/bin/env coqtop".toByteArray()) shouldBe "Coq"
-        lang.determineLanguage("", listOf("Coq", "SystemVerilog"), "#!/usr/bin/env verilog".toByteArray()) shouldBe "SystemVerilog"
+        val cases = listOf(
+            "#!/usr/bin/perl",
+            "#!  /usr/bin/perl",
+            "#!/usr/bin/perl -w",
+            "#!/usr/bin/env perl",
+            "#!  /usr/bin/env   perl",
+            "#!/usr/bin/env perl -w",
+            "#!  /usr/bin/env   perl   -w",
+            "#!/opt/local/bin/perl",
+            "#!/usr/bin/perl5",
+        )
+
+        for (case in cases) {
+            println(case)
+            lang.detectSheBang(case) shouldBe "Perl"
+        }
     }
 
     @Test
