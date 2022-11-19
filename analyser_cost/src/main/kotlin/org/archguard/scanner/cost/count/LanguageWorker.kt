@@ -50,6 +50,7 @@ class LanguageWorker {
     fun prepare(file: File): FileJob {
         // read file
         val fileContent = file.readBytes()
+
         val languages = languageService.detectLanguages(file.name)
 
         return FileJob(

@@ -37,22 +37,72 @@ class LanguageService {
         }
     }
 
-    fun determineLanguage(filename: String): String {
-        val langs = this.detectLanguages(filename)
-        if (langs.size == 1) {
-            return langs[0]
+    data class LanguageGuess(
+        val name: String,
+        val count: Int,
+    )
+
+    // DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
+    // If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
+    fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>, content: ByteArray): String {
+        // If being called through an API its possible nothing is set here and as
+        // such should just return as the Language value should have already been set
+        if (possibleLanguages.isEmpty()) {
+            return fallbackLanguage
         }
 
-        var primaryLanguage = ""
-        langs.forEach {
-            if (languageMap[it]?.keywords.isNullOrEmpty()) {
-                primaryLanguage = it
+        // There should only be two possibilities now, either we have a single fallbackLanguage
+        // in which case we set it and return
+        // or we have multiple in which case we try to determine it heuristically
+        if (possibleLanguages.size == 1) {
+            return possibleLanguages[0]
+        }
+
+        val toCheck: String = if (content.size > 20000) {
+            String(content.sliceArray(0..20000))
+        } else {
+            String(content)
+        }
+
+        var primary = ""
+
+        val toSort = mutableListOf<LanguageGuess>()
+        possibleLanguages.forEach { lang ->
+            val langFeatures = languageFeatures[lang]!!
+
+            var count = 0
+            langFeatures.keywords?.forEach { key ->
+                if (toCheck.contains(key)) {
+                    count++
+                }
+            }
+
+            if (langFeatures.keywords?.isEmpty() == true) {
+                primary = lang
+            }
+
+            toSort.add(LanguageGuess(lang, count))
+        }
+
+        toSort.sortWith(compareByDescending<LanguageGuess> { it.count }.thenBy { it.name })
+
+        if (primary.isNotEmpty() && toSort.isNotEmpty()) {
+            if (toSort[0].count < 3) {
+                return primary
             }
         }
 
-        return primaryLanguage
+        if (toSort.isNotEmpty()) {
+            return toSort[0].name
+        }
+
+        return fallbackLanguage
     }
 
+
+    /**
+     * ByExtension given a filename return the language it is associated with
+     */
     fun detectLanguages(filename: String): List<String> {
         val language: MutableList<String> = mutableListOf()
 
