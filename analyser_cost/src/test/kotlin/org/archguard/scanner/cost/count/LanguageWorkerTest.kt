@@ -2,6 +2,7 @@ package org.archguard.scanner.cost.count
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class LanguageWorkerTest {
 
@@ -84,4 +85,19 @@ namespace Baz
 
         job.complexity shouldBe 3
     }
+
+    @Test
+    fun processByFileFromResource() {
+        val path = this.javaClass.classLoader.getResource("c/demo.c")!!.file
+        val fileJob = worker.process(File(path))!!
+
+        fileJob.language shouldBe "C"
+        fileJob.possibleLanguages shouldBe listOf("C")
+        fileJob.filename shouldBe "demo.c"
+        fileJob.extension shouldBe "c"
+        fileJob.location shouldBe path
+        fileJob.content.size shouldBe 309
+        fileJob.complexity shouldBe 0
+    }
+
 }
