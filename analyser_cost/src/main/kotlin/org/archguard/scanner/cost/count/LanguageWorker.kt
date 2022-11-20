@@ -46,7 +46,7 @@ val byteOrderMarks = arrayOf(
 )
 
 class LanguageWorker {
-    val languageService: LanguageService = LanguageService()
+    private val languageService: LanguageService = LanguageService()
     fun prepare(file: File): FileJob {
         // read file
         val fileContent = file.readBytes()
@@ -219,8 +219,8 @@ class LanguageWorker {
         }
     }
 
-    var Duplicates = false
-    fun codeState(
+    var isDuplicates = false
+    private fun codeState(
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
@@ -250,7 +250,7 @@ class LanguageWorker {
             }
 
             if (shouldProcess(curByte, langFeatures.processMask!!)) {
-                if (Duplicates) {
+                if (isDuplicates) {
                     // Technically this is wrong because we skip bytes so this is not a true
                     // hash of the file contents, but for duplicate files it shouldn't matter
                     // as both will skip the same way
@@ -310,7 +310,7 @@ class LanguageWorker {
         return currentByte and processBytesMask == currentByte
     }
 
-    fun commentState(
+    private fun commentState(
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
@@ -386,7 +386,7 @@ class LanguageWorker {
         )
     }
 
-    fun docStringState(
+    private fun docStringState(
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
@@ -426,7 +426,7 @@ class LanguageWorker {
         return CodeStateTransition(index, currentState)
     }
 
-    fun stringState(
+    private fun stringState(
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
@@ -458,7 +458,7 @@ class LanguageWorker {
         return CodeStateTransition(index = id, state = currentState)
     }
 
-    fun blankState(
+    private fun blankState(
         fileJob: FileJob,
         index: Int,
         endPoint: Int,
@@ -520,7 +520,7 @@ class LanguageWorker {
         return CodeStateTransition(index, CodeState.CODE, endString, endComments, false)
     }
 
-    fun verifyIgnoreEscape(langFeatures: LanguageFeature, fileJob: FileJob, index: Int): Pair<Int, Boolean> {
+    private fun verifyIgnoreEscape(langFeatures: LanguageFeature, fileJob: FileJob, index: Int): Pair<Int, Boolean> {
         var ignoreEscape = false
 
         for (i in 0 until langFeatures.quotes!!.size) {
