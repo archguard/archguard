@@ -47,6 +47,10 @@ val byteOrderMarks = arrayOf(
 
 class LanguageWorker {
     private val languageService: LanguageService = LanguageService()
+
+    // Duplicates enables duplicate file detection
+    var isDuplicates = false
+
     fun prepare(file: File): FileJob {
         // read file
         val fileContent = file.readBytes()
@@ -59,7 +63,7 @@ class LanguageWorker {
         )
     }
 
-    fun countStates(fileJob: FileJob): FileJob? {
+    fun countStats(fileJob: FileJob): FileJob? {
         val langFeatures = languageService.getLanguageFeature(fileJob.language) ?: return null
 
         if (langFeatures.complexity == null) langFeatures.complexity = Trie()
@@ -208,6 +212,10 @@ class LanguageWorker {
             index += 1
         }
 
+        if (isDuplicates) {
+            fileJob.hash.update(byteArrayOf())
+        }
+
         return fileJob
     }
 
@@ -219,7 +227,6 @@ class LanguageWorker {
         }
     }
 
-    var isDuplicates = false
     private fun codeState(
         fileJob: FileJob,
         index: Int,

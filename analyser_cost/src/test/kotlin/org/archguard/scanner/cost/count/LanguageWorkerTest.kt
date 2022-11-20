@@ -37,7 +37,7 @@ namespace Baz
             bytes = content.size.toLong(),
         )
 
-        worker.countStates(job)!!
+        worker.countStats(job)!!
 
         job.lines shouldBe 14
         job.code shouldBe 11
@@ -53,7 +53,7 @@ namespace Baz
             content = content,
             bytes = content.size.toLong(),
         )
-        worker.countStates(job)!!
+        worker.countStats(job)!!
 
         job.complexity shouldBe 1
     }
@@ -80,7 +80,7 @@ namespace Baz
             content = content,
             bytes = content.size.toLong(),
         )
-        worker.countStates(job)!!
+        worker.countStats(job)!!
 
         job.complexity shouldBe 3
     }

@@ -4,6 +4,21 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class LanguageSummary(
+    val name: String,
+    val bytes: Long,
+    val codeBytes: Long,
+    val lines: Long,
+    val code: Long,
+    val comment: Long,
+    val blank: Long,
+    val complexity: Long,
+    val count: Long,
+    val weightedComplexity: Double,
+    val files: List<FileJob>,
+)
+
+@Serializable
 data class Quote(
     val start: String,
     val end: String,
