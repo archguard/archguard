@@ -349,7 +349,7 @@ class LanguageWorker {
             if (curByte == '\n'.code.toByte()) {
                 return CodeStateTransition(
                     index = id,
-                    state = currentState,
+                    state = state,
                     endString = endString,
                     endComments = endComments,
                 )

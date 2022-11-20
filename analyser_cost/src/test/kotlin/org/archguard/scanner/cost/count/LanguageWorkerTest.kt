@@ -103,4 +103,33 @@ namespace Baz
         fileJob.content.size shouldBe 169
     }
 
+    @Test
+    fun processKotlinDemo() {
+        val content = """// based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
+// SPDX-License-Identifier: MIT OR Unlicense
+// `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
+
+package org.archguard.scanner.cost.count
+""".toByteArray()
+
+        val job = FileJob(
+            language = "Kotlin",
+            content = content,
+            bytes = content.size.toLong(),
+        )
+
+        worker.countStats(job)!!
+
+        job.lines shouldBe 5
+        job.code shouldBe 1
+    }
+
+//    @Test
+//    fun processCostFile() {
+//        val path = "src/main/kotlin/org/archguard/scanner/cost/count/LanguageService.kt"
+//        val fileJob = worker.processFile(File(path))!!
+//
+//        fileJob.language shouldBe "Kotlin"
+//    }
+
 }
