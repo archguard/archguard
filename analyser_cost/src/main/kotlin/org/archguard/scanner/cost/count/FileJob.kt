@@ -1,23 +1,8 @@
 package org.archguard.scanner.cost.count
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.security.MessageDigest
-
-enum class LineType {
-    LINE_BLANK,
-    LINE_CODE,
-    LINE_COMMENT;
-
-    inline fun <reified E : Enum<E>> fromInt(value: Int): E {
-        return enumValues<E>().first { it.toString().toInt() == value }
-    }
-
-    fun int(): Byte {
-        return ordinal.toByte()
-    }
-}
-
-typealias FileJobCallback = (job: FileJob, currentLine: Long, lineType: LineType) -> Boolean
 
 @Serializable
 class FileJob(
@@ -36,9 +21,8 @@ class FileJob(
     var complexity: Long = 0,
     var weightedComplexity: Double = 0.0,
     // skip serialisation
-    @kotlinx.serialization.Transient
+    @Transient
     var hash: MessageDigest = MessageDigest.getInstance("SHA-256"),
-    var callback: FileJobCallback? = null,
     var binary: Boolean = false,
     var minified: Boolean = false,
     var generated: Boolean = false,

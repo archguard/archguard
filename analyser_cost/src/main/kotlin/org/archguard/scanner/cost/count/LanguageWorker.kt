@@ -58,8 +58,8 @@ class LanguageWorker {
         val languages = languageService.detectLanguages(file.name)
 
         return FileJob(
-            content = fileContent,
-            possibleLanguages = languages
+            possibleLanguages = languages,
+            content = fileContent
         )
     }
 
