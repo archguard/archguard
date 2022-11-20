@@ -89,7 +89,7 @@ namespace Baz
     @Test
     fun processByFileFromResource() {
         val path = this.javaClass.classLoader.getResource("c/demo.c")!!.file
-        val fileJob = worker.process(File(path))!!
+        val fileJob = worker.processFile(File(path))!!
 
         fileJob.language shouldBe "C"
         fileJob.possibleLanguages shouldBe listOf("C")
