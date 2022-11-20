@@ -96,8 +96,11 @@ namespace Baz
         fileJob.filename shouldBe "demo.c"
         fileJob.extension shouldBe "c"
         fileJob.location shouldBe path
-        fileJob.content.size shouldBe 309
-        fileJob.complexity shouldBe 0
+        fileJob.complexity shouldBe 2
+        fileJob.lines shouldBe 12
+        fileJob.code shouldBe 9
+        fileJob.blank shouldBe 3
+        fileJob.content.size shouldBe 169
     }
 
 }

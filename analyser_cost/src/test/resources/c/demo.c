@@ -1,20 +1,12 @@
 #include <stdio.h>
+int main() {
+	int rollNo[10];
 
-int main()
-{
-  int marks[20], i, n, sum = 0, avg;
+	for(int i=0;i<10;i++)
+	    scanf("%d",&rollNo[i]);
 
-  printf("Enter the number of elements: ");
-  scanf("%d", &n);
+	for(int i=0;i<10;i++)
+	    printf("%d ",rollNo[i]);
 
-  for (i=0; i < n; ++i) {
-    printf("Enter number%d: ",i+1);
-    scanf("%d", &marks[i]);
-    sum += marks[i];
-  }
-
-  avg = sum / n;
-  printf("Avg = %d", avg);
-  return 0;
-
+	return 0;
 }

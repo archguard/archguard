@@ -62,9 +62,11 @@ class LanguageWorker {
             possibleLanguages = possibleLanguages,
             content = fileContent,
             filename = file.name,
+            bytes = file.length(),
             extension = file.extension,
             location = file.absolutePath,
         )
+
         return countStats(fileJob)
     }
 
