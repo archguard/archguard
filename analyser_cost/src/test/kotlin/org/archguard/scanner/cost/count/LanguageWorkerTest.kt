@@ -107,9 +107,20 @@ namespace Baz
     fun processKotlinDemo() {
         val content = """// based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 // SPDX-License-Identifier: MIT OR Unlicense
-// `languages.json` based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
+// languages.json based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
 
 package org.archguard.scanner.cost.count
+
+class LanguageServices {
+    /**
+     * DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
+     * If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
+     */
+     fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>, content: ByteArray): String {
+
+     }
+}
+
 """.toByteArray()
 
         val job = FileJob(
@@ -120,8 +131,8 @@ package org.archguard.scanner.cost.count
 
         worker.countStats(job)!!
 
-        job.lines shouldBe 5
-        job.code shouldBe 1
+        job.lines shouldBe 16
+        job.code shouldBe 2
     }
 
 //    @Test
@@ -131,5 +142,4 @@ package org.archguard.scanner.cost.count
 //
 //        fileJob.language shouldBe "Kotlin"
 //    }
-
 }
