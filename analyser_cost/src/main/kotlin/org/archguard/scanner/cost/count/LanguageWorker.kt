@@ -8,7 +8,7 @@ class CodeStateTransition(
     val index: Int = 0,
     val state: CodeState = CodeState.BLANK,
     val endString: ByteArray = byteArrayOf(),
-    val endComments: ByteArray = byteArrayOf(),
+    val endComments: Array<ByteArray> = arrayOf(),
     val ignoreEscape: Boolean = false,
 )
 
@@ -88,7 +88,7 @@ class LanguageWorker {
 
         val endPoint: Int = (fileJob.bytes - 1).toInt()
         var currentState: CodeState = CodeState.BLANK
-        var endComments = byteArrayOf()
+        var endComments: Array<ByteArray> = arrayOf()
         var endString = byteArrayOf()
 
         // TODO needs to be set via langFeatures.Quotes[0].IgnoreEscape for the matching feature
@@ -103,6 +103,7 @@ class LanguageWorker {
             // changing anything in here and profile/measure afterwards!
             // NB that the order of the if statements matters and has been set to what in benchmarks is most efficient
             if (!LanguageService.isWhitespace(fileJob.content[index])) {
+//                println("index: $index, currentState: $currentState")
                 when (currentState) {
                     CodeState.CODE -> {
                         val codeStateTransition = codeState(
@@ -247,7 +248,7 @@ class LanguageWorker {
         endPoint: Int,
         currentState: CodeState,
         endString: ByteArray,
-        endComments: ByteArray,
+        endComments: Array<ByteArray>,
         langFeatures: LanguageFeature,
         digest: MessageDigest
     ): CodeStateTransition {
@@ -279,7 +280,7 @@ class LanguageWorker {
                     digest.update(digestible)
                 }
 
-                val rangeContent: ByteArray = fileJob.content.sliceArray(index until point)
+                val rangeContent: ByteArray = fileJob.content.sliceArray(index until fileJob.content.size)
                 val (tokenType, offsetJump, matchEndString) = langFeatures.tokens?.match(rangeContent)!!
                 when (tokenType) {
                     TokenType.TString -> {
@@ -295,11 +296,11 @@ class LanguageWorker {
                             state = CodeState.STRING
                         }
 
-                        return CodeStateTransition(i, state, endString, endComments, ignoreEscape)
+                        return CodeStateTransition(i, state, matchEndString, endComments, ignoreEscape)
                     }
 
                     TokenType.TSlcomment -> {
-                        return CodeStateTransition(id, CodeState.COMMENT_CODE, endString, endComments, false)
+                        return CodeStateTransition(id, CodeState.COMMENT_CODE, matchEndString, endComments, false)
                     }
 
                     TokenType.TMlcomment -> {
@@ -307,13 +308,19 @@ class LanguageWorker {
                             endComments.plus(endString)
                             id += offsetJump - 1
 
-                            return CodeStateTransition(id, CodeState.MULTICOMMENT_CODE, endString, endComments, false)
+                            return CodeStateTransition(
+                                id,
+                                CodeState.MULTICOMMENT_CODE,
+                                matchEndString,
+                                endComments,
+                                false
+                            )
                         }
                     }
 
                     TokenType.TComplexity -> {
                         if (index == 0 || LanguageService.isWhitespace(fileJob.content[index - 1])) {
-                            fileJob.complexity                            ++
+                            fileJob.complexity++
                         }
                     }
 
@@ -336,7 +343,7 @@ class LanguageWorker {
         index: Int,
         endPoint: Int,
         currentState: CodeState,
-        endComments: ByteArray,
+        endComments: Array<ByteArray>,
         endString: ByteArray,
         langFeatures: LanguageFeature,
     ): CodeStateTransition {
@@ -347,17 +354,12 @@ class LanguageWorker {
             val curByte = fileJob.content[id]
 
             if (curByte == '\n'.code.toByte()) {
-                return CodeStateTransition(
-                    index = id,
-                    state = state,
-                    endString = endString,
-                    endComments = endComments,
-                )
+                return CodeStateTransition(index = id, state = state, endString = endString, endComments = endComments)
             }
 
-            if (checkForMatchSingle(curByte, id, endPoint, endComments.sliceArray(endComments.indices), fileJob)) {
-                val offsetJump = endComments.sliceArray(endComments.indices).size
-                val newEndComments = endComments.sliceArray(endComments.indices)
+            if (checkForMatchSingle(curByte, id, endPoint, endComments[endComments.size - 1], fileJob)) {
+                val offsetJump = endComments[endComments.size - 1].size
+                val newEndComments: Array<ByteArray> = endComments.sliceArray(0 until endComments.size - 1)
 
                 if (newEndComments.isEmpty()) {
                     // If we started as multiline code switch back to code so we count correctly
@@ -375,8 +377,7 @@ class LanguageWorker {
                     index = id,
                     state = state,
                     endString = endString,
-                    endComments = newEndComments,
-                )
+                    endComments = newEndComments)
             }
             // Check if we are entering another multiline comment
             // This should come below check for match single as it speeds up processing
@@ -482,7 +483,7 @@ class LanguageWorker {
         index: Int,
         endPoint: Int,
         currentState: CodeState,
-        endComments: ByteArray,
+        endComments: Array<ByteArray>,
         endString: ByteArray,
         langFeatures: LanguageFeature
     ): CodeStateTransition {

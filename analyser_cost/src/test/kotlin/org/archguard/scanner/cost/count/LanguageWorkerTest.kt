@@ -100,25 +100,19 @@ namespace Baz
         fileJob.lines shouldBe 12
         fileJob.code shouldBe 9
         fileJob.blank shouldBe 3
-        fileJob.content.size shouldBe 169
+//        fileJob.content.size shouldBe 169
     }
 
     @Test
     fun processKotlinDemo() {
-        val content = """// based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
-// SPDX-License-Identifier: MIT OR Unlicense
-// languages.json based on [https://github.com/boyter/scc](https://github.com/boyter/scc) with MIT LICENSE.
-
-package org.archguard.scanner.cost.count
-
-class LanguageServices {
-    /**
-     * DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
-     * If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
-     */
-     fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>, content: ByteArray): String {
-
-     }
+        val content = """/**
+ * DetermineLanguage given a filename, fallback language, possible languages and content make a guess to the type.
+ * If multiple possible it will guess based on keywords similar to how https://github.com/vmchale/polyglot does
+ */
+fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>, content: ByteArray): String {
+   if (possibleLanguages.isEmpty()) {
+       return fallbackLanguage
+   }
 }
 
 """.toByteArray()
@@ -131,7 +125,28 @@ class LanguageServices {
 
         worker.countStats(job)!!
 
-        job.lines shouldBe 16
-        job.code shouldBe 2
+        job.lines shouldBe 10
+        job.code shouldBe 5
+        job.complexity shouldBe 1
+    }
+
+    @Test
+    fun languageServiceFile() {
+        val path = this.javaClass.classLoader.getResource("kotlin/LanguageService.kt.txt")!!.file
+        val content = File(path).readBytes()
+
+
+        val fileJob = FileJob(
+            language = "Kotlin",
+            content = content,
+            bytes = content.size.toLong(),
+        )
+        worker.countStats(fileJob)!!
+
+        fileJob.language shouldBe "Kotlin"
+        fileJob.complexity shouldBe 28
+        fileJob.lines shouldBe 340
+        fileJob.code shouldBe 256
+        fileJob.comment shouldBe 23
     }
 }
