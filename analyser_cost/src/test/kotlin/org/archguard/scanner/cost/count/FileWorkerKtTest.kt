@@ -7,9 +7,13 @@ import org.junit.jupiter.api.Test
 internal class FileWorkerKtTest {
     @Test
     fun process_current_project() {
-        val summary = process("src/main/kotlin")
+        val summary = process("src/main")
 
-        summary.files.size shouldBeGreaterThan  4 // just some number
-        summary.lines shouldBeGreaterThan  1000 // just some number
+        println(summary)
+
+        summary.size shouldBeGreaterThan 0
+
+        summary[0].files.size shouldBeGreaterThan  4 // just some number
+        summary[0].lines shouldBeGreaterThan  1000 // just some number
     }
 }

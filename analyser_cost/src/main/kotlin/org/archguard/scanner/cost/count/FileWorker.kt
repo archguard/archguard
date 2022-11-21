@@ -1,5 +1,6 @@
 package org.archguard.scanner.cost.count
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -8,7 +9,7 @@ import java.io.File
 
 //var FileProcessJobWorkers = 4 * Runtime.getRuntime().availableProcessors()
 
-fun process(filePath: String): LanguageSummary {
+fun process(filePath: String): List<LanguageSummary> {
     val languageWorker = LanguageWorker()
 
     // todo: filter ignore files ?
@@ -28,7 +29,7 @@ fun process(filePath: String): LanguageSummary {
         .toList()
 
     return runBlocking {
-        return@runBlocking process(languageWorker, files)
+        return@runBlocking process(languageWorker, files).toList()
     }
 }
 
@@ -42,27 +43,73 @@ suspend fun process(languageWorker: LanguageWorker, files: List<FileJob>) = coro
         channel.close()
     }
 
-
-    val languageSummary = LanguageSummary()
-    launch {
-        for (fileJob in channel) {
-            if (fileJob != null) {
-                fileSummary(fileJob, languageSummary)
-            }
-        }
-    }
-
-    return@coroutineScope languageSummary
+    return@coroutineScope fileSummarizeLong(channel)
 }
 
-fun fileSummary(element: FileJob, languageSummary: LanguageSummary) {
-    languageSummary.files += element
-    languageSummary.lines += element.lines
-    languageSummary.code += element.code
-    languageSummary.comment += element.comment
-    languageSummary.blank += element.blank
-    languageSummary.complexity += element.complexity
-    languageSummary.weightedComplexity += element.weightedComplexity
-    languageSummary.count += 1
-    languageSummary.bytes += element.bytes
+suspend fun CoroutineScope.fileSummarizeLong(channel: Channel<FileJob?>): MutableList<LanguageSummary> {
+    val languages = mutableMapOf<String, LanguageSummary>()
+    var sumLines: Long = 0
+    var sumBlank: Long = 0
+    var sumComment: Long = 0
+    var sumCode: Long = 0
+    var sumComplexity: Long = 0
+    var sumWeightedComplexity: Double = 0.0
+    var sumFiles: Long = 0
+    var sumBytes: Long = 0
+    for (res in channel) {
+        if (res == null) {
+            break
+        }
+        sumLines += res.lines
+        sumBlank += res.blank
+        sumComment += res.comment
+        sumCode += res.code
+        sumComplexity += res.complexity
+        sumWeightedComplexity += res.weightedComplexity
+        sumFiles++
+        sumBytes += res.bytes
+
+        var weightedComplexity = 0.0
+        if (res.code != 0L) {
+            weightedComplexity = res.complexity.toDouble() / res.code * 100
+        }
+        res.weightedComplexity = weightedComplexity
+        sumWeightedComplexity += weightedComplexity
+
+        if (languages[res.language] == null) {
+            val files = mutableListOf(res)
+            languages[res.language] = LanguageSummary(
+                name = res.language,
+                lines = res.lines,
+                code = res.code,
+                comment = res.comment,
+                blank = res.blank,
+                complexity = res.complexity,
+                count = 1,
+                weightedComplexity = weightedComplexity,
+                files = files,
+            )
+        } else {
+            val tmp = languages[res.language]!!
+            val files = tmp.files.toMutableList()
+            files.add(res)
+            languages[res.language] = LanguageSummary(
+                name = res.language,
+                lines = tmp.lines + res.lines,
+                code = tmp.code + res.code,
+                comment = tmp.comment + res.comment,
+                blank = tmp.blank + res.blank,
+                complexity =  tmp.complexity + res.complexity,
+                count = tmp.count + 1,
+                weightedComplexity = tmp.weightedComplexity + weightedComplexity,
+                files = files,
+            )
+        }
+    }
+    val language = mutableListOf<LanguageSummary>()
+    for (summary in languages) {
+        language.add(summary.value)
+    }
+
+    return language
 }
