@@ -4,6 +4,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.archguard.scanner.cost.count.FileJob
+import org.archguard.scanner.cost.count.LanguageWorker
 import org.archguard.scanner.cost.ignore.Gitignore
 import org.archguard.scanner.cost.ignore.IgnoreMatcher
 import java.io.File
@@ -15,12 +16,13 @@ class DirectoryJob(
     val ignores: List<IgnoreMatcher>
 )
 
-// refactor: change to coroutine
 class DirectoryWalker(
     val output: Channel<FileJob>,
     val excludes: List<Regex> = listOf()
 ) {
-    // Readdir reads a directory such that we know what files are in there
+
+    private var dirChannel: Channel<DirectoryJob> = Channel()
+
     fun readDir(path: String): Array<out File>? {
         val file = File(path)
         if (!file.exists()) {
@@ -33,9 +35,31 @@ class DirectoryWalker(
         return file.listFiles()
     }
 
-    suspend fun walk(path: String) = coroutineScope {
-        val ignores: MutableList<IgnoreMatcher> = mutableListOf()
+    suspend fun start(root: String) = coroutineScope {
+        val file = File(root)
+        if (!file.exists()) {
+            throw Exception("failed to open $root")
+        }
 
+        launch {
+            if (!file.isDirectory) {
+                LanguageWorker.createFileJob(file).let {
+                    output.send(it)
+                }
+            } else {
+                walk(root)
+            }
+
+            for (directoryJob in dirChannel) {
+                walk(directoryJob.path)
+            }
+
+            dirChannel.close()
+        }
+    }
+
+    private suspend fun walk(path: String) = coroutineScope {
+        val ignores: MutableList<IgnoreMatcher> = mutableListOf()
         val dirents = readDir(path) ?: return@coroutineScope
 
         dirents.map {
@@ -60,17 +84,11 @@ class DirectoryWalker(
                 }
 
                 if (!file.isDirectory) {
-                    output.send(
-                        FileJob(
-                            language = "Java",
-                            filename = file.name,
-                            extension = file.extension,
-                            location = file.absolutePath,
-                            symlocation = file.absolutePath,
-                            content = file.readBytes(),
-                            bytes = file.length(),
-                        )
-                    )
+                    LanguageWorker.createFileJob(file).let {
+                        output.send(it)
+                    }
+                } else {
+                    dirChannel.send(DirectoryJob(path, file.absolutePath, ignores))
                 }
             }
         }

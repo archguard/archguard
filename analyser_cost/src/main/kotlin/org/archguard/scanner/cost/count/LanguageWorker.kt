@@ -52,16 +52,7 @@ class LanguageWorker {
     var isDuplicates = false
 
     fun processFile(file: File): FileJob? {
-        val fileContent = file.readBytes()
-
-        val fileJob = FileJob(
-            content = fileContent,
-            filename = file.name,
-            bytes = file.length(),
-            extension = file.extension,
-            location = file.absolutePath,
-        )
-
+        val fileJob = createFileJob(file)
         return processFile(fileJob)
     }
 
@@ -611,6 +602,18 @@ class LanguageWorker {
             }
 
             return false
+        }
+
+        fun createFileJob(file: File): FileJob {
+            val fileContent = file.readBytes()
+
+            return FileJob(
+                content = fileContent,
+                filename = file.name,
+                bytes = file.length(),
+                extension = file.extension,
+                location = file.absolutePath,
+            )
         }
     }
 }
