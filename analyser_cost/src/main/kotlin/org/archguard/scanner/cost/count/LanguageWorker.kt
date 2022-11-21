@@ -333,7 +333,7 @@ class LanguageWorker {
             id += 1
         }
 
-        return CodeStateTransition(originIndex, currentState, endString, endComments, false)
+        return CodeStateTransition(id, currentState, endString, endComments, false)
     }
 
     private fun shouldProcess(currentByte: Byte, processBytesMask: Byte): Boolean {
@@ -342,7 +342,7 @@ class LanguageWorker {
 
     private fun commentState(
         fileJob: FileJob,
-        index: Int,
+        originIndex: Int,
         endPoint: Int,
         currentState: CodeState,
         endComments: Array<ByteArray>,
@@ -351,8 +351,8 @@ class LanguageWorker {
     ): CodeStateTransition {
         var state = currentState;
 
-        var id = index;
-        while (id in index until endPoint) {
+        var id = originIndex;
+        while (id in originIndex until endPoint) {
             val curByte = fileJob.content[id]
 
             if (curByte == '\n'.code.toByte()) {
@@ -367,7 +367,7 @@ class LanguageWorker {
                     // If we started as multiline code switch back to code so we count correctly
                     // IE i := 1 /* for the lols */
                     // TODO is that required? Might still be required to count correctly
-                    if (currentState == CodeState.MULTICOMMENT_CODE) {
+                    if (state == CodeState.MULTICOMMENT_CODE) {
                         state = CodeState.CODE // TODO pointless to change here, just set S_MULTICOMMENT_BLANK
                     } else {
                         state = CodeState.MULTICOMMENT_BLANK
@@ -412,7 +412,7 @@ class LanguageWorker {
 
     private fun docStringState(
         fileJob: FileJob,
-        index: Int,
+        originIndex: Int,
         endPoint: Int,
         endString: ByteArray,
         currentState: CodeState,
@@ -420,34 +420,35 @@ class LanguageWorker {
     ): CodeStateTransition {
         // Its not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
         // without checking if it is out of bounds first
-        for (i in index until endPoint) {
-            val id = i
+        var id = originIndex
+        for (i in originIndex until endPoint) {
+            id = i
 
-            if (fileJob.content[i] == '\n'.code.toByte()) {
-                return CodeStateTransition(i, currentState)
+            if (fileJob.content[id] == '\n'.code.toByte()) {
+                return CodeStateTransition(id, currentState)
             }
 
-            if (fileJob.content[i - 1] != '\\'.code.toByte()) {
-                val rangeContent: ByteArray = fileJob.content.sliceArray(index until endPoint)
+            if (fileJob.content[id - 1] != '\\'.code.toByte()) {
+                val rangeContent: ByteArray = fileJob.content.sliceArray(id until endPoint)
                 // So we have hit end of docstring at this point in which case check if only whitespace characters till the next
                 // newline and if so we change to a comment otherwise to code
                 // need to start the loop after ending definition of docstring, therefore adding the length of the string to
                 // the index
                 for (j in id + endString.size until endPoint) {
                     if (fileJob.content[j] == '\n'.code.toByte()) {
-                        return CodeStateTransition(i, CodeState.COMMENT)
+                        return CodeStateTransition(id, CodeState.COMMENT)
                     }
 
                     if (!LanguageService.isWhitespace(fileJob.content[j])) {
-                        return CodeStateTransition(i, CodeState.CODE)
+                        return CodeStateTransition(id, CodeState.CODE)
                     }
                 }
 
-                return CodeStateTransition(i, CodeState.CODE)
+                return CodeStateTransition(id, CodeState.CODE)
             }
         }
 
-        return CodeStateTransition(index, currentState)
+        return CodeStateTransition(id, currentState)
     }
 
     private fun stringState(
@@ -516,7 +517,7 @@ class LanguageWorker {
             TokenType.TString -> {
                 val (id, ignoreEscape) = verifyIgnoreEscape(langFeatures, fileJob, index)
 
-                for (v in langFeatures.quotes!!) {
+                langFeatures.quotes?.forEach { v ->
                     if (v.end == matchEndString.toString() && v.docString) {
                         return CodeStateTransition(
                             id,

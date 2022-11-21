@@ -9,8 +9,6 @@ internal class FileWorkerKtTest {
     fun process_current_project() {
         val summary = processByDir("src/main")
 
-        println(summary)
-
         summary.size shouldBeGreaterThan 0
 
         summary[0].files.size shouldBeGreaterThan  4 // just some number
