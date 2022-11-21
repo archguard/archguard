@@ -15,6 +15,7 @@ class Gitignore(val path: String) : IgnoreMatcher {
         if (acceptPatterns.match(relativePath, isDir)) {
             return false
         }
+
         return ignorePatterns.match(relativePath, isDir)
     }
 

@@ -1,7 +1,12 @@
 package org.archguard.scanner.cost
 
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.cost.count.FileJob
@@ -24,8 +29,8 @@ class DirectoryWalker(
     val output: Channel<FileJob>,
     val excludes: List<Regex> = listOf()
 ) {
-
-    private var dirChannel: Channel<DirectoryJob> = Channel()
+    private val ignores: MutableList<IgnoreMatcher> = mutableListOf()
+    private lateinit var dirChannel: MutableSharedFlow<DirectoryJob>
 
     fun readDir(path: String): Array<out File>? {
         val file = File(path)
@@ -44,13 +49,12 @@ class DirectoryWalker(
         val file = File(root)
         if (!file.exists()) throw Exception("failed to open $root")
 
-        launch {
-            for (directoryJob in dirChannel) {
-                walk(directoryJob.path)
+        dirChannel = MutableSharedFlow(1, extraBufferCapacity = 9999, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+        dirChannel
+            .onEach {
+                walk(it.path)
             }
-
-            dirChannel.close()
-        }
+            .launchIn(this)
 
         if (!file.isDirectory) {
             launch {
@@ -61,13 +65,12 @@ class DirectoryWalker(
         } else {
             launch {
                 println("sending root: $root")
-                dirChannel.send(DirectoryJob(root, root, listOf()))
+                dirChannel.tryEmit(DirectoryJob(root, root, listOf()))
             }
         }
     }
 
     private suspend fun walk(path: String) = coroutineScope {
-        val ignores: MutableList<IgnoreMatcher> = mutableListOf()
         val dirents = readDir(path) ?: return@coroutineScope
 
         dirents.map {
@@ -106,7 +109,7 @@ class DirectoryWalker(
             } else {
                 launch {
                     println("send dir: ${file.absolutePath}")
-                    dirChannel.send(DirectoryJob(path, file.absolutePath, ignores))
+                    dirChannel.tryEmit(DirectoryJob(path, file.absolutePath, ignores))
                 }
             }
         }
