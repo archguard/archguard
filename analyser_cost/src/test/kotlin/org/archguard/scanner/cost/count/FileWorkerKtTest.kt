@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test
 internal class FileWorkerKtTest {
     @Test
     fun process_current_project() {
-        val summary = processByDir("/Users/phodal/write/phodal.com")
-
-        println(summary)
+        val summary = processByDir("src")
 
         summary.size shouldBeGreaterThan 0
 
