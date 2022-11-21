@@ -9,7 +9,7 @@ import java.io.File
 
 //var FileProcessJobWorkers = 4 * Runtime.getRuntime().availableProcessors()
 
-fun process(filePath: String): List<LanguageSummary> {
+fun processByDir(filePath: String): List<LanguageSummary> {
     val languageWorker = LanguageWorker()
 
     // todo: filter ignore files ?

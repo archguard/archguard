@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 internal class FileWorkerKtTest {
     @Test
     fun process_current_project() {
-        val summary = process("src/main")
+        val summary = processByDir("src/main")
 
         println(summary)
 

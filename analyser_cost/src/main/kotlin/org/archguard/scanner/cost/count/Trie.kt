@@ -2,20 +2,11 @@ package org.archguard.scanner.cost.count
 
 import kotlinx.serialization.Serializable
 
-
 enum class TokenType {
     TString,
     TSlcomment,
     TMlcomment,
     TComplexity;
-
-    inline fun <reified E : Enum<E>> fromInt(value: Int): E {
-        return enumValues<E>().first { it.toString().toInt() == value }
-    }
-
-    fun toInt(): Byte {
-        return ordinal.toByte()
-    }
 }
 
 @Serializable
