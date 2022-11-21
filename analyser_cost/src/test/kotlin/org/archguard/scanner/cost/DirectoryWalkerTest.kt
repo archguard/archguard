@@ -10,7 +10,6 @@ import java.nio.file.Paths
 
 internal class DirectoryWalkerTest {
     @Test
-    @Disabled
     fun testWalk() {
         val rootDir = Paths.get("").toAbsolutePath().parent
         runBlocking {

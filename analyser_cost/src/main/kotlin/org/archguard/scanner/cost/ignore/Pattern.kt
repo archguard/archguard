@@ -4,7 +4,7 @@ class Pattern(
     var hasRootPrefix: Boolean = false,
     var hasDirSuffix: Boolean = false,
     var pathDepth: Int = 0,
-    var matcher: PathMatcher,
+    var matcher: IgnorePathMatcher,
     var onlyEqualizedPath: Boolean = false
 ) {
     fun match(path: String, isDir: Boolean): Boolean {
@@ -35,12 +35,12 @@ class Pattern(
                 pathDepth = path.count { it == '/' }
             }
 
-            val matcher: PathMatcher
+            val matcher: IgnorePathMatcher
             val matchingPath = path.trim('/')
             if (hasMeta(path)) {
-                matcher = FilepathMatcher(path = matchingPath)
+                matcher = FilepathMatcherIgnore(path = matchingPath)
             } else {
-                matcher = SimpleMatcher(path = matchingPath)
+                matcher = SimpleMatcherIgnore(path = matchingPath)
             }
 
             return Pattern(
