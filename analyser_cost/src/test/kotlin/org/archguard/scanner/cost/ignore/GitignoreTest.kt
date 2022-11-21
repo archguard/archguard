@@ -12,7 +12,7 @@ internal class GitignoreTest {
         val basepath = this.javaClass.classLoader.getResource("ignore/should_include")!!.path
         val path = this.javaClass.classLoader.getResource("ignore/.ignoretest")!!.path
 
-        val ignore = Gitignore(path)
+        val ignore = Gitignore.create(path)
         assertFalse(ignore.match(basepath, false))
     }
 
@@ -21,7 +21,7 @@ internal class GitignoreTest {
         val rootDir = Paths.get("").toAbsolutePath().parent
 
         val gitignore = rootDir.resolve(".gitignore")
-        val ignore = Gitignore(gitignore.toString())
+        val ignore = Gitignore.create(gitignore.toString())
 
         assertFalse(ignore.match(rootDir.resolve("build").toString(), false))
         assertFalse(ignore.match(rootDir.resolve("analyser_cost").toString(), false))
