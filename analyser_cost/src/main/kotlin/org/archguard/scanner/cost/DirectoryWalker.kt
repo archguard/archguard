@@ -27,7 +27,10 @@ class DirectoryWalker(
 
             File(path).listFiles()?.map {
                 if (it.name == ".gitignore" || it.name == ".ignore") {
-                    ignores += (Gitignore.create(it.absolutePath))
+                    val file = Gitignore.create(it.absolutePath)
+                    if (file != null) {
+                        ignores.add(file)
+                    }
                 }
             }
 

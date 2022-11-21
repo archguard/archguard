@@ -19,15 +19,21 @@ class Gitignore(val path: String) : IgnoreMatcher {
     }
 
     companion object {
-        fun create(gitignore: String, base: String = ""): IgnoreMatcher {
-            val path: String = if (base != "") {
-                base
+        fun create(gitignore: String, vararg base: String): Gitignore? {
+            val path: String = if (base.isNotEmpty()) {
+                base[0]
             } else {
                 File(gitignore).parent
             }
 
-            val file = File(gitignore)
-            return newGitIgnoreFromReader(path, file.readLines())
+            val ignoreFile = File(gitignore)
+
+            if (!ignoreFile.exists()) {
+                println("Ignore file $gitignore does not exist")
+                return null
+            }
+
+            return newGitIgnoreFromReader(path, ignoreFile.readLines())
         }
 
         fun newGitIgnoreFromReader(path: String, lines: List<String>): Gitignore {
