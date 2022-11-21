@@ -244,7 +244,7 @@ class LanguageWorker {
 
     private fun codeState(
         fileJob: FileJob,
-        index: Int,
+        originIndex: Int,
         endPoint: Int,
         currentState: CodeState,
         endString: ByteArray,
@@ -258,8 +258,8 @@ class LanguageWorker {
             point--
         }
 
-        var id = index;
-        while (id in (index + 1) until point) {
+        var id = originIndex;
+        while (id in originIndex until point) {
             val curByte = fileJob.content[id]
 
             if (curByte == '\n'.code.toByte()) {
@@ -276,16 +276,16 @@ class LanguageWorker {
                     // Technically this is wrong because we skip bytes so this is not a true
                     // hash of the file contents, but for duplicate files it shouldn't matter
                     // as both will skip the same way
-                    val digestible = byteArrayOf(fileJob.content[index])
+                    val digestible = byteArrayOf(fileJob.content[id])
                     digest.update(digestible)
                 }
 
-                val rangeContent: ByteArray = fileJob.content.sliceArray(index until fileJob.content.size)
+                val rangeContent: ByteArray = fileJob.content.sliceArray(id until fileJob.content.size)
                 val (tokenType, offsetJump, matchEndString) = langFeatures.tokens?.match(rangeContent)!!
                 when (tokenType) {
                     TokenType.TString -> {
                         // If we are in string state then check what sort of string so we know if docstring OR ignoreescape string
-                        val (i, ignoreEscape) = verifyIgnoreEscape(langFeatures, fileJob, index)
+                        val (i, ignoreEscape) = verifyIgnoreEscape(langFeatures, fileJob, id)
 
                         // It is safe to -1 here as to enter the code state we need to have
                         // transitioned from blank to here hence i should always be >= 1
@@ -319,7 +319,7 @@ class LanguageWorker {
                     }
 
                     TokenType.TComplexity -> {
-                        if (index == 0 || LanguageService.isWhitespace(fileJob.content[index - 1])) {
+                        if (id == 0 || LanguageService.isWhitespace(fileJob.content[id - 1])) {
                             fileJob.complexity++
                         }
                     }
@@ -329,9 +329,11 @@ class LanguageWorker {
                     }
                 }
             }
+
+            id += 1
         }
 
-        return CodeStateTransition(index, currentState, endString, endComments, false)
+        return CodeStateTransition(originIndex, currentState, endString, endComments, false)
     }
 
     private fun shouldProcess(currentByte: Byte, processBytesMask: Byte): Boolean {
@@ -377,12 +379,14 @@ class LanguageWorker {
                     index = id,
                     state = state,
                     endString = endString,
-                    endComments = newEndComments)
+                    endComments = newEndComments
+                )
             }
             // Check if we are entering another multiline comment
             // This should come below check for match single as it speeds up processing
             if (langFeatures.nested == true || endComments.isEmpty()) {
-                val (ok, offsetJump, matchEndString) = langFeatures.multiLineComments?.match(fileJob.content.sliceArray(id until fileJob.content.size))!!
+                val rangeContent = fileJob.content.sliceArray(id until fileJob.content.size)
+                val (ok, offsetJump, matchEndString) = langFeatures.multiLineComments?.match(rangeContent)!!
                 if (ok != null && ok != TokenType.TString) {
                     id += offsetJump - 1
 
@@ -457,20 +461,20 @@ class LanguageWorker {
         var id = index
         // It's not possible to enter this state without checking at least 1 byte so it is safe to check -1 here
         // without checking if it is out of bounds first
-        for (i in id until endPoint) {
+        for (i in index..endPoint) {
             id = i
 
             // If we hit a newline, return because we want to count the stats but keep
             // the current state, so we end up back in this loop when the outer
             // one calls again
-            if (fileJob.content[i] == '\n'.code.toByte()) {
-                return CodeStateTransition(i, currentState)
+            if (fileJob.content[id] == '\n'.code.toByte()) {
+                return CodeStateTransition(id, currentState)
             }
 
             // If we are in a literal string we want to ignore the \ check OR we aren't checking for special ones
-            if (ignoreEscape || fileJob.content[i - 1] != '\\'.code.toByte()) {
+            if (ignoreEscape || fileJob.content[id - 1] != '\\'.code.toByte()) {
                 if (checkForMatchSingle(fileJob.content[i], id, endPoint, endString, fileJob)) {
-                    return CodeStateTransition(i, CodeState.CODE)
+                    return CodeStateTransition(id, CodeState.CODE)
                 }
             }
         }

@@ -144,7 +144,7 @@ fun determineLanguage(fallbackLanguage: String, possibleLanguages: List<String>,
         worker.countStats(fileJob)!!
 
         fileJob.language shouldBe "Kotlin"
-        fileJob.complexity shouldBe 28
+        fileJob.complexity shouldBe 67
         fileJob.lines shouldBe 340
         fileJob.code shouldBe 256
         fileJob.comment shouldBe 23
