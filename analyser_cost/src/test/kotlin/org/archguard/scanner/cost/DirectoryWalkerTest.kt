@@ -7,6 +7,7 @@ internal class DirectoryWalkerTest {
     @Test
     fun testWalk() {
         val rootDir = Paths.get("").toAbsolutePath().parent
-        val walker = DirectoryWalker.walk(rootDir.toString())
+        val walker = DirectoryWalker.walk(rootDir.toString())!!
+        walker.forEach { println(it) }
     }
 }

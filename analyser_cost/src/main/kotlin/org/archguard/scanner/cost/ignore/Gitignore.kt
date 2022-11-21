@@ -33,15 +33,15 @@ class Gitignore(val path: String) : IgnoreMatcher {
                 return null
             }
 
-            return newGitIgnoreFromReader(path, ignoreFile.readLines())
+            return fromReader(path, ignoreFile.readLines())
         }
 
-        fun newGitIgnoreFromReader(path: String, lines: List<String>): Gitignore {
+        fun fromReader(path: String, lines: List<String>): Gitignore {
             val g = Gitignore(path)
-            lines.forEach { line ->
+            for (line in lines) {
                 val trimmed = line.trim()
                 if (trimmed.isEmpty() || trimmed.startsWith("#")) {
-                    return@forEach
+                    continue
                 }
 
                 if (trimmed.startsWith("!")) {
