@@ -7,14 +7,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-//var FileProcessJobWorkers = 4 * Runtime.getRuntime().availableProcessors()
-
 fun processByDir(filePath: String): List<LanguageSummary> {
     val languageWorker = LanguageWorker()
 
     // todo: filter ignore files ?
     val files = File(filePath).walk(FileWalkDirection.BOTTOM_UP)
-        .filter { it.isFile }
+        .filter {
+            // without .git
+            it.isFile
+                    && !it.absolutePath.contains(".git")
+                    && !it.absolutePath.contains("node_modules")
+                    && !it.absolutePath.contains("build")
+        }
         .map {
             FileJob(
                 language = "Java",
@@ -37,7 +41,7 @@ suspend fun process(languageWorker: LanguageWorker, files: List<FileJob>) = coro
     val channel = Channel<FileJob?>()
     launch {
         files.forEach {
-            channel.send(languageWorker.processFile(it))
+            channel.send(LanguageWorker().processFile(it))
         }
 
         channel.close()
@@ -57,9 +61,8 @@ suspend fun CoroutineScope.fileSummarizeLong(channel: Channel<FileJob?>): Mutabl
     var sumFiles: Long = 0
     var sumBytes: Long = 0
     for (res in channel) {
-        if (res == null) {
-            break
-        }
+        if (res == null) continue
+
         sumLines += res.lines
         sumBlank += res.blank
         sumComment += res.comment
@@ -99,7 +102,7 @@ suspend fun CoroutineScope.fileSummarizeLong(channel: Channel<FileJob?>): Mutabl
                 code = tmp.code + res.code,
                 comment = tmp.comment + res.comment,
                 blank = tmp.blank + res.blank,
-                complexity =  tmp.complexity + res.complexity,
+                complexity = tmp.complexity + res.complexity,
                 count = tmp.count + 1,
                 weightedComplexity = tmp.weightedComplexity + weightedComplexity,
                 files = files,
