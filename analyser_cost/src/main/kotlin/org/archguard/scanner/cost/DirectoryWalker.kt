@@ -40,7 +40,7 @@ class DirectoryWalker(
 
     suspend fun start(workdir: String) = coroutineScope {
         root = workdir
-
+        println("start processing: $workdir")
         val file = File(workdir)
         if (!file.exists()) throw Exception("failed to open $workdir")
 
@@ -73,6 +73,7 @@ class DirectoryWalker(
     }
 
     private suspend fun walk(path: String) = coroutineScope {
+        println("start walk: ${path}")
         val dirents = readDir(path) ?: return@coroutineScope
 
         dirents.map {

@@ -1,52 +1,41 @@
 package org.archguard.scanner.cost.count
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.io.File
+import org.archguard.scanner.cost.DirectoryWalker
 
-fun processByDir(filePath: String): List<LanguageSummary> {
-    val files = File(filePath).walk(FileWalkDirection.BOTTOM_UP)
-        .filter {
-            it.isFile
-                    && !it.absolutePath.contains(".git")
-                    && !it.absolutePath.contains("node_modules")
-                    && !it.absolutePath.contains("build")
-        }
-        .map {
-            FileJob(
-                language = "Java",
-                filename = it.name,
-                extension = it.extension,
-                location = it.absolutePath,
-                symlocation = it.absolutePath,
-                content = it.readBytes(),
-                bytes = it.length(),
-            )
-        }
-        .toList()
+suspend fun worker(filePath: String) = coroutineScope {
+    val dirChannel = Channel<FileJob>()
+    val processChannel = Channel<FileJob>()
 
-    return runBlocking {
-        return@runBlocking process(files).toList()
-    }
-}
-
-suspend fun process(files: List<FileJob>) = coroutineScope {
-    val channel = Channel<FileJob?>()
+    val languageWorker = LanguageWorker()
+    var summary = mutableListOf<LanguageSummary>()
     launch {
-        files.forEach {
-            channel.send(LanguageWorker().processFile(it))
+        launch {
+            val walker = DirectoryWalker(dirChannel)
+            walker.start(filePath)
+
+            dirChannel.close()
         }
+        launch {
+            for (fileJob in dirChannel) {
+                languageWorker.processFile(fileJob)?.let {
+                    processChannel.send(it)
+                }
+            }
 
-        channel.close()
-    }
+            processChannel.close()
+        }
+        launch {
+            summary = fileSummarizeLong(processChannel)
+        }
+    }.join()
 
-    return@coroutineScope fileSummarizeLong(channel)
+    return@coroutineScope summary
 }
 
-suspend fun CoroutineScope.fileSummarizeLong(channel: Channel<FileJob?>): MutableList<LanguageSummary> {
+suspend fun fileSummarizeLong(channel: Channel<FileJob>): MutableList<LanguageSummary> {
     val languages = mutableMapOf<String, LanguageSummary>()
     var sumLines: Long = 0
     var sumBlank: Long = 0
@@ -57,8 +46,6 @@ suspend fun CoroutineScope.fileSummarizeLong(channel: Channel<FileJob?>): Mutabl
     var sumFiles: Long = 0
     var sumBytes: Long = 0
     for (res in channel) {
-        if (res == null) continue
-
         sumLines += res.lines
         sumBlank += res.blank
         sumComment += res.comment
