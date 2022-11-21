@@ -313,7 +313,7 @@ class LanguageWorker {
 
                     TokenType.TComplexity -> {
                         if (index == 0 || LanguageService.isWhitespace(fileJob.content[index - 1])) {
-                            fileJob.complexity++
+                            fileJob.complexity                            ++
                         }
                     }
 
@@ -545,7 +545,7 @@ class LanguageWorker {
         var ignoreEscape = false
 
         for (i in 0 until langFeatures.quotes!!.size) {
-            if (langFeatures.quotes[i].docString == true || langFeatures.quotes[i].ignoreEscape == true) {
+            if (langFeatures.quotes[i].docString || langFeatures.quotes[i].ignoreEscape) {
                 var isMatch = true
                 for (j in 0 until langFeatures.quotes[i].start.length) {
                     if (fileJob.content.size <= index + j || fileJob.content[index + j] != langFeatures.quotes[i].start[j].code.toByte()) {
