@@ -17,7 +17,7 @@ internal class DirectoryWalkerTest {
             val channel = Channel<FileJob>()
             launch {
                 for (fileJob in channel) {
-                    println(fileJob.location)
+                    println("received: ${fileJob.location}")
                 }
             }
 

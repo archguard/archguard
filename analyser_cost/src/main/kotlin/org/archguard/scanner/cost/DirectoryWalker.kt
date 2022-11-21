@@ -44,20 +44,6 @@ class DirectoryWalker(
         val file = File(root)
         if (!file.exists()) throw Exception("failed to open $root")
 
-
-        if (!file.isDirectory) {
-            runBlocking {
-                LanguageWorker.createFileJob(file).let {
-                    output.send(it)
-                }
-            }
-        } else {
-            runBlocking {
-                println("sending root: $root")
-                dirChannel.send(DirectoryJob(root, root, listOf()))
-            }
-        }
-
         launch {
             for (directoryJob in dirChannel) {
                 walk(directoryJob.path)
@@ -65,11 +51,24 @@ class DirectoryWalker(
 
             dirChannel.close()
         }
+
+        if (!file.isDirectory) {
+            launch {
+                LanguageWorker.createFileJob(file).let {
+                    output.send(it)
+                }
+            }
+        } else {
+            launch {
+                println("sending root: $root")
+                dirChannel.send(DirectoryJob(root, root, listOf()))
+            }
+        }
     }
 
-    private suspend fun walk(path: String) {
+    private suspend fun walk(path: String) = coroutineScope {
         val ignores: MutableList<IgnoreMatcher> = mutableListOf()
-        val dirents = readDir(path) ?: return
+        val dirents = readDir(path) ?: return@coroutineScope
 
         dirents.map {
             if (it.name == ".gitignore" || it.name == ".ignore") {
@@ -99,13 +98,13 @@ class DirectoryWalker(
 
             if (!file.isDirectory) {
                 LanguageWorker.createFileJob(file).let {
-                    runBlocking {
-                        println("send file ${it.filename}")
+                    launch {
+                        println("send file ${it.location}")
                         output.send(it)
                     }
                 }
             } else {
-                runBlocking {
+                launch {
                     println("send dir: ${file.absolutePath}")
                     dirChannel.send(DirectoryJob(path, file.absolutePath, ignores))
                 }
