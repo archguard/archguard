@@ -13,7 +13,6 @@ fun processByDir(filePath: String): List<LanguageSummary> {
     // todo: filter ignore files ?
     val files = File(filePath).walk(FileWalkDirection.BOTTOM_UP)
         .filter {
-            // without .git
             it.isFile
                     && !it.absolutePath.contains(".git")
                     && !it.absolutePath.contains("node_modules")
@@ -33,11 +32,11 @@ fun processByDir(filePath: String): List<LanguageSummary> {
         .toList()
 
     return runBlocking {
-        return@runBlocking process(languageWorker, files).toList()
+        return@runBlocking process(files).toList()
     }
 }
 
-suspend fun process(languageWorker: LanguageWorker, files: List<FileJob>) = coroutineScope {
+suspend fun process(files: List<FileJob>) = coroutineScope {
     val channel = Channel<FileJob?>()
     launch {
         files.forEach {
