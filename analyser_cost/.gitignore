@@ -1,0 +1,22 @@
+HELP.md
+.gradle
+build/
+!../gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+**/bin
+
+### STS ###
+.apt_generated
+.factorypath
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+!.idea/icon.png
+*.iws
+*.iml
+*.ipr
+out/
