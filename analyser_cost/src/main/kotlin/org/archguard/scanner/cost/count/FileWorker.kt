@@ -8,9 +8,6 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 
 fun processByDir(filePath: String): List<LanguageSummary> {
-    val languageWorker = LanguageWorker()
-
-    // todo: filter ignore files ?
     val files = File(filePath).walk(FileWalkDirection.BOTTOM_UP)
         .filter {
             it.isFile

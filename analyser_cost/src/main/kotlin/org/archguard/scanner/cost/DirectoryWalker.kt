@@ -1,14 +1,7 @@
 package org.archguard.scanner.cost
 
-import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.cost.count.FileJob
 import org.archguard.scanner.cost.count.LanguageWorker
 import org.archguard.scanner.cost.ignore.Gitignore
@@ -29,8 +22,9 @@ class DirectoryWalker(
     val output: Channel<FileJob>,
     val excludes: List<Regex> = listOf()
 ) {
+    private var root: String = ""
     private val ignores: MutableList<IgnoreMatcher> = mutableListOf()
-    private lateinit var dirChannel: MutableSharedFlow<DirectoryJob>
+    private val dirChannels = mutableListOf<Channel<DirectoryJob>>()
 
     fun readDir(path: String): Array<out File>? {
         val file = File(path)
@@ -44,17 +38,12 @@ class DirectoryWalker(
         return file.listFiles()
     }
 
-    suspend fun start(root: String) = coroutineScope {
-        println("start processing: $root")
-        val file = File(root)
-        if (!file.exists()) throw Exception("failed to open $root")
+    suspend fun start(workdir: String) = coroutineScope {
+        root = workdir
 
-        dirChannel = MutableSharedFlow(1, extraBufferCapacity = 9999, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-        dirChannel
-            .onEach {
-                walk(it.path)
-            }
-            .launchIn(this)
+        val file = File(workdir)
+        if (!file.exists()) throw Exception("failed to open $workdir")
+
 
         if (!file.isDirectory) {
             launch {
@@ -63,10 +52,23 @@ class DirectoryWalker(
                 }
             }
         } else {
-            launch {
-                println("sending root: $root")
-                dirChannel.tryEmit(DirectoryJob(root, root, listOf()))
+            createDirJob(workdir, workdir)
+        }
+    }
+
+    // dynamic channel for dir
+    private fun CoroutineScope.createDirJob(root: String, path: String) {
+        val channel = Channel<DirectoryJob>(1)
+        dirChannels.add(channel)
+
+        launch {
+            channel.send(DirectoryJob(root, path, ignores))
+
+            for (dir in channel) {
+                walk(path)
             }
+
+            channel.close()
         }
     }
 
@@ -102,16 +104,16 @@ class DirectoryWalker(
             if (!file.isDirectory) {
                 LanguageWorker.createFileJob(file).let {
                     launch {
-                        println("send file ${it.location}")
                         output.send(it)
                     }
                 }
             } else {
-                launch {
-                    println("send dir: ${file.absolutePath}")
-                    dirChannel.tryEmit(DirectoryJob(path, file.absolutePath, ignores))
-                }
+                createDirJob(root, file.absolutePath)
             }
+        }
+
+        if(dirChannels.size >= 1) {
+            dirChannels.removeAt(0).close()
         }
     }
 }
