@@ -12,6 +12,6 @@ class SimpleMatcher(val path: String) : PathMatcher {
 
 class FilepathMatcher(val path: String) : PathMatcher {
     override fun match(path: String): Boolean {
-        return path.matches(this.path.toRegex())
+        return path.matches(Regex("^${this.path}$"))
     }
 }

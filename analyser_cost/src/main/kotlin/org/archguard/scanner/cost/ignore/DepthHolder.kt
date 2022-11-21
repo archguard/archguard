@@ -5,13 +5,8 @@ enum class Order {
     DESC
 }
 
-class DepthPatternHolder {
+class DepthPatternHolder(private val order: Order) {
     private val patterns = DepthPatterns()
-    private val order: Order
-
-    constructor(order: Order) {
-        this.order = order
-    }
 
     fun add(pattern: String) {
         val count = pattern.trim('/').count { it == '/' }
