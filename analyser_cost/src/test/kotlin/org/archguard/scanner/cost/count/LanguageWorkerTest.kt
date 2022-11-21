@@ -95,7 +95,7 @@ namespace Baz
         fileJob.possibleLanguages shouldBe listOf("C")
         fileJob.filename shouldBe "demo.c"
         fileJob.extension shouldBe "c"
-        fileJob.location shouldBe path
+//        fileJob.location shouldBe path
         fileJob.complexity shouldBe 2
         fileJob.lines shouldBe 12
         fileJob.code shouldBe 9
@@ -134,12 +134,4 @@ class LanguageServices {
         job.lines shouldBe 16
         job.code shouldBe 2
     }
-
-//    @Test
-//    fun processCostFile() {
-//        val path = "src/main/kotlin/org/archguard/scanner/cost/count/LanguageService.kt"
-//        val fileJob = worker.processFile(File(path))!!
-//
-//        fileJob.language shouldBe "Kotlin"
-//    }
 }
