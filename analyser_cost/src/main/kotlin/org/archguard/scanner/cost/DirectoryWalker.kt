@@ -71,7 +71,6 @@ class DirectoryWalker(
     }
 
     private suspend fun walk(workdir: String) = coroutineScope {
-        println("start walk: ${workdir}")
         val dirents = readDir(workdir) ?: return@coroutineScope
 
         dirents.map {
@@ -86,7 +85,7 @@ class DirectoryWalker(
 
         dirents.forEach { file ->
             val name = file.name
-            val path = file.resolve(name).toString()
+            val path = file.toString()
             val isDir = file.isDirectory
 
 

@@ -17,9 +17,9 @@ var fileSystem: FileSystem = FileSystems.getDefault()
 
 class FilepathMatcherIgnore(val path: String) : IgnorePathMatcher {
     override fun match(path: String): Boolean {
-//        val absolute = fileSystem.getPath(path)
-//        return fileSystem.getPathMatcher("glob:${this.path}").matches(absolute)
-        return path.matches(convertGlobToRegex(this.path).toRegex())
+        val absolute = fileSystem.getPath(path)
+        return fileSystem.getPathMatcher("glob:${this.path}").matches(absolute)
+//        return path.matches(convertGlobToRegex(this.path).toRegex())
     }
 
     companion object {

@@ -9,9 +9,8 @@ internal class FileWorkerKtTest {
     @Test
     fun process_by_blocking() {
         runBlocking {
-            val current = Paths.get("").toAbsolutePath()
-            val summary = worker(current.parent.toString())
-            println(summary)
+            val toAbsolutePath = Paths.get("").toAbsolutePath()
+            val summary = worker(toAbsolutePath.toString())
 
             summary.size shouldBeGreaterThan 4
         }

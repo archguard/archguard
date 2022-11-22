@@ -6,8 +6,8 @@ import kotlinx.coroutines.launch
 import org.archguard.scanner.cost.DirectoryWalker
 
 suspend fun worker(filePath: String) = coroutineScope {
-    val dirChannel = Channel<FileJob>()
-    val processChannel = Channel<FileJob>()
+    val walkdirChannel = Channel<FileJob>()
+    val langDetailChannel = Channel<FileJob>()
 
     val languageWorker = LanguageWorker()
     var summary = mutableListOf<LanguageSummary>()
@@ -17,22 +17,21 @@ suspend fun worker(filePath: String) = coroutineScope {
     // 3. add summary information to LanguageSummary
     launch {
         launch {
-            val walker = DirectoryWalker(dirChannel)
-            walker.start(filePath)
+            DirectoryWalker(walkdirChannel).start(filePath)
 
-            dirChannel.close()
+            walkdirChannel.close()
         }
         launch {
-            for (fileJob in dirChannel) {
+            for (fileJob in walkdirChannel) {
                 languageWorker.processFile(fileJob)?.let {
-                    processChannel.send(it)
+                    langDetailChannel.send(it)
                 }
             }
 
-            processChannel.close()
+            langDetailChannel.close()
         }
         launch {
-            summary = fileSummarizeLong(processChannel)
+            summary = fileSummarizeLong(langDetailChannel)
         }
     }.join()
 

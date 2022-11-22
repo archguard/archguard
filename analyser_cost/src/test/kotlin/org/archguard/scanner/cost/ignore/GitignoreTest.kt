@@ -2,7 +2,6 @@ package org.archguard.scanner.cost.ignore
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 

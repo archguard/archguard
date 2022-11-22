@@ -16,14 +16,6 @@ internal class FilepathMatcherIgnoreTest {
     private fun convert(text: String) = FilepathMatcherIgnore.convertGlobToRegex(text)
 
     @Test
-    fun shouldConvertPathMatcher() {
-        val matcher = FilepathMatcherIgnore("*.kt")
-
-        matcher.match("Pattern.kt") shouldBe true
-        matcher.match("Pattern.java") shouldBe false
-    }
-
-    @Test
     fun shouldConvertPathMatcherWithDir() {
         val matcher = FilepathMatcherIgnore("build/*.kt")
 
