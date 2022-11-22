@@ -1,6 +1,8 @@
 package org.archguard.scanner.cost.ignore
 
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 
@@ -26,9 +28,10 @@ internal class GitignoreTest {
 
     @Test
     fun testByLines() {
-        val ignore = Gitignore.fromLines("", listOf("*.kt", "!*.kt"))
+        val ignore = Gitignore.fromLines("", listOf("*.kt"))
 
-        assertFalse(ignore.matchText("test.kt", false))
-        assertFalse(ignore.matchText("test.java", false))
+        ignore.matchText("test.kt", false) shouldBe true
+        ignore.matchText("test.kt", true) shouldBe true
+        ignore.matchText("test.java", true) shouldBe false
     }
 }
