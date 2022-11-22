@@ -49,7 +49,7 @@ class LanguageWorker {
     private val languageService: LanguageService = LanguageService()
 
     // Duplicates enables duplicate file detection
-    var isDuplicates = false
+    private var isDuplicates = false
 
     fun processFile(file: File): FileJob? {
         val fileJob = createFileJob(file)
@@ -58,9 +58,7 @@ class LanguageWorker {
 
     fun processFile(fileJob: FileJob): FileJob? {
         fileJob.possibleLanguages = languageService.detectLanguages(fileJob.filename)
-        if (fileJob.possibleLanguages.isEmpty()) {
-            return null
-        }
+        if (fileJob.possibleLanguages.isEmpty()) return null
 
         fileJob.language =
             languageService.determineLanguage(fileJob.possibleLanguages[0], fileJob.possibleLanguages, fileJob.content)
