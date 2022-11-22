@@ -23,4 +23,12 @@ internal class GitignoreTest {
         assertFalse(ignore.match(rootDir.resolve("build").toString(), false))
         assertFalse(ignore.match(rootDir.resolve("analyser_cost").toString(), false))
     }
+
+    @Test
+    fun testByLines() {
+        val ignore = Gitignore.fromLines("", listOf("*.kt", "!*.kt"))
+
+        assertFalse(ignore.matchText("test.kt", false))
+        assertFalse(ignore.matchText("test.java", false))
+    }
 }

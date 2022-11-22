@@ -1,5 +1,6 @@
 package org.archguard.scanner.cost.ignore
 
+import org.jetbrains.annotations.TestOnly
 import java.io.File
 
 interface IgnoreMatcher {
@@ -19,6 +20,16 @@ class Gitignore(val path: String) : IgnoreMatcher {
         return ignorePatterns.match(relativePath, isDir)
     }
 
+    @TestOnly
+    fun matchText(relativePath: String, isDir: Boolean): Boolean {
+        if (acceptPatterns.match(relativePath, isDir)) {
+            return false
+        }
+
+        return ignorePatterns.match(relativePath, isDir)
+    }
+
+
     companion object {
         fun create(gitignore: String, vararg base: String): Gitignore? {
             val path: String = if (base.isNotEmpty()) {
@@ -34,10 +45,10 @@ class Gitignore(val path: String) : IgnoreMatcher {
                 return null
             }
 
-            return fromReader(path, ignoreFile.readLines())
+            return fromLines(path, ignoreFile.readLines())
         }
 
-        fun fromReader(path: String, lines: List<String>): Gitignore {
+        fun fromLines(path: String, lines: List<String>): Gitignore {
             val g = Gitignore(path)
             for (line in lines) {
                 val trimmed = line.trim()
