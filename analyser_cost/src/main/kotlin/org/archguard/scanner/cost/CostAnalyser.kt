@@ -4,7 +4,7 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.EmptyArchGuardClient
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.cost.CostContext
-import org.archguard.scanner.core.cost.EstimateCost
+import org.archguard.scanner.core.cost.EstimateCostSummary
 
 class SimpleCostContext(
     override val type: AnalyserType = AnalyserType.COST,
@@ -17,7 +17,7 @@ class SimpleCostContext(
 class CostAnalyser(val context: CostContext) {
     private val service = CostService(context)
 
-    fun analyse(): List<EstimateCost> {
+    fun analyse(): List<EstimateCostSummary> {
         return service.analyse()
     }
 }

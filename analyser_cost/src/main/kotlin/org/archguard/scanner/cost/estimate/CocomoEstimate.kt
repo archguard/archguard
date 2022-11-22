@@ -25,6 +25,15 @@ var projectType = mapOf(
 var CocomoProjectType = "organic"
 
 
+
+// AverageWage is the average wage in dollars used for the COCOMO cost estimate
+// var AverageWage int64 = 56286
+const val AverageWage = 56286
+
+// Overhead is the overhead multiplier for corporate overhead (facilities, equipment, accounting, etc.)
+// var Overhead float64 = 2.4
+const val Overhead = 2.4
+
 // Effort Adjustment Factor (EAF) = 1.00
 // Total Equivalent Size = 0 SLOC
 class CocomoEstimate : Estimate {
@@ -32,7 +41,7 @@ class CocomoEstimate : Estimate {
 
     override fun estimate(code: Int): EstimateCost {
         val estimatedEffort = effort(code, EAF)
-        val estimatedCost = cost(estimatedEffort, 1000, 0.0)
+        val estimatedCost = cost(estimatedEffort, AverageWage, Overhead)
         val estimatedScheduleMonths = months(estimatedEffort)
         val estimatedPeopleRequired = estimatedEffort / estimatedScheduleMonths
         return EstimateCost(estimatedCost, estimatedScheduleMonths, estimatedPeopleRequired)
