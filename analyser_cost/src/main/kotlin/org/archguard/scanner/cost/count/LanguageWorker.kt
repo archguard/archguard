@@ -93,6 +93,7 @@ class LanguageWorker {
             // NB that the order of the if statements matters and has been set to what in benchmarks is most efficient
             if (!LanguageService.isWhitespace(fileJob.content[index])) {
 //                println("index: $index, currentState: $currentState")
+//                println("text: ${String(fileJob.content.sliceArray(0 until index))}")
                 when (currentState) {
                     CodeState.CODE -> {
                         val codeStateTransition = codeState(
@@ -294,14 +295,13 @@ class LanguageWorker {
 
                     TokenType.TMlcomment -> {
                         if (langFeatures.nested == true || endComments.isEmpty()) {
-                            endComments.plus(endString)
                             id += offsetJump - 1
 
                             return CodeStateTransition(
                                 id,
                                 CodeState.MULTICOMMENT_CODE,
                                 matchEndString,
-                                endComments,
+                                endComments.plus(matchEndString),
                                 false
                             )
                         }
@@ -347,6 +347,7 @@ class LanguageWorker {
             if (curByte == '\n'.code.toByte()) {
                 return CodeStateTransition(index = id, state = state, endString = endString, endComments = endComments)
             }
+
 
             if (checkForMatchSingle(curByte, id, endPoint, endComments[endComments.size - 1], fileJob)) {
                 val offsetJump = endComments[endComments.size - 1].size

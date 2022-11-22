@@ -13,12 +13,12 @@ import java.io.File
 class CostService(val context: CostContext) {
     fun analyse(): List<EstimateCostSummary> {
         runBlocking {
-            val path = File(context.path).absolutePath.toString()
+            val path = File(context.path).canonicalPath.toString()
             val languageSummaries = FileWorker.start(path)
-            println(Json.encodeToString(languageSummaries))
 
             // todo: align the scc
             languageSummaries.map {
+                println(Json.encodeToString(it))
                 val cost = CocomoEstimate().estimate(it.code.toInt())
                 println("${it.name} cost: ${cost.cost}, month: ${cost.month}, people: ${cost.people}")
                 cost
