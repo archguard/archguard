@@ -11,6 +11,10 @@ suspend fun worker(filePath: String) = coroutineScope {
 
     val languageWorker = LanguageWorker()
     var summary = mutableListOf<LanguageSummary>()
+
+    // 1. read directory to collection of files for FileJob
+    // 2. add language information to FileJob
+    // 3. add summary information to LanguageSummary
     launch {
         launch {
             val walker = DirectoryWalker(dirChannel)

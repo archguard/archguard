@@ -40,10 +40,8 @@ class DirectoryWalker(
 
     suspend fun start(workdir: String) = coroutineScope {
         root = workdir
-        println("start processing: $workdir")
         val file = File(workdir)
         if (!file.exists()) throw Exception("failed to open $workdir")
-
 
         if (!file.isDirectory) {
             launch {
@@ -72,37 +70,45 @@ class DirectoryWalker(
         }
     }
 
-    private suspend fun walk(path: String) = coroutineScope {
-        println("start walk: ${path}")
-        val dirents = readDir(path) ?: return@coroutineScope
+    private suspend fun walk(workdir: String) = coroutineScope {
+        println("start walk: ${workdir}")
+        val dirents = readDir(workdir) ?: return@coroutineScope
 
         dirents.map {
-            if (it.name == ".gitignore" || it.name == ".ignore") {
-                val file = Gitignore.create(it.absolutePath) ?: return@map
+            val name = it.name
+
+            if (name == ".gitignore" || it.name == ".ignore") {
+                val path = File(workdir).resolve(name).toString()
+                val file = Gitignore.create(path) ?: return@map
                 ignores.add(file)
             }
         }
 
         dirents.forEach { file ->
-            for (ignore in ignores) {
-                if (ignore.match(file.absolutePath, file.isDirectory)) {
+            val name = file.name
+            val path = file.resolve(name).toString()
+            val isDir = file.isDirectory
+
+
+            for (deny in PathDenyList) {
+                if (path.contains(deny)) {
                     return@forEach
                 }
             }
 
             for (exclude in excludes) {
-                if (exclude.matches(file.absolutePath)) {
+                if (exclude.matches(path) || exclude.matches(name)) {
                     return@forEach
                 }
             }
 
-            for (deny in PathDenyList) {
-                if (file.absolutePath.contains(deny)) {
+            for (ignore in ignores) {
+                if (ignore.match(path, isDir)) {
                     return@forEach
                 }
             }
 
-            if (!file.isDirectory) {
+            if (!isDir) {
                 LanguageWorker.createFileJob(file).let {
                     launch {
                         output.send(it)
