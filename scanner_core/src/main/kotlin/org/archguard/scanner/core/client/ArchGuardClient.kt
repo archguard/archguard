@@ -18,3 +18,32 @@ interface ArchGuardClient {
     fun saveDependencies(dependencies: List<CompositionDependency>)
     fun saveRuleIssues(issues: List<Issue>)
 }
+
+class EmptyArchGuardClient: ArchGuardClient {
+    override fun saveDataStructure(codes: List<CodeDataStruct>) {
+
+    }
+
+    override fun saveApi(apis: List<ContainerService>) {
+
+    }
+
+    override fun saveRelation(records: List<CodeDatabaseRelation>) {
+
+    }
+    override fun saveGitLogs(gitLogs: List<GitLogs>) {
+
+    }
+
+    override fun saveDiffs(calls: List<ChangedCall>) {
+
+    }
+
+    override fun saveDependencies(dependencies: List<CompositionDependency>) {
+
+    }
+
+    override fun saveRuleIssues(issues: List<Issue>) {
+
+    }
+}

@@ -21,6 +21,5 @@ internal class FilepathMatcherIgnoreTest {
 
         matcher.match("build/Pattern.kt") shouldBe true
         matcher.match("build/Pattern.java") shouldBe false
-        matcher.match("build/main/Pattern.kt") shouldBe true
     }
 }

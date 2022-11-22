@@ -17,6 +17,7 @@ enum class AnalyserType {
     SCA,
     RULE,
     ARCHITECTURE,
+    COST
     ;
 }
 

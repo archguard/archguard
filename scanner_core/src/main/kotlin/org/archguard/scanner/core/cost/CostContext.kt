@@ -6,5 +6,4 @@ interface CostContext: Context {
     val path: String
     val repoId: String
     val branch: String
-    val startedAt: Long
 }
