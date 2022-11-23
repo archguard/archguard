@@ -17,13 +17,8 @@ object MysqlIdentApp {
             val statement: Statement = CCJSqlParserUtil.parse(sql)
             val tablesNamesFinder = TablesNamesFinder()
 
-            table.tableNames = tablesNamesFinder.getTableList(statement).map {
-                var tableName = it
-                if (it.startsWith("`") && it.endsWith("`")) {
-                     tableName = tableName.removeSuffix("`").removePrefix("`")
-                }
-
-                tableName
+            table.tableNames = tablesNamesFinder.getTableList(statement).map { it ->
+                it.removeSurrounding("`")
             }
         } catch (e: Exception) {
             // try used regex to match for CRUD by tables

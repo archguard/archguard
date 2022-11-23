@@ -35,7 +35,7 @@ internal class MysqlIdentAppTest {
         val code = "select id, system_name as systemName,\"+\" language from system_info where id in (<ids>)"
         val relation = MysqlIdentApp.analysis(code)
 
-        assertEquals(null, relation)
+        assertEquals("system_info", relation!!.tableNames.joinToString(","))
     }
 
     @Test
