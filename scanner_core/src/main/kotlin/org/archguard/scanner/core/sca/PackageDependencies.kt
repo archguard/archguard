@@ -8,6 +8,7 @@ class DeclFileTree(
     val path: String,
     val content: String,
     var childrens: List<DeclFileTree> = listOf(),
+    val name: String = ""
 )
 
 class PackageDependencies(
