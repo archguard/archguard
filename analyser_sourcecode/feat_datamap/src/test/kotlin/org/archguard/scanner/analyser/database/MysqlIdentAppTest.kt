@@ -78,6 +78,14 @@ internal class MysqlIdentAppTest {
         assertEquals("表名", relation!!.tableNames.joinToString(","))
     }
 
+    @Test
+    internal fun select_from_issues() {
+        val code = "select ' from table"
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("table", relation!!.tableNames.joinToString(","))
+    }
+
 //    @Test
 //    internal fun parse_sql() {
 //        val stmt = CCJSqlParserUtil.parseStatements("SELECT * FROM tab1; SELECT * FROM tab2")

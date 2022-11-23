@@ -7,6 +7,7 @@ import net.sf.jsqlparser.util.TablesNamesFinder
 
 object MysqlIdentApp {
     private val UPDATE_SQL = "update\\s+([a-zA-Z_]+)".toRegex()
+    private val SELECT_FROM_SQL = "select\\s+.*\\s+from\\s+([a-zA-Z_]+)".toRegex()
     private val logger = KotlinLogging.logger {}
 
     fun analysis(sql: String): SimpleRelation? {
@@ -28,6 +29,12 @@ object MysqlIdentApp {
             // try used regex to match for CRUD by tables
             if (UPDATE_SQL.find(sql) != null) {
                 val tableName = UPDATE_SQL.find(sql)!!.groups[1]!!.value
+                table.tableNames = arrayListOf(tableName)
+                return table
+            }
+
+            if (SELECT_FROM_SQL.find(sql) != null) {
+                val tableName = SELECT_FROM_SQL.find(sql)!!.groups[1]!!.value
                 table.tableNames = arrayListOf(tableName)
                 return table
             }
