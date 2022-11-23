@@ -21,16 +21,16 @@ dependencies {
 }
 
 application {
-//    mainClass.set("org.archguard.scanner.core.AnalyserKt")
-    mainClass.set("org.archguard.scanner.cost.CostAnalyserKt")
+    mainClass.set("org.archguard.scanner.core.AnalyserKt")
+//    mainClass.set("org.archguard.scanner.cost.CostAnalyserKt")
 }
 
 tasks {
     shadowJar {
-//        dependencies {
-//            exclude(dependency("org.jetbrains.kotlin:.*:.*"))
-//            exclude(dependency("org.jetbrains.kotlinx:.*:.*"))
-//        }
+        dependencies {
+            exclude(dependency("org.jetbrains.kotlin:.*:.*"))
+            exclude(dependency("org.jetbrains.kotlinx:.*:.*"))
+        }
         minimize()
     }
 }
