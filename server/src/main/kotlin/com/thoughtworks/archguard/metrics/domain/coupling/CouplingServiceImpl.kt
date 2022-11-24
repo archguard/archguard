@@ -118,16 +118,17 @@ class CouplingServiceImpl(
         dependency: List<Dependency<JClassVO>>,
         modules: List<LogicModule>
     ): ClassCoupling {
-        val innerFanIn = dependency.filter { it.callee == clazz }.filter { isInSameModule(modules, it) }.count()
-        val innerFanOut = dependency.filter { it.caller == clazz }.filter { isInSameModule(modules, it) }.count()
-        val outerFanIn = dependency.filter { it.callee == clazz }.filter { !isInSameModule(modules, it) }.count()
-        val outerFanOut = dependency.filter { it.caller == clazz }.filter { !isInSameModule(modules, it) }.count()
+        val innerFanIn = dependency.filter { it.callee == clazz }.count { isInSameModule(modules, it) }
+        val innerFanOut = dependency.filter { it.caller == clazz }.count { isInSameModule(modules, it) }
+        val outerFanIn = dependency.filter { it.callee == clazz }.count { !isInSameModule(modules, it) }
+        val outerFanOut = dependency.filter { it.caller == clazz }.count { !isInSameModule(modules, it) }
+
         return ClassCoupling(clazz, innerFanIn, innerFanOut, outerFanIn, outerFanOut)
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
         val callerModules = getModule(modules, it.caller)
         val calleeModules = getModule(modules, it.callee)
-        return callerModules.intersect(calleeModules).isNotEmpty()
+        return callerModules.intersect(calleeModules.toSet()).isNotEmpty()
     }
 }

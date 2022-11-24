@@ -68,6 +68,7 @@ fun getModule(modules: List<LogicModule>, logicComponent: LogicComponent): List<
     if (callerByFullMatch.isNotEmpty()) {
         return callerByFullMatch
     }
+
     return startsWithMatch(logicComponent, modules)
 }
 
