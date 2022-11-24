@@ -107,44 +107,31 @@ class JvmSqlAnalyser {
 
     private val RAW_STRING_REGEX = "\"\"\"(((.*?)|(\r\n|\n))+)\"\"\"".toRegex()
     private fun handleRawString(text: String): String {
-        val rawString = RAW_STRING_REGEX.find(text)
-        if (rawString != null) {
-            return rawString.groups[1]!!.value
-        }
+        val rawString = RAW_STRING_REGEX.find(text) ?: return text
 
-        return text
+        return rawString.groups[1]!!.value
     }
 
     // some text: "\"+orderSqlPiece+\""
     private val VARIABLE_IN_LINE = "(\"\\\\\"\\+[a-zA-Z0-9_]+\\+\"\\\\\")".toRegex()
     private fun removeVariableInLine(text: String): String {
-        val find = VARIABLE_IN_LINE.find(text)
-        if (find != null) {
-            return text.replace(VARIABLE_IN_LINE, "*")
-        }
+        val find = VARIABLE_IN_LINE.find(text) ?: return text
 
-        return text
+        return text.replace(VARIABLE_IN_LINE, "*")
     }
 
     private val IN_REGEX = "in\\s+\\((\\s+)?<([a-zA-Z0-9_]+)>(\\s+)?\\)".toRegex()
     private fun processIn(text: String): String {
-        val find = IN_REGEX.find(text)
-        if (find != null) {
-            return text.replace(IN_REGEX, "in (:${find.groups[2]!!.value})")
-        }
+        val find = IN_REGEX.find(text) ?: return text
 
-        return text
+        return text.replace(IN_REGEX, "in (:${find.groups[2]!!.value})")
     }
 
     // example: `where system_id=:systemId ` => `where system_id=''`
     private val JDBI_VALUE_BIND = ":([a-zA-Z0-9_]+)".toRegex()
     private fun removeJdbiValueBind(text: String): String {
-        val find = JDBI_VALUE_BIND.find(text)
-        if (find != null) {
-            return text.replace(JDBI_VALUE_BIND, "''")
-        }
-
-        return text
+        val find = JDBI_VALUE_BIND.find(text) ?: return text
+        return text.replace(JDBI_VALUE_BIND, "''")
     }
 
     private val KOTLIN_VARIABLE_WITH_QUOTE = "'\\\$([a-zA-Z0-9_]+)'".toRegex()
