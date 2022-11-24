@@ -100,9 +100,24 @@ class JvmSqlAnalyser {
         text = processIn(text)
 
         // sql fixed
-        text = fillLimitEmpty(text)
-        text = fillOffsetEmpty(text)
+        text = fillPagination(text)
         return text
+    }
+
+    private fun fillPagination(text: String): String {
+        var sqlText = text
+
+        // fill lost offset offset
+        sqlText = sqlText
+            .replace("offset ''", "offset 10")
+            .replace("OFFSET ''", "OFFSET 10")
+
+        // fill lost limit variable
+        sqlText = sqlText
+            .replace("limit ''", "limit 10")
+            .replace("LIMIT ''", "LIMIT 10")
+
+        return sqlText
     }
 
     private val RAW_STRING_REGEX = "\"\"\"(((.*?)|(\r\n|\n))+)\"\"\"".toRegex()
