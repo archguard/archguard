@@ -1,1 +1,0 @@
-ALTER TABLE logic_module ADD COLUMN status varchar(20) DEFAULT 'NORMAL' not null COMMENT '显示状态';
