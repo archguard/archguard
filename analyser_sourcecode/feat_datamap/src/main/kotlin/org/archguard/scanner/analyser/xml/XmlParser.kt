@@ -46,7 +46,7 @@ class XmlParser(
             try {
                 parser.parse(inputSource, dispatcher)
             } catch(e: Exception) {
-                LoggerFactory.getLogger(XmlParser.javaClass).info(e.toString())
+                LoggerFactory.getLogger(XmlParser::class.java).info(e.toString())
                 return null
             }
 
