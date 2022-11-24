@@ -12,6 +12,7 @@ class JavaApiAnalyser {
 
     fun analysisByNode(node: CodeDataStruct, _workspace: String) {
         val routeAnnotation = node.filterAnnotations("RestController", "Controller", "RequestMapping")
+        // 1. create resources
         if (routeAnnotation.isNotEmpty()) {
             var baseUrl = ""
             val mappingAnnotation = node.filterAnnotations("RequestMapping")
@@ -23,6 +24,7 @@ class JavaApiAnalyser {
             node.Functions.forEach { createResource(it, baseUrl, node) }
         }
 
+        // 2. create demands
         val useRestTemplate = node.Imports.filter { it.Source.endsWith(".RestTemplate") }
         if (useRestTemplate.isNotEmpty()) {
             node.Functions.forEach { createDemand(it, node) }
@@ -138,13 +140,12 @@ class JavaApiAnalyser {
     }
 
     fun toContainerServices(): List<ContainerService> {
-        val componentCalls: MutableList<ContainerService> = mutableListOf()
-
-        val componentRef = ContainerService(name = "")
-        componentRef.resources = this.resources
-        componentRef.demands = this.demands
-
-        componentCalls += componentRef
-        return componentCalls
+        return mutableListOf(
+            ContainerService(
+                name = "",
+                resources = resources,
+                demands = demands
+            )
+        )
     }
 }

@@ -51,12 +51,6 @@ class CSharpApiAnalyser {
     }
 
     fun toContainerServices(): List<ContainerService> {
-        val componentCalls: MutableList<ContainerService> = mutableListOf()
-
-        val componentRef = ContainerService(name = "")
-        componentRef.resources = this.resources
-
-        componentCalls += componentRef
-        return componentCalls
+        return listOf(ContainerService(name = "", resources = this.resources))
     }
 }
