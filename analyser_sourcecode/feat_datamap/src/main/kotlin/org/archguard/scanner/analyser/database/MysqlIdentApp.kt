@@ -10,8 +10,8 @@ object MysqlIdentApp {
     private val SELECT_FROM_SQL = "select\\s+.*\\s+from\\s+([a-zA-Z_]+)".toRegex()
     private val logger = KotlinLogging.logger {}
 
-    fun analysis(sql: String): SimpleRelation? {
-        val table = SimpleRelation()
+    fun analysis(sql: String): SimpleDbStructure? {
+        val table = SimpleDbStructure()
 
         try {
             val statement: Statement = CCJSqlParserUtil.parse(sql)
