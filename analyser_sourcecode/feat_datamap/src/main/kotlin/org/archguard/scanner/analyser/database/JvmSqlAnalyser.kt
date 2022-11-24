@@ -63,16 +63,15 @@ class JvmSqlAnalyser {
     }
 
     fun convertMyBatis(mybatisEntries: List<MybatisEntry>): MutableList<CodeDatabaseRelation> {
-        val relations: MutableList<CodeDatabaseRelation> = mutableListOf()
-        mybatisEntries.forEach { entry ->
+        return mybatisEntries.flatMap { entry ->
             val splits = entry.namespace.split(".")
             val className = splits.last()
             splits.dropLast(1)
             val packageName = splits.joinToString(".")
 
-            entry.methodSqlMap.forEach {
+            entry.methodSqlMap.map {
                 val tables = MysqlIdentApp.analysis(it.value)?.tableNames
-                relations += CodeDatabaseRelation(
+                CodeDatabaseRelation(
                     packageName = packageName,
                     className = className,
                     functionName = it.key,
@@ -80,9 +79,7 @@ class JvmSqlAnalyser {
                     sqls = listOf(it.value)
                 )
             }
-        }
-
-        return relations
+        }.toMutableList()
     }
 
     fun sqlify(value: String): String {
