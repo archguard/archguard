@@ -1,240 +1,270 @@
-{
-  "Fields": [],
-  "MultipleExtend": [],
-  "Implements": [],
-  "Functions": [
-    {
-      "Name": "installController",
-      "Package": "server",
-      "MultipleReturns": [
-        {
-          "Modifiers": [],
-          "TypeValue": "",
-          "TypeType": "*gin.Engine",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        }
-      ],
-      "Parameters": [
-        {
-          "Modifiers": [],
-          "TypeValue": "g",
-          "TypeType": "*gin.Engine",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        }
-      ],
-      "FunctionCalls": [
-        {
-          "Package": "github.com/chapi/server/store/mysql",
-          "NodeName": "mysql",
-          "FunctionName": "GetMySQLFactoryOr",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "nil",
-              "TypeType": "",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/gin-gonic/gin",
-          "NodeName": "*gin.Engine",
-          "FunctionName": "Group",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "/v1",
-              "TypeType": "string",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/gin-gonic/gin",
-          "NodeName": "*gin.Engine",
-          "FunctionName": "Group",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "/users",
-              "TypeType": "string",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/chapi/server/controller/v1/user",
-          "NodeName": "user",
-          "FunctionName": "NewUserController",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "storeIns",
-              "TypeType": "",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/gin-gonic/gin",
-          "NodeName": "*gin.Engine",
-          "FunctionName": "GET",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "",
-              "TypeType": "string",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            },
-            {
-              "Modifiers": [],
-              "TypeValue": "userController.List",
-              "TypeType": "FunctionCall",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/gin-gonic/gin",
-          "NodeName": "*gin.Engine",
-          "FunctionName": "POST",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": "",
-              "TypeType": "string",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            },
-            {
-              "Modifiers": [],
-              "TypeValue": "userController.Create",
-              "TypeType": "FunctionCall",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        },
-        {
-          "Package": "github.com/gin-gonic/gin",
-          "NodeName": "*gin.Engine",
-          "FunctionName": "GET",
-          "Parameters": [
-            {
-              "Modifiers": [],
-              "TypeValue": ":name",
-              "TypeType": "string",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            },
-            {
-              "Modifiers": [],
-              "TypeValue": "userController.Get",
-              "TypeType": "FunctionCall",
-              "Annotations": [],
-              "ObjectValue": [],
-              "ReturnTypes": [],
-              "Parameters": []
-            }
-          ]
-        }
-      ],
-      "Annotations": [],
-      "Modifiers": [],
-      "InnerStructures": [],
-      "InnerFunctions": [],
-      "LocalVariables": [
-        {
-          "Modifiers": [],
-          "TypeValue": "g",
-          "TypeType": "*gin.Engine",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        },
-        {
-          "Modifiers": [],
-          "TypeValue": "storeIns",
-          "TypeType": "mysql",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        },
-        {
-          "Modifiers": [],
-          "TypeValue": "_",
-          "TypeType": "mysql",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        },
-        {
-          "Modifiers": [],
-          "TypeValue": "v1",
-          "TypeType": "*gin.Engine",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        },
-        {
-          "Modifiers": [],
-          "TypeValue": "userv1",
-          "TypeType": "*gin.Engine",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        },
-        {
-          "Modifiers": [],
-          "TypeValue": "userController",
-          "TypeType": "user",
-          "Annotations": [],
-          "ObjectValue": [],
-          "ReturnTypes": [],
-          "Parameters": []
-        }
-      ]
-    }
-  ],
-  "InnerStructures": [],
-  "Annotations": [],
-  "FunctionCalls": [],
-  "Parameters": [],
-  "Imports": [],
-  "Exports": []
-}
+[
+  {
+    "Fields": [],
+    "MultipleExtend": [],
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "installController",
+        "Package": "server",
+        "MultipleReturns": [
+          {
+            "Modifiers": [],
+            "TypeValue": "",
+            "TypeType": "*gin.Engine",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "g",
+            "TypeType": "*gin.Engine",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [
+          {
+            "Package": "github.com/chapi/server/store/mysql",
+            "NodeName": "mysql",
+            "FunctionName": "GetMySQLFactoryOr",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "nil",
+                "TypeType": "",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ]
+          },
+          {
+            "Package": "github.com/gin-gonic/gin",
+            "NodeName": "*gin.Engine",
+            "FunctionName": "Group",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "/v1",
+                "TypeType": "string",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ]
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [
+          {
+            "Name": "chapi_block0",
+            "MultipleReturns": [],
+            "Parameters": [],
+            "FunctionCalls": [
+              {
+                "Package": "github.com/gin-gonic/gin",
+                "NodeName": "*gin.Engine",
+                "FunctionName": "Group",
+                "Parameters": [
+                  {
+                    "Modifiers": [],
+                    "TypeValue": "/users",
+                    "TypeType": "string",
+                    "Annotations": [],
+                    "ObjectValue": [],
+                    "ReturnTypes": [],
+                    "Parameters": []
+                  }
+                ]
+              }
+            ],
+            "Annotations": [],
+            "Modifiers": [],
+            "InnerStructures": [],
+            "InnerFunctions": [
+              {
+                "Name": "chapi_block1",
+                "MultipleReturns": [],
+                "Parameters": [],
+                "FunctionCalls": [
+                  {
+                    "Package": "github.com/chapi/server/controller/v1/user",
+                    "NodeName": "user",
+                    "FunctionName": "NewUserController",
+                    "Parameters": [
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "storeIns",
+                        "TypeType": "",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      }
+                    ]
+                  },
+                  {
+                    "Package": "github.com/gin-gonic/gin",
+                    "NodeName": "*gin.Engine",
+                    "FunctionName": "GET",
+                    "Parameters": [
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "/",
+                        "TypeType": "string",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      },
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "userController.List",
+                        "TypeType": "FunctionCall",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      }
+                    ]
+                  },
+                  {
+                    "Package": "github.com/gin-gonic/gin",
+                    "NodeName": "*gin.Engine",
+                    "FunctionName": "POST",
+                    "Parameters": [
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "/",
+                        "TypeType": "string",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      },
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "userController.Create",
+                        "TypeType": "FunctionCall",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      }
+                    ]
+                  },
+                  {
+                    "Package": "github.com/gin-gonic/gin",
+                    "NodeName": "*gin.Engine",
+                    "FunctionName": "GET",
+                    "Parameters": [
+                      {
+                        "Modifiers": [],
+                        "TypeValue": ":name",
+                        "TypeType": "string",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      },
+                      {
+                        "Modifiers": [],
+                        "TypeValue": "userController.Get",
+                        "TypeType": "FunctionCall",
+                        "Annotations": [],
+                        "ObjectValue": [],
+                        "ReturnTypes": [],
+                        "Parameters": []
+                      }
+                    ]
+                  }
+                ],
+                "Annotations": [],
+                "Modifiers": [],
+                "InnerStructures": [],
+                "InnerFunctions": [],
+                "LocalVariables": [],
+                "Type": "Block"
+              }
+            ],
+            "LocalVariables": [],
+            "Type": "Block"
+          }
+        ],
+        "LocalVariables": [
+          {
+            "Modifiers": [],
+            "TypeValue": "g",
+            "TypeType": "*gin.Engine",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "storeIns",
+            "TypeType": "mysql",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "_",
+            "TypeType": "mysql",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "v1",
+            "TypeType": "*gin.Engine",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "userv1",
+            "TypeType": "*gin.Engine",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "userController",
+            "TypeType": "user",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ]
+      }
+    ],
+    "InnerStructures": [],
+    "Annotations": [],
+    "FunctionCalls": [],
+    "Parameters": [],
+    "Imports": [],
+    "Exports": []
+  }
+]
