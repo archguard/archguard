@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser
+package org.archguard.scanner.analyser.base
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.core.sourcecode.ContainerService
