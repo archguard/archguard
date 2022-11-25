@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser
 
-import chapi.ast.kotlinast.AnalysisMode
 import chapi.domain.core.CodeDataStruct
+import chapi.parser.ParseMode
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -26,7 +26,7 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
         val moduleName = ModuleIdentify.lookupModuleName(file, basepath)
-        return impl.analysis(file.readContent(), file.name, AnalysisMode.Full).DataStructures
+        return impl.analysis(file.readContent(), file.name, ParseMode.Full).DataStructures
             .map {
                 it.apply {
                     it.Module = moduleName

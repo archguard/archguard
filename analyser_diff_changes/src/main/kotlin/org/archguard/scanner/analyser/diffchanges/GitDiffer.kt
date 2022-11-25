@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser.diffchanges
 
-import chapi.ast.kotlinast.AnalysisMode
 import chapi.domain.core.CodeDataStruct
+import chapi.parser.ParseMode
 import kotlinx.serialization.Serializable
 import org.archguard.scanner.core.diffchanges.ChangeRelation
 import org.archguard.scanner.core.diffchanges.ChangedCall
@@ -33,15 +33,6 @@ class ChangedEntry(
     val packageName: String,
     val className: String,
     val functionName: String = ""
-)
-
-class ChangedList(
-    // if it had fields changed, make it as class changed.
-    val files: List<ChangedEntry> = arrayListOf(),
-    // if it had multiple class/structs changed, mark it as file level
-    val classes: List<ChangedEntry> = arrayListOf(),
-    // if it had parameter changed, function call changed, make it as Function level
-    val functions: List<ChangedEntry> = arrayListOf(),
 )
 
 class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
@@ -284,7 +275,7 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         return when (extension) {
             "kt" -> {
                 val analyser = chapi.ast.kotlinast.KotlinAnalyser()
-                analyser.analysis(content, fileName, AnalysisMode.Full).run {
+                analyser.analysis(content, fileName, ParseMode.Full).run {
                     DataStructures.map { it.apply { it.FilePath = pathString } }
                 }.toTypedArray()
             }

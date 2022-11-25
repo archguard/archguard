@@ -25,11 +25,9 @@ class MetricsRepositoryImpl(
     }
 
     override fun getClassCoupling(jClassVO: JClassVO): ClassCoupling? {
-        val classCoupling = classCouplingReadDao.findClassCoupling(jClassVO.id!!)
-        if (classCoupling != null) {
-            return classCoupling.toClassCoupling()
-        }
-        return null
+        val classCoupling = classCouplingReadDao.findClassCoupling(jClassVO.id!!) ?: return null
+
+        return classCoupling.toClassCoupling()
     }
 
     override fun getClassCoupling(jClassVOs: List<JClassVO>): List<ClassCoupling> {
