@@ -1,0 +1,99 @@
+[
+  {
+    "Fields": [],
+    "MultipleExtend": [],
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "main",
+        "Package": "main",
+        "MultipleReturns": [],
+        "Parameters": [],
+        "FunctionCalls": [
+          {
+            "Package": "github.com/gin-gonic/gin",
+            "NodeName": "gin",
+            "FunctionName": "Default",
+            "Parameters": []
+          },
+          {
+            "Package": "github.com/gin-gonic/gin",
+            "NodeName": "gin",
+            "FunctionName": "GET",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "/",
+                "TypeType": "string",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "func(c*gin.Context){c.String(http.StatusOK,\"hello world\")\n}",
+                "TypeType": "",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ]
+          },
+          {
+            "NodeName": "c",
+            "FunctionName": "String",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "http.StatusOK",
+                "TypeType": "FunctionCall",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "hello world",
+                "TypeType": "string",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ]
+          },
+          {
+            "Package": "github.com/gin-gonic/gin",
+            "NodeName": "gin",
+            "FunctionName": "Run",
+            "Parameters": []
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "LocalVariables": [
+          {
+            "Modifiers": [],
+            "TypeValue": "r",
+            "TypeType": "gin",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ]
+      }
+    ],
+    "InnerStructures": [],
+    "Annotations": [],
+    "FunctionCalls": [],
+    "Parameters": [],
+    "Imports": [],
+    "Exports": []
+  }
+]

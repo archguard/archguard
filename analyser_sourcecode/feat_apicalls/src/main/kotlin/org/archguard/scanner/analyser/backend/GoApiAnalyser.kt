@@ -2,8 +2,6 @@ package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.archguard.scanner.core.sourcecode.ContainerSupply
@@ -19,9 +17,13 @@ class GoApiAnalyser : ApiAnalyser {
         }
     }
 
-    private fun analysisFunctionCall(funciton: CodeFunction): String? {
-        funciton.FunctionCalls.forEach { funcCall ->
+    private fun analysisFunctionCall(function: CodeFunction): String? {
+        function.FunctionCalls.forEach { funcCall ->
             if (isGin(funcCall.NodeName)) {
+                if (funcCall.Parameters.isEmpty()) {
+                    return@forEach
+                }
+
                 val typeValue = funcCall.Parameters[0].TypeValue
 
                 if (funcCall.FunctionName == "Group") {
@@ -40,17 +42,17 @@ class GoApiAnalyser : ApiAnalyser {
                         resources = resources + ContainerSupply(
                             sourceUrl = url,
                             sourceHttpMethod = funcCall.FunctionName,
-                            packageName = funciton.Package,
+                            packageName = function.Package,
                             className = "",
-                            methodName = funciton.Name
+                            methodName = function.Name
                         )
                     }
                 }
             }
         }
 
-        if (funciton.InnerFunctions.isNotEmpty()) {
-            funciton.InnerFunctions.forEach { innerFunc ->
+        if (function.InnerFunctions.isNotEmpty()) {
+            function.InnerFunctions.forEach { innerFunc ->
                 analysisFunctionCall(innerFunc)
             }
         }
@@ -69,7 +71,7 @@ class GoApiAnalyser : ApiAnalyser {
     }
 
     private fun isGinNode(nodeName: String) =
-        nodeName == "gin.Engine" || nodeName == "gin.RouterGroup" || nodeName == "gin.Default"
+        nodeName == "gin" || nodeName == "gin.Engine" || nodeName == "gin.RouterGroup" || nodeName == "gin.Default"
 
     override fun toContainerServices(): List<ContainerService> {
         return mutableListOf(
