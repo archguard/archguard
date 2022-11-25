@@ -2,15 +2,16 @@ package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.scanner.analyser.ApiAnalyser
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
-class JavaApiAnalyser {
+class JavaApiAnalyser: ApiAnalyser {
+    override var resources: List<ContainerSupply> = listOf()
     var demands: List<ContainerDemand> = listOf()
-    var resources: List<ContainerSupply> = listOf()
 
-    fun analysisByNode(node: CodeDataStruct, _workspace: String) {
+    override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         val routeAnnotation = node.filterAnnotations("RestController", "Controller", "RequestMapping")
         // 1. create resources
         if (routeAnnotation.isNotEmpty()) {
@@ -139,7 +140,7 @@ class JavaApiAnalyser {
         }
     }
 
-    fun toContainerServices(): List<ContainerService> {
+    override fun toContainerServices(): List<ContainerService> {
         return mutableListOf(
             ContainerService(
                 name = "",
