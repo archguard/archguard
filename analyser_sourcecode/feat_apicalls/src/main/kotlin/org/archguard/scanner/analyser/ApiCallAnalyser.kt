@@ -52,7 +52,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 apiAnalyser.toContainerServices()
             }
 
-            "go" -> {
+            "golang" -> {
                 logger.info("start analysis backend api ---- $language")
 
                 val apiAnalyser = GoApiAnalyser()

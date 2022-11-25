@@ -11,7 +11,7 @@ enum class OfficialAnalyserSpecs(
 ) {
     // languages
     CSHARP("CSharpAnalyser"),
-    GO("GoAnalyser"),
+    GOLANG("GoAnalyser"),
     JAVA("JavaAnalyser"),
     KOTLIN("KotlinAnalyser"),
     PYTHON("PythonAnalyser"),
