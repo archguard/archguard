@@ -1,5 +1,7 @@
 package org.archguard.scanner.core.sca
 
+import kotlinx.serialization.Serializable
+
 /*
  * file for save content ?
  */
@@ -11,6 +13,7 @@ class DeclFileTree(
     val name: String = ""
 )
 
+@Serializable
 class PackageDependencies(
     // self name
     val name: String,
@@ -39,6 +42,7 @@ enum class DEP_SCOPE {
                 "test" -> {
                     TEST
                 }
+
                 else -> {
                     NORMAL
                 }
@@ -47,11 +51,12 @@ enum class DEP_SCOPE {
     }
 }
 
+@Serializable
 class DependencyEntry(
     // full name groupId:artifactId
     val name: String,
-    val group: String,
-    val artifact: String,
+    val group: String = "",
+    val artifact: String = "",
     val version: String,
     // url: like github, maven
     val scope: DEP_SCOPE = DEP_SCOPE.NORMAL,
@@ -61,7 +66,9 @@ class DependencyEntry(
     val metadata: DepMetadata = DepMetadata(),
 )
 
-// like GitHub link,
+// like GitHub
+// link,
+@Serializable
 class DepSource(
     val type: String = "",
     val url: String = "",
@@ -69,6 +76,7 @@ class DepSource(
     val ref: String = "",
 )
 
+@Serializable
 class DepMetadata(
     val packagingType: String = "",
     val propertyName: String = "",
