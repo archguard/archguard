@@ -34,11 +34,11 @@ require (
 
         val expect = PackageDependencies(
             "github.com/boyter/scc/v3", "1.14", "gomod", listOf(
-                DependencyEntry("github.com/spf13/cobra", version = "0.0.3"),
-                DependencyEntry("github.com/spf13/pflag", version = "1.0.3"),
-                DependencyEntry("golang.org/x/text", version = "0.3.0"),
-                DependencyEntry("gopkg.in/yaml.v2", version = "2.2.8"),
-                DependencyEntry("google.golang.org/protobuf", version = "1.27.1"),
+                DependencyEntry("github.com/spf13/cobra", "github.com/spf13", "cobra", "0.0.3"),
+                DependencyEntry("github.com/spf13/pflag", "github.com/spf13", "pflag", "1.0.3"),
+                DependencyEntry("golang.org/x/text", "golang.org/x", "text", "0.3.0"),
+                DependencyEntry("gopkg.in/yaml.v2", "gopkg.in", "yaml.v2", "2.2.8"),
+                DependencyEntry("google.golang.org/protobuf", "google.golang.org", "protobuf", "1.27.1")
             ), "god.md"
         )
 

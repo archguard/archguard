@@ -34,7 +34,14 @@ class GoModParser : Parser() {
             val matchResult = goDependenceRegex.find(it)
             if (matchResult != null) {
                 val (name, version) = matchResult.destructured
-                deps += DependencyEntry(name = name, version = version)
+
+                // split "github.com/AlekSi/pointer" to { artifact: "github.comAlekSi", group: "pointer" }
+                val split = name.split("/")
+
+                val artifact = split.last()
+                val group = split.dropLast(1).joinToString("/")
+
+                deps += DependencyEntry(name, group, artifact, version)
             }
         }
 
