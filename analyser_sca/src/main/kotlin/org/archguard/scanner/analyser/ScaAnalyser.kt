@@ -1,5 +1,6 @@
 package org.archguard.scanner.analyser
 
+import org.archguard.scanner.analyser.sca.gomod.GoModFinder
 import org.archguard.scanner.analyser.sca.gradle.GradleFinder
 import org.archguard.scanner.analyser.sca.maven.MavenFinder
 import org.archguard.scanner.analyser.sca.npm.NpmFinder
@@ -25,6 +26,11 @@ class ScaAnalyser(override val context: ScaContext) : ScaAnalyser {
             "javascript", "typescript" -> {
                 val depDeclarations = NpmFinder().process(path)
                 depDeclarations.flatMap {
+                    it.toCompositionDependency()
+                }.toList()
+            }
+            "golang" -> {
+                GoModFinder().process(path).toMutableList().flatMap {
                     it.toCompositionDependency()
                 }.toList()
             }
