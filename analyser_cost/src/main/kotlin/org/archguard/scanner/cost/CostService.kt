@@ -16,12 +16,8 @@ class CostService(val context: CostContext) {
             val path = File(context.path).canonicalPath.toString()
             val languageSummaries = FileWorker.start(path)
 
-            // todo: align the scc
             languageSummaries.map {
-                println(Json.encodeToString(it))
-                val cost = CocomoEstimate().estimate(it.code.toInt())
-                println("${it.name} cost: ${cost.cost}, month: ${cost.month}, people: ${cost.people}")
-                cost
+                CocomoEstimate().estimate(it.code.toInt())
             }.reduce { acc, estimateCost ->
                 EstimateCost(
                     acc.cost + estimateCost.cost,
@@ -31,7 +27,6 @@ class CostService(val context: CostContext) {
             }.let {
                 println("total cost: ${it.cost}, month: ${it.month}, people: ${it.people}")
             }
-            ;
         }
 
         return emptyList()
