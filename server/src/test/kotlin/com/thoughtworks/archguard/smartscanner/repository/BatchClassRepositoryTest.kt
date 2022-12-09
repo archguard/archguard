@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.smartscanner.repository
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import kotlin.test.DefaultAsserter.assertNotEquals
@@ -10,6 +11,7 @@ import kotlin.test.assertEquals
 
 class BatchClassRepositoryTest {
     @Test
+    @Disabled
     fun `should find item by id`() {
         val resource = this.javaClass.classLoader.getResource("regression/jfield_codes.json")!!
         val path = Paths.get(resource.toURI())
