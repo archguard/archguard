@@ -12,6 +12,7 @@ import chapi.domain.core.CodeProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
+import org.jetbrains.annotations.TestOnly
 import java.io.File
 import java.util.Optional
 import java.util.concurrent.atomic.AtomicInteger
@@ -19,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger
 private const val DEFAULT_MODULE_NAME = "root"
 private const val THIRD_PARTY = "root"
 
-class ClassRepository(systemId: String, language: String, workspace: String) {
+class BatchClassRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100
@@ -312,7 +313,10 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
         batch.add("code_ref_class_dependencies", values)
     }
 
-    private fun findClass(name: String, module: String?): Optional<String?> {
+    /**
+     * find class id by name and module
+     */
+    fun findClass(name: String, module: String?): Optional<String?> {
         val keys: MutableMap<String, String> = HashMap()
         keys["name"] = name
         if (module != null) {
@@ -609,6 +613,11 @@ class ClassRepository(systemId: String, language: String, workspace: String) {
 
     fun flush() {
         batch.execute()
+    }
+
+    @TestOnly
+    fun getStore(table: String): MutableList<MutableMap<String, String>>? {
+        return batch.getStore(table)
     }
 
     fun close() {

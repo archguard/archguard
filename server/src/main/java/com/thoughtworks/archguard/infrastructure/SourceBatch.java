@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.infrastructure;
 
+import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,6 +121,11 @@ public class SourceBatch extends DefaultBatchImpl {
         List<String> ls = new ArrayList<>();
         ls.add(sql);
         write(ls, path);
+    }
+
+    @TestOnly
+    public List<Map<String, String>> getStore(String table) {
+        return insertStore.get(table);
     }
 
     public static void write(List<String> sqls, String path) {

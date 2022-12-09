@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.smartscanner.repository.ClassRepository
+import com.thoughtworks.archguard.smartscanner.repository.BatchClassRepository
 import com.thoughtworks.archguard.smartscanner.repository.ContainerRepository
 import com.thoughtworks.archguard.smartscanner.repository.DatamapRepository
 import com.thoughtworks.archguard.smartscanner.repository.DiffChangesRepository
@@ -68,7 +68,7 @@ class ScannerReportingService(
         )
 
         try {
-            val repo = ClassRepository(systemId, language, path)
+            val repo = BatchClassRepository(systemId, language, path)
             input.forEach { data -> repo.saveClassItem(data) }
             input.forEach { data -> repo.saveClassBody(data) }
             execute(systemId, tables)
