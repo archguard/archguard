@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
+    id("org.archguard.scanner.gradle.plugin")
 }
 
 dependencies {
@@ -12,4 +13,8 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.assertj:assertj-core:3.22.0")
+}
+
+archguard {
+    message.set("Just trying this gradle plugin...")
 }
