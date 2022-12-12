@@ -16,5 +16,13 @@ dependencies {
 }
 
 archguard {
-    message.set("Just trying this gradle plugin...")
+    serverUrl = "http://localhost:8088"
+    language = "kotlin"
+    features += "apicalls"
+//    slots {
+//        slot {
+//            name = "test"
+//            value = "test"
+//        }
+//    }
 }

@@ -9,12 +9,22 @@ const val DEFAULT_OUTPUT_FILE = "template-example.txt"
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class ArchguardExtension @Inject constructor(project: Project) {
+    /**
+     * The server url of Archguard backend, default to [http://localhost:8088]
+     */
+    var serverUrl: String = "http://localhost:8080"
+
+    /**
+     * The supported languages: [java, kotlin, javascript, typescript, python, go ...], default to [java]
+     */
+    var language: String = "java"
+
+    /**
+     * The supported features: ["apicalls", ""]
+     */
+    var features: List<String> = listOf()
 
     private val objects = project.objects
-
-    // Example of a property that is mandatory. The task will
-    // fail if this property is not set as is annotated with @Optional.
-    val message: Property<String> = objects.property(String::class.java)
 
     // Example of a property that is optional.
     val tag: Property<String> = objects.property(String::class.java)
