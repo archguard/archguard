@@ -1,7 +1,9 @@
 package org.archguard.scanner.gradle.plugin
 
 import groovy.lang.Closure
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import javax.inject.Inject
 
 const val DEFAULT_OUTPUT_FILE = "template-example.txt"
@@ -26,8 +28,8 @@ abstract class ArchguardExtension @Inject constructor(project: Project) {
     /**
      * The Archguard Slots configuration for the project
      */
-    val slots = project.container(SlotConfiguration::class.java) {
-        SlotConfiguration(project)
+    val slots = project.container(SlotConfiguration::class.java) { name ->
+        SlotConfiguration(name, project)
     }
 
     fun slots(config: SlotConfigContainer.() -> Unit) {
@@ -45,3 +47,4 @@ abstract class ArchguardExtension @Inject constructor(project: Project) {
         slots.configure(config)
     }
 }
+

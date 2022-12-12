@@ -16,6 +16,7 @@ abstract class ArchguardScanTask : DefaultTask() {
         description = "The scanner for Archguard"
     }
 
+    // todo: use the java source set to get the source files
     @get:Input
     @get:Option(option = "message", description = "A message to be printed in the output file")
     abstract val message: Property<String>
