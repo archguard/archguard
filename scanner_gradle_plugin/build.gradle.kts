@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+//    implementation(project(":scanner_core"))
+
     implementation(kotlin("stdlib"))
     implementation(gradleApi())
 }

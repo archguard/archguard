@@ -19,10 +19,10 @@ archguard {
     serverUrl = "http://localhost:8088"
     language = "kotlin"
     features += "apicalls"
-//    slots {
+
+    slots {
 //        slot {
-//            name = "test"
-//            value = "test"
+//
 //        }
-//    }
+    }
 }

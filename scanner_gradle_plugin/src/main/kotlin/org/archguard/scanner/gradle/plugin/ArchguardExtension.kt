@@ -1,8 +1,7 @@
 package org.archguard.scanner.gradle.plugin
 
+import groovy.lang.Closure
 import org.gradle.api.Project
-import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.Property
 import javax.inject.Inject
 
 const val DEFAULT_OUTPUT_FILE = "template-example.txt"
@@ -24,13 +23,25 @@ abstract class ArchguardExtension @Inject constructor(project: Project) {
      */
     var features: List<String> = listOf()
 
-    private val objects = project.objects
+    /**
+     * The Archguard Slots configuration for the project
+     */
+    val slots = project.container(SlotConfiguration::class.java) {
+        SlotConfiguration(project)
+    }
 
-    // Example of a property that is optional.
-    val tag: Property<String> = objects.property(String::class.java)
+    fun slots(config: SlotConfigContainer.() -> Unit) {
+        slots.configure(object : Closure<Unit>(this, this) {
+            fun doCall() {
+                @Suppress("UNCHECKED_CAST")
+                (delegate as? SlotConfigContainer)?.let {
+                    config(it)
+                }
+            }
+        })
+    }
 
-    // Example of a property with a default set with .convention
-    val outputFile: RegularFileProperty = objects.fileProperty().convention(
-        project.layout.buildDirectory.file(DEFAULT_OUTPUT_FILE)
-    )
+    fun slots(config: Closure<Unit>) {
+        slots.configure(config)
+    }
 }
