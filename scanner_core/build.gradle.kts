@@ -21,11 +21,13 @@ archguard {
     features += "apicalls"
 
     slots {
-//        demo {
-//            sourcePath = "src/main/kotlin"
-//        }
         create("slot") {
-            sourcePath = "src/main/kotlin"
+            identifier = "rule"
+            host = "https://github.com/archguard/archguard/releases/download/v2.0.0-alpha.17"
+            version = "2.0.0-alpha.17"
+            jar = "rule-webapi-2.0.0-alpha.17-all.jar"
+            className = "org.archguard.linter.rule.webapi.WebApiRuleSlot"
+            slotType = "rule"
         }
     }
 }

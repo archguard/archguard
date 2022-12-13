@@ -6,13 +6,10 @@ import org.gradle.api.Project
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class ArchguardExtension @Inject constructor(project: Project) {
-    var slot: NamedDomainObjectContainer<SlotConfiguration>
-
-    init {
-        this.slot = project.container(SlotConfiguration::class.java, SlotConfigurationFactory(project))
-    }
-
+abstract class ArchguardExtension @Inject constructor(
+    project: Project,
+    val slotContainer: NamedDomainObjectContainer<SlotConfiguration>
+) {
     /**
      * The server url of Archguard backend, default to [http://localhost:8088]
      */
@@ -32,7 +29,7 @@ abstract class ArchguardExtension @Inject constructor(project: Project) {
      * The Archguard Slots configuration for the project
      */
     fun slots(action: Action<NamedDomainObjectContainer<SlotConfiguration>>) {
-        action.execute(slot)
+        action.execute(slotContainer)
     }
 }
 
