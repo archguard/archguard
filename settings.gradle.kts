@@ -61,7 +61,7 @@ include(
 /**
  *
  */
-//include (
-//    ":scanner_gradle_plugin"
-//)
-includeBuild("scanner_gradle_plugin")
+include(
+    ":scanner_gradle_plugin"
+)
+//includeBuild("scanner_gradle_plugin")

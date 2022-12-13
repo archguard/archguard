@@ -20,9 +20,6 @@ abstract class ArchguardPlugin : Plugin<Project> {
         project.tasks.register(TASK_NAME, ArchguardScanTask::class.java) {
             it.group = "verification"
             it.description = "Scan the project with Archguard"
-
-            //            it.tag.set(extension.tag)
-//            it.outputFile.set(extension.outputFile)
         }
     }
 }

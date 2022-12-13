@@ -10,7 +10,8 @@ repositories {
 }
 
 dependencies {
-//    implementation(project(":scanner_core"))
+    implementation(project(":scanner_core"))
+    implementation(project(":scanner_cli"))
 
     implementation(kotlin("stdlib"))
     implementation(gradleApi())
@@ -18,8 +19,8 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("org.archguard.scanner.gradle.plugin") {
-            id = "org.archguard.scanner.gradle.plugin"
+        create("org.archguard.scanner") {
+            id = "org.archguard.scanner"
             implementationClass = "org.archguard.scanner.gradle.plugin.ArchguardPlugin"
             version = "0.0.1"
             displayName = "ArchGuard"

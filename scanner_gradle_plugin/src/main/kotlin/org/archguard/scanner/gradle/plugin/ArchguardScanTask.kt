@@ -6,7 +6,6 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.*
 
 abstract class ArchguardScanTask : DefaultTask() {
-
     init {
         description = "The scanner for Archguard"
     }
