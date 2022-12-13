@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
-//    id("org.archguard.scanner.gradle.plugin")
+//    id("org.archguard.scanner")
 }
 
 dependencies {
