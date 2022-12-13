@@ -1,15 +1,18 @@
 package org.archguard.scanner.gradle.plugin
 
-import groovy.lang.Closure
+import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
 import javax.inject.Inject
-
-const val DEFAULT_OUTPUT_FILE = "template-example.txt"
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class ArchguardExtension @Inject constructor(project: Project) {
+    var slot: NamedDomainObjectContainer<SlotConfiguration>
+
+    init {
+        this.slot = project.container(SlotConfiguration::class.java, SlotConfigurationFactory(project))
+    }
+
     /**
      * The server url of Archguard backend, default to [http://localhost:8088]
      */
@@ -28,23 +31,8 @@ abstract class ArchguardExtension @Inject constructor(project: Project) {
     /**
      * The Archguard Slots configuration for the project
      */
-    val slots = project.container(SlotConfiguration::class.java) { name ->
-        SlotConfiguration(name, project)
-    }
-
-    fun slots(config: SlotConfigContainer.() -> Unit) {
-        slots.configure(object : Closure<Unit>(this, this) {
-            fun doCall() {
-                @Suppress("UNCHECKED_CAST")
-                (delegate as? SlotConfigContainer)?.let {
-                    config(it)
-                }
-            }
-        })
-    }
-
-    fun slots(config: Closure<Unit>) {
-        slots.configure(config)
+    fun slots(action: Action<NamedDomainObjectContainer<SlotConfiguration>>) {
+        action.execute(slot)
     }
 }
 

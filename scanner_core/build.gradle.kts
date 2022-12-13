@@ -1,5 +1,3 @@
-import org.archguard.scanner.gradle.plugin.slot
-
 plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
@@ -23,15 +21,11 @@ archguard {
     features += "apicalls"
 
     slots {
-// todo: it's for kotlin
-//        slot {
+//        demo {
 //            sourcePath = "src/main/kotlin"
 //        }
-
-        create("test") {
-            slot {
-                sourcePath = "src/test/kotlin"
-            }
+        create("slot") {
+            sourcePath = "src/main/kotlin"
         }
     }
 }
