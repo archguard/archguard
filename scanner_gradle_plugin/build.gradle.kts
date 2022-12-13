@@ -1,17 +1,18 @@
+repositories {
+    mavenCentral()
+    google()
+    mavenLocal()
+}
+
 plugins {
     kotlin("jvm") version "1.6.21"
     `java-gradle-plugin`
     id("com.gradle.plugin-publish") version "1.1.0"
 }
 
-repositories {
-    google()
-    mavenCentral()
-}
-
 dependencies {
-    implementation(project(":scanner_core"))
-    implementation(project(":scanner_cli"))
+    implementation("org.archguard.scanner:scanner_core:2.0.0-beta.3")
+    implementation("org.archguard.scanner:scanner_cli:2.0.0-beta.3")
 
     implementation(kotlin("stdlib"))
     implementation(gradleApi())

@@ -20,7 +20,7 @@ abstract class ArchguardPlugin : Plugin<Project> {
             slotContainer
         )
 
-        val command = ScannerCommand.from(extension);
+        val command = toCommand(extension);
 
         project.tasks.register(TASK_NAME, ArchguardScanTask::class.java) {
             it.command = command
@@ -30,7 +30,7 @@ abstract class ArchguardPlugin : Plugin<Project> {
     }
 }
 
-private fun ScannerCommand.Companion.from(extension: ArchguardExtension): ScannerCommand {
+private fun toCommand(extension: ArchguardExtension): ScannerCommand {
     return ScannerCommand(
         serverUrl = extension.serverUrl,
         language = extension.language,
