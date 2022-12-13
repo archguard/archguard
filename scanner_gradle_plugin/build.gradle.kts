@@ -32,7 +32,7 @@ pluginBundle {
     website = "https://github.com/archguard/archguard"
     vcsUrl = "https://github.com/archguard/archguard"
     description = "ArchGuard"
-    tags = listOf("plugin", "gradle")
+    tags = listOf("architecture", "archguard", "guard", "lint")
 }
 
 tasks.create("setupPluginUploadFromEnvironment") {
