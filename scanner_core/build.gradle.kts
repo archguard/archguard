@@ -19,6 +19,8 @@ archguard {
     serverUrl = "http://localhost:8088"
     language = "kotlin"
     features += "apicalls"
+    path += "src/main/kotlin"
+    output += "json"
 
     slots {
         create("slot") {

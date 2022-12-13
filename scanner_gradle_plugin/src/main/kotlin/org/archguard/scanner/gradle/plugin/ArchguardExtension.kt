@@ -26,6 +26,16 @@ abstract class ArchguardExtension @Inject constructor(
     var features: List<String> = listOf()
 
     /**
+     * the source code path
+     */
+    var path: List<String> = listOf()
+
+    /**
+     * the output
+     */
+    var output: List<String> = listOf()
+
+    /**
      * The Archguard Slots configuration for the project
      */
     fun slots(action: Action<NamedDomainObjectContainer<SlotConfiguration>>) {

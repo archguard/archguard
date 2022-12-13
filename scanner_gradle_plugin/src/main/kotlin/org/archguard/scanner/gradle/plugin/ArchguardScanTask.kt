@@ -1,14 +1,9 @@
 package org.archguard.scanner.gradle.plugin
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.options.Option
+import org.gradle.api.tasks.*
 
 abstract class ArchguardScanTask : DefaultTask() {
 
@@ -16,27 +11,10 @@ abstract class ArchguardScanTask : DefaultTask() {
         description = "The scanner for Archguard"
     }
 
-    // todo: use the java source set to get the source files
-    @get:Input
-    @get:Option(option = "message", description = "A message to be printed in the output file")
-    abstract val message: Property<String>
-
-    @get:Input
-    @get:Option(option = "tag", description = "A Tag to be used for debug and in the output file")
-    @get:Optional
-    abstract val tag: Property<String>
-
-    @get:OutputFile
-    abstract val outputFile: RegularFileProperty
-
     @TaskAction
-    fun sampleAction() {
-        val prettyTag = tag.orNull?.let { "[$it]" } ?: ""
+    fun executeScan() {
+        logger.lifecycle("Archguard scan task start")
 
-        logger.lifecycle("$prettyTag message is: ${message.orNull}")
-        logger.lifecycle("$prettyTag tag is: ${tag.orNull}")
-        logger.lifecycle("$prettyTag outputFile is: ${outputFile.orNull}")
-
-        outputFile.get().asFile.writeText("$prettyTag ${message.get()}")
+        logger.lifecycle("Archguard scan task end")
     }
 }
