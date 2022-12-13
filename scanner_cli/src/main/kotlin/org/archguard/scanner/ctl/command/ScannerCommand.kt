@@ -72,4 +72,6 @@ data class ScannerCommand(
 
         return ChainedArchGuardClient(clients)
     }
+
+    companion object
 }
