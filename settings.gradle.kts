@@ -1,5 +1,21 @@
 rootProject.name = "Archguard"
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+        mavenLocal()
+    }
+}
+
 // meta type
 include(":meta")
 
@@ -58,10 +74,5 @@ include(
     ":rule-linter:rule-layer",
 )
 
-/**
- *
- */
-include(
-    ":scanner_gradle_plugin"
-)
-//includeBuild("scanner_gradle_plugin")
+
+includeBuild("scanner_gradle_plugin")
