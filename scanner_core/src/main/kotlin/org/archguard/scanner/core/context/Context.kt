@@ -19,5 +19,11 @@ enum class AnalyserType {
     ARCHITECTURE,
     COST
     ;
+
+    companion object {
+        fun fromString(type: String): AnalyserType {
+            return values().first { it.name.lowercase() == type.lowercase() }
+        }
+    }
 }
 

@@ -4,9 +4,7 @@ import org.archguard.scanner.ctl.command.ScannerCommand
 import org.archguard.scanner.ctl.loader.AnalyserDispatcher
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.options.Option
 
 abstract class ArchguardScanTask : DefaultTask() {
     init {
@@ -14,8 +12,6 @@ abstract class ArchguardScanTask : DefaultTask() {
     }
 
     @get:Input
-    @get:Option(option = "command", description = "The scanner command")
-    @get:Optional
     abstract var command: ScannerCommand
 
     @TaskAction

@@ -1,7 +1,6 @@
 package org.archguard.scanner.gradle.plugin
 
 import org.archguard.scanner.core.AnalyserSpec
-import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -20,10 +19,11 @@ abstract class ArchguardPlugin : Plugin<Project> {
             slotContainer
         )
 
-        val command = toCommand(extension);
+        println("extension: ${extension.serverUrl}")
+//        val command = toCommand(extension)
 
         project.tasks.register(TASK_NAME, ArchguardScanTask::class.java) {
-            it.command = command
+//            it.command = command
             it.group = "verification"
             it.description = "Scan the project with Archguard"
         }
@@ -35,9 +35,9 @@ private fun toCommand(extension: ArchguardExtension): ScannerCommand {
         serverUrl = extension.serverUrl,
         language = extension.language,
         features = extension.features,
-        path = extension.path[0],
+        path = ".",
         output = extension.output,
-        type = AnalyserType.SOURCE_CODE,
+        type = org.archguard.scanner.core.context.AnalyserType.SOURCE_CODE,
         systemId = extension.systemId,
         slots = extension.slotContainer.map { slot ->
             AnalyserSpec(

@@ -16,7 +16,7 @@ import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
  * put all input parameters in and build the context out
  **/
 data class ScannerCommand(
-    val type: AnalyserType,
+    val type: AnalyserType = AnalyserType.SOURCE_CODE,
     val systemId: String,
     val serverUrl: String,
     val path: String,

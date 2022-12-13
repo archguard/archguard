@@ -1,6 +1,6 @@
 repositories {
+    gradlePluginPortal()
     mavenCentral()
-    google()
 }
 
 plugins {
@@ -10,8 +10,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.archguard.scanner:scanner_core:2.0.0-beta.3")
-    implementation("org.archguard.scanner:scanner_cli:2.0.0-beta.3")
+    implementation("org.archguard.scanner:scanner_core:2.0.0-beta.4")
+    implementation("org.archguard.scanner:scanner_cli:2.0.0-beta.4")
 
     implementation(kotlin("stdlib"))
     implementation(gradleApi())

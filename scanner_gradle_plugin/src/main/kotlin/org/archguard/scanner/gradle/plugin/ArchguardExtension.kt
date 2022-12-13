@@ -23,17 +23,17 @@ abstract class ArchguardExtension @Inject constructor(
     /**
      * The supported features: ["apicalls", ""]
      */
-    abstract var features: List<String>
+    var features: List<String> = listOf()
 
     /**
      * the source code path
      */
-    abstract var path: List<String>
+    var path: List<String> = listOf()
 
     /**
      * the output
      */
-    abstract var output: List<String>
+    var output: List<String> = listOf()
 
     /**
      * the systemId

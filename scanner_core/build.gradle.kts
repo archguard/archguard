@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
-//    id("org.archguard.scanner")
+    id("org.archguard.scanner")
 }
 
 dependencies {
@@ -14,22 +14,22 @@ dependencies {
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.assertj:assertj-core:3.22.0")
 }
-//
-//archguard {
-//    serverUrl = "http://localhost:8088"
-//    language = "kotlin"
-//    features += "apicalls"
-//    path += "src/main/kotlin"
-//    output += "json"
-//
-//    slots {
-//        create("slot") {
-//            identifier = "rule"
-//            host = "https://github.com/archguard/archguard/releases/download/v2.0.0-alpha.17"
-//            version = "2.0.0-alpha.17"
-//            jar = "rule-webapi-2.0.0-alpha.17-all.jar"
-//            className = "org.archguard.linter.rule.webapi.WebApiRuleSlot"
-//            slotType = "rule"
-//        }
-//    }
-//}
+
+archguard {
+    serverUrl = "http://localhost:8088"
+    language = "kotlin"
+    features += "apicalls"
+    path += "src/main"
+    output += "http"
+
+    slots {
+        create("slot") {
+            identifier = "rule"
+            host = "https://github.com/archguard/archguard/releases/download/v2.0.0-alpha.17"
+            version = "2.0.0-alpha.17"
+            jar = "rule-webapi-2.0.0-alpha.17-all.jar"
+            className = "org.archguard.linter.rule.webapi.WebApiRuleSlot"
+            slotType = "rule"
+        }
+    }
+}
