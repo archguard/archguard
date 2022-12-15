@@ -2,16 +2,10 @@ package com.thoughtworks.archguard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
-import com.thoughtworks.archguard.smartscanner.repository.BatchClassRepository
-import com.thoughtworks.archguard.smartscanner.repository.ContainerRepository
-import com.thoughtworks.archguard.smartscanner.repository.DatamapRepository
-import com.thoughtworks.archguard.smartscanner.repository.DiffChangesRepository
-import com.thoughtworks.archguard.smartscanner.repository.GitSourceRepository
-import com.thoughtworks.archguard.smartscanner.repository.IssueDto
-import com.thoughtworks.archguard.smartscanner.repository.IssueRepository
-import com.thoughtworks.archguard.smartscanner.repository.ScaRepository
+import com.thoughtworks.archguard.smartscanner.repository.*
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
@@ -36,6 +30,7 @@ class ScannerReportingService(
     @Value("\${client.host}") val url: String,
     private val gitSourceRepository: GitSourceRepository,
     private val diffChangesRepository: DiffChangesRepository,
+    private val estimateRepository: EstimateRepository,
     private val scaRepository: ScaRepository,
     @Autowired private val issueRepository: IssueRepository,
 ) {
@@ -161,6 +156,13 @@ class ScannerReportingService(
         input: List<ChangedCall>,
     ) {
         diffChangesRepository.saveDiffs(systemId, since, until, input)
+    }
+
+    fun processEstimates(input: List<LanguageEstimate>, systemId: Long) {
+        if (input.isNotEmpty()) {
+            estimateRepository.save(systemId, input)
+        }
+
     }
 
     // TODO refactor: use direct sql or dao to insert the data

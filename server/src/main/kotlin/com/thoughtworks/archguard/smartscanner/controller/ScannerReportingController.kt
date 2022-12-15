@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.smartscanner.controller
 import chapi.domain.core.CodeDataStruct
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
@@ -77,5 +78,10 @@ class ScannerReportingController() {
     @PostMapping("/issues")
     fun saveIssues(@PathVariable systemId: Long, @RequestBody input: List<Issue>) {
         service.processIssues(input, systemId)
+    }
+
+    @PostMapping("/estimates")
+    fun saveEstimates(@PathVariable systemId: Long, @RequestBody input: List<LanguageEstimate>) {
+        service.processEstimates(input, systemId)
     }
 }
