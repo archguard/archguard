@@ -5,6 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
+import org.archguard.scanner.core.cost.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
@@ -54,5 +55,11 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
         println("==============================================================")
         println("Output project dependencies to console")
         println(Json.encodeToString(issues))
+    }
+
+    override fun saveEstimates(estimates: List<LanguageEstimate>) {
+        println("==============================================================")
+        println("Output project estimates to console")
+        println(Json.encodeToString(estimates))
     }
 }

@@ -7,7 +7,6 @@ import org.archguard.scanner.ctl.client.ArchGuardConsoleClient
 import org.archguard.scanner.ctl.client.ArchGuardCsvClient
 import org.archguard.scanner.ctl.client.ArchGuardHttpClient
 import org.archguard.scanner.ctl.client.ArchGuardJsonClient
-import org.archguard.scanner.ctl.client.ArchGuardProtobufClient
 import org.archguard.scanner.ctl.client.ChainedArchGuardClient
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
@@ -51,11 +50,6 @@ data class ScannerCommand(
 
         if (output.contains("http")) {
             clients.add(ArchGuardHttpClient(language ?: "", serverUrl, systemId, path, this))
-        }
-
-        // experimental function
-        if (output.contains("protobuf")) {
-            clients.add(ArchGuardProtobufClient(language ?: "", serverUrl, systemId, path, this))
         }
 
         if (output.contains("json")) {

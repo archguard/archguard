@@ -5,6 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
+import org.archguard.scanner.core.cost.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
@@ -85,5 +86,9 @@ class ArchGuardHttpClient(
 
     override fun saveRuleIssues(issues: List<Issue>) {
         process("issues", issues)
+    }
+
+    override fun saveEstimates(estimates: List<LanguageEstimate>) {
+        process("estimates", estimates)
     }
 }

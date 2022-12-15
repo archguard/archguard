@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
+import org.archguard.scanner.core.cost.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency
@@ -55,5 +56,9 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveRuleIssues(issues: List<Issue>) {
         writeCsvFile(issues, buildFileName("issues"))
+    }
+
+    override fun saveEstimates(estimates: List<LanguageEstimate>) {
+        writeCsvFile(estimates, buildFileName("estimates"))
     }
 }
