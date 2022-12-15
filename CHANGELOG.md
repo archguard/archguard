@@ -1,4 +1,71 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.3...v) (2022-11-15)
+# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.5...v) (2022-12-15)
+
+
+
+# [2.0.0-beta.5](https://github.com/archguard/archguard/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2022-12-15)
+
+
+### Bug Fixes
+
+* **cost:** fix complexity error id issues [#79](https://github.com/archguard/archguard/issues/79) ([cf251f8](https://github.com/archguard/archguard/commit/cf251f881c051740c0f5e5d215c04af11fb680a5))
+* **cost:** fix filter issues [#79](https://github.com/archguard/archguard/issues/79) ([44b1595](https://github.com/archguard/archguard/commit/44b15956cbf7dccf292f624eb65ab5058ee24c2f))
+* **cost:** fix indet condition error [#79](https://github.com/archguard/archguard/issues/79) ([d275847](https://github.com/archguard/archguard/commit/d27584700f1ae083ceb83329f17edf9616904dbe))
+* **cost:** fix tests [#79](https://github.com/archguard/archguard/issues/79) ([5452cda](https://github.com/archguard/archguard/commit/5452cda18a34b8ac2871d483221458bf97a105d8))
+* **cost:** fix tests [#79](https://github.com/archguard/archguard/issues/79) ([b4b0bb5](https://github.com/archguard/archguard/commit/b4b0bb5efc52d2e6db42c8caa4cab36ae1a20461))
+* **cost:** fix tests [#79](https://github.com/archguard/archguard/issues/79) ([61d1b0b](https://github.com/archguard/archguard/commit/61d1b0b5ddf8c15aea5c7b4375a2b6e4451055b0))
+* **cost:** fix translate issues [#79](https://github.com/archguard/archguard/issues/79) ([0c4270f](https://github.com/archguard/archguard/commit/0c4270fcd04ae25b1a78aa9989b7cc9553740191))
+* **cost:** update gp [#79](https://github.com/archguard/archguard/issues/79) ([551f17b](https://github.com/archguard/archguard/commit/551f17b0449abe66e2860b228c238aa33826c521))
+* fix cli cannot run isue [#79](https://github.com/archguard/archguard/issues/79) ([eca276e](https://github.com/archguard/archguard/commit/eca276e892866b7301d19e42e23c7283f2693d21))
+* fix lost scanned for [#123](https://github.com/archguard/archguard/issues/123) ([48f4c29](https://github.com/archguard/archguard/commit/48f4c2983ad2fad3880146403946873f86e5f188))
+* fix tests ([846a2c4](https://github.com/archguard/archguard/commit/846a2c41df3db5ed8e3d3ae6ed93132361efb831))
+* fix tests [#79](https://github.com/archguard/archguard/issues/79) ([ad48ae1](https://github.com/archguard/archguard/commit/ad48ae136e0a2b975a7fc5eb5f9fbf7ff7f27c68))
+* fix typo for golang [#86](https://github.com/archguard/archguard/issues/86) ([8375dc6](https://github.com/archguard/archguard/commit/8375dc69d3a448f845f99728eb4e8af796b85859))
+* try to fix sql error issues [#79](https://github.com/archguard/archguard/issues/79) ([51ff82d](https://github.com/archguard/archguard/commit/51ff82dc520af8d7cb52b6704192b7ed847988c4))
+
+
+### Features
+
+* add transform for command [#124](https://github.com/archguard/archguard/issues/124) ([a79ddd7](https://github.com/archguard/archguard/commit/a79ddd74f28ea147102a29216017f570c08ab86d))
+* **cost:** add api for status check [#79](https://github.com/archguard/archguard/issues/79) ([672ad83](https://github.com/archguard/archguard/commit/672ad83b606b8eb65d8d7e28d517205522058b89))
+* **cost:** add basci test for match [#79](https://github.com/archguard/archguard/issues/79) ([be68567](https://github.com/archguard/archguard/commit/be68567adc2875a52f538f3f548a98629fb23ad0))
+* **cost:** add blank state trans [#79](https://github.com/archguard/archguard/issues/79) ([42b7892](https://github.com/archguard/archguard/commit/42b7892c7a8ccdc606aeb432a50544e0cdcd0e68))
+* **cost:** add filejob [#79](https://github.com/archguard/archguard/issues/79) ([15a51db](https://github.com/archguard/archguard/commit/15a51db790d4a7c9c8fa1dcffe88797c2497d9ab))
+* **cost:** add langauge services ([74b013d](https://github.com/archguard/archguard/commit/74b013d843da6e36b8524a6c4d4b61e623f362f4))
+* **cost:** add simple channel worker [#79](https://github.com/archguard/archguard/issues/79) ([8d73515](https://github.com/archguard/archguard/commit/8d735155f0d827672e45ac908b14d26039ce61d8))
+* **cost:** add string state [#79](https://github.com/archguard/archguard/issues/79) ([2beb027](https://github.com/archguard/archguard/commit/2beb027e7fe87a8cc6c5b62a6dd49794c19d7570))
+* **cost:** fix trie data struct issues [#79](https://github.com/archguard/archguard/issues/79) ([9bb9769](https://github.com/archguard/archguard/commit/9bb9769d045ccf470d74fa4599e3239bc0b8063a))
+* **cost:** init basic trans state [#79](https://github.com/archguard/archguard/issues/79) ([dc4fbc3](https://github.com/archguard/archguard/commit/dc4fbc338b67cdef143c53420efa0e5a4530825d))
+* **cost:** init bom check [#79](https://github.com/archguard/archguard/issues/79) ([341bbc9](https://github.com/archguard/archguard/commit/341bbc9540c5ef0cf3c777e67280df3d123078e9))
+* **cost:** init count stats [#79](https://github.com/archguard/archguard/issues/79) ([f36d325](https://github.com/archguard/archguard/commit/f36d325757360246f61a03823446e3f47671fb78))
+* **cost:** init estimate for cocomo ([faa5251](https://github.com/archguard/archguard/commit/faa52514ac5232e3a81f3dac9e4349375c3ea5de))
+* **cost:** init gitignore [#79](https://github.com/archguard/archguard/issues/79) ([1bf8c0f](https://github.com/archguard/archguard/commit/1bf8c0ffe62798d78b4bdac3d3071d8bc213c7bf))
+* **cost:** init modules ([8392139](https://github.com/archguard/archguard/commit/8392139cdddad13122d5391123d29924eb59174a))
+* **cost:** init trie construct [#79](https://github.com/archguard/archguard/issues/79) ([f19b3f7](https://github.com/archguard/archguard/commit/f19b3f727bad0ec933abe0f4e818817f770ecdf6))
+* **cost:** make complexity check [#79](https://github.com/archguard/archguard/issues/79) ([da25e57](https://github.com/archguard/archguard/commit/da25e5740d1cc4e47858452aa60e9327b3ce2e72))
+* **cost:** make lines count * ocmments works [#79](https://github.com/archguard/archguard/issues/79) ([912d246](https://github.com/archguard/archguard/commit/912d246b5a6a4764bb57f22997fe9353468c7d4a))
+* **cost:** make parallesl works [#79](https://github.com/archguard/archguard/issues/79) ([8ac6dd9](https://github.com/archguard/archguard/commit/8ac6dd93c2975088511fed1ea33a6607f09f9823))
+* **cost:** make pipleline [#79](https://github.com/archguard/archguard/issues/79) ([59adccb](https://github.com/archguard/archguard/commit/59adccbd53dc719c41cce141e5b501be85b2b6b2))
+* **cost:** make summary better [#79](https://github.com/archguard/archguard/issues/79) ([6446ed5](https://github.com/archguard/archguard/commit/6446ed59ce7f05504dc47cf83c05e2aa81396a69))
+* **cost:** make working in thread works [#79](https://github.com/archguard/archguard/issues/79) ([d040ecd](https://github.com/archguard/archguard/commit/d040ecd5a2f858e6585fb44edfda659657145210))
+* **cost:** trans for comment state [#79](https://github.com/archguard/archguard/issues/79) ([352b457](https://github.com/archguard/archguard/commit/352b45789d0681074ea39e07731777ba07362e96))
+* **cost:** trans for doc state [#79](https://github.com/archguard/archguard/issues/79) ([930218a](https://github.com/archguard/archguard/commit/930218a708c0b77f176b74d0d68cc08981ff7a27))
+* **cost:** trans for doc string [#79](https://github.com/archguard/archguard/issues/79) ([d100f46](https://github.com/archguard/archguard/commit/d100f468421f94eb8ad50066af0a63ae07b44308))
+* **estimate:** add lost api for analyser [#79](https://github.com/archguard/archguard/issues/79) ([ccefcde](https://github.com/archguard/archguard/commit/ccefcde7ed30d436650432c1eda967e80e31d7a8))
+* **estimate:** add parse for server [#79](https://github.com/archguard/archguard/issues/79) ([6d7013d](https://github.com/archguard/archguard/commit/6d7013d6fa50176a2674a28ce3fbdb171e1b1cda))
+* **go:** add API identify for gin [#86](https://github.com/archguard/archguard/issues/86) ([c949e2d](https://github.com/archguard/archguard/commit/c949e2de45a7b62e11aef651e4599c25437ea423))
+* **go:** add lost parse for sca [#86](https://github.com/archguard/archguard/issues/86) ([dfa4b45](https://github.com/archguard/archguard/commit/dfa4b4562b2f135abe1ecd9b421a537c53cfd404))
+* **go:** add parse for golang mod [#86](https://github.com/archguard/archguard/issues/86) ([d7b0673](https://github.com/archguard/archguard/commit/d7b06738c89e900e2489fa62c5ffe64d377d7a49))
+* **go:** add support for hello,world [#86](https://github.com/archguard/archguard/issues/86) ([a0c1051](https://github.com/archguard/archguard/commit/a0c1051584d5f02719dd2f1343e345dde1686513))
+* **ident:** add catch for select from ([9694fd7](https://github.com/archguard/archguard/commit/9694fd7b545a4375b647b35debb65424d02685e0))
+* init gradle plugins [#124](https://github.com/archguard/archguard/issues/124) ([df711d3](https://github.com/archguard/archguard/commit/df711d3378125e3f797f2ce67bb969a387f2f8d7))
+* init slots ext [#124](https://github.com/archguard/archguard/issues/124) ([2915607](https://github.com/archguard/archguard/commit/291560742f26f5f7cbfee25a6de23769f8a34fac))
+* make slot create works [#124](https://github.com/archguard/archguard/issues/124) ([390363d](https://github.com/archguard/archguard/commit/390363d2f433403bf8674a5c2e8673035eed858d))
+* **sca:** init go mod parser ([3bfa90b](https://github.com/archguard/archguard/commit/3bfa90be03d0c64e2ac05017549a2b24caa4487f))
+* upgrade scanner_core for testing  [#124](https://github.com/archguard/archguard/issues/124) ([31fb9cb](https://github.com/archguard/archguard/commit/31fb9cb0810985f5ba263ee0d6fbcb1e01747599))
+
+
+
+# [2.0.0-beta.4](https://github.com/archguard/archguard/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2022-11-15)
 
 
 
