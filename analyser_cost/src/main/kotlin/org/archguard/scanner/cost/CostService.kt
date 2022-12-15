@@ -1,17 +1,15 @@
 package org.archguard.scanner.cost
 
-import CocomoEstimate
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.cost.CostContext
-import org.archguard.scanner.core.cost.EstimateCostSummary
+import org.archguard.scanner.core.cost.LanguageEstimate
 import org.archguard.scanner.cost.count.FileWorker
+import org.archguard.scanner.cost.estimate.CocomoEstimate
 import org.archguard.scanner.cost.estimate.EstimateCost
 import java.io.File
 
 class CostService(val context: CostContext) {
-    fun analyse(): List<EstimateCostSummary> {
+    fun analyse(): List<LanguageEstimate> {
         runBlocking {
             val path = File(context.path).canonicalPath.toString()
             val languageSummaries = FileWorker.start(path)

@@ -1,6 +1,5 @@
 package org.archguard.scanner.cost.estimate
 
-import CocomoEstimate
 import io.kotest.matchers.doubles.shouldBeBetween
 import org.junit.jupiter.api.Test
 

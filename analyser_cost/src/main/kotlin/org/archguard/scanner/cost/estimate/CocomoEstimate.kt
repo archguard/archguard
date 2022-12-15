@@ -1,3 +1,5 @@
+package org.archguard.scanner.cost.estimate;
+
 import org.archguard.scanner.cost.estimate.Estimate
 import org.archguard.scanner.cost.estimate.EstimateCost
 import kotlin.math.pow
