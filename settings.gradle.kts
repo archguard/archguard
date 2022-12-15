@@ -55,7 +55,7 @@ include(
 
     // external tools
     ":analyser_git",
-    ":analyser_cost",
+    ":analyser_estimate",
     ":analyser_diff_changes",
     ":analyser_sca",
     ":analyser_architecture",
