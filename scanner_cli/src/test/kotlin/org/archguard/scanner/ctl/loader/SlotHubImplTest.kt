@@ -85,7 +85,7 @@ internal class SlotHubImplTest {
             stubLoad()
             mockAnalysers()
 
-            val jarFileName = "rule-webapi-" + OfficialAnalyserSpecs.Rule.version() + "-all.jar"
+            val jarFileName = "rule-webapi-" + OfficialAnalyserSpecs.RULE.version() + "-all.jar"
             val customized = AnalyserSpec(
                 "rule-webapi",
                 "",

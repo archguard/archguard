@@ -25,8 +25,9 @@ enum class OfficialAnalyserSpecs(
 
     GIT("GitAnalyser"),
     SCA("ScaAnalyser"),
-    Rule("Rule"),
+    RULE("Rule"),
     DIFF_CHANGES("DiffChangesAnalyser"),
+    ESTIMATE("EstimateAnalyser"),
     ;
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, VERSION, jarFileName(), className)
@@ -38,7 +39,8 @@ enum class OfficialAnalyserSpecs(
         val prefix = when (this) {
             GIT, SCA, DIFF_CHANGES -> "analyser"
             DATAMAP, APICALLS -> "feat"
-            Rule -> "rule"
+            RULE -> "rule"
+            ESTIMATE -> "estimate"
             else -> "lang"
         }
         return "${prefix}_$identifier-$VERSION-all.jar"

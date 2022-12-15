@@ -1,4 +1,4 @@
-package org.archguard.scanner.core.cost
+package org.archguard.scanner.core.estimate
 
 import kotlinx.serialization.Serializable
 

@@ -7,6 +7,8 @@ import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.diffchanges.DiffChangesAnalyser
 import org.archguard.scanner.core.diffchanges.DiffChangesContext
+import org.archguard.scanner.core.estimate.EstimateAnalyser
+import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.git.GitAnalyser
 import org.archguard.scanner.core.git.GitContext
 import org.archguard.scanner.core.sca.ScaAnalyser
@@ -15,11 +17,7 @@ import org.archguard.scanner.core.sourcecode.SourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
 import org.archguard.scanner.ctl.command.ScannerCommand
-import org.archguard.scanner.ctl.impl.CliDiffChangesContext
-import org.archguard.scanner.ctl.impl.CliGitContext
-import org.archguard.scanner.ctl.impl.CliScaContext
-import org.archguard.scanner.ctl.impl.CliSourceCodeContext
-import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
+import org.archguard.scanner.ctl.impl.*
 import org.slf4j.LoggerFactory
 
 class AnalyserDispatcher {
@@ -30,6 +28,7 @@ class AnalyserDispatcher {
             AnalyserType.DIFF_CHANGES -> DiffChangesWorker(command)
             AnalyserType.SCA -> ScaWorker(command)
             AnalyserType.RULE -> RuleWorker(command)
+            AnalyserType.ESTIMATE -> EstimateWorker(command)
             else -> TODO("not implemented yet")
         }.run()
     }
@@ -51,7 +50,7 @@ data class SourceCodeSlot(
     val clz: Slot,
 )
 
-private class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCodeContext> {
+class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCodeContext> {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     override val context = CliSourceCodeContext(
         client = command.buildClient(),
@@ -83,7 +82,7 @@ private class SourceCodeWorker(override val command: ScannerCommand) : Worker<So
     }
 }
 
-private class GitWorker(override val command: ScannerCommand) : Worker<GitContext> {
+class GitWorker(override val command: ScannerCommand) : Worker<GitContext> {
     override val context = CliGitContext(
         client = command.buildClient(),
         path = command.path,
@@ -97,7 +96,7 @@ private class GitWorker(override val command: ScannerCommand) : Worker<GitContex
     }
 }
 
-private class DiffChangesWorker(override val command: ScannerCommand) : Worker<DiffChangesContext> {
+class DiffChangesWorker(override val command: ScannerCommand) : Worker<DiffChangesContext> {
     override val context = CliDiffChangesContext(
         client = command.buildClient(),
         path = command.path,
@@ -112,7 +111,7 @@ private class DiffChangesWorker(override val command: ScannerCommand) : Worker<D
     }
 }
 
-private class ScaWorker(override val command: ScannerCommand) : Worker<ScaContext> {
+class ScaWorker(override val command: ScannerCommand) : Worker<ScaContext> {
     override val context = CliScaContext(
         client = command.buildClient(),
         path = command.path,
@@ -124,7 +123,7 @@ private class ScaWorker(override val command: ScannerCommand) : Worker<ScaContex
     }
 }
 
-private class RuleWorker(override val command: ScannerCommand) : Worker<ScaContext> {
+class RuleWorker(override val command: ScannerCommand) : Worker<ScaContext> {
     override val context = CliScaContext(
         client = command.buildClient(),
         path = command.path,
@@ -132,6 +131,18 @@ private class RuleWorker(override val command: ScannerCommand) : Worker<ScaConte
     )
 
     override fun run() {
-        getOrInstall<RuleAnalyser>(OfficialAnalyserSpecs.Rule).analyse()
+        getOrInstall<RuleAnalyser>(OfficialAnalyserSpecs.RULE).analyse()
+    }
+}
+
+class EstimateWorker(override val command: ScannerCommand) : Worker<EstimateContext> {
+    override val context = CliEstimateContext(
+        client = command.buildClient(),
+        path = command.path,
+        branch = command.branch
+    )
+
+    override fun run() {
+        getOrInstall<EstimateAnalyser>(OfficialAnalyserSpecs.ESTIMATE).analyse()
     }
 }

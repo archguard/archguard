@@ -16,8 +16,9 @@ enum class AnalyserType {
     DIFF_CHANGES,
     SCA,
     RULE,
+    // todo: not implemented yet
     ARCHITECTURE,
-    COST
+    ESTIMATE
     ;
 
     companion object {

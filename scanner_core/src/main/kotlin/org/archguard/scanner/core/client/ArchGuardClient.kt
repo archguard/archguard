@@ -2,7 +2,7 @@ package org.archguard.scanner.core.client
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.rule.core.Issue
-import org.archguard.scanner.core.cost.LanguageEstimate
+import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
 import org.archguard.scanner.core.sca.CompositionDependency

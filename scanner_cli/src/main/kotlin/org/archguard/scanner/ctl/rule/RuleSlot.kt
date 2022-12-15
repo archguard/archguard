@@ -6,7 +6,7 @@ import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 object RuleSlot {
     fun fromName(name: String): AnalyserSpec? {
         val url = OfficialAnalyserSpecs.host()
-        val version = OfficialAnalyserSpecs.Rule.version()
+        val version = OfficialAnalyserSpecs.RULE.version()
 
         return when(name) {
             "webapi" ->  {
@@ -14,7 +14,7 @@ object RuleSlot {
                     "rule-webapi",
                     url,
                     version,
-                    "rule-${name}-${OfficialAnalyserSpecs.Rule.version()}-all.jar",
+                    "rule-${name}-${OfficialAnalyserSpecs.RULE.version()}-all.jar",
                     className = "org.archguard.linter.rule.webapi.WebApiRuleSlot",
                     "rule"
                 )
@@ -24,7 +24,7 @@ object RuleSlot {
                     "rule-${name}",
                     url,
                     version,
-                    "rule-${name}-${OfficialAnalyserSpecs.Rule.version()}-all.jar",
+                    "rule-${name}-${OfficialAnalyserSpecs.RULE.version()}-all.jar",
                     className = "org.archguard.linter.rule.testcode.TestSmellRuleSlot",
                     "rule"
                 )
@@ -34,7 +34,7 @@ object RuleSlot {
                     "rule-${name}",
                     url,
                     version,
-                    "rule-${name}-${OfficialAnalyserSpecs.Rule.version()}-all.jar",
+                    "rule-${name}-${OfficialAnalyserSpecs.RULE.version()}-all.jar",
                     className = "org.archguard.linter.rule.sql.DatamapRuleSlot",
                     "rule"
                 )

@@ -1,8 +1,8 @@
 package org.archguard.scanner.estimate
 
 import kotlinx.coroutines.runBlocking
-import org.archguard.scanner.core.cost.EstimateContext
-import org.archguard.scanner.core.cost.LanguageEstimate
+import org.archguard.scanner.core.estimate.EstimateContext
+import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.estimate.count.FileWorker
 import org.archguard.scanner.estimate.estimate.CocomoEstimate
 import java.io.File
