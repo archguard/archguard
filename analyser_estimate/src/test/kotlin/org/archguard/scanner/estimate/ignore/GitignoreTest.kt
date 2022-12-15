@@ -22,7 +22,7 @@ internal class GitignoreTest {
         val ignore = Gitignore.create(rootDir.resolve(".gitignore").toString())!!
 
         assertFalse(ignore.match(rootDir.resolve("build").toString(), false))
-        assertFalse(ignore.match(rootDir.resolve("analyser_cost").toString(), false))
+        assertFalse(ignore.match(rootDir.resolve("analyser_estimate").toString(), false))
     }
 
     @Test
