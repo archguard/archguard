@@ -74,4 +74,4 @@ include(
 )
 
 
-includeBuild("scanner_gradle_plugin")
+//includeBuild("scanner_gradle_plugin")
