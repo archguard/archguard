@@ -63,6 +63,7 @@ class SystemInfoRepositoryImpl : SystemInfoRepository {
                         "username = :username, " +
                         "password = :password, " +
                         "repo_type = :repoType, " +
+                        "scanned = :scanned, " +
                         "quality_gate_profile_id = :qualityGateProfileId, " +
                         "threshold_suite_id = :badSmellThresholdSuiteId, " +
                         "branch = :branch, " +
