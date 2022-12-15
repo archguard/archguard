@@ -11,7 +11,6 @@ class SimpleEstimateContext(
      override val type: AnalyserType = AnalyserType.ESTIMATE,
      override val client: ArchGuardClient = EmptyArchGuardClient(),
      override val path: String = ".",
-     override val repoId: String = "",
      override val branch: String = "",
 ) : EstimateContext
 
@@ -21,7 +20,6 @@ class EstimateServiceTest {
     fun analyse() {
         val context = SimpleEstimateContext(
             path = ".",
-            repoId = "test",
             branch = "master"
         )
 
