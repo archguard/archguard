@@ -37,10 +37,9 @@ enum class OfficialAnalyserSpecs(
     private fun jarFileName(): String {
         val identifier = identifier()
         val prefix = when (this) {
-            GIT, SCA, DIFF_CHANGES -> "analyser"
+            GIT, SCA, DIFF_CHANGES, ESTIMATE -> "analyser"
             DATAMAP, APICALLS -> "feat"
             RULE -> "rule"
-            ESTIMATE -> "estimate"
             else -> "lang"
         }
         return "${prefix}_$identifier-$VERSION-all.jar"
