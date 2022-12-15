@@ -17,9 +17,9 @@ class EstimateService(val context: EstimateContext) {
                 val estimate = CocomoEstimate().estimate(it.code.toInt())
 
                 LanguageEstimate(
-                    cost = estimate.cost.toFloat(),
-                    month = estimate.month.toFloat(),
-                    people = estimate.people.toFloat(),
+                    cost = estimate.cost.roundToFloat(),
+                    month = estimate.month.roundToFloat(),
+                    people = estimate.people.roundToFloat(),
                     name = it.name,
                     files = it.files.size.toLong(),
                     lines = it.lines,
@@ -31,3 +31,11 @@ class EstimateService(val context: EstimateContext) {
         }
     }
 }
+
+// format to 2 decimal places
+private fun Double.roundToFloat(): Float {
+    // String.format("%.2f", this).toDouble()
+    return (this * 100).toInt() / 100.0f
+}
+
+

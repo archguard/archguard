@@ -8,6 +8,8 @@ class EstimateAnalyser(override val context: EstimateContext) : org.archguard.sc
     private val service = EstimateService(context)
 
     override fun analyse(): List<LanguageEstimate> {
-        return service.analyse()
+        val results = service.analyse()
+        context.client.saveEstimates(results)
+        return results
     }
 }
