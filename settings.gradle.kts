@@ -72,6 +72,3 @@ include(
     ":rule-linter:rule-code",
     ":rule-linter:rule-layer",
 )
-
-
-//includeBuild("scanner_gradle_plugin")
