@@ -7,6 +7,7 @@
 [![Java support](https://img.shields.io/badge/Java-12+-green?logo=java&logoColor=white)](https://openjdk.java.net/)
 [![License](https://img.shields.io/github/license/archguard/archguard?color=4D7A97&logo=opensourceinitiative&logoColor=white)](https://opensource.org/licenses/MIT)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-green?label=gitpod&logo=gitpod&logoColor=white)](https://gitpod.io/#https://github.com/archguard/archguard)
+![Maven Central](https://img.shields.io/maven-central/v/org.archguard.scanner/scanner_core)
 
 > ArchGuard is an architecture governance tool which can analysis architecture in container, component, code level, database, create architecture fitness functions, and test for architecture rules. 
 
