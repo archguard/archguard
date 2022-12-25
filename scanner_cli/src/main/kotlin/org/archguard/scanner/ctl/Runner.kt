@@ -28,7 +28,17 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val serverUrl by option(help = "the base url of the archguard api server").default("http://localhost:8080")
     private val workspace by option(help = "the workspace directory").default(".")
     private val path by option(help = "the path of target project").default(".")
+
+    /**
+     * output type
+     */
     private val output by option(help = "http, csv, json, console").multiple()
+
+    /**
+     * todo: not implemented yet
+     * output dir
+     */
+    private val outputDir by option(help = "output directory").default(".")
 
     // additional parameters
     private val analyserSpec by option(help = "Override the analysers via json.").multiple()

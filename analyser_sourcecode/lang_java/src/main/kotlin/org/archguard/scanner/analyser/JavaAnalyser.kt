@@ -28,6 +28,7 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     }
 
     private fun analysisBasicInfoByFile(file: File): List<CodeDataStruct> {
+        println("analysisBasicInfoByFile: ${file.absolutePath}")
         val codeContainer = impl.identBasicInfo(file.readContent(), file.name)
         return codeContainer.DataStructures.map { ds -> ds.apply { ds.Imports = codeContainer.Imports } }
     }
