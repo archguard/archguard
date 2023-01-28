@@ -14,7 +14,7 @@ dependencies {
 
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.9")
+    implementation(libs.chapi.domain)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 }
 

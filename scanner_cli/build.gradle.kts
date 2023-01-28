@@ -12,7 +12,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("com.phodal.chapi:chapi-domain:2.0.0-beta.9")
+    implementation(libs.chapi.domain)
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.2")

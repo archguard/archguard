@@ -9,7 +9,7 @@ plugins {
 dependencies {
     api(project(":scanner_core"))
 
-    implementation("com.phodal.chapi:chapi-ast-scala:2.0.0-beta.9") {
+    implementation(libs.chapi.scala) {
         // around 10mb, only documents files, exclude (reuse in cli?)
         exclude(group = "com.ibm.icu", module = "icu4j")
     }
