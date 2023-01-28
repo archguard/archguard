@@ -1,7 +1,8 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     application
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
+    alias(libs.plugins.jvm)
+    alias(libs.plugins.serialization)
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 

@@ -1,8 +1,10 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     base
+    alias(libs.plugins.jvm)
+    alias(libs.plugins.dokka)
+
     id("jacoco-report-aggregation")
-    kotlin("jvm") version "1.6.21"
-    id("org.jetbrains.dokka") version "1.6.21"
 
     id("java-library")
     id("maven-publish")

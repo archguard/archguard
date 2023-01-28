@@ -17,16 +17,16 @@ buildscript {
 
 plugins {
     // springfox not support spring boot 2.6, see in https://github.com/springfox/springfox/issues/3462
-    id("org.springframework.boot") version "2.7.0"
-    kotlin("plugin.spring") version "1.6.21"
-    kotlin("jvm") version "1.6.21"
+    alias(libs.plugins.springboot)
 
-    // flyway 7.0 require spring .boot > 2.4
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.jvm)
+    alias(libs.plugins.dokka)
+
     id("org.flywaydb.flyway").version("7.15.0")
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
     id("com.avast.gradle.docker-compose") version "0.15.2"
 
-    id("org.jetbrains.dokka") version "1.6.21"
     id("com.google.protobuf") version "0.8.19"
 }
 

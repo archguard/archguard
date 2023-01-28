@@ -1,9 +1,11 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     base
     java
     id("org.jetbrains.kotlin.jupyter.api") version "0.11.0-89-1"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
+
+    alias(libs.plugins.jvm)
+    alias(libs.plugins.serialization)
 }
 
 group = "org.archguard.aaac"
