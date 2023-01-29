@@ -10,7 +10,7 @@ dependencies {
     api(project(":architecture-as-code:domain"))
 
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+    implementation(libs.kotlin.reflect)
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.8.2")

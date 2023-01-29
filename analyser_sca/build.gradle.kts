@@ -11,8 +11,7 @@ dependencies {
 
     implementation("com.jayway.jsonpath:json-path:2.7.0")
 
-    testImplementation("io.mockk:mockk:1.12.3")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation(libs.bundles.test)
 }
 
 application {

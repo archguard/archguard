@@ -19,8 +19,7 @@ dependencies {
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 
-    testImplementation("io.mockk:mockk:1.12.3")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation(libs.bundles.test)
 }
 
 application {

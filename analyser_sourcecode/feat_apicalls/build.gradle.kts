@@ -9,8 +9,7 @@ plugins {
 dependencies {
     api(project(":scanner_core"))
 
-    testImplementation("io.mockk:mockk:1.12.3")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation(libs.bundles.test)
 }
 
 application {

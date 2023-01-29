@@ -14,8 +14,7 @@ dependencies {
         exclude(group = "com.ibm.icu", module = "icu4j")
     }
 
-    testImplementation("io.mockk:mockk:1.12.3")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation(libs.bundles.test)
 }
 
 application {

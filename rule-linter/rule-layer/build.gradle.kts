@@ -3,7 +3,7 @@ plugins {
     application
     alias(libs.plugins.jvm)
 
-    kotlin("plugin.serialization") version "1.6.21"
+    alias(libs.plugins.serialization)
 
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
@@ -15,7 +15,9 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     implementation(libs.chapi.domain)
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+    implementation(libs.kotlin.reflect)
+
+    testImplementation(libs.bundles.test)
 }
 
 application {

@@ -79,7 +79,7 @@ dependencies {
     implementation(kotlin("reflect"))
 
     // kotlin coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation(libs.coroutines.core)
 
     implementation("org.jdbi:jdbi3-core:3.28.0")
     implementation("org.jdbi:jdbi3-spring4:3.19.0")    // provide JdbiFactoryBean
