@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":scanner_core"))
-    implementation(project(":rule-core"))
+    implementation(projects.scannerCore)
+    implementation(projects.ruleCore)
 
     implementation(libs.kotlin.reflect)
     implementation(libs.coroutines.core)

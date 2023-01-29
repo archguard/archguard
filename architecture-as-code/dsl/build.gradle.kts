@@ -7,7 +7,7 @@ plugins {
 group = "org.archguard.aaac"
 
 dependencies {
-    api(project(":architecture-as-code:domain"))
+    api(projects.architectureAsCode.domain)
 
     implementation(libs.serialization.json)
     implementation(libs.kotlin.reflect)

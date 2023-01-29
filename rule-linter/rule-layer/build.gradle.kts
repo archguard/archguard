@@ -9,8 +9,8 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule-core"))
-    api(project(":scanner_core"))
+    api(projects.ruleCore)
+    api(projects.scannerCore)
 
     implementation(libs.serialization.json)
 

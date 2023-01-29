@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 

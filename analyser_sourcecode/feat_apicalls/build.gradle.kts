@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     testImplementation(libs.bundles.test)
 }

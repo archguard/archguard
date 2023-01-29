@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":meta"))
+    api(projects.meta)
 
     implementation(libs.kotlin.reflect)
     implementation(libs.serialization.json)

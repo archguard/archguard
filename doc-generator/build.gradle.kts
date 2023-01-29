@@ -7,12 +7,12 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule-core"))
-    api(project(":scanner_cli"))
-    api(project(":rule-linter:rule-code"))
-    api(project(":rule-linter:rule-sql"))
-    api(project(":rule-linter:rule-test"))
-    api(project(":rule-linter:rule-webapi"))
+    api(projects.ruleCore)
+    api(projects.scannerCli)
+    api(projects.ruleLinter.ruleCode)
+    api(projects.ruleLinter.ruleSql)
+    api(projects.ruleLinter.ruleTest)
+    api(projects.ruleLinter.ruleWebapi)
 
     api("org.jetbrains.kotlin:kotlin-compiler:1.6.21")
 

@@ -61,11 +61,11 @@ configurations {
 dependencies {
     // architecture as code part
 //    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
-    api(project(":architecture-as-code:domain"))
-    api(project(":architecture-as-code:dsl"))
-    api(project(":architecture-as-code:repl-api"))
+    api(projects.architectureAsCode.domain)
+    api(projects.architectureAsCode.dsl)
+    api(projects.architectureAsCode.replApi)
 
     ktlint("com.pinterest:ktlint:0.44.0") {
         attributes {

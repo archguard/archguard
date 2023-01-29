@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     // should get the code data from language analyser
     implementation(libs.chapi.kotlin) {

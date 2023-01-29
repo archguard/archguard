@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     implementation(libs.chapi.scala) {
         // around 10mb, only documents files, exclude (reuse in cli?)

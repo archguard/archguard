@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule-core"))
+    api(projects.ruleCore)
 
     api(libs.chapi.domain)
     api(libs.coroutines.core)

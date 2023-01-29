@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     implementation("com.jayway.jsonpath:json-path:2.7.0")
 

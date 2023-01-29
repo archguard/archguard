@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":rule-core"))
+    api(projects.ruleCore)
 
     implementation(libs.serialization.json)
 

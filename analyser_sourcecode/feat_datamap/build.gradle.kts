@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":scanner_core"))
+    api(projects.scannerCore)
 
     implementation("org.mybatis:mybatis:3.5.9")
     implementation("ognl:ognl:3.3.2") // for mybatis expression

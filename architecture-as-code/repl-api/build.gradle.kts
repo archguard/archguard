@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":architecture-as-code:dsl"))
+    api(projects.architectureAsCode.dsl)
     implementation(kotlin("stdlib"))
 
     implementation(libs.serialization.json)

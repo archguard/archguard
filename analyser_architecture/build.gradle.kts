@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":meta"))
-    implementation(project(":scanner_core"))
+    implementation(projects.meta)
+    implementation(projects.scannerCore)
 
     testImplementation(libs.bundles.test)
 }
