@@ -1,6 +1,7 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("application")
-    kotlin("jvm") version "1.6.21"
+    alias(libs.plugins.jvm)
     alias(libs.plugins.shadow)
     alias(libs.plugins.serialization)
 }
@@ -15,11 +16,11 @@ dependencies {
 
     api("org.jetbrains.kotlin:kotlin-compiler:1.6.21")
 
-    testImplementation(libs.bundles.test)
-
     implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation(libs.clikt)
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
+    implementation(libs.kotlin.reflect)
+
+    testImplementation(libs.bundles.test)
 }
 
 application {
