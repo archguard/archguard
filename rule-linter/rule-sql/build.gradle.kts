@@ -11,7 +11,7 @@ dependencies {
     api(project(":rule-core"))
     api(project(":scanner_core"))
 
-    implementation("com.github.jsqlparser:jsqlparser:4.4")
+    implementation(libs.jsqlparser)
     implementation(libs.kotlin.reflect)
 
     testImplementation(libs.bundles.test)

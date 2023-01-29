@@ -9,14 +9,13 @@ plugins {
 
 dependencies {
     api(project(":scanner_core"))
-
-    testImplementation(libs.bundles.test)
-
-    testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
-    testImplementation("io.kotest:kotest-assertions-core:5.5.4")
+    implementation(libs.coroutines.core)
 
     implementation("com.google.re2j:re2j:1.7")
-    implementation(libs.coroutines.core)
+
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.kotest.core)
+    testImplementation(libs.kotest.junit5)
 }
 
 application {

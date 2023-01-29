@@ -9,7 +9,7 @@ dependencies {
 
     api(libs.chapi.domain)
     api(libs.coroutines.core)
+    api(libs.serialization.json)
 
-    implementation(libs.serialization.json)
     testImplementation(libs.bundles.test)
 }

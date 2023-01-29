@@ -11,6 +11,7 @@ dependencies {
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 
+    implementation(libs.serialization.json)
     testImplementation(libs.bundles.test)
 }
 

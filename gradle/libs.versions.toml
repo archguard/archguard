@@ -14,6 +14,7 @@ junit = "5.9.1"
 kotlinTest = "5.5.4"
 mockk = "1.13.3"
 assertj = "3.22.0"
+kotest = "5.5.4"
 
 chapi = "2.0.0-beta.9"
 
@@ -22,6 +23,8 @@ shadowJar = "7.1.2"
 clikt = "3.5.1"
 
 logback = "1.4.5"
+
+jsqlparser = "4.5"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -47,6 +50,9 @@ test-kotlintest-assertions = { module = "io.kotest:kotest-assertions-core", vers
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test-assertj = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 
+kotest-core = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotest-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+
 # Chapi
 chapi-domain = { group = "com.phodal.chapi", name = "chapi-domain", version.ref = "chapi" }
 chapi-java = { group = "com.phodal.chapi", name = "chapi-ast-java", version.ref = "chapi" }
@@ -63,6 +69,8 @@ clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" 
 # log
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = "logback" }
+
+jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
