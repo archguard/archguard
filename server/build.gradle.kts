@@ -78,11 +78,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
 
-    // test
-    implementation(kotlin("test"))
-    implementation(kotlin("test-junit"))
-    implementation("org.junit.platform:junit-platform-commons:1.8.2")
-
     // kotlin coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
@@ -121,7 +116,6 @@ dependencies {
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("com.github.database-rider:rider-spring:1.16.1")
     testImplementation("com.h2database:h2:1.4.200")
-    testImplementation("org.flywaydb:flyway-core:6.5.7")
 }
 
 configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {

@@ -26,17 +26,12 @@ dependencies {
 
     // tips: don't add follow deps to project will cause issues
     compileOnly("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
-//    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 
     implementation("ch.qos.logback:logback-classic:1.2.11")
 
     implementation(kotlin("stdlib"))
-    // test
-    implementation(kotlin("test"))
-    implementation(kotlin("test-junit"))
 
     testImplementation("io.kotest:kotest-assertions-core:5.1.0")
-
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }

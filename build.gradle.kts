@@ -23,6 +23,7 @@ allprojects {
 
     group = "org.archguard.scanner"
     version = "2.0.0-beta.5"
+
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -39,7 +40,6 @@ allprojects {
 
         // test
         implementation(kotlin("test"))
-        implementation(kotlin("test-junit"))
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
