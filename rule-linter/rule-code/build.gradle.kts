@@ -4,13 +4,13 @@ plugins {
     alias(libs.plugins.jvm)
     alias(libs.plugins.serialization)
 
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
     api(project(":rule-core"))
 
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation(libs.serialization.json)
 
     implementation(libs.chapi.domain)
     implementation(libs.kotlin.reflect)

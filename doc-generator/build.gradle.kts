@@ -1,7 +1,7 @@
 plugins {
     id("application")
     kotlin("jvm") version "1.6.21"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    alias(libs.plugins.shadow)
     alias(libs.plugins.serialization)
 }
 
@@ -18,7 +18,7 @@ dependencies {
     testImplementation(libs.bundles.test)
 
     implementation("io.github.microutils:kotlin-logging:2.1.21")
-    implementation("com.github.ajalt.clikt:clikt:3.4.0")
+    implementation(libs.clikt)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.30")
 }
 

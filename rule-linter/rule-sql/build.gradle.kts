@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.jvm)
 
 
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {

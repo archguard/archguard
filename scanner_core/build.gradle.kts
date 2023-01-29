@@ -8,8 +8,8 @@ dependencies {
     api(project(":rule-core"))
 
     api(libs.chapi.domain)
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    api(libs.coroutines.core)
 
+    implementation(libs.serialization.json)
     testImplementation(libs.bundles.test)
 }

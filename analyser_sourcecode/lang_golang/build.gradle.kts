@@ -3,7 +3,7 @@ plugins {
     application
     alias(libs.plugins.jvm)
     alias(libs.plugins.serialization)
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {

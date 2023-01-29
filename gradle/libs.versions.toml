@@ -17,6 +17,12 @@ assertj = "3.22.0"
 
 chapi = "2.0.0-beta.9"
 
+shadowJar = "7.1.2"
+
+clikt = "3.5.1"
+
+logback = "1.4.5"
+
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-scriptingJvm = { group = "org.jetbrains.kotlin", name = "kotlin-scripting-jvm", version.ref = "kotlin" }
@@ -26,7 +32,8 @@ kotlin-stdlibJdk8 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8
 # Kotlinx Serialization
 serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 serialization-protobuf = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-protobuf", version.ref = "kotlinxSerialization" }
-jackson = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
+jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
+jackson-format-csv = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-csv", version.ref = "jackson" }
 
 # Coroutines
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -50,12 +57,20 @@ chapi-python = { group = "com.phodal.chapi", name = "chapi-ast-python", version.
 chapi-scala = { group = "com.phodal.chapi", name = "chapi-ast-scala", version.ref = "chapi" }
 chapi-typescript = { group = "com.phodal.chapi", name = "chapi-ast-typescript", version.ref = "chapi" }
 
+# clikt
+clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" }
+
+# log
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = "logback" }
+
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 springboot = { id = "org.springframework.boot", version.ref = "springBoot" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadowJar" }
 
 [bundles]
 test = ["test-junit-params", "test-kotlintest-assertions", "test-mockk", "test-assertj"]

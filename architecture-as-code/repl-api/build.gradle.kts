@@ -18,8 +18,9 @@ repositories {
 
 dependencies {
     api(project(":architecture-as-code:dsl"))
+    implementation(kotlin("stdlib"))
 
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation(libs.serialization.json)
 
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-89-1")
     implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-89-1")
@@ -27,11 +28,7 @@ dependencies {
     // tips: don't add follow deps to project will cause issues
     compileOnly("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")
 
-    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation(libs.logback.classic)
 
-    implementation(kotlin("stdlib"))
-
-    testImplementation("io.kotest:kotest-assertions-core:5.1.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation(libs.bundles.test)
 }
