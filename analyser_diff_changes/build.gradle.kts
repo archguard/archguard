@@ -17,8 +17,7 @@ dependencies {
         exclude(group = "com.ibm.icu", module = "icu4j")
     }
 
-    implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
-
+    implementation(libs.jgit)
     testImplementation(libs.bundles.test)
 }
 
