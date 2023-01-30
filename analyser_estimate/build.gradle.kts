@@ -4,14 +4,11 @@ plugins {
     alias(libs.plugins.jvm)
     alias(libs.plugins.serialization)
     alias(libs.plugins.shadow)
-    id("io.kotest.multiplatform") version "5.5.4"
 }
 
 dependencies {
     api(projects.scannerCore)
     implementation(libs.coroutines.core)
-
-    implementation("com.google.re2j:re2j:1.7")
 
     testImplementation(libs.bundles.test)
     testImplementation(libs.kotest.core)
