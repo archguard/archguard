@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.infrastructure
+package com.thoughtworks.archguard.scanner2.domain
 
 enum class Toggle(private var status: Boolean) {
     EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY(true);

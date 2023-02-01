@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
+import com.thoughtworks.archguard.scanner2.domain.Toggle
 import com.thoughtworks.archguard.scanner2.domain.model.Dependency
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import com.thoughtworks.archguard.scanner2.infrastructure.Toggle
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -38,7 +38,15 @@ class ScannerCircularDependencyServiceTest {
         val dependency5 = Dependency("m", "n")
         val dependency6 = Dependency("n", "p")
         val dependency7 = Dependency("p", "m")
-        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6, dependency7)
+        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(
+            dependency1,
+            dependency2,
+            dependency3,
+            dependency4,
+            dependency5,
+            dependency6,
+            dependency7
+        )
         val jClassA = JClass("a", "a", "m1")
         val jClassB = JClass("b", "b", "m1")
         val jClassC = JClass("c", "c", "m1")
@@ -46,12 +54,34 @@ class ScannerCircularDependencyServiceTest {
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("n", "n", "m1")
         val jClassP = JClass("p", "p", "m1")
-        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN, jClassP)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(
+            jClassA,
+            jClassB,
+            jClassC,
+            jClassD,
+            jClassM,
+            jClassN,
+            jClassN,
+            jClassP
+        )
         val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(2)
-        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
-        assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(listOf(jClassM.toVO(), jClassN.toVO(), jClassP.toVO()))
+        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
+            listOf(
+                jClassA.toVO(),
+                jClassB.toVO(),
+                jClassC.toVO(),
+                jClassD.toVO()
+            )
+        )
+        assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(
+            listOf(
+                jClassM.toVO(),
+                jClassN.toVO(),
+                jClassP.toVO()
+            )
+        )
     }
 
     @Test
@@ -64,20 +94,42 @@ class ScannerCircularDependencyServiceTest {
 
         val dependency5 = Dependency("m", "m$1")
         val dependency6 = Dependency("m$1", "m")
-        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6)
+        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(
+            dependency1,
+            dependency2,
+            dependency3,
+            dependency4,
+            dependency5,
+            dependency6
+        )
         val jClassA = JClass("a", "a", "m1")
         val jClassB = JClass("b", "b", "m1")
         val jClassC = JClass("c", "c", "m1")
         val jClassD = JClass("d", "d", "m1")
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("m$1", "m$1", "m1")
-        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(
+            jClassA,
+            jClassB,
+            jClassC,
+            jClassD,
+            jClassM,
+            jClassN,
+            jClassN
+        )
         val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
         println(classCircularDependency)
 
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(1)
-        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
+        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
+            listOf(
+                jClassA.toVO(),
+                jClassB.toVO(),
+                jClassC.toVO(),
+                jClassD.toVO()
+            )
+        )
     }
 
     @Test
@@ -91,20 +143,47 @@ class ScannerCircularDependencyServiceTest {
 
         val dependency5 = Dependency("m", "m$1")
         val dependency6 = Dependency("m$1", "m")
-        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6)
+        every { jClassRepository.getDistinctClassDependenciesAndNotThirdParty(projectId) } returns listOf(
+            dependency1,
+            dependency2,
+            dependency3,
+            dependency4,
+            dependency5,
+            dependency6
+        )
         val jClassA = JClass("a", "a", "m1")
         val jClassB = JClass("b", "b", "m1")
         val jClassC = JClass("c", "c", "m1")
         val jClassD = JClass("d", "d", "m1")
         val jClassM = JClass("m", "m", "m1")
         val jClassN = JClass("m$1", "m$1", "m1")
-        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(jClassA, jClassB, jClassC, jClassD, jClassM, jClassN, jClassN)
+        every { jClassRepository.getJClassesNotThirdPartyAndNotTest(projectId) } returns listOf(
+            jClassA,
+            jClassB,
+            jClassC,
+            jClassD,
+            jClassM,
+            jClassN,
+            jClassN
+        )
         val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
         println(classCircularDependency)
 
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(2)
-        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(listOf(jClassA.toVO(), jClassB.toVO(), jClassC.toVO(), jClassD.toVO()))
-        assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(listOf(jClassM.toVO(), jClassN.toVO()))
+        assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
+            listOf(
+                jClassA.toVO(),
+                jClassB.toVO(),
+                jClassC.toVO(),
+                jClassD.toVO()
+            )
+        )
+        assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(
+            listOf(
+                jClassM.toVO(),
+                jClassN.toVO()
+            )
+        )
     }
 }

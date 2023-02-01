@@ -10,7 +10,7 @@ import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
 import com.thoughtworks.archguard.scanner2.domain.model.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import com.thoughtworks.archguard.scanner2.infrastructure.Toggle
+import com.thoughtworks.archguard.scanner2.domain.Toggle
 import org.springframework.stereotype.Service
 
 @Service
