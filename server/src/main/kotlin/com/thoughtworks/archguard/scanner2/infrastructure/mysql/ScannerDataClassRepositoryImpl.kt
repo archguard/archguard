@@ -1,6 +1,7 @@
-package com.thoughtworks.archguard.scanner2.domain.repository
+package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 

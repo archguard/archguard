@@ -7,7 +7,11 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ScannerDataClassService(val jClassRepository: JClassRepository, val jMethodRepository: JMethodRepository, val dataClassRepository: DataClassRepository) {
+class ScannerDataClassService(
+    val jClassRepository: JClassRepository,
+    val jMethodRepository: JMethodRepository,
+    val dataClassRepository: DataClassRepository
+) {
     fun findAllDataClasses(systemId: Long): List<JClass> {
         val jClasses = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         val dataClasses = mutableListOf<JClass>()
