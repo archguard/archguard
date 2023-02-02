@@ -15,6 +15,7 @@ buildscript {
     }
 }
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     // springfox not support spring boot 2.6, see in https://github.com/springfox/springfox/issues/3462
     alias(libs.plugins.springboot)
