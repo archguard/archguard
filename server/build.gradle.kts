@@ -63,6 +63,7 @@ dependencies {
     // architecture as code part
 //    implementation("org.archguard.scanner:scanner_core:2.0.0-alpha.7")
     api(projects.scannerCore)
+    api(projects.server.metricService)
 
     api(projects.architectureAsCode.domain)
     api(projects.architectureAsCode.dsl)
