@@ -76,6 +76,16 @@ jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref
 
 jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }
 
+# springboot
+springboot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "springBoot" }
+springboot-jdbc = { group = "org.springframework.boot", name = "spring-boot-starter-jdbc", version.ref = "springBoot" }
+springboot-actuator = { group = "org.springframework.boot", name = "spring-boot-starter-actuator", version.ref = "springBoot" }
+springboot-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation", version.ref = "springBoot" }
+springboot-websocket = { group = "org.springframework.boot", name = "spring-boot-starter-websocket", version.ref = "springBoot" }
+springboot-cache = { group = "org.springframework.boot", name = "spring-boot-starter-cache", version.ref = "springBoot" }
+
+springboot-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "springBoot" }
+
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

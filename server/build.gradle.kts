@@ -94,14 +94,14 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java:3.21.5")
     implementation("com.googlecode.protobuf-java-format:protobuf-java-format:1.4")
 
-    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-web:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-validation:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-websocket:2.7.0")
+    implementation(libs.springboot.jdbc)
+    implementation(libs.springboot.web)
+    implementation(libs.springboot.actuator)
+    implementation(libs.springboot.validation)
+    implementation(libs.springboot.websocket)
     // cache for overview api
-    implementation("org.springframework.boot:spring-boot-starter-cache:2.7.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.0")
+    implementation(libs.springboot.cache)
+    testImplementation(libs.springboot.test)
 
     implementation("org.nield:kotlinstatistics:0.3.0")
     implementation("com.alibaba:druid-spring-boot-starter:1.2.8")
