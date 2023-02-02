@@ -25,7 +25,7 @@ include(":meta")
 
 // backend
 include(":server")
-include(":server:metric-module")
+include(":server:metric-service")
 
 include(":doc-generator")
 

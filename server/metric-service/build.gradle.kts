@@ -8,5 +8,9 @@ dependencies {
     api(libs.coroutines.core)
     api(libs.serialization.json)
 
+    implementation(libs.springboot.jdbc)
+    implementation(libs.springboot.web)
+
     testImplementation(libs.bundles.test)
+    testImplementation(libs.springboot.test)
 }
