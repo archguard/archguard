@@ -68,7 +68,7 @@ layered []
 
         assertEquals("error", result.msgType.type)
         val errorMsg =
-            "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter-kts (2:10 - 10) Expecting an index element"
+            "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException: Line_1.jupyter.kts (2:10 - 10) Expecting an index element"
         assertEquals(errorMsg, (result.content as ErrorContent).message)
         assertEquals(
             "org.jetbrains.kotlinx.jupyter.exceptions.ReplCompilerException",
