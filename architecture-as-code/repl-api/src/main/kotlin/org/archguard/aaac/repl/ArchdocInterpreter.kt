@@ -17,7 +17,7 @@ class ArchdocInterpreter : InterpreterService {
 
     override fun eval(interpreterRequest: InterpreterRequest): Message {
         try {
-            val result = compiler.eval(interpreterRequest.code, null, interpreterRequest.id)
+            val result = compiler.eval(interpreterRequest.code, interpreterRequest.id)
             return convertResult(result, interpreterRequest.id)
         } catch (e: Exception) {
             logger.error(e.toString())
