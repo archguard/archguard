@@ -14,11 +14,14 @@ import org.archguard.scanner.core.sourcecode.ContainerService
 import org.archguard.scanner.ctl.command.ScannerCommand
 import org.slf4j.LoggerFactory
 import java.net.URI
+import java.net.URLEncoder
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpRequest.BodyPublishers.ofString
 import java.net.http.HttpResponse
 import java.time.Duration
+
+val String.encodeUri: String get() = URLEncoder.encode(this, "UTF-8")
 
 // 通过http api回写分析数据
 class ArchGuardHttpClient(
@@ -36,8 +39,7 @@ class ArchGuardHttpClient(
             .build()
     }
 
-    private fun buildUrl(topic: String) =
-        "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=$path"
+    fun buildUrl(topic: String) = "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=${path.encodeUri}"
 
     private inline fun <reified T> process(uri: URI, body: T) {
         val request = HttpRequest.newBuilder(uri)
