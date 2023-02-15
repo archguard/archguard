@@ -63,3 +63,4 @@ localtesting_*.csv
 slot.json
 *.proto
 *.pb
+*.arrow

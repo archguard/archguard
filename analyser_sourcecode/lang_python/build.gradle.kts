@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.chapi.python) {
         // around 10mb, only documents files, exclude (reuse in cli?)
         exclude(group = "com.ibm.icu", module = "icu4j")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
     }
 
     testImplementation(libs.bundles.test)
