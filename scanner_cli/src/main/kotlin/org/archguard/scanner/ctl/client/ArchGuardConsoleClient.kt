@@ -13,7 +13,6 @@ import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClient {
-    private fun buildFileName(topic: String): String = systemId + "_" + topic + ".json"
 
     override fun saveDataStructure(codes: List<CodeDataStruct>) {
         println("==============================================================")

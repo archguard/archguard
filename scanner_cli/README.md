@@ -24,3 +24,9 @@ java -jar scanner_cli.jar --language=Kotlin --features=apicalls --output=http --
 ```
 java -jar scanner_cli.jar --language=Kotlin --features=apicalls --output=json --path=server --slot-spec='{"identifier": "rule", "host": "https://github.com/archguard/archguard/releases/download/v2.0.0-alpha.17", "version": "2.0.0-alpha.17", "jar": "rule-webapi-2.0.0-alpha.17-all.jar", "className": "org.archguard.linter.rule.webapi.WebApiRuleSlot", "slotType": "rule"}' 
 ```
+
+### With Arrow Output
+
+```bash
+ java  --add-opens=java.base/java.nio=ALL-UNNAMED -jar plugins/scanner-v2.jar --type=source_code --path=. --output=json --language=kotlin --output=arrow
+```

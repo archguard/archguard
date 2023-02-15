@@ -12,7 +12,12 @@ dependencies {
 
     implementation(libs.kotlin.reflect)
     implementation(libs.coroutines.core)
-    implementation(libs.chapi.domain)
+
+    implementation(libs.chapi.domain) {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
+    }
+
+    implementation(libs.dataframe.arrow)
 
     implementation(libs.serialization.json)
     implementation(libs.serialization.protobuf)

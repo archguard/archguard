@@ -3,11 +3,7 @@ package org.archguard.scanner.ctl.command
 import org.archguard.scanner.core.AnalyserSpec
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.context.AnalyserType
-import org.archguard.scanner.ctl.client.ArchGuardConsoleClient
-import org.archguard.scanner.ctl.client.ArchGuardCsvClient
-import org.archguard.scanner.ctl.client.ArchGuardHttpClient
-import org.archguard.scanner.ctl.client.ArchGuardJsonClient
-import org.archguard.scanner.ctl.client.ChainedArchGuardClient
+import org.archguard.scanner.ctl.client.*
 import org.archguard.scanner.ctl.impl.OfficialAnalyserSpecs
 
 /**
@@ -58,6 +54,10 @@ data class ScannerCommand(
 
         if (output.contains("csv")) {
             clients.add(ArchGuardCsvClient(systemId))
+        }
+
+        if (output.contains("arrow")) {
+            clients.add(ArchGuardArrowClient(systemId))
         }
 
         if (output.contains("console") || output.isEmpty()) {

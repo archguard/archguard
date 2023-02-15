@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.6.21"
+kotlin = "1.8.0"
 dokka = "1.6.21"
 
 kotlinxCoroutines = "1.6.4"
@@ -27,6 +27,8 @@ logback = "1.4.5"
 jsqlparser = "4.5"
 
 jgit = "6.4.0.202211300538-r"
+
+dataframe = "0.9.1"
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -75,6 +77,8 @@ logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = 
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 
 jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }
+
+dataframe-arrow = { group = "org.jetbrains.kotlinx", name = "dataframe-arrow", version.ref = "dataframe" }
 
 # springboot
 springboot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "springBoot" }

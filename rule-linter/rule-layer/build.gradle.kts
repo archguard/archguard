@@ -14,7 +14,9 @@ dependencies {
 
     implementation(libs.serialization.json)
 
-    implementation(libs.chapi.domain)
+    implementation(libs.chapi.domain) {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
+    }
     implementation(libs.kotlin.reflect)
 
     testImplementation(libs.bundles.test)

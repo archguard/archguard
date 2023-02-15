@@ -7,7 +7,10 @@ plugins {
 dependencies {
     api(projects.ruleCore)
 
-    api(libs.chapi.domain)
+    api(libs.chapi.domain) {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
+    }
+    
     api(libs.coroutines.core)
     api(libs.serialization.json)
 
