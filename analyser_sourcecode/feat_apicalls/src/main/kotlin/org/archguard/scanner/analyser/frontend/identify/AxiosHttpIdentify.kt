@@ -2,10 +2,11 @@ package org.archguard.scanner.analyser.frontend.identify
 
 import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeImport
+import org.archguard.scanner.analyser.frontend.ApiCodeCall
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 
 open class AxiosHttpIdentify : HttpIdentify {
-    override fun isMatch(call: CodeCall, imports: Array<CodeImport>): Boolean {
+    override fun isMatch(call: CodeCall, imports: List<CodeImport>): Boolean {
         if (call.FunctionName == "axios" || call.FunctionName.startsWith("axios.")) {
             if (call.Parameters.isNotEmpty()) {
                 return true
@@ -15,7 +16,7 @@ open class AxiosHttpIdentify : HttpIdentify {
         return false
     }
 
-    override fun convert(call: CodeCall): ContainerDemand {
+    override fun convert(call: ApiCodeCall): ContainerDemand {
         val httpApi = ContainerDemand()
         call.Parameters.forEach { prop ->
             for (codeProperty in prop.ObjectValue) {

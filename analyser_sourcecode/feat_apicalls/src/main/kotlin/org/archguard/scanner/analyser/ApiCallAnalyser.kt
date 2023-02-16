@@ -4,10 +4,10 @@ import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.analyser.backend.GoApiAnalyser
 import org.archguard.scanner.analyser.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
-import org.archguard.scanner.sourcecode.frontend.FrontendApiAnalyser
 import org.slf4j.LoggerFactory
 
 class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser {

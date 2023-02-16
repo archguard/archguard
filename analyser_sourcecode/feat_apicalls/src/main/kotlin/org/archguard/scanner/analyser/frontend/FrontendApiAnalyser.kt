@@ -1,22 +1,25 @@
-package org.archguard.scanner.sourcecode.frontend
+package org.archguard.scanner.analyser.frontend
 
-import chapi.domain.core.CodeCall
-import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeField
-import chapi.domain.core.CodeFunction
-import chapi.domain.core.CodeImport
-import chapi.domain.core.DataStructType
+import chapi.domain.core.*
 import kotlinx.serialization.Serializable
 import org.archguard.scanner.analyser.frontend.identify.AxiosHttpIdentify
 import org.archguard.scanner.analyser.frontend.identify.UmiHttpIdentify
-import org.archguard.scanner.analyser.frontend.naming
 import org.archguard.scanner.analyser.frontend.path.ecmaImportConvert
 import org.archguard.scanner.analyser.frontend.path.relativeRoot
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 @Serializable
-data class ApiCodeCall(val ApiType: String = "") : CodeCall() {
+class ApiCodeCall(
+    val ApiType: String = "",
+    var Package: String = "",
+    var Type: CallType = CallType.FUNCTION,
+    var NodeName: String = "",
+    var FunctionName: String = "",
+    var Parameters: List<CodeProperty> = listOf(),
+    var Position: CodePosition = CodePosition(),
+    var OriginNodeName: String = "",
+) {
     companion object {
         fun from(call: CodeCall, apiType: String): ApiCodeCall {
             val apiCodeCall = ApiCodeCall(ApiType = apiType)
@@ -155,6 +158,7 @@ class FrontendApiAnalyser {
             "axios" -> {
                 httpApi = axiosIdent.convert(call)
             }
+
             "umi" -> {
                 httpApi = umiIdent.convert(call)
             }
@@ -185,7 +189,7 @@ class FrontendApiAnalyser {
         }
     }
 
-    private fun createInbounds(workspace: String, imports: Array<CodeImport>, filePath: String): MutableList<String> {
+    private fun createInbounds(workspace: String, imports: List<CodeImport>, filePath: String): MutableList<String> {
         val inbounds: MutableList<String> = mutableListOf()
 
         imports.forEach { imp ->
@@ -203,7 +207,7 @@ class FrontendApiAnalyser {
         calleeName: String,
         isComponent: Boolean,
         componentName: String,
-        imports: Array<CodeImport>
+        imports: List<CodeImport>
     ) {
         func.InnerFunctions.forEach { inner ->
             run {
