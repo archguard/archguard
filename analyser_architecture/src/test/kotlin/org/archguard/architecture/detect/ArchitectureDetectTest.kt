@@ -2,10 +2,10 @@ package org.archguard.architecture.detect
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeImport
-import org.archguard.scanner.core.sca.DependencyEntry
-import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
+import org.archguard.scanner.core.sca.DependencyEntry
+import org.archguard.scanner.core.sca.PackageDependencies
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -56,7 +56,7 @@ internal class ArchitectureDetectTest {
     @Test
     fun exec_arch_from_source_code() {
         val struct = CodeDataStruct(
-            Imports = arrayOf(CodeImport(Source = "java.io.File"))
+            Imports = listOf(CodeImport(Source = "java.io.File"))
         )
         val execArch = ArchitectureDetect().identPotential(Workspace(listOf(struct)))
 

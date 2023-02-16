@@ -12,15 +12,15 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     private val client = context.client
     private val impl = chapi.ast.javaast.JavaAnalyser()
 
-    private lateinit var basicNodes: Array<CodeDataStruct>
-    private lateinit var classes: Array<String>
+    private lateinit var basicNodes: List<CodeDataStruct>
+    private lateinit var classes: List<String>
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         val files = getFilesByPath(context.path) {
             it.absolutePath.endsWith(".java")
         }
-        basicNodes = files.asyncMap { analysisBasicInfoByFile(it) }.flatten().toTypedArray()
-        classes = basicNodes.map { it.getClassFullName() }.toTypedArray()
+        basicNodes = files.asyncMap { analysisBasicInfoByFile(it) }.flatten()
+        classes = basicNodes.map { it.getClassFullName() }
 
         val basepath = File(context.path)
         files.asyncMap { analysisFullInfoByFile(it, basepath) }.flatten().toList()

@@ -1,16 +1,11 @@
 package org.archguard.linter.rule.testcode
 
-import chapi.domain.core.CodeAnnotation
-import chapi.domain.core.CodeCall
-import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeField
-import chapi.domain.core.CodeFunction
-import chapi.domain.core.CodePosition
-import org.archguard.rule.core.Rule
-import org.archguard.rule.core.RuleContext
+import chapi.domain.core.*
+import org.archguard.rule.common.Language
 import org.archguard.rule.core.IssueEmit
 import org.archguard.rule.core.IssuePosition
-import org.archguard.rule.common.Language
+import org.archguard.rule.core.Rule
+import org.archguard.rule.core.RuleContext
 
 fun CodePosition.smellPosition(): IssuePosition {
     return IssuePosition(
@@ -90,6 +85,7 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
                 val testsFilter = it.Annotations.filter { it.Name == "Test" || it.Name.endsWith(".Test") }
                 testsFilter.isNotEmpty()
             }
+
             else -> {
                 false
             }
@@ -100,8 +96,8 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
         method: CodeFunction,
         node: CodeDataStruct,
         callMethodMap: MutableMap<String, CodeFunction>
-    ): Array<CodeCall> {
-        var methodCalls = method.FunctionCalls
+    ): List<CodeCall> {
+        val methodCalls = method.FunctionCalls.toMutableList()
         for (methodCall in methodCalls) {
             if (methodCall.NodeName == node.NodeName) {
                 val mapFunc = callMethodMap[methodCall.buildFullMethodName()]
@@ -116,7 +112,13 @@ open class TbsRule(var language: Language = Language.JAVA) : Rule() {
 
     open fun visitField(field: CodeField, index: Int, callback: IssueEmit) {}
 
-    open fun visitFunctionAnnotation(function: CodeFunction, annotation: CodeAnnotation, index: Int, callback: IssueEmit) {}
+    open fun visitFunctionAnnotation(
+        function: CodeFunction,
+        annotation: CodeAnnotation,
+        index: Int,
+        callback: IssueEmit
+    ) {
+    }
 
     open fun beforeVisitFunction(function: CodeFunction, callback: IssueEmit) {}
 
