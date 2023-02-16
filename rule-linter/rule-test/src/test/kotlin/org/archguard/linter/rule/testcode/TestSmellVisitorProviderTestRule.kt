@@ -1,10 +1,6 @@
 package org.archguard.linter.rule.testcode
 
-import chapi.domain.core.CodeAnnotation
-import chapi.domain.core.CodeCall
-import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeFunction
-import chapi.domain.core.CodeProperty
+import chapi.domain.core.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -15,7 +11,7 @@ internal class TestSmellVisitorProviderTestRule {
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(
+            Annotations = listOf(
                 CodeAnnotation(Name = "Test"),
                 CodeAnnotation(Name = "Ignore")
             )
@@ -37,8 +33,8 @@ internal class TestSmellVisitorProviderTestRule {
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(CodeCall(NodeName = "System.out", FunctionName = "println"))
+            Annotations = listOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = listOf(CodeCall(NodeName = "System.out", FunctionName = "println"))
         )
 
         val visitor = TestSmellRuleVisitor(listOf(ds))
@@ -56,8 +52,8 @@ internal class TestSmellVisitorProviderTestRule {
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(
+            Annotations = listOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = listOf(
                 CodeCall(NodeName = "Thread", FunctionName = "sleep"),
                 CodeCall(NodeName = "", FunctionName = "assert")
             )
@@ -76,15 +72,15 @@ internal class TestSmellVisitorProviderTestRule {
     internal fun redundant_assertion() {
         val provider = TestSmellRuleSetProvider()
 
-        val parameters: Array<CodeProperty> = arrayOf(
+        val parameters: List<CodeProperty> = listOf(
             CodeProperty(TypeValue = "true", TypeType = "Boolean"),
             CodeProperty(TypeValue = "true", TypeType = "Boolean")
         )
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters))
+            Annotations = listOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = listOf(CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters))
         )
 
         val visitor = TestSmellRuleVisitor(listOf(ds))
@@ -100,15 +96,15 @@ internal class TestSmellVisitorProviderTestRule {
     internal fun unknown_test() {
         val provider = TestSmellRuleSetProvider()
 
-        val parameters: Array<CodeProperty> = arrayOf(
+        val parameters: List<CodeProperty> = listOf(
             CodeProperty(TypeValue = "true", TypeType = "Boolean"),
             CodeProperty(TypeValue = "true", TypeType = "Boolean")
         )
 
         val ds = CodeDataStruct()
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(CodeCall(NodeName = "", FunctionName = "demo", Parameters = parameters))
+            Annotations = listOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = listOf(CodeCall(NodeName = "", FunctionName = "demo", Parameters = parameters))
         )
 
         val visitor = TestSmellRuleVisitor(listOf(ds))
@@ -124,13 +120,13 @@ internal class TestSmellVisitorProviderTestRule {
     internal fun duplicate_asserts() {
         val provider = TestSmellRuleSetProvider()
 
-        val parameters: Array<CodeProperty> = arrayOf(CodeProperty(TypeValue = "true", TypeType = "Boolean"))
+        val parameters: List<CodeProperty> = listOf(CodeProperty(TypeValue = "true", TypeType = "Boolean"))
 
         val ds = CodeDataStruct()
         val assertCall = CodeCall(NodeName = "", FunctionName = "assert", Parameters = parameters)
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(CodeAnnotation(Name = "Test")),
-            FunctionCalls = arrayOf(
+            Annotations = listOf(CodeAnnotation(Name = "Test")),
+            FunctionCalls = listOf(
                 assertCall, assertCall, assertCall, assertCall, assertCall, assertCall
             )
         )
@@ -152,7 +148,7 @@ internal class TestSmellVisitorProviderTestRule {
         ds.Annotations += CodeAnnotation(Name = "Ignore")
 
         ds.Functions += CodeFunction(
-            Annotations = arrayOf(
+            Annotations = listOf(
                 CodeAnnotation(Name = "Test"),
             )
         )
