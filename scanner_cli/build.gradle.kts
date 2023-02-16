@@ -17,8 +17,6 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
     }
 
-    implementation(libs.dataframe.arrow)
-
     implementation(libs.serialization.json)
     implementation(libs.serialization.protobuf)
 

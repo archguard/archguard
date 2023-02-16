@@ -56,10 +56,6 @@ data class ScannerCommand(
             clients.add(ArchGuardCsvClient(systemId))
         }
 
-        if (output.contains("arrow")) {
-            clients.add(ArchGuardArrowClient(systemId))
-        }
-
         if (output.contains("console") || output.isEmpty()) {
             clients.add(ArchGuardConsoleClient(systemId))
         }
