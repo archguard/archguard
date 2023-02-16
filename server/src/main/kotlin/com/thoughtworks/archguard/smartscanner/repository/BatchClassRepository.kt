@@ -1,20 +1,12 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
-import chapi.domain.core.AnnotationKeyValue
-import chapi.domain.core.CodeAnnotation
-import chapi.domain.core.CodeCall
-import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeExport
-import chapi.domain.core.CodeField
-import chapi.domain.core.CodeFunction
-import chapi.domain.core.CodeImport
-import chapi.domain.core.CodeProperty
+import chapi.domain.core.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.jetbrains.annotations.TestOnly
 import java.io.File
-import java.util.Optional
+import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
 private const val DEFAULT_MODULE_NAME = "root"
@@ -75,13 +67,13 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         }
     }
 
-    private fun saveClassAnnotation(clzId: String, annotations: Array<CodeAnnotation>) {
+    private fun saveClassAnnotation(clzId: String, annotations: List<CodeAnnotation>) {
         annotations.forEach {
             doSaveAnnotation(it, clzId)
         }
     }
 
-    private fun saveClassCallees(functions: Array<CodeFunction>, moduleName: String, clzName: String, pkgName: String) {
+    private fun saveClassCallees(functions: List<CodeFunction>, moduleName: String, clzName: String, pkgName: String) {
         for (function in functions) {
             val mId = findMethodIdByClzName(function, clzName, function.Name, pkgName)?.orElse("") ?: continue
             for (call in function.FunctionCalls) {
@@ -155,7 +147,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
     private fun findCalleeMethodId(
         module: String,
         clzName: String,
-        parameters: Array<CodeProperty>,
+        parameters: List<CodeProperty>,
         functionName: String,
         pkgName: String,
     ): Optional<String?>? {
@@ -169,7 +161,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
     private fun findMethodId(
         moduleName: String,
         clzName: String,
-        parameters: Array<CodeProperty>,
+        parameters: List<CodeProperty>,
         callNodeName: String,
         pkgName: String
     ): Optional<String?>? {
@@ -181,7 +173,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         return batch.findId("code_method", keys)
     }
 
-    private fun saveClassParent(clzId: String, module: String, imports: Array<CodeImport>, extend: String) {
+    private fun saveClassParent(clzId: String, module: String, imports: List<CodeImport>, extend: String) {
         var delimiters = "."
         if (isJs()) {
             delimiters = "/"
@@ -210,12 +202,12 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
 
     private fun saveClassDependencies(
         clzId: String,
-        imports: Array<CodeImport>,
+        imports: List<CodeImport>,
         packageName: String,
         clzName: String,
         filePath: String,
-        clzFunctions: Array<CodeFunction>,
-        exports: Array<CodeExport>
+        clzFunctions: List<CodeFunction>,
+        exports: List<CodeExport>
     ) {
         for (import in imports) {
             if (isJs()) {
@@ -328,7 +320,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
 
     private fun saveClassMethods(
         clzId: String,
-        functions: Array<CodeFunction>,
+        functions: List<CodeFunction>,
         clzName: String,
         pkgName: String,
         filePath: String
@@ -446,7 +438,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
 
     private fun isTest(function: CodeFunction, filePath: String): String {
         val testPath = arrayOf("src", "test").joinToString(File.separator)
-        if(filePath.contains(testPath)) {
+        if (filePath.contains(testPath)) {
             return "true"
         }
 
@@ -454,7 +446,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
     }
 
     private val FIELD_NAME = "[a-zA-Z_\$@]+".toRegex()
-    private fun saveClassFields(clzId: String, fields: Array<CodeField>, clzName: String) {
+    private fun saveClassFields(clzId: String, fields: List<CodeField>, clzName: String) {
         for (field in fields) {
             val id = generateId()
             val time: String = RepositoryHelper.getCurrentTime()
