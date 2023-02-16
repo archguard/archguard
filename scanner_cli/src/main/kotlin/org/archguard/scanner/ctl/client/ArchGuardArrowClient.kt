@@ -14,38 +14,38 @@ import org.jetbrains.kotlinx.dataframe.io.writeArrowFeather
 import java.io.File
 
 class ArchGuardArrowClient(private val systemId: String) : ArchGuardClient {
-    private fun buildFileName(topic: String): String = systemId + "_" + topic + ".arrow"
+    private fun filename(topic: String): String = systemId + "_" + topic + ".arrow"
     override fun saveDataStructure(codes: List<CodeDataStruct>) {
-        codes.toDataFrame().writeArrowFeather(File(buildFileName("codes")))
+        codes.toDataFrame().writeArrowFeather(File(filename("codes")))
     }
 
     override fun saveApi(apis: List<ContainerService>) {
-        apis.toDataFrame().writeArrowFeather(File(buildFileName("apis")))
+        apis.toDataFrame().writeArrowFeather(File(filename("apis")))
     }
 
     override fun saveRelation(records: List<CodeDatabaseRelation>) {
-        records.toDataFrame().writeArrowFeather(File(buildFileName("databases")))
+        records.toDataFrame().writeArrowFeather(File(filename("databases")))
     }
 
     override fun saveGitLogs(gitLogs: List<GitLogs>) {
-        gitLogs[0].commitLog.toDataFrame().writeArrowFeather(File(buildFileName("gitlog-commit")))
-        gitLogs[0].changeEntry.toDataFrame().writeArrowFeather(File(buildFileName("gitlog-change-entry")))
-        gitLogs[0].pathChangeCount.toDataFrame().writeArrowFeather(File(buildFileName("gitlog-change-count")))
+        gitLogs[0].commitLog.toDataFrame().writeArrowFeather(File(filename("gitlog-commit")))
+        gitLogs[0].changeEntry.toDataFrame().writeArrowFeather(File(filename("gitlog-change-entry")))
+        gitLogs[0].pathChangeCount.toDataFrame().writeArrowFeather(File(filename("gitlog-change-count")))
     }
 
     override fun saveDiffs(calls: List<ChangedCall>) {
-        calls.toDataFrame().writeArrowFeather(File(buildFileName("diff-changes")))
+        calls.toDataFrame().writeArrowFeather(File(filename("diff-changes")))
     }
 
     override fun saveDependencies(dependencies: List<CompositionDependency>) {
-        dependencies.toDataFrame().writeArrowFeather(File(buildFileName("sca-dependencies")))
+        dependencies.toDataFrame().writeArrowFeather(File(filename("sca-dependencies")))
     }
 
     override fun saveRuleIssues(issues: List<Issue>) {
-        issues.toDataFrame().writeArrowFeather(File(buildFileName("issues")))
+        issues.toDataFrame().writeArrowFeather(File(filename("issues")))
     }
 
     override fun saveEstimates(estimates: List<LanguageEstimate>) {
-        estimates.toDataFrame().writeArrowFeather(File(buildFileName("estimates")))
+        estimates.toDataFrame().writeArrowFeather(File(filename("estimates")))
     }
 }
