@@ -427,7 +427,7 @@ class SizingRepositoryImpl(val jdbi: Jdbi) : SizingRepository {
                         "and package_name like '%${filter.packageName}%' ) ";
             }
 
-            val sql = "select id, count(distinct name) as count, module,system_id, class_name, package_name " +
+            val sql = "select  count(distinct name) as count, module,class_name, package_name " +
                 "from code_method " +
                 "where system_id = :systemId " +
                 "and is_test=false " +
