@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
  * **Issue** is the analysis result of [org.archguard.rule.core.Rule] items.
  */
 @Serializable
-class Issue(
+data class Issue(
     val position: IssuePosition,
     val ruleId: String,
     val name: String,

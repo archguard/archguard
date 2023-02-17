@@ -3,7 +3,7 @@ package org.archguard.scanner.core.diffchanges
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ChangedCall(
+data class ChangedCall(
     val path: String,
     val packageName: String,
     val className: String,
@@ -11,7 +11,7 @@ class ChangedCall(
 )
 
 @Serializable
-class ChangeRelation(
+data class ChangeRelation(
     val source: String,
     val target: String
 )

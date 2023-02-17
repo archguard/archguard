@@ -3,6 +3,7 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.core.sourcecode.LanguageSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
@@ -19,6 +20,15 @@ class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAn
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }
+    }
+
+    fun analyse(channel: Channel<CodeDataStruct>) = runBlocking {
+        getFilesByPath(context.path) {
+            it.absolutePath.endsWith(".go")
+        }
+            .map { async { analysisByFile(it) } }.awaitAll()
+            .flatten()
+            .forEach { channel.send(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {
