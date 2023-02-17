@@ -4,8 +4,8 @@ import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithLine
 import com.thoughtworks.archguard.report.domain.sizing.ClassSizingWithMethodCount
 
 data class JClassPO(
-    val id: String,
-    val systemId: Long,
+    val id: String="",
+    val systemId: Long=0,
     val module: String? = null,
     val loc: Int? = null,
     val className: String,
