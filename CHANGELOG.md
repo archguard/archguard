@@ -1,4 +1,34 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0-beta.5...v) (2022-12-15)
+# [](https://github.com/archguard/archguard/compare/v2.0.0...v) (2023-04-24)
+
+
+### Bug Fixes
+
+* fix lost branch config for [#131](https://github.com/archguard/archguard/issues/131) ([dc6c3e0](https://github.com/archguard/archguard/commit/dc6c3e0d7b2be407f7a9702c1f35774f2216d56f))
+* fix tests ([9236b7b](https://github.com/archguard/archguard/commit/9236b7bbfe08de5c00e1bc98caac1ca9853123be))
+
+
+### Features
+
+* upgrade kotli jupyter version for [#131](https://github.com/archguard/archguard/issues/131) ([1dd8e2a](https://github.com/archguard/archguard/commit/1dd8e2a67d175e3bbfc9df3f2ea5a48d9acf9c88))
+
+
+
+# [2.0.0](https://github.com/archguard/archguard/compare/v2.0.0-beta.5...v2.0.0) (2023-02-16)
+
+
+### Bug Fixes
+
+* add encode for : in URI [#127](https://github.com/archguard/archguard/issues/127) ([877eaf8](https://github.com/archguard/archguard/commit/877eaf86b8374e3e578a4c019df92eb3eabf1fe3))
+* fix archdoc repl test issues ([c6f90a1](https://github.com/archguard/archguard/commit/c6f90a1f24a199d54335e7c5e8bb6a8d5698c2da))
+* fix chapi testing naming issues ([8699116](https://github.com/archguard/archguard/commit/8699116c243fe77244ba58151cd2368e837052b5))
+* fix cli item issues ([ece6689](https://github.com/archguard/archguard/commit/ece6689172e885cd3df8567f94b47bcc0cd94ac2))
+* fix deps warn in ide  issues ([e24c890](https://github.com/archguard/archguard/commit/e24c8901770107f262f0e71be58e716384d59307))
+* upgrade jupyter api version ([4a91264](https://github.com/archguard/archguard/commit/4a9126422afb4bb1f9542d5889653c1ddef8ae6f))
+
+
+### Features
+
+* import arrow as data format [#97](https://github.com/archguard/archguard/issues/97) ([3e73b0c](https://github.com/archguard/archguard/commit/3e73b0cc08bd31c43e479f529e29120dd293e0bf))
 
 
 
