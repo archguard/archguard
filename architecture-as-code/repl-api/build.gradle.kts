@@ -2,7 +2,7 @@
 plugins {
     base
     java
-    id("org.jetbrains.kotlin.jupyter.api") version "0.11.0-208"
+    id("org.jetbrains.kotlin.jupyter.api") version "0.11.0-358"
 
     alias(libs.plugins.jvm)
     alias(libs.plugins.serialization)
@@ -22,8 +22,8 @@ dependencies {
 
     implementation(libs.serialization.json)
 
-    implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-208")
-    implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-208")
+    implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.11.0-358")
+    implementation("org.jetbrains.kotlinx:kotlin-jupyter-kernel:0.11.0-358")
 
     // tips: don't add follow deps to project will cause issues
     compileOnly("org.jetbrains.kotlin:kotlin-scripting-jvm:1.6.21")

@@ -48,7 +48,7 @@ class KotlinReplWrapper {
     }
 
     fun eval(code: Code, jupyterId: Int = -1, storeHistory: Boolean = true) =
-        repl.eval(EvalRequestData(code, jupyterId, storeHistory))
+        repl.evalEx(EvalRequestData(code, jupyterId, storeHistory))
 
     companion object {
         fun resolveArchGuardDsl(): LibraryResolver {

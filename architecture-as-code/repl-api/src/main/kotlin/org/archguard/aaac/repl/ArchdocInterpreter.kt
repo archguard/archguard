@@ -7,7 +7,7 @@ import org.archguard.aaac.api.messaging.Message
 import org.archguard.aaac.api.messaging.MessageType
 import org.archguard.aaac.repl.compiler.KotlinReplWrapper
 import org.archguard.dsl.base.model.ReactiveAction
-import org.jetbrains.kotlinx.jupyter.repl.EvalResult
+import org.jetbrains.kotlinx.jupyter.repl.EvalResultEx
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -26,8 +26,8 @@ class ArchdocInterpreter : InterpreterService {
         }
     }
 
-    private fun convertResult(result: EvalResult, id: Int): Message {
-        val resultValue = result.resultValue
+    private fun convertResult(result: EvalResultEx, id: Int): Message {
+        val resultValue = result.rawValue
         val className: String = resultValue?.javaClass?.name.orEmpty()
 
         val message = Message(

@@ -18,7 +18,7 @@ internal class DslTest {
     internal fun simple_eval() {
         compiler.eval("val x = 3")
         val res = compiler.eval("x*2")
-        res.resultValue shouldBe 6
+        res.rawValue shouldBe 6
     }
 
     @Test
@@ -35,10 +35,10 @@ internal class DslTest {
         )
 
         val res = compiler.eval("layer.components().size")
-        res.resultValue shouldBe 3
+        res.rawValue shouldBe 3
 
         val name = compiler.eval("layer.components()[0].name")
-        name.resultValue shouldBe "controller"
+        name.rawValue shouldBe "controller"
     }
 
 }
