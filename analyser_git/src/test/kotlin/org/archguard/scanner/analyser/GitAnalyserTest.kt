@@ -9,10 +9,7 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.git.GitContext
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.jgit.api.Git
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import java.io.File
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -51,8 +48,8 @@ internal class GitAnalyserTest {
         val analyser = GitAnalyser(mockContext)
         val gitLogs = analyser.analyse()[0]
 
-        assertThat(gitLogs.commitLog).hasSize(5)
-        assertThat(gitLogs.changeEntry).hasSize(62)
-        assertThat(gitLogs.pathChangeCount).hasSize(33)
+        assertThat(gitLogs.commitLog).hasSize(8)
+        assertThat(gitLogs.changeEntry).hasSize(69)
+        assertThat(gitLogs.pathChangeCount).hasSize(36)
     }
 }
