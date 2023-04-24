@@ -1,7 +1,6 @@
 package org.archguard.aaac.repl.compiler
 
-import org.jetbrains.kotlinx.jupyter.EvalRequestData
-import org.jetbrains.kotlinx.jupyter.ReplForJupyter
+import org.jetbrains.kotlinx.jupyter.*
 import org.jetbrains.kotlinx.jupyter.api.Code
 import org.jetbrains.kotlinx.jupyter.libraries.EmptyResolutionInfoProvider
 import org.jetbrains.kotlinx.jupyter.libraries.LibraryResolver
@@ -43,7 +42,16 @@ class KotlinReplWrapper {
             embeddedClasspath,
             libraryResolver = resolveArchGuardDsl(),
             displayHandler = NoOpDisplayHandler,
-            isEmbedded = true
+            isEmbedded = true,
+            runtimeProperties = RuntimeKernelProperties(
+                mapOf(
+                    "version" to " 0.11.0.348",
+                    "currentBranch" to "stable-kotlin",
+                    "currentSha" to "d349508fbf0e94bf2f76435fcc8534cfa2bea380",
+                    "librariesFormatVersion" to "2",
+                    "jvmTargetForSnippets" to "11"
+                )
+            )
         )
     }
 
