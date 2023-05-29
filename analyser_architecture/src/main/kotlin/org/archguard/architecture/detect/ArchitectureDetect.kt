@@ -23,12 +23,12 @@ data class PotentialExecArch(
 class ArchitectureDetect {
     fun identPotential(workspace: Workspace): PotentialExecArch {
         // 1. setup
+        // todo: setup workspace
 
-        var execArch = PotentialExecArch()
         // 2. create exec arch
+        var execArch = PotentialExecArch()
         val markup = FrameworkMarkup.byLanguage("Java")
         if (markup != null) {
-            // todo: cache
             execArch = inferenceExecArchByDependencies(markup, workspace.projectDependencies)
         }
 
@@ -79,7 +79,7 @@ class ArchitectureDetect {
 
     /**
      *  create execute architecture by dependencies
-     *  - identify appType : web, data, like
+     *  - identify the channel type: web, data, like
      *  - identify protocol: http, rpc
      *  - identify core stacks
      */

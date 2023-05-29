@@ -10,6 +10,7 @@ typealias Language = String
 @Serializable
 class FrameworkMarkup(
     val language: String,
+    // todo: change to knowledge graph
     @SerialName("core_stacks")
     val coreStacks: List<String> = listOf(),
     @SerialName("app_type_mapping")

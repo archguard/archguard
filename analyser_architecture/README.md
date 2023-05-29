@@ -14,6 +14,8 @@ Refs:
 
 ## 基于依赖的框架映射，分析出架构分格
 
+Maven Index: [https://maven.apache.org/repository/central-index.html](https://maven.apache.org/repository/central-index.html) 
+
 示例：
 
 1. Spring Boot => 微服务架构
