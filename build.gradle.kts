@@ -73,8 +73,8 @@ allprojects {
 configure(
     allprojects
             - project(":server")
-//            - project(":architecture-as-code")
-//            - project(":rule-linter")
+            - project(":architecture-as-code")
+            - project(":rule-linter")
 //            - project(":doc-generator")
 //            - project(":analyser_architecture")
 //            - project(":analyser_diff_changes")
