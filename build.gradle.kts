@@ -80,7 +80,7 @@ configure(
 //            - project(":analyser_diff_changes")
 //            - project(":analyser_git")
 //            - project(":analyser_sca")
-//            - project(":analyser_sourcecode")
+            - project(":analyser_sourcecode")
 ) {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
