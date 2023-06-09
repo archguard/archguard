@@ -10,6 +10,11 @@ private val GRADLE_SHORT_IMPL_REGEX =
     // implementation "joda-time:joda-time:2.2"
     "([a-zA-Z]+)?(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
 
+// gradle version catalog
+private val GRADLE_VERSION_CATALOG_REGEX =
+    // implementation(libs.bundles.openai)
+    "([a-zA-Z]+)(?:\\(|\\s)(([a-zA-Z]+)((\\.[a-zA-Z]+)+))".toRegex()
+
 private val GRADLE_KEYWORD_REGEX =
     // runtimeOnly(group = "org.springframework", name = "spring-core", version = "2.5")
     "\\s+([a-zA-Z]+)(?:^|\\s|,|\\()((([a-zA-Z]+)(\\s*=|:)\\s*['\"]([^'\"]+)['\"][\\s,]*)+)\\)".toRegex()
@@ -23,9 +28,10 @@ private val ENTRY_REGEX =
 class GradleParser : Parser() {
     override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
         val deps = mutableListOf<DependencyEntry>()
-        deps += parseShortform(file.content)
+        deps += parseShortForm(file.content)
         deps += parseKeywordArg(file.content)
         deps += parseDependencySet(file.content)
+        deps += parseVersionCatalog(file.content)
 
         return listOf(
             PackageDependencies(
@@ -38,8 +44,23 @@ class GradleParser : Parser() {
         )
     }
 
+    private fun parseVersionCatalog(content: String): List<DependencyEntry> {
+        return GRADLE_VERSION_CATALOG_REGEX.findAll(content).filter {
+            it.groups.isNotEmpty() && it.groups.size == 6
+        }.map {
+            val groups = it.groups
+            DependencyEntry(
+                name = groups[2]!!.value,
+                group = "",
+                artifact = groups[2]!!.value,
+                version = "",
+                scope = DEP_SCOPE.from(groups[0]!!.value)
+            )
+        }.toList()
+    }
+
     // sample: implementation "joda-time:joda-time:2.2"
-    private fun parseShortform(content: String): List<DependencyEntry> {
+    private fun parseShortForm(content: String): List<DependencyEntry> {
         return GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
             it.groups.isNotEmpty() && it.groups.size == 6
         }.map {
