@@ -2,8 +2,8 @@ package org.archguard.scanner.ctl.impl
 
 import org.archguard.scanner.core.AnalyserSpec
 
-private const val VERSION = "2.0.2"
-private const val TAG = "v$VERSION"
+const val ARCHGUARD_VERSION = "2.0.2"
+private const val TAG = "v$ARCHGUARD_VERSION"
 private const val RELEASE_REPO_URL = "https://github.com/archguard/archguard/releases/download/$TAG"
 
 enum class OfficialAnalyserSpecs(
@@ -30,11 +30,18 @@ enum class OfficialAnalyserSpecs(
     ESTIMATE("EstimateAnalyser"),
     ;
 
-    fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, VERSION, jarFileName(), className)
-    fun version() = VERSION
-    fun identifier() = name.lowercase()
+    fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, ARCHGUARD_VERSION, jarFileName(), className)
+    fun version() = ARCHGUARD_VERSION
+    fun identifier(): String {
+        return if (name.lowercase() == "javascript") {
+            // we use the same analyser for javascript and typescript
+            "typescript"
+        } else {
+            name.lowercase()
+        }
+    }
 
-    private fun jarFileName(): String {
+    fun jarFileName(): String {
         val identifier = identifier()
         val prefix = when (this) {
             GIT, SCA, DIFF_CHANGES, ESTIMATE -> "analyser"
@@ -42,7 +49,7 @@ enum class OfficialAnalyserSpecs(
             RULE -> "rule"
             else -> "lang"
         }
-        return "${prefix}_$identifier-$VERSION-all.jar"
+        return "${prefix}_$identifier-$ARCHGUARD_VERSION-all.jar"
     }
 
     companion object {
