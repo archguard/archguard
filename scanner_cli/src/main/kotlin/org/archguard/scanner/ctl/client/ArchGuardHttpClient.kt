@@ -39,7 +39,14 @@ class ArchGuardHttpClient(
             .build()
     }
 
-    fun buildUrl(topic: String) = "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=${path.encodeUri}"
+    fun buildUrl(topic: String): String {
+        val url = "$serverUrl/api/scanner/$systemId/reporting/$topic?language=$language&path=${path.encodeUri}"
+        if (command.repoId != null) {
+            return url + "&repoId=${command.repoId}"
+        }
+
+        return url
+    }
 
     private inline fun <reified T> process(uri: URI, body: T) {
         val request = HttpRequest.newBuilder(uri)
