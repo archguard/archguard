@@ -28,6 +28,7 @@ enum class OfficialAnalyserSpecs(
     RULE("Rule"),
     DIFF_CHANGES("DiffChangesAnalyser"),
     ESTIMATE("EstimateAnalyser"),
+    OPEN_API("OpenApiAnalyser")
     ;
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, ARCHGUARD_VERSION, jarFileName(), className)

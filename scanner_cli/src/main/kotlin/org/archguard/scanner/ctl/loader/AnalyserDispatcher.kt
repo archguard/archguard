@@ -11,6 +11,7 @@ import org.archguard.scanner.core.estimate.EstimateAnalyser
 import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.git.GitAnalyser
 import org.archguard.scanner.core.git.GitContext
+import org.archguard.scanner.core.openapi.OpenApiAnalyser
 import org.archguard.scanner.core.sca.ScaAnalyser
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeAnalyser
@@ -29,7 +30,8 @@ class AnalyserDispatcher {
             AnalyserType.SCA -> ScaWorker(command)
             AnalyserType.RULE -> RuleWorker(command)
             AnalyserType.ESTIMATE -> EstimateWorker(command)
-            else -> TODO("not implemented yet")
+            AnalyserType.ARCHITECTURE -> TODO()
+            AnalyserType.OPEN_API -> OpenApiWorker(command)
         }.run()
     }
 }
@@ -144,5 +146,17 @@ class EstimateWorker(override val command: ScannerCommand) : Worker<EstimateCont
 
     override fun run() {
         getOrInstall<EstimateAnalyser>(OfficialAnalyserSpecs.ESTIMATE).analyse()
+    }
+}
+
+class OpenApiWorker(override val command: ScannerCommand) : Worker<EstimateContext> {
+    override val context = CliEstimateContext(
+        client = command.buildClient(),
+        path = command.path,
+        branch = command.branch
+    )
+
+    override fun run() {
+        getOrInstall<OpenApiAnalyser>(OfficialAnalyserSpecs.OPEN_API).analyse()
     }
 }
