@@ -25,9 +25,7 @@ data class ApiItem(
     var displayText: String = "",
 ) {
     override fun toString(): String {
-        val request = request.toString()
-        val response = response.joinToString(", ") { it.toString() }
-        return "$method $path $description $request $response"
+        return this.renderDisplayText()
     }
 
     fun renderDisplayText(): String {
