@@ -13,7 +13,7 @@ sealed class ChildType {
 }
 
 class PostmanParser {
-    private val `var`: PostmanVariables = PostmanVariables(PostmanEnvironment())
+    private val variables: PostmanVariables = PostmanVariables(PostmanEnvironment())
     fun parse(collection: PostmanCollection): List<ApiCollection>? {
         return collection.item?.map {
             parseFolder(it, it.name)
@@ -113,7 +113,7 @@ class PostmanParser {
         val description = request?.description
         val name = subItem.name
 
-        var uri = request?.getUrl(`var`)
+        var uri = request?.getUrl(variables)
         uri = uri?.replace("http://UNDEFINED", "")
             ?.replace("https://UNDEFINED", "")
             ?.replace("UNDEFINED", "{}")

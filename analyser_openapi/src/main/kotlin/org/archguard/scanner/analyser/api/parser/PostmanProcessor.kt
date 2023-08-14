@@ -11,6 +11,13 @@ class PostmanProcessor(val file: File) : ApiProcessor {
         val collection = postmanReader.readCollectionFile(file.absolutePath)
         val postmanParser = PostmanParser()
 
-        return postmanParser.parse(collection) ?: emptyList()
+        return postmanParser.parse(collection)?.map { apiCollection ->
+            apiCollection.items.forEach {
+                it.renderDisplayText()
+            }
+
+            apiCollection
+        }
+            ?: emptyList()
     }
 }
