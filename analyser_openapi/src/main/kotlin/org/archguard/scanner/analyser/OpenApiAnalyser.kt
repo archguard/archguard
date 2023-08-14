@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.api
+package org.archguard.scanner.analyser
 
 import org.archguard.scanner.analyser.api.openapi.OpenApiV3Processor
 import org.archguard.scanner.core.openapi.ApiCollection
@@ -16,6 +16,7 @@ class OpenApiAnalyser(override val context: OpenApiContext) : org.archguard.scan
         val target = Path(path);
         if (target.isDirectory()) {
             targetsFile += target.walk().filter {
+                println("it: $it")
                 !it.toString().contains("src/main/resources") && mayBeOasFile(it)
             }.toList()
         } else {
@@ -39,6 +40,5 @@ class OpenApiAnalyser(override val context: OpenApiContext) : org.archguard.scan
         return collections
     }
 
-    private fun mayBeOasFile(it: Path) = it.extension == ".json" || it.extension == ".yaml" || it.extension == ".yml"
-
+    private fun mayBeOasFile(it: Path) = it.extension == "json" || it.extension == "yaml" || it.extension == "yml"
 }

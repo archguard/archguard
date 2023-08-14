@@ -104,14 +104,13 @@ class OpenApiV3Processor(private val api: OpenAPI) : ApiProcessor {
     }
 
     companion object {
-        val logger = org.slf4j.LoggerFactory.getLogger(OpenApiV3Processor::class.java)!!
+        private val logger = org.slf4j.LoggerFactory.getLogger(OpenApiV3Processor::class.java)!!
 
         fun fromFile(file: File): OpenAPI? {
             try {
                 return OpenAPIV3Parser().read(file.absolutePath)
             } catch (e: Exception) {
                 logger.error("parse swagger file failed: ${file.absolutePath}")
-                e.printStackTrace()
             }
 
             return null

@@ -60,6 +60,7 @@ localtesting_*.csv
 *_databases.json
 *_issues.json
 *_estimates.json
+*_openapi.json
 slot.json
 *.proto
 *.pb
