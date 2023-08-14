@@ -16,6 +16,8 @@ jobs:
           - analyser_git/build/libs/analyser_git*-all.jar
           - analyser_sca/build/libs/analyser_sca*-all.jar
           - analyser_estimate/build/libs/analyser_estimate*-all.jar
+          - analyser_openapi/build/libs/analyser_openapi*-all.jar
+          # source code
           - analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar
           - analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar
           - analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar

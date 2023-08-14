@@ -19,7 +19,7 @@ enum class AnalyserType {
     // todo: not implemented yet
     ARCHITECTURE,
     ESTIMATE,
-    OPEN_API
+    OPENAPI
     ;
 
     companion object {

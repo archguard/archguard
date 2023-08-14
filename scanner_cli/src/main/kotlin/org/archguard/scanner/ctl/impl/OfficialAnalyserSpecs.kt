@@ -28,7 +28,7 @@ enum class OfficialAnalyserSpecs(
     RULE("Rule"),
     DIFF_CHANGES("DiffChangesAnalyser"),
     ESTIMATE("EstimateAnalyser"),
-    OPEN_API("OpenApiAnalyser")
+    OPENAPI("OpenApiAnalyser")
     ;
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, ARCHGUARD_VERSION, jarFileName(), className)
@@ -45,7 +45,7 @@ enum class OfficialAnalyserSpecs(
     fun jarFileName(): String {
         val identifier = identifier()
         val prefix = when (this) {
-            GIT, SCA, DIFF_CHANGES, ESTIMATE -> "analyser"
+            GIT, SCA, DIFF_CHANGES, ESTIMATE, OPENAPI -> "analyser"
             DATAMAP, APICALLS -> "feat"
             RULE -> "rule"
             else -> "lang"
