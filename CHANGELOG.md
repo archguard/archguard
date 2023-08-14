@@ -1,4 +1,51 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.0...v) (2023-04-24)
+# [](https://github.com/archguard/archguard/compare/v2.0.3...v) (2023-08-14)
+
+
+
+## [2.0.3](https://github.com/archguard/archguard/compare/v2.0.2...v2.0.3) (2023-08-14)
+
+
+### Bug Fixes
+
+* **cli:** add lost worker ([0b19a39](https://github.com/archguard/archguard/commit/0b19a392371a06167508eb0796c9dc62f19042ff))
+* fix javascript version issues ([d166be1](https://github.com/archguard/archguard/commit/d166be113a8059d5340c9f11563d6f58e6ca0eab))
+* fix not woring issues ([d8b9370](https://github.com/archguard/archguard/commit/d8b937030310187ae1150a85b9af3f073dbe5356))
+* fix testS ([32d81ce](https://github.com/archguard/archguard/commit/32d81ce69b12dcafe5df874720fc2814050a38c9))
+* fix to strings ([bfd5300](https://github.com/archguard/archguard/commit/bfd53007b3a337b6ff7cb4a6d8c6adcf34ba7e54))
+* fix typos ([02efcd0](https://github.com/archguard/archguard/commit/02efcd04c257e954fcf01272a095ab648d6c1b63))
+* fix typos for worker ([0ff1b4d](https://github.com/archguard/archguard/commit/0ff1b4dc081ee77bbfb2f7c746e9b7a12ef1f6e7))
+* **openapi:** fix postman not update item ([99b6e2c](https://github.com/archguard/archguard/commit/99b6e2ccccedea10683f5aee91d4f797bd159063))
+
+
+### Features
+
+* add api for swagger ([2815648](https://github.com/archguard/archguard/commit/2815648830ad9de6e3bf3d4fbbefc650cf790aa0))
+* add postman support for api ([11c1c6e](https://github.com/archguard/archguard/commit/11c1c6e1144e9bde26a62db819ecfc39a10fd952))
+* add repo id for autoDev ([0bf294c](https://github.com/archguard/archguard/commit/0bf294ce2ad08473d8f169316c15c4e3b483a437))
+* init analyser api ([6ae51c7](https://github.com/archguard/archguard/commit/6ae51c720ae07c0095c8071a819a04caa4e827a9))
+* skip for resources files ([2fd2198](https://github.com/archguard/archguard/commit/2fd2198b98ffb0be1e3f002d88030032904df5b6))
+
+
+
+## [2.0.2](https://github.com/archguard/archguard/compare/v2.0.1...v2.0.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* enable for analyser ro mavne center ([112edb4](https://github.com/archguard/archguard/commit/112edb41714ec0d3f84bbc77fbb8f61b85ac8d90))
+* fix typos ([2a5bb92](https://github.com/archguard/archguard/commit/2a5bb92a9ae06d1eabafd4b432314ca54dfe9e6c))
+* fix typos ([9bce5a7](https://github.com/archguard/archguard/commit/9bce5a7f7c3e3ac7b7e1b6451ac51e1deea4d59d))
+
+
+### Features
+
+* add for pipe and filters arch ([464a292](https://github.com/archguard/archguard/commit/464a292dafffb7e6f7a75bdf42a939ae336f64d3))
+* add support for gradle version catalog ([d87f3ad](https://github.com/archguard/archguard/commit/d87f3ad4a280c3e874fab93b7d03fcf621513623))
+* make all values method ([7790d28](https://github.com/archguard/archguard/commit/7790d2833dc3f2b99c9a5b4599a786dc09f10b54))
+
+
+
+## [2.0.1](https://github.com/archguard/archguard/compare/v2.0.0...v2.0.1) (2023-04-24)
 
 
 ### Bug Fixes
