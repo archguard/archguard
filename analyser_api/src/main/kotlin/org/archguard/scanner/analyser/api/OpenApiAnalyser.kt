@@ -17,8 +17,7 @@ class OpenApiAnalyser(override val context: ApiContext) : ApiAnalyser {
         val target = Path(path);
         if (target.isDirectory()) {
             targetsFile += target.walk().filter {
-                // skip file if under src/main/resources
-                mayBeOasFile(it)
+                !it.toString().contains("src/main/resources") && mayBeOasFile(it)
             }.toList()
         } else {
             if (mayBeOasFile(target)) {
