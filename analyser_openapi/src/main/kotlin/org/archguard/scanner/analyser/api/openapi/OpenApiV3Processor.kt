@@ -28,6 +28,8 @@ class OpenApiV3Processor(private val api: OpenAPI) : ApiProcessor {
                     response = convertResponses(operation),
                 )
 
+                apiItem.renderDisplayText()
+
                 allItems.add(apiItem)
             }
         }
