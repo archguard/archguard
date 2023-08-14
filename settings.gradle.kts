@@ -65,6 +65,7 @@ include(
     ":analyser_diff_changes",
     ":analyser_sca",
     ":analyser_architecture",
+    ":analyser_api",
 )
 
 /**

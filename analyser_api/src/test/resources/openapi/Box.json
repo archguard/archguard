@@ -1,0 +1,834 @@
+{
+  "info": {
+    "_postman_id": "b5ea2aeb-c82a-425d-baff-ed5dfd1d7659",
+    "name": "Box Platform API",
+    "description": "[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27038575",
+    "_collection_link": "https://www.postman.com/boxdev/workspace/box-s-public-workspace/collection/8119550-b5ea2aeb-c82a-425d-baff-ed5dfd1d7659?action=share&creator=27038575&source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Box Sign",
+      "item": [
+        {
+          "name": "Get sign request by ID",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* global pm */\n\n/**\n * Pre-request script ran before every API request.\n *\n * Used to notify users that their access token has expired\n */\n\n// determine if the Access Token has expired\nconst expiresAt = pm.environment.get('expires_at')\nconst expired = Date.now() > Number(expiresAt)\n\n// determine if the user has auto-refresh enabled\nconst autoRefresh = String(pm.environment.get('enable_auto_refresh_access_token')) === 'true'\n\n// determine if we have all the client credentials needed in the environment\nconst hasClientId = String(pm.environment.get('client_id')).length === 32\nconst hasClientSecret = String(pm.environment.get('client_secret')).length === 32\nconst hasRefreshToken = String(pm.environment.get('refresh_token')).length === 64\nconst hasAllCredentials = hasClientId && hasClientSecret && hasRefreshToken\n\n// if the access token expired and auto refresh has been set, use the refresh\n// token to create a new access token\nif (expired && autoRefresh && hasAllCredentials) {\n  // send a new API request to refresh the access token\n  pm.sendRequest({\n    url: 'https://api.box.com/oauth2/token',\n    method: 'POST',\n    headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' },\n    body: {\n      mode: 'urlencoded',\n      urlencoded: [\n        { key: 'client_id', value: pm.environment.get('client_id'), disabled: false },\n        { key: 'client_secret', value: pm.environment.get('client_secret'), disabled: false },\n        { key: 'refresh_token', value: pm.environment.get('refresh_token'), disabled: false },\n        { key: 'grant_type', value: 'refresh_token', disabled: false }\n      ]\n    }\n  }, function (error, response) {\n    if (error || response.json().error) {\n      // if an error occured, log the error and raise a message to the user.\n      console.log('Could not refresh the access token')\n      console.log(error)\n      console.log(response.json())\n      throw new Error('Could not refresh the access token. Check the console for more details.')\n    } else {\n      // otherwise, fetch the new access token and store it\n      const data = response.json()\n\n      // determine when this token is set to expire at\n      const newExpiresAt = Date.now() + data.expires_in * 1000\n      // store the new variables in the environment\n      pm.environment.set('access_token', data.access_token)\n      pm.environment.set('refresh_token', data.refresh_token)\n      pm.environment.set('expires_at', newExpiresAt)\n    }\n  })\n} else if (expired) {\n  // otherwise, throw a message to the user if the access token expired.\n  throw new Error('Access token expired. Please use the \"Authorization => Refresh access token\" API to request a new token.')\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id",
+              "protocol": "https",
+              "host": [
+                "{{api.box.com}}"
+              ],
+              "path": [
+                "2.0",
+                "sign_requests",
+                ":sign_request_id"
+              ],
+              "variable": [
+                {
+                  "key": "sign_request_id",
+                  "value": "33243242",
+                  "description": "The ID of the sign request"
+                }
+              ]
+            },
+            "description": "Gets a sign request by ID.\n\nhttps://developer.box.com/reference/get-sign-requests-id"
+          },
+          "response": [
+            {
+              "name": "[200] Returns a sign request",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Gets a sign request by ID.\n\nhttps://developer.box.com/reference/get-sign-requests-id"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"is_document_preparation_needed\": true,\n  \"redirect_url\": \"https://www.example.com\",\n  \"declined_redirect_url\": \"https://declined-redirect.com\",\n  \"are_text_signatures_enabled\": true,\n  \"email_subject\": \"Sign Request from Acme\",\n  \"email_message\": \"Hello! Please sign the document below\",\n  \"are_reminders_enabled\": true,\n  \"parent_folder\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"folder\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"name\": \"name\",\n  \"prefill_tags\": [\n    {\n      \"document_tag_id\": \"1234\",\n      \"text_value\": \"text\",\n      \"checkbox_value\": true,\n      \"date_value\": \"2021-04-26T08:12:13.982Z\"\n    }\n  ],\n  \"days_valid\": 2,\n  \"external_id\": \"123\",\n  \"is_phone_verification_required_to_view\": true,\n  \"type\": \"sign-request\",\n  \"signers\": [\n    {\n      \"email\": \"example@gmail.com\",\n      \"role\": \"signer\",\n      \"is_in_person\": true,\n      \"order\": 2,\n      \"embed_url_external_user_id\": \"1234\",\n      \"redirect_url\": \"https://example.com\",\n      \"declined_redirect_url\": \"https://declined-example.com\",\n      \"login_required\": true,\n      \"verification_phone_number\": \"6314578901\",\n      \"password\": \"SecretPassword123\",\n      \"has_viewed_document\": true,\n      \"signer_decision\": {\n        \"type\": \"signed\",\n        \"finalized_at\": \"2021-04-26T08:12:13.982Z\"\n      },\n      \"inputs\": [\n        {\n          \"document_tag_id\": \"1234\",\n          \"text_value\": \"text\",\n          \"checkbox_value\": true,\n          \"date_value\": \"2021-04-26T08:12:13.982Z\",\n          \"type\": \"text\",\n          \"content_type\": \"signature\",\n          \"page_index\": 4\n        }\n      ],\n      \"embed_url\": \"https://example.com\"\n    }\n  ],\n  \"signature_color\": \"blue\",\n  \"id\": \"12345\",\n  \"prepare_url\": \"https://prepareurl.com\",\n  \"signing_log\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"file\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": \"12345\",\n      \"type\": \"file_version\",\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"status\": \"converting\",\n  \"sign_files\": {\n    \"files\": [\n      {\n        \"id\": \"12345\",\n        \"etag\": \"1\",\n        \"type\": \"file\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"id\": \"12345\",\n          \"type\": \"file_version\",\n          \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n        }\n      }\n    ],\n    \"is_ready_for_download\": true\n  },\n  \"auto_expire_at\": \"2021-04-26T08:12:13.982Z\",\n  \"source_files\": [\n    {\n      \"id\": \"12345\",\n      \"etag\": \"1\",\n      \"type\": \"file\",\n      \"sequence_id\": \"3\",\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"id\": \"12345\",\n        \"type\": \"file_version\",\n        \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n      }\n    }\n  ]\n}"
+            },
+            {
+              "name": "[404] Returns an error when the sign request cannot be found, the user does",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Gets a sign request by ID.\n\nhttps://developer.box.com/reference/get-sign-requests-id"
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List sign requests",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* global pm */\n\n/**\n * Pre-request script ran before every API request.\n *\n * Used to notify users that their access token has expired\n */\n\n// determine if the Access Token has expired\nconst expiresAt = pm.environment.get('expires_at')\nconst expired = Date.now() > Number(expiresAt)\n\n// determine if the user has auto-refresh enabled\nconst autoRefresh = String(pm.environment.get('enable_auto_refresh_access_token')) === 'true'\n\n// determine if we have all the client credentials needed in the environment\nconst hasClientId = String(pm.environment.get('client_id')).length === 32\nconst hasClientSecret = String(pm.environment.get('client_secret')).length === 32\nconst hasRefreshToken = String(pm.environment.get('refresh_token')).length === 64\nconst hasAllCredentials = hasClientId && hasClientSecret && hasRefreshToken\n\n// if the access token expired and auto refresh has been set, use the refresh\n// token to create a new access token\nif (expired && autoRefresh && hasAllCredentials) {\n  // send a new API request to refresh the access token\n  pm.sendRequest({\n    url: 'https://api.box.com/oauth2/token',\n    method: 'POST',\n    headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' },\n    body: {\n      mode: 'urlencoded',\n      urlencoded: [\n        { key: 'client_id', value: pm.environment.get('client_id'), disabled: false },\n        { key: 'client_secret', value: pm.environment.get('client_secret'), disabled: false },\n        { key: 'refresh_token', value: pm.environment.get('refresh_token'), disabled: false },\n        { key: 'grant_type', value: 'refresh_token', disabled: false }\n      ]\n    }\n  }, function (error, response) {\n    if (error || response.json().error) {\n      // if an error occured, log the error and raise a message to the user.\n      console.log('Could not refresh the access token')\n      console.log(error)\n      console.log(response.json())\n      throw new Error('Could not refresh the access token. Check the console for more details.')\n    } else {\n      // otherwise, fetch the new access token and store it\n      const data = response.json()\n\n      // determine when this token is set to expire at\n      const newExpiresAt = Date.now() + data.expires_in * 1000\n      // store the new variables in the environment\n      pm.environment.set('access_token', data.access_token)\n      pm.environment.set('refresh_token', data.refresh_token)\n      pm.environment.set('expires_at', newExpiresAt)\n    }\n  })\n} else if (expired) {\n  // otherwise, throw a message to the user if the access token expired.\n  throw new Error('Access token expired. Please use the \"Authorization => Refresh access token\" API to request a new token.')\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://{{api.box.com}}/2.0/sign_requests",
+              "protocol": "https",
+              "host": [
+                "{{api.box.com}}"
+              ],
+              "path": [
+                "2.0",
+                "sign_requests"
+              ],
+              "query": [
+                {
+                  "key": "marker",
+                  "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1000",
+                  "description": "The maximum number of items to return per page.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Gets sign requests created by a user. If the sign_files and/or\n\nhttps://developer.box.com/reference/get-sign-requests"
+          },
+          "response": [
+            {
+              "name": "[200] Returns a collection of sign requests",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "description": "The maximum number of items to return per page.",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Gets sign requests created by a user. If the sign_files and/or\n\nhttps://developer.box.com/reference/get-sign-requests"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"limit\": 1000,\n  \"next_marker\": 3000,\n  \"prev_marker\": 1000,\n  \"entries\": [\n    {\n      \"is_document_preparation_needed\": true,\n      \"redirect_url\": \"https://www.example.com\",\n      \"declined_redirect_url\": \"https://declined-redirect.com\",\n      \"are_text_signatures_enabled\": true,\n      \"email_subject\": \"Sign Request from Acme\",\n      \"email_message\": \"Hello! Please sign the document below\",\n      \"are_reminders_enabled\": true,\n      \"parent_folder\": {\n        \"id\": \"12345\",\n        \"etag\": \"1\",\n        \"type\": \"folder\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contracts\"\n      },\n      \"name\": \"name\",\n      \"prefill_tags\": [\n        {\n          \"document_tag_id\": \"1234\",\n          \"text_value\": \"text\",\n          \"checkbox_value\": true,\n          \"date_value\": \"2021-04-26T08:12:13.982Z\"\n        }\n      ],\n      \"days_valid\": 2,\n      \"external_id\": \"123\",\n      \"is_phone_verification_required_to_view\": true,\n      \"type\": \"sign-request\",\n      \"signers\": [\n        {\n          \"email\": \"example@gmail.com\",\n          \"role\": \"signer\",\n          \"is_in_person\": true,\n          \"order\": 2,\n          \"embed_url_external_user_id\": \"1234\",\n          \"redirect_url\": \"https://example.com\",\n          \"declined_redirect_url\": \"https://declined-example.com\",\n          \"login_required\": true,\n          \"verification_phone_number\": \"6314578901\",\n          \"password\": \"SecretPassword123\",\n          \"has_viewed_document\": true,\n          \"signer_decision\": {\n            \"type\": \"signed\",\n            \"finalized_at\": \"2021-04-26T08:12:13.982Z\"\n          },\n          \"inputs\": [\n            {\n              \"document_tag_id\": \"1234\",\n              \"text_value\": \"text\",\n              \"checkbox_value\": true,\n              \"date_value\": \"2021-04-26T08:12:13.982Z\",\n              \"type\": \"text\",\n              \"content_type\": \"signature\",\n              \"page_index\": 4\n            }\n          ],\n          \"embed_url\": \"https://example.com\"\n        }\n      ],\n      \"signature_color\": \"blue\",\n      \"id\": \"12345\",\n      \"prepare_url\": \"https://prepareurl.com\",\n      \"signing_log\": {\n        \"id\": \"12345\",\n        \"etag\": \"1\",\n        \"type\": \"file\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"id\": \"12345\",\n          \"type\": \"file_version\",\n          \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n        }\n      },\n      \"status\": \"converting\",\n      \"sign_files\": {\n        \"files\": [\n          {\n            \"id\": \"12345\",\n            \"etag\": \"1\",\n            \"type\": \"file\",\n            \"sequence_id\": \"3\",\n            \"name\": \"Contract.pdf\",\n            \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n            \"file_version\": {\n              \"id\": \"12345\",\n              \"type\": \"file_version\",\n              \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n            }\n          }\n        ],\n        \"is_ready_for_download\": true\n      },\n      \"auto_expire_at\": \"2021-04-26T08:12:13.982Z\",\n      \"source_files\": [\n        {\n          \"id\": \"12345\",\n          \"etag\": \"1\",\n          \"type\": \"file\",\n          \"sequence_id\": \"3\",\n          \"name\": \"Contract.pdf\",\n          \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n          \"file_version\": {\n            \"id\": \"12345\",\n            \"type\": \"file_version\",\n            \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n          }\n        }\n      ]\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cancel sign request",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* global pm */\n\n/**\n * Pre-request script ran before every API request.\n *\n * Used to notify users that their access token has expired\n */\n\n// determine if the Access Token has expired\nconst expiresAt = pm.environment.get('expires_at')\nconst expired = Date.now() > Number(expiresAt)\n\n// determine if the user has auto-refresh enabled\nconst autoRefresh = String(pm.environment.get('enable_auto_refresh_access_token')) === 'true'\n\n// determine if we have all the client credentials needed in the environment\nconst hasClientId = String(pm.environment.get('client_id')).length === 32\nconst hasClientSecret = String(pm.environment.get('client_secret')).length === 32\nconst hasRefreshToken = String(pm.environment.get('refresh_token')).length === 64\nconst hasAllCredentials = hasClientId && hasClientSecret && hasRefreshToken\n\n// if the access token expired and auto refresh has been set, use the refresh\n// token to create a new access token\nif (expired && autoRefresh && hasAllCredentials) {\n  // send a new API request to refresh the access token\n  pm.sendRequest({\n    url: 'https://api.box.com/oauth2/token',\n    method: 'POST',\n    headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' },\n    body: {\n      mode: 'urlencoded',\n      urlencoded: [\n        { key: 'client_id', value: pm.environment.get('client_id'), disabled: false },\n        { key: 'client_secret', value: pm.environment.get('client_secret'), disabled: false },\n        { key: 'refresh_token', value: pm.environment.get('refresh_token'), disabled: false },\n        { key: 'grant_type', value: 'refresh_token', disabled: false }\n      ]\n    }\n  }, function (error, response) {\n    if (error || response.json().error) {\n      // if an error occured, log the error and raise a message to the user.\n      console.log('Could not refresh the access token')\n      console.log(error)\n      console.log(response.json())\n      throw new Error('Could not refresh the access token. Check the console for more details.')\n    } else {\n      // otherwise, fetch the new access token and store it\n      const data = response.json()\n\n      // determine when this token is set to expire at\n      const newExpiresAt = Date.now() + data.expires_in * 1000\n      // store the new variables in the environment\n      pm.environment.set('access_token', data.access_token)\n      pm.environment.set('refresh_token', data.refresh_token)\n      pm.environment.set('expires_at', newExpiresAt)\n    }\n  })\n} else if (expired) {\n  // otherwise, throw a message to the user if the access token expired.\n  throw new Error('Access token expired. Please use the \"Authorization => Refresh access token\" API to request a new token.')\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/cancel",
+              "protocol": "https",
+              "host": [
+                "{{api.box.com}}"
+              ],
+              "path": [
+                "2.0",
+                "sign_requests",
+                ":sign_request_id",
+                "cancel"
+              ],
+              "variable": [
+                {
+                  "key": "sign_request_id",
+                  "value": "33243242",
+                  "description": "The ID of the sign request"
+                }
+              ]
+            },
+            "description": "Cancels a sign request.\n\nhttps://developer.box.com/reference/post-sign-requests-id-cancel"
+          },
+          "response": [
+            {
+              "name": "[200] Returns a Sign Request object.",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/cancel",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id",
+                    "cancel"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Cancels a sign request.\n\nhttps://developer.box.com/reference/post-sign-requests-id-cancel"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"is_document_preparation_needed\": true,\n  \"redirect_url\": \"https://www.example.com\",\n  \"declined_redirect_url\": \"https://declined-redirect.com\",\n  \"are_text_signatures_enabled\": true,\n  \"email_subject\": \"Sign Request from Acme\",\n  \"email_message\": \"Hello! Please sign the document below\",\n  \"are_reminders_enabled\": true,\n  \"parent_folder\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"folder\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"name\": \"name\",\n  \"prefill_tags\": [\n    {\n      \"document_tag_id\": \"1234\",\n      \"text_value\": \"text\",\n      \"checkbox_value\": true,\n      \"date_value\": \"2021-04-26T08:12:13.982Z\"\n    }\n  ],\n  \"days_valid\": 2,\n  \"external_id\": \"123\",\n  \"is_phone_verification_required_to_view\": true,\n  \"type\": \"sign-request\",\n  \"signers\": [\n    {\n      \"email\": \"example@gmail.com\",\n      \"role\": \"signer\",\n      \"is_in_person\": true,\n      \"order\": 2,\n      \"embed_url_external_user_id\": \"1234\",\n      \"redirect_url\": \"https://example.com\",\n      \"declined_redirect_url\": \"https://declined-example.com\",\n      \"login_required\": true,\n      \"verification_phone_number\": \"6314578901\",\n      \"password\": \"SecretPassword123\",\n      \"has_viewed_document\": true,\n      \"signer_decision\": {\n        \"type\": \"signed\",\n        \"finalized_at\": \"2021-04-26T08:12:13.982Z\"\n      },\n      \"inputs\": [\n        {\n          \"document_tag_id\": \"1234\",\n          \"text_value\": \"text\",\n          \"checkbox_value\": true,\n          \"date_value\": \"2021-04-26T08:12:13.982Z\",\n          \"type\": \"text\",\n          \"content_type\": \"signature\",\n          \"page_index\": 4\n        }\n      ],\n      \"embed_url\": \"https://example.com\"\n    }\n  ],\n  \"signature_color\": \"blue\",\n  \"id\": \"12345\",\n  \"prepare_url\": \"https://prepareurl.com\",\n  \"signing_log\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"file\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": \"12345\",\n      \"type\": \"file_version\",\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"status\": \"converting\",\n  \"sign_files\": {\n    \"files\": [\n      {\n        \"id\": \"12345\",\n        \"etag\": \"1\",\n        \"type\": \"file\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"id\": \"12345\",\n          \"type\": \"file_version\",\n          \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n        }\n      }\n    ],\n    \"is_ready_for_download\": true\n  },\n  \"auto_expire_at\": \"2021-04-26T08:12:13.982Z\",\n  \"source_files\": [\n    {\n      \"id\": \"12345\",\n      \"etag\": \"1\",\n      \"type\": \"file\",\n      \"sequence_id\": \"3\",\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"id\": \"12345\",\n        \"type\": \"file_version\",\n        \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n      }\n    }\n  ]\n}"
+            },
+            {
+              "name": "[404] Returns an error when the sign request cannot be found or the user does",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/cancel",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id",
+                    "cancel"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Cancels a sign request.\n\nhttps://developer.box.com/reference/post-sign-requests-id-cancel"
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Resend sign request",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* global pm */\n\n/**\n * Pre-request script ran before every API request.\n *\n * Used to notify users that their access token has expired\n */\n\n// determine if the Access Token has expired\nconst expiresAt = pm.environment.get('expires_at')\nconst expired = Date.now() > Number(expiresAt)\n\n// determine if the user has auto-refresh enabled\nconst autoRefresh = String(pm.environment.get('enable_auto_refresh_access_token')) === 'true'\n\n// determine if we have all the client credentials needed in the environment\nconst hasClientId = String(pm.environment.get('client_id')).length === 32\nconst hasClientSecret = String(pm.environment.get('client_secret')).length === 32\nconst hasRefreshToken = String(pm.environment.get('refresh_token')).length === 64\nconst hasAllCredentials = hasClientId && hasClientSecret && hasRefreshToken\n\n// if the access token expired and auto refresh has been set, use the refresh\n// token to create a new access token\nif (expired && autoRefresh && hasAllCredentials) {\n  // send a new API request to refresh the access token\n  pm.sendRequest({\n    url: 'https://api.box.com/oauth2/token',\n    method: 'POST',\n    headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' },\n    body: {\n      mode: 'urlencoded',\n      urlencoded: [\n        { key: 'client_id', value: pm.environment.get('client_id'), disabled: false },\n        { key: 'client_secret', value: pm.environment.get('client_secret'), disabled: false },\n        { key: 'refresh_token', value: pm.environment.get('refresh_token'), disabled: false },\n        { key: 'grant_type', value: 'refresh_token', disabled: false }\n      ]\n    }\n  }, function (error, response) {\n    if (error || response.json().error) {\n      // if an error occured, log the error and raise a message to the user.\n      console.log('Could not refresh the access token')\n      console.log(error)\n      console.log(response.json())\n      throw new Error('Could not refresh the access token. Check the console for more details.')\n    } else {\n      // otherwise, fetch the new access token and store it\n      const data = response.json()\n\n      // determine when this token is set to expire at\n      const newExpiresAt = Date.now() + data.expires_in * 1000\n      // store the new variables in the environment\n      pm.environment.set('access_token', data.access_token)\n      pm.environment.set('refresh_token', data.refresh_token)\n      pm.environment.set('expires_at', newExpiresAt)\n    }\n  })\n} else if (expired) {\n  // otherwise, throw a message to the user if the access token expired.\n  throw new Error('Access token expired. Please use the \"Authorization => Refresh access token\" API to request a new token.')\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/resend",
+              "protocol": "https",
+              "host": [
+                "{{api.box.com}}"
+              ],
+              "path": [
+                "2.0",
+                "sign_requests",
+                ":sign_request_id",
+                "resend"
+              ],
+              "variable": [
+                {
+                  "key": "sign_request_id",
+                  "value": "33243242",
+                  "description": "The ID of the sign request"
+                }
+              ]
+            },
+            "description": "Resends a sign request email to all outstanding signers.\n\nhttps://developer.box.com/reference/post-sign-requests-id-resend"
+          },
+          "response": [
+            {
+              "name": "[202] Returns an empty response when the API call was successful.",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/resend",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id",
+                    "resend"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Resends a sign request email to all outstanding signers.\n\nhttps://developer.box.com/reference/post-sign-requests-id-resend"
+              },
+              "status": "Accepted",
+              "code": 202,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "[404] Returns an error when the sign request cannot be found or the user does",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests/:sign_request_id/resend",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests",
+                    ":sign_request_id",
+                    "resend"
+                  ],
+                  "variable": [
+                    {
+                      "key": "sign_request_id",
+                      "value": "33243242",
+                      "description": "The ID of the sign request"
+                    }
+                  ]
+                },
+                "description": "Resends a sign request email to all outstanding signers.\n\nhttps://developer.box.com/reference/post-sign-requests-id-resend"
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create sign request",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* global pm */\n\n/**\n * Pre-request script ran before every API request.\n *\n * Used to notify users that their access token has expired\n */\n\n// determine if the Access Token has expired\nconst expiresAt = pm.environment.get('expires_at')\nconst expired = Date.now() > Number(expiresAt)\n\n// determine if the user has auto-refresh enabled\nconst autoRefresh = String(pm.environment.get('enable_auto_refresh_access_token')) === 'true'\n\n// determine if we have all the client credentials needed in the environment\nconst hasClientId = String(pm.environment.get('client_id')).length === 32\nconst hasClientSecret = String(pm.environment.get('client_secret')).length === 32\nconst hasRefreshToken = String(pm.environment.get('refresh_token')).length === 64\nconst hasAllCredentials = hasClientId && hasClientSecret && hasRefreshToken\n\n// if the access token expired and auto refresh has been set, use the refresh\n// token to create a new access token\nif (expired && autoRefresh && hasAllCredentials) {\n  // send a new API request to refresh the access token\n  pm.sendRequest({\n    url: 'https://api.box.com/oauth2/token',\n    method: 'POST',\n    headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' },\n    body: {\n      mode: 'urlencoded',\n      urlencoded: [\n        { key: 'client_id', value: pm.environment.get('client_id'), disabled: false },\n        { key: 'client_secret', value: pm.environment.get('client_secret'), disabled: false },\n        { key: 'refresh_token', value: pm.environment.get('refresh_token'), disabled: false },\n        { key: 'grant_type', value: 'refresh_token', disabled: false }\n      ]\n    }\n  }, function (error, response) {\n    if (error || response.json().error) {\n      // if an error occured, log the error and raise a message to the user.\n      console.log('Could not refresh the access token')\n      console.log(error)\n      console.log(response.json())\n      throw new Error('Could not refresh the access token. Check the console for more details.')\n    } else {\n      // otherwise, fetch the new access token and store it\n      const data = response.json()\n\n      // determine when this token is set to expire at\n      const newExpiresAt = Date.now() + data.expires_in * 1000\n      // store the new variables in the environment\n      pm.environment.set('access_token', data.access_token)\n      pm.environment.set('refresh_token', data.refresh_token)\n      pm.environment.set('expires_at', newExpiresAt)\n    }\n  })\n} else if (expired) {\n  // otherwise, throw a message to the user if the access token expired.\n  throw new Error('Access token expired. Please use the \"Authorization => Refresh access token\" API to request a new token.')\n}\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessToken",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_document_preparation_needed\": true,\n  \"redirect_url\": \"https://www.example.com\",\n  \"declined_redirect_url\": \"https://declined-redirect.com\",\n  \"are_text_signatures_enabled\": true,\n  \"email_subject\": \"Sign Request from Acme\",\n  \"email_message\": \"Hello! Please sign the document below\",\n  \"are_reminders_enabled\": true,\n  \"parent_folder\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"folder\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"name\": \"name\",\n  \"prefill_tags\": [\n    {\n      \"document_tag_id\": \"1234\",\n      \"text_value\": \"text\",\n      \"checkbox_value\": true,\n      \"date_value\": \"2021-04-26T08:12:13.982Z\"\n    }\n  ],\n  \"days_valid\": 2,\n  \"external_id\": \"123\",\n  \"is_phone_verification_required_to_view\": true,\n  \"source_files\": [\n    {\n      \"id\": \"12345\",\n      \"etag\": \"1\",\n      \"type\": \"file\",\n      \"sequence_id\": \"3\",\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"id\": \"12345\",\n        \"type\": \"file_version\",\n        \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n      }\n    }\n  ],\n  \"signature_color\": \"blue\",\n  \"signers\": [\n    {\n      \"email\": \"example@gmail.com\",\n      \"role\": \"signer\",\n      \"is_in_person\": true,\n      \"order\": 2,\n      \"embed_url_external_user_id\": \"1234\",\n      \"redirect_url\": \"https://example.com\",\n      \"declined_redirect_url\": \"https://declined-example.com\",\n      \"login_required\": true,\n      \"verification_phone_number\": \"6314578901\",\n      \"password\": \"SecretPassword123\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "https://{{api.box.com}}/2.0/sign_requests",
+              "protocol": "https",
+              "host": [
+                "{{api.box.com}}"
+              ],
+              "path": [
+                "2.0",
+                "sign_requests"
+              ]
+            },
+            "description": "Creates a sign request. This involves preparing a document for signing and\n\nhttps://developer.box.com/reference/post-sign-requests"
+          },
+          "response": [
+            {
+              "name": "[201] Returns a Sign Request object.",
+              "originalRequest": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "accessToken",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "tokenType",
+                      "value": "bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_document_preparation_needed\": true,\n  \"redirect_url\": \"https://www.example.com\",\n  \"declined_redirect_url\": \"https://declined-redirect.com\",\n  \"are_text_signatures_enabled\": true,\n  \"email_subject\": \"Sign Request from Acme\",\n  \"email_message\": \"Hello! Please sign the document below\",\n  \"are_reminders_enabled\": true,\n  \"parent_folder\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"folder\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"name\": \"name\",\n  \"prefill_tags\": [\n    {\n      \"document_tag_id\": \"1234\",\n      \"text_value\": \"text\",\n      \"checkbox_value\": true,\n      \"date_value\": \"2021-04-26T08:12:13.982Z\"\n    }\n  ],\n  \"days_valid\": 2,\n  \"external_id\": \"123\",\n  \"is_phone_verification_required_to_view\": true,\n  \"source_files\": [\n    {\n      \"id\": \"12345\",\n      \"etag\": \"1\",\n      \"type\": \"file\",\n      \"sequence_id\": \"3\",\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"id\": \"12345\",\n        \"type\": \"file_version\",\n        \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n      }\n    }\n  ],\n  \"signature_color\": \"blue\",\n  \"signers\": [\n    {\n      \"email\": \"example@gmail.com\",\n      \"role\": \"signer\",\n      \"is_in_person\": true,\n      \"order\": 2,\n      \"embed_url_external_user_id\": \"1234\",\n      \"redirect_url\": \"https://example.com\",\n      \"declined_redirect_url\": \"https://declined-example.com\",\n      \"login_required\": true,\n      \"verification_phone_number\": \"6314578901\",\n      \"password\": \"SecretPassword123\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "https://{{api.box.com}}/2.0/sign_requests",
+                  "protocol": "https",
+                  "host": [
+                    "{{api.box.com}}"
+                  ],
+                  "path": [
+                    "2.0",
+                    "sign_requests"
+                  ]
+                },
+                "description": "Creates a sign request. This involves preparing a document for signing and\n\nhttps://developer.box.com/reference/post-sign-requests"
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"is_document_preparation_needed\": true,\n  \"redirect_url\": \"https://www.example.com\",\n  \"declined_redirect_url\": \"https://declined-redirect.com\",\n  \"are_text_signatures_enabled\": true,\n  \"email_subject\": \"Sign Request from Acme\",\n  \"email_message\": \"Hello! Please sign the document below\",\n  \"are_reminders_enabled\": true,\n  \"parent_folder\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"folder\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"name\": \"name\",\n  \"prefill_tags\": [\n    {\n      \"document_tag_id\": \"1234\",\n      \"text_value\": \"text\",\n      \"checkbox_value\": true,\n      \"date_value\": \"2021-04-26T08:12:13.982Z\"\n    }\n  ],\n  \"days_valid\": 2,\n  \"external_id\": \"123\",\n  \"is_phone_verification_required_to_view\": true,\n  \"type\": \"sign-request\",\n  \"signers\": [\n    {\n      \"email\": \"example@gmail.com\",\n      \"role\": \"signer\",\n      \"is_in_person\": true,\n      \"order\": 2,\n      \"embed_url_external_user_id\": \"1234\",\n      \"redirect_url\": \"https://example.com\",\n      \"declined_redirect_url\": \"https://declined-example.com\",\n      \"login_required\": true,\n      \"verification_phone_number\": \"6314578901\",\n      \"password\": \"SecretPassword123\",\n      \"has_viewed_document\": true,\n      \"signer_decision\": {\n        \"type\": \"signed\",\n        \"finalized_at\": \"2021-04-26T08:12:13.982Z\"\n      },\n      \"inputs\": [\n        {\n          \"document_tag_id\": \"1234\",\n          \"text_value\": \"text\",\n          \"checkbox_value\": true,\n          \"date_value\": \"2021-04-26T08:12:13.982Z\",\n          \"type\": \"text\",\n          \"content_type\": \"signature\",\n          \"page_index\": 4\n        }\n      ],\n      \"embed_url\": \"https://example.com\"\n    }\n  ],\n  \"signature_color\": \"blue\",\n  \"id\": \"12345\",\n  \"prepare_url\": \"https://prepareurl.com\",\n  \"signing_log\": {\n    \"id\": \"12345\",\n    \"etag\": \"1\",\n    \"type\": \"file\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": \"12345\",\n      \"type\": \"file_version\",\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"status\": \"converting\",\n  \"sign_files\": {\n    \"files\": [\n      {\n        \"id\": \"12345\",\n        \"etag\": \"1\",\n        \"type\": \"file\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"id\": \"12345\",\n          \"type\": \"file_version\",\n          \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n        }\n      }\n    ],\n    \"is_ready_for_download\": true\n  },\n  \"auto_expire_at\": \"2021-04-26T08:12:13.982Z\",\n  \"source_files\": [\n    {\n      \"id\": \"12345\",\n      \"etag\": \"1\",\n      \"type\": \"file\",\n      \"sequence_id\": \"3\",\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"id\": \"12345\",\n        \"type\": \"file_version\",\n        \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n      }\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessToken",
+        "value": "{{access_token}}",
+        "type": "string"
+      },
+      {
+        "key": "tokenType",
+        "value": "bearer",
+        "type": "string"
+      },
+      {
+        "key": "addTokenTo",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "account.box.com",
+      "value": "account.box.com"
+    },
+    {
+      "key": "api.box.com",
+      "value": "api.box.com"
+    },
+    {
+      "key": "upload.box.com",
+      "value": "upload.box.com"
+    },
+    {
+      "key": "dl.boxcloud.com",
+      "value": "dl.boxcloud.com"
+    }
+  ]
+}

@@ -1,0 +1,1176 @@
+{
+	"info": {
+		"_postman_id": "497c1579-7153-42d7-9ae4-62094712cd15",
+		"name": "CircleCI",
+		"description": "This describes the resources that make up the CircleCI API v2.\n\nContact Support:\n Name: No Contact\n Email: email@example.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27038575",
+		"_collection_link": "https://www.postman.com/apievangelist/workspace/ci-cd/collection/35240-497c1579-7153-42d7-9ae4-62094712cd15?action=share&creator=27038575&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "context",
+			"item": [
+				{
+					"name": "{context-id}",
+					"item": [
+						{
+							"name": "environment-variable",
+							"item": [
+								{
+									"name": "List environment variables",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/context/:context-id/environment-variable",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"context",
+												":context-id",
+												"environment-variable"
+											],
+											"variable": [
+												{
+													"key": "context-id",
+													"value": "<string>",
+													"type": "string",
+													"description": "ID of the context (UUID)"
+												}
+											]
+										},
+										"description": "List information about environment variables in a context, not including their values."
+									},
+									"response": []
+								},
+								{
+									"name": "Add or update an environment variable",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/context/:context-id/environment-variable/:env-var-name",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"context",
+												":context-id",
+												"environment-variable",
+												":env-var-name"
+											],
+											"variable": [
+												{
+													"key": "context-id",
+													"value": "<string>",
+													"type": "string",
+													"description": "ID of the context (UUID)"
+												},
+												{
+													"key": "env-var-name",
+													"value": "<string>",
+													"type": "string",
+													"description": "The name of the environment variable"
+												}
+											]
+										},
+										"description": "Create or update an environment variable within a context. Returns information about the environment variable, not including its value."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete a context",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/context/:context-id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"context",
+										":context-id"
+									],
+									"variable": [
+										{
+											"key": "context-id",
+											"value": "<string>",
+											"type": "string",
+											"description": "ID of the context (UUID)"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List contexts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/context?owner-id=<string>&owner-slug=<string>&owner-type=<string>&page-token=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"context"
+							],
+							"query": [
+								{
+									"key": "owner-id",
+									"value": "<string>",
+									"description": "The unique ID of the owner of the context. Specify either this or owner-slug."
+								},
+								{
+									"key": "owner-slug",
+									"value": "<string>",
+									"description": "A string that represents an organization. Specify either this or owner-id. Cannot be used for accounts."
+								},
+								{
+									"key": "owner-type",
+									"value": "<string>",
+									"description": "The type of the owner. Defaults to \"organization\". Accounts are only used as context owners in server."
+								},
+								{
+									"key": "page-token",
+									"value": "<string>",
+									"description": "A token to retrieve the next page of results."
+								}
+							]
+						},
+						"description": "List all contexts for an owner."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "insights/{project-slug}/workflows",
+			"item": [
+				{
+					"name": "{workflow-name}",
+					"item": [
+						{
+							"name": "jobs",
+							"item": [
+								{
+									"name": "Get summary metrics for a project workflow's jobs.",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/insights/:project-slug/workflows/:workflow-name/jobs?page-token=<string>&branch=<string>&reporting-window=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												":project-slug",
+												"workflows",
+												":workflow-name",
+												"jobs"
+											],
+											"query": [
+												{
+													"key": "page-token",
+													"value": "<string>",
+													"description": "A token to retrieve the next page of results."
+												},
+												{
+													"key": "branch",
+													"value": "<string>",
+													"description": "The name of a vcs branch. If not passed we will scope the API call to the default branch."
+												},
+												{
+													"key": "reporting-window",
+													"value": "<string>",
+													"description": "The time window used to calculate summary metrics."
+												}
+											],
+											"variable": [
+												{
+													"key": "project-slug",
+													"value": "<string>",
+													"type": "string",
+													"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+												},
+												{
+													"key": "workflow-name",
+													"value": "<string>",
+													"type": "string",
+													"description": "The name of the workflow."
+												}
+											]
+										},
+										"description": "Get summary metrics for a project workflow's jobs. Job runs going back at most 90 days are included in the aggregation window. Metrics are refreshed daily, and thus may not include executions from the last 24 hours. Please note that Insights is not a real time financial reporting tool and should not be used for credit reporting. The most up to date credit information can be found in Plan Overview in the CircleCI UI."
+									},
+									"response": []
+								},
+								{
+									"name": "Get recent runs of a workflow job",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/insights/:project-slug/workflows/:workflow-name/jobs/:job-name?branch=<string>&page-token=<string>&start-date=<string>&end-date=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												":project-slug",
+												"workflows",
+												":workflow-name",
+												"jobs",
+												":job-name"
+											],
+											"query": [
+												{
+													"key": "branch",
+													"value": "<string>",
+													"description": "The name of a vcs branch. If not passed we will scope the API call to the default branch."
+												},
+												{
+													"key": "page-token",
+													"value": "<string>",
+													"description": "A token to retrieve the next page of results."
+												},
+												{
+													"key": "start-date",
+													"value": "<string>",
+													"description": "Include only executions that started at or after this date. This must be specified if an end-date is provided."
+												},
+												{
+													"key": "end-date",
+													"value": "<string>",
+													"description": "Include only executions that started before this date. This date can be at most 90 days after the start-date."
+												}
+											],
+											"variable": [
+												{
+													"key": "project-slug",
+													"value": "<string>",
+													"type": "string",
+													"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+												},
+												{
+													"key": "workflow-name",
+													"value": "<string>",
+													"type": "string",
+													"description": "The name of the workflow."
+												},
+												{
+													"key": "job-name",
+													"value": "<string>",
+													"type": "string",
+													"description": "The name of the job."
+												}
+											]
+										},
+										"description": "Get recent runs of a job within a workflow. Runs going back at most 90 days are returned. Please note that Insights is not a real time financial reporting tool and should not be used for credit reporting. The most up to date credit information can be found in Plan Overview in the CircleCI UI."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get recent runs of a workflow",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/insights/:project-slug/workflows/:workflow-name?branch=<string>&page-token=<string>&start-date=<string>&end-date=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"insights",
+										":project-slug",
+										"workflows",
+										":workflow-name"
+									],
+									"query": [
+										{
+											"key": "branch",
+											"value": "<string>",
+											"description": "The name of a vcs branch. If not passed we will scope the API call to the default branch."
+										},
+										{
+											"key": "page-token",
+											"value": "<string>",
+											"description": "A token to retrieve the next page of results."
+										},
+										{
+											"key": "start-date",
+											"value": "<string>",
+											"description": "Include only executions that started at or after this date. This must be specified if an end-date is provided."
+										},
+										{
+											"key": "end-date",
+											"value": "<string>",
+											"description": "Include only executions that started before this date. This date can be at most 90 days after the start-date."
+										}
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										},
+										{
+											"key": "workflow-name",
+											"value": "<string>",
+											"type": "string",
+											"description": "The name of the workflow."
+										}
+									]
+								},
+								"description": "Get recent runs of a workflow. Runs going back at most 90 days are returned. Please note that Insights is not a real time financial reporting tool and should not be used for credit reporting. The most up to date credit information can be found in Plan Overview in the CircleCI UI."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get summary metrics for a project's workflows",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/insights/:project-slug/workflows?page-token=<string>&branch=<string>&reporting-window=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"insights",
+								":project-slug",
+								"workflows"
+							],
+							"query": [
+								{
+									"key": "page-token",
+									"value": "<string>",
+									"description": "A token to retrieve the next page of results."
+								},
+								{
+									"key": "branch",
+									"value": "<string>",
+									"description": "The name of a vcs branch. If not passed we will scope the API call to the default branch."
+								},
+								{
+									"key": "reporting-window",
+									"value": "<string>",
+									"description": "The time window used to calculate summary metrics."
+								}
+							],
+							"variable": [
+								{
+									"key": "project-slug",
+									"value": "<string>",
+									"type": "string",
+									"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+								}
+							]
+						},
+						"description": "Get summary metrics for a project's workflows. Workflow runs going back at most 90 days are included in the aggregation window. Metrics are refreshed daily, and thus may not include executions from the last 24 hours. Please note that Insights is not a real time financial reporting tool and should not be used for credit reporting. The most up to date credit information can be found in Plan Overview in the CircleCI UI."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "me",
+			"item": [
+				{
+					"name": "User Information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"me"
+							]
+						},
+						"description": "Provides information about the user that is currently signed in."
+					},
+					"response": []
+				},
+				{
+					"name": "Collaborations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/me/collaborations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"me",
+								"collaborations"
+							]
+						},
+						"description": "Provides the set of organizations of which a user is a member or a collaborator.\n\nThe set of organizations that a user can collaborate on is composed of:\n\n* Organizations that the current user belongs to across VCS types (e.g. BitBucket, GitHub)\n* The parent organization of repository that the user can collaborate on, but is not necessarily a member of\n* The organization of the current user's account"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pipeline",
+			"item": [
+				{
+					"name": "{pipeline-id}",
+					"item": [
+						{
+							"name": "Get a pipeline",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pipeline/:pipeline-id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pipeline",
+										":pipeline-id"
+									],
+									"variable": [
+										{
+											"key": "pipeline-id",
+											"value": "<string>",
+											"type": "string",
+											"description": "The unique ID of the pipeline."
+										}
+									]
+								},
+								"description": "Returns a pipeline by ID."
+							},
+							"response": []
+						},
+						{
+							"name": "Get a pipeline's configuration",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pipeline/:pipeline-id/config",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pipeline",
+										":pipeline-id",
+										"config"
+									],
+									"variable": [
+										{
+											"key": "pipeline-id",
+											"value": "<string>",
+											"type": "string",
+											"description": "The unique ID of the pipeline."
+										}
+									]
+								},
+								"description": "Returns a pipeline's configuration by ID."
+							},
+							"response": []
+						},
+						{
+							"name": "Get a pipeline's workflows",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pipeline/:pipeline-id/workflow?page-token=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pipeline",
+										":pipeline-id",
+										"workflow"
+									],
+									"query": [
+										{
+											"key": "page-token",
+											"value": "<string>",
+											"description": "A token to retrieve the next page of results."
+										}
+									],
+									"variable": [
+										{
+											"key": "pipeline-id",
+											"value": "<string>",
+											"type": "string",
+											"description": "The unique ID of the pipeline."
+										}
+									]
+								},
+								"description": "Returns a paginated list of workflows by pipeline ID."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get a list of pipelines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pipeline?org-slug=<string>&page-token=<string>&mine=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pipeline"
+							],
+							"query": [
+								{
+									"key": "org-slug",
+									"value": "<string>",
+									"description": "Org slug in the form `vcs-slug/org-name`"
+								},
+								{
+									"key": "page-token",
+									"value": "<string>",
+									"description": "A token to retrieve the next page of results."
+								},
+								{
+									"key": "mine",
+									"value": "<string>",
+									"description": "Only include entries created by your user."
+								}
+							]
+						},
+						"description": "Returns all pipelines for the most recently built projects (max 250) you follow in an organization."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "project/{project-slug}",
+			"item": [
+				{
+					"name": "checkout-key",
+					"item": [
+						{
+							"name": "Get all checkout keys",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/checkout-key",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"checkout-key"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Returns a sequence of checkout keys for `:project`."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a checkout key",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/checkout-key/:fingerprint",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"checkout-key",
+										":fingerprint"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										},
+										{
+											"key": "fingerprint",
+											"value": "<string>",
+											"type": "string",
+											"description": "An SSH key fingerprint."
+										}
+									]
+								},
+								"description": "Deletes the checkout key."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "envvar",
+					"item": [
+						{
+							"name": "List all environment variables",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/envvar",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"envvar"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Returns four 'x' characters, in addition to the last four ASCII characters of the value, consistent with the display of environment variable values on the CircleCI website."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an environment variable",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/envvar/:name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"envvar",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										},
+										{
+											"key": "name",
+											"value": "<string>",
+											"type": "string",
+											"description": "The name of the environment variable."
+										}
+									]
+								},
+								"description": "Deletes the environment variable named :name."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "job/{job-number}",
+					"item": [
+						{
+							"name": "Get job details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/job/:job-number",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"job",
+										":job-number"
+									],
+									"variable": [
+										{
+											"key": "job-number",
+											"value": "<string>",
+											"type": "string",
+											"description": "The number of the job."
+										},
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Returns job details."
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel job",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/job/:job-number/cancel",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"job",
+										":job-number",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "job-number",
+											"value": "<string>",
+											"type": "string",
+											"description": "The number of the job."
+										},
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Cancel job with a given job number."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "pipeline",
+					"item": [
+						{
+							"name": "Trigger a new pipeline",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/pipeline",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"pipeline"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Triggers a new pipeline on the project."
+							},
+							"response": []
+						},
+						{
+							"name": "Get your pipelines",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/pipeline/mine?page-token=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"pipeline",
+										"mine"
+									],
+									"query": [
+										{
+											"key": "page-token",
+											"value": "<string>",
+											"description": "A token to retrieve the next page of results."
+										}
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Returns a sequence of all pipelines for this project triggered by the user."
+							},
+							"response": []
+						},
+						{
+							"name": "Get a pipeline",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/pipeline/:pipeline-number",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										"pipeline",
+										":pipeline-number"
+									],
+									"variable": [
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										},
+										{
+											"key": "pipeline-number",
+											"value": "<string>",
+											"type": "string",
+											"description": "The number of the pipeline."
+										}
+									]
+								},
+								"description": "Returns a pipeline by number."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "{job-number}",
+					"item": [
+						{
+							"name": "Get a job's artifacts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/:job-number/artifacts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										":job-number",
+										"artifacts"
+									],
+									"variable": [
+										{
+											"key": "job-number",
+											"value": "<string>",
+											"type": "string",
+											"description": "The number of the job."
+										},
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Returns a job's artifacts."
+							},
+							"response": []
+						},
+						{
+							"name": "Get test metadata",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/project/:project-slug/:job-number/tests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"project",
+										":project-slug",
+										":job-number",
+										"tests"
+									],
+									"variable": [
+										{
+											"key": "job-number",
+											"value": "<string>",
+											"type": "string",
+											"description": "The number of the job."
+										},
+										{
+											"key": "project-slug",
+											"value": "<string>",
+											"type": "string",
+											"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+										}
+									]
+								},
+								"description": "Get test metadata for a build."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get a project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/project/:project-slug",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"project",
+								":project-slug"
+							],
+							"variable": [
+								{
+									"key": "project-slug",
+									"value": "<string>",
+									"type": "string",
+									"description": "Project slug in the form `vcs-slug/org-name/repo-name`. The `/` characters may be URL-escaped."
+								}
+							]
+						},
+						"description": "Retrieves a project by project slug."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "workflow/{id}",
+			"item": [
+				{
+					"name": "Get a workflow",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workflow/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workflow",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The unique ID of the user."
+								}
+							]
+						},
+						"description": "Returns summary fields of a workflow by ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Approve a job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workflow/:id/approve/:approval_request_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workflow",
+								":id",
+								"approve",
+								":approval_request_id"
+							],
+							"variable": [
+								{
+									"key": "approval_request_id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The ID of the job being approved."
+								},
+								{
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The unique ID of the user."
+								}
+							]
+						},
+						"description": "Approves a pending approval job in a workflow."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel a workflow",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workflow/:id/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workflow",
+								":id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The unique ID of the user."
+								}
+							]
+						},
+						"description": "Cancels a running workflow."
+					},
+					"response": []
+				},
+				{
+					"name": "Get a workflow's jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workflow/:id/job",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workflow",
+								":id",
+								"job"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The unique ID of the user."
+								}
+							]
+						},
+						"description": "Returns a sequence of jobs for a workflow."
+					},
+					"response": []
+				},
+				{
+					"name": "Rerun a workflow",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/workflow/:id/rerun",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"workflow",
+								":id",
+								"rerun"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"type": "string",
+									"description": "The unique ID of the user."
+								}
+							]
+						},
+						"description": "Reruns a workflow."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Information",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/user/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "<string>",
+							"type": "string",
+							"description": "The unique ID of the user."
+						}
+					]
+				},
+				"description": "Provides information about the user with the given ID."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://circleci.com/api/v1",
+			"type": "string"
+		}
+	]
+}

@@ -90,6 +90,8 @@ springboot-cache = { group = "org.springframework.boot", name = "spring-boot-sta
 
 springboot-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "springBoot" }
 
+swagger-parser-v3 = "io.swagger.parser.v3:swagger-parser-v3:2.1.12"
+
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

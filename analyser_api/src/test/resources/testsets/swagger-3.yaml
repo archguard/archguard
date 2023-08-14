@@ -1,0 +1,977 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.1"
+  title: Tikkie Cashback
+  description: |-
+    # Overview
+    The Tikkie Cashback API enables clients to use the Tikkie Cashback _(Tikkie Terug)_ functionality.
+
+    This API provides the following functionality:
+    - Create cashbacks: Refunds of part, or all, of a paid amount that is redeemable by a customer.
+    - Retrieve cashback campaign details used by a brand or product to generate cashbacks.
+    - Retrieve cashback details.
+    - Subscribe to notifications when a cashback is redeemed.
+
+    For more information on Tikkie products, see [https://tikkie.me](https://tikkie.me).
+
+    ## App token
+
+    An app token is a unique token per API connection. It is used to identify your company.
+    Your Tikkie account can have multiple app tokens for various purposes.
+
+    >**Important:** This API is available in a production environment only. See the [Tutorial](#section/Tutorial) for details on how to get access and how to create an `appToken`. 
+
+    `appToken` has various permission types. The Cashback permission is required to use this AP. For more information, see [Tikkie API](https://developer.abnamro.com/api-products/tikkie).
+
+    | Permission | Description|
+    |---|---|
+    | Cashback | Retrieve cashback campaign details, create cashbacks, and retrieve cashback details. |
+    
+    # Requirements
+    To use this API in a production environment, you must have the following:
+    - A Tikkie Cashback contract. For more information, see [Tikkie Cashback](https://www.tikkie.me/tikkieterug).
+    - An [app token](#section/Overview/App-token) created in the [Tikkie Business Portal](https://business.tikkie.me) with Cashback permission enabled.
+
+    # Tutorial
+
+    This tutorial describes how to use the Tikkie Cashback API in a production environment, along with the APIs functionality.
+    
+    ## Step 1 - Get a Tikkie Cashback Contract
+    1. Go to [Apply](https://www.tikkie.me/aanvragen-zakelijk-new).
+    1. Fill in your details and click **Send**.
+    1. A member from the Tikkie Service Team will contact you about your request and set up a contract.
+    
+    ## Step 2 - Get an API key
+    1. Register and create an account:
+      1. Go to <a href="https://developer.abnamro.com/" target="_blank">https://developer.abnamro.com/</a> and click **Sign up**.
+      1. Enter your details, and click **Create an account**.
+      1. Developer Support will send you an activation link by email.
+      1. Click the activation link.
+    1. Request production access:
+      1. Log in to <a href="https://developer.abnamro.com/" target="_blank">your account</a> .
+      1. In the top navigation bar, click **My Apps**.
+      1. Click **Request Production Access**.
+      1. Select the API category that you want to request production access on.
+     	>**Note:** It is not possible to request production access for multiple API categories in one request.
+      1. Fill in the form, and click **Submit**.
+      1. You receive a confirmation email and ticket-ID. 
+      1. ABN AMRO Developer Support validates the form, and if necessary contacts you. 
+      1. When the setup is complete, ABN AMRO Developer Support contacts you, and a new App is added in **My Apps**. This new app contains your API key.
+
+
+    ## Step 3 - Create an appToken
+
+    1. Go to the [Tikkie Business Portal](https://business.tikkie.me) and sign in.
+    1. Go to the Settings menu and select API settings
+    1. Select an existing app or create a new one
+    1. In the permissions block, enable the **Cashback permission**.
+
+    ## Step 4 - Create a cashback campaign
+
+    A cashback is a refund of part, or all, of a paid amount that is redeemable by a customer. A cashback campaign is a logical component that is used by a brand or product to generate cashbacks.
+
+    A cashback campaign is created in coordination with the Tikkie Team. After this has been created you will receive an `campaignId`.
+
+    ## Step 5 - Retrieve cashback campaign details
+
+    To retrieve details of a cashback campaign, using your `campaignId`, execute: [GET Cashback Campaign](#operation/getCashbackCampaign).
+
+    ## Step 6 - Create a cashback
+
+    A cashback is a refund of part, or all, of a paid amount that is redeemable by a customer.
+    
+    The cashback operation creates a cashback in the specified campaign, and returns a `cashbackId` which is used to retrieve details.
+
+    To create a cashback, execute: [POST Cashback](#operation/createCashback).
+
+    ## Step 7 - Retrieve cashback details
+
+    This operation returns the details of one cashback, specified by a `cashbackId`.
+
+    To retrieve cashback details, execute: [GET Cashback](#operation/getCashback).
+
+    ## Step 8 - Set up a cashback subscription
+
+    To receive notifications when a cashback is redeemed, set up a subscription using: [POST Notification Subscription](#operation/subscribeCashbackNotifications).
+
+    HTTP post requests will be made to the specified `url`, containing information about cashback in the body of the request.
+
+    ## Step 9 - Cancel a cashback subscription
+
+    To cancel a subscription and stop receiving notifications, execute: [DELETE Notification Subscription](#operation/deleteCashbackNotifications).
+
+    # Release notes
+
+    ## Version 1.0.1
+    - Minor text update.
+
+    ## Version 1.0.0
+    - Released this API.
+
+  x-apiType: open
+servers:
+  - url: https://api.abnamro.com/v1/tikkie/cashback
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Cashback campaign
+    description: A cashback campaign is a logical component that is used by a brand or product to generate cashbacks.
+  - name: Cashback
+    description: A cashback is a refund of part, or all, of a paid amount that is redeemable by a customer.
+  - name: Cashback notification
+    description: Notification subscriptions related to a cashback or a cashback campaign.
+paths:
+  /cashback-campaigns/{campaignId}:
+    get:
+      description: |-
+        Retrieves a specific cashback campaign. 
+        
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+
+      operationId: getCashbackCampaign
+      tags:
+        - Cashback campaign
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+        - $ref: "#/components/parameters/campaignId"
+      responses:
+        '200':
+          $ref: "#/components/responses/getCashbackCampaignSuccess"
+        '400':
+          $ref: "#/components/responses/InvalidGetCashbackCampaignErrors"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '404':
+          $ref: "#/components/responses/CashbackCampaignNotFoundError"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+  /cashback-campaigns/{campaignId}/cashbacks:
+    post:
+      description: |-
+        Creates a cashback. 
+
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+
+      operationId: createCashback
+      tags:
+        - Cashback
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+        - $ref: "#/components/parameters/campaignId"
+      requestBody:
+        $ref: "#/components/requestBodies/CashbackCreationRequest"
+      responses:
+        '201':
+          $ref: "#/components/responses/createCashbackSuccess"
+        '400':
+          $ref: "#/components/responses/InvalidCashbackCreationRequestErrors"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '404':
+          $ref: "#/components/responses/CashbackCampaignNotFoundError"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+    get:
+      description: |-
+        Retrieves a list of cashbacks based on the parameters that are provided. 
+
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+
+      operationId: getCashbackList
+      tags:
+        - Cashback
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+        - $ref: "#/components/parameters/campaignId"
+        - $ref: "#/components/parameters/pageNumber"
+        - $ref: "#/components/parameters/pageSize"
+        - $ref: "#/components/parameters/fromDateTime"
+        - $ref: "#/components/parameters/toDateTime"
+        - $ref: "#/components/parameters/status"
+      responses:
+        '200':
+          $ref: "#/components/responses/getCashbackListSuccess"
+        '400':
+          $ref: "#/components/responses/InvalidGetCashbackListErrors"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '404':
+          $ref: "#/components/responses/CashbackCampaignNotFoundError"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+  /cashback-campaigns/{campaignId}/cashbacks/{cashbackId}:
+    get:
+      description: |-
+        Retrieves a specific cashback. 
+
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+      operationId: getCashback
+      tags:
+        - Cashback
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+        - $ref: "#/components/parameters/campaignId"
+        - $ref: "#/components/parameters/cashbackId"
+      responses:
+        '200':
+          $ref: "#/components/responses/getCashbackSuccess"
+        '400':
+          $ref: "#/components/responses/InvalidGetCashbackErrors"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '404':
+          $ref: "#/components/responses/CashbackNotFoundError"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+  /cashback-subscriptions:
+    post:
+      description: |-
+        Subscribes to cashback related notifications. Only one subscription can be active at any given time. When this request is repeated, the existing subscription is overwritten.
+
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+      operationId: subscribeCashbackNotifications
+      tags:
+        - Cashback notification
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+      requestBody:
+        $ref: "#/components/requestBodies/SubscribeRequest"
+      responses:
+        '201':
+          $ref: "#/components/responses/SubscribeSuccess"
+        '400':
+          $ref: "#/components/responses/InvalidSubscribeRequestErrors"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+      callbacks:
+        Notification:
+          'notificationUrl':
+            post:
+              requestBody:
+                $ref: "#/components/requestBodies/CashbackNotification"
+              responses:
+                '2XX':
+                  description: "Acknowledgement that a notification has been received."
+    delete:
+      description: |-
+        Deletes a subscription. 
+
+        The application must have the cashback permission to complete this request. For more information, see [Step 3 - Create an appToken](#section/Tutorial/Step-3-Create-an-appToken) or [App token](#section/Overview/App-token).
+
+      operationId: deleteCashbackNotifications
+      tags:
+        - Cashback notification
+      parameters:
+        - $ref: "#/components/parameters/appToken"
+      responses:
+        '204':
+          $ref: "#/components/responses/DeleteSuccess"
+        '401':
+          $ref: "#/components/responses/InvalidAccessTokenErrors"
+        '403':
+          $ref: "#/components/responses/CashbackForbiddenErrors"
+        '500':
+          $ref: "#/components/responses/ServerErrors"
+components:
+##################################### SECURITYSCHEMES #############################
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: API-Key
+      description: "An API-Key is a consumer key, which is obtained after app registration on the ABN developer portal."
+##################################### REQUESTBODIES ###############################
+  requestBodies:
+    CashbackCreationRequest:
+      description: Details of the cashback that you are creating.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CashbackCreationRequest'
+    CashbackNotification:
+      description: "Details of a notification related to a cashback or a cashback campaign."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CashbackNotification'
+    SubscribeRequest:
+      description: "Details of the URL on which you want to receive notifications per webhook."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscribeRequest'
+##################################### RESPONSES ###################################
+  responses:
+    SubscribeSuccess:
+      description: Subscription successfully created.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              subscriptionId:
+                type: string
+                format: uuid
+                description: Unique subscription identifier. This will be sent with the notification.
+                example: e0111835-e8df-4070-874a-f12cf3f77e39
+    DeleteSuccess:
+      description: Subscription successfully removed.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+    createCashbackSuccess:
+      description: Cashback created.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Cashback"
+          example:
+            cashbackId: 'd18f29e2-a7de-47b7-9846-a2cd8075896e'
+            url: 'https://tikkie.me/cashback-brands/cashback-campaign-123/d18f29e2-a7de-47b7-9846-a2cd8075896e'
+            amountInCents: 500
+            createdDateTime: '2020-07-15T14:00:00.000Z'
+            expiryDateTime: '2021-07-15T14:00:00.000Z'
+            status: 'CREATED'
+            referenceId: 'Customer 12345'
+            locationId: 'Branch 123'
+            locationAddress: 'Gustav Mahlerlaan 10, 1082 PP, Amsterdam'
+    getCashbackCampaignSuccess:
+      description: A specific cashback campaign.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CashbackCampaign"
+    getCashbackListSuccess:
+      description: A list of cashbacks.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cashbacks:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cashback"
+                minItems: 0
+                maxItems: 50
+                description: Cashbacks
+              totalElementCount:
+                type: integer
+                format: "int32"
+                description: Total amount of cashbacks which match the parameters provided.
+                example: 75
+    getCashbackSuccess:
+      description: A specific cashback.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Cashback"
+    InvalidSubscribeRequestErrors:
+      description: |
+        Missing or invalid parameters.
+
+        Detailed error list:
+          ---
+          - URL_MISSING
+            > `url` was not supplied in the request.
+          - URL_INVALID
+            > `url` is in an invalid format.
+          - URL_DISALLOWED
+            > It is prohibited to use this `url` for webhooks.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: URL_MISSING
+                message: 'url was not supplied in the request.'
+                reference: "https://developer.abnamro.com"
+                status: 400
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    InvalidGetCashbackCampaignErrors:
+      description: |
+        Missing or invalid parameters
+
+        Detailed error list:
+          ---
+          - CAMPAIGN_ID_INVALID
+            > `campaignId` is in an invalid format.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: CAMPAIGN_ID_INVALID
+                message: 'campaignId is in an invalid format.'
+                reference: "https://developer.abnamro.com"
+                status: 400
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    InvalidCashbackCreationRequestErrors:
+      description: |
+        Missing or invalid parameters
+
+        Detailed error list:
+          ---
+          - CAMPAIGN_ID_INVALID
+            > `campaignId` is in an invalid format.
+          - AMOUNT_IN_CENTS_MISSING
+            > `amountInCents` was not supplied in the request.
+          - AMOUNT_IN_CENTS_INVALID
+            > `amountInCents` is in an invalid format.
+          - REFERENCE_ID_INVALID
+            > `referenceId` is in an invalid format.
+          - LOCATION_ID_INVALID
+            > `locationId` is in an invalid format.
+          - LOCATION_ADDRESS_INVALID
+            > `locationAddress` is in an invalid format.
+          - CAMPAIGN_NOT_STARTED
+            > The campaign has not started yet.
+          - CAMPAIGN_ENDED
+            > The campaign has already ended.
+          - CAMPAIGN_SUSPENDED
+            > The campaign has been suspended.
+          - CAMPAIGN_OUT_OF_FUNDS
+            > The campaign has no funds to create a cashback.
+          - AMOUNT_IN_CENTS_TOO_LOW
+            > `amountInCents` is too low.
+          - AMOUNT_IN_CENTS_TOO_HIGH
+            > `amountInCents` is too high.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: AMOUNT_IN_CENTS_INVALID
+                message: 'amountInCents is in an invalid format.'
+                reference: "https://developer.abnamro.com"
+                status: 400
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    InvalidGetCashbackErrors:
+      description: |
+        Missing or invalid parameters
+
+        Detailed error list:
+          ---
+          - CAMPAIGN_ID_INVALID
+            > `campaignId` is in an invalid format.
+          - CASHBACK_ID_INVALID
+            > `cashbackId` is in an invalid format.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: CASHBACK_ID_INVALID
+                message: 'cashbackId is in an invalid format.'
+                reference: "https://developer.abnamro.com"
+                status: 400
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    InvalidGetCashbackListErrors:
+      description: |
+        Missing or invalid parameters
+
+        Detailed error list:
+          ---
+          - CAMPAIGN_ID_INVALID
+            > `campaignId` is in an invalid format.
+          - PAGE_NUMBER_MISSING
+            > `pageNumber` was not supplied in the query.
+          - PAGE_SIZE_MISSING
+            > `pageSize` was not supplied in the query.
+          - PAGE_NUMBER_INVALID
+            > `pageNumber` is in an invalid format.
+          - PAGE_SIZE_INVALID
+            > `pageSize` is in an invalid format.
+          - PAGE_SIZE_TOO_LARGE
+            > `pageSize` is larger than the maximum value (50).
+          - FROM_DATE_TIME_INVALID
+            > `fromDateTime` is in an invalid format.
+          - TO_DATE_TIME_INVALID
+            > `toDateTime` is in an invalid format.
+          - STATUS_INVALID
+            > `status` is in an invalid format.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: PAGE_NUMBER_MISSING
+                message: 'pageNumber was not supplied in the query.'
+                reference: "https://developer.abnamro.com"
+                status: 400
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    InvalidAccessTokenErrors:
+      description: |
+        Access denied.
+
+        Detailed error list:
+          ---
+          - APP_TOKEN_INVALID
+            > `appToken` is in an invalid format.
+          - APP_TOKEN_ALREADY_IN_USE
+            > This `appToken` was used with another API Key.
+          - APP_TOKEN_DISABLED
+            > `appToken` disabled.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: APP_TOKEN_INVALID
+                message: 'appToken is in an invalid format.'
+                reference: "https://developer.abnamro.com"
+                status: 401
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    CashbackForbiddenErrors:
+      description: |
+        Forbidden
+
+        Detailed error list:
+          ---
+          - CASHBACK_FORBIDDEN
+            > `appToken` does not have permission to create or get cashbacks or cashback campaigns.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: CASHBACK_FORBIDDEN
+                message: 'appToken does not have permission to create or get cashbacks or cashback campaigns.'
+                reference: "https://developer.abnamro.com"
+                status: 403
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    CashbackCampaignNotFoundError:
+      description: |
+        Not found.
+
+        Detailed error list:
+          ---
+          - CASHBACK_CAMPAIGN_NOT_FOUND
+            > No cashback campaign found for the specified `campaignId`.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: CASHBACK_CAMPAIGN_NOT_FOUND
+                message: 'No cashback campaign found for the specified campaignId.'
+                reference: "https://developer.abnamro.com"
+                status: 404
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    CashbackNotFoundError:
+      description: |
+        Not found.
+
+        Detailed error list:
+          ---
+          - CASHBACK_CAMPAIGN_NOT_FOUND
+            > No cashback campaign found for the specified `campaignId`.
+          - CASHBACK_NOT_FOUND
+            > No cashback found for the specified `cashbackId`.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: CASHBACK_NOT_FOUND
+                message: 'No cashback found for the specified cashbackId.'
+                reference: "https://developer.abnamro.com"
+                status: 404
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+    ServerErrors:
+      description: |
+        Internal server error.
+
+        Detailed error list:
+          ---
+          - INTERNAL_SERVER_ERROR
+            > An unknown error occurred.
+      headers:
+        'Trace-Id':
+          $ref: "#/components/headers/Trace-Id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+          example:
+            errors:
+              - code: INTERNAL_SERVER_ERROR
+                message: 'Some unknown error occurred'
+                reference: "https://developer.abnamro.com"
+                status: 500
+                traceId: 5e332871-7f05-4de6-975e-27de0a369629
+##################################### PARAMETERS ##################################
+  parameters:
+    appToken:
+      in: header
+      name: X-App-Token
+      description: "`appToken` generated in the Tikkie Business Portal."
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: 'aaaaaaaa-1111-bbbb-2222-cccccccccccc'
+    campaignId:
+      name: campaignId
+      in: path
+      required: true
+      description: Unique identifier for the cashback campaign.
+      schema:
+        type: string
+      example: 'cashback-campaign-123'
+    cashbackId:
+      name: cashbackId
+      in: path
+      required: true
+      description: Unique identifier for the cashback.
+      schema:
+        type: string
+      example: 'd18f29e2-a7de-47b7-9846-a2cd8075896e'
+    pageSize:
+      in: query
+      name: pageSize
+      description: Number of items on a page.
+      required: true
+      schema:
+        minimum: 1
+        maximum: 50
+        type: integer
+        format: "int32"
+      example: 10
+    pageNumber:
+      in: query
+      name: pageNumber
+      description: Number of the page to be returned.
+      required: true
+      schema:
+        type: integer
+        format: "int32"
+      example: 2
+    fromDateTime:
+      in: query
+      name: fromDateTime
+      description: "Point in time where you start searching for items. For cashbacks, this refers to the time of creation. Format: YYYY-MM-DDTHH:mm:ss.SSSZ"
+      required: false
+      schema:
+        type: string
+        format: date-time
+      example: "2020-02-04T18:00:00.000Z"
+    toDateTime:
+      in: query
+      name: toDateTime
+      description: "Point in time where you stop searching for items. For cashbacks, this refers to the time of creation. Format: YYYY-MM-DDTHH:mm:ss.SSSZ."
+      required: false
+      schema:
+        type: string
+        format: date-time
+      example: "2020-03-03T15:00:00.000Z"
+    status:
+      in: query
+      name: status
+      description: Status of the cashbacks
+      required: false
+      schema:
+        type: string
+        enum: ['CREATED', 'REDEEMED', 'EXPIRED']
+      example: 'REDEEMED'
+##################################### HEADERS #####################################
+  headers:
+    Trace-Id:
+      schema:
+        type: string
+        format: uuid
+      description: A unique identifier for the request.
+      example: '2409b949-cefd-4208-bd37-f805a79b8075'
+##################################### SCHEMAS #####################################
+  schemas:
+    SubscribeRequest:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          example: 'https://www.example.com/notification'
+          description: 'URL where notifications must be sent using a webhook or callback.'
+    CashbackNotification:
+      type: object
+      required:
+        - subscriptionId
+        - notificationType
+        - campaignId
+        - cashbackId
+      properties:
+        subscriptionId:
+          type: string
+          example: 'e0111835-e8df-4070-874a-f12cf3f77e39'
+          description: 'Unique ID that identifies a subscription that has sent a notification.'
+        notificationType:
+          type: string
+          enum: ['CASHBACK']
+          example: 'CASHBACK'
+          description: |
+            Type of notification.
+
+            Description:
+              ---
+              - CASHBACK
+                > Cashback notification.
+        campaignId:
+          type: string
+          example: 'cashback-campaign-123'
+          description: Unique identifier for the cashback campaign.
+        cashbackId:
+          type: string
+          format: uuid
+          example: 'd18f29e2-a7de-47b7-9846-a2cd8075896e'
+          description: Unique identifier for the cashback.
+    CashbackCampaign:
+      type: object
+      required:
+        - campaignId
+        - campaignName
+        - startDate
+        - endDate
+        - status
+      properties:
+        campaignId:
+          type: string
+          example: 'cashback-campaign-123'
+          description: 'Unique identifier for the cashback campaign.'
+        campaignName:
+          type: string
+          example: 'Campaign name'
+          description: 'Name of the cashback campaign.'
+        startDate:
+          type: string
+          format: date
+          example: '2020-01-01'
+          description: 'Starting date of the cashback campaign. Format: YYYY-MM-DD'
+        endDate:
+          type: string
+          format: date
+          example: '2021-01-01'
+          description: 'End date of the cashback campaign. Format: YYYY-MM-DD'
+        status:
+          type: string
+          enum: ['UPCOMING', 'ACTIVE', 'ENDED', 'SUSPENDED']
+          example: 'ACTIVE'
+          description: |
+            The status of the cashback campaign.
+
+            Status Description:
+              ---
+              - UPCOMING
+                > The campaign has not yet started.
+              - ACTIVE
+                > The campaign is active.
+              - ENDED
+                > The campaign has ended.
+              - SUSPENDED
+                > The campaign has been temporarily suspended.
+        remainingAmountInCents:
+          type: integer
+          format: int64
+          example: 5000000
+          description: Amount of money, in cents, which is remaining in the campaign.
+    CashbackCreationRequest:
+      type: object
+      required:
+        - amountInCents
+      properties:
+        amountInCents:
+          type: integer
+          format: int32
+          example: 500
+          description: Cashback amount in cents.
+        referenceId:
+          type: string
+          description: ID reference of the API consumer.
+          example: Customer 12345
+          maxLength: 255
+          pattern: "^[a-zA-Z0-9!&'()+-./:?_`, ]{1,255}$"
+        locationId:
+          type: string
+          description: Identifies the location where a cashback was generated. This identifier can be used to group together cashbacks that are generated at the same location.
+          example: 'Branch 123'
+          maxLength: 255
+          pattern: "^[a-zA-Z0-9!&'()+-./:?_`, ]{1,255}$"
+        locationAddress:
+          type: string
+          description: Address where the cashback is generated. This parameter can be used to visualize where cashbacks are generated.
+          example: 'Gustav Mahlerlaan 10, 1082 PP, Amsterdam'
+          maxLength: 255
+          pattern: "^[a-zA-Z0-9!&'()+-./:?_`, ]{1,255}$"
+    Cashback:
+      type: object
+      required:
+        - cashbackId
+        - url
+        - amountInCents
+        - status
+        - createdDateTime
+        - expiryDateTime
+      properties:
+        cashbackId:
+          type: string
+          format: uuid
+          example: 'd18f29e2-a7de-47b7-9846-a2cd8075896e'
+          description: Unique cashback identifier.
+        url:
+          type: string
+          example: 'https://tikkie.me/cashback-brands/cashback-campaign-123/d18f29e2-a7de-47b7-9846-a2cd8075896e'
+          description: URL of the cashback, which is to be scanned as a QR code in the Tikkie app.
+        amountInCents:
+          type: integer
+          format: int32
+          example: 500
+          description: Cashback amount in cents.
+        createdDateTime:
+          type: string
+          format: date-time
+          example: '2020-07-15T14:00:00.000Z'
+          description: 'Timestamp of when the cashback was created. Format: YYYY-MM-DD:HH:mm:ss.SSSZ.'
+        expiryDateTime:
+          type: string
+          format: date-time
+          example: '2021-07-15T14:00:00.000Z'
+          description: 'Timestamp of when the cashback will expire. Format: YYYY-MM-DD:HH:mm:ss.SSSZ.'
+        redeemedDateTime:
+          type: string
+          format: date-time
+          example: '2020-07-15T14:05:00.000Z'
+          description: 'Timestamp of when the cashback was redeemed. Will be omitted if the cashback is not redeemed. Format: YYYY-MM-DD:HH:mm:ss.SSSZ.'
+        status:
+          type: string
+          enum: ['CREATED', 'REDEEMED', 'EXPIRED']
+          description: |
+            Status of the cashback.
+
+            Status Description:
+              ---
+              - CREATED
+                > Cashback is generated and ready to be redeemed by the customer.
+              - REDEEMED
+                > Cashback has been redeemed by the customer.
+              - EXPIRED
+                > The cashback has expired.
+          example: 'REDEEMED'
+        referenceId:
+          type: string
+          example: 'Customer 12345'
+          description: ID reference for the API consumer.
+          maxLength: 255
+        locationId:
+          type: string
+          description: Identifies the location where the cashback was generated.
+          example: 'Branch 123'
+          maxLength: 255
+        locationAddress:
+          type: string
+          description: The address where the cashback was generated.
+          example: 'Gustav Mahlerlaan 10, 1082 PP, Amsterdam'
+          maxLength: 255
+    Errors:
+      type: object
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+        - code
+        - message
+        - status
+      properties:
+        code:
+          type: string
+          example: 'PAYMENT_REQUEST_TOKEN_INVALID'
+          description: Unique error code.
+        message:
+          type: string
+          example: 'paymentRequestToken is in an invalid format.'
+          description: Message describing the error.
+        reference:
+          type: string
+          example: "https://developer.abnamro.com"
+          description: reference to documentation
+        status:
+          type: integer
+          format: "int32"
+          example: 400
+          description: HTTP Status code.
+        traceId:
+          type: string
+          format: "uuid"
+          example: "5e332871-7f05-4de6-975e-27de0a369629"
+          description: ID to trace the request.

@@ -1,0 +1,1150 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "dbapi-banking-cashAccountOpenings",
+    "description": "dbAPI",
+    "termsOfService": "https://developer.db.com/termsandconditions",
+    "contact": {
+      "url": "https://developer.db.com/contact",
+      "email": "bank.api@db.com"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://simulator-api.postbank.de:443/gw/dbapi/banking/cashAccountOpenings/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cash Account Openings"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "Cash Account Openings"
+        ],
+        "summary": "Open cash accounts",
+        "description": "Open cash accounts",
+        "operationId": "cashAccountOpenings",
+        "parameters": [
+          {
+            "name": "idempotency-id",
+            "in": "header",
+            "description": "Unique id of the service call. Should be resent during retries to avoid multiple processing of the same request",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Correlation-Id",
+            "in": "header",
+            "description": "Free form key controlled by the caller e.g. uuid",
+            "required": false,
+            "schema": {
+              "maxLength": 50,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountOpeningRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountOpeningResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unsuccessful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_client_credential": [
+              "open_cash_account"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/{accountOpeningId}": {
+      "get": {
+        "tags": [
+          "Cash account opening status"
+        ],
+        "summary": "Cash account opening status",
+        "description": "Cash account opening status",
+        "operationId": "cashAccountOpeningStatus",
+        "parameters": [
+          {
+            "name": "accountOpeningId",
+            "in": "path",
+            "description": "Identifier of the cash account opening",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Correlation-Id",
+            "in": "header",
+            "description": "Free form key controlled by the caller e.g. uuid",
+            "required": false,
+            "schema": {
+              "maxLength": 50,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountOpeningStatusResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unsuccessful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_client_credential": [
+              "open_cash_account"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountOpeningResponse": {
+        "required": [
+          "message",
+          "productApplicationStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "productApplicationId": {
+            "type": "string",
+            "description": "The unique ID for the partner to identify the call"
+          },
+          "e2eProcessId": {
+            "type": "string",
+            "description": "The e2eProcessId to recognize the account opening application"
+          },
+          "productApplicationStatus": {
+            "$ref": "#/components/schemas/ProductApplicationStatus"
+          },
+          "precontractualInformation": {
+            "type": "string",
+            "description": "The URL of the PCI (D: Vorvertragliche Informationen) for the product"
+          },
+          "productAlternatives": {
+            "$ref": "#/components/schemas/ProductAlternatives"
+          },
+          "productApplicationForm": {
+            "$ref": "#/components/schemas/ProductApplicationForm"
+          },
+          "legitimationUrl": {
+            "type": "string",
+            "description": "The customer legitimation URL"
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          }
+        }
+      },
+      "ProductApplicationForm": {
+        "type": "string",
+        "description": "The PDF document for the customer in base64"
+      },
+      "ProductAlternatives": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountProduct"
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardProduct"
+            }
+          }
+        },
+        "description": "Product alternatives if ProductApplicationStatus = REJECTED_PRODUCT_ALTERNATIVES"
+      },
+      "AccountOpeningStatusResponse": {
+        "required": [
+          "e2eProcessId",
+          "lastStatusChange",
+          "productApplicationStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "e2eProcessId": {
+            "type": "string",
+            "description": "The e2eProcessId to recognize the account opening application"
+          },
+          "productApplicationStatus": {
+            "$ref": "#/components/schemas/ProcessingStatus"
+          },
+          "lastStatusChange": {
+            "type": "string",
+            "description": "The last status change date time with format ISO_LOCAL_DATE_TIME (yyyy-MM-dd'T'HH:mm:ss)",
+            "format": "date-time"
+          },
+          "iban": {
+            "$ref": "#/components/schemas/IBAN"
+          },
+          "productApplicationForm": {
+            "$ref": "#/components/schemas/ProductApplicationForm"
+          }
+        }
+      },
+      "ProductApplicationStatus": {
+        "type": "string",
+        "description": "The result of the customer verification",
+        "enum": [
+          "ACCEPTED",
+          "ACCEPTED_POSTIDENT_ONLY",
+          "REJECTED_PRODUCT_ALTERNATIVES",
+          "REJECTED"
+        ]
+      },
+      "ProcessingStatus": {
+        "type": "string",
+        "description": "The processing state of the legimation/fulfillment",
+        "enum": [
+          "APPLICATION_RECEIVED",
+          "WEBID_CONFIRMATION_RECEIVED",
+          "REJECTED",
+          "MANUAL_PROCESSING",
+          "APPLICATION_FULFILLED",
+          "POSTIDENT_CHOSEN",
+          "POSTIDENT_DOCUMENT_GENERATED"
+        ]
+      },
+      "CardProduct": {
+        "type": "string",
+        "description": "The possible card(s) if the customer has not been rejected",
+        "enum": [
+          "DB_MASTERCARD_STANDARD",
+          "DB_MASTERCARD_GOLD",
+          "DB_MASTERCARD_TRAVEL",
+          "DB_MASTERCARD_PLATINUM",
+          "NB_MASTERCARD_KREDITKARTE",
+          "DB_GIROCARD",
+          "NB_SERVICECARD",
+          "NB_MAESTROCARD",
+          "DB_DEUTSCHE_BANK_CARD_PLUS",
+          "NB_MASTERCARD_DIREKT_WITHOUT_SOLVENCY",
+          "NB_MASTERCARD_DIREKT_WITH_SOLVENCY",
+          "PBCARD",
+          "PBDEBITKARTE",
+          "PBDEBITKARTEGOLD",
+          "POSTBANK_CARD_PLUS",
+          "POSTBANK_BUSINESS_CARD_PLUS",
+          "PB_MASTERCARD_STANDARD",
+          "PB_MASTERCARD_GOLD",
+          "PB_MASTERCARD_TRAVEL",
+          "PB_MASTERCARD_PLATINUM",
+          "MASTERCARD_PLATINUM",
+          "MASTERCARD_STANDARD",
+          "MASTERCARD_GOLD",
+          "MASTERCARD_TRAVEL"
+        ]
+      },
+      "Message": {
+        "required": [
+          "code",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The response code"
+          },
+          "text": {
+            "type": "string",
+            "description": "The message text"
+          },
+          "category": {
+            "type": "string",
+            "description": "The message category"
+          }
+        },
+        "description": "Response message"
+      },
+      "AccountOpeningRequest": {
+        "required": [
+          "currentAccount",
+          "digitalServices",
+          "isActingForOwnAccount",
+          "overdraftCredit",
+          "partners"
+        ],
+        "type": "object",
+        "properties": {
+          "community": {
+            "$ref": "#/components/schemas/Community"
+          },
+          "partners": {
+            "maxItems": 2,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NaturalPerson"
+            }
+          },
+          "isActingForOwnAccount": {
+            "type": "boolean",
+            "description": "Customer is acting for own account?"
+          },
+          "currentAccount": {
+            "$ref": "#/components/schemas/CurrentAccount"
+          },
+          "overdraftCredit": {
+            "$ref": "#/components/schemas/OverdraftCredit"
+          },
+          "savingsAccount": {
+            "$ref": "#/components/schemas/SavingsAccount"
+          },
+          "solvencyInformation": {
+            "maxItems": 2,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolvencyInformation"
+            }
+          },
+          "creditCard": {
+            "maxItems": 2,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditCard"
+            }
+          },
+          "debitMasterCard": {
+            "maxItems": 2,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DebitMasterCard"
+            }
+          },
+          "digitalServices": {
+            "maxItems": 2,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DigitalService"
+            }
+          },
+          "processControls": {
+            "$ref": "#/components/schemas/ProcessControls"
+          },
+          "additionalAgreements": {
+            "maxItems": 2,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalAgreements"
+            }
+          }
+        }
+      },
+      "PersonCommunityType": {
+        "type": "string",
+        "description": "Type of community the account holder are in: OTHER, MARRIAGE, COHABITATION, RESIDENTIAL_COMMUNITY, HEIRS_COMMUNITY, CIVIL_UNION",
+        "enum": [
+          "OTHER",
+          "MARRIAGE",
+          "COHABITATION",
+          "RESIDENTIAL_COMMUNITY",
+          "HEIRS_COMMUNITY",
+          "CIVIL_UNION"
+        ]
+      },
+      "AccountProduct": {
+        "type": "string",
+        "description": "The possible account(s) if the customer has not been rejected",
+        "enum": [
+          "DB_AKTIVKONTO",
+          "DB_BESTKONTO",
+          "DB_JUNGESKONTO",
+          "NB_TOPGIROKONTO",
+          "NB_GIROKONTOPLUS",
+          "PBGIRODIREKT",
+          "PBGIROSTARTDIREKT",
+          "PBGIROPLUS",
+          "PBGIROEXTRAPLUS"
+        ]
+      },
+      "SavingsAccountProduct": {
+        "type": "string",
+        "description": "Customer request for a saving account: NB_TAGESGELDKONTO",
+        "enum": [
+          "NB_TAGESGELDKONTO"
+        ]
+      },
+      "CreditCardProduct": {
+        "type": "string",
+        "description": "Credit card product requested by customer: MASTERCARD_STANDARD, MASTERCARD_GOLD, MASTERCARD_TRAVEL, MASTERCARD_KREDITKARTE",
+        "enum": [
+          "DB_MASTERCARD_STANDARD",
+          "DB_MASTERCARD_GOLD",
+          "DB_MASTERCARD_TRAVEL",
+          "NB_MASTERCARD_KREDITKARTE"
+        ]
+      },
+      "DebitMastercardProduct": {
+        "type": "string",
+        "description": "Product Debit MasterCard: DEUTSCHE_BANK_CARD_PLUS, MASTERCARD_DIREKT_WITHOUT_SOLVENCY, MASTERCARD_DIREKT_WITH_SOLVENCY",
+        "enum": [
+          "DB_DEUTSCHE_BANK_CARD_PLUS",
+          "NB_MASTERCARD_DIREKT_WITHOUT_SOLVENCY",
+          "NB_MASTERCARD_DIREKT_WITH_SOLVENCY"
+        ]
+      },
+      "RequestedPFM": {
+        "type": "string",
+        "description": "The customer signs in for Finanzplaner MultiBanking: PFM_ONLY, PFM_DATA. Not available for Postbank tenant",
+        "enum": [
+          "PFM_ONLY",
+          "PFM_DATA"
+        ]
+      },
+      "mTanMobileNumber": {
+        "pattern": "^\\+[1-9]\\d{6,14}$",
+        "type": "string",
+        "description": "Optional mobile number field in E.164 standard format that will be used for mTAN authentication"
+      },
+      "Community": {
+        "required": [
+          "personCommunityType"
+        ],
+        "type": "object",
+        "properties": {
+          "personCommunityType": {
+            "$ref": "#/components/schemas/PersonCommunityType"
+          }
+        },
+        "description": "A partner and the specific details for this communiy e.g. married couple"
+      },
+      "CurrentAccount": {
+        "required": [
+          "accountCurrency",
+          "accountProductId"
+        ],
+        "type": "object",
+        "properties": {
+          "accountProductId": {
+            "$ref": "#/components/schemas/AccountProduct"
+          },
+          "accountCurrency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "isSalaryAccount": {
+            "type": "boolean",
+            "description": "Flag indicating if the account is used as a salary account"
+          },
+          "periodicIncomingPayments": {
+            "type": "boolean",
+            "description": "Account is not used as salary account, nevertheless incoming payments are expected regularly"
+          },
+          "endDateYoungAccount": {
+            "type": "string",
+            "description": "End date for account product DB_JUNGESKONTO",
+            "format": "date"
+          }
+        },
+        "description": "Current account information"
+      },
+      "OverdraftCredit": {
+        "required": [
+          "requestedOverdraftCredit"
+        ],
+        "type": "object",
+        "properties": {
+          "requestedOverdraftCredit": {
+            "type": "integer",
+            "description": "Amount of the overdraft credit as requested by the customer. A value of 0 EUR indicates that an overdraft is not requested",
+            "format": "int64"
+          }
+        },
+        "description": "Overdraft credit information"
+      },
+      "SavingsAccount": {
+        "type": "object",
+        "properties": {
+          "savingsAccountProduct": {
+            "$ref": "#/components/schemas/SavingsAccountProduct"
+          }
+        },
+        "description": "Savings account information"
+      },
+      "SolvencyInformation": {
+        "required": [
+          "additionalLoanExpenses",
+          "alimonyPayment",
+          "dependentChildren",
+          "insuranceExpenses",
+          "loanExpenses",
+          "netIncome",
+          "partnerIndex",
+          "rentalExpenses"
+        ],
+        "type": "object",
+        "properties": {
+          "partnerIndex": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Reference to partner that gives this SolvencyInformation (1st or 2nd account holder)",
+            "format": "int32",
+            "example": 1
+          },
+          "netIncome": {
+            "type": "integer",
+            "description": "Net income per month",
+            "format": "int64"
+          },
+          "rentalExpenses": {
+            "type": "integer",
+            "description": "Amount of monthly rental expenses; mandatory if ProprietaryStatus = RENTING_SUBTENANT or WITH_PARENTS",
+            "format": "int64"
+          },
+          "loanExpenses": {
+            "type": "integer",
+            "description": "Amount of monthly loan expenses; mandatory if ProprietaryStatus = OWN_PROPERTY",
+            "format": "int64"
+          },
+          "additionalLoanExpenses": {
+            "type": "integer",
+            "description": "Amount of additional monthly loan expenses; mandatory if ProprietaryStatus = OWN_PROPERTY",
+            "format": "int64"
+          },
+          "insuranceExpenses": {
+            "type": "integer",
+            "description": "Amount of monthly expenses for private health insurance",
+            "format": "int64"
+          },
+          "dependentChildren": {
+            "type": "integer",
+            "description": "Number of dependent children",
+            "format": "int32"
+          },
+          "alimonyPayment": {
+            "type": "integer",
+            "description": "Alimony payment in EUR per month",
+            "format": "int64"
+          }
+        },
+        "description": "Solvency Information for one or two account holders(in case of joint account.) The solvency information is mandatory when an overdraft credit and/or a credit card is requested"
+      },
+      "CreditCard": {
+        "required": [
+          "limit",
+          "partnerIndex",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "partnerIndex": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Reference to partner that requests the credit card",
+            "format": "int32",
+            "example": 1
+          },
+          "product": {
+            "$ref": "#/components/schemas/CreditCardProduct"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Credit card limit in EUR requested by customer",
+            "format": "int64"
+          }
+        },
+        "description": "Optional list of credit cards for the first and second account holder; a credit card for the 2nd account holder is only possible in case of a joint account"
+      },
+      "DebitMasterCard": {
+        "required": [
+          "partnerIndex",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "partnerIndex": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Reference to partner that requests the Debit MasterCard",
+            "format": "int32",
+            "example": 1
+          },
+          "product": {
+            "$ref": "#/components/schemas/DebitMastercardProduct"
+          }
+        },
+        "description": "Optional list of Debit MasterCards cards for the first and second account holder; a DMC for the 2nd account holder is only possible in case of a joint account"
+      },
+      "DigitalService": {
+        "required": [
+          "partnerIndex"
+        ],
+        "type": "object",
+        "properties": {
+          "partnerIndex": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Reference to partner that requests the digital services",
+            "format": "int32",
+            "example": 1
+          },
+          "requestedPFM": {
+            "$ref": "#/components/schemas/RequestedPFM"
+          },
+          "mTanMobileNumber": {
+            "$ref": "#/components/schemas/mTanMobileNumber"
+          }
+        },
+        "description": "List of digital services for the first and second account holder; only allowed for second account holder in case of joint account"
+      },
+      "ProcessControls": {
+        "type": "object",
+        "properties": {
+          "legitimationRedirectUrl": {
+            "type": "string",
+            "description": "Redirect URL for customer legitimation"
+          },
+          "receiveStatusNotifications": {
+            "type": "boolean",
+            "description": "Customer wishes to receive status notifications",
+            "default": false
+          },
+          "notificationUrl": {
+            "type": "string",
+            "description": "Customer URL for notifications"
+          },
+          "promotionId": {
+            "type": "string",
+            "description": "Id to map request to certain campaign."
+          }
+        },
+        "description": "Process controls for Legitimation as a Service (Laas) and notifications"
+      },
+      "AdditionalAgreements": {
+        "required": [
+          "partnerIndex"
+        ],
+        "type": "object",
+        "properties": {
+          "partnerIndex": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "financeStatus": {
+            "type": "string",
+            "enum": [
+              "MONTHLY_FIRST",
+              "MONTHLY_MID",
+              "2_WEEKLY",
+              "WEEKLY",
+              "DAILY"
+            ]
+          },
+          "employerLetter": {
+            "type": "boolean"
+          },
+          "changeAccountService": {
+            "type": "boolean"
+          },
+          "consentForDataAnalysis": {
+            "type": "boolean"
+          },
+          "requestForSubAccount": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Description of the belonging error code."
+          },
+          "messageId": {
+            "type": "string",
+            "description": "dbAPI internal message-id (unique identifier) that allow reference to each of your API calls."
+          }
+        },
+        "description": "Default error response message"
+      },
+      "IBAN": {
+        "pattern": "[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}",
+        "type": "string",
+        "description": "The IBAN of this account."
+      },
+      "NaturalPerson": {
+        "required": [
+          "dateOfBirth",
+          "emailAddress",
+          "employmentStatus",
+          "firstName",
+          "index",
+          "lastName",
+          "maritalStatus",
+          "nationality",
+          "phoneNumber",
+          "placeOfBirth",
+          "registeredAddress",
+          "schufaAccordance",
+          "sex",
+          "taxInformation"
+        ],
+        "type": "object",
+        "properties": {
+          "index": {
+            "maximum": 2,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Explicit index of partner: 1 = 1st account holder, 2 = 2nd account holder",
+            "format": "int32",
+            "example": 1
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name of the partner"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Content: [Title of Nobility ] + LastName or: LastName (and usage of optional attributes Title of Nobility)"
+          },
+          "sex": {
+            "$ref": "#/components/schemas/Sex"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Birth date of the partner. In the format YYYY-MM-DD",
+            "format": "date"
+          },
+          "placeOfBirth": {
+            "type": "string",
+            "description": "Birth place of the partner."
+          },
+          "schufaAccordance": {
+            "type": "boolean",
+            "description": "SCHUFA accordance"
+          },
+          "nationality": {
+            "$ref": "#/components/schemas/Nationality"
+          },
+          "maritalStatus": {
+            "$ref": "#/components/schemas/MaritalStatus"
+          },
+          "maidenName": {
+            "type": "string",
+            "description": "Maiden name of the partner."
+          },
+          "academicTitle": {
+            "$ref": "#/components/schemas/AcademicTitle"
+          },
+          "proprietaryStatus": {
+            "$ref": "#/components/schemas/ProprietaryStatus"
+          },
+          "employmentStatus": {
+            "$ref": "#/components/schemas/EmploymentStatus"
+          },
+          "registeredAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "communicationAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "phoneNumber": {
+            "$ref": "#/components/schemas/PhoneNumber"
+          },
+          "emailAddress": {
+            "pattern": "([^@\\s]+@[^@]+\\.[^@\\s\\.]{2,})",
+            "type": "string",
+            "description": "Email address"
+          },
+          "employmentInformation": {
+            "$ref": "#/components/schemas/EmploymentInformation"
+          },
+          "selfEmploymentInformation": {
+            "$ref": "#/components/schemas/SelfEmploymentInformation"
+          },
+          "taxInformation": {
+            "$ref": "#/components/schemas/TaxInformation"
+          }
+        },
+        "description": "Basic partner information"
+      },
+      "Sex": {
+        "type": "string",
+        "description": "Sex of the partner",
+        "enum": [
+          "MALE",
+          "FEMALE"
+        ]
+      },
+      "Nationality": {
+        "type": "string",
+        "description": "Nationality"
+      },
+      "MaritalStatus": {
+        "type": "string",
+        "description": "Marital status",
+        "enum": [
+          "UNKNOWN",
+          "SINGLE",
+          "MARRIED_SEPARATE_TAX_ASSESSMENT",
+          "DIVORCED",
+          "WIDOWED",
+          "SINGLE_LIVING_IN_COHABITATION",
+          "MARRIED_SEPARATED",
+          "MARRIED_JOINT_TAX_ASSESSMENT",
+          "CIVIL_UNION_JOINT_TAX_ASSESSMENT",
+          "CIVIL_UNION_SEPARATE_TAX_ASSESSMENT",
+          "CIVIL_UNION_SEPARATED"
+        ]
+      },
+      "AcademicTitle": {
+        "type": "string",
+        "description": "Academic title",
+        "enum": [
+          "DR",
+          "PROF",
+          "PROF_DR"
+        ]
+      },
+      "ProprietaryStatus": {
+        "type": "string",
+        "description": "Proprietary status of the partner: RENTING_OR_SUBTENANT, OWN_PROPERTY, WITH_PARENTS",
+        "example": "RENTING_OR_SUBTENANT",
+        "enum": [
+          "RENTING_OR_SUBTENANT",
+          "OWN_PROPERTY",
+          "WITH_PARENTS"
+        ]
+      },
+      "EmploymentStatus": {
+        "type": "string",
+        "description": "Employment status of the partner: EMPLOYED, SELF_EMPLOYED. For Norisbank only EMPLOYED is allowed",
+        "example": "EMPLOYED",
+        "enum": [
+          "SELF_EMPLOYED",
+          "EMPLOYED"
+        ]
+      },
+      "Address": {
+        "required": [
+          "city",
+          "country",
+          "houseNumber",
+          "street",
+          "zipCode"
+        ],
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street"
+          },
+          "houseNumber": {
+            "type": "string",
+            "description": "House number"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "Zip code"
+          },
+          "city": {
+            "type": "string",
+            "description": "City"
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          }
+        },
+        "description": "User address. Note that CommunicationAddress must not be provided for Norisbank and will result in an error"
+      },
+      "Country": {
+        "type": "string",
+        "description": "Country"
+      },
+      "PhoneNumber": {
+        "required": [
+          "areaCode",
+          "internationalAreaCode",
+          "telephoneNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "internationalAreaCode": {
+            "type": "string",
+            "description": "International area code"
+          },
+          "areaCode": {
+            "type": "string",
+            "description": "Area code"
+          },
+          "telephoneNumber": {
+            "type": "string",
+            "description": "Phone number"
+          }
+        },
+        "description": "Phone number information"
+      },
+      "EmploymentInformation": {
+        "type": "object",
+        "properties": {
+          "industryCodeEmployer": {
+            "type": "string",
+            "description": "Industry code of the employer"
+          },
+          "employmentLevel": {
+            "$ref": "#/components/schemas/EmploymentLevel"
+          },
+          "employedSince": {
+            "type": "string",
+            "description": "Start date of the current employment. In the format YYYY-MM-DD",
+            "format": "date"
+          }
+        },
+        "description": "Employment information"
+      },
+      "EmploymentLevel": {
+        "type": "string",
+        "description": "Employment level",
+        "enum": [
+          "SENIOR_EMPLOYEE",
+          "QUALIFIED_EMPLOYEE",
+          "SALARIED_EMPLOYEE",
+          "SENIOR_CIVIL_SERVANT",
+          "MIDDLE_CIVIL_SERVANT",
+          "JUNIOR_CIVIL_SERVANT",
+          "MASTER",
+          "SKILLED_WORKER",
+          "WORKER",
+          "RETIRED",
+          "STUDENT",
+          "SCHOLAR",
+          "MILITARY_COMMUNITY_SERVICE",
+          "APPRENTICE",
+          "HOMEWORKER",
+          "UPPER_CIVIL_SERVANT",
+          "UNEMPLOYED",
+          "CHAIRMAN"
+        ]
+      },
+      "SelfEmploymentInformation": {
+        "required": [
+          "industryCodeSelfEmployer",
+          "legalForm"
+        ],
+        "type": "object",
+        "properties": {
+          "industryCodeSelfEmployer": {
+            "type": "string",
+            "description": "Industry code of the self-employer"
+          },
+          "legalForm": {
+            "$ref": "#/components/schemas/LegalForm"
+          },
+          "employedSince": {
+            "type": "string",
+            "description": "Start of date the current self-employment. In the format YYYY-MM-DD",
+            "format": "date"
+          }
+        },
+        "description": "Self-employment information"
+      },
+      "LegalForm": {
+        "type": "string",
+        "description": "Self-employment legal form",
+        "example": "FREELANCER",
+        "enum": [
+          "FREELANCER",
+          "CRAFTSMAN",
+          "TRADESMAN_WITHOUT_COMMERCIAL_REGISTER_ENTRY",
+          "OTHER_LEGAL_ORGANIZATION_FORM"
+        ]
+      },
+      "TaxInformation": {
+        "required": [
+          "isBornInTheUS",
+          "isGermanTaxPayer",
+          "isNonGermanTaxPayer",
+          "isSecondNationalityUS"
+        ],
+        "type": "object",
+        "properties": {
+          "isBornInTheUS": {
+            "type": "boolean",
+            "description": "FATCA Question: Customer born in the USA?"
+          },
+          "isNonGermanTaxPayer": {
+            "type": "boolean",
+            "description": "CRS Question: Taxpayer outside Germany?"
+          },
+          "isGermanTaxPayer": {
+            "type": "boolean",
+            "description": "CRS Question: Taxpayer in Germany?"
+          },
+          "isSecondNationalityUS": {
+            "type": "boolean",
+            "description": "FATCA Question: 2nd nationality US?"
+          },
+          "hasUSGreencard": {
+            "type": "boolean",
+            "description": "FATCA Question Customer has US greencard?"
+          },
+          "tin": {
+            "maxLength": 11,
+            "minLength": 11,
+            "type": "string",
+            "description": "Customer tax ID"
+          },
+          "selfEmployedTaxID": {
+            "type": "string",
+            "description": "Self-employed customer tax ID"
+          },
+          "nonGermanTaxPayerCountry1": {
+            "type": "string",
+            "description": "Non-German country where customer is taxpayer (1)"
+          },
+          "nonGermanTaxId1": {
+            "type": "string",
+            "description": "Tax-ID valid in Tax-Country-1"
+          },
+          "nonGermanTaxPayerCountry2": {
+            "type": "string",
+            "description": "Non-German country where customer is taxpayer (2)"
+          },
+          "nonGermanTaxId2": {
+            "type": "string",
+            "description": "Tax-ID valid in Tax-Country-2"
+          },
+          "nonGermanTaxPayerCountry3": {
+            "type": "string",
+            "description": "Non-German country where customer is taxpayer (3)"
+          },
+          "nonGermanTaxId3": {
+            "type": "string",
+            "description": "Tax-ID valid in Tax-Country-3"
+          },
+          "nonGermanTaxIdExemption1": {
+            "type": "string",
+            "description": "Reason for not providing Tax-ID for Tax-Country-1",
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "nonGermanTaxIdExemption2": {
+            "type": "string",
+            "description": "Reason for not providing Tax-ID for Tax-Country-2",
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "nonGermanTaxIdExemption3": {
+            "type": "string",
+            "description": "Reason for not providing Tax-ID for Tax-Country-3",
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        },
+        "description": "Tax information"
+      },
+      "CurrencyCode": {
+        "pattern": "[A-Z]{3}",
+        "type": "string",
+        "description": "ISO 4217 Alpha 3 currency code.",
+        "example": "EUR"
+      }
+    },
+    "securitySchemes": {
+      "api_client_credential": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://simulator-api.postbank.de:443/gw/oidc/token",
+            "scopes": {
+              "open_cash_account": "Cash account openings"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-original-swagger-version": "2.0"
+}
