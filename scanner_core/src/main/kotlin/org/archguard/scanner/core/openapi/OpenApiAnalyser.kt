@@ -2,6 +2,6 @@ package org.archguard.scanner.core.openapi
 
 import org.archguard.scanner.core.Analyser
 
-interface ApiAnalyser: Analyser<ApiContext> {
+interface OpenApiAnalyser: Analyser<OpenApiContext> {
     fun analyse(): List<ApiCollection>
 }

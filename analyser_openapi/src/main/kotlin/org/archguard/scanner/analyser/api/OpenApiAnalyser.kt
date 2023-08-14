@@ -1,13 +1,12 @@
 package org.archguard.scanner.analyser.api
 
 import org.archguard.scanner.analyser.api.openapi.OpenApiV3Processor
-import org.archguard.scanner.core.openapi.ApiAnalyser
 import org.archguard.scanner.core.openapi.ApiCollection
-import org.archguard.scanner.core.openapi.ApiContext
+import org.archguard.scanner.core.openapi.OpenApiContext
 import java.nio.file.Path
 import kotlin.io.path.*
 
-class OpenApiAnalyser(override val context: ApiContext) : ApiAnalyser {
+class OpenApiAnalyser(override val context: OpenApiContext) : org.archguard.scanner.core.openapi.OpenApiAnalyser {
     private val client = context.client
     private val path = context.path
 
