@@ -3,6 +3,7 @@ package org.archguard.scanner.analyser
 import org.archguard.scanner.analyser.api.openapi.OpenApiV3Processor
 import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.openapi.OpenApiContext
+import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.*
 
@@ -13,10 +14,10 @@ class OpenApiAnalyser(override val context: OpenApiContext) : org.archguard.scan
     @OptIn(ExperimentalPathApi::class)
     override fun analyse(): List<ApiCollection> {
         val targetsFile: MutableList<Path> = mutableListOf()
-        val target = Path(path);
+        val target = Path(path)
+
         if (target.isDirectory()) {
             targetsFile += target.walk().filter {
-                println("it: $it")
                 !it.toString().contains("src/main/resources") && mayBeOasFile(it)
             }.toList()
         } else {
@@ -26,13 +27,9 @@ class OpenApiAnalyser(override val context: OpenApiContext) : org.archguard.scan
         }
 
         val collections = targetsFile.mapNotNull {
-            try {
-                OpenApiV3Processor.fromFile(it.toFile())
-            } catch (e: Exception) {
-                null
-            }
+            ApiProcessorDetector.detectApiProcessor(it.toFile(), withPostman = true)
         }.map {
-            OpenApiV3Processor(it).convertApi()
+            it.convertApi()
         }.flatten()
 
         client.saveOpenApi(collections)

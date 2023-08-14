@@ -1,0 +1,711 @@
+{
+  "info": {
+    "_postman_id": "83c3d23d-4d8b-4661-b514-5efdc2459fe6",
+    "name": "微信支付 APIv3 Copy",
+    "description": "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/15520576-b0b733ba-a440-41d4-a5ac-ad7620500fd0?action=collection%2Ffork&collection-url=entityId%3D15520576-b0b733ba-a440-41d4-a5ac-ad7620500fd0%26entityType%3Dcollection%26workspaceId%3Da4c4f830-deea-405a-924f-d3b20cdf5eb2)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21136807",
+    "_collection_link": "https://www.postman.com/cryosat-architect-82597078/workspace/archguard/collection/21136807-83c3d23d-4d8b-4661-b514-5efdc2459fe6?action=share&creator=21136807&source=collection_link"
+  },
+  "item": [
+    {
+      "name": "风险合规",
+      "item": [
+        {
+          "name": "消费者投诉2.0",
+          "item": [
+            {
+              "name": "查询投诉单列表",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2?limit=5&offset=10&begin_date=2022-11-01&end_date=2022-11-11&complainted_mchid={{mchid}}",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5",
+                      "description": "设置该次请求返回的最大投诉条数，范围【1,50】,商户自定义字段，不传默认为10。\n注：如遇到提示“当前查询结果数据量过大”，是回包触发微信支付下行数据包大小限制，请缩小入参limit并重试。"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "10",
+                      "description": "该次请求的分页开始位置，从0开始计数，例如offset=10，表示从第11条记录开始返回，不传默认为0 。"
+                    },
+                    {
+                      "key": "begin_date",
+                      "value": "2022-11-01",
+                      "description": "投诉发生的开始日期，格式为yyyy-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2022-11-11",
+                      "description": "投诉发生的结束日期，格式为yyyy-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询"
+                    },
+                    {
+                      "key": "complainted_mchid",
+                      "value": "{{mchid}}",
+                      "description": "投诉单对应的被诉商户号。示例值：1900012181"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2?limit=5&offset=10&begin_date=2022-11-01&end_date=2022-11-11&complainted_mchid={{mchid}}",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "5",
+                          "description": "设置该次请求返回的最大投诉条数，范围【1,50】,商户自定义字段，不传默认为10。\n注：如遇到提示“当前查询结果数据量过大”，是回包触发微信支付下行数据包大小限制，请缩小入参limit并重试。"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "10",
+                          "description": "该次请求的分页开始位置，从0开始计数，例如offset=10，表示从第11条记录开始返回，不传默认为0 。"
+                        },
+                        {
+                          "key": "begin_date",
+                          "value": "2022-11-01",
+                          "description": "投诉发生的开始日期，格式为yyyy-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询"
+                        },
+                        {
+                          "key": "end_date",
+                          "value": "2022-11-11",
+                          "description": "投诉发生的结束日期，格式为yyyy-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询"
+                        },
+                        {
+                          "key": "complainted_mchid",
+                          "value": "{{mchid}}",
+                          "description": "投诉单对应的被诉商户号。示例值：1900012181"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "/* 参数说明看文档：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_11.shtml */\n{\n  \"data\": [\n    {\n      \"complaint_id\": \"200201820200101080076610000\",\n      \"complaint_time\": \"2015-05-20T13:29:35.120+08:00\",\n      \"complaint_detail\": \"反馈一个重复扣费的问题\",\n      \"complaint_state\": \"PENDING\",\n      \"payer_phone\": \"Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg==\",\n      \"complaint_order_info\":[\n          {\n            \"transaction_id\": \"4200000404201909069117582536\",\n            \"out_trade_no\": \"20190906154617947762231\",\n            \"amount\": 3\n          }\n      ],\n      \"service_order_info\": [\n         {\n\t   \"order_id\": \"15646546545165651651\",\n\t   \"out_order_no\": \"1234323JKHDFE1243252\",\n\t   \"state\": \"DOING\" \n\t      }\n      ],\n      \"complaint_full_refunded\": true,\n      \"incoming_user_response\": true,\n      \"user_complaint_times\": 1,\n      \"complaint_media_list\": [\n\t      {\n\t\t\t\"media_type\": \"USER_COMPLAINT_IMAGE\",\n\t\t\t\"media_url\": [\n\t\t\t\t\"https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx\"\n\t\t\t]\n\t\t  }\n\t  ],\n  \t \"problem_description\": \"不满意商家服务\",\n  \t \"limit\": 5,\n  \t \"offset\": 10,\n  \t \"total_count\": 1000\n  \n}"
+                }
+              ]
+            },
+            {
+              "name": "查询投诉单详情",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要查询的投诉单对应的投诉单号}}",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2",
+                    "{{请将此处替换为要查询的投诉单对应的投诉单号}}"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要查询的投诉单对应的投诉单号}}",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2",
+                        "{{请将此处替换为要查询的投诉单对应的投诉单号}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "/* 参数说明看文档：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_13.shtml */\n{\n\t\"complaint_id\": \"200201820200101080076610000\",\n\t\"complaint_time\": \"2015-05-20T13:29:35.120+08:00\",\n\t\"complaint_detail\": \"反馈一个重复扣费的问题\",\n\t\"complainted_mchid\": 1900012181,\n\t\"complaint_state\": \"PENDING\",\n\t\"payer_phone\": \"sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB\",\n\t\"payer_openid\": \"oUpF8uMuAJO_M2pxb1Q9zNjWeS6o\",\n\t\"complaint_media_list\": [{\n\t\t\"media_type\": \"USER_COMPLAINT_IMAGE\",\n\t\t\"media_url\": [\n\t\t\t\"https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx\"\n\t\t]\n\t}],\n\t\"complaint_order_info\": [{\n\t\t\"transaction_id\": \"4200000404201909069117582536\",\n\t\t\"out_trade_no\": \"20190906154617947762231\",\n\t\t\"amount\": 3\n\t}],\n   \"service_order_info\": [\n    {\n\t   \"order_id\": \"15646546545165651651\",\n\t   \"out_order_no\": \"1234323JKHDFE1243252\",\n\t   \"state\": \"DOING\" \n\t}\n  ]\n\t\"complaint_full_refunded\": true,\n\t\"incoming_user_response\": true,\n\t\"problem_description\": \"不满意商家服务\",\n\t\"user_complaint_times\": 1\n}"
+                }
+              ]
+            },
+            {
+              "name": "查询投诉协商历史",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要查询的投诉单对应的投诉单号}}/negotiation-historys?limit=50&offset=0",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2",
+                    "{{请将此处替换为要查询的投诉单对应的投诉单号}}",
+                    "negotiation-historys"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50",
+                      "description": "设置该次请求返回的最大协商历史条数，范围[1,300]，不传默认为100。\n注：如遇到提示“当前查询结果数据量过大”，是回包触发微信支付下行数据包大小限制，请缩小入参limit并重试。"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0",
+                      "description": "该次请求的分页开始位置，从0开始计数，例如offset=10，表示从第11条记录开始返回，不传默认为0。。"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要查询的投诉单对应的投诉单号}}/negotiation-historys?limit=50&offset=0",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2",
+                        "{{请将此处替换为要查询的投诉单对应的投诉单号}}",
+                        "negotiation-historys"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "50",
+                          "description": "设置该次请求返回的最大协商历史条数，范围[1,300]，不传默认为100。\n注：如遇到提示“当前查询结果数据量过大”，是回包触发微信支付下行数据包大小限制，请缩小入参limit并重试。"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "0",
+                          "description": "该次请求的分页开始位置，从0开始计数，例如offset=10，表示从第11条记录开始返回，不传默认为0。。"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "/* 参数说明看文档: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_12.shtml */\n{\n\t\"data\": [{\n\t\t\"complaint_media_list\": {\n\t\t\t\"media_type\": \"USER_COMPLAINT_IMAGE\",\n\t\t\t\"media_url\": [\n\t\t\t\t\"https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx\"\n\t\t\t]\n\t\t},\n\t\t\"log_id\": \"300285320210322170000071077\",\n\t\t\"operator\": \"投诉人\",\n\t\t\"operate_time\": \"2015-05-20T13:29:35.120+08:00\",\n\t\t\"operate_type\": \"USER_CREATE_COMPLAINT\",\n\t\t\"operate_details\": \"已与用户电话沟通解决\",\n\t\t\"image_list\": [\n\t\t\t\"https://qpic.cn/xxx\"\n\t\t]\n\t}],\n\t\"limit\": 50,\n\t\"offset\": 50,\n\t\"total_count\": 1000\n}"
+                }
+              ]
+            },
+            {
+              "name": "创建投诉通知回调地址",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_12.shtml\n   接口说明：商户通过调用此接口创建投诉通知回调URL，当用户产生新投诉且投诉状态已变更时，微信支付会通过回调URL通知商户。对于服务商、渠道商，会收到所有子商户的投诉信息推送。 */\n{\n   \"url\": \"https://www.pay.weixin.qq.com/notify\" ///接收投诉回调通知地址，仅支持https。\n} ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaint-notifications"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_12.shtml\n   接口说明：商户通过调用此接口创建投诉通知回调URL，当用户产生新投诉且投诉状态已变更时，微信支付会通过回调URL通知商户。对于服务商、渠道商，会收到所有子商户的投诉信息推送。 */\n{\n   \"url\": \"https://www.pay.weixin.qq.com/notify\" ///接收投诉回调通知地址，仅支持https。\n} ",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaint-notifications"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"mchid\": \"1900012181\", ///返回创建回调地址的商户号\n  \"url\": \"https://www.pay.weixin.qq.com/notify\" ///配置的接收投诉回调通知地址\n}"
+                }
+              ]
+            },
+            {
+              "name": "查询投诉通知回调地址",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaint-notifications"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaint-notifications"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"mchid\": \"1900012181\", ///返回创建回调地址的商户号\n  \"url\": \"https://www.pay.weixin.qq.com/notify\" ///配置的接收投诉回调通知地址\n}"
+                }
+              ]
+            },
+            {
+              "name": "更新投诉通知回调地址",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_4.shtml\n   接口说明：商户通过调用此接口更新投诉通知的回调URL。 */\n{\n   \"url\": \"https://www.pay.weixin.qq.com/notify\" ///配置更新的接收投诉回调通知地址\n} ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaint-notifications"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "200_OK",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_4.shtml\n   接口说明：商户通过调用此接口更新投诉通知的回调URL。 */\n{\n   \"url\": \"https://www.pay.weixin.qq.com/notify\" ///配置更新的接收投诉回调通知地址\n} ",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaint-notifications"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "name": "Content-Type",
+                      "description": "",
+                      "type": "text"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"mchid\": \"1900012181\", ///返回创建回调地址的商户号\n  \"url\": \"https://www.pay.weixin.qq.com/notify\" ///配置的接收投诉回调通知地址\n}"
+                }
+              ]
+            },
+            {
+              "name": "删除投诉通知回调地址",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaint-notifications"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "204_无数据",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaint-notifications",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaint-notifications"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            },
+            {
+              "name": "回复用户",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_14.shtml\n   接口说明：商户可通过调用此接口，提交内容回复用户。其中上传图片凭证需首先调用商户上传反馈图片接口，得到图片id，再将id填入请求。 回复可配置文字链，传入跳转链接文案和跳转链接字段，用户点击即可跳转对应页面。首次回复用户后，投诉单状态将由待处理更新为处理中。 */\n{\n  \"complainted_mchid\": \"{{mchid}}\",///投诉单对应的被诉商户号\n  \"response_content\": \"已与用户沟通解决\",///具体的投诉处理方案，限制200个字符以内。\n  \"jump_url\": \"https://www.xxx.com/notify\",/* 商户可在回复中附加跳转链接，引导用户跳转至商户客诉处理页面，链接需满足https格式 注：配置文字链属于灰度功能, 若有需要请使用超管邮箱，按照要求发送邮件申请。邮件要求详情见：https://kf.qq.com/faq/211207a6zMBj211207ZnIr2A.html  */\n  \"jump_url_text\": \"查看订单详情\", ///际展示给用户的文案，附在回复内容之后。用户点击文案，即可进行跳转。注:若传入跳转链接，则跳转链接文案为必传项，二者缺一不可。\n  \"response_images\": [\"aabbccdd\",\"aaccddee\"] ///传入调用商户上传反馈图片接口返回的media_id，最多上传4张图片凭证\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要回复的投诉单对应的投诉单号}}/response",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2",
+                    "{{请将此处替换为要回复的投诉单对应的投诉单号}}",
+                    "response"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "204_无数据",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_14.shtml\n   接口说明：商户可通过调用此接口，提交内容回复用户。其中上传图片凭证需首先调用商户上传反馈图片接口，得到图片id，再将id填入请求。 回复可配置文字链，传入跳转链接文案和跳转链接字段，用户点击即可跳转对应页面。首次回复用户后，投诉单状态将由待处理更新为处理中。 */\n{\n  \"complainted_mchid\": \"{{mchid}}\",///投诉单对应的被诉商户号\n  \"response_content\": \"已与用户沟通解决\",///具体的投诉处理方案，限制200个字符以内。\n  \"jump_url\": \"https://www.xxx.com/notify\",/* 商户可在回复中附加跳转链接，引导用户跳转至商户客诉处理页面，链接需满足https格式 注：配置文字链属于灰度功能, 若有需要请使用超管邮箱，按照要求发送邮件申请。邮件要求详情见：https://kf.qq.com/faq/211207a6zMBj211207ZnIr2A.html  */\n  \"jump_url_text\": \"查看订单详情\", ///际展示给用户的文案，附在回复内容之后。用户点击文案，即可进行跳转。注:若传入跳转链接，则跳转链接文案为必传项，二者缺一不可。\n  \"response_images\": [\"aabbccdd\",\"aaccddee\"] ///传入调用商户上传反馈图片接口返回的media_id，最多上传4张图片凭证\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{请将此处替换为要回复的投诉单对应的投诉单号}}/response",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2",
+                        "{{请将此处替换为要回复的投诉单对应的投诉单号}}",
+                        "response"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            },
+            {
+              "name": "反馈处理完成",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"complainted_mchid\": \"{{mchid}}\"///投诉单对应的被诉商户号\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{此处替换为反馈处理完成的投诉单号}}/complete",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2",
+                    "{{此处替换为反馈处理完成的投诉单号}}",
+                    "complete"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "204_无数据",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"complainted_mchid\": \"{{mchid}}\"///投诉单对应的被诉商户号\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{此处替换为反馈处理完成的投诉单号}}/complete",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2",
+                        "{{此处替换为反馈处理完成的投诉单号}}",
+                        "complete"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            },
+            {
+              "name": "更新退款审批结果",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_19.shtml\n   接口说明：商户可通过调用此接口，更新“申请退款”单据的退款审批结果。\n   注意：针对“申请退款单”，需要商户明确返回是否可退款的审批结果。\n    1、核实可以退款，审批动作传入“APPROVE”，同意退款，并给出一个预计退款时间。传入“同意退款”后，需要额外调退款接口发起原路退款。退款到账后，投诉单的状态将自动扭转为“处理完成”。\n    2、核实不可退款，审批动作传入“REJECT”，拒绝退款，并说明拒绝退款原因。驳回退款后，投诉单的状态将自动扭转为“处理完成”。请确保和用户沟通清楚后再驳回，避免用户重复投诉。 */\n{\n  \"action\": \"REJECT\", ///审批动作 同意 或 拒绝 REJECT：拒绝，拒绝退款 APPROVE：同意，同意退款\n  \"launch_refund_day\": 3, ///在同意退款时返回，预计将在多少个工作日内能发起退款, 0代表当天\n  \"reject_media_list\": [\"aabbccdd\",\"aaccddee\"], ///在拒绝退款时，如果有拒绝的图片举证，可以提供 最多上传4张图片, 传入调用“商户上传反馈图片”接口返回的media_id，最多上传4张图片凭证\n  \"reject_reason\": \"拒绝退款\",///在拒绝退款时返回拒绝退款的原因\n  \"remark\": \"不同意退款\" ///任何需要向微信支付客服反馈的信息\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{此处替换为投诉单对应的投诉单号}}/update-refund-progress",
+                  "host": [
+                    "{{server_url}}"
+                  ],
+                  "path": [
+                    "v3",
+                    "merchant-service",
+                    "complaints-v2",
+                    "{{此处替换为投诉单对应的投诉单号}}",
+                    "update-refund-progress"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "204_无数据",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "/* 接口地址：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter10_2_19.shtml\n   接口说明：商户可通过调用此接口，更新“申请退款”单据的退款审批结果。\n   注意：针对“申请退款单”，需要商户明确返回是否可退款的审批结果。\n    1、核实可以退款，审批动作传入“APPROVE”，同意退款，并给出一个预计退款时间。传入“同意退款”后，需要额外调退款接口发起原路退款。退款到账后，投诉单的状态将自动扭转为“处理完成”。\n    2、核实不可退款，审批动作传入“REJECT”，拒绝退款，并说明拒绝退款原因。驳回退款后，投诉单的状态将自动扭转为“处理完成”。请确保和用户沟通清楚后再驳回，避免用户重复投诉。 */\n{\n  \"action\": \"REJECT\", ///审批动作 同意 或 拒绝 REJECT：拒绝，拒绝退款 APPROVE：同意，同意退款\n  \"launch_refund_day\": 3, ///在同意退款时返回，预计将在多少个工作日内能发起退款, 0代表当天\n  \"reject_media_list\": [\"aabbccdd\",\"aaccddee\"], ///在拒绝退款时，如果有拒绝的图片举证，可以提供 最多上传4张图片, 传入调用“商户上传反馈图片”接口返回的media_id，最多上传4张图片凭证\n  \"reject_reason\": \"拒绝退款\",///在拒绝退款时返回拒绝退款的原因\n  \"remark\": \"不同意退款\" ///任何需要向微信支付客服反馈的信息\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{server_url}}/v3/merchant-service/complaints-v2/{{此处替换为投诉单对应的投诉单号}}/update-refund-progress",
+                      "host": [
+                        "{{server_url}}"
+                      ],
+                      "path": [
+                        "v3",
+                        "merchant-service",
+                        "complaints-v2",
+                        "{{此处替换为投诉单对应的投诉单号}}",
+                        "update-refund-progress"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+
+  ],
+  "variable": [
+    {
+      "key": "sm2js_code",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "forge_code",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
