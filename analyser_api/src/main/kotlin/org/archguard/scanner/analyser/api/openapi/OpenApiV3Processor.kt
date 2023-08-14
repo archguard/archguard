@@ -6,10 +6,10 @@ import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.parser.OpenAPIV3Parser
 import org.archguard.scanner.analyser.api.base.ApiProcessor
-import org.archguard.scanner.analyser.model.*
+import org.archguard.scanner.core.openapi.*
 import java.io.File
 
-class Swagger3Processor(private val api: OpenAPI) : ApiProcessor {
+class OpenApiV3Processor(private val api: OpenAPI) : ApiProcessor {
     private val apiSchemaMutableMap = api.components?.schemas
 
     override fun convertApi(): List<ApiCollection> {
@@ -104,7 +104,7 @@ class Swagger3Processor(private val api: OpenAPI) : ApiProcessor {
     }
 
     companion object {
-        val logger = org.slf4j.LoggerFactory.getLogger(Swagger3Processor::class.java)!!
+        val logger = org.slf4j.LoggerFactory.getLogger(OpenApiV3Processor::class.java)!!
 
         fun fromFile(file: File): OpenAPI? {
             try {

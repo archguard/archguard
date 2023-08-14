@@ -5,6 +5,7 @@ import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -29,38 +30,17 @@ interface ArchGuardClient {
      * Count of Lines with complexity
      */
     fun saveEstimates(estimates: List<LanguageEstimate>)
+    fun saveOpenApi(collections: List<ApiCollection>)
 }
 
 class EmptyArchGuardClient : ArchGuardClient {
-    override fun saveDataStructure(codes: List<CodeDataStruct>) {
-
-    }
-
-    override fun saveApi(apis: List<ContainerService>) {
-
-    }
-
-    override fun saveRelation(records: List<CodeDatabaseRelation>) {
-
-    }
-
-    override fun saveGitLogs(gitLogs: List<GitLogs>) {
-
-    }
-
-    override fun saveDiffs(calls: List<ChangedCall>) {
-
-    }
-
-    override fun saveDependencies(dependencies: List<CompositionDependency>) {
-
-    }
-
-    override fun saveRuleIssues(issues: List<Issue>) {
-
-    }
-
-    override fun saveEstimates(estimates: List<LanguageEstimate>) {
-
-    }
+    override fun saveDataStructure(codes: List<CodeDataStruct>) = Unit
+    override fun saveApi(apis: List<ContainerService>) = Unit
+    override fun saveRelation(records: List<CodeDatabaseRelation>) = Unit
+    override fun saveGitLogs(gitLogs: List<GitLogs>) = Unit
+    override fun saveDiffs(calls: List<ChangedCall>) = Unit
+    override fun saveDependencies(dependencies: List<CompositionDependency>) = Unit
+    override fun saveRuleIssues(issues: List<Issue>) = Unit
+    override fun saveEstimates(estimates: List<LanguageEstimate>) = Unit
+    override fun saveOpenApi(collections: List<ApiCollection>) = Unit
 }

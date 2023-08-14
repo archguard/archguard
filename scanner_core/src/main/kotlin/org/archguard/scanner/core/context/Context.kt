@@ -18,7 +18,8 @@ enum class AnalyserType {
     RULE,
     // todo: not implemented yet
     ARCHITECTURE,
-    ESTIMATE
+    ESTIMATE,
+    OPEN_API
     ;
 
     companion object {

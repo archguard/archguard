@@ -8,6 +8,7 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -99,5 +100,9 @@ class ArchGuardHttpClient(
 
     override fun saveEstimates(estimates: List<LanguageEstimate>) {
         process("estimates", estimates)
+    }
+
+    override fun saveOpenApi(collections: List<ApiCollection>) {
+        process("openapi", collections)
     }
 }

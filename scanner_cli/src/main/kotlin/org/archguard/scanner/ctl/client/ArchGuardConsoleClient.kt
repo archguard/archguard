@@ -8,6 +8,7 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -60,5 +61,11 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
         println("==============================================================")
         println("Output project estimates to console")
         println(Json.encodeToString(estimates))
+    }
+
+    override fun saveOpenApi(collections: List<ApiCollection>) {
+        println("==============================================================")
+        println("Output project openapi to console")
+        println(Json.encodeToString(collections))
     }
 }

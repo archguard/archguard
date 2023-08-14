@@ -8,6 +8,7 @@ import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.git.GitLogs
+import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.sca.CompositionDependency
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -60,5 +61,9 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveEstimates(estimates: List<LanguageEstimate>) {
         writeCsvFile(estimates, buildFileName("estimates"))
+    }
+
+    override fun saveOpenApi(collections: List<ApiCollection>) {
+        writeCsvFile(collections, buildFileName("openapi"))
     }
 }

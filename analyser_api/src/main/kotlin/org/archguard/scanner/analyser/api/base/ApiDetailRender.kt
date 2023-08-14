@@ -1,6 +1,6 @@
 package org.archguard.scanner.analyser.api.base
 
-import org.archguard.scanner.analyser.model.ApiCollection
+import org.archguard.scanner.core.openapi.ApiCollection
 
 interface ApiDetailRender {
     fun render(apiCollections: List<ApiCollection>): String {

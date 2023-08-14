@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.model
+package org.archguard.scanner.core.openapi
 
 import kotlinx.serialization.Serializable
 
