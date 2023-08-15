@@ -1,4 +1,35 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.3...v) (2023-08-14)
+# [](https://github.com/archguard/archguard/compare/v2.0.5...v) (2023-08-15)
+
+
+
+## [2.0.5](https://github.com/archguard/archguard/compare/v2.0.4...v2.0.5) (2023-08-15)
+
+
+### Bug Fixes
+
+* fix tests ([541da25](https://github.com/archguard/archguard/commit/541da25b45773d3795a2f64998466127ad64bfa7))
+
+
+### Features
+
+* add dispaly function ([fab055e](https://github.com/archguard/archguard/commit/fab055ed2746e785051028d426f8cdde541db1dd))
+* **funcode:** add --with-function code to parser ([17e2a74](https://github.com/archguard/archguard/commit/17e2a749fef590b108b4730f7c227f12ce6e4ef6))
+* **funcode:** add --with-function-code parameter to cmmand ([e3b50c4](https://github.com/archguard/archguard/commit/e3b50c4b545b5c2c9e3ab7de41ebc64d41bf1d85))
+
+
+
+## [2.0.4](https://github.com/archguard/archguard/compare/v2.0.3...v2.0.4) (2023-08-15)
+
+
+### Bug Fixes
+
+* fix version issue ([ecfb1ad](https://github.com/archguard/archguard/commit/ecfb1ade88a16cc2de22369c157241c10cf837b1))
+* fix version issues ([a56040b](https://github.com/archguard/archguard/commit/a56040b0f1a367c4210c89e3eddc4b9fb77bb7cd))
+
+
+### Features
+
+* add filelang to extentions ([b45d7a5](https://github.com/archguard/archguard/commit/b45d7a50b786efdec02de1404592f2e1f057e031))
 
 
 
