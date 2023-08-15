@@ -5,7 +5,7 @@ import org.archguard.scanner.analyser.api.postman.PostmanReader
 import org.archguard.scanner.core.openapi.ApiCollection
 import java.io.File
 
-class PostmanProcessor(val file: File) : ApiProcessor {
+class PostmanProcessor(private val file: File) : ApiProcessor {
     override fun convertApi(): List<ApiCollection> {
         val postmanReader = PostmanReader()
         val collection = postmanReader.readCollectionFile(file.absolutePath)
@@ -15,6 +15,8 @@ class PostmanProcessor(val file: File) : ApiProcessor {
             apiCollection.items.forEach {
                 it.renderDisplayText()
             }
+
+            apiCollection.filename = file.name
 
             apiCollection
         }

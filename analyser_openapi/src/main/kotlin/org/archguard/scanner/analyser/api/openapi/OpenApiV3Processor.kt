@@ -9,7 +9,7 @@ import org.archguard.scanner.analyser.api.base.ApiProcessor
 import org.archguard.scanner.core.openapi.*
 import java.io.File
 
-class OpenApiV3Processor(private val api: OpenAPI) : ApiProcessor {
+class OpenApiV3Processor(private val api: OpenAPI, val file: File) : ApiProcessor {
     private val apiSchemaMutableMap = api.components?.schemas
 
     override fun convertApi(): List<ApiCollection> {
@@ -37,7 +37,7 @@ class OpenApiV3Processor(private val api: OpenAPI) : ApiProcessor {
         // group by tag
         val apiDetailsByTag = allItems.groupBy { it.tags.firstOrNull() ?: "" }
         return apiDetailsByTag.map { (tag, apiItems) ->
-            ApiCollection(tag, "", apiItems)
+            ApiCollection(tag, file.name, "", apiItems)
         }
     }
 

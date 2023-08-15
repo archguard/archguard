@@ -39,7 +39,7 @@ object ApiProcessorDetector {
     private fun getSwaggerProcessor(it: File): ApiProcessor? {
         return try {
             val openAPI = OpenApiV3Processor.fromFile(it) ?: return null
-            OpenApiV3Processor(openAPI)
+            OpenApiV3Processor(openAPI, it)
         } catch (e: Exception) {
             logger.info("Failed to parse ${it.absolutePath}", e)
             null

@@ -1,9 +1,7 @@
 package org.archguard.scanner.analyser
 
-import org.archguard.scanner.analyser.api.openapi.OpenApiV3Processor
 import org.archguard.scanner.core.openapi.ApiCollection
 import org.archguard.scanner.core.openapi.OpenApiContext
-import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.*
 

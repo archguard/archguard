@@ -154,7 +154,7 @@ class OpenApiWorker(override val command: ScannerCommand) : Worker<OpenApiContex
     override val context = CliOpenApiContext(
         client = command.buildClient(),
         path = command.path,
-        branch = command.branch
+        branch = command.branch,
     )
 
     override fun run() {

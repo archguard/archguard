@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ApiCollection(
     val name: String,
+    var filename: String,
     val description: String,
     val items: List<ApiItem>,
 ) {

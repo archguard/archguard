@@ -36,7 +36,7 @@ class PostmanParser {
                 details.addAll(folder)
 
                 val items = it.items.map(ChildType.Item::items).flatten()
-                details.add(ApiCollection(folderName ?: "", "", items))
+                details.add(ApiCollection(folderName ?: "", "", "", items))
             }
 
             val items = childTypes.filterIsInstance<ChildType.Item>().map { it.items }.flatten()
@@ -47,7 +47,7 @@ class PostmanParser {
                     item.name ?: ""
                 }
 
-                details.add(ApiCollection(folderName ?: "", descriptionName, items))
+                details.add(ApiCollection(folderName ?: "", "", descriptionName, items))
             }
         } else if (item.request != null) {
             val apiItems = processApiItem(item as PostmanItem, folderName, item.name)?.let {
@@ -60,7 +60,7 @@ class PostmanParser {
                 item.name ?: ""
             }
 
-            details.add(ApiCollection(folderName ?: "", descriptionName, apiItems))
+            details.add(ApiCollection(folderName ?: "", "", descriptionName, apiItems))
         }
 
         return details
@@ -80,7 +80,7 @@ class PostmanParser {
                     return listOf(ChildType.NestedFolder(folder, items))
                 } else if (items.size == subItem.item!!.size) {
                     val collection =
-                        ApiCollection(folderName ?: "", subItem.name ?: "", items.map { it.items }.flatten())
+                        ApiCollection(folderName ?: "", subItem.name ?: "", "", items.map { it.items }.flatten())
                     return listOf(ChildType.Folder(collection))
                 }
 
