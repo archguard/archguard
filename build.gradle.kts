@@ -22,7 +22,7 @@ allprojects {
     apply(plugin = "org.jetbrains.dokka")
 
     group = "org.archguard.scanner"
-    version = "2.0.3"
+    version = "2.0.4"
 
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
