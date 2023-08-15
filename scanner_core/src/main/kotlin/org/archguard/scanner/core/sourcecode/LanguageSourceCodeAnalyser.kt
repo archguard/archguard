@@ -1,6 +1,7 @@
 package org.archguard.scanner.core.sourcecode
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodePosition
 import java.io.File
 import kotlin.streams.asStream
@@ -26,6 +27,35 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
             return text.substring(1);
         }
         return text
+    }
+
+    /**
+     * output example:
+     * ```code
+     * @{annotation}
+     * function_name(param1, param2) -> return_TYPE {
+     *    // function-call
+     * }
+     * ```
+     */
+    fun display(function: CodeFunction): String {
+        val annotation = function.Annotations.joinToString("\n") {
+            val keyValues = it.KeyValues.joinToString(", ") { keyValue -> "${keyValue.Key} = ${keyValue.Value}" }
+            "@${it.Name}($keyValues)"
+        }
+
+        val params = function.Parameters.joinToString(", ") { "${it.TypeValue}: ${it.TypeType}" }
+        val returnType = function.ReturnType
+        val body = function.FunctionCalls.joinToString("\n") {
+            "// ->" + it.Package + "." + it.NodeName + "." + it.FunctionName + "(" + it.Parameters.joinToString(", ") + ")"
+        }
+
+        return """
+            $annotation
+            ${function.Name}($params) -> $returnType {
+                $body
+            }
+        """.trimIndent()
     }
 
     fun contentByPosition(lines: List<String>, position: CodePosition): String {
