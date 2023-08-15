@@ -7,11 +7,11 @@ data class ChangedCall(
     val path: String,
     val packageName: String,
     val className: String,
-    val relations: List<ChangeRelation>
+    val relations: List<NodeRelation>
 )
 
 @Serializable
-data class ChangeRelation(
+data class NodeRelation(
     val source: String,
     val target: String
 )

@@ -3,9 +3,9 @@ package org.archguard.scanner.analyser.diffchanges
 import chapi.domain.core.CodeDataStruct
 import chapi.parser.ParseMode
 import kotlinx.serialization.Serializable
-import org.archguard.scanner.core.diffchanges.ChangeRelation
-import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.archguard.scanner.core.diffchanges.NodeRelation
+import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.diffchanges.NodeRelationBuilder
 import org.archguard.scanner.core.diffchanges.SHORT_ID_LENGTH
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
@@ -37,7 +37,7 @@ class ChangedEntry(
     val functionName: String = ""
 )
 
-class GitDiffer(val path: String, val branch: String, val loopDepth: Int = SHORT_ID_LENGTH) : NodeRelation() {
+class GitDiffer(val path: String, val branch: String, val loopDepth: Int = SHORT_ID_LENGTH) : NodeRelationBuilder() {
     private var baseLineDataTree: List<DifferFile> = listOf()
     private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
     private val changedFiles: MutableMap<String, ChangedEntry> = mutableMapOf()
@@ -73,14 +73,14 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int = SHORT
     private fun calculateChange(): List<ChangedCall> {
         return changedFunctions.map {
             val callName = it.value.packageName + "." + it.value.className + "." + it.value.functionName
-            val changeRelations: MutableList<ChangeRelation> = mutableListOf()
-            calculateReverseCalls(callName, changeRelations, loopDepth) ?: listOf()
+            val nodeRelations: MutableList<NodeRelation> = mutableListOf()
+            calculateReverseCalls(callName, nodeRelations, loopDepth) ?: listOf()
 
             ChangedCall(
                 path = it.value.path,
                 packageName = it.value.packageName,
                 className = it.value.className,
-                relations = changeRelations
+                relations = nodeRelations
             )
         }.toList()
     }

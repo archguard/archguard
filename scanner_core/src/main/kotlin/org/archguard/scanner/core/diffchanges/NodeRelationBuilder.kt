@@ -4,17 +4,32 @@ import chapi.domain.core.CodeDataStruct
 
 const val SHORT_ID_LENGTH = 7
 
-open class NodeRelation {
+open class NodeRelationBuilder {
     private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
     private val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
 
-    protected fun calculateReverseCalls(
+    /**
+     * Calculate the relations between the functions of the two nodes.
+     *
+     * @param sourceNode The source node.
+     * @param targetNode The target node.
+     * @return The relations between the functions of the two nodes.
+     * usage example:
+     *
+     * ```kotlin
+     * val callName = packageName + "." + className + "." + functionName
+     * val changeRelations: MutableList<NodeRelation> = mutableListOf()
+     * calculateReverseCalls(callName, changeRelations, loopDepth) ?: listOf()
+     * ```
+     *
+     */
+    open fun calculateReverseCalls(
         sourceFunctionName: String,
-        changeRelations: MutableList<ChangeRelation>,
+        nodeRelations: MutableList<NodeRelation>,
         loopDepth: Int = SHORT_ID_LENGTH
-    ): List<ChangeRelation>? {
+    ): List<NodeRelation>? {
         if (loopCount > loopDepth) {
             return null
         }
@@ -29,14 +44,14 @@ open class NodeRelation {
 
             if (reverseCallMap[child] != null) {
                 lastReverseCallChild = child
-                val optRelations = calculateReverseCalls(child, changeRelations, loopDepth)
+                val optRelations = calculateReverseCalls(child, nodeRelations, loopDepth)
                 if (optRelations != null) {
-                    changeRelations += optRelations
+                    nodeRelations += optRelations
                 }
             }
 
             if (child != sourceFunctionName) {
-                changeRelations += ChangeRelation(child, sourceFunctionName)
+                nodeRelations += NodeRelation(child, sourceFunctionName)
             }
         }
 
