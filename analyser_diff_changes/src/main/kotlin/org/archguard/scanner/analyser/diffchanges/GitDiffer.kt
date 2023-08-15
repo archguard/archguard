@@ -3,9 +3,10 @@ package org.archguard.scanner.analyser.diffchanges
 import chapi.domain.core.CodeDataStruct
 import chapi.parser.ParseMode
 import kotlinx.serialization.Serializable
-import org.archguard.scanner.analyser.DiffChangesAnalyser.Companion.SHORT_ID_LENGTH
 import org.archguard.scanner.core.diffchanges.ChangeRelation
 import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.scanner.core.diffchanges.NodeRelation
+import org.archguard.scanner.core.diffchanges.SHORT_ID_LENGTH
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter

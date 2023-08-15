@@ -1,18 +1,19 @@
-package org.archguard.scanner.analyser.diffchanges
+package org.archguard.scanner.core.diffchanges
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.scanner.core.diffchanges.ChangeRelation
+
+const val SHORT_ID_LENGTH = 7
 
 open class NodeRelation {
-    protected val functionMap: MutableMap<String, Boolean> = mutableMapOf()
-    protected val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+    private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
+    private val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
 
     protected fun calculateReverseCalls(
         sourceFunctionName: String,
         changeRelations: MutableList<ChangeRelation>,
-        loopDepth: Int
+        loopDepth: Int = SHORT_ID_LENGTH
     ): List<ChangeRelation>? {
         if (loopCount > loopDepth) {
             return null
