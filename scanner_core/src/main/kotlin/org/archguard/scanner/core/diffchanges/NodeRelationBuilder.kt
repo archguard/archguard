@@ -12,10 +12,12 @@ open class NodeRelationBuilder {
 
     /**
      * Calculate the relations between the functions of the two nodes.
+     * <b>Before calling this function, you need to call [fillFunctionMap] and [fillReverseCallMap] </b>
      *
      * @param sourceNode The source node.
      * @param targetNode The target node.
      * @return The relations between the functions of the two nodes.
+     *
      * usage example:
      *
      * ```kotlin
@@ -58,7 +60,7 @@ open class NodeRelationBuilder {
         return null
     }
 
-    protected fun fillFunctionMap(dataStructs: List<CodeDataStruct>) {
+    open fun fillFunctionMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
             node.Functions.forEach {
                 functionMap[node.Package + "." + node.NodeName + "." + it.Name] = true
@@ -66,7 +68,7 @@ open class NodeRelationBuilder {
         }
     }
 
-    protected fun fillReverseCallMap(dataStructs: List<CodeDataStruct>) {
+    open fun fillReverseCallMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
             node.Fields.forEach {
                 it.Calls.forEach {

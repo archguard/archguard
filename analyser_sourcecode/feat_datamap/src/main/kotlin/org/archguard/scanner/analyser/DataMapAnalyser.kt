@@ -13,7 +13,12 @@ import org.slf4j.LoggerFactory
 class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser {
     private val client = context.client
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val relationBuilder = NodeRelationBuilder()
+    private val relationBuilder = object : NodeRelationBuilder() {
+        fun initDataMap(ds: List<CodeDataStruct>) {
+            this.fillFunctionMap(ds)
+            this.fillReverseCallMap(ds)
+        }
+    }
 
     override fun analyse(input: List<CodeDataStruct>): List<CodeDatabaseRelation> {
         val language = context.language.lowercase()
@@ -33,12 +38,14 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 databaseRelations.forEach {
                     val changeRelations: MutableList<NodeRelation> = mutableListOf()
                     val callee = it.packageName + "." + it.className + "." + it.functionName
-                    relationBuilder.calculateReverseCalls(callee, changeRelations)?.let { _ ->
-                        it.relations = changeRelations
-                    }
+                    relationBuilder.calculateReverseCalls(callee, changeRelations)
+
+                    it.relations = changeRelations
                 }
+
                 databaseRelations
             }
+
             else -> throw IllegalArgumentException("Unsupported language: $language")
         }
 
