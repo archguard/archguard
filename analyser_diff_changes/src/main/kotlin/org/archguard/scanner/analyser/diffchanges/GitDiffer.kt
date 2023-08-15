@@ -3,6 +3,7 @@ package org.archguard.scanner.analyser.diffchanges
 import chapi.domain.core.CodeDataStruct
 import chapi.parser.ParseMode
 import kotlinx.serialization.Serializable
+import org.archguard.scanner.analyser.DiffChangesAnalyser.Companion.SHORT_ID_LENGTH
 import org.archguard.scanner.core.diffchanges.ChangeRelation
 import org.archguard.scanner.core.diffchanges.ChangedCall
 import org.eclipse.jgit.api.Git
@@ -35,7 +36,7 @@ class ChangedEntry(
     val functionName: String = ""
 )
 
-class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
+class GitDiffer(val path: String, val branch: String, val loopDepth: Int = SHORT_ID_LENGTH) : NodeRelation() {
     private var baseLineDataTree: List<DifferFile> = listOf()
     private val differFileMap: MutableMap<String, DifferFile> = mutableMapOf()
     private val changedFiles: MutableMap<String, ChangedEntry> = mutableMapOf()
@@ -58,8 +59,8 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         }
 
         // 3. count changed items reverse-call function
-        this.genFunctionMap()
-        this.genFunctionCallMap()
+        this.baseLineDataTree.forEach { file -> this.fillFunctionMap(file.dataStructs) }
+        this.baseLineDataTree.forEach { file -> this.fillReverseCallMap(file.dataStructs) }
         val changedCalls = this.calculateChange()
 
         // add path map to projects
@@ -68,7 +69,7 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
         return changedCalls
     }
 
-    fun calculateChange(): List<ChangedCall> {
+    private fun calculateChange(): List<ChangedCall> {
         return changedFunctions.map {
             val callName = it.value.packageName + "." + it.value.className + "." + it.value.functionName
             val changeRelations: MutableList<ChangeRelation> = mutableListOf()
@@ -81,79 +82,6 @@ class GitDiffer(val path: String, val branch: String, val loopDepth: Int) {
                 relations = changeRelations
             )
         }.toList()
-    }
-
-    private var loopCount: Int = 0
-    private var lastReverseCallChild: String = ""
-    private fun calculateReverseCalls(
-        funName: String,
-        changeRelations: MutableList<ChangeRelation>,
-        loopDepth: Int
-    ): List<ChangeRelation>? {
-        if (loopCount > loopDepth) {
-            return null
-        }
-
-        loopCount++
-
-        val calls = reverseCallMap[funName]
-        calls?.forEach { child ->
-            if (child == lastReverseCallChild) {
-                return null
-            }
-
-            if (reverseCallMap[child] != null) {
-                lastReverseCallChild = child
-                val optRelations = calculateReverseCalls(child, changeRelations, loopDepth)
-                if (optRelations != null) {
-                    changeRelations += optRelations
-                }
-            }
-
-            if (child != funName) {
-                changeRelations += ChangeRelation(child, funName)
-            }
-        }
-
-        return null
-    }
-
-    private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
-    fun genFunctionMap() {
-        baseLineDataTree.forEach { file ->
-            file.dataStructs.forEach { node ->
-                node.Functions.forEach {
-                    functionMap[node.Package + "." + node.NodeName + "." + it.Name] = true
-                }
-            }
-        }
-    }
-
-    private val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
-    fun genFunctionCallMap() {
-        baseLineDataTree.forEach { file ->
-            file.dataStructs.forEach { node ->
-                node.Fields.forEach {
-                    it.Calls.forEach {
-                        // todo: add support for field call
-                    }
-                }
-
-                node.Functions.forEach {
-                    val caller = node.Package + "." + node.NodeName + "." + it.Name
-                    it.FunctionCalls.forEach { codeCall ->
-                        val callee = codeCall.buildFullMethodName()
-                        if (functionMap[callee] != null) {
-                            if (reverseCallMap[callee] == null) {
-                                reverseCallMap[callee] = mutableListOf()
-                            }
-
-                            reverseCallMap[callee]!! += caller
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun getChangedFiles(repository: Repository, revCommit: RevCommit) {

@@ -11,7 +11,7 @@ class DiffChangesAnalyser(
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
-        private const val SHORT_ID_LENGTH = 7
+        const val SHORT_ID_LENGTH = 7
     }
 
     override fun analyse(): List<ChangedCall> = context.run {
