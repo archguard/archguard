@@ -31,14 +31,38 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
     fun contentByPosition(lines: List<String>, position: CodePosition): String {
         val startLine = position.StartLine - 1
         val endLine = position.StopLine - 1
-        val startColumn = position.StartLinePosition - 1
-        val endColumn = position.StartLinePosition - 1
-        val start = lines[startLine].substring(startColumn)
-        val end = lines[endLine].substring(0, endColumn)
+        val startLineContent = lines[startLine]
+        val endLineContent = lines[endLine]
+
+        val startColumn = if (position.StartLinePosition > startLineContent.length) {
+            if (startLineContent.isBlank()) {
+                0
+            } else {
+                startLineContent.length - 1
+            }
+        } else {
+            position.StartLinePosition
+        }
+
+        val endColumn = if (position.StopLinePosition > endLineContent.length) {
+            if (endLineContent.isBlank()) {
+                0
+            } else {
+                endLineContent.length - 1
+            }
+        } else {
+            position.StopLinePosition
+        }
+
+        val start = startLineContent.substring(startColumn)
+        val end = endLineContent.substring(0, endColumn)
+
+        // start + ... + end
         return if (startLine == endLine) {
             start
         } else {
-            start + "\n" + end
+            start + lines.subList(startLine + 1, endLine).joinToString("") + end
         }
     }
 }
+

@@ -32,7 +32,7 @@ class ScalaAnalyser(override val context: SourceCodeContext) : LanguageSourceCod
                 ds.FilePath = file.absolutePath
 
                 if (context.withFunctionCode) {
-                    ds.Functions.map { ds.apply { ds.Content = contentByPosition(lines, ds.Position) } }
+                    ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                 }
             }
         }

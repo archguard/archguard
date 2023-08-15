@@ -30,6 +30,7 @@ internal class CSharpAnalyserTest {
     }
     private val mockContext = mockk<SourceCodeContext> {
         every { client } returns mockClient
+        every { withFunctionCode } returns false
     }
 
     @AfterEach
@@ -54,8 +55,6 @@ internal class CSharpAnalyserTest {
 
             val models = mutableListOf<ApiModel>()
 
-            println("|  Controller   | Method     | URI          | RequestModel     | ReturnModel       |")
-            println("|---------------|------------|--------------|------------------|-------------------|")
             nodes.map { node ->
                 val routeAnnotation = node.filterAnnotations("RoutePrefix", "Route")
                 if (routeAnnotation.isNotEmpty()) {

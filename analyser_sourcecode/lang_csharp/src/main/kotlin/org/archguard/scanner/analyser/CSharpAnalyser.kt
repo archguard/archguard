@@ -35,7 +35,7 @@ class CSharpAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
                     ds.FilePath = file.relativeTo(basepath).toString()
 
                     if (context.withFunctionCode) {
-                        ds.Functions.map { ds.apply { ds.Content = contentByPosition(lines, ds.Position) } }
+                        ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                     }
                 }
             }

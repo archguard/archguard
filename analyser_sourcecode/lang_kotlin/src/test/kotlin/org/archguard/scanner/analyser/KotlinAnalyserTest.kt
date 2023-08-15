@@ -21,6 +21,7 @@ internal class KotlinAnalyserTest {
     }
     private val mockContext = mockk<SourceCodeContext> {
         every { client } returns mockClient
+        every { withFunctionCode } returns false
     }
 
     @AfterEach
