@@ -43,6 +43,7 @@ internal class AnalyserDispatcherTest {
             every { command.slots } returns listOf()
             every { command.buildClient() } returns mockk()
             every { command.getAnalyserSpec(any()) } returns mockk()
+            every { command.withFunctionCode } returns false
         }
 
         private fun stubContext() {

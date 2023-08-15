@@ -36,6 +36,8 @@ data class ScannerCommand(
      * relate to [org.archguard.meta.Slot]
      **/
     val slots: List<AnalyserSpec> = emptyList(),
+
+    val withFunctionCode: Boolean = false,
 ) {
     private val allAnalyserSpecs = customizedAnalyserSpecs + slots + OfficialAnalyserSpecs.specs()
     fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier.lowercase() }

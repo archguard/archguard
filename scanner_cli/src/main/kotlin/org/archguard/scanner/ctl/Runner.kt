@@ -2,6 +2,7 @@ package org.archguard.scanner.ctl
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
@@ -54,6 +55,7 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val since by option(help = "COMMIT ID, the specific revision of the baseline")
     private val until by option(help = "COMMIT ID, the specific revision of the target")
     private val depth by option(help = "INTEGER, the max loop depth").int().default(7)
+    private val withFunctionCode by option(help = "BOOLEAN, whether to include the function code").flag(default = false)
 
     /**
      *  --language=java
@@ -98,6 +100,7 @@ class Runner : CliktCommand(help = "scanner cli") {
             // additional parameters
             language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth,
             slotsFromJson,
+            withFunctionCode
         )
         AnalyserDispatcher().dispatch(command)
     }

@@ -60,6 +60,7 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
         path = command.path,
         language = command.language!!,
         features = command.features,
+        withFunctionCode = command.withFunctionCode,
     )
 
     private val slotHub = SlotHubImpl(context)
