@@ -1,6 +1,7 @@
 package org.archguard.scanner.core.sourcecode
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodePosition
 import java.io.File
 import kotlin.streams.asStream
 import kotlin.streams.toList
@@ -25,5 +26,19 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
             return text.substring(1);
         }
         return text
+    }
+
+    fun contentByPosition(lines: List<String>, position: CodePosition): String {
+        val startLine = position.StartLine - 1
+        val endLine = position.StopLine - 1
+        val startColumn = position.StartLinePosition - 1
+        val endColumn = position.StartLinePosition - 1
+        val start = lines[startLine].substring(startColumn)
+        val end = lines[endLine].substring(0, endColumn)
+        return if (startLine == endLine) {
+            start
+        } else {
+            start + "\n" + end
+        }
     }
 }

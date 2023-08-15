@@ -22,22 +22,19 @@ class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAn
             .also { client.saveDataStructure(it) }
     }
 
-    fun analyse(channel: Channel<CodeDataStruct>) = runBlocking {
-        getFilesByPath(context.path) {
-            it.absolutePath.endsWith(".go")
-        }
-            .map { async { analysisByFile(it) } }.awaitAll()
-            .flatten()
-            .forEach { channel.send(it) }
-    }
-
     private fun analysisByFile(file: File): List<CodeDataStruct> {
-        val codeContainer = impl.analysis(file.readContent(), file.name)
+        val content = file.readContent()
+        val lines = content.lines()
+        val codeContainer = impl.analysis(content, file.name)
 
-        return codeContainer.DataStructures.map {
-            it.apply {
-                it.Imports = codeContainer.Imports
-                it.FilePath = file.absolutePath
+        return codeContainer.DataStructures.map { ds ->
+            ds.apply {
+                ds.Imports = codeContainer.Imports
+                ds.FilePath = file.absolutePath
+
+                if (context.withFunctionCode) {
+                    ds.Functions.map { ds.apply { ds.Content = contentByPosition(lines, ds.Position) } }
+                }
             }
         }
     }

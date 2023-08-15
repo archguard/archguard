@@ -23,29 +23,38 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
             val path = it.absolutePath
 
             val isNormalFile = path.endsWith(".ts") ||
-                path.endsWith(".tsx") ||
-                path.endsWith(".js") ||
-                path.endsWith(".jsx")
+                    path.endsWith(".tsx") ||
+                    path.endsWith(".js") ||
+                    path.endsWith(".jsx")
             val isNotMinFile = path.endsWith(".min.js")
 
-            if (ignoreMinFile) isNormalFile && !isNotMinFile
-            else isNormalFile
+            if (ignoreMinFile) isNormalFile && !isNotMinFile else isNormalFile
         }
-            .map { async {
-                println(it.absolutePath)
-                analysisByFile(it, basepath) } }.awaitAll()
+            .map {
+                async {
+                    println(it.absolutePath)
+                    analysisByFile(it, basepath)
+                }
+            }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
         val workspace = File(context.path)
-        val codeContainer = impl.analysis(file.readContent(), file.toRelativeString(workspace))
-        return codeContainer.DataStructures.map {
-            it.apply {
-                if (it.Type != DataStructType.INTERFACE) {
-                    it.Imports = codeContainer.Imports
-                    it.FilePath = file.relativeTo(basepath).toString()
+        val content = file.readContent()
+        val lines = content.lines()
+        val codeContainer = impl.analysis(content, file.toRelativeString(workspace))
+
+        return codeContainer.DataStructures.map { ds ->
+            ds.apply {
+                if (ds.Type != DataStructType.INTERFACE) {
+                    ds.Imports = codeContainer.Imports
+                    ds.FilePath = file.relativeTo(basepath).toString()
+                }
+
+                if (context.withFunctionCode) {
+                    ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                 }
             }
         }

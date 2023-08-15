@@ -25,13 +25,20 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
+        val content = file.readContent()
+        val lines = content.lines()
         val moduleName = ModuleIdentify.lookupModuleName(file, basepath)
-        return impl.analysis(file.readContent(), file.name, ParseMode.Full).DataStructures
-            .map {
-                it.apply {
-                    it.Module = moduleName
-                    it.FilePath = file.relativeTo(basepath).toString()
+        val codeContainer = impl.analysis(content, file.name, ParseMode.Full)
+
+        return codeContainer.DataStructures.map { ds ->
+            ds.apply {
+                ds.Module = moduleName
+                ds.FilePath = file.relativeTo(basepath).toString()
+
+                if (context.withFunctionCode) {
+                    ds.Functions.map { ds.apply { ds.Content = contentByPosition(lines, ds.Position) } }
                 }
             }
+        }
     }
 }

@@ -34,12 +34,19 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
 
     private fun analysisFullInfoByFile(file: File, basepath: File): List<CodeDataStruct> {
         val moduleName = ModuleIdentify.lookupModuleName(file, basepath)
-        val codeContainer = impl.identFullInfo(file.readContent(), file.name, classes, basicNodes)
+        val content = file.readContent()
+        val lines = content.lines()
+        val codeContainer = impl.identFullInfo(content, file.name, classes, basicNodes)
+
         return codeContainer.DataStructures.map { ds ->
             ds.apply {
                 ds.Module = moduleName
                 ds.FilePath = file.relativeTo(basepath).toString()
                 ds.Imports = codeContainer.Imports
+
+                if (context.withFunctionCode) {
+                    ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
+                }
             }
         }
     }

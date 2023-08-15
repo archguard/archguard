@@ -22,12 +22,18 @@ class PythonAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {
-        val codeContainer = impl.analysis(file.readContent(), file.name)
+        val content = file.readContent()
+        val lines = content.lines()
+        val codeContainer = impl.analysis(content, file.name)
 
-        return codeContainer.DataStructures.map {
-            it.apply {
-                it.Imports = codeContainer.Imports
-                it.FilePath = file.absolutePath
+        return codeContainer.DataStructures.map { ds ->
+            ds.apply {
+                ds.Imports = codeContainer.Imports
+                ds.FilePath = file.absolutePath
+
+                if (context.withFunctionCode) {
+                    ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
+                }
             }
         }
     }

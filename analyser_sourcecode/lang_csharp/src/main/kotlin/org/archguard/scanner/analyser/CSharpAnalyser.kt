@@ -24,12 +24,19 @@ class CSharpAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
-        val codeContainer = impl.analysis(file.readContent(), file.name)
+        val content = file.readContent()
+        val lines = content.lines()
+        val codeContainer = impl.analysis(content, file.name)
+
         return codeContainer.Containers.flatMap { container ->
-            container.DataStructures.map {
-                it.apply {
-                    it.Imports = codeContainer.Imports
-                    it.FilePath = file.relativeTo(basepath).toString()
+            container.DataStructures.map { ds ->
+                ds.apply {
+                    ds.Imports = codeContainer.Imports
+                    ds.FilePath = file.relativeTo(basepath).toString()
+
+                    if (context.withFunctionCode) {
+                        ds.Functions.map { ds.apply { ds.Content = contentByPosition(lines, ds.Position) } }
+                    }
                 }
             }
         }
