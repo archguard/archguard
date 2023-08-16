@@ -48,7 +48,7 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
     - CLOCO：代码复杂度 [#79](https://github.com/archguard/archguard/issues/79)
 - **运行态**
   - APM（TODO）
-- **架构工作台**（DOING）
+- **架构工作台**
 
 Features：
 
@@ -76,7 +76,7 @@ Features：
     - Continuous Integration
 - **Running state**
   - APM (TODO)
-- **Architecture Workbench** (DOING)
+- **Architecture Workbench**
 
 Screenshots:
 
@@ -100,6 +100,28 @@ Languages parse by [Chapi](https://github.com/modernizing/chapi)
 | function call       | ✅    | 🆕     | ✅   | ✅      | ✅          |     |     |       |     |
 | arch/package        | ✅    |        |     | ✅      | ✅          |     | ✅   | ✅     |     |
 | real world validate | ✅    |        |     |        | ✅          |     |     |       |     |
+
+## Custom Backend
+
+case example: 
+
+- [https://github.com/unit-mesh/co-unit](https://github.com/unit-mesh/co-unit) by Rust language
+
+use [Scanner CLI](./scanner_cli) you can customize your backend. For more detail, see in: [ArchGuardHttpClient](scanner_cli/src/main/kotlin/org/archguard/scanner/ctl/client/ArchGuardHttpClient.kt)
+
+HTTP examples:
+
+```http request
+POST http://127.0.0.1:8765/scanner/:systemId/reporting/class-items
+
+POST http://127.0.0.1:8765/scanner/:systemId/reporting/openapi
+
+POST http://127.0.0.1:8765/scanner/:systemId/reporting/container-services
+
+POST http://127.0.0.1:8765/scanner/:systemId/reporting/datamap-relations
+
+...
+```
 
 ### Chat
 
