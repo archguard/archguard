@@ -1,6 +1,7 @@
 package org.archguard.scanner.core.diffchanges
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeFunction
 
 const val SHORT_ID_LENGTH = 7
 
@@ -14,6 +15,7 @@ open class NodeRelationBuilder {
     open fun resetCount() {
         loopCount = 0
     }
+
     /**
      * Calculate the relations between the functions of the two nodes.
      * <b>Before calling this function, you need to call [fillFunctionMap] and [fillReverseCallMap] </b>
@@ -66,14 +68,21 @@ open class NodeRelationBuilder {
 
     open fun fillFunctionMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
+            val isDependencyInjection = hasDependencyInjection(node)
             node.Functions.forEach {
                 functionMap[node.Package + "." + node.NodeName + "." + it.Name] = true
+            }
+            if (isDependencyInjection) {
+                val className = node.NodeName.removeSuffix("Impl")
+                functionMap[node.Package + "." + className + "." + "get" + node.NodeName] = true
             }
         }
     }
 
     open fun fillReverseCallMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
+            val isDependencyInjection = hasDependencyInjection(node)
+
             node.Fields.forEach {
                 it.Calls.forEach {
                     // todo: add support for field call
@@ -81,19 +90,45 @@ open class NodeRelationBuilder {
             }
 
             node.Functions.forEach {
-                val caller = node.Package + "." + node.NodeName + "." + it.Name
-                it.FunctionCalls.forEach { codeCall ->
-                    val callee = codeCall.buildFullMethodName()
-                    if (functionMap[callee] != null) {
-                        if (reverseCallMap[callee] == null) {
-                            reverseCallMap[callee] = mutableListOf()
-                        }
-
-                        reverseCallMap[callee]!! += caller
-                    }
+                if (isDependencyInjection) {
+                    val cleanName = node.NodeName.removeSuffix("Impl")
+                    insertToReverse(node, node.NodeName, it)
+                    insertToReverse(node, cleanName, it)
+                } else {
+                    insertToReverse(node, node.NodeName, it)
                 }
             }
         }
+    }
+
+    private fun insertToReverse(
+        node: CodeDataStruct,
+        nodeName: String,
+        it: CodeFunction
+    ) {
+        val caller = node.Package + "." + nodeName + "." + it.Name
+        it.FunctionCalls.forEach { codeCall ->
+            val callee = codeCall.buildFullMethodName()
+            if (functionMap[callee] != null) {
+                if (reverseCallMap[callee] == null) {
+                    reverseCallMap[callee] = mutableListOf()
+                }
+
+                reverseCallMap[callee]!! += caller
+            }
+        }
+    }
+
+    private fun hasDependencyInjection(node: CodeDataStruct): Boolean {
+        var isDependencyInjection = false
+        // annotation with Service, and end with Impl
+        if (node.Annotations.find { it.Name == "Service" } != null && node.Implements.isNotEmpty()) {
+            val canonicalName = node.Package + node.NodeName
+            if (node.Implements.find { canonicalName == it + "Impl" } != null) {
+                isDependencyInjection = true
+            }
+        }
+        return isDependencyInjection
     }
 
 }
