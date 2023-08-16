@@ -8,6 +8,7 @@ const val SHORT_ID_LENGTH = 7
 open class NodeRelationBuilder {
     open val functionMap: MutableMap<String, Boolean> = mutableMapOf()
     open val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+    open val injectionMap: MutableMap<String, String> = mutableMapOf()
 
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
@@ -68,35 +69,19 @@ open class NodeRelationBuilder {
 
     open fun fillFunctionMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
-            val isDependencyInjection = hasDependencyInjection(node)
+            updateDependencyInjection(node)
             node.Functions.forEach {
                 functionMap[node.Package + "." + node.NodeName + "." + it.Name] = true
-            }
-            if (isDependencyInjection) {
-                val className = node.NodeName.removeSuffix("Impl")
-                functionMap[node.Package + "." + className + "." + "get" + node.NodeName] = true
             }
         }
     }
 
     open fun fillReverseCallMap(dataStructs: List<CodeDataStruct>) {
         dataStructs.forEach { node ->
-            val isDependencyInjection = hasDependencyInjection(node)
-
-            node.Fields.forEach {
-                it.Calls.forEach {
-                    // todo: add support for field call
-                }
-            }
+            updateDependencyInjection(node)
 
             node.Functions.forEach {
-                if (isDependencyInjection) {
-                    val cleanName = node.NodeName.removeSuffix("Impl")
-                    insertToReverse(node, node.NodeName, it)
-                    insertToReverse(node, cleanName, it)
-                } else {
-                    insertToReverse(node, node.NodeName, it)
-                }
+                insertToReverse(node, node.NodeName, it)
             }
         }
     }
@@ -119,21 +104,18 @@ open class NodeRelationBuilder {
         }
     }
 
-    private fun hasDependencyInjection(node: CodeDataStruct): Boolean {
-        var isDependencyInjection = false
-        // annotation with Service, and end with Impl
+    private fun updateDependencyInjection(node: CodeDataStruct) {
         val hasInjectionAnnotation =
             node.Annotations.find {
                 it.Name == "Service" || it.Name == "Component" || it.Name == "Repository"
             }
 
         if (hasInjectionAnnotation != null && node.Implements.isNotEmpty()) {
-            val canonicalName = node.Package + node.NodeName
-            if (node.Implements.find { canonicalName == it + "Impl" } != null) {
-                isDependencyInjection = true
+            val canonicalName = node.Package + "." + node.NodeName
+
+            node.Implements.find { node.NodeName == it.substringAfterLast(".") + "Impl" }?.let {
+                injectionMap[canonicalName] = it
             }
         }
-        return isDependencyInjection
     }
-
 }

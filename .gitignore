@@ -67,3 +67,4 @@ slot.json
 *.arrow
 function_map.txt
 reverse_call_map.txt
+injection_map.txt

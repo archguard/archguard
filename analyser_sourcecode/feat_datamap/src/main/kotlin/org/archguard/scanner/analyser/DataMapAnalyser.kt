@@ -37,6 +37,11 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                     this.reverseCallMap.forEach { (k, v) ->
                         file2.appendText("$k: $v\n")
                     }
+
+                    val file3 = File("injection_map.txt")
+                    this.injectionMap.forEach { (k, v) ->
+                        file3.appendText("$k: $v\n")
+                    }
                 }
 
                 val sqlAnalyser = JvmSqlAnalyser()
