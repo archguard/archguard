@@ -93,8 +93,7 @@ class JvmSqlAnalyser {
         return mybatisEntries.flatMap { entry ->
             val splits = entry.namespace.split(".")
             val className = splits.last()
-            splits.dropLast(1)
-            val packageName = splits.joinToString(".")
+            val packageName = splits.dropLast(1).joinToString(".")
 
             entry.methodSqlMap.map {
                 val tables = MysqlIdentApp.analysis(it.value)?.tableNames
