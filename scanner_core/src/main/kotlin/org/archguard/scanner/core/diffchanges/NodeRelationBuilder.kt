@@ -5,11 +5,15 @@ import chapi.domain.core.CodeDataStruct
 const val SHORT_ID_LENGTH = 7
 
 open class NodeRelationBuilder {
-    private val functionMap: MutableMap<String, Boolean> = mutableMapOf()
-    private val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+    open val functionMap: MutableMap<String, Boolean> = mutableMapOf()
+    open val reverseCallMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+
     private var loopCount: Int = 0
     private var lastReverseCallChild: String = ""
 
+    open fun resetCount() {
+        loopCount = 0
+    }
     /**
      * Calculate the relations between the functions of the two nodes.
      * <b>Before calling this function, you need to call [fillFunctionMap] and [fillReverseCallMap] </b>

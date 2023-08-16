@@ -65,3 +65,5 @@ slot.json
 *.proto
 *.pb
 *.arrow
+function_map.txt
+reverse_call_map.txt

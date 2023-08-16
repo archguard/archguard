@@ -9,16 +9,11 @@ import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
+import java.io.File
 
-class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser {
+class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAnalyser, NodeRelationBuilder() {
     private val client = context.client
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val relationBuilder = object : NodeRelationBuilder() {
-        fun initDataMap(ds: List<CodeDataStruct>) {
-            this.fillFunctionMap(ds)
-            this.fillReverseCallMap(ds)
-        }
-    }
 
     override fun analyse(input: List<CodeDataStruct>): List<CodeDatabaseRelation> {
         val language = context.language.lowercase()
@@ -27,6 +22,21 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
         val relations = when (language) {
             "java", "kotlin" -> {
                 logger.info("start analysis database api ---- ${language.lowercase()}")
+                this.fillFunctionMap(input)
+                this.fillReverseCallMap(input)
+
+                // write function map to file
+                val file = File("function_map.txt")
+                this.functionMap.forEach { (k, v) ->
+                    file.appendText("$k: $v\n")
+                }
+
+                // write reverse call map to file
+                val file2 = File("reverse_call_map.txt")
+                this.reverseCallMap.forEach { (k, v) ->
+                    file2.appendText("$k: $v\n")
+                }
+
                 val sqlAnalyser = JvmSqlAnalyser()
                 val records = input.flatMap { data ->
                     sqlAnalyser.analysisByNode(data, "")
@@ -35,12 +45,16 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 val dbRelations = sqlAnalyser.convertMyBatis(mybatisEntries)
 
                 val databaseRelations = dbRelations + records
-                databaseRelations.forEach {
+                databaseRelations.map {
                     val changeRelations: MutableList<NodeRelation> = mutableListOf()
                     val callee = it.packageName + "." + it.className + "." + it.functionName
-                    relationBuilder.calculateReverseCalls(callee, changeRelations)
 
+                    this.resetCount()
+                    this.calculateReverseCalls(callee, changeRelations)
+
+                    println("callee: $callee, changeRelations: $changeRelations")
                     it.relations = changeRelations
+                    it
                 }
 
                 databaseRelations
