@@ -45,7 +45,8 @@ open class NodeRelationBuilder {
 
         loopCount++
 
-        val calls = reverseCallMap[sourceFunctionName]
+        val maybeNewFuncName = updateInjectionNode(sourceFunctionName)
+        val calls = reverseCallMap[maybeNewFuncName]
         calls?.forEach { child ->
             if (child == lastReverseCallChild) {
                 return null
@@ -53,18 +54,36 @@ open class NodeRelationBuilder {
 
             if (reverseCallMap[child] != null) {
                 lastReverseCallChild = child
-                val optRelations = calculateReverseCalls(child, nodeRelations, loopDepth)
+                val sourceName = updateInjectionNode(child)
+                val optRelations = calculateReverseCalls(sourceName, nodeRelations, loopDepth)
                 if (optRelations != null) {
                     nodeRelations += optRelations
                 }
             }
 
-            if (child != sourceFunctionName) {
-                nodeRelations += NodeRelation(child, sourceFunctionName)
+            if (child != maybeNewFuncName) {
+                val sourceName = updateInjectionNode(child)
+                val targetName = updateInjectionNode(maybeNewFuncName)
+                nodeRelations += NodeRelation(sourceName, targetName)
             }
         }
 
         return null
+    }
+
+    /**
+     * @canonicalName will be xxx.xxx.xxx.NodeName.FunctionName,
+     */
+    private fun updateInjectionNode(canonicalName: String): String {
+        val functionName = canonicalName.substringAfterLast(".")
+        val nodeName = canonicalName.substringBeforeLast(".")
+
+        val injectionName = injectionMap[nodeName]
+        if (injectionName != null) {
+            return "$injectionName.$functionName"
+        }
+
+        return canonicalName
     }
 
     open fun fillFunctionMap(dataStructs: List<CodeDataStruct>) {
