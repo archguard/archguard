@@ -11,6 +11,7 @@ class JvmSqlAnalyser {
     // todo: split by framework
     fun analysisByNode(node: CodeDataStruct, workspace: String): MutableList<CodeDatabaseRelation> {
         val relations: MutableList<CodeDatabaseRelation> = mutableListOf()
+        val hasRepositoryAnnotation = node.Annotations.any { it.Name == "Repository" }
         // by annotation: identify
         node.Functions.forEach { function ->
             val sqls: MutableList<String> = mutableListOf()
@@ -47,12 +48,32 @@ class JvmSqlAnalyser {
                 }
             }
 
+            var implementations: MutableList<String> = mutableListOf()
+            val currentPackageName = node.Package
+            if (hasRepositoryAnnotation && node.Implements.isNotEmpty()) {
+                if (currentPackageName.endsWith("Impl") || currentPackageName.endsWith("impl")) {
+                    implementations = node.Implements.toMutableList()
+                }
+            }
+
             if (sqls.size > 0) {
                 relations += CodeDatabaseRelation(
-                    packageName = node.Package,
+                    packageName = currentPackageName,
                     className = node.NodeName,
                     functionName = function.Name,
                     tables = tables.toList(),
+                    implementations = implementations,
+                    sqls = sqls
+                )
+            }
+
+            if (sqls.size == 0 && hasRepositoryAnnotation) {
+                relations += CodeDatabaseRelation(
+                    packageName = currentPackageName,
+                    className = node.NodeName,
+                    functionName = function.Name,
+                    tables = tables.toList(),
+                    implementations = implementations,
                     sqls = sqls
                 )
             }

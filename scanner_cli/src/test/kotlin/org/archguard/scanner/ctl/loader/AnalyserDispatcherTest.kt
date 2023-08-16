@@ -44,6 +44,7 @@ internal class AnalyserDispatcherTest {
             every { command.buildClient() } returns mockk()
             every { command.getAnalyserSpec(any()) } returns mockk()
             every { command.withFunctionCode } returns false
+            every { command.debug } returns false
         }
 
         private fun stubContext() {

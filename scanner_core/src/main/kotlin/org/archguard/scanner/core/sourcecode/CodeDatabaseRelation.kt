@@ -10,6 +10,7 @@ data class CodeDatabaseRelation(
     val functionName: String = "",
     val tables: List<String> = listOf(),
     val sqls: List<String> = listOf(),
+    val implementations: List<String> = listOf(),
     var relations: List<NodeRelation> = listOf(),
 )
 
