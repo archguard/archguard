@@ -49,33 +49,39 @@ class JvmSqlAnalyser {
             }
 
             var implementations: MutableList<String> = mutableListOf()
-            val currentPackageName = node.Package
+            val currentNode = node.NodeName
             if (hasRepositoryAnnotation && node.Implements.isNotEmpty()) {
-                if (currentPackageName.endsWith("Impl") || currentPackageName.endsWith("impl")) {
+                if (currentNode.endsWith("Impl") || currentNode.endsWith("impl")) {
                     implementations = node.Implements.toMutableList()
                 }
             }
 
-            if (sqls.size > 0) {
+            if ((sqls.size > 0 || hasRepositoryAnnotation)) {
                 relations += CodeDatabaseRelation(
-                    packageName = currentPackageName,
+                    packageName = currentNode,
                     className = node.NodeName,
                     functionName = function.Name,
                     tables = tables.toList(),
                     implementations = implementations,
                     sqls = sqls
                 )
-            }
 
-            if (sqls.size == 0 && hasRepositoryAnnotation) {
-                relations += CodeDatabaseRelation(
-                    packageName = currentPackageName,
-                    className = node.NodeName,
-                    functionName = function.Name,
-                    tables = tables.toList(),
-                    implementations = implementations,
-                    sqls = sqls
-                )
+                if (implementations.isNotEmpty()) {
+                    logger.info("found implementation for ${node.NodeName} -> ${implementations}")
+                    val firstImpl = implementations.first()
+                    val stringList = firstImpl.split(".")
+                    val packageName = stringList.dropLast(1).joinToString(".")
+                    val className = stringList.last()
+
+                    relations += CodeDatabaseRelation(
+                        packageName = packageName,
+                        className = className,
+                        functionName = function.Name,
+                        tables = tables.toList(),
+                        implementations = implementations,
+                        sqls = sqls
+                    )
+                }
             }
         }
 
