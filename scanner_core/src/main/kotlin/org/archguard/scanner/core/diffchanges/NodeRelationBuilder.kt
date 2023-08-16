@@ -122,7 +122,12 @@ open class NodeRelationBuilder {
     private fun hasDependencyInjection(node: CodeDataStruct): Boolean {
         var isDependencyInjection = false
         // annotation with Service, and end with Impl
-        if (node.Annotations.find { it.Name == "Service" } != null && node.Implements.isNotEmpty()) {
+        val hasInjectionAnnotation =
+            node.Annotations.find {
+                it.Name == "Service" || it.Name == "Component" || it.Name == "Repository"
+            }
+
+        if (hasInjectionAnnotation != null && node.Implements.isNotEmpty()) {
             val canonicalName = node.Package + node.NodeName
             if (node.Implements.find { canonicalName == it + "Impl" } != null) {
                 isDependencyInjection = true
