@@ -25,16 +25,18 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 this.fillFunctionMap(input)
                 this.fillReverseCallMap(input)
 
-                // write function map to file
-                val file = File("function_map.txt")
-                this.functionMap.forEach { (k, v) ->
-                    file.appendText("$k: $v\n")
-                }
+                if (context.debug) {
+                    // write function map to file
+                    val file = File("function_map.txt")
+                    this.functionMap.forEach { (k, v) ->
+                        file.appendText("$k: $v\n")
+                    }
 
-                // write reverse call map to file
-                val file2 = File("reverse_call_map.txt")
-                this.reverseCallMap.forEach { (k, v) ->
-                    file2.appendText("$k: $v\n")
+                    // write reverse call map to file
+                    val file2 = File("reverse_call_map.txt")
+                    this.reverseCallMap.forEach { (k, v) ->
+                        file2.appendText("$k: $v\n")
+                    }
                 }
 
                 val sqlAnalyser = JvmSqlAnalyser()
@@ -52,7 +54,6 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                     this.resetCount()
                     this.calculateReverseCalls(callee, changeRelations)
 
-                    println("callee: $callee, changeRelations: $changeRelations")
                     it.relations = changeRelations
                     it
                 }

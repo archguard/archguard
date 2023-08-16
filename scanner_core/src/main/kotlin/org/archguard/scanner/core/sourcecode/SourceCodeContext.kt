@@ -11,4 +11,5 @@ interface SourceCodeContext : Context {
     val features: List<String>
     val path: String
     val withFunctionCode: Boolean
+    val debug: Boolean
 }

@@ -9,4 +9,5 @@ data class CliSourceCodeContext(
     override val client: ArchGuardClient,
     override val path: String,
     override val withFunctionCode: Boolean,
+    override val debug: Boolean,
 ) : SourceCodeContext
