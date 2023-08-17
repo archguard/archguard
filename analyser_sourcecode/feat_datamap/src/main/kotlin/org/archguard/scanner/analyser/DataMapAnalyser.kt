@@ -25,24 +25,7 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 this.fillFunctionMap(input)
                 this.fillReverseCallMap(input)
 
-                if (context.debug) {
-                    // write function map to file
-                    val file = File("function_map.txt")
-                    this.functionMap.forEach { (k, v) ->
-                        file.appendText("$k: $v\n")
-                    }
-
-                    // write reverse call map to file
-                    val file2 = File("reverse_call_map.txt")
-                    this.reverseCallMap.forEach { (k, v) ->
-                        file2.appendText("$k: $v\n")
-                    }
-
-                    val file3 = File("injection_map.txt")
-                    this.injectionMap.forEach { (k, v) ->
-                        file3.appendText("$k: $v\n")
-                    }
-                }
+                if (context.debug) logFunctionMapInfo()
 
                 val sqlAnalyser = JvmSqlAnalyser()
                 val records = input.flatMap { data ->
@@ -71,5 +54,24 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
 
         client.saveRelation(relations)
         return relations
+    }
+
+    private fun logFunctionMapInfo() {
+        // write function map to file
+        val file = File("function_map.txt")
+        this.functionMap.forEach { (k, v) ->
+            file.appendText("$k: $v\n")
+        }
+
+        // write reverse call map to file
+        val file2 = File("reverse_call_map.txt")
+        this.reverseCallMap.forEach { (k, v) ->
+            file2.appendText("$k: $v\n")
+        }
+
+        val file3 = File("injection_map.txt")
+        this.injectionMap.forEach { (k, v) ->
+            file3.appendText("$k: $v\n")
+        }
     }
 }
