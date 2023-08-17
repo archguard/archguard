@@ -19,7 +19,7 @@ internal class DataMapAnalyserTest {
         every { client } returns mockClient
         every { withFunctionCode } returns false
         every { language } returns "java"
-        every { path } returns "src/test/resources/datastructure"
+        every { path } returns javaClass.getResource("/blog_mybatis").path
         every { debug } returns false
     }
 
@@ -31,7 +31,7 @@ internal class DataMapAnalyserTest {
     @Test
     fun should_handle_for_jpa_native_method() {
         // based on https://github.com/fmendozaro/spring-blog/tree/master
-        val dataString = javaClass.getResource("/datastructure/jpa_codes.json").readText()
+        val dataString = javaClass.getResource("/blog_jpa/jpa_codes.json").readText()
         val data = Json.decodeFromString<List<CodeDataStruct>>(dataString)
 
         val analyser = DataMapAnalyser(mockContext)
