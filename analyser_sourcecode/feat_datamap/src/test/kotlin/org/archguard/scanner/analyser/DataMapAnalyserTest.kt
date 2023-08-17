@@ -48,4 +48,36 @@ internal class DataMapAnalyserTest {
    com.fer_mendoza.blog.models.Comment.Comment -> com.fer_mendoza.blog.models.Comment.setChildren
 }"""
     }
+
+    @Test
+    fun should_handle_for_mybatis_relation() {
+        // based on https://github.com/fmendozaro/spring-blog/tree/master
+        val dataString = javaClass.getResource("/blog_mybatis/mybatis_codes.json").readText()
+        val data = Json.decodeFromString<List<CodeDataStruct>>(dataString)
+
+        val analyser = DataMapAnalyser(mockContext)
+        val relations = analyser.analyse(data)
+
+        relations.size shouldBe 7
+        relations[0].relations.size shouldBe 2
+        relations[0].relationBeautify() shouldBe """{
+   com.hpm.blog.service.PostService.add -> com.hpm.blog.mapper.PostMapper.add
+   com.hpm.blog.api.PostApi.add -> com.hpm.blog.service.PostService.add
+}"""
+        relations[3].relations.size shouldBe 12
+        relations[3].relationBeautify() shouldBe """{
+   com.hpm.blog.service.PostService.findById -> com.hpm.blog.mapper.PostMapper.findOne
+   com.hpm.blog.service.PostService.checkOwner -> com.hpm.blog.service.PostService.findById
+   com.hpm.blog.service.PostService.delete -> com.hpm.blog.service.PostService.checkOwner
+   com.hpm.blog.api.PostApi.delete -> com.hpm.blog.service.PostService.delete
+   com.hpm.blog.service.PostService.update -> com.hpm.blog.service.PostService.checkOwner
+   com.hpm.blog.api.PostApi.update -> com.hpm.blog.service.PostService.update
+   com.hpm.blog.service.PostService.update -> com.hpm.blog.service.PostService.findById
+   com.hpm.blog.api.PostApi.update -> com.hpm.blog.service.PostService.update
+   com.hpm.blog.service.PostService.add -> com.hpm.blog.service.PostService.findById
+   com.hpm.blog.api.PostApi.add -> com.hpm.blog.service.PostService.add
+   com.hpm.blog.api.PostApi.findById -> com.hpm.blog.service.PostService.findById
+   com.hpm.blog.api.PostApi.findById -> com.hpm.blog.service.PostService.findById
+}"""
+    }
 }

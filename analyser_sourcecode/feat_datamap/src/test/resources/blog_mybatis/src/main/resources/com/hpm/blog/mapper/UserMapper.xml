@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hpm.blog.mapper.UserMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into user(name, password) values (#{name},#{password})
+    </insert>
+
+    <select id="findOne" resultType="User">
+      select * from user
+      <where>
+          <!-- 重复说一下，id 不能是 int，int 默认是 0，不可能是 null, 而 Integer 可以是 null-->
+          <if test="id!=null">
+              id=#{id}
+          </if>
+          <if test="name!=null">
+              and name=#{name}
+          </if>
+      </where>
+    </select>
+</mapper>

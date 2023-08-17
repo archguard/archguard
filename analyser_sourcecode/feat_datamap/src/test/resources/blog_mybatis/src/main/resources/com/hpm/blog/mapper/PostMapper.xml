@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hpm.blog.mapper.PostMapper">
+    <resultMap id="PostResultMap" type="com.hpm.blog.model.Post" autoMapping="true">
+        <id column="id" property="id" />    <!-- id 很重要 -->
+        <!--关联作者，post 表和 user 表可能会用一些字段重复，比如 id 这个属性，所以给 user 表的字段加上columnPrefix（前缀）-->
+        <association property="author" autoMapping="true" columnPrefix="author__"
+                     javaType="com.hpm.blog.model.User">
+            <id column="author_id" property="id" />
+        </association>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post (author_id, title, content) VALUES (#{authorId}, #{title}, #{content});
+    </insert>
+
+    <update id="update">
+      UPDATE post
+         <set>
+             <if test="title!=null">
+                 title=#{title},
+             </if>
+             <if test="content!=null">
+                 content=#{content},
+             </if>
+         </set>
+      where post.id=#{id}
+    </update>
+
+    <delete id="delete">
+      DELETE FROM post WHERE post.id=#{id}
+    </delete>
+
+    <select id="findOne" resultMap="PostResultMap">
+      <include refid="select-post" />
+      <where>
+          <if test="id!=null">
+             AND post.id=#{id}
+          </if>
+      </where>
+    </select>
+
+    <select id="all" resultMap="PostResultMap">
+      <include refid="select-post" />
+    </select>
+
+    <sql id="select-post" >
+        SELECT
+            post.id,
+            post.author_id ,
+            post.title ,
+            post.content ,
+            post.create_time ,
+            post.update_time,
+            <!-- 作者信息，password 不需要就不查了 -->
+            `user`.id as author__id,
+            `user`.`name` as author__name
+        FROM post
+        LEFT JOIN `user` ON `user`.id=post.author_id
+    </sql>
+</mapper>
