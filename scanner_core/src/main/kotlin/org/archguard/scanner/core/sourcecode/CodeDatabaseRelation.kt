@@ -12,5 +12,16 @@ data class CodeDatabaseRelation(
     val sqls: List<String> = listOf(),
     val implementations: List<String> = listOf(),
     var relations: List<NodeRelation> = listOf(),
-)
+) {
+    fun relationBeautify(): String {
+        val sb = StringBuilder()
+        sb.append("{\n")
+        relations.reversed().forEach {
+            sb.append("   ${it.source} -> ${it.target}\n")
+        }
+        sb.append("}")
+
+        return sb.toString()
+    }
+}
 

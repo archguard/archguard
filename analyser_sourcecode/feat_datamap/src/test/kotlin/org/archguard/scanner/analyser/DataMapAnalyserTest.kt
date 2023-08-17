@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import io.kotest.matchers.shouldBe
 import io.mockk.*
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
@@ -29,12 +30,22 @@ internal class DataMapAnalyserTest {
 
     @Test
     fun should_handle_for_jpa_native_method() {
-        val dataString = javaClass.getResource("/datastructure/0_codes.json").readText()
+        // based on https://github.com/fmendozaro/spring-blog/tree/master
+        val dataString = javaClass.getResource("/datastructure/jpa_codes.json").readText()
         val data = Json.decodeFromString<List<CodeDataStruct>>(dataString)
 
         val analyser = DataMapAnalyser(mockContext)
         val relations = analyser.analyse(data)
 
         relations.size shouldBe 12
+        relations[0].relations.size shouldBe 0
+
+        val second = relations[1]
+        second.relations.size shouldBe 3
+        second.relationBeautify() shouldBe """{
+   com.fer_mendoza.blog.controllers.CommentsController.getChildren -> com.fer_mendoza.blog.repositories.CommentRepository.findByParent
+   com.fer_mendoza.blog.models.Comment.setChildren -> com.fer_mendoza.blog.repositories.CommentRepository.findByParent
+   com.fer_mendoza.blog.models.Comment.Comment -> com.fer_mendoza.blog.models.Comment.setChildren
+}"""
     }
 }

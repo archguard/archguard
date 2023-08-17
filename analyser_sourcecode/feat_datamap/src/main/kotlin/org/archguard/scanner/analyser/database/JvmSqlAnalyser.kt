@@ -48,17 +48,11 @@ class JvmSqlAnalyser {
                 }
             }
 
-            var implementations: MutableList<String> = mutableListOf()
-            val currentNode = node.NodeName
-            if (hasRepositoryAnnotation && node.Implements.isNotEmpty()) {
-                if (currentNode.endsWith("Impl") || currentNode.endsWith("impl")) {
-                    implementations = node.Implements.toMutableList()
-                }
-            }
+            val implementations: MutableList<String> = mutableListOf()
 
             if ((sqls.size > 0 || hasRepositoryAnnotation)) {
                 relations += CodeDatabaseRelation(
-                    packageName = currentNode,
+                    packageName = node.Package,
                     className = node.NodeName,
                     functionName = function.Name,
                     tables = tables.toList(),
