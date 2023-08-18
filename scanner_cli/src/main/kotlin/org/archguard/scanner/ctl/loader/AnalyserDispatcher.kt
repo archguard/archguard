@@ -7,6 +7,8 @@ import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.diffchanges.DiffChangesAnalyser
 import org.archguard.scanner.core.diffchanges.DiffChangesContext
+import org.archguard.scanner.core.document.DocumentAnalyser
+import org.archguard.scanner.core.document.DocumentContext
 import org.archguard.scanner.core.estimate.EstimateAnalyser
 import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.git.GitAnalyser
@@ -33,6 +35,7 @@ class AnalyserDispatcher {
             AnalyserType.ESTIMATE -> EstimateWorker(command)
             AnalyserType.ARCHITECTURE -> TODO()
             AnalyserType.OPENAPI -> OpenApiWorker(command)
+            AnalyserType.DOCUMENT -> DocumentWorker(command)
         }.run()
     }
 }
@@ -161,5 +164,17 @@ class OpenApiWorker(override val command: ScannerCommand) : Worker<OpenApiContex
 
     override fun run() {
         getOrInstall<OpenApiAnalyser>(OfficialAnalyserSpecs.OPENAPI).analyse()
+    }
+}
+
+class DocumentWorker(override val command: ScannerCommand) : Worker<DocumentContext> {
+    override val context = CliDocumentContext(
+        client = command.buildClient(),
+        path = command.path,
+        branch = command.branch,
+    )
+
+    override fun run() {
+        getOrInstall<DocumentAnalyser>(OfficialAnalyserSpecs.DOCUMENT).analyse()
     }
 }
