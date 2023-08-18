@@ -5,8 +5,6 @@ import org.archguard.scanner.core.context.Context
 
 interface SourceCodeContext : Context {
     override val type: AnalyserType get() = AnalyserType.SOURCE_CODE
-
-    // TODO replace with DAG
     val language: String
     val features: List<String>
     val path: String

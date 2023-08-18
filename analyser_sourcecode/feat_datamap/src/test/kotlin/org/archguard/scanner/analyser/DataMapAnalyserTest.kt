@@ -4,7 +4,6 @@ import chapi.domain.core.CodeDataStruct
 import io.kotest.matchers.shouldBe
 import io.mockk.*
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
