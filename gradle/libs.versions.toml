@@ -92,6 +92,9 @@ springboot-test = { group = "org.springframework.boot", name = "spring-boot-star
 
 swagger-parser-v3 = "io.swagger.parser.v3:swagger-parser-v3:2.1.12"
 
+commonmark-core = "org.commonmark:commonmark:0.21.0"
+commonmark-gfm-tables = "org.commonmark:commonmark-ext-gfm-tables:0.21.0"
+
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -102,3 +105,4 @@ shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadowJar" }
 
 [bundles]
 test = ["test-junit-params", "test-kotlintest-assertions", "test-mockk", "test-assertj"]
+markdown = ["commonmark-core", "commonmark-gfm-tables"]

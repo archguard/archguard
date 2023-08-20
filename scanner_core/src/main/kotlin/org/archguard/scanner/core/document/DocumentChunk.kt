@@ -3,7 +3,7 @@ package org.archguard.scanner.core.document
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DocumentContent(
+data class DocumentChunk(
     val filename: String = "",
     val fileUri: String = "",
     val type: String = "",

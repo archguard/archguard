@@ -10,6 +10,8 @@ dependencies {
     api(projects.scannerCore)
     implementation(libs.coroutines.core)
 
+    implementation(libs.bundles.markdown)
+
     testImplementation(libs.bundles.test)
     testImplementation(libs.kotest.core)
 }
