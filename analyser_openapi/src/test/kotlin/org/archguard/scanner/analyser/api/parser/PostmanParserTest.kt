@@ -46,7 +46,7 @@ class PostmanParserTest {
 
 
         val firstText = listList[0].items[0].renderDisplayText()
-        firstText shouldBe  """### name: 查询投诉单列表
+        firstText shouldBe  """### 查询投诉单列表
 GET /v3/merchant-service/complaints-v2?limit=5&offset=10&begin_date=2022-11-01&end_date=2022-11-11&complainted_mchid={}?limit=5&offset=10&begin_date=2022-11-01&end_date=2022-11-11&complainted_mchid={{mchid}}
 Response Body: 200: {}"""
     }
