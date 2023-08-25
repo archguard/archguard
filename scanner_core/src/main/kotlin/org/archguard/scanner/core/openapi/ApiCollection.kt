@@ -31,7 +31,7 @@ data class ApiItem(
 
     fun renderDisplayText(): String {
         val sb = StringBuilder()
-        sb.append("### $description\n")
+        sb.append("### $operationId -> $description\n")
         sb.append("$method $path")
 
         val parameters = request?.parameters
