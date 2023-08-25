@@ -12,14 +12,13 @@ class PostmanProcessor(private val file: File) : ApiProcessor {
         val postmanParser = PostmanParser()
 
         return postmanParser.parse(collection)?.map { apiCollection ->
-            apiCollection.items.forEach {
+            apiCollection.items.map {
                 it.renderDisplayText()
             }
 
             apiCollection.filename = file.name
 
             apiCollection
-        }
-            ?: emptyList()
+        } ?: emptyList()
     }
 }

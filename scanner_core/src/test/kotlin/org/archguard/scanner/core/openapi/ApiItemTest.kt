@@ -49,7 +49,8 @@ class ApiItemTest {
         )
 
         val expected =
-            """### Get health status
+            """### getHealth
+> Get health status
 GET /api/v1/health?id=string&name=string
 Request Body: [
 (body: string)
