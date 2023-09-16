@@ -1,4 +1,48 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.5...v) (2023-08-15)
+# [](https://github.com/archguard/archguard/compare/v2.0.7...v) (2023-09-16)
+
+
+
+## [2.0.7](https://github.com/archguard/archguard/compare/v2.0.6...v2.0.7) (2023-09-16)
+
+
+### Features
+
+* enable for ds content ([fd95c24](https://github.com/archguard/archguard/commit/fd95c24d62e50cea6dd4a9e4b07e326ced5197f5))
+
+
+
+## [2.0.6](https://github.com/archguard/archguard/compare/v2.0.5...v2.0.6) (2023-08-25)
+
+
+### Bug Fixes
+
+* **counit:** fix test ([b308578](https://github.com/archguard/archguard/commit/b30857819c1d3eab5c18110ee38dddb8a6c73847))
+* **datamap:** fix error in mybatis ([1f35df7](https://github.com/archguard/archguard/commit/1f35df7a2a17033cbe86873b43e0a3e577f4608d))
+* fix tests ([6ccd709](https://github.com/archguard/archguard/commit/6ccd709f9ca90631c3e9578440d7b1b0d1f82f1d))
+* fix unknown compile issue ([22ab033](https://github.com/archguard/archguard/commit/22ab0339f075d68a2e7a30a25c224461f01d2ed1))
+* make reject works ([ce1997a](https://github.com/archguard/archguard/commit/ce1997a682b46eeda35ed016221a45d4f799f86c))
+* try to fix for callback issue ([d238c3a](https://github.com/archguard/archguard/commit/d238c3a03fb4581d7ff0bf2acebc16589c1a67ad))
+
+
+### Features
+
+* add basic dependency injection for relation builder ([42ad141](https://github.com/archguard/archguard/commit/42ad141025fe5da92a449e9e11bab1e4435872d1))
+* add debug option for context cli ([a05e4e5](https://github.com/archguard/archguard/commit/a05e4e527b119a53ad27f28217dfc6e5b35cada9))
+* add debug option to cli ([d12c65f](https://github.com/archguard/archguard/commit/d12c65fb1f7d31f94d9c6a959cd5cd2520706862))
+* add for eject map ([d6fe084](https://github.com/archguard/archguard/commit/d6fe08436e890427678ff979008099e730a385ed))
+* add lost component & repository annotation ([d9105b1](https://github.com/archguard/archguard/commit/d9105b133aff1c1c8d948a9ff77e2c91d354bd7d))
+* add test for mybatis ([31d8688](https://github.com/archguard/archguard/commit/31d868819f0ddf3eb53008efaa2500cc82ba9327))
+* **datamap:** make for injection ([e8d798a](https://github.com/archguard/archguard/commit/e8d798ae4d7f62408ffd5b914615f1260a248b5a))
+* **datamap:** make output better ([daa3f4a](https://github.com/archguard/archguard/commit/daa3f4a9b7931a0116467498bfb3fd395cea0c10))
+* **datamap:** make test for working ([6162a2c](https://github.com/archguard/archguard/commit/6162a2c6151bbf482e9e0f0cd6c2b910d696ce23))
+* **document:** init basic datastrucutre ([2a4e1e9](https://github.com/archguard/archguard/commit/2a4e1e9992b9cabebcd043a7550d4d42b6af00d2))
+* **document:** update to model ([b6a6d35](https://github.com/archguard/archguard/commit/b6a6d358e5bb62c154f2aade2a4d4efa48d8a63c))
+* init basic datamap datastructure relations ([b0e3872](https://github.com/archguard/archguard/commit/b0e3872d02e4885cf1c1ad7fb4c665ba89eeb791))
+* init document analyser ([1c5e631](https://github.com/archguard/archguard/commit/1c5e6318da190c01a09ba7140f3c2a406506df31))
+* init first test for datamap ([c871157](https://github.com/archguard/archguard/commit/c871157a32d8999902adfda1e3700d53c82953ef))
+* init for markdown parser ([c1d3fed](https://github.com/archguard/archguard/commit/c1d3fedf59f5717cf5eebef2134ace0fbc9ca3a7))
+* **openapi:** add description id ([498586d](https://github.com/archguard/archguard/commit/498586dca0b96b4bcf7fb6bc80f9c9c97d2366c5))
+* **openapi:** fix dispaly text ([2bc2df8](https://github.com/archguard/archguard/commit/2bc2df834241e52ba46f5bc007f8de02544f8629))
 
 
 
