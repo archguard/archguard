@@ -3,12 +3,19 @@ package org.archguard.scanner.core.sourcecode
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodePosition
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.streams.asStream
 import kotlin.streams.toList
 
 // 重载函数, 实现细粒度的接口定义
 interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
+    companion object {
+        private val logger = LoggerFactory.getLogger(LanguageSourceCodeAnalyser::class.java)
+    }
+
     override fun analyse(input: Any?): List<Any>? = analyse()
 
     fun analyse(): List<CodeDataStruct>
@@ -59,8 +66,17 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
     }
 
     fun contentByPosition(lines: List<String>, position: CodePosition): String {
-        val startLine = position.StartLine - 1
-        val endLine = position.StopLine - 1
+        val startLine = if (position.StartLine == 0) {
+            0
+        } else {
+            position.StartLine - 1
+        }
+        val endLine = if (position.StopLine == 0) {
+            0
+        } else {
+            position.StopLine - 1
+        }
+
         val startLineContent = lines[startLine]
         val endLineContent = lines[endLine]
 
