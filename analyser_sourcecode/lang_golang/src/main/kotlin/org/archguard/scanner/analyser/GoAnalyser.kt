@@ -33,6 +33,7 @@ class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAn
                 ds.FilePath = file.absolutePath
 
                 if (context.withFunctionCode) {
+                    ds.Content = contentByPosition(lines, ds.Position)
                     ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                 }
             }

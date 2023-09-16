@@ -45,6 +45,7 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
                 ds.Imports = codeContainer.Imports
 
                 if (context.withFunctionCode) {
+                    ds.Content = contentByPosition(lines, ds.Position)
                     ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                 }
             }

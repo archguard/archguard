@@ -54,6 +54,7 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
                 }
 
                 if (context.withFunctionCode) {
+                    ds.Content = contentByPosition(lines, ds.Position)
                     ds.Functions.map { it.apply { it.Content = contentByPosition(lines, it.Position) } }
                 }
             }
