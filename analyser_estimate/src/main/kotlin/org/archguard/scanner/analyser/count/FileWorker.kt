@@ -25,7 +25,6 @@ class FileWorker {
                 }
                 launch {
                     for (fileJob in walkdirChannel) {
-                        println("processing file: ${fileJob.location}")
                         languageWorker.processFile(fileJob)?.let {
                             langDetailChannel.send(it)
                         }
