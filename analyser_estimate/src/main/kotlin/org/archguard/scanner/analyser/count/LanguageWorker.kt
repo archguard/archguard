@@ -66,6 +66,53 @@ class LanguageWorker {
         return countStats(fileJob)
     }
 
+    /**
+     * Process code as a string.
+     */
+    fun processCode(code: String, filename: String): FileJob? {
+        val fileContent = code.toByteArray()
+        val fileJob = FileJob(
+            content = fileContent,
+            filename = filename,
+            bytes = fileContent.size.toLong(),
+        )
+
+        return processFile(fileJob)
+    }
+
+    /**
+     * Count single FileJob stats.
+     *
+     * for examples:
+     * ```kotlin
+     * """  // Comment 1
+     * namespace Baz
+     * {
+     *     using System;
+     *
+     *     public class FooClass
+     *     {
+     *         public void Test(string report)
+     *         {
+     *           // Comment 2
+     *           throw new NotImplementedException();
+     *         }
+     *     }
+     * }""".toByteArray()
+     *  val job = FileJob(
+     *      language = "C#",
+     *      content = content,
+     *      bytes = content.size.toLong(),
+     *  )
+     *
+     *  worker.countStats(job)!!
+     *
+     *  job.lines shouldBe 14
+     *  job.code shouldBe 11
+     *  job.comment shouldBe 2
+     *  job.blank shouldBe 1
+     * ```
+     */
     fun countStats(fileJob: FileJob): FileJob? {
         val langFeatures = languageService.getLanguageFeature(fileJob.language) ?: return null
 
