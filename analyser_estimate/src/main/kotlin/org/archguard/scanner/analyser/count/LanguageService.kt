@@ -233,6 +233,12 @@ class LanguageService {
         return language
     }
 
+    /**
+     * Returns the extension of a given filename.
+     *
+     * @param name the name of the file
+     * @return the extension of the file
+     */
     fun getExtension(name: String): String {
         val lowercase = name.lowercase()
         var extension = extensionCache[lowercase]
@@ -257,6 +263,7 @@ class LanguageService {
     }
 
     private var Complexity = true
+
     private fun processLanguageFeatures(name: String, value: Language) {
         val complexityTrie = Trie()
         val slCommentTrie = Trie()
