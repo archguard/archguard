@@ -26,18 +26,6 @@ class DirectoryWalker(
     private val ignores: MutableList<IgnoreMatcher> = mutableListOf()
     private val dirChannels = mutableListOf<Channel<DirectoryJob>>()
 
-    fun readDir(path: String): Array<out File>? {
-        val file = File(path)
-        if (!file.exists()) {
-            throw Exception("failed to open $path")
-        }
-        if (!file.isDirectory) {
-            throw Exception("failed to read $path")
-        }
-
-        return file.listFiles()
-    }
-
     suspend fun start(workdir: String) = coroutineScope {
         root = workdir
         val file = File(workdir)
@@ -52,6 +40,18 @@ class DirectoryWalker(
         } else {
             createDirJob(workdir, workdir)
         }
+    }
+
+    private fun readDir(path: String): Array<out File>? {
+        val file = File(path)
+        if (!file.exists()) {
+            throw Exception("failed to open $path")
+        }
+        if (!file.isDirectory) {
+            throw Exception("failed to read $path")
+        }
+
+        return file.listFiles()
     }
 
     // dynamic channel for dir

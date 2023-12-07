@@ -139,8 +139,6 @@ class LanguageWorker {
             // changing anything in here and profile/measure afterwards!
             // NB that the order of the if statements matters and has been set to what in benchmarks is most efficient
             if (!LanguageService.isWhitespace(fileJob.content[index])) {
-//                println("index: $index, currentState: $currentState")
-//                println("text: ${String(fileJob.content.sliceArray(0 until index))}")
                 when (currentState) {
                     CodeState.CODE -> {
                         val codeStateTransition = codeState(

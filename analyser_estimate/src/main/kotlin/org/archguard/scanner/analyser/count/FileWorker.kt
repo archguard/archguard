@@ -5,6 +5,30 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.archguard.scanner.analyser.DirectoryWalker
 
+/**
+ * The FileWorker class provides a set of static methods for working with files.
+ *
+ * This class contains a single method, start(), which allows for the processing and summarization
+ * of files in a specified directory.
+ *
+ * The start() method uses coroutines to perform the following steps:
+ * 1. Reads the specified directory and collects the files into a collection of FileJob objects.
+ * 2. Adds language information to each FileJob object by calling the LanguageWorker's processFile() method.
+ * 3. Summarizes the language details by computing various metrics such as lines of code, comments, blank lines,
+ *    complexity, and weighted complexity.
+ *
+ * The fileSummarizeLong() method is a private method used internally by the start() method to calculate the language
+ * summary based on the FileJob objects received from the channel.
+ *
+ * This class is designed to be used in conjunction with the LanguageWorker and DirectoryWalker classes to provide
+ * a comprehensive analysis of files in a specified directory.
+ *
+ * Usage:
+ * ```
+ * val filePath = "/path/to/directory"
+ * val summary = FileWorker.start(filePath)
+ * ```
+ */
 class FileWorker {
     companion object {
         suspend fun start(filePath: String) = coroutineScope {
@@ -40,7 +64,7 @@ class FileWorker {
             return@coroutineScope summary
         }
 
-        suspend fun fileSummarizeLong(channel: Channel<FileJob>): MutableList<LanguageSummary> {
+        private suspend fun fileSummarizeLong(channel: Channel<FileJob>): MutableList<LanguageSummary> {
             val languages = mutableMapOf<String, LanguageSummary>()
             var sumLines: Long = 0
             var sumBlank: Long = 0
