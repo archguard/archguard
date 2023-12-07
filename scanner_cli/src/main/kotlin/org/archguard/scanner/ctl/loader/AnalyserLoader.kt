@@ -46,7 +46,7 @@ object AnalyserLoader {
         val targetJarPath = getLocalPath()
 
         logger.debug("analyser is configured as url, downloading to installation path...")
-        logger.debug("| $sourceUrl -> $targetJarPath |")
+        logger.debug("| {} -> {} |", sourceUrl, targetJarPath)
 
         logger.debug("downloading...")
         val cost = measureTimeMillis {
@@ -62,7 +62,7 @@ object AnalyserLoader {
         val targetJarFile = getLocalPath().toFile()
 
         logger.debug("analyser is configured as absolute path, copying to installation path...")
-        logger.debug("| $sourceJarFile -> $targetJarFile |")
+        logger.debug("| {} -> {} |", sourceJarFile, targetJarFile)
 
         sourceJarFile.copyTo(targetJarFile)
     }
