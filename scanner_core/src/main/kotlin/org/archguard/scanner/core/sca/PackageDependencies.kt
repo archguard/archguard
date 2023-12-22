@@ -55,9 +55,9 @@ enum class DEP_SCOPE {
 class DependencyEntry(
     // full name groupId:artifactId
     val name: String,
-    val group: String = "",
-    val artifact: String = "",
-    val version: String,
+    var group: String = "",
+    var artifact: String = "",
+    var version: String,
     // url: like github, maven
     val scope: DEP_SCOPE = DEP_SCOPE.NORMAL,
     // file: like NPM in local

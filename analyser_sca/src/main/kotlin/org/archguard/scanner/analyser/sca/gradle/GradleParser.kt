@@ -28,6 +28,7 @@ private val ENTRY_REGEX =
 class GradleParser : Parser() {
     override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
         val deps = mutableListOf<DependencyEntry>()
+
         deps += parseShortForm(file.content)
         deps += parseKeywordArg(file.content)
         deps += parseDependencySet(file.content)
