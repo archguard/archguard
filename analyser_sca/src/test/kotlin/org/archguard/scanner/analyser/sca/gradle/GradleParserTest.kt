@@ -132,8 +132,7 @@ dependencies {
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
-        assertEquals(8, dependencies.size)
-        assertEquals("projects.metaAction", dependencies[0].name)
-        assertEquals("libs.kotlin.stdlib", dependencies[1].name)
+        assertEquals(7, dependencies.size)
+        assertEquals("libs.kotlin.stdlib", dependencies[0].name)
     }
 }
