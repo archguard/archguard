@@ -30,7 +30,7 @@ import org.archguard.scanner.core.sca.DependencyEntry
  * ```
  */
 class GradleTomlParser(private val content: String) {
-    val logger = mu.KotlinLogging.logger {}
+    private val logger = mu.KotlinLogging.logger {}
 
     private val toml = Toml(
         inputConfig = TomlInputConfig(
@@ -89,8 +89,7 @@ class GradleTomlParser(private val content: String) {
         versions: MutableMap<String, String>
     ): Map<String, DependencyEntry> {
         return declarations.associate { declaration ->
-            val dependencyEntry = DependencyEntry(name = declaration.name, version = "", group = "", artifact = "")
-
+            val entry = DependencyEntry(name = "", aliasName = declaration.name)
             declaration.children.forEach {
                 val value = valueFromToNode(it)
                 when (it.name) {
@@ -98,33 +97,47 @@ class GradleTomlParser(private val content: String) {
                         val children = it.children
                         if (children.isNotEmpty() && children[0].name == "ref") {
                             val ref = valueFromToNode(children[0])
-                            dependencyEntry.version = versions[ref] ?: ""
+                            entry.version = versions[ref] ?: ""
                         } else {
-                            dependencyEntry.version = value
+                            entry.version = value
                         }
                     }
+
                     "version.ref" -> {
-                        dependencyEntry.version = versions[value] ?: ""
+                        entry.version = versions[value] ?: ""
                     }
+
                     "group" -> {
-                        dependencyEntry.group = value
+                        entry.group = value
                     }
+
                     "name" -> {
-                        dependencyEntry.artifact = value
+                        entry.artifact = value
                     }
+
                     "module" -> {
                         val module = value
                         val parts = module.split(":")
-                        dependencyEntry.group = parts[0]
-                        dependencyEntry.artifact = parts[1]
+                        entry.group = parts.getOrNull(0) ?: ""
+                        entry.artifact = parts.getOrNull(1) ?: ""
                     }
+
                     else -> {
                         logger.warn("Unknown node type: ${it.javaClass}")
                     }
                 }
             }
 
-            dependencyEntry.name to dependencyEntry
+            if (declaration.children.isEmpty()) {
+                val module = valueFromToNode(declaration)
+                val parts = module.split(":")
+                entry.group = parts.getOrNull(0) ?: ""
+                entry.artifact = parts.getOrNull(1) ?: ""
+                entry.version = parts.getOrNull(2) ?: ""
+            }
+
+            entry.name = "${entry.group}:${entry.artifact}"
+            entry.aliasName to entry
         }
     }
 

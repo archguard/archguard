@@ -36,10 +36,11 @@ class GradleTomlParserTest {
         assertThat(results.size).isEqualTo(3)
         val result = results["groovy-core"]!!
 
-        result.name shouldBe "groovy-core"
+        result.aliasName shouldBe "groovy-core"
         result.group shouldBe "org.codehaus.groovy"
         result.artifact shouldBe "groovy"
         result.version shouldBe "3.0.5"
+        result.name shouldBe "org.codehaus.groovy:groovy"
     }
 
     @Test
@@ -54,5 +55,33 @@ class GradleTomlParserTest {
 
         // then
         assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun shouldParseGradleTomlFileWithLibrariesOnly() {
+        // given
+        val content = """
+            [libraries]
+            swagger-parser-v3 = "io.swagger.parser.v3:swagger-parser-v3:2.1.12"
+            
+            commonmark-core = "org.commonmark:commonmark:0.21.0"
+            commonmark-gfm-tables = "org.commonmark:commonmark-ext-gfm-tables:0.21.0"
+        """.trimIndent()
+
+        val parser = GradleTomlParser(content)
+
+        // when
+        val results = parser.parse()
+
+        // then
+        assertThat(results).isNotEmpty
+        assertThat(results.size).isEqualTo(3)
+        val result = results["swagger-parser-v3"]!!
+
+        result.aliasName shouldBe "swagger-parser-v3"
+        result.group shouldBe "io.swagger.parser.v3"
+        result.artifact shouldBe "swagger-parser-v3"
+        result.version shouldBe "2.1.12"
+        result.name shouldBe "io.swagger.parser.v3:swagger-parser-v3"
     }
 }
