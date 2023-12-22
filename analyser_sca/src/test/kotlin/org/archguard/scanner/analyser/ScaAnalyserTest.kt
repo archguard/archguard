@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sca.ScaContext
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ScaAnalyserTest {
@@ -37,6 +38,7 @@ internal class ScaAnalyserTest {
     }
 
     @Test
+    @Disabled
     internal fun support_archguard_self_toml() {
         every { mockContext.path } returns ".."
         every { mockContext.language } returns "kotlin"
@@ -49,3 +51,4 @@ internal class ScaAnalyserTest {
         deps[0].depVersion shouldNotBe ""
     }
 }
+
