@@ -27,4 +27,6 @@ jobs:
 
       - name: Execute Gradle Coverage
         if: runner.os == 'macOS'
-        run: bash <(curl -s https://codecov.io/bash)
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
