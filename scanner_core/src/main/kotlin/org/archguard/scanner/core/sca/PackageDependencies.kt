@@ -53,17 +53,19 @@ enum class DEP_SCOPE {
 
 @Serializable
 class DependencyEntry(
-    // full name groupId:artifactId
+    /* full name groupId:artifactId */
     val name: String,
     var group: String = "",
     var artifact: String = "",
     var version: String,
-    // url: like github, maven
+    /* url: like github, maven */
     val scope: DEP_SCOPE = DEP_SCOPE.NORMAL,
-    // file: like NPM in local
+    /* file: like NPM in local */
     val source: DepSource = DepSource(),
-    // additional information
+    /* additional information */
     val metadata: DepMetadata = DepMetadata(),
+    /* alias name in libs.version.toml */
+    val aliasName: String = "",
 )
 
 // like GitHub
