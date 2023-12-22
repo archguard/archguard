@@ -1,4 +1,15 @@
-# [](https://github.com/archguard/archguard/compare/v2.0.7...v) (2023-09-16)
+# [](https://github.com/archguard/archguard/compare/v2.1.0...v) (2023-12-22)
+
+
+
+# [2.1.0](https://github.com/archguard/archguard/compare/v2.0.7...v2.1.0) (2023-12-22)
+
+
+### Features
+
+* **sca:** extract parse toml file and make version reable ([e69b82d](https://github.com/archguard/archguard/commit/e69b82d153de31e26ab3539635a82eefdf00b2da))
+* **sca:** init basic version toml parse support for gradle ([7268c69](https://github.com/archguard/archguard/commit/7268c6987a8990b1300f693f9fb75a14fe227d53))
+* **sca:** make more test example for project ([c18b814](https://github.com/archguard/archguard/commit/c18b8143ce4500749cb916cc07b77015014d82c3))
 
 
 
