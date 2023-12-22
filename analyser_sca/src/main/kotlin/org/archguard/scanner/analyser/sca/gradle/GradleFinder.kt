@@ -7,7 +7,7 @@ import org.archguard.scanner.core.sca.PackageDependencies
 import java.io.File
 
 class GradleFinder : Finder() {
-    override val parser: Parser = GradleParser()
+    override val parser: GradleParser = GradleParser()
 
     override fun isMatch(it: File): Boolean {
         if (it.isDirectory) return false
@@ -18,13 +18,16 @@ class GradleFinder : Finder() {
     override fun process(path: String): List<PackageDependencies> {
         val fileTreeWalk = File(path).walk(FileWalkDirection.BOTTOM_UP)
 
-        val versionToml = fileTreeWalk.filter {
-            it.canonicalPath.endsWith("gradle/libs.versions.toml")
-        }.take(1)
-//
-//        versionToml.forEach { file ->
-//
-//        }
+
+        val entryMutableMap = fileTreeWalk
+            .firstOrNull {
+                it.canonicalPath.endsWith("gradle/libs.versions.toml")
+            }
+            ?.readText()
+            ?.let { GradleTomlParser(it).parse() }
+            ?: mutableMapOf()
+
+        parser.versionCatalogs = entryMutableMap
 
         return fileTreeWalk
             .filter {

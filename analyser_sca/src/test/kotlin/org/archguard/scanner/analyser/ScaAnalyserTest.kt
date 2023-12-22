@@ -1,10 +1,13 @@
 package org.archguard.scanner.analyser
 
+import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sca.ScaContext
 import org.junit.jupiter.api.AfterEach
@@ -31,5 +34,18 @@ internal class ScaAnalyserTest {
         val deps = analyser.analyse()
 
         assert(deps.size >= 2)
+    }
+
+    @Test
+    internal fun support_archguard_self_toml() {
+        every { mockContext.path } returns ".."
+        every { mockContext.language } returns "kotlin"
+        val analyser = ScaAnalyser(mockContext)
+        val deps = analyser.analyse().filter {
+            it.depName.contains("chapi")
+        }
+
+        println(Json.encodeToString(deps))
+        deps[0].depVersion shouldNotBe ""
     }
 }

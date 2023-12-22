@@ -1,5 +1,7 @@
 package org.archguard.scanner.analyser.sca.gradle
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.sca.DEP_SCOPE
 import org.archguard.scanner.core.sca.DeclFileTree
 import org.archguard.scanner.core.sca.PackageDependencies
@@ -26,6 +28,8 @@ private val ENTRY_REGEX =
     "\\s+entry\\s+['\"]([^\\s,@'\":\\/\\\\]+)['\"]".toRegex()
 
 class GradleParser : Parser() {
+    var versionCatalogs: MutableMap<String, DependencyEntry> = mutableMapOf()
+
     override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
         val deps = mutableListOf<DependencyEntry>()
 
@@ -46,11 +50,18 @@ class GradleParser : Parser() {
     }
 
     private fun parseVersionCatalog(content: String): List<DependencyEntry> {
-        return GRADLE_VERSION_CATALOG_REGEX.findAll(content).filter {
-            it.groups.isNotEmpty() && it.groups.size == 6
+        val findAll = GRADLE_VERSION_CATALOG_REGEX.findAll(content)
+        return findAll.filter {
+            it.groups.isNotEmpty() && it.value.contains("libs.")
         }.map {
             val groups = it.groups
-            DependencyEntry(
+
+            val matchGroup = groups[2]!!.value
+                .substringAfter("libs.")
+                .replace(".", "-")
+
+            val dependencyEntry = versionCatalogs[matchGroup]
+            dependencyEntry ?: DependencyEntry(
                 name = groups[2]!!.value,
                 group = "",
                 artifact = groups[2]!!.value,
