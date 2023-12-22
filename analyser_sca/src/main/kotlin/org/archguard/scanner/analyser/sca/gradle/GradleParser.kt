@@ -1,16 +1,18 @@
 package org.archguard.scanner.analyser.sca.gradle
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import org.archguard.scanner.analyser.sca.base.Parser
 import org.archguard.scanner.core.sca.DEP_SCOPE
 import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.scanner.core.sca.DependencyEntry
-import org.archguard.scanner.analyser.sca.base.Parser
+import org.archguard.scanner.core.sca.PackageDependencies
 
 private val GRADLE_SHORT_IMPL_REGEX =
     // implementation "joda-time:joda-time:2.2"
     "([a-zA-Z]+)?(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+):([^\\s,'\":\\/\\\\]+))['\"]".toRegex()
+
+private val SHORT_IMPL_REGEX_NO_VERSION =
+    // implementation "joda-time:joda-time"
+    "([a-zA-Z]+)?(?:\\(|\\s)\\s*['\"](([^\\s,@'\":\\/\\\\]+):([^\\s,@'\":\\/\\\\]+))['\"]".toRegex()
 
 // gradle version catalog
 private val GRADLE_VERSION_CATALOG_REGEX =
@@ -73,7 +75,7 @@ class GradleParser : Parser() {
 
     // sample: implementation "joda-time:joda-time:2.2"
     private fun parseShortForm(content: String): List<DependencyEntry> {
-        return GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
+        val versionsDep = GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
             it.groups.isNotEmpty() && it.groups.size == 6
         }.map {
             val groups = it.groups
@@ -86,9 +88,24 @@ class GradleParser : Parser() {
                 scope = scope
             )
         }.toList()
+
+        val noVersionDeps = SHORT_IMPL_REGEX_NO_VERSION.findAll(content).filter {
+            it.groups.isNotEmpty() && it.groups.size == 5
+        }.map {
+            val groups = it.groups.filterNotNull()
+            val scope = scopeForGradle(groups[1].value)
+            DependencyEntry(
+                name = "${groups[3].value}:${groups[4].value}",
+                group = groups[3].value,
+                artifact = groups[4].value,
+                version = "",
+                scope = scope
+            )
+        }.toList()
+
+        return versionsDep + noVersionDeps
     }
 
-    // sample: `testRuntimeOnly`
     private fun scopeForGradle(text: String): DEP_SCOPE {
         if (text.startsWith("test")) {
             return DEP_SCOPE.TEST
@@ -176,7 +193,4 @@ class GradleParser : Parser() {
 
         return deps
     }
-
-    // sample: plugins { }
-    private fun parsePlugin() {}
 }

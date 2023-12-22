@@ -135,4 +135,41 @@ dependencies {
         assertEquals(7, dependencies.size)
         assertEquals("libs.kotlin.stdlib", dependencies[0].name)
     }
+
+    @Test
+    internal fun should_succes_parse_in_sub_projects() {
+val declFileTree = DeclFileTree(
+    "archguard", "build.gradle", """
+subprojects {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.flywaydb:flyway-core'
+        implementation "org.springframework.boot:spring-boot-starter-data-redis"
+        implementation 'org.apache.commons:commons-lang3:3.0'
+        implementation 'org.springframework.security:spring-security-core:5.4.6'
+        implementation 'mysql:mysql-connector-java'
+
+        compileOnly 'org.projectlombok:lombok'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'com.tngtech.archunit:archunit:0.23.1'
+        testImplementation "ch.vorburger.mariaDB4j:mariaDB4j:2.4.0"
+        testImplementation 'io.rest-assured:rest-assured:3.0.5'
+        testImplementation 'org.dbunit:dbunit:2.7.0'
+    }
+}
+"""
+)
+
+        val depDecls = GradleParser().lookupSource(declFileTree)
+        assertEquals(1, depDecls.size)
+
+        val dependencies = depDecls[0].dependencies
+        assertEquals(18, dependencies.size)
+    }
 }
