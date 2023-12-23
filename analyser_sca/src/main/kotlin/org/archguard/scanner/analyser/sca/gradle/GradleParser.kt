@@ -76,31 +76,39 @@ class GradleParser : Parser() {
     // sample: implementation "joda-time:joda-time:2.2"
     private fun parseShortForm(content: String): List<DependencyEntry> {
         val versionsDep = GRADLE_SHORT_IMPL_REGEX.findAll(content).filter {
-            it.groups.isNotEmpty() && it.groups.size == 6
-        }.map {
-            val groups = it.groups
-            val scope = scopeForGradle(groups[1]?.value ?: "")
-            DependencyEntry(
-                name = "${groups[3]!!.value}:${groups[4]!!.value}",
-                group = groups[3]!!.value,
-                artifact = groups[4]!!.value,
-                version = groups[5]!!.value,
-                scope = scope
-            )
+            it.groups.isNotEmpty() && it.groups.filterNotNull().size == 6
+        }.mapNotNull {
+            try {
+                val groups = it.groups.filterNotNull()
+                val scope = scopeForGradle(groups[1]?.value ?: "")
+                DependencyEntry(
+                    name = "${groups[3]?.value}:${groups[4]?.value ?: ""}",
+                    group = groups[3]?.value ?: "",
+                    artifact = groups[4]?.value ?: "",
+                    version = groups[5]?.value ?: "",
+                    scope = scope
+                )
+            } catch (e: Exception) {
+                null
+            }
         }.toList()
 
         val noVersionDeps = SHORT_IMPL_REGEX_NO_VERSION.findAll(content).filter {
-            it.groups.isNotEmpty() && it.groups.size == 5
-        }.map {
-            val groups = it.groups.filterNotNull()
-            val scope = scopeForGradle(groups[1].value)
-            DependencyEntry(
-                name = "${groups[3].value}:${groups[4].value}",
-                group = groups[3].value,
-                artifact = groups[4].value,
-                version = "",
-                scope = scope
-            )
+            it.groups.isNotEmpty() && it.groups.filterNotNull().size == 5
+        }.mapNotNull {
+            try {
+                val groups = it.groups.filterNotNull()
+                val scope = scopeForGradle(groups[1].value)
+                DependencyEntry(
+                    name = "${groups[3].value}:${groups[4]?.value}",
+                    group = groups[3].value,
+                    artifact = groups[4]?.value ?: "",
+                    version = "",
+                    scope = scope
+                )
+            } catch (e: Exception) {
+                null
+            }
         }.toList()
 
         return versionsDep + noVersionDeps

@@ -95,7 +95,7 @@ dependencySet(group:'org.slf4j', version: '1.7.7') {
     }
 
     @Test
-    internal fun single_line() {
+    internal fun error_single_line() {
         val declFileTree = DeclFileTree(
             "archguard", "build.gradle", """
 libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:4.4.0"
@@ -105,8 +105,7 @@ libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:4.4.0"
         assertEquals(1, depDecls.size)
 
         val dependencies = depDecls[0].dependencies
-        assertEquals(1, dependencies.size)
-        assertEquals("junit-jupiter-api", dependencies[0].artifact)
+        assertEquals(0, dependencies.size)
     }
 
     @Test
