@@ -51,25 +51,30 @@ class GradleParser : Parser() {
         )
     }
 
+    // sample: implementation(libs.bundles.openai)
     private fun parseVersionCatalog(content: String): List<DependencyEntry> {
         val findAll = GRADLE_VERSION_CATALOG_REGEX.findAll(content)
         return findAll.filter {
-            it.groups.isNotEmpty() && it.value.contains("libs.")
-        }.map {
-            val groups = it.groups
+            it.groups.isNotEmpty() && it.value.contains("libs.") && it.groups.filterNotNull().size >= 4
+        }.mapNotNull {
+            try {
+                val groups = it.groups.filterNotNull()
 
-            val matchGroup = groups[2]!!.value
-                .substringAfter("libs.")
-                .replace(".", "-")
+                val matchGroup = groups[2].value
+                    .substringAfter("libs.")
+                    .replace(".", "-")
 
-            val dependencyEntry = versionCatalogs[matchGroup]
-            dependencyEntry ?: DependencyEntry(
-                name = groups[2]!!.value,
-                group = "",
-                artifact = groups[2]!!.value,
-                version = "",
-                scope = DEP_SCOPE.from(groups[0]!!.value)
-            )
+                val dependencyEntry = versionCatalogs[matchGroup]
+                dependencyEntry ?: DependencyEntry(
+                    name = groups[2].value,
+                    group = "",
+                    artifact = groups[2].value,
+                    version = "",
+                    scope = DEP_SCOPE.from(groups[0].value)
+                )
+            } catch (e: Exception) {
+                null
+            }
         }.toList()
     }
 
@@ -79,7 +84,7 @@ class GradleParser : Parser() {
             it.groups.isNotEmpty() && it.groups.filterNotNull().size == 6
         }.mapNotNull {
             try {
-                val groups = it.groups.filterNotNull()
+                val groups = it.groups
                 val scope = scopeForGradle(groups[1]?.value ?: "")
                 DependencyEntry(
                     name = "${groups[3]?.value}:${groups[4]?.value ?: ""}",
@@ -97,11 +102,11 @@ class GradleParser : Parser() {
             it.groups.isNotEmpty() && it.groups.filterNotNull().size == 5
         }.mapNotNull {
             try {
-                val groups = it.groups.filterNotNull()
-                val scope = scopeForGradle(groups[1].value)
+                val groups = it.groups
+                val scope = scopeForGradle(groups[1]?.value ?: "")
                 DependencyEntry(
-                    name = "${groups[3].value}:${groups[4]?.value}",
-                    group = groups[3].value,
+                    name = "${groups[3]?.value}:${groups[4]?.value}",
+                    group = groups[3]?.value ?: "",
                     artifact = groups[4]?.value ?: "",
                     version = "",
                     scope = scope
