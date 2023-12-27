@@ -25,12 +25,31 @@ fun getOS(): OS? {
     }
 }
 
-// filePath: point to current file
-// sourcePath: like `../../`
-//
-// output: to normalize path
+/**
+ * Converts a TypeScript import statement to the corresponding import statement in the target language.
+ *
+ * This method takes an import statement in TypeScript and converts it to the equivalent import statement in the target language. It handles the conversion of file paths and package names.
+ *
+ * @param importSource The import statement to be converted. It should be in the format of a TypeScript import statement.
+ * @param sourceFile The file path of the current file. This is used to resolve relative file paths in the import statement.
+ *
+ * @return The converted import statement in the target language.
+ *
+ * Usage:
+ * ```kotlin
+ * // case 1
+ * val output = EcmaImportHelper.convertTypeScriptImport("../component", "src/main.tsx")
+ * println(output) // "component"
+ * // case 2
+ * val output = EcmaImportHelper.convertTypeScriptImport("src/component", "src/main.tsx")
+ * println(output) // "@.component"
+ * // case 3
+ * val output = EcmaImportHelper.convertTypeScriptImport("@/page/component", "src/main.tsx")
+ * println(output) // "@.page.component"
+ * ```
+ *
+ */
 fun importConvert(filepath: String, importPath: String): String {
-    // import "@/src/component/Hello.js"
     val isResolvePath = importPath.startsWith("@/")
     if (isResolvePath) {
         var pathname = importPath.removeRange(0, 2)
