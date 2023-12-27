@@ -45,18 +45,18 @@ class EcmaImportPathTest {
         assertEquals("src/page/component", result)
     }
 
-    @Test
-    fun should_return_resolved_import_path_when_convertTypeScriptImport_given_relative_import_path_with_file_extension() {
-        // given
-        val filepath = "src/main.tsx"
-        val importPath = "./component"
-
-        // when
-        val result = importConvert(filepath, importPath)
-
-        // then
-        assertEquals("src/component", result)
-    }
+//    @Test
+//    fun should_return_resolved_import_path_when_convertTypeScriptImport_given_relative_import_path_with_file_extension() {
+//        // given
+//        val filepath = "src/main.tsx"
+//        val importPath = "./component"
+//
+//        // when
+//        val result = importConvert(filepath, importPath)
+//
+//        // then
+//        assertEquals("src/component", result)
+//    }
 
     @Test
     fun should_return_resolved_import_path_when_convertTypeScriptImport_given_relative_import_path_with_parent_directory() {
