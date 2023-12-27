@@ -25,32 +25,6 @@ fun getOS(): OS? {
     }
 }
 
-fun ecmaImportConvert(workspace: String, filepath: String, importPath: String): String {
-    var pathname = filepath
-    val isResolvePath = pathname.startsWith("@/")
-    if (isResolvePath) {
-        pathname = pathname.removeRange(0, 2)
-        pathname = "src/$pathname"
-
-        if (getOS() == OS.WINDOWS) pathname = pathname.replace("\\", "/")
-
-        return pathname
-    }
-
-    var relativePath = pathname
-    try {
-        relativePath = File(pathname).relativeTo(File(workspace)).toString()
-    } catch (e: IllegalArgumentException) {
-        println(e)
-    }
-
-    if (!relativePath.startsWith("./") || !relativePath.startsWith("../")) {
-        relativePath = "./$relativePath"
-    }
-
-    return importConvert(relativePath, importPath)
-}
-
 // filePath: point to current file
 // sourcePath: like `../../`
 //
@@ -87,26 +61,3 @@ fun importConvert(filepath: String, importPath: String): String {
     return finalPath
 }
 
-fun relativeRoot(filepath: String, importPath: String): String {
-    var pathname = importPath
-    val isResolvePath = pathname.startsWith("@/")
-    if (isResolvePath) {
-        pathname = pathname.removeRange(0, 2)
-        pathname = "src/$pathname"
-
-        if (getOS() == OS.WINDOWS) pathname = pathname.replace("\\", "/")
-
-        return pathname
-    }
-
-    var relativePath = pathname
-    try {
-        relativePath = File(pathname).relativeTo(File(filepath)).toString()
-    } catch (e: IllegalArgumentException) {
-        println(e)
-    }
-
-    if (getOS() == OS.WINDOWS) relativePath = relativePath.replace("\\", "/")
-
-    return relativePath
-}
