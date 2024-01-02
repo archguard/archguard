@@ -16,7 +16,7 @@ mockk = "1.13.3"
 assertj = "3.22.0"
 kotest = "5.5.4"
 
-chapi = "2.1.3"
+chapi = "2.2.1"
 
 shadowJar = "7.1.2"
 
@@ -66,6 +66,7 @@ chapi-csharp = { group = "com.phodal.chapi", name = "chapi-ast-csharp", version.
 chapi-python = { group = "com.phodal.chapi", name = "chapi-ast-python", version.ref = "chapi" }
 chapi-scala = { group = "com.phodal.chapi", name = "chapi-ast-scala", version.ref = "chapi" }
 chapi-typescript = { group = "com.phodal.chapi", name = "chapi-ast-typescript", version.ref = "chapi" }
+chapi-rust = { group = "com.phodal.chapi", name = "chapi-ast-rust", version.ref = "chapi" }
 
 # clikt
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" }
