@@ -3,7 +3,7 @@ package org.archguard.scanner.core.sca
 import kotlinx.serialization.Serializable
 
 /*
- * file for save content ?
+ * file for save content?
  */
 class DeclFileTree(
     val filename: String,
@@ -17,7 +17,7 @@ class DeclFileTree(
 class PackageDependencies(
     // self name
     val name: String,
-    // self version for some cases
+    // self-version for some cases
     val version: String,
     // like `maven`, `gradle`
     val packageManager: String,
