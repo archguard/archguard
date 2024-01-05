@@ -1,5 +1,6 @@
 package org.archguard.scanner.analyser
 
+import org.archguard.scanner.analyser.sca.cargo.CargoFinder
 import org.archguard.scanner.analyser.sca.gomod.GoModFinder
 import org.archguard.scanner.analyser.sca.gradle.GradleFinder
 import org.archguard.scanner.analyser.sca.maven.MavenFinder
@@ -17,23 +18,30 @@ class ScaAnalyser(override val context: ScaContext) : ScaAnalyser {
     override fun analyse(): List<CompositionDependency> {
         return when (context.language) {
             "java", "kotlin" -> {
-                val depDeclarations = GradleFinder().process(path).toMutableList()
-                depDeclarations += MavenFinder().process(path)
+                val depDeclarations = GradleFinder().process(path) + MavenFinder().process(path)
                 depDeclarations.flatMap {
                     it.toCompositionDependency()
                 }.toList()
             }
+
             "javascript", "typescript" -> {
-                val depDeclarations = NpmFinder().process(path)
-                depDeclarations.flatMap {
+                NpmFinder().process(path).flatMap {
                     it.toCompositionDependency()
                 }.toList()
             }
+
             "golang" -> {
-                GoModFinder().process(path).toMutableList().flatMap {
+                GoModFinder().process(path).flatMap {
                     it.toCompositionDependency()
                 }.toList()
             }
+
+            "rust" -> {
+                CargoFinder().process(path).flatMap {
+                    it.toCompositionDependency()
+                }
+            }
+
             else -> throw IllegalStateException("Unsupported language: ${context.language}")
         }.also {
             client.saveDependencies(it)
