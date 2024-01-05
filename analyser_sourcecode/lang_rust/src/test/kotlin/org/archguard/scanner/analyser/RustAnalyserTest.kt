@@ -32,6 +32,6 @@ internal class RustAnalyserTest {
         val result = RustAnalyser(mockContext).analyse()
 
         Assertions.assertEquals(result.size, 2)
-        Assertions.assertEquals(result[0].NodeName, "foo")
+        Assertions.assertEquals(result[0].NodeName, "sample")
     }
 }
