@@ -4,6 +4,9 @@ enum class LangType {
     Java,
     Kotlin,
     Scala,
-    Clojure,
+    Rust,
+    Go,
+    Python,
+    CSharp,
     Groovy
 }
