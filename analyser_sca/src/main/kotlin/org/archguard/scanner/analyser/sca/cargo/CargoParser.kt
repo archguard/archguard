@@ -68,9 +68,12 @@ class CargoParser : Parser() {
 }
 
 private fun DEP_SCOPE.Companion.rust(tableName: String): DEP_SCOPE {
+    if (tableName.contains("target.")) return DEP_SCOPE.OPTIONAL
+
     return when(tableName) {
         "dependencies" -> DEP_SCOPE.NORMAL
         "build-dependencies" -> DEP_SCOPE.BUILD
+        "dev-dependencies" -> DEP_SCOPE.DEV
         else -> DEP_SCOPE.NORMAL
     }
 }

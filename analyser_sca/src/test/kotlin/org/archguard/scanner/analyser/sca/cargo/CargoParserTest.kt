@@ -44,6 +44,9 @@ class CargoParserTest {
                 
                 [build-dependencies]
                 uniffi = { version = "0.25", features = ["build"] }
+                
+                [target.'cfg(target_arch = "x86_64")'.dependencies]
+                native-x86_64 = { path = "native/x86_64" }
             """.trimIndent(),
             childrens = emptyList(),
             name = "Cargo.toml"
@@ -53,7 +56,7 @@ class CargoParserTest {
         val result = cargoParser.lookupSource(file).first().dependencies
 
         // Then
-        assertEquals(5, result.size)
+        assertEquals(6, result.size)
         assertEquals("ort", result[0].name)
         assertEquals("2.0.0-alpha.1", result[0].version)
         assertEquals("tokenizers", result[1].name)
@@ -62,5 +65,6 @@ class CargoParserTest {
         assertEquals("0.15.6", result[2].version)
         assertEquals("enfer_core", result[3].name)
         assertEquals(DEP_SCOPE.BUILD, result[4].scope)
+        assertEquals(DEP_SCOPE.OPTIONAL, result[5].scope)
     }
 }
