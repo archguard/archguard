@@ -10,9 +10,6 @@ dependencies {
     api(projects.scannerCore)
 
     implementation("com.jayway.jsonpath:json-path:2.7.0")
-    implementation("com.akuleshov7:ktoml-core:0.5.0")
-    implementation("com.akuleshov7:ktoml-file:0.5.0")
-
     implementation("com.phodal.chapi:chapi-parser-toml:2.2.4")
 
     testImplementation(libs.bundles.test)

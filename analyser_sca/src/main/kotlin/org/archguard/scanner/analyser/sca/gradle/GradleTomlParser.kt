@@ -1,10 +1,8 @@
 package org.archguard.scanner.analyser.sca.gradle
 
-import com.akuleshov7.ktoml.tree.nodes.TomlFile
-import com.akuleshov7.ktoml.tree.nodes.TomlKeyValuePrimitive
-import com.akuleshov7.ktoml.tree.nodes.TomlNode
-import com.akuleshov7.ktoml.tree.nodes.TomlTablePrimitive
-import org.archguard.scanner.analyser.sca.base.createTomlParser
+import chapi.domain.core.CodeContainer
+import chapi.domain.core.CodeField
+import chapi.parser.toml.TomlAnalyser
 import org.archguard.scanner.core.sca.DependencyEntry
 
 
@@ -31,27 +29,21 @@ import org.archguard.scanner.core.sca.DependencyEntry
  */
 class GradleTomlParser(private val content: String) {
     private val logger = mu.KotlinLogging.logger {}
+    val analyser = TomlAnalyser()
 
     fun parse(): MutableMap<String, DependencyEntry> {
         val entries: MutableMap<String, DependencyEntry> = mutableMapOf()
         val tomlFile = try {
-            createTomlParser().parseString(content)
+            val containers = analyser.analysis(content, "libs.versions.toml")
+            containers
         } catch (e: Exception) {
             return entries
         }
 
         val versions: MutableMap<String, String> = mutableMapOf()
-        tomlFile.children.filter { it.name == "versions" }.map { node ->
-            node.children.forEach {
-                when (it) {
-                    is TomlKeyValuePrimitive -> {
-                        versions[it.name] = it.value.content.toString()
-                    }
-
-                    else -> {
-                        logger.warn("Unknown node type: ${it.javaClass}")
-                    }
-                }
+        tomlFile.Containers.filter { it.PackageName == "versions" }.map { container ->
+            container.Fields.forEach {
+                versions[it.TypeKey] = it.TypeValue
             }
         }
 
@@ -62,32 +54,31 @@ class GradleTomlParser(private val content: String) {
 
 
     private fun versionCatalogLibraryDependencies(
-        tomlFile: TomlFile,
+        tomlFile: CodeContainer,
         versions: MutableMap<String, String>
     ): MutableMap<String, DependencyEntry> {
         val entries: MutableMap<String, DependencyEntry> = mutableMapOf()
 
-        tomlFile.children
-            .filter { it.name == "libraries" }
-            .forEach { entries += dependenciesForDeclarations(it.children, versions) }
+        tomlFile.Containers
+            .filter { it.PackageName == "libraries" }
+            .forEach { entries += dependenciesForDeclarations(it.Fields, versions) }
 
         return entries
     }
 
     private fun dependenciesForDeclarations(
-        declarations: MutableList<TomlNode>,
+        declarations: List<CodeField>,
         versions: MutableMap<String, String>
     ): Map<String, DependencyEntry> {
         return declarations.associate { declaration ->
-            val entry = DependencyEntry(name = "", aliasName = declaration.name)
-            declaration.children.forEach {
-                val value = valueFromToNode(it)
-                when (it.name) {
+            val entry = DependencyEntry(name = "", aliasName = declaration.TypeKey)
+            declaration.ArrayValue.forEach {
+                val value = it.TypeValue
+                when (it.TypeKey) {
                     "version" -> {
-                        val children = it.children
-                        if (children.isNotEmpty() && children[0].name == "ref") {
-                            val ref = valueFromToNode(children[0])
-                            entry.version = versions[ref] ?: ""
+                        val children = it.ArrayValue
+                        if (children.isNotEmpty() && children[0].TypeKey == "ref") {
+                            entry.version = children[0].TypeValue ?: ""
                         } else {
                             entry.version = value
                         }
@@ -106,8 +97,7 @@ class GradleTomlParser(private val content: String) {
                     }
 
                     "module" -> {
-                        val module = value
-                        val parts = module.split(":")
+                        val parts = value.split(":")
                         entry.group = parts.getOrNull(0) ?: ""
                         entry.artifact = parts.getOrNull(1) ?: ""
                     }
@@ -118,8 +108,8 @@ class GradleTomlParser(private val content: String) {
                 }
             }
 
-            if (declaration.children.isEmpty()) {
-                val module = valueFromToNode(declaration)
+            if (declaration.TypeType == "String") {
+                val module = declaration.TypeValue
                 val parts = module.split(":")
                 entry.group = parts.getOrNull(0) ?: ""
                 entry.artifact = parts.getOrNull(1) ?: ""
@@ -128,23 +118,6 @@ class GradleTomlParser(private val content: String) {
 
             entry.name = "${entry.group}:${entry.artifact}"
             entry.aliasName to entry
-        }
-    }
-
-    fun valueFromToNode(node: TomlNode): String {
-        return when (node) {
-            is TomlKeyValuePrimitive -> {
-                node.value.content.toString()
-            }
-
-            is TomlTablePrimitive -> {
-                node.fullTableKey.toString()
-            }
-
-            else -> {
-                logger.warn("TomlNode toString - Unknown node type: ${node.javaClass}")
-                node.toString()
-            }
         }
     }
 }

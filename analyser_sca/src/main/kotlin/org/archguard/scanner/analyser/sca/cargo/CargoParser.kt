@@ -46,6 +46,10 @@ class CargoParser : Parser() {
                 }
             }.flatten()
 
+        if (dependencies.isEmpty()) {
+            return listOf()
+        }
+
         return listOf(
             PackageDependencies(file.name, "", "cargo", dependencies, file.path)
         )
