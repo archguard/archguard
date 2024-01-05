@@ -34,7 +34,9 @@ enum class DEP_SCOPE {
     RUNTIME,
     TEST,
     OPTIONAL,
-    DEV;
+    DEV,
+    // add for Cargo
+    BUILD;
 
     companion object {
         fun from(str: String): DEP_SCOPE {

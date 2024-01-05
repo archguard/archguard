@@ -1,6 +1,8 @@
 package org.archguard.scanner.analyser.sca.cargo;
 
+import org.archguard.scanner.core.sca.DEP_SCOPE
 import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.DepSource
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -27,7 +29,6 @@ class CargoParserTest {
     }
 
     @Test
-    @Disabled
     fun `lookupSource should return list of PackageDependencies when given file has dependencies`() {
         // Given
         val cargoParser = CargoParser()
@@ -49,10 +50,10 @@ class CargoParserTest {
         )
 
         // When
-        val result = cargoParser.lookupSource(file)
+        val result = cargoParser.lookupSource(file).first().dependencies
 
         // Then
-        assertEquals(4, result.size)
+        assertEquals(5, result.size)
         assertEquals("ort", result[0].name)
         assertEquals("2.0.0-alpha.1", result[0].version)
         assertEquals("tokenizers", result[1].name)
@@ -60,7 +61,6 @@ class CargoParserTest {
         assertEquals("ndarray", result[2].name)
         assertEquals("0.15.6", result[2].version)
         assertEquals("enfer_core", result[3].name)
-        assertEquals("", result[3].version)
-        assertEquals("../enfer_core", result[3].path)
+        assertEquals(DEP_SCOPE.BUILD, result[4].scope)
     }
 }

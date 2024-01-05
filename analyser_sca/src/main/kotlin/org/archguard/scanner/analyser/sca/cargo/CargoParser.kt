@@ -1,12 +1,17 @@
 package org.archguard.scanner.analyser.sca.cargo
 
-import com.akuleshov7.ktoml.tree.nodes.TomlFile
+import chapi.domain.core.CodeField
+import chapi.parser.toml.TomlAnalyser
+import chapi.parser.toml.TomlType
 import org.archguard.scanner.analyser.sca.base.Parser
-import org.archguard.scanner.analyser.sca.base.createTomlParser
+import org.archguard.scanner.core.sca.DEP_SCOPE
 import org.archguard.scanner.core.sca.DeclFileTree
+import org.archguard.scanner.core.sca.DependencyEntry
 import org.archguard.scanner.core.sca.PackageDependencies
 
 class CargoParser : Parser() {
+    val analyser = TomlAnalyser()
+
     /**
      *
      * example [DeclFileTree.content] for Cargo.toml:
@@ -23,14 +28,49 @@ class CargoParser : Parser() {
      *```
      */
     override fun lookupSource(file: DeclFileTree): List<PackageDependencies> {
-        val tomlFile: TomlFile = createTomlParser().parseString(file.content)
-//        val tomlNodes = tomlFile.children.filter { it.name.endsWith("dependencies") }
-//        tomlNodes.map { node ->
-//            node.children.forEach {
-//               println(it)
-//            }
-//        }
+        val containers = analyser.analysis(file.content, file.path).Containers
+        val dependencies: List<DependencyEntry> =
+            containers.filter { it.PackageName.endsWith("dependencies") }.map { container ->
+                val scope = DEP_SCOPE.rust(container.PackageName)
+                container.Fields.map {
+                    val name = it.TypeKey
+                    val version = lookupVersion(it)
 
-        return listOf()
+                    DependencyEntry(
+                        name,
+                        group = "",
+                        artifact = name,
+                        version = version,
+                        scope,
+                    )
+                }
+            }.flatten()
+
+        return listOf(
+            PackageDependencies(file.name, "", "cargo", dependencies, file.path)
+        )
+    }
+
+    private fun lookupVersion(field: CodeField): String {
+        return when (TomlType.fromString(field.TypeType)) {
+            TomlType.InlineTable -> {
+                val version = lookupByFieldChild(field.ArrayValue, "version") ?: field.TypeValue
+                version.ifEmpty { field.TypeValue }
+            }
+
+            else -> field.TypeValue
+        }
+    }
+
+    private fun lookupByFieldChild(arrayValue: List<CodeField>, propName: String): String? {
+        return arrayValue.firstOrNull { it.TypeKey == propName }?.TypeValue
+    }
+}
+
+private fun DEP_SCOPE.Companion.rust(tableName: String): DEP_SCOPE {
+    return when(tableName) {
+        "dependencies" -> DEP_SCOPE.NORMAL
+        "build-dependencies" -> DEP_SCOPE.BUILD
+        else -> DEP_SCOPE.NORMAL
     }
 }

@@ -27,7 +27,7 @@ internal class RustAnalyserTest {
 
     @Test
     fun `should return nodes of the sample code file`() {
-        every { mockContext.path } returns this.javaClass.classLoader.getResource("py").path
+        every { mockContext.path } returns this.javaClass.classLoader.getResource("rs").path
 
         val result = RustAnalyser(mockContext).analyse()
 
