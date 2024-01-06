@@ -67,6 +67,7 @@ chapi-python = { group = "com.phodal.chapi", name = "chapi-ast-python", version.
 chapi-scala = { group = "com.phodal.chapi", name = "chapi-ast-scala", version.ref = "chapi" }
 chapi-typescript = { group = "com.phodal.chapi", name = "chapi-ast-typescript", version.ref = "chapi" }
 chapi-rust = { group = "com.phodal.chapi", name = "chapi-ast-rust", version.ref = "chapi" }
+chapi-c = { group = "com.phodal.chapi", name = "chapi-ast-c", version.ref = "chapi" }
 
 # clikt
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" }

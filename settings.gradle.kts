@@ -57,6 +57,7 @@ include(
     ":analyser_sourcecode:lang_csharp",
     ":analyser_sourcecode:lang_scala",
     ":analyser_sourcecode:lang_rust",
+    ":analyser_sourcecode:lang_c",
 
     ":analyser_sourcecode:feat_apicalls",
     ":analyser_sourcecode:feat_datamap",
