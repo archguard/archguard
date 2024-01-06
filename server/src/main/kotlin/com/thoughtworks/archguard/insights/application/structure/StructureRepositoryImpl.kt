@@ -23,7 +23,7 @@ class StructureRepositoryImpl(val jdbi: Jdbi) : StructureRepository {
     }
 
     override fun filterByConditionWithSystemId(id: Long, query: Query): List<StructureModelDto> {
-        var sql = "SELECT name, package_name FROM code_class where system_id = :id"
+        var sql = "SELECT name, package_name FROM code_class where system_id = :id "
 
         sql += query.toSQL("AND")
 

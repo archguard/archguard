@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 class EvoIssueRepositoryImpl(val jdbi: Jdbi) : EvoIssueRepository {
     override fun getAll(id: Long): List<EvoIssueModel> {
         val sql =
-            "select  position, rule_id as ruleId, name, detail, rule_type as ruleType, severity, full_name as fullName, source from governance_issue where system_id = :id"
+            "select  position, rule_id as ruleId, name, detail, rule_type as ruleType, severity, full_name as fullName, source from governance_issue where system_id = :id "
         return jdbi.withHandle<List<EvoIssueModel>, Nothing> {
             it.registerRowMapper(ConstructorMapper.factory(EvoIssueModel::class.java))
             it.createQuery(sql)
