@@ -55,7 +55,7 @@ enum class RuleType {
     HTTP_API_SMELL,
 
     /*
-     * Database smell, if a Controller have to many smells
+     * Database smell, if a Controller has to many smells
      */
     SQL_SMELL,
 
@@ -69,5 +69,23 @@ enum class RuleType {
      */
     ORGANIZATION,
 
-    LAYER,
+    /**
+     * for layer architecture check
+     */
+    LAYER_SMELL,
+
+    /**
+     * Service layer check
+     */
+    SERVICE_SMELL,
+
+    /**
+     * for code comment
+     */
+    COMMENT,
+
+    /**
+     * custom
+     */
+    CUSTOM
 }
