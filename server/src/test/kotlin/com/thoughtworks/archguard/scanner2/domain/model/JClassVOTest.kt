@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
+import org.archguard.model.vos.JClassVO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

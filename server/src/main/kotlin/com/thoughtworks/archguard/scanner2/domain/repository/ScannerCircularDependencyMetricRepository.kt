@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.domain.repository
 
-import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
-import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
+import org.archguard.model.vos.JClassVO
+import org.archguard.model.vos.JMethodVO
 
 interface ScannerCircularDependencyMetricRepository {
     fun insertOrUpdateClassCircularDependency(systemId: Long, classCircularDependency: List<List<JClassVO>>)

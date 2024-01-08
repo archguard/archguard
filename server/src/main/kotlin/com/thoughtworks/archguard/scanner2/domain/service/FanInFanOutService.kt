@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
+import org.archguard.model.vos.JClassVO
 import org.archguard.model.Dependency
 import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository

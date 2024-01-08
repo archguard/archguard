@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
-import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
+import org.archguard.model.vos.JClassVO
+import org.archguard.model.vos.JMethodVO
 import com.thoughtworks.archguard.scanner2.domain.repository.ScannerCircularDependencyMetricRepository
 import org.archguard.metric.CircularDependencyType
 import org.jdbi.v3.core.Jdbi

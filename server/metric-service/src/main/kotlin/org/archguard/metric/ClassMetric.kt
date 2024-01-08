@@ -1,4 +1,6 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.metric
+
+import org.archguard.model.vos.JClassVO
 
 data class ClassMetric(
     val systemId: Long,

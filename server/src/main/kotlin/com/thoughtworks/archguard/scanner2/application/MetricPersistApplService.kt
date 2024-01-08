@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.scanner2.application
 
-import com.thoughtworks.archguard.scanner2.domain.model.*
 import com.thoughtworks.archguard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
@@ -21,6 +20,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.archguard.metric.ModuleMetric
 import org.archguard.metric.PackageMetric
+import org.archguard.metric.ClassMetric
+import org.archguard.model.vos.JClassVO
+import org.archguard.model.vos.JMethodVO
+import org.archguard.metric.MethodMetric
 import org.archguard.model.code.JClass
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

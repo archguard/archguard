@@ -5,8 +5,8 @@ import org.archguard.model.Dependency
 import org.archguard.graph.Graph
 import org.archguard.graph.GraphStore
 import org.archguard.graph.IdNode
-import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
-import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
+import org.archguard.model.vos.JClassVO
+import org.archguard.model.vos.JMethodVO
 import org.archguard.graph.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository

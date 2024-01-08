@@ -8,6 +8,8 @@ dependencies {
     api(libs.coroutines.core)
     api(libs.serialization.json)
 
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     implementation(libs.springboot.jdbc)
     implementation(libs.springboot.web)
 
