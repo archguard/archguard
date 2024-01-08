@@ -130,7 +130,7 @@ class MetricPersistApplService(
 
         val methodMetrics = methods.map {
             MethodMetric(
-                systemId, toVO(it),
+                systemId, JMethodVO.fromJMethod(it),
                 methodFanInFanOutMap[it.id]?.fanIn ?: 0, methodFanInFanOutMap[it.id]?.fanOut ?: 0
             )
         }
@@ -151,7 +151,7 @@ class MetricPersistApplService(
 
         val classMetrics = jClasses.map {
             ClassMetric(
-                systemId, toVO(it),
+                systemId, JClassVO.fromClass(it),
                 ditMap.await()[it.id],
                 nocMap.await()[it.id],
                 lcom4Map.await()[it.id],

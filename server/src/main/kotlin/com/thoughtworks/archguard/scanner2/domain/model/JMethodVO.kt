@@ -20,19 +20,15 @@ data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: Stri
 
     companion object {
         fun fromJMethod(jMethod: JMethod): JMethodVO {
-            return toVO(jMethod)
+            val jMethodVO = JMethodVO(
+                jMethod.name,
+                jMethod.clazz,
+                jMethod.module,
+                jMethod.returnType,
+                jMethod.argumentTypes
+            )
+            jMethodVO.id = jMethod.id
+            return jMethodVO
         }
     }
-}
-
-fun toVO(jMethod: JMethod): JMethodVO {
-    val jMethodVO = JMethodVO(
-        jMethod.name,
-        jMethod.clazz,
-        jMethod.module,
-        jMethod.returnType,
-        jMethod.argumentTypes
-    )
-    jMethodVO.id = jMethod.id
-    return jMethodVO
 }

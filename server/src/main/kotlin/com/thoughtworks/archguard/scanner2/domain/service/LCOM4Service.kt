@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
+import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
 import org.archguard.graph.GraphStore
 import org.archguard.model.code.JClass
-import com.thoughtworks.archguard.scanner2.domain.model.toVO
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.slf4j.LoggerFactory
@@ -39,9 +39,12 @@ class LCOM4Service(
             val graphStore = GraphStore()
             val methods = jClass.methods
             methods.forEach { method ->
-                method.fields.forEach { graphStore.addEdge(toVO(method), it) }
+                method.fields.forEach { graphStore.addEdge(JMethodVO.fromJMethod(method), it) }
                 val methodsCallBySelfOtherMethod = method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
-                methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(toVO(method), toVO(it)) }
+                methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(
+                    JMethodVO.fromJMethod(method),
+                    JMethodVO.fromJMethod(it)
+                ) }
             }
 
             return graphStore

@@ -11,7 +11,6 @@ import org.archguard.graph.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.Toggle
-import com.thoughtworks.archguard.scanner2.domain.model.toVO
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,7 +23,7 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
             return emptyList()
         }
 
-        val cycleList = cycles.map { it.map { toVO(jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }) } }
+        val cycleList = cycles.map { it.map { JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }) } }
         return if (Toggle.EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY.getStatus()) {
             cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
         } else {
@@ -46,7 +45,7 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
             return emptyList()
         }
         val methodsHasModules = jMethodRepository.getMethodsNotThirdParty(systemId)
-        return cycles.map { it.map { toVO(methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }) } }
+        return cycles.map { it.map { JMethodVO.fromJMethod(methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }) } }
     }
 
     fun getModuleCircularDependency(systemId: Long): List<List<String>> {
@@ -96,8 +95,8 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
         val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
         return allClassIdDependencies.map { dependency: Dependency<String> ->
             Dependency(
-                toVO(jClassesHasModules.first { jClass -> jClass.id == dependency.caller }),
-                toVO(jClassesHasModules.first { jClass -> jClass.id == dependency.callee })
+                JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == dependency.caller }),
+                JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == dependency.callee })
             )
         }
     }
