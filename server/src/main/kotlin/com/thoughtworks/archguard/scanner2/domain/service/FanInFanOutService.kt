@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import org.archguard.model.vos.JClassVO
-import org.archguard.model.Dependency
-import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import org.archguard.operator.calculateFanInFanOutWithDependency
 import org.archguard.model.FanInFanOut
+import org.archguard.model.code.JClass
+import org.archguard.operator.FanInFanOut.buildModuleDependencyFromClassDependency
+import org.archguard.operator.FanInFanOut.buildPackageDependencyFromClassDependency
+import org.archguard.operator.FanInFanOut.calculateFanInFanOutWithDependency
 import org.springframework.stereotype.Service
 
 @Service
@@ -33,25 +33,5 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         return calculateFanInFanOutWithDependency(moduleDependencies)
     }
 
-    companion object {
-        fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
-            return classDependencies.map { classDependency ->
-                val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
-                val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
-                Dependency(callerClass.module!!, calleeClass.module!!)
-            }
-        }
-
-        fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
-            return classDependencies.map { classDependency ->
-                val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
-                val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
-                Dependency(
-                    callerClass.module + "." + callerClass.getPackageName(),
-                    calleeClass.module + "." + calleeClass.getPackageName()
-                )
-            }
-        }
-    }
 }
 
