@@ -7,7 +7,7 @@ import org.archguard.rule.core.RuleType
 class LayerRuleSetProvider: RuleSetProvider {
     override fun get(): RuleSet {
         return RuleSet(
-            RuleType.LAYER,
+            RuleType.LAYER_SMELL,
             "normal",
         )
     }
