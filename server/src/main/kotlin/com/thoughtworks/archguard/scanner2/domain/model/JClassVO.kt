@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner2.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.archguard.graph.Node
+import org.archguard.model.code.JClass
 
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
@@ -58,4 +59,10 @@ class JClassVO(val name: String, val module: String?) : Node {
     fun getBaseClassName(): String {
         return name.substringBefore("$", name)
     }
+}
+
+fun toVO(jClass: JClass): JClassVO {
+    val jClassVO = JClassVO(jClass.name, jClass.module)
+    jClassVO.id = jClass.id
+    return jClassVO
 }

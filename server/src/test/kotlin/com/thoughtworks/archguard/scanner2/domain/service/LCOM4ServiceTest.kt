@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
 import org.archguard.graph.Edge
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
-import com.thoughtworks.archguard.scanner2.domain.model.JField
-import com.thoughtworks.archguard.scanner2.domain.model.JMethod
+import org.archguard.model.code.JClass
+import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
@@ -41,7 +41,7 @@ internal class LCOM4ServiceTest {
         val jMethod4 = JMethod("m4", "m4", "clazz2", "module2", "Boolean", emptyList())
         jMethod3.callees = listOf(jMethod2, jMethod4)
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3)
-        val lcom4Graph = lcom4Service.getLCOM4Graph(jClass)
+        val lcom4Graph = LCOM4Service.getLCOM4Graph(jClass)
 
         assertThat(lcom4Graph.toDirectedGraph().nodes.size).isEqualTo(5)
         assertThat(lcom4Graph.toDirectedGraph().edges.size).isEqualTo(3)

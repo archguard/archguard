@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
-import com.thoughtworks.archguard.scanner2.domain.model.JField
-import com.thoughtworks.archguard.scanner2.domain.model.JMethod
+import org.archguard.model.code.JClass
+import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

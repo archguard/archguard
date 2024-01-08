@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.model.code
 
 import org.archguard.graph.Node
 

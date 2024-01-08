@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner2.domain.repository
 
 import org.archguard.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.JField
-import com.thoughtworks.archguard.scanner2.domain.model.JMethod
+import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 
 interface JMethodRepository {
     fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod>

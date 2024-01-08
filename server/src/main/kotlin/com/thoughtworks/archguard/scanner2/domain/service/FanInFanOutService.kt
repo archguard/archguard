@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
 import org.archguard.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import org.archguard.model.code.JClass
+import com.thoughtworks.archguard.scanner2.domain.model.toVO
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.archguard.operator.calculateFanInFanOutWithDependency
@@ -34,16 +35,16 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
 
     fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
         return classDependencies.map { classDependency ->
-            val callerClass = jClasses.first { it.id == classDependency.caller }.toVO()
-            val calleeClass = jClasses.first { it.id == classDependency.callee }.toVO()
+            val callerClass = toVO(jClasses.first { it.id == classDependency.caller })
+            val calleeClass = toVO(jClasses.first { it.id == classDependency.callee })
             Dependency(callerClass.module!!, calleeClass.module!!)
         }
     }
 
     fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
         return classDependencies.map { classDependency ->
-            val callerClass = jClasses.first { it.id == classDependency.caller }.toVO()
-            val calleeClass = jClasses.first { it.id == classDependency.callee }.toVO()
+            val callerClass = toVO(jClasses.first { it.id == classDependency.caller })
+            val calleeClass = toVO(jClasses.first { it.id == classDependency.callee })
             Dependency(callerClass.module + "." + callerClass.getPackageName(), calleeClass.module + "." + calleeClass.getPackageName())
         }
     }

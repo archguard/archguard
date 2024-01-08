@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner2.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.archguard.graph.Node
+import org.archguard.model.code.JMethod
 import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
 data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: String, val argumentTypes: List<String>) :
@@ -16,4 +17,22 @@ data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: Stri
     override fun getNodeId(): String {
         return id!!
     }
+
+    companion object {
+        fun fromJMethod(jMethod: JMethod): JMethodVO {
+            return toVO(jMethod)
+        }
+    }
+}
+
+fun toVO(jMethod: JMethod): JMethodVO {
+    val jMethodVO = JMethodVO(
+        jMethod.name,
+        jMethod.clazz,
+        jMethod.module,
+        jMethod.returnType,
+        jMethod.argumentTypes
+    )
+    jMethodVO.id = jMethod.id
+    return jMethodVO
 }

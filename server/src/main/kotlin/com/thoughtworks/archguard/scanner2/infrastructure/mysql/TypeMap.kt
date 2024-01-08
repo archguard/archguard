@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.ClazzType
-import com.thoughtworks.archguard.scanner2.domain.model.MethodType
+import org.archguard.model.code.ClazzType
+import org.archguard.model.code.MethodType
 
 object TypeMap {
     private const val ACC_INTERFACE = 512

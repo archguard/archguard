@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.JMethod
+import org.archguard.model.code.JMethod
 
 class JMethodPO(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: String?, val access: String) {
     fun toJMethod(): JMethod {

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import org.archguard.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import org.archguard.model.code.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

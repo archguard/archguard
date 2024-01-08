@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
+import org.archguard.model.code.JMethod
+
 class MethodAccess(
     val id: String,
     val isSynthetic: Boolean,

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import org.archguard.model.code.JClass
 
 class JClassPO(val id: String, val name: String, val module: String?, val loc: Int?, val access: String?) {
     fun toJClass(): JClass {

@@ -1,7 +1,8 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
 import org.archguard.graph.GraphStore
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import org.archguard.model.code.JClass
+import com.thoughtworks.archguard.scanner2.domain.model.toVO
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.slf4j.LoggerFactory
@@ -19,7 +20,7 @@ class LCOM4Service(
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { lcom4Map[it.id] = getLCOM4Graph(it).getConnectivityCount() }
+        jClasses.forEach { lcom4Map[it.id] = Companion.getLCOM4Graph(it).getConnectivityCount() }
         log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
 
         return lcom4Map
@@ -33,14 +34,17 @@ class LCOM4Service(
         jClass.methods = methods
     }
 
-    fun getLCOM4Graph(jClass: JClass): GraphStore {
-        val graphStore = GraphStore()
-        val methods = jClass.methods
-        methods.forEach { method ->
-            method.fields.forEach { graphStore.addEdge(method.toVO(), it) }
-            val methodsCallBySelfOtherMethod = method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
-            methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(method.toVO(), it.toVO()) }
+    companion object {
+        fun getLCOM4Graph(jClass: JClass): GraphStore {
+            val graphStore = GraphStore()
+            val methods = jClass.methods
+            methods.forEach { method ->
+                method.fields.forEach { graphStore.addEdge(toVO(method), it) }
+                val methodsCallBySelfOtherMethod = method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
+                methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(toVO(method), toVO(it)) }
+            }
+
+            return graphStore
         }
-        return graphStore
     }
 }

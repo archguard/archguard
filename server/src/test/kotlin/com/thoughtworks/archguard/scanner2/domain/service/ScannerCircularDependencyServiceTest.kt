@@ -2,7 +2,8 @@ package com.thoughtworks.archguard.scanner2.domain.service
 
 import com.thoughtworks.archguard.scanner2.domain.Toggle
 import org.archguard.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
+import org.archguard.model.code.JClass
+import com.thoughtworks.archguard.scanner2.domain.model.toVO
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
@@ -69,17 +70,17 @@ class ScannerCircularDependencyServiceTest {
         assertThat(classCircularDependency.size).isEqualTo(2)
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
             listOf(
-                jClassA.toVO(),
-                jClassB.toVO(),
-                jClassC.toVO(),
-                jClassD.toVO()
+                toVO(jClassA),
+                toVO(jClassB),
+                toVO(jClassC),
+                toVO(jClassD)
             )
         )
         assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(
             listOf(
-                jClassM.toVO(),
-                jClassN.toVO(),
-                jClassP.toVO()
+                toVO(jClassM),
+                toVO(jClassN),
+                toVO(jClassP)
             )
         )
     }
@@ -124,10 +125,10 @@ class ScannerCircularDependencyServiceTest {
         assertThat(classCircularDependency.size).isEqualTo(1)
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
             listOf(
-                jClassA.toVO(),
-                jClassB.toVO(),
-                jClassC.toVO(),
-                jClassD.toVO()
+                toVO(jClassA),
+                toVO(jClassB),
+                toVO(jClassC),
+                toVO(jClassD)
             )
         )
     }
@@ -173,16 +174,16 @@ class ScannerCircularDependencyServiceTest {
         assertThat(classCircularDependency.size).isEqualTo(2)
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
             listOf(
-                jClassA.toVO(),
-                jClassB.toVO(),
-                jClassC.toVO(),
-                jClassD.toVO()
+                toVO(jClassA),
+                toVO(jClassB),
+                toVO(jClassC),
+                toVO(jClassD)
             )
         )
         assertThat(classCircularDependency[1]).containsExactlyInAnyOrderElementsOf(
             listOf(
-                jClassM.toVO(),
-                jClassN.toVO()
+                toVO(jClassM),
+                toVO(jClassN)
             )
         )
     }

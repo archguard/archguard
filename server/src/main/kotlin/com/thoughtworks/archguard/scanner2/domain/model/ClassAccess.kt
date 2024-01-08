@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
+import org.archguard.model.code.JClass
+
 class ClassAccess(val id: String, val isInterface: Boolean, val isAbstract: Boolean, val isSynthetic: Boolean) {
 
     companion object {

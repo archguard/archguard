@@ -1,10 +1,6 @@
 package com.thoughtworks.archguard.scanner2.application
 
-import com.thoughtworks.archguard.scanner2.domain.model.ClassMetric
-import com.thoughtworks.archguard.scanner2.domain.model.JClass
-import com.thoughtworks.archguard.scanner2.domain.model.MethodMetric
-import com.thoughtworks.archguard.scanner2.domain.model.ModuleMetric
-import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
+import com.thoughtworks.archguard.scanner2.domain.model.*
 import com.thoughtworks.archguard.scanner2.domain.repository.ClassMetricRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
@@ -23,6 +19,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.archguard.model.code.JClass
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -131,7 +128,7 @@ class MetricPersistApplService(
 
         val methodMetrics = methods.map {
             MethodMetric(
-                systemId, it.toVO(),
+                systemId, toVO(it),
                 methodFanInFanOutMap[it.id]?.fanIn ?: 0, methodFanInFanOutMap[it.id]?.fanOut ?: 0
             )
         }
@@ -152,7 +149,7 @@ class MetricPersistApplService(
 
         val classMetrics = jClasses.map {
             ClassMetric(
-                systemId, it.toVO(),
+                systemId, toVO(it),
                 ditMap.await()[it.id],
                 nocMap.await()[it.id],
                 lcom4Map.await()[it.id],

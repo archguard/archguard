@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import org.archguard.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.JField
-import com.thoughtworks.archguard.scanner2.domain.model.JMethod
+import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
