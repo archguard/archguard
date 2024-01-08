@@ -11,7 +11,7 @@ dependencies {
     api(projects.analyserArchitecture)
 
     implementation("com.jayway.jsonpath:json-path:2.7.0")
-    implementation("com.phodal.chapi:chapi-parser-toml:2.2.4")
+    implementation(libs.chapi.parser.toml)
 
     testImplementation(libs.bundles.test)
 }
