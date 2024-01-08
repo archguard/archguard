@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
 import com.thoughtworks.archguard.scanner2.domain.CycleDetector
-import com.thoughtworks.archguard.scanner2.domain.model.GraphStore
+import org.archguard.graph.GraphStore
 import com.thoughtworks.archguard.scanner2.domain.model.IdNode
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

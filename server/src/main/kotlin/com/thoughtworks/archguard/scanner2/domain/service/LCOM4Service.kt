@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.model.GraphStore
+import org.archguard.graph.GraphStore
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository

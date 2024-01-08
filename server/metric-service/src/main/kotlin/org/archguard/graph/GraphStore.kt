@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.graph
 
-import com.thoughtworks.archguard.scanner2.domain.DfsUtil
+import org.archguard.metric.DfsUtil
 
 class GraphStore {
     private val nodes = mutableListOf<Node>()
@@ -58,6 +58,3 @@ class GraphStore {
         return Graph(nodes, undirectedEdges.toSet().toList())
     }
 }
-
-data class Graph(val nodes: List<Node>, val edges: List<Edge>)
-data class Edge(val a: String, val b: String, var num: Int)

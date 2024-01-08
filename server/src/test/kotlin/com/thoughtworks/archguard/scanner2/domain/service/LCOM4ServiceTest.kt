@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.model.Edge
+import org.archguard.graph.Edge
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.model.JField
 import com.thoughtworks.archguard.scanner2.domain.model.JMethod

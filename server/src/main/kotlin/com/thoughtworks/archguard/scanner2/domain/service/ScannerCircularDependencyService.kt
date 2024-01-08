@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.scanner2.domain.service
 
 import com.thoughtworks.archguard.scanner2.domain.CycleDetector
 import com.thoughtworks.archguard.scanner2.domain.model.Dependency
-import com.thoughtworks.archguard.scanner2.domain.model.Graph
-import com.thoughtworks.archguard.scanner2.domain.model.GraphStore
+import org.archguard.graph.Graph
+import org.archguard.graph.GraphStore
 import com.thoughtworks.archguard.scanner2.domain.model.IdNode
 import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
 import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
-import com.thoughtworks.archguard.scanner2.domain.model.Node
+import org.archguard.graph.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.Toggle

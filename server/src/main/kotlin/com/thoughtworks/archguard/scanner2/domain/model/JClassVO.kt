@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.archguard.graph.Node
 
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation

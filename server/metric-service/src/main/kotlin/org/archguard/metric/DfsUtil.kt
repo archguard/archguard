@@ -1,7 +1,7 @@
-package com.thoughtworks.archguard.scanner2.domain
+package org.archguard.metric
 
-import com.thoughtworks.archguard.scanner2.domain.model.Edge
-import com.thoughtworks.archguard.scanner2.domain.model.Graph
+import org.archguard.graph.Edge
+import org.archguard.graph.Graph
 
 /**
  * 将无向图转换为邻接矩阵表示的图。之后进行DFS，计算连通子图个数

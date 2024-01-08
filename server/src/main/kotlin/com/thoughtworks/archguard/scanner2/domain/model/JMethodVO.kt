@@ -1,9 +1,11 @@
 package com.thoughtworks.archguard.scanner2.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.archguard.graph.Node
 import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
-data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: String, val argumentTypes: List<String>) : Node {
+data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: String, val argumentTypes: List<String>) :
+    Node {
     var id: String? = null
     val fullName = clazz.fullName + "." + name + "(" + argumentTypes.joinToString(separator = ",") + ")"
 
