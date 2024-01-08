@@ -16,7 +16,7 @@ mockk = "1.13.3"
 assertj = "3.22.0"
 kotest = "5.5.4"
 
-chapi = "2.2.4"
+chapi = "2.2.5"
 
 shadowJar = "7.1.2"
 

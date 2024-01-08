@@ -82,4 +82,5 @@ include(
     ":rule-linter:rule-webapi",
     ":rule-linter:rule-code",
     ":rule-linter:rule-layer",
+    ":rule-linter:rule-comment",
 )

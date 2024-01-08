@@ -82,7 +82,7 @@ enum class RuleType {
     /**
      * for code comment
      */
-    COMMENT,
+    COMMENT_SMELL,
 
     /**
      * custom
