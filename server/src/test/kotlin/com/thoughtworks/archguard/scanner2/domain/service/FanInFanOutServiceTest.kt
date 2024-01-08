@@ -1,10 +1,12 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.model.Dependency
+import org.archguard.model.Dependency
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
+import org.archguard.calculator.calculateFanInFanOutWithDependency
+import org.archguard.model.FanInFanOut
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,7 +34,7 @@ internal class FanInFanOutServiceTest {
         val d4 = Dependency("c1", "c5")
         val allClassDependencies = listOf(d1, d2, d3, d4)
 
-        val fanInFanOutMap = fanInFanOutService.calculateFanInFanOutWithDependency(allClassDependencies)
+        val fanInFanOutMap = calculateFanInFanOutWithDependency(allClassDependencies)
         assertThat(fanInFanOutMap).containsExactlyInAnyOrderEntriesOf(
             mapOf(
                 "c1" to FanInFanOut(1, 3), "c2" to FanInFanOut(1, 0),

@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner2.domain.service
 
 import com.thoughtworks.archguard.scanner2.domain.CycleDetector
 import org.archguard.graph.GraphStore
-import com.thoughtworks.archguard.scanner2.domain.model.IdNode
+import org.archguard.graph.IdNode
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

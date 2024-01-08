@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.threshold
 
 data class CircularDependenciesCount(
     val systemId: Long,

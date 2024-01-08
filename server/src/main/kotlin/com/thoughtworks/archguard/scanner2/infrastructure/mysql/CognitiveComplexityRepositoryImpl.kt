@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.CognitiveComplexity
+import org.archguard.threshold.CognitiveComplexity
 import com.thoughtworks.archguard.scanner2.domain.repository.CognitiveComplexityRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository

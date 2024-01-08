@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.scanner2.domain
 
 import org.archguard.graph.Edge
 import org.archguard.graph.Graph
-import com.thoughtworks.archguard.scanner2.domain.model.IdNode
+import org.archguard.graph.IdNode
 import org.archguard.graph.Node
 import java.util.Stack
 

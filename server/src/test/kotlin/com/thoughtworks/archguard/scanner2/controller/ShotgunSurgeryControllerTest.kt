@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.controller
 
-import com.thoughtworks.archguard.scanner2.domain.model.CognitiveComplexity
+import org.archguard.threshold.CognitiveComplexity
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.Jdbi
 import org.junit.jupiter.api.Disabled

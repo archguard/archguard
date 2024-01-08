@@ -1,4 +1,6 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.threshold
+
+import org.archguard.model.ChangeEntry
 
 class CognitiveComplexity(
     val commitId: String,

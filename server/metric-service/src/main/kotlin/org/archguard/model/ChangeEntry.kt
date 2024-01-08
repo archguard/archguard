@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain.model
+package org.archguard.model
 
 class ChangeEntry(
     val oldPath: String,

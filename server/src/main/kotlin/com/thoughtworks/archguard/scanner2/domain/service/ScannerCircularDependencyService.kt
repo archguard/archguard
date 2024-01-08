@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
 import com.thoughtworks.archguard.scanner2.domain.CycleDetector
-import com.thoughtworks.archguard.scanner2.domain.model.Dependency
+import org.archguard.model.Dependency
 import org.archguard.graph.Graph
 import org.archguard.graph.GraphStore
-import com.thoughtworks.archguard.scanner2.domain.model.IdNode
+import org.archguard.graph.IdNode
 import com.thoughtworks.archguard.scanner2.domain.model.JClassVO
 import com.thoughtworks.archguard.scanner2.domain.model.JMethodVO
 import org.archguard.graph.Node
@@ -71,7 +71,7 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
         val moduleDependencies = mutableSetOf<Dependency<String>>()
         allClassDependencies.forEach {
             if (it.caller.module!! != it.callee.module!!) {
-                moduleDependencies.add(Dependency(it.caller.module, it.callee.module))
+                moduleDependencies.add(Dependency(it.caller.module!!, it.callee.module!!))
             }
         }
         return moduleDependencies

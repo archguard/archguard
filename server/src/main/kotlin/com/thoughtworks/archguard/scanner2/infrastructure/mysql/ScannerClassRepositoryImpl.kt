@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.Dependency
+import org.archguard.model.Dependency
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.model.JField
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.ChangeEntry
+import org.archguard.model.ChangeEntry
 
 class ChangeEntryPO(
     val changeMode: String,
