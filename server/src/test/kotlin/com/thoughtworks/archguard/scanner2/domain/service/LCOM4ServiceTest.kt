@@ -8,6 +8,7 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
+import org.archguard.operator.getLCOM4Graph
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

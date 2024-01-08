@@ -15,7 +15,7 @@ class ScannerShotgunSurgeryService(
         val entryList = changeEntryRepository.getAllChangeEntry(systemId)
 
         val cognitiveComplexityList = ArrayList<CognitiveComplexity>()
-        entryList.groupBy { if (it.newPath.equals("/dev/null")) it.oldPath else it.newPath }.forEach { (k, v) ->
+        entryList.groupBy { if (it.newPath == "/dev/null") it.oldPath else it.newPath }.forEach { (k, v) ->
             cognitiveComplexityList.addAll(CognitiveComplexity.from(k, v, systemId))
         }
         cognitiveComplexityRepository.saveAll(systemId, cognitiveComplexityList)

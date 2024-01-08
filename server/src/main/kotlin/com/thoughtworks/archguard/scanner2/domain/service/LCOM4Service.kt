@@ -1,10 +1,9 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import org.archguard.model.vos.JMethodVO
-import org.archguard.graph.GraphStore
 import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
+import org.archguard.operator.getLCOM4Graph
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -35,22 +34,3 @@ class LCOM4Service(
     }
 }
 
-fun getLCOM4Graph(jClass: JClass): GraphStore {
-    val graphStore = GraphStore()
-    val methods = jClass.methods
-    methods.forEach { method ->
-        method.fields.forEach { graphStore.addEdge(JMethodVO.fromJMethod(method), it) }
-
-        val methodsCallBySelfOtherMethod =
-            method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
-
-        methodsCallBySelfOtherMethod.forEach {
-            graphStore.addEdge(
-                JMethodVO.fromJMethod(method),
-                JMethodVO.fromJMethod(it)
-            )
-        }
-    }
-
-    return graphStore
-}

@@ -1,10 +1,10 @@
-package com.thoughtworks.archguard.scanner2.domain.service
+package org.archguard.operator;
 
 import org.archguard.model.code.JClass
 import org.archguard.model.code.JField
 import org.archguard.model.code.JMethod
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test;
 
 internal class DataClassServiceTest {
 
@@ -20,7 +20,7 @@ internal class DataClassServiceTest {
         val jMethod4 = JMethod("m4", "setGoodField", "class1", "module1", "void", listOf("java.lang.String"))
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4)
 
-        assertThat(checkIsDataClass(jClass)).isTrue()
+        Assertions.assertThat(checkIsDataClass(jClass)).isTrue()
     }
 
     @Test
@@ -37,7 +37,7 @@ internal class DataClassServiceTest {
 
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4, jMethod5)
 
-        assertThat(checkIsDataClass(jClass)).isFalse()
+        Assertions.assertThat(checkIsDataClass(jClass)).isFalse()
     }
 
     @Test
@@ -53,6 +53,6 @@ internal class DataClassServiceTest {
 
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4)
 
-        assertThat(checkIsDataClass(jClass)).isFalse()
+        Assertions.assertThat(checkIsDataClass(jClass)).isFalse()
     }
 }
