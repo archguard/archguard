@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.infrastructure.mysql
+package org.archguard.bytecode
 
 import org.archguard.model.code.ClazzType
 import org.archguard.model.code.MethodType

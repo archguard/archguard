@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.repository
 
-import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
+import org.archguard.metric.PackageMetric
 
 interface PackageMetricRepository {
     fun insertOrUpdatePackageMetric(systemId: Long, packageMetrics: List<PackageMetric>)

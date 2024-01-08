@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
+import org.archguard.metric.PackageMetric
 import com.thoughtworks.archguard.scanner2.domain.repository.PackageMetricRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository

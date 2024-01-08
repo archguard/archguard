@@ -4,6 +4,7 @@ import org.archguard.model.Dependency
 import org.archguard.model.code.JClass
 import org.archguard.model.code.JField
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
+import com.thoughtworks.archguard.scanner2.infrastructure.po.JClassPO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository

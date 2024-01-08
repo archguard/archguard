@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.PackageMetric
+import org.archguard.metric.PackageMetric
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.customizer.BindBeanList

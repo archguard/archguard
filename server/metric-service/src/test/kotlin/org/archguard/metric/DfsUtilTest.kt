@@ -1,5 +1,6 @@
 package org.archguard.metric;
 
+import org.archguard.graph.DfsUtil
 import org.archguard.graph.Edge
 import org.archguard.graph.Graph
 import org.archguard.graph.IdNode

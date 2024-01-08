@@ -1,6 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain.model
-
-import org.archguard.model.code.JClass
+package org.archguard.model.code
 
 class ClassAccess(val id: String, val isInterface: Boolean, val isAbstract: Boolean, val isSynthetic: Boolean) {
 

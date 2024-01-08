@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.infrastructure.mysql
+package com.thoughtworks.archguard.scanner2.infrastructure.po
 
 import org.archguard.model.ChangeEntry
 

@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
+import com.thoughtworks.archguard.scanner2.infrastructure.po.DataClassPO
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
@@ -33,4 +34,3 @@ class ScannerDataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     }
 }
 
-data class DataClassPO(val classId: String, val fieldId: String, val systemId: Long)

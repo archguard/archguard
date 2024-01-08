@@ -1,6 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain.model
-
-import org.archguard.model.code.JMethod
+package org.archguard.model.code
 
 class MethodAccess(
     val id: String,

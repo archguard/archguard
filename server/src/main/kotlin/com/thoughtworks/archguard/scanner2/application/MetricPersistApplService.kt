@@ -19,6 +19,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.archguard.metric.ModuleMetric
+import org.archguard.metric.PackageMetric
 import org.archguard.model.code.JClass
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

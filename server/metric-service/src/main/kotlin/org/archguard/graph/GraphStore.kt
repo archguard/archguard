@@ -1,7 +1,5 @@
 package org.archguard.graph
 
-import org.archguard.metric.DfsUtil
-
 class GraphStore {
     private val nodes = mutableListOf<Node>()
     private var edges = mutableListOf<Edge>()

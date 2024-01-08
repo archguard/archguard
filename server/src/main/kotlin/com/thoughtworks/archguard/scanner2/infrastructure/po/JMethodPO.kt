@@ -1,5 +1,6 @@
-package com.thoughtworks.archguard.scanner2.infrastructure.mysql
+package com.thoughtworks.archguard.scanner2.infrastructure.po
 
+import org.archguard.bytecode.TypeMap
 import org.archguard.model.code.JMethod
 
 class JMethodPO(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: String?, val access: String) {

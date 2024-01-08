@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import com.thoughtworks.archguard.scanner2.domain.model.ClassAccess
-import com.thoughtworks.archguard.scanner2.domain.model.MethodAccess
+import org.archguard.model.code.ClassAccess
+import org.archguard.model.code.MethodAccess
 import com.thoughtworks.archguard.scanner2.domain.repository.AccessRepository
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository

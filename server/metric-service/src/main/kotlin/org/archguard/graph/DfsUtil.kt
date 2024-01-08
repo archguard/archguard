@@ -1,7 +1,4 @@
-package org.archguard.metric
-
-import org.archguard.graph.Edge
-import org.archguard.graph.Graph
+package org.archguard.graph
 
 /**
  * 将无向图转换为邻接矩阵表示的图。之后进行DFS，计算连通子图个数

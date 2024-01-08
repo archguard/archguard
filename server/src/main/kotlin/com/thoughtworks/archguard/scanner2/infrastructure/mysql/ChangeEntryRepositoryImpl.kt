@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import org.archguard.model.ChangeEntry
 import com.thoughtworks.archguard.scanner2.domain.repository.ChangeEntryRepository
+import com.thoughtworks.archguard.scanner2.infrastructure.po.ChangeEntryPO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository

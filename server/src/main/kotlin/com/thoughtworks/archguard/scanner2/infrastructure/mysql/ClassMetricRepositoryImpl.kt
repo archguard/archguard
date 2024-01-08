@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
 import com.thoughtworks.archguard.scanner2.domain.model.ClassMetric
 import com.thoughtworks.archguard.scanner2.domain.repository.ClassMetricRepository
+import com.thoughtworks.archguard.scanner2.infrastructure.po.ClassMetricPO
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 
