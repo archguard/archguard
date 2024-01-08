@@ -20,7 +20,7 @@ class LCOM4Service(
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { lcom4Map[it.id] = Companion.getLCOM4Graph(it).getConnectivityCount() }
+        jClasses.forEach { lcom4Map[it.id] = getLCOM4Graph(it).getConnectivityCount() }
         log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
 
         return lcom4Map
@@ -33,21 +33,24 @@ class LCOM4Service(
         methods.forEach { it.callees = jMethodRepository.findMethodCallees(it.id) }
         jClass.methods = methods
     }
+}
 
-    companion object {
-        fun getLCOM4Graph(jClass: JClass): GraphStore {
-            val graphStore = GraphStore()
-            val methods = jClass.methods
-            methods.forEach { method ->
-                method.fields.forEach { graphStore.addEdge(JMethodVO.fromJMethod(method), it) }
-                val methodsCallBySelfOtherMethod = method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
-                methodsCallBySelfOtherMethod.forEach { graphStore.addEdge(
-                    JMethodVO.fromJMethod(method),
-                    JMethodVO.fromJMethod(it)
-                ) }
-            }
+fun getLCOM4Graph(jClass: JClass): GraphStore {
+    val graphStore = GraphStore()
+    val methods = jClass.methods
+    methods.forEach { method ->
+        method.fields.forEach { graphStore.addEdge(JMethodVO.fromJMethod(method), it) }
 
-            return graphStore
+        val methodsCallBySelfOtherMethod =
+            method.callees.filter { jMethod -> methods.map { it.id }.contains(jMethod.id) }
+
+        methodsCallBySelfOtherMethod.forEach {
+            graphStore.addEdge(
+                JMethodVO.fromJMethod(method),
+                JMethodVO.fromJMethod(it)
+            )
         }
     }
+
+    return graphStore
 }

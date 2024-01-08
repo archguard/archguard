@@ -41,7 +41,7 @@ internal class LCOM4ServiceTest {
         val jMethod4 = JMethod("m4", "m4", "clazz2", "module2", "Boolean", emptyList())
         jMethod3.callees = listOf(jMethod2, jMethod4)
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3)
-        val lcom4Graph = LCOM4Service.getLCOM4Graph(jClass)
+        val lcom4Graph = getLCOM4Graph(jClass)
 
         assertThat(lcom4Graph.toDirectedGraph().nodes.size).isEqualTo(5)
         assertThat(lcom4Graph.toDirectedGraph().edges.size).isEqualTo(3)

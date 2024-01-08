@@ -13,7 +13,7 @@ import com.thoughtworks.archguard.scanner2.domain.service.DitService
 import com.thoughtworks.archguard.scanner2.domain.service.FanInFanOutService
 import com.thoughtworks.archguard.scanner2.domain.service.LCOM4Service
 import com.thoughtworks.archguard.scanner2.domain.service.NocService
-import com.thoughtworks.archguard.scanner2.domain.service.ScannerCircularDependencyService
+import com.thoughtworks.archguard.scanner2.domain.service.ScannerCircularDependencyServiceImpl
 import com.thoughtworks.archguard.scanner2.domain.service.ScannerDataClassService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -35,7 +35,7 @@ class MetricPersistApplService(
     val jClassRepository: JClassRepository,
     val jMethodRepository: JMethodRepository,
     val fanInFanOutService: FanInFanOutService,
-    val scannerCircularDependencyService: ScannerCircularDependencyService,
+    val scannerCircularDependencyServiceImpl: ScannerCircularDependencyServiceImpl,
     val classMetricRepository: ClassMetricRepository,
     val methodMetricRepository: MethodMetricRepository,
     val packageMetricRepository: PackageMetricRepository,
@@ -73,19 +73,19 @@ class MetricPersistApplService(
 
     @Transactional
     fun persistCircularDependencyMetrics(systemId: Long) {
-        val moduleCircularDependency = scannerCircularDependencyService.getModuleCircularDependency(systemId)
+        val moduleCircularDependency = scannerCircularDependencyServiceImpl.getModuleCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateModuleCircularDependency(systemId, moduleCircularDependency)
         log.info("Finished persist moduleCircularDependency in systemId $systemId")
 
-        val packageCircularDependency = scannerCircularDependencyService.getPackageCircularDependency(systemId)
+        val packageCircularDependency = scannerCircularDependencyServiceImpl.getPackageCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdatePackageCircularDependency(systemId, packageCircularDependency)
         log.info("Finished persist packageCircularDependency in systemId $systemId")
 
-        val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(systemId)
+        val classCircularDependency = scannerCircularDependencyServiceImpl.getClassCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateClassCircularDependency(systemId, classCircularDependency)
         log.info("Finished persist classCircularDependency in systemId $systemId")
 
-        val methodCircularDependency = scannerCircularDependencyService.getMethodCircularDependency(systemId)
+        val methodCircularDependency = scannerCircularDependencyServiceImpl.getMethodCircularDependency(systemId)
         circularDependencyMetricRepository.insertOrUpdateMethodCircularDependency(systemId, methodCircularDependency)
         log.info("Finished persist methodCircularDependency in systemId $systemId")
 

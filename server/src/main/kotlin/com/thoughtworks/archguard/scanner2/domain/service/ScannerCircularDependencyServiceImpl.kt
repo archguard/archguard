@@ -11,19 +11,42 @@ import org.archguard.graph.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.Toggle
+import org.archguard.model.code.JClass
+import org.archguard.model.code.JMethod
 import org.springframework.stereotype.Service
 
+interface CircularDependencyServiceInterface {
+    fun getMethodsHasModules(systemId: Long): List<JMethod>
+    fun getJClassesHasModules(systemId: Long): List<JClass>
+    fun getAllClassIdDependencies(systemId: Long): List<Dependency<String>>
+    fun getAllMethodDependencies(systemId: Long): List<Dependency<String>>
+}
+
 @Service
-class ScannerCircularDependencyService(private val jClassRepository: JClassRepository, private val jMethodRepository: JMethodRepository) {
+class ScannerCircularDependencyServiceImpl(
+    private val jClassRepository: JClassRepository,
+    private val jMethodRepository: JMethodRepository
+) : CircularDependencyServiceInterface {
+    override fun getMethodsHasModules(systemId: Long) = jMethodRepository.getMethodsNotThirdParty(systemId)
+
+    override fun getJClassesHasModules(systemId: Long) = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
+
+    override fun getAllClassIdDependencies(systemId: Long) =
+        jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
+
+    override fun getAllMethodDependencies(systemId: Long) =
+        jMethodRepository.getDistinctMethodDependenciesAndNotThirdParty(systemId)
+
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
-        val allClassDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
+        val allClassDependencies = getAllClassIdDependencies(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
-        val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
+        val jClassesHasModules = getJClassesHasModules(systemId)
         if (cycles.isEmpty()) {
             return emptyList()
         }
 
-        val cycleList = cycles.map { it.map { JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }) } }
+        val cycleList =
+            cycles.map { it.map { JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }) } }
         return if (Toggle.EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY.getStatus()) {
             cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
         } else {
@@ -39,14 +62,15 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
     }
 
     fun getMethodCircularDependency(systemId: Long): List<List<JMethodVO>> {
-        val allMethodDependencies = jMethodRepository.getDistinctMethodDependenciesAndNotThirdParty(systemId)
+        val allMethodDependencies = getAllMethodDependencies(systemId)
         val cycles = findCyclesFromDependencies(allMethodDependencies)
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        val methodsHasModules = jMethodRepository.getMethodsNotThirdParty(systemId)
+        val methodsHasModules = getMethodsHasModules(systemId)
         return cycles.map { it.map { JMethodVO.fromJMethod(methodsHasModules.first { jMethod -> jMethod.id == it.getNodeId() }) } }
     }
+
 
     fun getModuleCircularDependency(systemId: Long): List<List<String>> {
         val moduleDependencies = buildModuleDependencies(systemId)
@@ -54,7 +78,7 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
         if (cycles.isEmpty()) {
             return emptyList()
         }
-        return cycles.map { it.map { it.getNodeId() } }
+        return cycles.map { nodes -> nodes.map { it.getNodeId() } }
     }
 
     fun getPackageCircularDependency(systemId: Long): List<List<String>> {
@@ -91,8 +115,8 @@ class ScannerCircularDependencyService(private val jClassRepository: JClassRepos
     }
 
     private fun buildAllClassDependencies(systemId: Long): List<Dependency<JClassVO>> {
-        val allClassIdDependencies = jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
-        val jClassesHasModules = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
+        val allClassIdDependencies = getAllClassIdDependencies(systemId)
+        val jClassesHasModules = getJClassesHasModules(systemId)
         return allClassIdDependencies.map { dependency: Dependency<String> ->
             Dependency(
                 JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == dependency.caller }),

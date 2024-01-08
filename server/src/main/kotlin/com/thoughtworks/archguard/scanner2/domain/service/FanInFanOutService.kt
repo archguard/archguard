@@ -33,22 +33,24 @@ class FanInFanOutService(val jClassRepository: JClassRepository, val jMethodRepo
         return calculateFanInFanOutWithDependency(moduleDependencies)
     }
 
-    fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
-        return classDependencies.map { classDependency ->
-            val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
-            val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
-            Dependency(callerClass.module!!, calleeClass.module!!)
+    companion object {
+        fun buildModuleDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
+            return classDependencies.map { classDependency ->
+                val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
+                val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
+                Dependency(callerClass.module!!, calleeClass.module!!)
+            }
         }
-    }
 
-    fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
-        return classDependencies.map { classDependency ->
-            val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
-            val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
-            Dependency(
-                callerClass.module + "." + callerClass.getPackageName(),
-                calleeClass.module + "." + calleeClass.getPackageName()
-            )
+        fun buildPackageDependencyFromClassDependency(classDependencies: Collection<Dependency<String>>, jClasses: List<JClass>): List<Dependency<String>> {
+            return classDependencies.map { classDependency ->
+                val callerClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.caller })
+                val calleeClass = JClassVO.fromClass(jClasses.first { it.id == classDependency.callee })
+                Dependency(
+                    callerClass.module + "." + callerClass.getPackageName(),
+                    calleeClass.module + "." + calleeClass.getPackageName()
+                )
+            }
         }
     }
 }

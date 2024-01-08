@@ -13,8 +13,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ScannerCircularDependencyServiceTest {
-    private lateinit var scannerCircularDependencyService: ScannerCircularDependencyService
+class ScannerCircularDependencyServiceImplTest {
+    private lateinit var scannerCircularDependencyServiceImpl: ScannerCircularDependencyServiceImpl
 
     @MockK
     private lateinit var jClassRepository: JClassRepository
@@ -25,7 +25,7 @@ class ScannerCircularDependencyServiceTest {
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
-        scannerCircularDependencyService = ScannerCircularDependencyService(jClassRepository, jMethodRepository)
+        scannerCircularDependencyServiceImpl = ScannerCircularDependencyServiceImpl(jClassRepository, jMethodRepository)
     }
 
     @Test
@@ -65,7 +65,7 @@ class ScannerCircularDependencyServiceTest {
             jClassN,
             jClassP
         )
-        val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
+        val classCircularDependency = scannerCircularDependencyServiceImpl.getClassCircularDependency(projectId)
         classCircularDependency.sortedWith(compareBy { it.size })
         assertThat(classCircularDependency.size).isEqualTo(2)
         assertThat(classCircularDependency[0]).containsExactlyInAnyOrderElementsOf(
@@ -118,7 +118,7 @@ class ScannerCircularDependencyServiceTest {
             jClassN,
             jClassN
         )
-        val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
+        val classCircularDependency = scannerCircularDependencyServiceImpl.getClassCircularDependency(projectId)
         println(classCircularDependency)
 
         classCircularDependency.sortedWith(compareBy { it.size })
@@ -167,7 +167,7 @@ class ScannerCircularDependencyServiceTest {
             jClassN,
             jClassN
         )
-        val classCircularDependency = scannerCircularDependencyService.getClassCircularDependency(projectId)
+        val classCircularDependency = scannerCircularDependencyServiceImpl.getClassCircularDependency(projectId)
         println(classCircularDependency)
 
         classCircularDependency.sortedWith(compareBy { it.size })
