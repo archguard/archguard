@@ -1,4 +1,4 @@
-package org.archguard.calculator
+package org.archguard.operator
 
 import org.archguard.model.Dependency
 import org.archguard.model.FanInFanOut

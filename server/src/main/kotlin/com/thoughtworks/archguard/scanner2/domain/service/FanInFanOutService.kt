@@ -4,7 +4,7 @@ import org.archguard.model.Dependency
 import com.thoughtworks.archguard.scanner2.domain.model.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import org.archguard.calculator.calculateFanInFanOutWithDependency
+import org.archguard.operator.calculateFanInFanOutWithDependency
 import org.archguard.model.FanInFanOut
 import org.springframework.stereotype.Service
 

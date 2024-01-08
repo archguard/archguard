@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner2.domain
+package org.archguard.operator
 
 import org.archguard.graph.Edge
 import org.archguard.graph.Graph

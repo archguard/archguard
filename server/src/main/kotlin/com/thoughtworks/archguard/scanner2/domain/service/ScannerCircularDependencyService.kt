@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import com.thoughtworks.archguard.scanner2.domain.CycleDetector
+import org.archguard.operator.CycleDetector
 import org.archguard.model.Dependency
 import org.archguard.graph.Graph
 import org.archguard.graph.GraphStore

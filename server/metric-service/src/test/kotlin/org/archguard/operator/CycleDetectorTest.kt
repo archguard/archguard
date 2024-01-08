@@ -1,6 +1,5 @@
-package com.thoughtworks.archguard.scanner2.domain.service
+package org.archguard.operator
 
-import com.thoughtworks.archguard.scanner2.domain.CycleDetector
 import org.archguard.graph.GraphStore
 import org.archguard.graph.IdNode
 import org.assertj.core.api.Assertions.assertThat

@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import org.archguard.calculator.calculateFanInFanOutWithDependency
+import org.archguard.operator.calculateFanInFanOutWithDependency
 import org.archguard.model.FanInFanOut
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
