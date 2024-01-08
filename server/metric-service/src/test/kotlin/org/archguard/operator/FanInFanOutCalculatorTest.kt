@@ -2,6 +2,7 @@ package org.archguard.operator;
 
 import org.archguard.model.Dependency
 import org.archguard.model.FanInFanOut
+import org.archguard.operator.FanInFanOut.calculateFanInFanOutWithDependency
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
