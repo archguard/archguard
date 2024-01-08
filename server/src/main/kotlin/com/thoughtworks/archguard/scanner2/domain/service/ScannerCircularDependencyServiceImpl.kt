@@ -11,25 +11,19 @@ import org.archguard.graph.Node
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import com.thoughtworks.archguard.scanner2.domain.Toggle
-import org.archguard.model.code.JClass
-import org.archguard.model.code.JMethod
+import org.archguard.wrapper.CircularDependencyServiceInterface
 import org.springframework.stereotype.Service
-
-interface CircularDependencyServiceInterface {
-    fun getMethodsHasModules(systemId: Long): List<JMethod>
-    fun getJClassesHasModules(systemId: Long): List<JClass>
-    fun getAllClassIdDependencies(systemId: Long): List<Dependency<String>>
-    fun getAllMethodDependencies(systemId: Long): List<Dependency<String>>
-}
 
 @Service
 class ScannerCircularDependencyServiceImpl(
     private val jClassRepository: JClassRepository,
     private val jMethodRepository: JMethodRepository
 ) : CircularDependencyServiceInterface {
-    override fun getMethodsHasModules(systemId: Long) = jMethodRepository.getMethodsNotThirdParty(systemId)
+    override fun getMethodsHasModules(systemId: Long) =
+        jMethodRepository.getMethodsNotThirdParty(systemId)
 
-    override fun getJClassesHasModules(systemId: Long) = jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
+    override fun getJClassesHasModules(systemId: Long) =
+        jClassRepository.getJClassesNotThirdPartyAndNotTest(systemId)
 
     override fun getAllClassIdDependencies(systemId: Long) =
         jClassRepository.getDistinctClassDependenciesAndNotThirdParty(systemId)
@@ -38,6 +32,11 @@ class ScannerCircularDependencyServiceImpl(
         jMethodRepository.getDistinctMethodDependenciesAndNotThirdParty(systemId)
 
     fun getClassCircularDependency(systemId: Long): List<List<JClassVO>> {
+        val isExcludeInternalClass = Toggle.EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY.getStatus()
+        return getClassCircularDependency(systemId, isExcludeInternalClass)
+    }
+
+    private fun getClassCircularDependency(systemId: Long, isExcludeInternalClass: Boolean): List<List<JClassVO>> {
         val allClassDependencies = getAllClassIdDependencies(systemId)
         val cycles = findCyclesFromDependencies(allClassDependencies)
         val jClassesHasModules = getJClassesHasModules(systemId)
@@ -47,7 +46,7 @@ class ScannerCircularDependencyServiceImpl(
 
         val cycleList =
             cycles.map { it.map { JClassVO.fromClass(jClassesHasModules.first { jClass -> jClass.id == it.getNodeId() }) } }
-        return if (Toggle.EXCLUDE_INTERNAL_CLASS_CYCLE_DEPENDENCY.getStatus()) {
+        return if (isExcludeInternalClass) {
             cycleList.filter { cycle -> !isInternalClassCycle(cycle) }
         } else {
             cycleList
