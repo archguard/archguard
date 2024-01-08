@@ -4,6 +4,7 @@ import org.archguard.doc.generator.render.CustomJekyllFrontMatter
 import org.archguard.doc.generator.render.DocHeader
 import org.archguard.doc.generator.render.DocPage
 import org.archguard.doc.generator.render.DocText
+import org.archguard.linter.rule.comment.CommentRuleSetProvider
 import org.archguard.linter.rule.sql.SqlRuleSetProvider
 import org.archguard.linter.rule.testcode.TestSmellRuleSetProvider
 import org.archguard.linter.rule.webapi.WebApiRuleSetProvider
@@ -25,10 +26,16 @@ class RuleDocGenerator : DocGenerator() {
         File(baseDir + "test-smell.md").writeText(apiStr)
 
         val testStr = listOf(
-            CustomJekyllFrontMatter(title = "Web API", navOrder = 99, permalink = "web-api").toMarkdown(),
+            CustomJekyllFrontMatter(title = "Web API", navOrder = 3, permalink = "web-api").toMarkdown(),
             stringify(nodeFromRules(WebApiRuleSetProvider().get().rules))
         ).joinToString("\n")
         File(baseDir + "web-api.md").writeText(testStr)
+
+        val commentStr = listOf(
+            CustomJekyllFrontMatter(title = "Comment", navOrder = 4, permalink = "comment").toMarkdown(),
+            stringify(nodeFromRules(CommentRuleSetProvider().get().rules))
+        ).joinToString("\n")
+        File(baseDir + "comment.md").writeText(commentStr)
 
     }
 

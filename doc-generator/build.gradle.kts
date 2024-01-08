@@ -13,6 +13,7 @@ dependencies {
     api(projects.ruleLinter.ruleSql)
     api(projects.ruleLinter.ruleTest)
     api(projects.ruleLinter.ruleWebapi)
+    api(projects.ruleLinter.ruleComment)
 
     api("org.jetbrains.kotlin:kotlin-compiler:1.6.21")
 

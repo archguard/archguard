@@ -30,6 +30,7 @@ class MissingParameterDescRule : CommentRule() {
         this.id = "missing-parameter-desc"
         this.name = "MissingParameterDesc"
         this.key = this.javaClass.name
+        this.description = "The documentation is un-complete, parameter description is missing"
         this.severity = Severity.WARN
     }
 
