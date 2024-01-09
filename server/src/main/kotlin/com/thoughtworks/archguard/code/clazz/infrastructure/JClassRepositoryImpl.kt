@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import com.thoughtworks.archguard.common.TypeMap
+import com.thoughtworks.archguard.code.module.domain.model.TypeMap
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory

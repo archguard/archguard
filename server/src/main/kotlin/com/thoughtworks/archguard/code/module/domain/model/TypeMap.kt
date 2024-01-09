@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.common
+package com.thoughtworks.archguard.code.module.domain.model
 
 import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.method.domain.MethodType
