@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.clazz.domain.JField
-import com.thoughtworks.archguard.code.module.domain.model.LeafManger
+import org.archguard.arch.LeafManger
 import org.archguard.arch.LogicModule
 import org.archguard.graph.Edge
 import org.archguard.graph.GraphStore

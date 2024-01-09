@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.code.module.domain.model.LeafManger
+import org.archguard.arch.LeafManger
 import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager

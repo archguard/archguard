@@ -2,9 +2,7 @@ package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.code.module.domain.model.*
 import org.archguard.arch.*
-import org.archguard.model.vos.JClassVO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -137,31 +135,3 @@ class LogicModuleRepositoryImpl : LogicModuleRepository {
     }
 }
 
-fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): String {
-    var tableTemplate = "select * from code_method where ("
-    val filterConditions = ArrayList<String>()
-    members.forEach { s ->
-        if (s.getType() == LogicModuleMemberType.SUBMODULE) {
-            filterConditions.add("module = '${s.getFullName()}'")
-        }
-        if (s.getType() == LogicModuleMemberType.CLASS) {
-            val jclass = s as JClassVO
-            filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
-            filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
-        }
-    }
-    tableTemplate += filterConditions.joinToString(" or ")
-    tableTemplate += ")"
-    return tableTemplate
-}
-
-class LogicModuleDTO(val id: String, val name: String, val members: String?, private val lgMembers: String?, private val status: LogicModuleStatus) {
-    fun toLogicModule(systemId: Long, logicModuleRepository: LogicModuleRepository): LogicModule {
-        val leafMembers = members?.split(',')?.sorted()?.map { m -> LeafManger.createLeaf(m) } ?: emptyList()
-        val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(systemId, m) }
-            ?: emptyList()
-        val logicModule = LogicModule.create(id, name, leafMembers, lgMembers)
-        logicModule.status = status
-        return logicModule
-    }
-}

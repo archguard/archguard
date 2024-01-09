@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.infrastructure.dto
 
-import com.thoughtworks.archguard.code.module.domain.model.LeafManger
+import org.archguard.arch.LeafManger
 import org.archguard.arch.LogicModule
 import org.archguard.arch.LogicModuleStatus
 import java.util.UUID
