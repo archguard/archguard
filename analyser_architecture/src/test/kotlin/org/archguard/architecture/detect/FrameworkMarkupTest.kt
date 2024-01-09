@@ -1,5 +1,6 @@
 package org.archguard.architecture.detect
 
+import org.archguard.architecture.techstack.FrameworkMarkup
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

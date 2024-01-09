@@ -7,6 +7,7 @@ import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
 import org.archguard.architecture.layered.LayeredIdentify
+import org.archguard.architecture.techstack.FrameworkMarkup
 
 /**
  * 潜在的架构元素，后续需要根据这个继续分析

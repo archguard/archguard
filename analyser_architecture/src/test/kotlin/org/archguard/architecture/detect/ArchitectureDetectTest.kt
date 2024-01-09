@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeImport
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
+import org.archguard.architecture.techstack.FrameworkMarkup
 import org.archguard.scanner.core.sca.DependencyEntry
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.junit.jupiter.api.Assertions
