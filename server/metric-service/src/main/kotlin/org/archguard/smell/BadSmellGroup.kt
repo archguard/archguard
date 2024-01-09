@@ -1,6 +1,6 @@
 package org.archguard.smell
 
-enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
+enum class BadSmellGroup(val value: String, val badSmells: List<BadSmellType>) {
     COUPLING(
         "耦合过高",
         listOf(
@@ -47,7 +47,7 @@ enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) 
     UNDEFINED("未找到", listOf());
 
     companion object {
-        fun getGroup(badSmellType: BadSmellType): DashboardGroup {
+        fun getGroup(badSmellType: BadSmellType): BadSmellGroup {
             return values().find { it.badSmells.contains(badSmellType) } ?: UNDEFINED
         }
     }

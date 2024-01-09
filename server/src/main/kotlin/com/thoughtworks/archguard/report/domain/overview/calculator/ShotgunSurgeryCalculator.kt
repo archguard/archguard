@@ -1,25 +1,25 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
-import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellResult
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
 class ShotgunSurgeryCalculator(val shotgunSurgeryService: ShotgunSurgeryService) : BadSmellLevelCalculator {
 
-    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
+    override fun getCalculateResult(systemId: Long): BadSmellResult {
         val shotgunSurgeryCount = shotgunSurgeryService.getShotgunSurgeryCount(systemId)
         return getBadSmellLevel(shotgunSurgeryCount, getLevelRanges())
     }
 
-    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellCalculateResult {
+    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellResult {
         return when (count) {
-            in range[0] -> BadSmellCalculateResult(1L, 0L, 0L)
-            in range[1] -> BadSmellCalculateResult(0L, 1L, 0L)
-            in range[2] -> BadSmellCalculateResult(0L, 0L, 1L)
+            in range[0] -> BadSmellResult(1L, 0L, 0L)
+            in range[1] -> BadSmellResult(0L, 1L, 0L)
+            in range[2] -> BadSmellResult(0L, 0L, 1L)
             else -> {
-                BadSmellCalculateResult(0L, 0L, 0L)
+                BadSmellResult(0L, 0L, 0L)
             }
         }
     }

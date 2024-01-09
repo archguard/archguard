@@ -1,7 +1,7 @@
 package org.archguard.smell
 
 interface BadSmellLevelCalculator {
-    fun getCalculateResult(systemId: Long): BadSmellCalculateResult
+    fun getCalculateResult(systemId: Long): BadSmellResult
 
     fun getBadSmellOverviewItem(systemId: Long, badSmellType: BadSmellType): BadSmellOverviewItem {
         val result = getCalculateResult(systemId)

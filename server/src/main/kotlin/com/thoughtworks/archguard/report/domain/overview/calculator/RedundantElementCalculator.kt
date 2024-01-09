@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
 import com.thoughtworks.archguard.report.domain.redundancy.RedundancyRepository
-import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellResult
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
@@ -12,7 +12,7 @@ class RedundantElementCalculator(
     val dataClassRepository: DataClassRepository
 ) : BadSmellLevelCalculator {
 
-    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
+    override fun getCalculateResult(systemId: Long): BadSmellResult {
         val oneMethodClassCount = redundancyRepository.getOneMethodClassCount(systemId)
         val oneMethodLevel = getOneMethodLevel(oneMethodClassCount, getOneMethodCountLevelRanges())
 
@@ -22,13 +22,13 @@ class RedundantElementCalculator(
         return oneMethodLevel.plus(oneFieldLevel)
     }
 
-    private fun getOneMethodLevel(oneMethodClassCount: Long, range: Array<LongRange>): BadSmellCalculateResult {
+    private fun getOneMethodLevel(oneMethodClassCount: Long, range: Array<LongRange>): BadSmellResult {
         return when (oneMethodClassCount) {
-            in range[0] -> BadSmellCalculateResult(1L, 0L, 0L)
-            in range[1] -> BadSmellCalculateResult(0L, 1L, 0L)
-            in range[2] -> BadSmellCalculateResult(0L, 0L, 1L)
+            in range[0] -> BadSmellResult(1L, 0L, 0L)
+            in range[1] -> BadSmellResult(0L, 1L, 0L)
+            in range[2] -> BadSmellResult(0L, 0L, 1L)
             else -> {
-                BadSmellCalculateResult(0L, 0L, 0L)
+                BadSmellResult(0L, 0L, 0L)
             }
         }
     }
@@ -40,13 +40,13 @@ class RedundantElementCalculator(
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
 
-    private fun getOneFieldLevel(oneFieldClassCount: Long, range: Array<LongRange>): BadSmellCalculateResult {
+    private fun getOneFieldLevel(oneFieldClassCount: Long, range: Array<LongRange>): BadSmellResult {
         return when (oneFieldClassCount) {
-            in range[0] -> BadSmellCalculateResult(1L, 0L, 0L)
-            in range[1] -> BadSmellCalculateResult(0L, 1L, 0L)
-            in range[2] -> BadSmellCalculateResult(0L, 0L, 1L)
+            in range[0] -> BadSmellResult(1L, 0L, 0L)
+            in range[1] -> BadSmellResult(0L, 1L, 0L)
+            in range[2] -> BadSmellResult(0L, 0L, 1L)
             else -> {
-                BadSmellCalculateResult(0L, 0L, 0L)
+                BadSmellResult(0L, 0L, 0L)
             }
         }
     }

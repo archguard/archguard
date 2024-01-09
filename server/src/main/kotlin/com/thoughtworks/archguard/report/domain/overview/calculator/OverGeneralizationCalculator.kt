@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
-import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellResult
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneralizationRepository) :
     BadSmellLevelCalculator {
 
-    override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
+    override fun getCalculateResult(systemId: Long): BadSmellResult {
         val overGeneralizationCount = overGeneralizationRepository.getOverGeneralizationCount(systemId)
         return getOverGeneralizationLevel(overGeneralizationCount, getOverGeneralizationCountLevelRanges())
     }
@@ -21,13 +21,13 @@ class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneral
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
 
-    private fun getOverGeneralizationLevel(count: Long, range: Array<LongRange>): BadSmellCalculateResult {
+    private fun getOverGeneralizationLevel(count: Long, range: Array<LongRange>): BadSmellResult {
         return when (count) {
-            in range[0] -> BadSmellCalculateResult(1L, 0L, 0L)
-            in range[1] -> BadSmellCalculateResult(0L, 1L, 0L)
-            in range[2] -> BadSmellCalculateResult(0L, 0L, 1L)
+            in range[0] -> BadSmellResult(1L, 0L, 0L)
+            in range[1] -> BadSmellResult(0L, 1L, 0L)
+            in range[2] -> BadSmellResult(0L, 0L, 1L)
             else -> {
-                BadSmellCalculateResult(0L, 0L, 0L)
+                BadSmellResult(0L, 0L, 0L)
             }
         }
     }

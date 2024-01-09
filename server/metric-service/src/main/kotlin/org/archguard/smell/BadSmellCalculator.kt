@@ -1,14 +1,14 @@
 package org.archguard.smell
 
 object BadSmellCalculator {
-    fun calculateLevel(badSmellCalculateResult: BadSmellCalculateResult): BadSmellLevel {
-        return if (badSmellCalculateResult.level1 == 0L && badSmellCalculateResult.level2 == 0L && badSmellCalculateResult.level3 == 0L) {
+    fun calculateLevel(badSmellResult: BadSmellResult): BadSmellLevel {
+        return if (badSmellResult.level1 == 0L && badSmellResult.level2 == 0L && badSmellResult.level3 == 0L) {
             BadSmellLevel.A
-        } else if (badSmellCalculateResult.level1 > 0 && badSmellCalculateResult.level2 == 0L && badSmellCalculateResult.level3 == 0L) {
+        } else if (badSmellResult.level1 > 0 && badSmellResult.level2 == 0L && badSmellResult.level3 == 0L) {
             BadSmellLevel.B
-        } else if (badSmellCalculateResult.level2 > 0 && badSmellCalculateResult.level3 == 0L) {
+        } else if (badSmellResult.level2 > 0 && badSmellResult.level3 == 0L) {
             BadSmellLevel.C
-        } else if (badSmellCalculateResult.level3 > 0) {
+        } else if (badSmellResult.level3 > 0) {
             BadSmellLevel.D
         } else {
             BadSmellLevel.A

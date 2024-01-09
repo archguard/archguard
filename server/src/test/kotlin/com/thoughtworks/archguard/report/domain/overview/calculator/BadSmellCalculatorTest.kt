@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellTypeInjector
-import org.archguard.smell.DashboardGroup
+import org.archguard.smell.BadSmellGroup
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
@@ -19,7 +19,7 @@ import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellResult
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -118,37 +118,37 @@ internal class BadSmellCalculatorTest {
 
     @Test
     fun should_calculate_class_hub_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(3, 3, 3)
+        val mockResult = BadSmellResult(3, 3, 3)
         every { classCouplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = BadSmellType.CLASSHUB.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.CLASSHUB)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CLASSHUB.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.D)
         assertThat(result?.count).isEqualTo(9)
     }
 
     @Test
     fun should_calculate_Data_clumps_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(0, 0, 0)
+        val mockResult = BadSmellResult(0, 0, 0)
         every { dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = BadSmellType.DATACLUMPS.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DATACLUMPS)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DATACLUMPS.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.A)
         assertThat(result?.count).isEqualTo(0)
     }
 
     @Test
     fun should_calculate_deep_inheritance_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(5, 0, 0)
+        val mockResult = BadSmellResult(5, 0, 0)
         every { deepInheritanceRepository.getDitAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result =
             BadSmellType.DEEPINHERITANCE.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DEEPINHERITANCE)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DEEPINHERITANCE.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.B)
         assertThat(result?.count).isEqualTo(5)
     }
@@ -161,7 +161,7 @@ internal class BadSmellCalculatorTest {
             BadSmellType.SIZINGMODULES.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGMODULES)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMODULES.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.C)
         assertThat(result?.count).isEqualTo(8L)
     }
@@ -174,7 +174,7 @@ internal class BadSmellCalculatorTest {
             BadSmellType.SIZINGPACKAGE.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGPACKAGE)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.C)
         assertThat(result?.count).isEqualTo(9)
     }
@@ -186,7 +186,7 @@ internal class BadSmellCalculatorTest {
         val result = BadSmellType.SIZINGCLASS.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGCLASS)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGCLASS.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.A)
     }
 
@@ -197,13 +197,13 @@ internal class BadSmellCalculatorTest {
         val result = BadSmellType.SIZINGMETHOD.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGMETHOD)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.A)
     }
 
     @Test
     fun should_calculate_circular_denpendency_bad_smell_result() {
-        val mockResult = BadSmellCalculateResult(12, 23, 34)
+        val mockResult = BadSmellResult(12, 23, 34)
         every {
             circularDenpendencyRepository.getCircularDependencyBadSmellCalculateResult(
                 any(),
@@ -216,7 +216,7 @@ internal class BadSmellCalculatorTest {
             BadSmellType.CYCLEDEPENDENCY.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.CYCLEDEPENDENCY)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY.value)
-        assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
+        assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
         assertThat(result?.level).isEqualTo(BadSmellLevel.D)
         assertThat(result?.count).isEqualTo(69 * 4)
     }

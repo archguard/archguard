@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.domain.GroupData
 import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellType
-import org.archguard.smell.DashboardGroup
+import org.archguard.smell.BadSmellGroup
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyService
@@ -41,11 +41,11 @@ class DashboardService(
     private val TEST_BAD_SMELL_REPORT: String = "test_report"
 
     fun getDashboard(systemId: Long): List<Dashboard> {
-        val couplingDashboard = getDashboard(systemId, DashboardGroup.COUPLING, COUPLING_REPORT)
-        val sizingDashboard = getDashboard(systemId, DashboardGroup.SIZING, SIZNG_REPORT)
-        val redundancyDashboard = getDashboard(systemId, DashboardGroup.REDUNDANCY, REDUNDANCY_REPORT)
-        val cohesionDashboard = getDashboard(systemId, DashboardGroup.COHESION, COHESION_REPORT)
-        val testDashboard = getDashboard(systemId, DashboardGroup.TESTBADSMELL, TEST_BAD_SMELL_REPORT)
+        val couplingDashboard = getDashboard(systemId, BadSmellGroup.COUPLING, COUPLING_REPORT)
+        val sizingDashboard = getDashboard(systemId, BadSmellGroup.SIZING, SIZNG_REPORT)
+        val redundancyDashboard = getDashboard(systemId, BadSmellGroup.REDUNDANCY, REDUNDANCY_REPORT)
+        val cohesionDashboard = getDashboard(systemId, BadSmellGroup.COHESION, COHESION_REPORT)
+        val testDashboard = getDashboard(systemId, BadSmellGroup.TESTBADSMELL, TEST_BAD_SMELL_REPORT)
         return listOf(couplingDashboard, sizingDashboard, redundancyDashboard, cohesionDashboard, testDashboard)
     }
 
@@ -94,8 +94,8 @@ class DashboardService(
             }
     }
 
-    private fun getDashboard(systemId: Long, dashboardGroup: DashboardGroup, reportName: String): Dashboard {
-        val groupData = dashboardGroup.badSmells
+    private fun getDashboard(systemId: Long, badSmellGroup: BadSmellGroup, reportName: String): Dashboard {
+        val groupData = badSmellGroup.badSmells
             .map {
                 GroupData(
                     it,
@@ -104,12 +104,12 @@ class DashboardService(
                     queryReport(systemId, it, reportName)
                 )
             }
-        return Dashboard(dashboardGroup, groupData)
+        return Dashboard(badSmellGroup, groupData)
     }
 }
 
-class Dashboard(eDashboardGroup: DashboardGroup, val groupData: List<GroupData>) {
-    var dashboardGroup: String = eDashboardGroup.value
+class Dashboard(eBadSmellGroup: BadSmellGroup, val groupData: List<GroupData>) {
+    var dashboardGroup: String = eBadSmellGroup.value
 }
 
 data class GraphData(val date: String, val value: Int)

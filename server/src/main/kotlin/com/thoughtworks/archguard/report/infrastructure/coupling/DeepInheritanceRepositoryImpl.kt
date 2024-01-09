@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritance
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceRepository
-import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellResult
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
@@ -22,8 +22,8 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
         }
     }
 
-    override fun getDitAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellCalculateResult {
-        return jdbi.withHandle<BadSmellCalculateResult, Exception> {
+    override fun getDitAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellResult {
+        return jdbi.withHandle<BadSmellResult, Exception> {
             val sql = """
                 select sum(CASE when c.dit >= :level1Start and c.dit < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.dit >= :level2Start and c.dit < :level2End then 1 else 0 end) AS 'level2',
@@ -41,7 +41,7 @@ class DeepInheritanceRepositoryImpl(val jdbi: Jdbi) : DeepInheritanceRepository 
                 .bind("level2Start", thresholdRanges[1].first)
                 .bind("level2End", thresholdRanges[0].last)
                 .bind("level3Start", thresholdRanges[2].first)
-                .mapTo(BadSmellCalculateResult::class.java)
+                .mapTo(BadSmellResult::class.java)
                 .one()
         }
     }
