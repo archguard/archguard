@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.clazz.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependencerService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependenciesService
@@ -10,6 +9,7 @@ import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,8 +44,10 @@ class ClassServiceTest {
         // given
         val systemId: Long = 1
         val targetName = "clazz"
-        val dependencee = JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
-        val dependencer = JClass("id2", "com.thoughtworks.archguard.domain.dependencer", "archguard")
+        val dependencee =
+            JClass("id1", "com.thoughtworks.archguard.domain.dependencee", "archguard")
+        val dependencer =
+            JClass("id2", "com.thoughtworks.archguard.domain.dependencer", "archguard")
         val expected = JClass("1", targetName, "module")
         (expected.dependencies as MutableList).add(dependencee)
         (expected.dependencers as MutableList).add(dependencer)

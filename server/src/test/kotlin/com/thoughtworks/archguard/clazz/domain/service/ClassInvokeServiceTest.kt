@@ -1,7 +1,5 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassConfigService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassInvokeService
@@ -9,6 +7,8 @@ import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.ClassRelation
+import org.archguard.model.code.JClass
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,8 +45,18 @@ class ClassInvokeServiceTest {
         every { repo.findClassParents(systemId, target.module!!, target.name) } returns listOf(parent)
         every { configService.isDisplayNode(any(), any()) } returns true
         every { repo.findClassImplements(systemId, target.name, target.module!!) } returns listOf(impl)
-        every { repo.findCallees(systemId, target.name, target.module!!) } returns listOf(ClassRelation(callee, 1))
-        every { repo.findCallers(systemId, target.name, target.module!!) } returns listOf(ClassRelation(caller, 1))
+        every { repo.findCallees(systemId, target.name, target.module!!) } returns listOf(
+            ClassRelation(
+                callee,
+                1
+            )
+        )
+        every { repo.findCallers(systemId, target.name, target.module!!) } returns listOf(
+            ClassRelation(
+                caller,
+                1
+            )
+        )
         every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit
         every { classConfigService.buildClassRelationColorConfig(any(), any()) } returns Unit
         service.findInvokes(systemId, target, 1, 1, true)

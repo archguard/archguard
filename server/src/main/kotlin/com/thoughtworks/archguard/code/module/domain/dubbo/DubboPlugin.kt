@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.plugin.AbstractDependPlugin
 import org.archguard.plugin.PluginType
 import org.archguard.model.Dependency
+import org.archguard.model.code.JClass
 import org.archguard.model.vos.JClassVO
 import org.archguard.model.vos.JMethodVO
 import org.springframework.beans.factory.annotation.Autowired

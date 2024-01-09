@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.infrastructure
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import org.archguard.model.code.ClazzType
+import org.archguard.model.code.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -35,7 +35,11 @@ internal class JClassRepositoryImplTest {
         val jClass2 =
             jClassRepository.getJClassBy(systemId, "org.apache.dubbo.demo.DemoService", "dubbo-demo-interface")
         val expectedClass2 =
-            JClass("c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d8", "org.apache.dubbo.demo.DemoService", "dubbo-demo-interface")
+            JClass(
+                "c65ee9c2-dab5-4ebb-8a0f-b8682eddd9d8",
+                "org.apache.dubbo.demo.DemoService",
+                "dubbo-demo-interface"
+            )
         assertThat(jClass2).isEqualToComparingFieldByField(expectedClass2)
     }
 }

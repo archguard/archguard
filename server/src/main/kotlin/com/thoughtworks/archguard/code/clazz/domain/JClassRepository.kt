@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.code.clazz.domain
 
+import org.archguard.model.code.ClassRelation
+import org.archguard.model.code.JClass
 import org.archguard.model.code.JField
 
 interface JClassRepository {

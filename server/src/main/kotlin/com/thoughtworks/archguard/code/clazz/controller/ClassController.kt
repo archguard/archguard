@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.clazz.controller
 
 import org.archguard.model.code.CodeTree
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassService
+import org.archguard.model.code.JClass
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

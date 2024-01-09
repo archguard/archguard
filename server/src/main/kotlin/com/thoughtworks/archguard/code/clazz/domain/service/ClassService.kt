@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.clazz.domain.service
 
 import org.archguard.model.code.CodeTree
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
+import org.archguard.model.code.JClass
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,7 +27,14 @@ class ClassService(
             ?: throw ClassNotFountException("Can't find class by module:$module, class:$name")
     }
 
-    fun findInvokes(systemId: Long, module: String, name: String, callerDeep: Int, calleeDeep: Int, needIncludeImpl: Boolean): JClass {
+    fun findInvokes(
+        systemId: Long,
+        module: String,
+        name: String,
+        callerDeep: Int,
+        calleeDeep: Int,
+        needIncludeImpl: Boolean
+    ): JClass {
         val targetClass = getTargetClass(systemId, module, name)
         return classInvokeService.findInvokes(systemId, targetClass, callerDeep, calleeDeep, needIncludeImpl)
     }
@@ -49,7 +56,8 @@ class ClassService(
 
     fun initCodeTree(systemId: Long): CodeTree {
         val codeTree = CodeTree()
-        jClassRepository.getAllBySystemId(systemId).filter { it.module != null }.map { codeTree.addClass(it.getFullName()) }
+        jClassRepository.getAllBySystemId(systemId).filter { it.module != null }
+            .map { codeTree.addClass(it.getFullName()) }
         codeTree.fixTopNodeSubModuleType()
         return codeTree
     }

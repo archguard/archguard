@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.abstracts
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
+import org.archguard.model.code.JClass
 import org.archguard.model.vos.JClassVO
 
 class ClassAbstractRatio(val ratio: Double, val jClass: JClassVO) {

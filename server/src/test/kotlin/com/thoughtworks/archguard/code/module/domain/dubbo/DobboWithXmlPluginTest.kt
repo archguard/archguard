@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -8,6 +7,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.Dependency
 import org.archguard.model.code.ClazzType
+import org.archguard.model.code.JClass
 import org.archguard.model.vos.JMethodVO
 import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat

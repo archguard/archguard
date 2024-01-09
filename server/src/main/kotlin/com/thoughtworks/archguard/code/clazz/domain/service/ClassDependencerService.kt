@@ -1,14 +1,18 @@
 package com.thoughtworks.archguard.code.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.config.domain.ConfigureService
+import org.archguard.model.code.JClass
 import org.springframework.stereotype.Service
 
 @Service
 class ClassDependencerService(val repo: JClassRepository, val configureService: ConfigureService, val classConfigService: ClassConfigService) {
 
-    fun findDependencers(systemId: Long, target: JClass, deep: Int): JClass {
+    fun findDependencers(
+        systemId: Long,
+        target: JClass,
+        deep: Int
+    ): JClass {
         buildDependencers(systemId, listOf(target), deep)
         return target
     }
@@ -25,7 +29,8 @@ class ClassDependencerService(val repo: JClassRepository, val configureService: 
             container.addAll(pendingClasses)
         } else {
             pendingClasses.forEach {
-                val dependencers = repo.findDependencers(it.id).filter { configureService.isDisplayNode(systemId, it.name) }
+                val dependencers =
+                    repo.findDependencers(it.id).filter { configureService.isDisplayNode(systemId, it.name) }
                 classConfigService.buildJClassColorConfig(dependencers, systemId)
                 it.dependencers = dependencers
             }

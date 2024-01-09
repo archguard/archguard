@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassConfigService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassDependenciesService
@@ -8,6 +7,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.JClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

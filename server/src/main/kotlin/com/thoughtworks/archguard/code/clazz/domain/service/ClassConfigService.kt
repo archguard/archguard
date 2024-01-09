@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.ClassRelation
-import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.config.domain.ConfigureService
+import org.archguard.model.code.ClassRelation
+import org.archguard.model.code.JClass
 import org.springframework.stereotype.Service
 
 @Service
