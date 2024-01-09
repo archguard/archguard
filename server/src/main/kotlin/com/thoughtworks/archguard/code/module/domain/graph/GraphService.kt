@@ -6,6 +6,8 @@ import com.thoughtworks.archguard.code.module.domain.getModule
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
+import org.archguard.graph.Graph
+import org.archguard.graph.GraphStore
 import org.archguard.model.Dependency
 import org.springframework.stereotype.Service
 

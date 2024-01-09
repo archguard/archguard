@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.thoughtworks.archguard.code.module.domain.graph.Node
+import org.archguard.graph.Node
 
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation

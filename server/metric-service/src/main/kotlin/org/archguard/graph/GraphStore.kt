@@ -31,6 +31,10 @@ class GraphStore {
         edges.add(newEdge)
     }
 
+    fun getGraph(): Graph {
+        return Graph(nodes, edges)
+    }
+
     private fun existEdge(caller: Node, callee: Node): Boolean {
         return edges.any { it.a == caller.getNodeId() && it.b == callee.getNodeId() }
     }

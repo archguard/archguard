@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
-import com.thoughtworks.archguard.code.module.domain.graph.Node
+import org.archguard.graph.Node
 import org.slf4j.LoggerFactory
 
 /**
