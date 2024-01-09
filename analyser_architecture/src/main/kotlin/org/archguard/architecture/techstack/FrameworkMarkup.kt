@@ -37,7 +37,7 @@ class FrameworkMarkup(
     companion object {
         fun byLanguage(language: String): FrameworkMarkup? {
             val markups = loadFrameworkMaps()
-            return extendLanguage(markups)[language]
+            return extendLanguage(markups)[language.lowercase()]
         }
 
         fun fromResource(): Array<FrameworkMarkup> {

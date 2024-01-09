@@ -10,11 +10,15 @@ import org.archguard.scanner.core.client.EmptyArchGuardClient
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
+data class SampleArchitectureContext(
+    override val path: String,
+    override val client: ArchGuardClient = EmptyArchGuardClient(),
+) : ArchitectureContext
+
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
     override fun analyse(): List<ArchitectureView> {
-        // TODO: Implement this method
-        val sourceCodeContext = ArchSourceCodeContext(language = "java", path = context.path)
+        val sourceCodeContext = ArchSourceCodeContext(language = "Java", path = context.path)
         val dataStructs = JavaAnalyser(sourceCodeContext)
             .analyse()
         val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = "java"))

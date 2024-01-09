@@ -2,11 +2,12 @@ package org.archguard.architecture.core
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.architecture.ArchitectureView
+import org.archguard.architecture.detect.ArchitectureDetect
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.scanner.core.sourcecode.ContainerService
 
 /**
- * **Workspace** is like IDE/Editor's workspace, same as to Git/SVN project.
+ * Workspace is like IDE/Editor's workspace, same as to project.
  *
  * @property dataStructs the analysis result of projects.
  * @property projectDependencies the analysis result of package manager's config.
@@ -17,8 +18,13 @@ class Workspace(
     val dataStructs: List<CodeDataStruct> = listOf(),
     val projectDependencies: List<PackageDependencies> = listOf(),
     val service: List<ContainerService> = listOf(),
+    val language: String = "Java",
 ) {
     fun analysis(): ArchitectureView {
-        return ArchitectureView()
+        val identPotential = ArchitectureDetect().identPotential(this)
+        println(identPotential)
+        return ArchitectureView(
+
+        )
     }
 }

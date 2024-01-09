@@ -24,26 +24,23 @@ data class PotentialExecArch(
 
 class ArchitectureDetect {
     fun identPotential(workspace: Workspace): PotentialExecArch {
-        // 1. setup
-        // todo: setup workspace
-
-        // 2. create exec arch
+        // 1. create exec arch
         var execArch = PotentialExecArch()
-        val markup = FrameworkMarkup.byLanguage("Java")
-        if (markup != null) {
-            execArch = inferenceByDependencies(markup, workspace.projectDependencies)
+
+        val byLanguage = FrameworkMarkup.byLanguage(workspace.language)
+        byLanguage?.also {
+            execArch = inferenceByDependencies(it, workspace.projectDependencies)
         }
 
-        // 3. update exec arch from call nodeName
+        // 2. update exec arch from call nodeName
         fillArchFromSourceCode(workspace, execArch)
 
-        // 4. load all package name for layered architecture
-        // todo: refactor
+        // 3. load all package name for layered architecture
         val packages = workspace.dataStructs.map { it.Package }.toList()
         val layeredStyle = LayeredIdentify(packages).identify()
         execArch.layeredStyle = layeredStyle
 
-        // 5. create concepts domain
+        // 4. create concepts domain
         when (layeredStyle) {
             CodeStructureStyle.MVC -> {
                 execArch.concepts = workspace.dataStructs.filter {
@@ -92,8 +89,8 @@ class ArchitectureDetect {
         val protocols = markup.depProtocolMap
         val coreStacks = markup.coreStacks
 
-        packageDeps.map {
-            it.dependencies.forEach { depEntry ->
+        packageDeps.map { dependencies ->
+            dependencies.dependencies.forEach { depEntry ->
                 // app types
                 appTypeMap.forEach {
                     if (depEntry.name.startsWith(it.key)) {
@@ -117,6 +114,10 @@ class ArchitectureDetect {
             }
         }
 
-        return potentialExecArch
+        return potentialExecArch.copy(
+            appTypes = potentialExecArch.appTypes.distinct(),
+            protocols = potentialExecArch.protocols.distinct(),
+            coreStacks = potentialExecArch.coreStacks.distinct()
+        )
     }
 }

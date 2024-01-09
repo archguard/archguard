@@ -1,6 +1,6 @@
 [
   {
-    "language": "Java",
+    "language": "java",
     "core_stacks": [
       "org.springframework.boot",
       "org.jdbi:jdbi3",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "extends": "Java",
-    "language": "Kotlin"
+    "extends": "java",
+    "language": "kotlin"
   }
 ]
