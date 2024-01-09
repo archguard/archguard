@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service
 import java.lang.annotation.ElementType
 
 @Service
-class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val springCloudServiceRepository: SpringCloudServiceRepository, val httpRequestService: HttpRequestService) {
+class FeignClientService(
+    val jAnnotationRepository: JAnnotationRepository,
+    val springCloudServiceRepository: SpringCloudServiceRepository,
+    val httpRequestService: HttpRequestService
+) {
 
     private val log = LoggerFactory.getLogger(FeignClientService::class.java)
 
     fun getFeignClients(): List<FeignClient> {
-        val feignClientAnnotations = jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient").filter { it.targetType == ElementType.TYPE.name }
+        val feignClientAnnotations = jAnnotationRepository.getJAnnotationWithValueByName("feign.FeignClient")
+            .filter { it.targetType == ElementType.TYPE.name }
         return feignClientAnnotations.map { FeignClient(it.targetId, FeignClientArg(it.values.orEmpty())) }
     }
 
@@ -36,10 +41,16 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
         feignClients.forEach {
             val serviceName = it.arg.name
             val methods = springCloudServiceRepository.getMethodIdsByClassId(it.targetId)
-            val callers = httpRequestMethods.filter { method -> method.targetId in methods }.map { method -> margeFeignClientArgToMethod(it.arg, method) }
+            val callers = httpRequestMethods.filter { method -> method.targetId in methods }
+                .map { method -> margeFeignClientArgToMethod(it.arg, method) }
             val callees = services.getOrDefault(serviceName, mutableListOf())
 
-            feignClientMethodDependencies.addAll(callers.flatMap { caller -> mapToMethod(caller, callees).map { callee -> Dependency(caller, callee) } })
+            feignClientMethodDependencies.addAll(callers.flatMap { caller ->
+                mapToMethod(
+                    caller,
+                    callees
+                ).map { callee -> Dependency(caller, callee) }
+            })
         }
 
         return feignClientMethodDependencies
@@ -50,7 +61,13 @@ class FeignClientService(val jAnnotationRepository: JAnnotationRepository, val s
     }
 
     private fun mapToMethod(caller: HttpRequest, callees: List<HttpRequest>): List<HttpRequest> {
-        return callees.filter { it.arg.paths.any { calleePath -> caller.arg.paths.any { callerPath -> matchPath(callerPath, calleePath) } } && it.arg.methods.intersect(caller.arg.methods).isNotEmpty() }
+        return callees.filter {
+            it.arg.paths.any { calleePath ->
+                caller.arg.paths.any { callerPath ->
+                    matchPath(callerPath, calleePath)
+                }
+            } && it.arg.methods.intersect(caller.arg.methods.toSet()).isNotEmpty()
+        }
     }
 
     private fun matchPath(callerPath: String, calleePath: String): Boolean {
