@@ -1,6 +1,6 @@
 package org.archguard.graph
 
-class TypedNode(var node: String, var type: TypeEnum) {
+data class TypedNode(var node: String, var type: TypeEnum) {
     var children: HashSet<TypedNode> = HashSet()
 }
 
