@@ -61,8 +61,3 @@ class JMethod(
     }
 }
 
-// 暂时只有接口和类
-enum class MethodType {
-    NOT_DEFINED, ABSTRACT_METHOD, SYNTHETIC, STATIC, PRIVATE
-}
-

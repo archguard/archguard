@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
-class FanInFanOutCalculatorCalculatorTest {
+class FanInFanOutCalculatorTest {
 
     @Test
     fun shouldCalculateFanInFanOutWithDependency() {

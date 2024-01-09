@@ -1,8 +1,7 @@
-package com.thoughtworks.archguard.code.clazz.domain
+package org.archguard.model.code
 
 import org.archguard.graph.TypeEnum
 import org.archguard.graph.TypedNode
-import org.archguard.model.code.CodeTree
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -23,7 +22,10 @@ internal class CodeTreeTest {
 
         Assertions.assertThat(codeTree.trees).containsExactlyInAnyOrderElementsOf(
             listOf(
-                TypedNode("a", TypeEnum.PACKAGE), TypedNode("m", TypeEnum.PACKAGE), TypedNode("x", TypeEnum.FILE), TypedNode("a", TypeEnum.FILE)
+                TypedNode("a", TypeEnum.PACKAGE),
+                TypedNode("m", TypeEnum.PACKAGE),
+                TypedNode("x", TypeEnum.FILE),
+                TypedNode("a", TypeEnum.FILE)
             )
         )
 
