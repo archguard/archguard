@@ -1,13 +1,13 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.coupling.hub.PackageCouplingRepository
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
 class PackageHubCouplingCalculator(val packageCouplingRepository: PackageCouplingRepository) : BadSmellLevelCalculator {
-    override fun getCalculateResult(systemId: Long): BadSmellResult {
+    override fun getCalculateResult(systemId: Long): BadSmellLevel {
         return packageCouplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 

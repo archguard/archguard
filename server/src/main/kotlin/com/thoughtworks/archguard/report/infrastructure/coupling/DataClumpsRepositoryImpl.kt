@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.ClassDataClump
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.stereotype.Repository
@@ -22,8 +22,8 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
         }
     }
 
-    override fun getLCOM4AboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellResult {
-        return jdbi.withHandle<BadSmellResult, Exception> {
+    override fun getLCOM4AboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellLevel {
+        return jdbi.withHandle<BadSmellLevel, Exception> {
             val sql = """
                 select sum(CASE when c.lcom4 >= :level1Start and c.lcom4 < :level1End then 1 else 0 end) AS 'level1',
                        sum(CASE when c.lcom4 >= :level2Start and c.lcom4 < :level2End then 1 else 0 end) AS 'level2',
@@ -42,7 +42,7 @@ class DataClumpsRepositoryImpl(val jdbi: Jdbi) : DataClumpsRepository {
                 .bind("level2Start", thresholdRanges[1].first)
                 .bind("level2End", thresholdRanges[0].last)
                 .bind("level3Start", thresholdRanges[2].first)
-                .mapTo(BadSmellResult::class.java)
+                .mapTo(BadSmellLevel::class.java)
                 .one()
         }
     }

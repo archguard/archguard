@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyType
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
@@ -32,8 +32,8 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
         }
     }
 
-    override fun getCircularDependencyBadSmellCalculateResult(systemId: Long, type: CircularDependencyType, thresholdRanges: Array<LongRange>): BadSmellResult {
-        return jdbi.withHandle<BadSmellResult, Exception> {
+    override fun getCircularDependencyBadSmellCalculateResult(systemId: Long, type: CircularDependencyType, thresholdRanges: Array<LongRange>): BadSmellLevel {
+        return jdbi.withHandle<BadSmellLevel, Exception> {
             val sql = """
                 select (CASE when c.cd >= :level1Start and c.cd < :level1End then c.cd else 0 end) AS 'level1',
                        (CASE when c.cd >= :level2Start and c.cd < :level2End then c.cd else 0 end) AS 'level2',
@@ -53,7 +53,7 @@ class CircularDependencyRepositoryImpl(val jdbi: Jdbi) : CircularDependencyRepos
                 .bind("level2Start", thresholdRanges[1].first)
                 .bind("level2End", thresholdRanges[0].last)
                 .bind("level3Start", thresholdRanges[2].first)
-                .mapTo(BadSmellResult::class.java)
+                .mapTo(BadSmellLevel::class.java)
                 .one()
         }
     }

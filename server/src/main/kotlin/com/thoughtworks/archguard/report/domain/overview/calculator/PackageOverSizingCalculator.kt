@@ -1,14 +1,14 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.sizing.SizingService
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
 class PackageOverSizingCalculator(val sizingService: SizingService) : BadSmellLevelCalculator {
 
-    override fun getCalculateResult(systemId: Long): BadSmellResult {
+    override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val count = sizingService.getPackageSizingSmellCount(systemId)
         return getBadSmellLevel(count, getLevelRanges())
     }
@@ -20,13 +20,13 @@ class PackageOverSizingCalculator(val sizingService: SizingService) : BadSmellLe
         return arrayOf(linesRangeLevel1, linesRangeLevel2, linesRangeLevel3)
     }
 
-    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellResult {
+    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellLevel {
         return when (count) {
-            in range[0] -> BadSmellResult(count, 0L, 0L)
-            in range[1] -> BadSmellResult(0L, count, 0L)
-            in range[2] -> BadSmellResult(0L, 0L, count)
+            in range[0] -> BadSmellLevel(count, 0L, 0L)
+            in range[1] -> BadSmellLevel(0L, count, 0L)
+            in range[2] -> BadSmellLevel(0L, 0L, count)
             else -> {
-                BadSmellResult(0L, 0L, 0L)
+                BadSmellLevel(0L, 0L, 0L)
             }
         }
     }

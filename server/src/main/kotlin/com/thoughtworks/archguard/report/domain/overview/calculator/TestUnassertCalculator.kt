@@ -1,14 +1,14 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellRepository
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
 class TestUnassertCalculator(val testBadSmellRepository: TestBadSmellRepository) : BadSmellLevelCalculator {
 
-    override fun getCalculateResult(systemId: Long): BadSmellResult {
+    override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val unassertTestCount = testBadSmellRepository.countTestSmellByType(systemId, "UnknownTest")
         return getBadSmellLevel(unassertTestCount, getLevelRanges())
     }
@@ -20,13 +20,13 @@ class TestUnassertCalculator(val testBadSmellRepository: TestBadSmellRepository)
         return arrayOf(countRangeLevel1, countRangeLevel2, countRangeLevel3)
     }
 
-    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellResult {
+    private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellLevel {
         return when (count) {
-            in range[0] -> BadSmellResult(1L, 0L, 0L)
-            in range[1] -> BadSmellResult(0L, 1L, 0L)
-            in range[2] -> BadSmellResult(0L, 0L, 1L)
+            in range[0] -> BadSmellLevel(1L, 0L, 0L)
+            in range[1] -> BadSmellLevel(0L, 1L, 0L)
+            in range[2] -> BadSmellLevel(0L, 0L, 1L)
             else -> {
-                BadSmellResult(0L, 0L, 0L)
+                BadSmellLevel(0L, 0L, 0L)
             }
         }
     }

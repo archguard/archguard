@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.hub.PackageCoupling
 import com.thoughtworks.archguard.report.domain.coupling.hub.PackageCouplingRepository
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
@@ -38,8 +38,8 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
         }
     }
 
-    override fun getCouplingAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellResult {
-        return jdbi.withHandle<BadSmellResult, Exception> {
+    override fun getCouplingAboveBadSmellCalculateResult(systemId: Long, thresholdRanges: Array<LongRange>): BadSmellLevel {
+        return jdbi.withHandle<BadSmellLevel, Exception> {
             val sql = """
                 select sum(CASE
                                when (c.fanin >= :level1Start and c.fanin < :level1End
@@ -64,7 +64,7 @@ class PackageCouplingRepositoryImpl(val jdbi: Jdbi) : PackageCouplingRepository 
                 .bind("level2Start", thresholdRanges[1].first)
                 .bind("level2End", thresholdRanges[0].last)
                 .bind("level3Start", thresholdRanges[2].first)
-                .mapTo(BadSmellResult::class.java)
+                .mapTo(BadSmellLevel::class.java)
                 .one()
         }
     }

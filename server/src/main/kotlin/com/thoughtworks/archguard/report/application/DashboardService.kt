@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.domain.GroupData
-import org.archguard.smell.BadSmellLevel
+import org.archguard.smell.BadSmellLevelType
 import org.archguard.smell.BadSmellType
 import org.archguard.smell.BadSmellGroup
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
@@ -100,7 +100,7 @@ class DashboardService(
                 GroupData(
                     it,
                     it.badSmellCalculator?.getBadSmellOverviewItem(systemId, it)?.level
-                        ?: BadSmellLevel.A,
+                        ?: BadSmellLevelType.A,
                     queryReport(systemId, it, reportName)
                 )
             }

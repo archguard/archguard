@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import org.archguard.smell.BadSmellLevel
+import org.archguard.smell.BadSmellLevelType
 import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellTypeInjector
 import org.archguard.smell.BadSmellGroup
@@ -19,7 +19,7 @@ import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -118,38 +118,38 @@ internal class BadSmellCalculatorTest {
 
     @Test
     fun should_calculate_class_hub_bad_smell_result() {
-        val mockResult = BadSmellResult(3, 3, 3)
+        val mockResult = BadSmellLevel(3, 3, 3)
         every { classCouplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = BadSmellType.CLASSHUB.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.CLASSHUB)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CLASSHUB.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.D)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.D)
         assertThat(result?.count).isEqualTo(9)
     }
 
     @Test
     fun should_calculate_Data_clumps_bad_smell_result() {
-        val mockResult = BadSmellResult(0, 0, 0)
+        val mockResult = BadSmellLevel(0, 0, 0)
         every { dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result = BadSmellType.DATACLUMPS.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DATACLUMPS)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DATACLUMPS.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.A)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.A)
         assertThat(result?.count).isEqualTo(0)
     }
 
     @Test
     fun should_calculate_deep_inheritance_bad_smell_result() {
-        val mockResult = BadSmellResult(5, 0, 0)
+        val mockResult = BadSmellLevel(5, 0, 0)
         every { deepInheritanceRepository.getDitAboveBadSmellCalculateResult(any(), any()) } returns mockResult
         val result =
             BadSmellType.DEEPINHERITANCE.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DEEPINHERITANCE)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DEEPINHERITANCE.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.B)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.B)
         assertThat(result?.count).isEqualTo(5)
     }
 
@@ -162,7 +162,7 @@ internal class BadSmellCalculatorTest {
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMODULES.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.C)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.C)
         assertThat(result?.count).isEqualTo(8L)
     }
 
@@ -175,7 +175,7 @@ internal class BadSmellCalculatorTest {
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.C)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.C)
         assertThat(result?.count).isEqualTo(9)
     }
 
@@ -187,7 +187,7 @@ internal class BadSmellCalculatorTest {
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGCLASS.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.A)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.A)
     }
 
     @Test
@@ -198,12 +198,12 @@ internal class BadSmellCalculatorTest {
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.SIZING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.A)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.A)
     }
 
     @Test
     fun should_calculate_circular_denpendency_bad_smell_result() {
-        val mockResult = BadSmellResult(12, 23, 34)
+        val mockResult = BadSmellLevel(12, 23, 34)
         every {
             circularDenpendencyRepository.getCircularDependencyBadSmellCalculateResult(
                 any(),
@@ -217,7 +217,7 @@ internal class BadSmellCalculatorTest {
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY.value)
         assertThat(result?.category).isEqualTo(BadSmellGroup.COUPLING.value)
-        assertThat(result?.level).isEqualTo(BadSmellLevel.D)
+        assertThat(result?.level).isEqualTo(BadSmellLevelType.D)
         assertThat(result?.count).isEqualTo(69 * 4)
     }
 }

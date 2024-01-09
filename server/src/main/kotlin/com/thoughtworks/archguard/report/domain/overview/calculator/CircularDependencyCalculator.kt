@@ -2,14 +2,14 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyType
-import org.archguard.smell.BadSmellResult
+import org.archguard.smell.BadSmellLevel
 import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
 class CircularDependencyCalculator(val circularDependencyRepository: CircularDependencyRepository) :
     BadSmellLevelCalculator {
-    override fun getCalculateResult(systemId: Long): BadSmellResult {
+    override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val methodResult = circularDependencyRepository
             .getCircularDependencyBadSmellCalculateResult(
                 systemId,
