@@ -10,7 +10,6 @@ package org.archguard.architecture.core
  * @property ability -ability from source code
  */
 class WorkspaceArchitecture(
-    private val archStyle: ArchitectureStyle,
     // 对于单体系统来说，它可以是一些模块。系统可能是一个组件。
     private var components: List<Component>,
     // 组件或系统之间的关系风格，connectors or connectorStyles
@@ -58,47 +57,6 @@ class ArchOverview(
     val lineCounts: List<String>,
 )
 
-/// from GitTags
-enum class DevelMethodology {
-    // 频繁的 tag 发布
-    Agile,
-    // 没有 Tag
-    Waterfall,
-    Unknown
-}
-
-// base on Framework mapping
-enum class ArchitectureStyle {
-    // 分层
-    Layered,
-
-    // 管道
-    Pipeline,
-
-    // 微内核
-    MicroKernel,
-
-    // 基于服务
-    ServiceBased,
-
-    // ?
-    Serverless,
-
-    // 事件驱动
-    EventDriven,
-
-    // 基于空间
-    SpaceBased,
-
-    // 编制驱动的面向服务
-    OrchestrationDrivenServiceOriented,
-
-    // 微服务
-    Microservice,
-    Unknown
-}
-
-///
 enum class CodeStructureStyle {
     MVC,
     ModuleDDD,
