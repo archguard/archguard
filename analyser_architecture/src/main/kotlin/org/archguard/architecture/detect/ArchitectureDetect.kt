@@ -6,6 +6,7 @@ import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
+import org.archguard.architecture.layered.LayeredIdentify
 
 /**
  * 潜在的架构元素，后续需要根据这个继续分析
