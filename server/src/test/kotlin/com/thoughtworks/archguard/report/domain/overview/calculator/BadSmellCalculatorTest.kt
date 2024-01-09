@@ -78,6 +78,15 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var shotgunSurgeryService: ShotgunSurgeryService
 
+    @MockK
+    lateinit var sleepCalculator: TestSleepCalculator
+
+    @MockK
+    lateinit var ignoreCalculator: TestIgnoreCalculator
+
+    @MockK
+    lateinit var unassertCalculator: TestUnassertCalculator
+
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -102,8 +111,9 @@ internal class BadSmellCalculatorTest {
             classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
             dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
             redundantElementCalculator, overGeneralizationCalculator,
-            dataClassCalculator, shotgunSurgeryCalculator
-        ).postConstruct()
+            dataClassCalculator, shotgunSurgeryCalculator, sleepCalculator, unassertCalculator, ignoreCalculator
+        )
+            .postConstruct()
     }
 
     @Test

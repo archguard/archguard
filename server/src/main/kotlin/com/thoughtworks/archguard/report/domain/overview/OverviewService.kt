@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.report.domain.overview
 
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,7 +18,6 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
         return systemOverviewRepository.getContributorCountBySystemId(systemId)
     }
 
-    @Cacheable("systemOverview")
     fun getOverview(systemId: Long): BadSmellOverviewDto {
         return BadSmellOverviewDto(
             BadSmellType.values()
