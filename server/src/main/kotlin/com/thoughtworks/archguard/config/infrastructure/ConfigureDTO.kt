@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.config.infrastructure
 
-import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.config.Configure
 import org.jdbi.v3.core.mapper.reflect.ColumnName
 
 data class ConfigureDTO(

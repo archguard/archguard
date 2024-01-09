@@ -1,8 +1,9 @@
 package com.thoughtworks.archguard.code.method.domain
 
-import com.thoughtworks.archguard.config.domain.ConfigType
-import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.config.ConfigType
+import org.archguard.config.Configure
 import org.archguard.model.code.JField
+import org.archguard.model.code.MethodType
 import org.archguard.model.vos.JMethodVO
 
 class JMethod(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: List<String>) {
@@ -41,9 +42,4 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
             configuresMap[ConfigType.COLOR.typeName] = color
         }
     }
-}
-
-// 暂时只有接口和类
-enum class MethodType {
-    NOT_DEFINED, ABSTRACT_METHOD
 }

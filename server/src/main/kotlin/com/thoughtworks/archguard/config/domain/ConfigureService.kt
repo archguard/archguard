@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.config.domain
 
+import org.archguard.config.ConfigType
+import org.archguard.config.Configure
 import org.springframework.stereotype.Service
 
 @Service
@@ -50,8 +52,4 @@ class ConfigureService(val configureRepository: ConfigureRepository) {
         configs.forEach { it.systemId = systemId }
         configureRepository.batchCreateConfigures(configs)
     }
-}
-
-enum class ConfigType(val typeName: String) {
-    COLOR("nodeColor"), DISPLAY("nodeDisplay");
 }

@@ -30,3 +30,4 @@ class JMethod(val id: String, val name: String, val clazz: String, val module: S
 enum class MethodType {
     NOT_DEFINED, ABSTRACT_METHOD, SYNTHETIC, STATIC, PRIVATE
 }
+

@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.domain.plugin
 
 import com.thoughtworks.archguard.code.module.domain.dubbo.DubboPlugin
 import com.thoughtworks.archguard.code.module.domain.springcloud.feignclient.FeignClientPlugin
-import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.config.Configure
 import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every

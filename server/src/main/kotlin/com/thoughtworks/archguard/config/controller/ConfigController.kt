@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.config.controller
 
-import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.config.Configure
 import com.thoughtworks.archguard.config.domain.ConfigureService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
