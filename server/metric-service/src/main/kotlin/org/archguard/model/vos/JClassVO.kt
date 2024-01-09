@@ -1,15 +1,16 @@
 package org.archguard.model.vos
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.archguard.arch.LogicComponent
+import org.archguard.arch.LogicModuleMemberType
 import org.archguard.graph.Node
 import org.archguard.model.code.JClass
 
 /**
  * JClassVO is a Value Object, use for LogicModule aggregation
  */
-data class JClassVO(val name: String, val module: String?) : Node {
+data class JClassVO(val name: String, val module: String?) : LogicComponent(), Node {
     var id: String? = null
-    val fullName = "$module.$name"
 
     @JsonIgnore
     override fun getNodeId(): String {
@@ -43,5 +44,18 @@ data class JClassVO(val name: String, val module: String?) : Node {
             jClassVO.id = jClass.id
             return jClassVO
         }
+    }
+
+
+    override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
+        return logicComponent.getType() == LogicModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
+    }
+
+    override fun getFullName(): String {
+        return "$module.$name"
+    }
+
+    override fun getType(): LogicModuleMemberType {
+        return LogicModuleMemberType.CLASS
     }
 }

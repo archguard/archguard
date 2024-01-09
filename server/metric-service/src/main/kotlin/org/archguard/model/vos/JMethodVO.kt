@@ -7,7 +7,7 @@ import org.archguard.model.code.JMethod
 data class JMethodVO(val name: String, val clazz: JClassVO, val returnType: String, val argumentTypes: List<String>) :
     Node {
     var id: String? = null
-    val fullName = clazz.fullName + "." + name + "(" + argumentTypes.joinToString(separator = ",") + ")"
+    val fullName = clazz.getFullName() + "." + name + "(" + argumentTypes.joinToString(separator = ",") + ")"
 
     constructor(
         name: String,
