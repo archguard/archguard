@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.clazz.domain
+package org.archguard.model.code
 
 import org.archguard.graph.TypeEnum
 import org.archguard.graph.TypedNode

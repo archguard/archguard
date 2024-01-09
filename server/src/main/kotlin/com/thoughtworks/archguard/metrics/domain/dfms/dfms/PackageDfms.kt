@@ -1,4 +1,4 @@
-package org.archguard.metric.dfms
+package com.thoughtworks.archguard.metrics.domain.dfms.dfms
 
 import org.archguard.model.vos.PackageVO
 

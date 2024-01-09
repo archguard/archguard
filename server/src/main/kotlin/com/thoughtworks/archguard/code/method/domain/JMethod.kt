@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.method.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.model.code.JField
 import org.archguard.model.vos.JMethodVO
 
 class JMethod(val id: String, val name: String, val clazz: String, val module: String?, val returnType: String, val argumentTypes: List<String>) {

@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.code.clazz.domain
 
+import org.archguard.model.code.JField
+
 interface JClassRepository {
     fun getJClassBy(systemId: Long, name: String, module: String?): JClass?
 

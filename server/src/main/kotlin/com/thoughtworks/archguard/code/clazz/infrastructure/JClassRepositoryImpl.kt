@@ -3,9 +3,9 @@ package com.thoughtworks.archguard.code.clazz.infrastructure
 import com.thoughtworks.archguard.code.clazz.domain.ClassRelation
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
 import org.archguard.bytecode.TypeMap
+import org.archguard.model.code.JField
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.slf4j.LoggerFactory

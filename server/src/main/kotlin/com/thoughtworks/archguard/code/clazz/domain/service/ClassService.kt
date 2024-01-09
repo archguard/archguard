@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.clazz.domain.service
 
-import com.thoughtworks.archguard.code.clazz.domain.CodeTree
+import org.archguard.model.code.CodeTree
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException

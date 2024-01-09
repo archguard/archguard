@@ -4,6 +4,7 @@ import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
 import org.archguard.model.code.ClazzType
+import org.archguard.model.code.JField
 import org.archguard.model.vos.JClassVO
 import org.slf4j.LoggerFactory
 

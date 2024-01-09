@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.code.module.domain.graph
 
-import com.thoughtworks.archguard.code.clazz.domain.JField
 import org.archguard.arch.LeafManger
 import org.archguard.arch.LogicModule
 import org.archguard.graph.Edge
 import org.archguard.graph.GraphStore
+import org.archguard.model.code.JField
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

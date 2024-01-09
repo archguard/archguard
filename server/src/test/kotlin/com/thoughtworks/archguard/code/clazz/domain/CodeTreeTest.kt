@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.code.clazz.domain
 
 import org.archguard.graph.TypeEnum
 import org.archguard.graph.TypedNode
+import org.archguard.model.code.CodeTree
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
