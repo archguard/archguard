@@ -1,5 +1,6 @@
-package com.thoughtworks.archguard.report.controller.coupling
+package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.controller.coupling.*
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
 import com.thoughtworks.archguard.report.domain.coupling.hub.HubService
 import org.springframework.http.ResponseEntity

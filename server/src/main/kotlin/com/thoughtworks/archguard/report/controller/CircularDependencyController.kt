@@ -1,5 +1,7 @@
-package com.thoughtworks.archguard.report.controller.coupling
+package com.thoughtworks.archguard.report.controller
 
+import com.thoughtworks.archguard.report.controller.coupling.CircularDependencyListDto
+import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.models.ClassVO

@@ -1,6 +1,9 @@
-package com.thoughtworks.archguard.report.controller.coupling
+package com.thoughtworks.archguard.report.controller
 
 import com.thoughtworks.archguard.report.application.ClassCouplingAppService
+import com.thoughtworks.archguard.report.controller.coupling.ClassDataClumpsListDto
+import com.thoughtworks.archguard.report.controller.coupling.DeepInheritanceListDto
+import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsService
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceService
