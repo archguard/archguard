@@ -1,5 +1,12 @@
 package org.archguard.architecture.biz
 
+/**
+ * The `ChannelType` class is an enum class that represents different types of communication channels.
+ * Each channel type has a display name associated with it.
+ *
+ * The `ChannelType` class also provides a companion object with a single method `allValues()`.
+ * This method returns a list of all the display names of the available channel types.
+ */
 enum class ChannelType(val displayName: String) {
     WEBSITE("Website"),
     MOBILE_APP("Mobile App"),

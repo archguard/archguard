@@ -1,7 +1,6 @@
 package org.archguard.architecture.detect
 
 import chapi.domain.core.CodeDataStruct
-import kotlinx.serialization.Serializable
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
@@ -10,23 +9,22 @@ import org.archguard.architecture.layered.LayeredIdentify
 import org.archguard.architecture.techstack.FrameworkMarkup
 
 /**
- * 潜在的架构元素，后续需要根据这个继续分析
+ * The `ArchitectureDetect` class is responsible for identifying the potential execution architecture based on the given
+ * workspace. It provides methods to infer the execution architecture by analyzing the project's language, dependencies,
+ * source code, and package structure.
  */
-@Serializable
-data class PotentialExecArch(
-    var layeredStyle: CodeStructureStyle = CodeStructureStyle.UNKNOWN,
-    var protocols: List<OutboundProtocol> = listOf(),
-    var appTypes: List<AppType> = listOf(),
-    var connectorTypes: List<ConnectorType> = listOf(),
-    var coreStacks: List<String> = listOf(),
-    var concepts: List<CodeDataStruct> = listOf()
-)
-
 class ArchitectureDetect {
+    /**
+     * Identifies the potential execution architecture based on the given workspace.
+     *
+     * @param workspace The workspace containing the project information.
+     * @return The `PotentialExecArch` object representing the identified execution architecture.
+     */
     fun identPotential(workspace: Workspace): PotentialExecArch {
         // 1. create exec arch
         var execArch = PotentialExecArch()
 
+        // Identify execution architecture based on the project's language
         val byLanguage = FrameworkMarkup.byLanguage(workspace.language)
         byLanguage?.also {
             execArch = inferenceByDependencies(it, workspace.projectDependencies)
@@ -40,27 +38,52 @@ class ArchitectureDetect {
         val layeredStyle = LayeredIdentify(packages).identify()
         execArch.layeredStyle = layeredStyle
 
-        // 4. create concepts domain
-        when (layeredStyle) {
+        // 4. create concepts domain based on the identified layered architecture style
+        execArch.concepts = buildConcepts(layeredStyle, workspace)
+
+        return execArch
+    }
+
+    /**
+     * Builds a list of code data structures based on the given layered style and workspace.
+     *
+     * @param layeredStyle The layered style of the code structure.
+     * @param workspace The workspace containing the code data structures.
+     * @return A list of code data structures that match the given layered style and workspace.
+     */
+    private fun buildConcepts(
+        layeredStyle: CodeStructureStyle,
+        workspace: Workspace
+    ): List<CodeDataStruct> {
+        return when (layeredStyle) {
             CodeStructureStyle.MVC -> {
-                execArch.concepts = workspace.dataStructs.filter { dataStruct ->
+                workspace.dataStructs.filter { dataStruct ->
                     dataStruct.Annotations.any { it.Name == "Entity" }
                 }
             }
 
             CodeStructureStyle.ModuleDDD, CodeStructureStyle.DDD -> {
-                execArch.concepts = workspace.dataStructs.filter {
+                workspace.dataStructs.filter {
                     it.Package.contains("domain") && !it.NodeName.contains("Factory")
                 }
             }
 
-            CodeStructureStyle.CLEAN -> {}
-            CodeStructureStyle.UNKNOWN -> {}
-        }
+            CodeStructureStyle.CLEAN -> {
+                listOf()
+            }
 
-        return execArch
+            CodeStructureStyle.UNKNOWN -> {
+                listOf()
+            }
+        }
     }
 
+    /**
+     * Fills the execution architecture information from the source code of the workspace.
+     *
+     * @param workspace The workspace containing the project information.
+     * @param execArch The `PotentialExecArch` object to be updated.
+     */
     private fun fillArchFromSourceCode(workspace: Workspace, execArch: PotentialExecArch) {
         workspace.dataStructs.forEach { struct ->
             struct.Imports.forEach {
@@ -78,10 +101,11 @@ class ArchitectureDetect {
     }
 
     /**
-     *  create execute architecture by dependencies
-     *  - identify the channel type: web, data, like
-     *  - identify protocol: http, rpc
-     *  - identify core stacks
+     * Infers the execution architecture based on the project's dependencies and the provided framework markup.
+     *
+     * @param markup The framework markup containing the mapping of dependencies to architecture elements.
+     * @param packageDeps The list of package dependencies in the project.
+     * @return The `PotentialExecArch` object representing the inferred execution architecture.
      */
     fun inferenceByDependencies(markup: FrameworkMarkup, packageDeps: List<PackageDependencies>): PotentialExecArch {
         val potentialExecArch = PotentialExecArch()
