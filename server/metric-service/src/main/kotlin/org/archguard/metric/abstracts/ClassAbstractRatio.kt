@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.metrics.domain.abstracts
+package org.archguard.metric.abstracts
 
 import org.archguard.model.code.JClass
 import org.archguard.model.vos.JClassVO

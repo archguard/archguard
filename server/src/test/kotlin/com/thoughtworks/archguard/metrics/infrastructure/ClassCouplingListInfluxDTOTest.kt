@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.metric.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
 import org.archguard.model.vos.JClassVO

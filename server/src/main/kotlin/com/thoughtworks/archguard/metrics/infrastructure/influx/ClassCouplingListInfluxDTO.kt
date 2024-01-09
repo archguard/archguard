@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure.influx
 
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.metric.coupling.ClassCoupling
 
 data class ClassCouplingListInfluxDTO(val systemId: Long, val classCouplings: List<ClassCoupling>) {
     fun toRequestBody() = classCouplings.joinToString("\n") { ClassCouplingInfluxDTO(systemId, it).toInfluxDBRequestBody() }

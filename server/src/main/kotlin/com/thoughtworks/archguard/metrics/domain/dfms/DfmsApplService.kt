@@ -6,11 +6,11 @@ import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
-import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
+import org.archguard.metric.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
-import com.thoughtworks.archguard.metrics.domain.dfms.dfms.ClassDfms
-import com.thoughtworks.archguard.metrics.domain.dfms.dfms.ModuleDfms
-import com.thoughtworks.archguard.metrics.domain.dfms.dfms.PackageDfms
+import org.archguard.metric.dfms.ClassDfms
+import org.archguard.metric.dfms.ModuleDfms
+import org.archguard.metric.dfms.PackageDfms
 import org.archguard.model.vos.JClassVO
 import org.springframework.stereotype.Service
 

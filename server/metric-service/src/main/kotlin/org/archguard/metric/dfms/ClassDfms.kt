@@ -1,5 +1,7 @@
-package com.thoughtworks.archguard.metrics.domain.dfms.dfms
+package org.archguard.metric.dfms
 
+import org.archguard.metric.abstracts.ClassAbstractRatio
+import org.archguard.metric.coupling.ClassCoupling
 import org.archguard.model.vos.JClassVO
 
 class ClassDfms private constructor(
@@ -11,8 +13,8 @@ class ClassDfms private constructor(
     companion object {
         fun of(
             jClassVO: JClassVO,
-            classCoupling: com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling,
-            classAbstractRatio: com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
+            classCoupling: ClassCoupling,
+            classAbstractRatio: ClassAbstractRatio
         ): ClassDfms {
             return ClassDfms(
                 jClassVO,

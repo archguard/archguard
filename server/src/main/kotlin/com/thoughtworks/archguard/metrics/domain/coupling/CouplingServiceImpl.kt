@@ -8,6 +8,9 @@ import com.thoughtworks.archguard.code.module.domain.getModule
 import org.archguard.arch.LogicModule
 import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
+import org.archguard.metric.coupling.ClassCoupling
+import org.archguard.metric.coupling.ModuleCoupling
+import org.archguard.metric.coupling.PackageCoupling
 import org.archguard.model.Dependency
 import org.archguard.model.vos.JClassVO
 import org.springframework.stereotype.Service

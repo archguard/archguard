@@ -1,10 +1,10 @@
-package com.thoughtworks.archguard.metrics.domain.coupling
+package org.archguard.metric.coupling
 
-import org.archguard.arch.LogicModule
+import org.archguard.model.vos.PackageVO
 import org.nield.kotlinstatistics.median
 
-class ModuleCoupling private constructor(
-    val logicModule: LogicModule,
+class PackageCoupling private constructor(
+    val packageVO: PackageVO,
     val outerInstabilityAvg: Double,
     val outerInstabilityMed: Double,
     val outerCouplingAvg: Double,
@@ -15,8 +15,8 @@ class ModuleCoupling private constructor(
     val innerCouplingMed: Double
 ) {
     companion object {
-        fun of(logicModule: LogicModule, classCouplings: List<ClassCoupling>) = ModuleCoupling(
-            logicModule = logicModule,
+        fun of(packageVO: PackageVO, classCouplings: List<ClassCoupling>) = PackageCoupling(
+            packageVO = packageVO,
             outerInstabilityAvg = classCouplings.map { it.outerInstability }.average(),
             outerInstabilityMed = classCouplings.map { it.outerInstability }.median(),
             outerCouplingAvg = classCouplings.map { it.outerCoupling }.average(),

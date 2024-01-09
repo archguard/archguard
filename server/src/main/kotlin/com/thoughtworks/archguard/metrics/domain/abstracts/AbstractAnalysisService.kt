@@ -4,6 +4,8 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.getModule
 import org.archguard.arch.LogicModule
+import org.archguard.metric.abstracts.ModuleAbstractRatio
+import org.archguard.metric.abstracts.PackageAbstractRatio
 import org.archguard.model.vos.PackageVO
 import org.springframework.stereotype.Service
 

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.metric.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import org.archguard.model.vos.JClassVO

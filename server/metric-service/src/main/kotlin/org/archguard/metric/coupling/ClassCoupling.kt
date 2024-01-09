@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.metrics.domain.coupling
+package org.archguard.metric.coupling
 
 import org.archguard.model.vos.JClassVO
 

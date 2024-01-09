@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain
 
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.metric.coupling.ClassCoupling
 import org.archguard.model.vos.JClassVO
 
 interface MetricsRepository {

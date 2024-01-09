@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
 import org.archguard.arch.LogicModule
+import org.archguard.metric.coupling.ClassCoupling
+import org.archguard.metric.coupling.ModuleCoupling
+import org.archguard.metric.coupling.PackageCoupling
 import org.archguard.model.vos.PackageVO
 import org.archguard.model.vos.JClassVO
 

@@ -2,10 +2,10 @@ package com.thoughtworks.archguard.metrics.controller
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import org.archguard.model.vos.PackageVO
-import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.metric.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
-import com.thoughtworks.archguard.metrics.domain.coupling.ModuleCoupling
-import com.thoughtworks.archguard.metrics.domain.coupling.PackageCoupling
+import org.archguard.metric.coupling.ModuleCoupling
+import org.archguard.metric.coupling.PackageCoupling
 import org.archguard.model.vos.JClassVO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
