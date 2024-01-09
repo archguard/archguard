@@ -10,6 +10,10 @@ import java.util.Stack
  * Reference: https://www.baeldung.com/cs/detecting-cycles-in-directed-graph
  */
 class CycleDetector(directedGraph: Graph) {
+    enum class VisitStatus {
+        IN_STACK, NOT_VISITED, DONE
+    }
+
     private var vertices: Array<String> = directedGraph.nodes.map { it.getNodeId() }.toTypedArray()
     private var arcs: Array<IntArray>
     private var vexnum = 0
@@ -73,8 +77,4 @@ class CycleDetector(directedGraph: Graph) {
             this.cycles.add(cycle)
         }
     }
-}
-
-enum class VisitStatus {
-    IN_STACK, NOT_VISITED, DONE
 }

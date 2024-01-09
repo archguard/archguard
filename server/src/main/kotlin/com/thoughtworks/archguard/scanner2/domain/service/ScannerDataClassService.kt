@@ -4,7 +4,7 @@ import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.DataClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import org.archguard.operator.checkIsDataClass
+import org.archguard.operator.DataClassChecker
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,7 +20,7 @@ class ScannerDataClassService(val jClassRepository: JClassRepository, val jMetho
             it.methods.forEach { method ->
                 method.fields = jMethodRepository.findMethodFields(method.id)
             }
-            if (checkIsDataClass(it)) {
+            if (DataClassChecker.check(it)) {
                 dataClasses.add(it)
             }
         }

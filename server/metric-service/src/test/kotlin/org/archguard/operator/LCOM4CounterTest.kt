@@ -43,6 +43,6 @@ class LCOM4CounterTest {
         val jMethod4 = JMethod("m4", "setGoodField", "class1", "module1", "void", listOf("java.lang.String"))
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4)
 
-        Assertions.assertThat(checkIsDataClass(jClass)).isTrue()
+        Assertions.assertThat(DataClassChecker.check(jClass)).isTrue()
     }
 }

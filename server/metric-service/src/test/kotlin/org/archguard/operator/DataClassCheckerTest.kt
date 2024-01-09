@@ -6,7 +6,7 @@ import org.archguard.model.code.JMethod
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test;
 
-internal class DataClassServiceTest {
+internal class DataClassCheckerTest {
 
     @Test
     internal fun should_return_true_when_class_is_data_class() {
@@ -20,7 +20,7 @@ internal class DataClassServiceTest {
         val jMethod4 = JMethod("m4", "setGoodField", "class1", "module1", "void", listOf("java.lang.String"))
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4)
 
-        Assertions.assertThat(checkIsDataClass(jClass)).isTrue()
+        Assertions.assertThat(DataClassChecker.check(jClass)).isTrue()
     }
 
     @Test
@@ -37,7 +37,7 @@ internal class DataClassServiceTest {
 
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4, jMethod5)
 
-        Assertions.assertThat(checkIsDataClass(jClass)).isFalse()
+        Assertions.assertThat(DataClassChecker.check(jClass)).isFalse()
     }
 
     @Test
@@ -53,6 +53,6 @@ internal class DataClassServiceTest {
 
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3, jMethod4)
 
-        Assertions.assertThat(checkIsDataClass(jClass)).isFalse()
+        Assertions.assertThat(DataClassChecker.check(jClass)).isFalse()
     }
 }
