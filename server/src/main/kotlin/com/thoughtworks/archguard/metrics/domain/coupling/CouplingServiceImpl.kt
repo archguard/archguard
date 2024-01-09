@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.code.module.domain.getModule
+import org.archguard.arch.getModule
 import org.archguard.arch.LogicModule
 import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
