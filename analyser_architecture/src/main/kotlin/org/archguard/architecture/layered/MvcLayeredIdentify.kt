@@ -1,6 +1,6 @@
 package org.archguard.architecture.layered
 
-class MvcLayeredIdentify() : LayeredChecker {
+class MvcLayeredIdentify : LayeredChecker {
     private var hasController: Boolean = false
     private var hasService: Boolean = false
     private var hasRepo: Boolean = false

@@ -4,7 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.archguard.architecture.detect.Language
 
 @Serializable
 class FrameworkMarkup(
@@ -47,7 +46,7 @@ class FrameworkMarkup(
         }
 
         private fun extendLanguage(markups: Array<FrameworkMarkup>): MutableMap<String, FrameworkMarkup> {
-            val needExtends: MutableMap<Language, Language> = mutableMapOf()
+            val needExtends: MutableMap<String, String> = mutableMapOf()
 
             val markupMap: MutableMap<String, FrameworkMarkup> = mutableMapOf()
             markups.forEach {

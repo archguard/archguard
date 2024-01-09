@@ -5,4 +5,7 @@ import org.archguard.scanner.core.context.Context
 
 interface ArchitectureContext : Context {
     override val type: AnalyserType get() = AnalyserType.ARCHITECTURE
+
+    val path: String
+    val branch: String
 }

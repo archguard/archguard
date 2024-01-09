@@ -8,7 +8,6 @@ plugins {
 
 dependencies {
     api(projects.scannerCore)
-    api(projects.analyserArchitecture)
 
     implementation("com.jayway.jsonpath:json-path:2.7.0")
     implementation(libs.chapi.parser.toml)
