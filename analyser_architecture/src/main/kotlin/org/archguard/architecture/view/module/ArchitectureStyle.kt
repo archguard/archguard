@@ -12,9 +12,3 @@ sealed interface ArchitectureStyle {
     }
 }
 
-enum class DependencyType {
-    Notify,
-    Query,
-    Call,
-    Update
-}

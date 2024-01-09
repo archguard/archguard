@@ -1,8 +1,13 @@
 package org.archguard.architecture.view.module
 
+import kotlinx.serialization.Serializable
+import org.archguard.architecture.view.module.mvc.Controller
+import org.archguard.architecture.view.module.mvc.Model
+import org.archguard.architecture.view.module.mvc.View
 import org.archguard.architecture.view.module.shared.Dependency
 
-class MVCArchitecture(
+@Serializable
+data class MVCArchitecture(
     val models: List<Model>,
     val views: List<View>,
     val controllers: List<Controller>,
@@ -10,8 +15,3 @@ class MVCArchitecture(
 ) :
     ArchitectureStyle
 
-class Model
-
-class View
-
-class Controller
