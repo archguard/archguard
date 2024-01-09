@@ -27,10 +27,6 @@ data class TestSmellPO(
             split = split.dropLast(1)
 
             packageName = split.last()
-
-            // todo: after refactor module, it need to be flag
-//            split = split.dropLast(1)
-//            moduleName = split.joinToString(":")
         }
 
         val issuePosition = Json.decodeFromString<IssuePosition>(position)
