@@ -1,4 +1,4 @@
-package org.archguard.scanner.core.architecture
+package org.archguard.architecture.core
 
 class CodeLanguage(
   val name: String,
