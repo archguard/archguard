@@ -8,7 +8,7 @@ import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import org.archguard.operator.getLCOM4Graph
+import org.archguard.operator.LCOM4Graph
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -42,10 +42,14 @@ internal class LCOM4ServiceTest {
         val jMethod4 = JMethod("m4", "m4", "clazz2", "module2", "Boolean", emptyList())
         jMethod3.callees = listOf(jMethod2, jMethod4)
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3)
-        val lcom4Graph = getLCOM4Graph(jClass)
+        val lcom4Graph = LCOM4Graph.buildGraph(jClass)
 
         assertThat(lcom4Graph.toDirectedGraph().nodes.size).isEqualTo(5)
         assertThat(lcom4Graph.toDirectedGraph().edges.size).isEqualTo(3)
-        assertThat(lcom4Graph.toDirectedGraph().edges).contains(Edge("m1", "f1", 1), Edge("m2", "f2", 1), Edge("m3", "m2", 1))
+        assertThat(lcom4Graph.toDirectedGraph().edges).contains(
+            Edge("m1", "f1", 1),
+            Edge("m2", "f2", 1),
+            Edge("m3", "m2", 1)
+        )
     }
 }

@@ -23,7 +23,7 @@ class LCOM4CounterTest {
         val jMethod4 = JMethod("m4", "m4", "clazz2", "module2", "Boolean", emptyList())
         jMethod3.callees = listOf(jMethod2, jMethod4)
         jClass.methods = listOf(jMethod1, jMethod2, jMethod3)
-        val lcom4Graph = getLCOM4Graph(jClass)
+        val lcom4Graph = LCOM4Graph.buildGraph(jClass)
 
         Assertions.assertThat(lcom4Graph.toDirectedGraph().nodes.size).isEqualTo(5)
         Assertions.assertThat(lcom4Graph.toDirectedGraph().edges.size).isEqualTo(3)

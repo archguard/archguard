@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.scanner2.domain.service
 import org.archguard.model.code.JClass
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import org.archguard.operator.getLCOM4Graph
+import org.archguard.operator.LCOM4Graph
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -19,7 +19,7 @@ class LCOM4Service(
         jClasses.forEach { prepareJClassBasicDataForLCOM4(systemId, it) }
 
         val lcom4Map: MutableMap<String, Int> = mutableMapOf()
-        jClasses.forEach { lcom4Map[it.id] = getLCOM4Graph(it).getConnectivityCount() }
+        jClasses.forEach { lcom4Map[it.id] = LCOM4Graph.buildGraph(it).getConnectivityCount() }
         log.info("Finish calculate all lcom4, count: {}", lcom4Map.keys.size)
 
         return lcom4Map
