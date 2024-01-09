@@ -3,11 +3,12 @@ package org.archguard.model.code
 import org.archguard.config.ConfigType
 import org.archguard.config.Configure
 import org.archguard.model.vos.JClassVO
+import org.jdbi.v3.core.mapper.reflect.ColumnName
 
 /**
  * JClass is an Entity, so it must have an id.
  */
-data class JClass(val id: String, val name: String, val module: String?) {
+data class JClass(@ColumnName("id") val id: String, @ColumnName("name") val name: String, @ColumnName("module") val module: String?) {
     var methods: List<JMethod> = ArrayList()
     var callees: List<ClassRelation> = ArrayList()
     var callers: List<ClassRelation> = ArrayList()
