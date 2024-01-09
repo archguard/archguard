@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.archguard.arch.LogicComponent
+import org.archguard.arch.ModuleMemberType
 import org.archguard.graph.Node
 
 /**

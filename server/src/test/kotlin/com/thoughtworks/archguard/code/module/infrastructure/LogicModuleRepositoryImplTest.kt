@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -25,7 +25,7 @@ internal class LogicModuleRepositoryImplTest {
         val normalLogicModules = logicModuleRepository.getAllByShowStatus(systemId, true)
         assertThat(normalLogicModules.size).isEqualTo(1)
         assertThat(normalLogicModules[0]).usingRecursiveComparison().isEqualTo(
-            LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
+            LogicModule("id1", "dubbo-provider", listOf(LeafManger.createLeaf("dubbo-provider")))
         )
     }
 
@@ -35,8 +35,8 @@ internal class LogicModuleRepositoryImplTest {
         val systemId: Long = 1
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
         assertThat(logicModules.size).isEqualTo(4)
-        val lg1 = LogicModule("id1", "dubbo-provider", listOf(LogicComponent.createLeaf("dubbo-provider")))
-        val lg2 = LogicModule("id2", "dubbo-consumer", listOf(LogicComponent.createLeaf("dubbo-consumer")))
+        val lg1 = LogicModule("id1", "dubbo-provider", listOf(LeafManger.createLeaf("dubbo-provider")))
+        val lg2 = LogicModule("id2", "dubbo-consumer", listOf(LeafManger.createLeaf("dubbo-consumer")))
         lg2.hide()
         val lg3 = LogicModule.create("id3", "dubbo-all", emptyList(), listOf(lg2, lg1))
         lg3.hide()

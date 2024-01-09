@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.infrastructure.dto
 
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
 import java.util.UUID
@@ -11,7 +11,7 @@ class LogicModuleLegacy(var id: String?, val name: String, val members: List<Str
         if (id == null) {
             id = UUID.randomUUID().toString()
         }
-        val logicModule = LogicModule.createWithOnlyLeafMembers(id!!, name, members.map { LogicComponent.createLeaf(it) })
+        val logicModule = LogicModule.createWithOnlyLeafMembers(id!!, name, members.map { LeafManger.createLeaf(it) })
         logicModule.status = status
         return logicModule
     }

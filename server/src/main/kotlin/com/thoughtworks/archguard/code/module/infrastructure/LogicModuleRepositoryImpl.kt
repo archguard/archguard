@@ -2,12 +2,9 @@ package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
-import com.thoughtworks.archguard.code.module.domain.model.ModuleMemberType
-import com.thoughtworks.archguard.code.module.domain.model.SubModule
+import com.thoughtworks.archguard.code.module.domain.model.*
+import org.archguard.arch.LogicComponent
+import org.archguard.arch.ModuleMemberType
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -160,7 +157,7 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
 
 class LogicModuleDTO(val id: String, val name: String, val members: String?, private val lgMembers: String?, private val status: LogicModuleStatus) {
     fun toLogicModule(systemId: Long, logicModuleRepository: LogicModuleRepository): LogicModule {
-        val leafMembers = members?.split(',')?.sorted()?.map { m -> LogicComponent.createLeaf(m) } ?: emptyList()
+        val leafMembers = members?.split(',')?.sorted()?.map { m -> LeafManger.createLeaf(m) } ?: emptyList()
         val lgMembers = lgMembers?.split(',')?.sorted()?.map { m -> logicModuleRepository.get(systemId, m) }
             ?: emptyList()
         val logicModule = LogicModule.create(id, name, leafMembers, lgMembers)

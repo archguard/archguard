@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.code.module.controller
 import com.thoughtworks.archguard.code.module.domain.LogicModuleService
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.graph.GraphService
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.infrastructure.dto.LogicModuleLegacy
 import io.mockk.MockKAnnotations.init
@@ -35,14 +35,15 @@ class LogicModuleControllerTest {
     }
 
     private fun createLogicModule(id: String = UUID.randomUUID().toString(), name: String = "name", members: List<String> = listOf()): LogicModule {
-        return LogicModule(id, name, members.map { LogicComponent.createLeaf(it) })
+        return LogicModule(id, name, members.map { LeafManger.createLeaf(it) })
     }
 
     @Test
     fun `should get all logic modules`() {
         val systemId: Long = 1
         // given
-        val logicModules = listOf(LogicModule.createWithOnlyLeafMembers("id", "name", listOf(LogicComponent.createLeaf("module"))))
+        val logicModules = listOf(LogicModule.createWithOnlyLeafMembers("id", "name",
+            listOf(LeafManger.createLeaf("module"))))
         every { service.getLogicModules(systemId) } returns logicModules
 
         // when

@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.code.module.domain.graph
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
@@ -37,9 +37,12 @@ class GraphServiceTest {
     @Test
     fun `should get graph of all logic modules dependency`() {
         val systemId: Long = 1
-        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("submodule1.class")))
-        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("submodule2.class")))
-        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("submodule3.class")))
+        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1",
+            listOf(LeafManger.createLeaf("submodule1.class")))
+        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2",
+            listOf(LeafManger.createLeaf("submodule2.class")))
+        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3",
+            listOf(LeafManger.createLeaf("submodule3.class")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
         val dependency1 = Dependency(JClassVO("class", "submodule1"), JClassVO("class", "submodule2"))
@@ -62,11 +65,16 @@ class GraphServiceTest {
     @Test
     fun `map bottom logic module to top level logic module`() {
         val systemId: Long = 1
-        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1", listOf(LogicComponent.createLeaf("caller.method1")))
-        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2", listOf(LogicComponent.createLeaf("callee.method1")))
-        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3", listOf(LogicComponent.createLeaf("callee.method1")))
-        val logicModule4 = LogicModule.createWithOnlyLeafMembers("id4", "module4", listOf(LogicComponent.createLeaf("caller.method2"), LogicComponent.createLeaf("callee.method2")))
-        val logicModule5 = LogicModule.createWithOnlyLeafMembers("id5", "module5", listOf(LogicComponent.createLeaf("module5")))
+        val logicModule1 = LogicModule.createWithOnlyLeafMembers("id1", "module1",
+            listOf(LeafManger.createLeaf("caller.method1")))
+        val logicModule2 = LogicModule.createWithOnlyLeafMembers("id2", "module2",
+            listOf(LeafManger.createLeaf("callee.method1")))
+        val logicModule3 = LogicModule.createWithOnlyLeafMembers("id3", "module3",
+            listOf(LeafManger.createLeaf("callee.method1")))
+        val logicModule4 = LogicModule.createWithOnlyLeafMembers("id4", "module4",
+            listOf(LeafManger.createLeaf("caller.method2"), LeafManger.createLeaf("callee.method2")))
+        val logicModule5 = LogicModule.createWithOnlyLeafMembers("id5", "module5",
+            listOf(LeafManger.createLeaf("module5")))
 
         val service1 = LogicModule.create("id11", "lg11", emptyList(), listOf(logicModule1, logicModule3))
         val service2 = LogicModule.create("id12", "lg12", emptyList(), listOf(logicModule2, logicModule4))

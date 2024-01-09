@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
+import org.archguard.arch.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import org.springframework.stereotype.Service

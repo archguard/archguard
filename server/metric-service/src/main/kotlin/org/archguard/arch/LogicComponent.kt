@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.module.domain.model
+package org.archguard.arch
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 
@@ -21,15 +21,6 @@ abstract class LogicComponent {
     abstract fun getType(): ModuleMemberType
 
     abstract override fun toString(): String
-
-    companion object {
-        fun createLeaf(name: String): LogicComponent {
-            if (name.split(".").size > 1) {
-                return JClassVO.create(name)
-            }
-            return SubModule(name)
-        }
-    }
 }
 
 enum class ModuleMemberType {
