@@ -8,7 +8,7 @@ class MVCArchitecture(
     val controllers: List<Controller>,
     val dependencies: List<Dependency>
 ) :
-    ModuleArchitecture
+    ArchitectureStyle
 
 class Model
 

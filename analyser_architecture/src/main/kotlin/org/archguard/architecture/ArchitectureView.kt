@@ -1,24 +1,31 @@
 package org.archguard.architecture
 
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.graph.TreeNode
 import org.archguard.architecture.view.code.CodeArchitecture
 import org.archguard.architecture.view.code.CodeType
 import org.archguard.architecture.view.code.LangType
 import org.archguard.architecture.view.concept.ConceptArchitecture
 import org.archguard.architecture.view.execution.ExecutionArchitecture
-import org.archguard.architecture.view.module.ModuleArchitecture
+import org.archguard.architecture.view.module.ArchitectureStyle
 import org.archguard.architecture.view.module.LayeredArchitecture
 import org.archguard.scanner.core.estimate.LanguageEstimate
 
 @Serializable
 class ArchitectureView(
     var conceptArchitecture: ConceptArchitecture = ConceptArchitecture(),
-    var moduleArchitecture: ModuleArchitecture = LayeredArchitecture(listOf()),
+    var architectureStyle: ArchitectureStyle = LayeredArchitecture(listOf()),
     var executionArchitecture: ExecutionArchitecture = ExecutionArchitecture(),
     var codeArchitecture: CodeArchitecture = CodeArchitecture(
         LangType.Java,
         CodeType.Interface
     ),
-    var languageSummary: List<LanguageEstimate> = listOf()
+    var physicalStructure: PhysicalStructure = PhysicalStructure()
+)
+
+@Serializable
+data class PhysicalStructure (
+    var languageEstimate: List<LanguageEstimate> = listOf(),
+    var codeStructure: TreeNode = TreeNode("root"),
 )
 

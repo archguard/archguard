@@ -30,7 +30,7 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             projectDependencies,
             service = services
         ).analysis()
-        workspace.languageSummary = languageEstimates
+        workspace.physicalStructure.languageEstimate = languageEstimates
 
         return listOf(workspace)
     }

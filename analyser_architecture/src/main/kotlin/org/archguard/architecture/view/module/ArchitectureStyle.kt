@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 import org.archguard.architecture.detect.PotentialExecArch
 
 @Serializable
-sealed interface ModuleArchitecture {
+sealed interface ArchitectureStyle {
     companion object {
-        fun from(identPotential: PotentialExecArch): ModuleArchitecture {
+        fun from(identPotential: PotentialExecArch): ArchitectureStyle {
             return LayeredArchitecture(listOf())
         }
     }

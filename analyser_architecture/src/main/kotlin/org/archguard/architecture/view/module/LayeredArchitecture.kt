@@ -8,4 +8,4 @@ import org.archguard.architecture.view.module.layer.MLayer
  * So in module architecture have one or more layers.
  */
 @Serializable
-class LayeredArchitecture(val layers: List<MLayer>) : ModuleArchitecture
+class LayeredArchitecture(val layers: List<MLayer>) : ArchitectureStyle

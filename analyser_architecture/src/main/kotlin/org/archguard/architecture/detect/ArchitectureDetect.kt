@@ -5,6 +5,7 @@ import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.architecture.core.CodeStructureStyle
 import org.archguard.architecture.core.ConnectorType
 import org.archguard.architecture.core.Workspace
+import org.archguard.architecture.graph.TreeNode
 import org.archguard.architecture.layered.LayeredIdentify
 import org.archguard.architecture.techstack.FrameworkMarkup
 
@@ -38,7 +39,10 @@ class ArchitectureDetect {
         val layeredStyle = LayeredIdentify(packages).identify()
         execArch.layeredStyle = layeredStyle
 
-        // 4. create concepts domain based on the identified layered architecture style
+        // 4. create packages structure
+        execArch.physicalStructure = TreeNode.create(packages)
+
+        // 5. create concepts domain based on the identified layered architecture style
         execArch.concepts = buildConcepts(layeredStyle, workspace)
 
         return execArch

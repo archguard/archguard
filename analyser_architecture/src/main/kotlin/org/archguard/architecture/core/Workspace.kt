@@ -2,10 +2,11 @@ package org.archguard.architecture.core
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.architecture.ArchitectureView
+import org.archguard.architecture.PhysicalStructure
 import org.archguard.architecture.detect.ArchitectureDetect
 import org.archguard.architecture.view.concept.ConceptArchitecture
 import org.archguard.architecture.view.concept.DomainModel
-import org.archguard.architecture.view.module.ModuleArchitecture
+import org.archguard.architecture.view.module.ArchitectureStyle
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.scanner.core.sourcecode.ContainerService
 
@@ -30,7 +31,11 @@ class Workspace(
             conceptArchitecture = ConceptArchitecture(
                 domainModels = DomainModel.from(identPotential.concepts)
             ),
-            moduleArchitecture = ModuleArchitecture.from(identPotential),
+            architectureStyle = ArchitectureStyle.from(identPotential),
+            physicalStructure = PhysicalStructure(
+                languageEstimate = listOf(),
+                codeStructure = identPotential.physicalStructure,
+            )
         )
     }
 }

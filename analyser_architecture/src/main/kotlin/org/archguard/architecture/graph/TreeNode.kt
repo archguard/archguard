@@ -1,5 +1,7 @@
 package org.archguard.architecture.graph
 
+import kotlinx.serialization.Serializable
+
 /**
  * The `TreeNode` class represents a node in a package tree. Each node has a name and a list of children nodes.
  *
@@ -15,6 +17,7 @@ package org.archguard.architecture.graph
  * @see findOrCreateChild
  * @see printPackageTree
  */
+@Serializable
 data class TreeNode(val name: String, val children: MutableList<TreeNode> = mutableListOf()) {
     companion object {
         /**
