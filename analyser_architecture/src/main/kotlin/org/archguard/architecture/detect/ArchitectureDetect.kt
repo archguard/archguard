@@ -31,7 +31,7 @@ class ArchitectureDetect {
         var execArch = PotentialExecArch()
         val markup = FrameworkMarkup.byLanguage("Java")
         if (markup != null) {
-            execArch = inferenceExecArchByDependencies(markup, workspace.projectDependencies)
+            execArch = inferenceByDependencies(markup, workspace.projectDependencies)
         }
 
         // 3. update exec arch from call nodeName
@@ -50,12 +50,13 @@ class ArchitectureDetect {
                     it.NodeName.contains("Entity")
                 }
             }
-            CodeStructureStyle.ModuleDDD,
-            CodeStructureStyle.DDD -> {
+
+            CodeStructureStyle.ModuleDDD, CodeStructureStyle.DDD -> {
                 execArch.concepts = workspace.dataStructs.filter {
                     it.Package.contains("domain") && !it.NodeName.contains("Factory")
                 }
             }
+
             CodeStructureStyle.CLEAN -> {}
             CodeStructureStyle.UNKNOWN -> {}
         }
@@ -85,31 +86,33 @@ class ArchitectureDetect {
      *  - identify protocol: http, rpc
      *  - identify core stacks
      */
-    fun inferenceExecArchByDependencies(markup: FrameworkMarkup, packageDeps: PackageDependencies): PotentialExecArch {
+    fun inferenceByDependencies(markup: FrameworkMarkup, packageDeps: List<PackageDependencies>): PotentialExecArch {
         val potentialExecArch = PotentialExecArch()
         val appTypeMap = markup.depAppTypeMap
         val protocols = markup.depProtocolMap
         val coreStacks = markup.coreStacks
 
-        packageDeps.dependencies.forEach { depEntry ->
-            // app types
-            appTypeMap.forEach {
-                if (depEntry.name.startsWith(it.key)) {
-                    potentialExecArch.appTypes += it.value
+        packageDeps.map {
+            it.dependencies.forEach { depEntry ->
+                // app types
+                appTypeMap.forEach {
+                    if (depEntry.name.startsWith(it.key)) {
+                        potentialExecArch.appTypes += it.value
+                    }
                 }
-            }
 
-            // protocols
-            protocols.forEach {
-                if (depEntry.name.startsWith(it.key)) {
-                    potentialExecArch.protocols += it.value
+                // protocols
+                protocols.forEach {
+                    if (depEntry.name.startsWith(it.key)) {
+                        potentialExecArch.protocols += it.value
+                    }
                 }
-            }
 
-            // core stacks
-            coreStacks.forEach {
-                if (depEntry.name.startsWith(it)) {
-                    potentialExecArch.coreStacks += it
+                // core stacks
+                coreStacks.forEach {
+                    if (depEntry.name.startsWith(it)) {
+                        potentialExecArch.coreStacks += it
+                    }
                 }
             }
         }

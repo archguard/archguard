@@ -15,7 +15,7 @@ import org.archguard.scanner.core.sourcecode.ContainerService
  */
 class Workspace(
     val dataStructs: List<CodeDataStruct> = listOf(),
-    val projectDependencies: PackageDependencies = PackageDependencies("", "", "", listOf(), ""),
+    val projectDependencies: List<PackageDependencies> = listOf(),
     val service: List<ContainerService> = listOf(),
 ) {
     fun analysis(): ArchitectureView {

@@ -16,36 +16,45 @@ class ScaAnalyser(override val context: ScaContext) : ScaAnalyser {
     private val path = context.path
 
     override fun analyse(): List<CompositionDependency> {
-        return when (context.language) {
+        val packageDependencies = analysisByPackages()
+
+        return packageDependencies.flatMap {
+            it.toCompositionDependency()
+        }.toList().also {
+            client.saveDependencies(it)
+        }
+    }
+
+    /**
+     * This method, `analysisByPackages`, is used to analyze the dependencies of a project based on the language
+     * specified in the context.
+     * It returns a list of `PackageDependencies` objects, which represent the dependencies found in the project.
+     *
+     * @return A list of `PackageDependencies` objects representing the dependencies found in the project.
+     * @throws IllegalStateException if the language specified in the context is not supported.
+     */
+    fun analysisByPackages(): List<PackageDependencies> {
+        val packageDependencies = when (context.language) {
             "java", "kotlin" -> {
-                val depDeclarations = GradleFinder().process(path) + MavenFinder().process(path)
-                depDeclarations.flatMap {
-                    it.toCompositionDependency()
-                }.toList()
+                GradleFinder().process(path) + MavenFinder().process(path)
             }
 
             "javascript", "typescript" -> {
-                NpmFinder().process(path).flatMap {
-                    it.toCompositionDependency()
-                }.toList()
+                NpmFinder().process(path)
             }
 
             "golang" -> {
-                GoModFinder().process(path).flatMap {
-                    it.toCompositionDependency()
-                }.toList()
+                GoModFinder().process(path)
             }
 
             "rust" -> {
-                CargoFinder().process(path).flatMap {
-                    it.toCompositionDependency()
-                }
+                CargoFinder().process(path)
             }
 
             else -> throw IllegalStateException("Unsupported language: ${context.language}")
-        }.also {
-            client.saveDependencies(it)
         }
+
+        return packageDependencies
     }
 
     private fun PackageDependencies.toCompositionDependency(): List<CompositionDependency> = dependencies.map {

@@ -17,15 +17,18 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val sourceCodeContext = ArchSourceCodeContext(language = "java", path = context.path)
         val dataStructs = JavaAnalyser(sourceCodeContext)
             .analyse()
-        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = "java")).analyse()
+        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = "java"))
+            .analysisByPackages()
+
         val services = ApiCallAnalyser(sourceCodeContext).analyse(dataStructs)
 
         val workspace = Workspace(
             dataStructs,
+            projectDependencies,
             service = services
         ).analysis()
 
-        return listOf()
+        return listOf(workspace)
     }
 }
 
