@@ -5,21 +5,18 @@ import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServ
 import org.archguard.json.JsonUtils
 import org.archguard.protocol.http.HttpRequest
 import org.archguard.protocol.http.HttpRequestArg
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestMethod
 import java.lang.annotation.ElementType
 
 @Service
 class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val springCloudServiceRepository: SpringCloudServiceRepository) {
-    private val log = LoggerFactory.getLogger(HttpRequestService::class.java)
-
     fun getHttpRequests(): List<HttpRequest> {
 
         val httpRequestMethods = analyzeRequestMethods()
         val httpRequestClasses = analyzeRequestClasses()
 
-        margeHttpRequestClassToMethod(httpRequestMethods, httpRequestClasses)
+        mergeHttpRequestClassToMethod(httpRequestMethods, httpRequestClasses)
 
         return httpRequestMethods
     }
@@ -48,20 +45,23 @@ class HttpRequestService(val jAnnotationRepository: JAnnotationRepository, val s
         return jAnnotationRepository.getJAnnotationWithValueByName("RequestMapping").filter { it.targetType == ElementType.TYPE.name }.map { HttpRequest(it.targetId, HttpRequestArg(it.values.orEmpty())) }.toList()
     }
 
-    private fun margeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
+    private fun mergeHttpRequestClassToMethod(httpRequestMethods: List<HttpRequest>, httpRequestClasses: List<HttpRequest>) {
         for (httpRequestClass in httpRequestClasses) {
             val methods = springCloudServiceRepository.getMethodIdsByClassId(httpRequestClass.targetId)
-            httpRequestMethods.filter { it.targetId in methods }.forEach { it.arg.paths = margePath(httpRequestClass.arg.paths, it.arg.paths) }
+            httpRequestMethods.filter { it.targetId in methods }.forEach {
+                it.arg.paths = merge(httpRequestClass.arg.paths, it.arg.paths)
+            }
         }
     }
 
-    private fun margePath(basePaths: List<String>, paths: List<String>): List<String> {
+    private fun merge(basePaths: List<String>, paths: List<String>): List<String> {
         val finalPaths = mutableListOf<String>()
         for (basePath in basePaths) {
             for (path in paths) {
                 finalPaths.add(basePath + path)
             }
         }
+
         return finalPaths
     }
 }
