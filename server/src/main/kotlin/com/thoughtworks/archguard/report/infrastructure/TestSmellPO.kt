@@ -30,7 +30,7 @@ data class TestSmellPO(
         }
 
         val issuePosition = Json.decodeFromString<IssuePosition>(position)
-        val methodName = issuePosition.additions.get("methodName").orEmpty()
+        val methodName = issuePosition.additions["methodName"].orEmpty()
 
         return TestSmellPO(name, fullName, moduleName, packageName, className, methodName, detail, position)
     }
