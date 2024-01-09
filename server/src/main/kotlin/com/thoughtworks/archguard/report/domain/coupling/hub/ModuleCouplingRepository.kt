@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.coupling.hub
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
+import org.archguard.smell.BadSmellCalculateResult
 
 interface ModuleCouplingRepository {
     fun getCouplingAboveThreshold(systemId: Long, moduleFanInThreshold: Int, moduleFanOutThreshold: Int, offset: Long, limit: Long, orderByFanIn: Boolean): List<ModuleCoupling>

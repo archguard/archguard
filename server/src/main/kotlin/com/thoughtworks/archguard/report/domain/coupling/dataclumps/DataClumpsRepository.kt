@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.coupling.dataclumps
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
+import org.archguard.smell.BadSmellCalculateResult
 
 interface DataClumpsRepository {
     fun getLCOM4AboveThresholdCount(systemId: Long, dataClumpsLCOM4Threshold: Int): Long

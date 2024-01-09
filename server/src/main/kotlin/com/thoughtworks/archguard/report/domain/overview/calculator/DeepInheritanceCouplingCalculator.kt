@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.coupling.deepinheritance.DeepInheritanceRepository
+import org.archguard.smell.BadSmellCalculateResult
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.coupling.deepinheritance
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
+import org.archguard.smell.BadSmellCalculateResult
 
 interface DeepInheritanceRepository {
     fun getDitAboveThresholdCount(systemId: Long, threshold: Int): Long

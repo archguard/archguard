@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.domain.GroupData
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
+import org.archguard.smell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService

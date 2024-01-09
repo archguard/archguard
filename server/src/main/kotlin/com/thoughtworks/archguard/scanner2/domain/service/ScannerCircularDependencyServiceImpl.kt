@@ -1,16 +1,9 @@
 package com.thoughtworks.archguard.scanner2.domain.service
 
-import org.archguard.operator.CycleDetector
-import org.archguard.model.Dependency
-import org.archguard.graph.Graph
-import org.archguard.graph.GraphStore
-import org.archguard.graph.IdNode
-import org.archguard.model.vos.JClassVO
-import org.archguard.model.vos.JMethodVO
-import org.archguard.graph.Node
+import com.thoughtworks.archguard.scanner2.domain.Toggle
 import com.thoughtworks.archguard.scanner2.domain.repository.JClassRepository
 import com.thoughtworks.archguard.scanner2.domain.repository.JMethodRepository
-import com.thoughtworks.archguard.scanner2.domain.Toggle
+import org.archguard.model.vos.JClassVO
 import org.archguard.wrapper.CircularDependencyServiceInterface
 import org.springframework.stereotype.Service
 

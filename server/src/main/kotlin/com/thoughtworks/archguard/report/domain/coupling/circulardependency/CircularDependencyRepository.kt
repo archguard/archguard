@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.coupling.circulardependency
 
-import com.thoughtworks.archguard.report.domain.overview.calculator.BadSmellCalculateResult
+import org.archguard.smell.BadSmellCalculateResult
 
 interface CircularDependencyRepository {
     fun getCircularDependency(systemId: Long, type: CircularDependencyType, limit: Long, offset: Long): List<String>

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellLevel
+import org.archguard.smell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
@@ -18,6 +18,7 @@ import com.thoughtworks.archguard.report.domain.sizing.SizingService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.smell.BadSmellCalculateResult
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
