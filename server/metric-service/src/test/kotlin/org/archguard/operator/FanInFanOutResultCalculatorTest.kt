@@ -1,13 +1,13 @@
 package org.archguard.operator;
 
 import org.archguard.model.Dependency
-import org.archguard.model.FanInFanOut
-import org.archguard.operator.FanInFanOut.calculateFanInFanOutWithDependency
+import org.archguard.model.FanInFanOutResult
+import org.archguard.operator.FanInFanOutCalculator.calculateFanInFanOutWithDependency
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
-class FanInFanOutCalculatorTest {
+class FanInFanOutCalculatorCalculatorTest {
 
     @Test
     fun shouldCalculateFanInFanOutWithDependency() {
@@ -37,9 +37,10 @@ class FanInFanOutCalculatorTest {
         val fanInFanOutMap = calculateFanInFanOutWithDependency(allClassDependencies)
         Assertions.assertThat(fanInFanOutMap).containsExactlyInAnyOrderEntriesOf(
             mapOf(
-                "c1" to FanInFanOut(1, 3), "c2" to FanInFanOut(1, 0),
-                "c3" to FanInFanOut(1, 1), "c5" to FanInFanOut(1, 0)
+                "c1" to FanInFanOutResult(1, 3), "c2" to FanInFanOutResult(1, 0),
+                "c3" to FanInFanOutResult(1, 1), "c5" to FanInFanOutResult(1, 0)
             )
         )
     }
+
 }

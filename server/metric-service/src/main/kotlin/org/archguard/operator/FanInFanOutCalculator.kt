@@ -1,11 +1,11 @@
 package org.archguard.operator
 
 import org.archguard.model.Dependency
-import org.archguard.model.FanInFanOut
+import org.archguard.model.FanInFanOutResult
 import org.archguard.model.code.JClass
 import org.archguard.model.vos.JClassVO
 
-object FanInFanOut {
+object FanInFanOutCalculator {
     fun buildModuleDependencyFromClassDependency(
         classDependencies: Collection<Dependency<String>>,
         jClasses: List<JClass>
@@ -31,23 +31,23 @@ object FanInFanOut {
         }
     }
 
-    fun calculateFanInFanOutWithDependency(allClassDependencies: Collection<Dependency<String>>): Map<String, FanInFanOut> {
-        val fanInFanOutMap: MutableMap<String, FanInFanOut> = mutableMapOf()
+    fun calculateFanInFanOutWithDependency(allClassDependencies: Collection<Dependency<String>>): Map<String, FanInFanOutResult> {
+        val fanInFanOutResultMap: MutableMap<String, FanInFanOutResult> = mutableMapOf()
         allClassDependencies.forEach {
-            if (fanInFanOutMap.containsKey(it.caller)) {
-                val hub = fanInFanOutMap[it.caller]!!
-                fanInFanOutMap[it.caller] = FanInFanOut(hub.fanIn, hub.fanOut + 1)
+            if (fanInFanOutResultMap.containsKey(it.caller)) {
+                val hub = fanInFanOutResultMap[it.caller]!!
+                fanInFanOutResultMap[it.caller] = FanInFanOutResult(hub.fanIn, hub.fanOut + 1)
             } else {
-                fanInFanOutMap[it.caller] = FanInFanOut(0, 1)
+                fanInFanOutResultMap[it.caller] = FanInFanOutResult(0, 1)
             }
-            if (fanInFanOutMap.containsKey(it.callee)) {
-                val hub = fanInFanOutMap[it.callee]!!
-                fanInFanOutMap[it.callee] = FanInFanOut(hub.fanIn + 1, hub.fanOut)
+            if (fanInFanOutResultMap.containsKey(it.callee)) {
+                val hub = fanInFanOutResultMap[it.callee]!!
+                fanInFanOutResultMap[it.callee] = FanInFanOutResult(hub.fanIn + 1, hub.fanOut)
             } else {
-                fanInFanOutMap[it.callee] = FanInFanOut(1, 0)
+                fanInFanOutResultMap[it.callee] = FanInFanOutResult(1, 0)
             }
         }
 
-        return fanInFanOutMap
+        return fanInFanOutResultMap
     }
 }
