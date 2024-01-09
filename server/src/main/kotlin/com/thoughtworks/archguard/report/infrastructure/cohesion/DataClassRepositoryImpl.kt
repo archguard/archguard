@@ -7,6 +7,7 @@ import com.thoughtworks.archguard.report.util.NameUtil
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository
 
+// TODO: write test for verify SQL string
 @Repository
 class DataClassRepositoryImpl(val jdbi: Jdbi) : DataClassRepository {
     override fun getAllDataClassCount(systemId: Long): Long {
