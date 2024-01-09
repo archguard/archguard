@@ -7,6 +7,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.plugin.PluginType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory

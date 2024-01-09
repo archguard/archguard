@@ -5,7 +5,7 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.plugin.AbstractDependPlugin
-import com.thoughtworks.archguard.code.module.domain.plugin.PluginType
+import org.archguard.plugin.PluginType
 import org.archguard.model.Dependency
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

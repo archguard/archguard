@@ -5,6 +5,8 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import org.archguard.protocol.dubbo.ReferenceConfig
+import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

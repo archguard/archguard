@@ -9,6 +9,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.Dependency
+import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -47,7 +48,9 @@ class DobboWithXmlPluginTest {
 
         every { jClassRepository.getJClassesHasModules(systemId) } returns listOf(class2)
         every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(class3, class4)
-        every { xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, method1.clazz, method2.clazz) } returns listOf(SubModuleDubbo("any", "module3", "any"))
+        every { xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, method1.clazz, method2.clazz) } returns listOf(
+            SubModuleDubbo("any", "module3", "any")
+        )
 
         // when
         val fixedMethodDependencies = dubboPlugin.fixMethodDependencies(systemId, methodDependencies)

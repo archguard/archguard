@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain.plugin
 
 import com.thoughtworks.archguard.config.domain.ConfigureRepository
+import org.archguard.plugin.Plugin
+import org.archguard.plugin.PluginType
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Component

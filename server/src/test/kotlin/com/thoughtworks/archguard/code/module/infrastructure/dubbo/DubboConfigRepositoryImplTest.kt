@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.module.infrastructure.dubbo
 
 import com.thoughtworks.archguard.code.module.domain.dubbo.DubboConfigRepository
-import com.thoughtworks.archguard.code.module.domain.dubbo.ReferenceConfig
+import org.archguard.protocol.dubbo.ReferenceConfig
 import com.thoughtworks.archguard.code.module.domain.dubbo.ServiceConfig
-import com.thoughtworks.archguard.code.module.domain.dubbo.SubModuleDubbo
+import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

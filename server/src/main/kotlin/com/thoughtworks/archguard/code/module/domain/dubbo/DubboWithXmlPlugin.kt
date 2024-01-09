@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
-import com.thoughtworks.archguard.code.module.domain.plugin.PluginType
+import org.archguard.plugin.PluginType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

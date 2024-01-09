@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.module.domain.plugin
+package org.archguard.plugin
 
 enum class PluginType {
     DUBBO,
