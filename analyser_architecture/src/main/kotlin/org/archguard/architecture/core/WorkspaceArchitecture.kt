@@ -58,11 +58,10 @@ class ArchOverview(
     val lineCounts: List<String>,
 )
 
-// from GitTags
+/// from GitTags
 enum class DevelMethodology {
     // 频繁的 tag 发布
     Agile,
-
     // 没有 Tag
     Waterfall,
     Unknown
@@ -104,11 +103,9 @@ enum class ArchitectureStyle {
     Unknown
 }
 
-// from file name: like repository, controller, services
+///
 enum class CodeStructureStyle {
     MVC,
-
-    // examples: https://github.com/domain-driven-design/ddd-lite-example
     ModuleDDD,
     DDD,
     CLEAN,

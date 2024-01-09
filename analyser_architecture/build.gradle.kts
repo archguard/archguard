@@ -13,6 +13,7 @@ dependencies {
 
     // analysis software composition analysis
     implementation(projects.analyserSca)
+    implementation(projects.analyserEstimate)
 
     // architecture will load Database, HttpAPIs
     implementation(projects.analyserSourcecode.featDatamap)
