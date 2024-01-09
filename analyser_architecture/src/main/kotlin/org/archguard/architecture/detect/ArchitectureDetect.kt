@@ -15,8 +15,8 @@ import org.archguard.architecture.techstack.FrameworkMarkup
 @Serializable
 data class PotentialExecArch(
     var layeredStyle: CodeStructureStyle = CodeStructureStyle.UNKNOWN,
-    var protocols: List<String> = listOf(),
-    var appTypes: List<String> = listOf(),
+    var protocols: List<OutboundProtocol> = listOf(),
+    var appTypes: List<AppType> = listOf(),
     var connectorTypes: List<ConnectorType> = listOf(),
     var coreStacks: List<String> = listOf(),
     var concepts: List<CodeDataStruct> = listOf()
@@ -94,14 +94,14 @@ class ArchitectureDetect {
                 // app types
                 appTypeMap.forEach {
                     if (depEntry.name.startsWith(it.key)) {
-                        potentialExecArch.appTypes += it.value
+                        potentialExecArch.appTypes += AppType.fromString(it.value)
                     }
                 }
 
                 // protocols
                 protocols.forEach {
                     if (depEntry.name.startsWith(it.key)) {
-                        potentialExecArch.protocols += it.value
+                        potentialExecArch.protocols += OutboundProtocol.fromString(it.value)
                     }
                 }
 

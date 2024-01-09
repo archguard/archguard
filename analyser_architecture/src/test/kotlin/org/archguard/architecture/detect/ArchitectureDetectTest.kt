@@ -30,7 +30,7 @@ internal class ArchitectureDetectTest {
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, listOf(packageDependencies))
-        Assertions.assertEquals("web", potentialExecArch.appTypes[0])
+        Assertions.assertEquals(AppType.Web, potentialExecArch.appTypes[0])
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class ArchitectureDetectTest {
         )
 
         val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, listOf(packageDependencies))
-        Assertions.assertEquals("rpc", potentialExecArch.protocols[0])
+        Assertions.assertEquals(OutboundProtocol.RPC, potentialExecArch.protocols[0])
     }
 
     @Test
