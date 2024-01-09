@@ -23,7 +23,7 @@ class OverviewService(val systemOverviewRepository: SystemOverviewRepository) {
     fun getOverview(systemId: Long): BadSmellOverviewDto {
         return BadSmellOverviewDto(
             BadSmellType.values()
-                .mapNotNull { it.calculate(systemId) }
+                .mapNotNull { it.badSmellCalculator?.getBadSmellOverviewItem(systemId, it) }
         )
     }
 

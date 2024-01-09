@@ -99,7 +99,7 @@ class DashboardService(
             .map {
                 GroupData(
                     it,
-                    it.calculate(systemId)?.level
+                    it.badSmellCalculator?.getBadSmellOverviewItem(systemId, it)?.level
                         ?: BadSmellLevel.A,
                     queryReport(systemId, it, reportName)
                 )

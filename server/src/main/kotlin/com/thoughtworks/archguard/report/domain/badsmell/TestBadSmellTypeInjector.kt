@@ -5,11 +5,12 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
-class BadSmellTypeInjector(
+class TestBadSmellTypeInjector(
     val moduleCalculator: ModuleOverSizingCalculator,
     val packageCalculator: PackageOverSizingCalculator,
     val classCalculator: ClassOverSizingCalculator,
     val methodCalculator: MethodOverSizingCalculator,
+
     val classHubCalculator: ClassHubCouplingCalculator,
     val methodHubCalculator: MethodHubCouplingCalculator,
     val packageHubCalculator: PackageHubCouplingCalculator,
@@ -20,7 +21,10 @@ class BadSmellTypeInjector(
     val redundantElementCalculator: RedundantElementCalculator,
     val overGeneralizationCalculator: OverGeneralizationCalculator,
     val dataClassCalculator: DataClassCalculator,
-    val shotgunSurgeryCalculator: ShotgunSurgeryCalculator
+    val shotgunSurgeryCalculator: ShotgunSurgeryCalculator,
+    val testSleepCalculator: TestSleepCalculator,
+    val testUnassertCalculator: TestUnassertCalculator,
+    val testIgnoreCalculator: TestIgnoreCalculator
 ) {
     @PostConstruct
     fun postConstruct() {
@@ -42,5 +46,9 @@ class BadSmellTypeInjector(
 
         BadSmellType.DATA_CLASS.badSmellCalculator = dataClassCalculator
         BadSmellType.SHOTGUN_SURGERY.badSmellCalculator = shotgunSurgeryCalculator
+
+        BadSmellType.IGNORE_TEST.badSmellCalculator = testIgnoreCalculator
+        BadSmellType.SLEEP_TEST.badSmellCalculator = testSleepCalculator
+        BadSmellType.UN_ASSERT_TEST.badSmellCalculator = testUnassertCalculator
     }
 }

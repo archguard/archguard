@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 import org.archguard.smell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
+import com.thoughtworks.archguard.report.domain.badsmell.TestBadSmellTypeInjector
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
@@ -105,7 +106,7 @@ internal class BadSmellCalculatorTest {
         shotgunSurgeryCalculator = ShotgunSurgeryCalculator(shotgunSurgeryService)
         dataClassCalculator = DataClassCalculator(dataClassRepository)
 
-        BadSmellType.BadSmellTypeInjector(
+        TestBadSmellTypeInjector(
             moduleCalculator, packageCalculator, classCalculator, methodCalculator,
             classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
             dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
@@ -119,7 +120,7 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_class_hub_bad_smell_result() {
         val mockResult = BadSmellCalculateResult(3, 3, 3)
         every { classCouplingRepository.getCouplingAboveBadSmellCalculateResult(any(), any()) } returns mockResult
-        val result = BadSmellType.CLASSHUB.calculate(1)
+        val result = BadSmellType.CLASSHUB.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.CLASSHUB)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CLASSHUB.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
@@ -131,7 +132,7 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_Data_clumps_bad_smell_result() {
         val mockResult = BadSmellCalculateResult(0, 0, 0)
         every { dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(any(), any()) } returns mockResult
-        val result = BadSmellType.DATACLUMPS.calculate(1)
+        val result = BadSmellType.DATACLUMPS.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DATACLUMPS)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DATACLUMPS.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
@@ -143,7 +144,8 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_deep_inheritance_bad_smell_result() {
         val mockResult = BadSmellCalculateResult(5, 0, 0)
         every { deepInheritanceRepository.getDitAboveBadSmellCalculateResult(any(), any()) } returns mockResult
-        val result = BadSmellType.DEEPINHERITANCE.calculate(1)
+        val result =
+            BadSmellType.DEEPINHERITANCE.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.DEEPINHERITANCE)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.DEEPINHERITANCE.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
@@ -155,7 +157,8 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_module_sizing_bad_smell_result() {
         every { sizingService.getModuleSizingSmellCount(1) } returns 8L
 
-        val result = BadSmellType.SIZINGMODULES.calculate(1)
+        val result =
+            BadSmellType.SIZINGMODULES.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGMODULES)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMODULES.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
@@ -167,7 +170,8 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_package_sizing_bad_smell_result() {
         every { sizingService.getPackageSizingSmellCount(1) } returns 9
 
-        val result = BadSmellType.SIZINGPACKAGE.calculate(1)
+        val result =
+            BadSmellType.SIZINGPACKAGE.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGPACKAGE)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGPACKAGE.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
@@ -179,7 +183,7 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_class_sizing_bad_smell_result() {
         every { sizingService.getClassSizingSmellCount(1) } returns 2
 
-        val result = BadSmellType.SIZINGCLASS.calculate(1)
+        val result = BadSmellType.SIZINGCLASS.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGCLASS)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGCLASS.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
@@ -190,7 +194,7 @@ internal class BadSmellCalculatorTest {
     fun should_calculate_method_sizing_bad_smell_result() {
         every { sizingService.getMethodSizingSmellCount(1) } returns 1
 
-        val result = BadSmellType.SIZINGMETHOD.calculate(1)
+        val result = BadSmellType.SIZINGMETHOD.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.SIZINGMETHOD)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.SIZINGMETHOD.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.SIZING.value)
@@ -200,9 +204,16 @@ internal class BadSmellCalculatorTest {
     @Test
     fun should_calculate_circular_denpendency_bad_smell_result() {
         val mockResult = BadSmellCalculateResult(12, 23, 34)
-        every { circularDenpendencyRepository.getCircularDependencyBadSmellCalculateResult(any(), any(), any()) } returns mockResult
+        every {
+            circularDenpendencyRepository.getCircularDependencyBadSmellCalculateResult(
+                any(),
+                any(),
+                any()
+            )
+        } returns mockResult
 
-        val result = BadSmellType.CYCLEDEPENDENCY.calculate(1)
+        val result =
+            BadSmellType.CYCLEDEPENDENCY.badSmellCalculator?.getBadSmellOverviewItem(1, BadSmellType.CYCLEDEPENDENCY)
 
         assertThat(result?.badSmell).isEqualTo(BadSmellType.CYCLEDEPENDENCY.value)
         assertThat(result?.category).isEqualTo(DashboardGroup.COUPLING.value)
