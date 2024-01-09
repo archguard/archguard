@@ -29,7 +29,7 @@ internal class ArchitectureDetectTest {
             ""
         )
 
-        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, packageDependencies)
+        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, listOf(packageDependencies))
         Assertions.assertEquals("web", potentialExecArch.appTypes[0])
     }
 
@@ -50,7 +50,7 @@ internal class ArchitectureDetectTest {
             ""
         )
 
-        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, packageDependencies)
+        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, listOf(packageDependencies))
         Assertions.assertEquals("rpc", potentialExecArch.protocols[0])
     }
 
@@ -82,7 +82,7 @@ internal class ArchitectureDetectTest {
             ""
         )
 
-        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, packageDependencies)
+        val potentialExecArch = ArchitectureDetect().inferenceByDependencies(markup, listOf(packageDependencies))
         Assertions.assertEquals("org.springframework.boot", potentialExecArch.coreStacks[0])
     }
 
