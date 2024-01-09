@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory
  * @property name The name of the submodule.
  */
 data class SubModule(val name: String) : LogicComponent() {
-    private val log = LoggerFactory.getLogger(SubModule::class.java)
-
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
         return logicComponent.getType() == LogicModuleMemberType.SUBMODULE && logicComponent.getFullName() == this.getFullName()
     }

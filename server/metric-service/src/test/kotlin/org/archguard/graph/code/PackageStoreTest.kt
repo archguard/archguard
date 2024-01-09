@@ -1,4 +1,4 @@
-package org.archguard.graph.code;
+package org.archguard.graph.code
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
