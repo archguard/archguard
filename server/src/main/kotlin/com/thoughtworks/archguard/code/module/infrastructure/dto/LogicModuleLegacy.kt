@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.infrastructure.dto
 
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
+import org.archguard.arch.LogicModule
+import org.archguard.arch.LogicModuleStatus
 import java.util.UUID
 
 @Deprecated(message = "we are going to replace with LogicModule")

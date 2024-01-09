@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain
 
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import io.mockk.MockKAnnotations
 import io.mockk.Runs

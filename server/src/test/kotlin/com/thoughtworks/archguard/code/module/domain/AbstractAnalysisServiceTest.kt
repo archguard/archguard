@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.code.module.domain
 import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.PackageVO
 import com.thoughtworks.archguard.code.module.domain.model.SubModule
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService

@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleService
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.graph.GraphService
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.infrastructure.dto.LogicModuleLegacy
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
@@ -42,7 +42,8 @@ class LogicModuleControllerTest {
     fun `should get all logic modules`() {
         val systemId: Long = 1
         // given
-        val logicModules = listOf(LogicModule.createWithOnlyLeafMembers("id", "name",
+        val logicModules = listOf(
+            LogicModule.createWithOnlyLeafMembers("id", "name",
             listOf(LeafManger.createLeaf("module"))))
         every { service.getLogicModules(systemId) } returns logicModules
 

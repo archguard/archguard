@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.module.domain.model.LogicModuleStatus
+import org.archguard.arch.LogicModuleStatus
 import java.util.UUID
 
 class LogicModuleWithCompositeNodes(var id: String?, val name: String, val lgMembers: List<String>, var status: LogicModuleStatus = LogicModuleStatus.NORMAL) {

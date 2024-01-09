@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.archguard.arch.LogicComponent
-import org.archguard.arch.ModuleMemberType
+import org.archguard.arch.LogicModuleMemberType
 import org.archguard.graph.Node
 
 /**
@@ -11,7 +11,7 @@ import org.archguard.graph.Node
 class JClassVO(val name: String, val module: String?) : LogicComponent(), Node {
     var id: String? = null
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
-        return logicComponent.getType() == ModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
+        return logicComponent.getType() == LogicModuleMemberType.CLASS && logicComponent.getFullName() == this.getFullName()
     }
 
     companion object {
@@ -25,8 +25,8 @@ class JClassVO(val name: String, val module: String?) : LogicComponent(), Node {
         return "$module.$name"
     }
 
-    override fun getType(): ModuleMemberType {
-        return ModuleMemberType.CLASS
+    override fun getType(): LogicModuleMemberType {
+        return LogicModuleMemberType.CLASS
     }
 
     override fun toString(): String {

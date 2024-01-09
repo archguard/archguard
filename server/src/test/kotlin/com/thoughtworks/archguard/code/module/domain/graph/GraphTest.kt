@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.clazz.domain.JField
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import org.archguard.graph.Edge
 import org.archguard.graph.GraphStore
 import org.assertj.core.api.Assertions.assertThat

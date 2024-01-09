@@ -4,7 +4,7 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
 import io.mockk.MockKAnnotations

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
 import org.archguard.arch.LogicComponent
-import org.archguard.arch.ModuleMemberType
+import org.archguard.arch.LogicModuleMemberType
 import org.slf4j.LoggerFactory
 
 /**
@@ -11,15 +11,15 @@ class SubModule(val name: String) : LogicComponent() {
     private val log = LoggerFactory.getLogger(SubModule::class.java)
 
     override fun containsOrEquals(logicComponent: LogicComponent): Boolean {
-        return logicComponent.getType() == ModuleMemberType.SUBMODULE && logicComponent.getFullName() == this.getFullName()
+        return logicComponent.getType() == LogicModuleMemberType.SUBMODULE && logicComponent.getFullName() == this.getFullName()
     }
 
     override fun getFullName(): String {
         return name
     }
 
-    override fun getType(): ModuleMemberType {
-        return ModuleMemberType.SUBMODULE
+    override fun getType(): LogicModuleMemberType {
+        return LogicModuleMemberType.SUBMODULE
     }
 
     override fun toString(): String {

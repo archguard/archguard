@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain
 
 import org.archguard.arch.LogicComponent
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import org.springframework.stereotype.Service
 import java.util.UUID

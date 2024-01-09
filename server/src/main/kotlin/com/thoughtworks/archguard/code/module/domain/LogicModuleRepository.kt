@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.module.domain.model.LogicModule
+import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.SubModule
 
 interface LogicModuleRepository {

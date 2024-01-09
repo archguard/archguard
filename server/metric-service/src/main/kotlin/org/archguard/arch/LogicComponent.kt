@@ -18,11 +18,7 @@ abstract class LogicComponent {
 
     abstract fun containsOrEquals(logicComponent: LogicComponent): Boolean
     abstract fun getFullName(): String
-    abstract fun getType(): ModuleMemberType
+    abstract fun getType(): LogicModuleMemberType
 
     abstract override fun toString(): String
-}
-
-enum class ModuleMemberType {
-    SUBMODULE, CLASS, LOGIC_MODULE
 }

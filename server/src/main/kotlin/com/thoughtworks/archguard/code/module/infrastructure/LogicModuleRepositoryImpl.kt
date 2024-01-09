@@ -4,7 +4,9 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.code.module.domain.model.*
 import org.archguard.arch.LogicComponent
-import org.archguard.arch.ModuleMemberType
+import org.archguard.arch.LogicModule
+import org.archguard.arch.LogicModuleStatus
+import org.archguard.arch.LogicModuleMemberType
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -141,10 +143,10 @@ fun generateTableSqlTemplateWithModuleModules(members: List<LogicComponent>): St
     var tableTemplate = "select * from code_method where ("
     val filterConditions = ArrayList<String>()
     members.forEach { s ->
-        if (s.getType() == ModuleMemberType.SUBMODULE) {
+        if (s.getType() == LogicModuleMemberType.SUBMODULE) {
             filterConditions.add("module = '${s.getFullName()}'")
         }
-        if (s.getType() == ModuleMemberType.CLASS) {
+        if (s.getType() == LogicModuleMemberType.CLASS) {
             val jclass = s as JClassVO
             filterConditions.add("(module = '${jclass.module}' and clzname like '${jclass.name + "."}%')")
             filterConditions.add("(module = '${jclass.module}' and clzname='${jclass.name}')")
