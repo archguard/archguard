@@ -1,7 +1,5 @@
 package org.archguard.protocol.dubbo
 
-import org.archguard.protocol.dubbo.SubModuleDubbo
-
 data class ServiceConfig(
     val id: String,
     val interfaceName: String,
