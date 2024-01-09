@@ -11,6 +11,17 @@ dependencies {
     implementation(projects.meta)
     implementation(projects.scannerCore)
 
+    // analysis software composition analysis
+    implementation(projects.analyserSca)
+
+    // architecture will load Database, HttpAPIs
+    implementation(projects.analyserSourcecode.featDatamap)
+    implementation(projects.analyserSourcecode.featApicalls)
+
+    // analysis source code
+    implementation(projects.analyserSourcecode.langJava)
+    implementation(projects.analyserSourcecode.langKotlin)
+
     testImplementation(libs.bundles.test)
 }
 
