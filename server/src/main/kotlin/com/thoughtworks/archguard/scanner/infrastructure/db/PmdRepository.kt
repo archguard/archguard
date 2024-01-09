@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.scanner.infrastructure.db
 
+import com.thoughtworks.archguard.scanner.domain.scanner.javaext.pmd.Violation
 import org.jdbi.v3.core.Jdbi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository

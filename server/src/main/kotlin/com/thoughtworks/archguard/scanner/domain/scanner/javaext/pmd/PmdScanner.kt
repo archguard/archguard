@@ -3,7 +3,6 @@ package com.thoughtworks.archguard.scanner.domain.scanner.javaext.pmd
 import com.thoughtworks.archguard.scanner.domain.scanner.Scanner
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 import com.thoughtworks.archguard.scanner.infrastructure.db.PmdRepository
-import com.thoughtworks.archguard.scanner.infrastructure.db.Violation
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import org.slf4j.Logger

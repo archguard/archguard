@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.scanner.infrastructure.db
+package com.thoughtworks.archguard.scanner.domain.scanner.javaext.pmd
 
 data class Violation(
     val systemId: Long,
