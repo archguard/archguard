@@ -89,12 +89,12 @@ class TreeNodeTest {
 
         // then
         val expectedOutput = """
-            root
-              org
-                archguard
-                  architecture
-                  backend
-        """.trimIndent()
+        root
+          org
+            archguard
+              architecture
+              backend
+    """.trimIndent().replace("\n", System.lineSeparator())
 
         assertEquals(expectedOutput, output)
     }
