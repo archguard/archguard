@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import org.archguard.smell.BadSmellLevel
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import com.thoughtworks.archguard.report.domain.badsmell.BadSmellTypeInjector
 import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
-import com.thoughtworks.archguard.report.domain.badsmell.TestBadSmellTypeInjector
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository
@@ -78,15 +78,6 @@ internal class BadSmellCalculatorTest {
     @MockK
     lateinit var shotgunSurgeryService: ShotgunSurgeryService
 
-    @MockK
-    lateinit var sleepCalculator: TestSleepCalculator
-
-    @MockK
-    lateinit var ignoreCalculator: TestIgnoreCalculator
-
-    @MockK
-    lateinit var unassertCalculator: TestUnassertCalculator
-
     @BeforeEach
     internal fun setUp() {
         MockKAnnotations.init(this)
@@ -106,14 +97,13 @@ internal class BadSmellCalculatorTest {
         shotgunSurgeryCalculator = ShotgunSurgeryCalculator(shotgunSurgeryService)
         dataClassCalculator = DataClassCalculator(dataClassRepository)
 
-        TestBadSmellTypeInjector(
+        BadSmellTypeInjector(
             moduleCalculator, packageCalculator, classCalculator, methodCalculator,
             classHubCalculator, methodHubCalculator, packageHubCalculator, moduleHubCalculator,
             dataClumpsCalculator, deepInheritanceCalculator, circularDependencyCalculator,
             redundantElementCalculator, overGeneralizationCalculator,
-            dataClassCalculator, shotgunSurgeryCalculator, sleepCalculator, unassertCalculator, ignoreCalculator
-        )
-            .postConstruct()
+            dataClassCalculator, shotgunSurgeryCalculator
+        ).postConstruct()
     }
 
     @Test
