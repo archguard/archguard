@@ -1,5 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
+import org.archguard.model.vos.JClassVO
+
 class PackageVO(val packageName: String, val module: String) {
 
     fun containClass(jClassVO: JClassVO): Boolean {

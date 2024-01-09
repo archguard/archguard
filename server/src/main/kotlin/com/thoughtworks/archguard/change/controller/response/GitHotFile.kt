@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.change.controller.response
 
 import com.thoughtworks.archguard.change.domain.model.GitHotFile
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
+import org.archguard.model.vos.JClassVO
 
 class GitHotFile(private val gitHotFile: GitHotFile) {
     val jclassId: String

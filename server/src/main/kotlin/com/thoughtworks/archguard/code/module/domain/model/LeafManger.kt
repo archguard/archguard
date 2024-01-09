@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.model
 
 import org.archguard.arch.LogicComponent
+import org.archguard.model.vos.JClassVO
 
 object LeafManger {
     fun createLeaf(name: String): LogicComponent {

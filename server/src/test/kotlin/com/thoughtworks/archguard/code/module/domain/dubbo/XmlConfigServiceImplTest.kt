@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.vos.JClassVO
 import org.archguard.protocol.dubbo.ReferenceConfig
 import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
@@ -34,7 +34,9 @@ internal class XmlConfigServiceImplTest {
         val serviceConfig = ServiceConfig("service_id1", "callee1", "callee1A", null, "g1", calleeImplSubModule)
 
         every { dubboConfigRepository.getSubModuleByName(systemId, "module1") } returns callerSubModule
-        every { dubboConfigRepository.getReferenceConfigBy(systemId, "callee1", callerSubModule) } returns listOf(referenceConfig)
+        every { dubboConfigRepository.getReferenceConfigBy(systemId, "callee1", callerSubModule) } returns listOf(
+            referenceConfig
+        )
         every { dubboConfigRepository.getServiceConfigBy(systemId, referenceConfig) } returns listOf(serviceConfig)
 
         val module = service.getRealCalleeModuleByXmlConfig(systemId, callerClass, calleeClass)

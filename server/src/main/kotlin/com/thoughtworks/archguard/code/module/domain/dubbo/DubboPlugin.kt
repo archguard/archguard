@@ -2,11 +2,11 @@ package com.thoughtworks.archguard.code.module.domain.dubbo
 
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.plugin.AbstractDependPlugin
 import org.archguard.plugin.PluginType
 import org.archguard.model.Dependency
+import org.archguard.model.vos.JClassVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -41,7 +41,11 @@ class DubboPlugin : AbstractDependPlugin() {
         return mapCalleeToReal(systemId, caller, callee).map { Dependency(caller, it) }
     }
 
-    fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO> {
+    fun mapCalleeToReal(
+        systemId: Long,
+        caller: JClassVO,
+        callee: JClassVO
+    ): List<JClassVO> {
         return jClassRepository.findClassImplements(systemId, callee.name, callee.module!!).map { it.toVO() }
     }
 

@@ -7,6 +7,7 @@ import org.archguard.arch.LogicComponent
 import org.archguard.arch.LogicModule
 import org.archguard.arch.LogicModuleStatus
 import org.archguard.arch.LogicModuleMemberType
+import org.archguard.model.vos.JClassVO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

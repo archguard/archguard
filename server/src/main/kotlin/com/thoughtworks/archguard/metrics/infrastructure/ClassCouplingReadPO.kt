@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
+import org.archguard.model.vos.JClassVO
 
 class ClassCouplingReadPO(
     var classId: String,

@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.clazz.domain
 
 import com.thoughtworks.archguard.code.method.domain.JMethod
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.model.vos.JClassVO
 import org.slf4j.LoggerFactory
 
 /**

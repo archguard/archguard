@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.DependPlugin
@@ -11,6 +10,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.Dependency
+import org.archguard.model.vos.JClassVO
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,9 +45,21 @@ class GraphServiceTest {
             listOf(LeafManger.createLeaf("submodule3.class")))
         val logicModules = listOf(logicModule1, logicModule2, logicModule3)
 
-        val dependency1 = Dependency(JClassVO("class", "submodule1"), JClassVO("class", "submodule2"))
-        val dependency2 = Dependency(JClassVO("class", "submodule1"), JClassVO("class", "submodule3"))
-        val dependency3 = Dependency(JClassVO("class", "submodule2"), JClassVO("class", "submodule3"))
+        val dependency1 =
+            Dependency(
+                JClassVO("class", "submodule1"),
+                JClassVO("class", "submodule2")
+            )
+        val dependency2 =
+            Dependency(
+                JClassVO("class", "submodule1"),
+                JClassVO("class", "submodule3")
+            )
+        val dependency3 =
+            Dependency(
+                JClassVO("class", "submodule2"),
+                JClassVO("class", "submodule3")
+            )
         val dependencies = listOf(dependency1, dependency2, dependency3)
 
         every { pluginManager.getDependPlugin<DependPlugin>(systemId) } returns emptyList()

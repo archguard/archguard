@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.metrics.infrastructure
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingInfluxDTO
 import com.thoughtworks.archguard.metrics.infrastructure.influx.ClassCouplingListInfluxDTO
+import org.archguard.model.vos.JClassVO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -11,8 +11,18 @@ internal class ClassCouplingListInfluxDTOTest {
     @Test
     internal fun should_generate_influx_request_string() {
         val classCouplings = listOf(
-            ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 0, 4),
-            ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.OtherService", "dubbo-service"), 0, 0, 1, 3)
+            ClassCoupling(
+                JClassVO(
+                    "net.aimeizi.dubbo.service.service.UserService",
+                    "dubbo-service"
+                ), 0, 0, 0, 4
+            ),
+            ClassCoupling(
+                JClassVO(
+                    "net.aimeizi.dubbo.service.service.OtherService",
+                    "dubbo-service"
+                ), 0, 0, 1, 3
+            )
         )
         val classCouplingDtoListForWriteInfluxDB = ClassCouplingListInfluxDTO(0, classCouplings)
 
@@ -29,7 +39,12 @@ internal class ClassCouplingListInfluxDTOTest {
     internal fun should_convert_object_to_influx_request_body() {
         val classCouplingDtoForWriteInfluxDB = ClassCouplingInfluxDTO(
             0,
-            ClassCoupling(JClassVO("net.aimeizi.dubbo.service.service.UserService", "dubbo-service"), 0, 0, 4, 0)
+            ClassCoupling(
+                JClassVO(
+                    "net.aimeizi.dubbo.service.service.UserService",
+                    "dubbo-service"
+                ), 0, 0, 4, 0
+            )
         )
 
         val toInfluxDBRequestBody = classCouplingDtoForWriteInfluxDB.toInfluxDBRequestBody()

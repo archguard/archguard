@@ -12,7 +12,7 @@ class CircularDependencyMetricRepositoryImpl(val jdbi: Jdbi) : ScannerCircularDe
     override fun insertOrUpdateClassCircularDependency(systemId: Long, classCircularDependency: List<List<JClassVO>>) {
         deleteCircularDependency(systemId, type = CircularDependencyType.CLASS)
         classCircularDependency.forEach {
-            val circularDependency = it.joinToString(separator = ";") { it.fullName }
+            val circularDependency = it.joinToString(separator = ";") { it.getFullName() }
             saveCircularDependency(systemId, circularDependency, CircularDependencyType.CLASS)
         }
     }

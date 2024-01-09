@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.JClassVO
 
 interface CouplingService {
     fun persistAllClassCouplingResults(systemId: Long)

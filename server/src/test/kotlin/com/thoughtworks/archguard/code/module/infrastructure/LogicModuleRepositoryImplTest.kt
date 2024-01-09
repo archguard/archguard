@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LeafManger
 import org.archguard.arch.LogicModule
+import org.archguard.model.vos.JClassVO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

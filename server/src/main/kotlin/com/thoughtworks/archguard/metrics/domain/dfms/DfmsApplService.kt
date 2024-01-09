@@ -4,11 +4,11 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.PackageVO
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import com.thoughtworks.archguard.metrics.domain.abstracts.ClassAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
+import org.archguard.model.vos.JClassVO
 import org.springframework.stereotype.Service
 
 @Service

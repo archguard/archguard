@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.module.domain.model.JClassVO
+import org.archguard.model.vos.JClassVO
 import org.archguard.plugin.PluginType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,7 +15,11 @@ class DubboWithXmlPlugin : DubboPlugin() {
         return PluginType.DUBBO_WITH_XML
     }
 
-    override fun mapCalleeToReal(systemId: Long, caller: JClassVO, callee: JClassVO): List<JClassVO> {
+    override fun mapCalleeToReal(
+        systemId: Long,
+        caller: JClassVO,
+        callee: JClassVO
+    ): List<JClassVO> {
         val implements = jClassRepository.findClassImplements(systemId, callee.name, callee.module!!).map { it.toVO() }
         val calleeSubModuleByXml = xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, caller, callee)
         val realCallee = implements.filter { calleeSubModuleByXml.any { subModuleDubbo -> subModuleDubbo.name == it.module } }
