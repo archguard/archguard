@@ -1,6 +1,7 @@
 package org.archguard.architecture.layered
 
 import io.kotest.matchers.shouldBe
+import org.archguard.architecture.biz.ChannelType
 import org.junit.jupiter.api.Test
 
 class ChannelTypeTest {

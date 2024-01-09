@@ -1,6 +1,7 @@
 package org.archguard.architecture.core
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.architecture.ArchitectureView
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.scanner.core.sourcecode.ContainerService
 
@@ -9,13 +10,15 @@ import org.archguard.scanner.core.sourcecode.ContainerService
  *
  * @property dataStructs the analysis result of projects.
  * @property projectDependencies the analysis result of package manager's config.
- * @property port the analysis result of container services.
- * @property languages the overview of project languages.
+ * @property service the analysis result of container services.
  *
  */
 class Workspace(
     val dataStructs: List<CodeDataStruct> = listOf(),
     val projectDependencies: PackageDependencies = PackageDependencies("", "", "", listOf(), ""),
-    val port: ContainerService = ContainerService(),
-    val languages: List<CodeLanguage> = listOf(),
-)
+    val service: List<ContainerService> = listOf(),
+) {
+    fun analysis(): ArchitectureView {
+        return ArchitectureView()
+    }
+}

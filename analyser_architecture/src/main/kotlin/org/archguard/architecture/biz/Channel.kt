@@ -1,4 +1,4 @@
-package org.archguard.architecture.layered
+package org.archguard.architecture.biz
 
 enum class ChannelType(val displayName: String) {
     WEBSITE("Website"),

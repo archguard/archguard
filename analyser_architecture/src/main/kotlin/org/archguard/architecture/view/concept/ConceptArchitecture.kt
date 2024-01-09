@@ -6,10 +6,9 @@ package org.archguard.architecture.view.concept
  * If it has more than one identity，may need be divided to more than one module.
  */
 class ConceptArchitecture(
-    val type: org.archguard.architecture.view.concept.ConceptType,
-    val domainModels: List<org.archguard.architecture.view.concept.DomainModel>,
-    val reliability: Float,
-    val desc: String,
-    val comment: String
+    val type: ConceptType = ConceptType.CComponent,
+    val domainModels: List<DomainModel> = listOf(),
+    val reliability: Float = 0.0f,
+    val desc: String = "",
 )
 

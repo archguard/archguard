@@ -7,5 +7,4 @@ class DocumentAnalyser(override val context: DocumentContext) : org.archguard.sc
     override fun analyse(): List<DocumentChunk> {
         return listOf()
     }
-
 }
