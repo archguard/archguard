@@ -44,6 +44,7 @@ class ShotgunSurgeryRepositoryImpl(val jdbi: Jdbi) : ShotgunSurgeryRepository {
                 .mapTo(ShotgunSurgeryPO::class.java)
                 .list()
         }
+
         return ShotgunSurgeryPO.from(shotgunSurgeryPOList.groupBy { it.commitId })
     }
 }
