@@ -1,3 +1,6 @@
 package org.archguard.architecture.view.module.layer
 
-class MComponent(name: String) : org.archguard.architecture.view.module.layer.MModule(name)
+import kotlinx.serialization.Serializable
+
+@Serializable
+class MComponent(val name: String)

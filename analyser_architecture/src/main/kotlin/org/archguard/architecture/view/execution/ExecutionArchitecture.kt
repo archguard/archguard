@@ -1,5 +1,8 @@
 package org.archguard.architecture.view.execution
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class ExecutionArchitecture(
     val connectionType: ConnectionType = ConnectionType.INBOUND,
     val connectorStyle: ConnectorStyle = ConnectorStyle.HTTP,

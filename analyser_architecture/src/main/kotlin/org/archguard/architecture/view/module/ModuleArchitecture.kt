@@ -1,8 +1,9 @@
 package org.archguard.architecture.view.module
 
-interface ModuleArchitecture
+import kotlinx.serialization.Serializable
 
-class Dependency(val type: DependencyType, val dependent: String, val dependence: String)
+@Serializable
+sealed interface ModuleArchitecture
 
 enum class DependencyType {
     Notify,

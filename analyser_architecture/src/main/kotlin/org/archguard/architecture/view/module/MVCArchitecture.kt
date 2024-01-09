@@ -1,6 +1,6 @@
-package org.archguard.architecture.view.module.mvc
+package org.archguard.architecture.view.module
 
-import org.archguard.architecture.view.module.Dependency
+import org.archguard.architecture.view.module.shared.Dependency
 
 class MVCArchitecture(
     val models: List<Model>,
@@ -8,7 +8,7 @@ class MVCArchitecture(
     val controllers: List<Controller>,
     val dependencies: List<Dependency>
 ) :
-    org.archguard.architecture.view.module.ModuleArchitecture
+    ModuleArchitecture
 
 class Model
 

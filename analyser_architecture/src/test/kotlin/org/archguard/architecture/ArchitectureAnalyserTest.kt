@@ -1,5 +1,7 @@
 package org.archguard.architecture;
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -19,7 +21,8 @@ class ArchitectureAnalyserTest {
         val result = analyser.analyse()
 
         // Then
+        println(Json.encodeToString(result))
         assertEquals(1, result.size)
-        assertEquals(ArchitectureView::class, result[0]::class)
+        assertEquals(result[0].conceptArchitecture.domainModels.size, 3)
     }
 }

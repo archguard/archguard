@@ -1,3 +1,6 @@
 package org.archguard.architecture.view.execution
 
-class Component
+import kotlinx.serialization.Serializable
+
+@Serializable
+class Component(val name: String)

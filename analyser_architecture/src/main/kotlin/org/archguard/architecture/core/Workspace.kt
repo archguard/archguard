@@ -24,7 +24,6 @@ class Workspace(
 ) {
     fun analysis(): ArchitectureView {
         val identPotential = ArchitectureDetect().identPotential(this)
-        println(identPotential)
         return ArchitectureView(
             conceptArchitecture = ConceptArchitecture(
                 domainModels = DomainModel.from(identPotential.concepts)
