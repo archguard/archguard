@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.domain.coupling
 
 import org.archguard.arch.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.PackageVO
 import org.archguard.model.vos.JClassVO
 
 interface CouplingService {

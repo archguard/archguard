@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain
 
 import org.archguard.arch.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.SubModule
+import org.archguard.arch.SubModule
 
 interface LogicModuleRepository {
     fun getAllByShowStatus(systemId: Long, isShow: Boolean): List<LogicModule>

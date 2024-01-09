@@ -3,10 +3,7 @@ package com.thoughtworks.archguard.code.module.infrastructure
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.code.module.domain.model.*
-import org.archguard.arch.LogicComponent
-import org.archguard.arch.LogicModule
-import org.archguard.arch.LogicModuleStatus
-import org.archguard.arch.LogicModuleMemberType
+import org.archguard.arch.*
 import org.archguard.model.vos.JClassVO
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

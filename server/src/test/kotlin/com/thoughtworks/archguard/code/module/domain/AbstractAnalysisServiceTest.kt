@@ -4,8 +4,8 @@ import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import org.archguard.arch.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
-import com.thoughtworks.archguard.code.module.domain.model.SubModule
+import org.archguard.model.vos.PackageVO
+import org.archguard.arch.SubModule
 import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.every

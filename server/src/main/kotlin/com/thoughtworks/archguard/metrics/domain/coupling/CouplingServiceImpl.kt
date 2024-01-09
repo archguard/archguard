@@ -6,7 +6,7 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.getModule
 import org.archguard.arch.LogicModule
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
 import org.archguard.model.Dependency
 import org.archguard.model.vos.JClassVO

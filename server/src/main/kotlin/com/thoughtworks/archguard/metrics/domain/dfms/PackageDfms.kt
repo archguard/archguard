@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.domain.dfms
 
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.abstracts.PackageAbstractRatio
 import com.thoughtworks.archguard.metrics.domain.coupling.PackageCoupling
 

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.controller
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.coupling.ClassCoupling
 import com.thoughtworks.archguard.metrics.domain.coupling.CouplingService
 import com.thoughtworks.archguard.metrics.domain.coupling.ModuleCoupling

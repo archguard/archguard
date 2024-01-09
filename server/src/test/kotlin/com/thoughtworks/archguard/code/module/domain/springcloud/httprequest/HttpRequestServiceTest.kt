@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud.httprequest
 
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
-import com.thoughtworks.archguard.code.module.domain.model.JAnnotation
+import org.archguard.model.code.JAnnotation
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every

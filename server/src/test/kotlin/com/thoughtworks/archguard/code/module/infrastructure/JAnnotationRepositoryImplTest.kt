@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.code.module.infrastructure
 
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
-import com.thoughtworks.archguard.code.module.domain.model.JAnnotation
+import org.archguard.model.code.JAnnotation
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

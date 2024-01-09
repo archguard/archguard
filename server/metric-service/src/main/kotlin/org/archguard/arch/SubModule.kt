@@ -1,7 +1,5 @@
-package com.thoughtworks.archguard.code.module.domain.model
+package org.archguard.arch
 
-import org.archguard.arch.LogicComponent
-import org.archguard.arch.LogicModuleMemberType
 import org.slf4j.LoggerFactory
 
 /**

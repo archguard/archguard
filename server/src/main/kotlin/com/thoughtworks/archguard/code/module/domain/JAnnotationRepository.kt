@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.module.domain.model.JAnnotation
+import org.archguard.model.code.JAnnotation
 
 interface JAnnotationRepository {
     fun getJAnnotationByName(name: String): List<JAnnotation>

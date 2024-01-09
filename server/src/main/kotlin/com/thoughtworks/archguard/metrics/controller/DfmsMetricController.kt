@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.controller
 
-import com.thoughtworks.archguard.code.module.domain.model.PackageVO
+import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.dfms.ClassDfms
 import com.thoughtworks.archguard.metrics.domain.dfms.DfmsApplService
 import com.thoughtworks.archguard.metrics.domain.dfms.ModuleDfms
