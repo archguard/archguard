@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.qualitygate.domain
+package org.archguard.gate
 
 enum class LayerType {
     MODULE, PACKAGE, CLASS, COUPLINGS

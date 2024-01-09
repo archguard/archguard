@@ -2,11 +2,11 @@ package com.thoughtworks.archguard.report.application
 
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCouplingRepository
-import com.thoughtworks.archguard.report.domain.qualitygate.ComparationOperator
-import com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate
-import com.thoughtworks.archguard.report.domain.qualitygate.LayerType
+import org.archguard.gate.ComparatorOperator
+import org.archguard.gate.CouplingQualityGate
+import org.archguard.gate.LayerType
 import com.thoughtworks.archguard.report.domain.qualitygate.QualityGateClient
-import com.thoughtworks.archguard.report.domain.qualitygate.QualityGateConfig
+import org.archguard.gate.QualityGateConfig
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -39,9 +39,9 @@ internal class ClassCouplingAppServiceTest {
         val classCoupling4 = ClassCoupling("id4", "m1", "p1", "c4", 8, 20, 0.1, 1.0)
         every { classCouplingRepository.getAllCoupling(systemId) } returns listOf(classCoupling1, classCoupling2, classCoupling3, classCoupling4)
 
-        val qualityGateConfig1 = QualityGateConfig(LayerType.COUPLINGS, "fanIn", ComparationOperator.LESS, 6)
-        val qualityGateConfig2 = QualityGateConfig(LayerType.COUPLINGS, "instability", ComparationOperator.BIGGER, 0.8)
-        val qualityGateConfig3 = QualityGateConfig(LayerType.COUPLINGS, "fanOut", ComparationOperator.EQUAL, 20)
+        val qualityGateConfig1 = QualityGateConfig(LayerType.COUPLINGS, "fanIn", ComparatorOperator.LESS, 6)
+        val qualityGateConfig2 = QualityGateConfig(LayerType.COUPLINGS, "instability", ComparatorOperator.BIGGER, 0.8)
+        val qualityGateConfig3 = QualityGateConfig(LayerType.COUPLINGS, "fanOut", ComparatorOperator.EQUAL, 20)
         every { qualityGateClient.getQualityGate(qualityGateName) } returns CouplingQualityGate(1L, "qualityGate1", listOf(qualityGateConfig1, qualityGateConfig2, qualityGateConfig3), null, null)
 
         val couplingFilterByQualityGate = classCouplingAppService.getCouplingFilterByQualityGate(systemId, qualityGateName)

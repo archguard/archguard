@@ -1,5 +1,6 @@
 package com.thoughtworks.archguard.qualitygate.domain
 
+import org.archguard.gate.QualityGateConfig
 import org.archguard.json.JsonUtils
 import java.util.Date
 

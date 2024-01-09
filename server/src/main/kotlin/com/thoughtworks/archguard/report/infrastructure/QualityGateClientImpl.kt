@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import com.thoughtworks.archguard.report.domain.qualitygate.CouplingQualityGate
+import org.archguard.gate.CouplingQualityGate
 import com.thoughtworks.archguard.report.domain.qualitygate.QualityGateClient
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
