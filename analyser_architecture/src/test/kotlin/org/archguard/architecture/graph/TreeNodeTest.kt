@@ -13,7 +13,7 @@ class TreeNodeTest {
         val packageNames = listOf("org.archguard", "org.archguard.architecture", "org.archguard.backend")
 
         // when
-        val root = TreeNode.buildPackageTree(packageNames)
+        val root = TreeNode.create(packageNames)
 
         // then
         assertEquals("root", root.name)

@@ -1,14 +1,36 @@
 package org.archguard.architecture.graph
 
+/**
+ * The `TreeNode` class represents a node in a package tree. Each node has a name and a list of children nodes.
+ *
+ * @property name The name of the node.
+ * @property children The list of children nodes.
+ *
+ * @constructor Creates a new `TreeNode` with the specified name and children.
+ *
+ * @param name The name of the node.
+ * @param children The list of children nodes. Defaults to an empty list.
+ *
+ * @see create
+ * @see findOrCreateChild
+ * @see printPackageTree
+ */
 data class TreeNode(val name: String, val children: MutableList<TreeNode> = mutableListOf()) {
     companion object {
         /**
          * Builds a package tree based on the given list of package names.
          *
-         * @param packageNames the list of package names to build the tree from
+         * @param packageNames the list of package names to build the tree from,
+         * e.g. `["org.archguard", "org.archguard.architecture", "org.archguard.backend"]`.
          * @return the root node of the package tree
+         *
+         * for example:
+         * ```kotlin
+         * val packageNames = listOf("org.archguard", "org.archguard.architecture", "org.archguard.backend")
+         * val rootNode = TreeNode.create(packageNames)
+         * ```
          */
-        fun buildPackageTree(packageNames: List<String>): TreeNode {
+        fun create(packageNames: List<String>): TreeNode {
             val root = TreeNode("root")
 
             for (packageName in packageNames) {
