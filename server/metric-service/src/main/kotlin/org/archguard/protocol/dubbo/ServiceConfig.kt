@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.module.domain.dubbo
+package org.archguard.protocol.dubbo
 
 import org.archguard.protocol.dubbo.SubModuleDubbo
 

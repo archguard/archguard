@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
 import org.archguard.protocol.dubbo.ReferenceConfig
+import org.archguard.protocol.dubbo.ServiceConfig
 import org.archguard.protocol.dubbo.SubModuleDubbo
 
 interface DubboConfigRepository {

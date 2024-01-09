@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.code.module.infrastructure.dubbo
 
 import com.thoughtworks.archguard.code.module.domain.dubbo.DubboConfigRepository
 import org.archguard.protocol.dubbo.ReferenceConfig
-import com.thoughtworks.archguard.code.module.domain.dubbo.ServiceConfig
+import org.archguard.protocol.dubbo.ServiceConfig
 import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper

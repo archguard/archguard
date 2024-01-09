@@ -6,6 +6,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.vos.JClassVO
 import org.archguard.protocol.dubbo.ReferenceConfig
+import org.archguard.protocol.dubbo.ServiceConfig
 import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
