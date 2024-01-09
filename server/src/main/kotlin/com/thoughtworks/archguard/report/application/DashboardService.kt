@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.report.application
 import com.thoughtworks.archguard.metrics.infrastructure.influx.InfluxDBClient
 import com.thoughtworks.archguard.report.domain.GroupData
 import org.archguard.smell.BadSmellLevel
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
+import org.archguard.smell.BadSmellType
+import org.archguard.smell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.cohesion.DataClassService
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyService

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.infrastructure
 
 import com.google.gson.Gson
-import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuite
+import org.archguard.threshold.ThresholdSuite
 
 class BadSmellSuitePO(val id: Long, val suiteName: String, val thresholds: String, val systemIds: String) {
 

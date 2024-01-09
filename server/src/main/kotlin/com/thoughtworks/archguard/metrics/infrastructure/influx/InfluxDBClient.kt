@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.metrics.infrastructure.influx
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

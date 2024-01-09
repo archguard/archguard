@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.testing.TestBadSmellRepository
 import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component

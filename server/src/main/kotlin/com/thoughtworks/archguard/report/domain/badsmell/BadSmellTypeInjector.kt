@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.domain.overview.calculator.*
+import org.archguard.smell.BadSmellType
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 

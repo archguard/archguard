@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.evolution.infrastructure
 
-import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuite
+import org.archguard.threshold.ThresholdSuite
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteRepository
 import com.thoughtworks.archguard.report.infrastructure.BadSmellSuitePO
 import org.jdbi.v3.core.Jdbi

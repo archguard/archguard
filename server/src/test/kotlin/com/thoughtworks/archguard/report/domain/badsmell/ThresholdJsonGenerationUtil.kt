@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.report.domain.badsmell
 import com.google.gson.Gson
 import com.thoughtworks.archguard.report.infrastructure.BadSmellGroupPO
 import com.thoughtworks.archguard.report.infrastructure.BadSmellThresholdPO
+import org.archguard.threshold.ThresholdKey
 
 class ThresholdJsonGenerationUtil {
 

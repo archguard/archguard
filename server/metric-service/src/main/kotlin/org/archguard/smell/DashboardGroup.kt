@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.badsmell
+package org.archguard.smell
 
 enum class DashboardGroup(val value: String, val badSmells: List<BadSmellType>) {
     COUPLING(

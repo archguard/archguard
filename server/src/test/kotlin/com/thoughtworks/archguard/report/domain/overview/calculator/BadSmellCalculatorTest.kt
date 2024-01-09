@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import org.archguard.smell.BadSmellLevel
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.badsmell.BadSmellTypeInjector
-import com.thoughtworks.archguard.report.domain.badsmell.DashboardGroup
+import org.archguard.smell.DashboardGroup
 import com.thoughtworks.archguard.report.domain.cohesion.ShotgunSurgeryService
 import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyRepository
 import com.thoughtworks.archguard.report.domain.coupling.dataclumps.DataClumpsRepository

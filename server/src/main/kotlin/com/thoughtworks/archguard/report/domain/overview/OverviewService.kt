@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.domain.overview
 
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.sizing.SystemOverviewRepository
 import org.springframework.stereotype.Service
 

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.metrics.infrastructure.influx
 
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.badsmell
+package org.archguard.threshold
 
 enum class ThresholdKey(val dimension: String, val key: String, val condition: String) {
     SIZING_MODULE_BY_LOC("体量维度", "过大的模块", "模块的总代码行数 > 指标阈值"),

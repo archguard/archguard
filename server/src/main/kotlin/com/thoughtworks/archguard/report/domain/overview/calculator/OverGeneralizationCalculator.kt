@@ -2,10 +2,12 @@ package com.thoughtworks.archguard.report.domain.overview.calculator
 
 import com.thoughtworks.archguard.report.domain.redundancy.OverGeneralizationRepository
 import org.archguard.smell.BadSmellCalculateResult
+import org.archguard.smell.BadSmellLevelCalculator
 import org.springframework.stereotype.Component
 
 @Component
-class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneralizationRepository) : BadSmellLevelCalculator {
+class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneralizationRepository) :
+    BadSmellLevelCalculator {
 
     override fun getCalculateResult(systemId: Long): BadSmellCalculateResult {
         val overGeneralizationCount = overGeneralizationRepository.getOverGeneralizationCount(systemId)

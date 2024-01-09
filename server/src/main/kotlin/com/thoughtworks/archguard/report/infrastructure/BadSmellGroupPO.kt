@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.report.infrastructure
 
-import com.thoughtworks.archguard.report.domain.badsmell.FlattenThreshold
+import org.archguard.threshold.FlattenThreshold
 
 class BadSmellGroupPO(val name: String, val threshold: List<BadSmellThresholdPO>) {
 

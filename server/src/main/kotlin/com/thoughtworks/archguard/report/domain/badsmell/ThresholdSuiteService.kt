@@ -1,6 +1,8 @@
 package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.thoughtworks.archguard.report.exception.ThresholdNotDefinedException
+import org.archguard.threshold.ThresholdKey
+import org.archguard.threshold.ThresholdSuite
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Service

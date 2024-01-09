@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.cohesion
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
 import org.springframework.stereotype.Service

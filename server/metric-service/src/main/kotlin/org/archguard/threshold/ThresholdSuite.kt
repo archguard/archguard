@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.report.domain.badsmell
+package org.archguard.threshold
 
 class ThresholdSuite(
     val id: Long,

@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.report.domain.coupling.circulardependency
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
+import org.archguard.smell.BadSmellType
 import com.thoughtworks.archguard.report.domain.models.ClassVO
 import com.thoughtworks.archguard.report.domain.models.MethodVO
 import com.thoughtworks.archguard.report.domain.models.ModuleVO

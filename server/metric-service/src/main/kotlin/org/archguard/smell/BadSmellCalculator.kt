@@ -1,7 +1,4 @@
-package com.thoughtworks.archguard.report.domain.overview.calculator
-
-import org.archguard.smell.BadSmellCalculateResult
-import org.archguard.smell.BadSmellLevel
+package org.archguard.smell
 
 object BadSmellCalculator {
     fun calculateLevel(badSmellCalculateResult: BadSmellCalculateResult): BadSmellLevel {

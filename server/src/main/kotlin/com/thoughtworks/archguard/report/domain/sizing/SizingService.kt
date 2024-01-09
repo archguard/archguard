@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
 import com.thoughtworks.archguard.report.domain.ValidPagingParam.validPagingParam
-import com.thoughtworks.archguard.report.domain.badsmell.BadSmellType
-import com.thoughtworks.archguard.report.domain.badsmell.ThresholdKey
+import org.archguard.smell.BadSmellType
+import org.archguard.threshold.ThresholdKey
 import com.thoughtworks.archguard.report.domain.badsmell.ThresholdSuiteService
 import com.thoughtworks.archguard.report.infrastructure.FilterSizingPO.Companion.fromFilterSizing
 import org.springframework.stereotype.Service

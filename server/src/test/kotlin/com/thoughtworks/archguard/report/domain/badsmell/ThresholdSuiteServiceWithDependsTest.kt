@@ -2,6 +2,7 @@ package com.thoughtworks.archguard.report.domain.badsmell
 
 import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.spring.api.DBRider
+import org.archguard.threshold.ThresholdKey
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
