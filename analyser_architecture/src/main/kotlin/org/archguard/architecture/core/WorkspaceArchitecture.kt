@@ -107,6 +107,7 @@ enum class ArchitectureStyle {
 // from file name: like repository, controller, services
 enum class CodeStructureStyle {
     MVC,
+
     // examples: https://github.com/domain-driven-design/ddd-lite-example
     ModuleDDD,
     DDD,
@@ -125,15 +126,38 @@ enum class ComponentTypes {
     General
 }
 
-//// 进程间通信
-//enum class IPCType {
-//    Pipe,
-//    Signal,
-//    Semaphore,
-//    MessageQueue,
-//    SharedMemory,
-//    IpcSocket
-//}
+/**
+ * Represents the types of inter-process communication (IPC) mechanisms.
+ *
+ * The IPCType enum class provides a set of options for different IPC mechanisms that can be used for communication
+ * between processes. These mechanisms enable processes running on the same or different systems to exchange data
+ * and synchronize their actions.
+ *
+ * The available IPC types are:
+ *  - Pipe: A unidirectional communication channel that allows the transfer of data between two related processes.
+ *  - Signal: A software interrupt that can be sent to a process to notify it of an event or to request its attention.
+ *  - Semaphore: A synchronization primitive that controls access to a shared resource by multiple processes.
+ *  - MessageQueue: A message passing mechanism that allows processes to send and receive messages.
+ *  - SharedMemory: A region of memory that can be accessed by multiple processes, enabling them to share data.
+ *  - IpcSocket: A bidirectional communication channel that allows processes to communicate over a network.
+ *
+ * Each IPC type has its own characteristics, advantages, and limitations. The choice of IPC mechanism depends on the
+ * specific requirements of the application and the environment in which it is running.
+ *
+ * Usage:
+ *  val ipcType: IPCType = IPCType.Pipe
+ *  println("Selected IPC type: $ipcType")
+ *
+ * Note: This enum class is part of the Kotlin language and can be used directly without any additional imports.
+ */
+enum class IPCType {
+    Pipe,
+    Signal,
+    Semaphore,
+    MessageQueue,
+    SharedMemory,
+    IpcSocket
+}
 
 // 多个组件间的交互
 enum class ConnectorStyle {
