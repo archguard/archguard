@@ -4,10 +4,10 @@ import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.exception.ClassNotFountException
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import org.archguard.arch.getModule
 import org.archguard.arch.LogicModule
 import org.archguard.model.vos.PackageVO
 import com.thoughtworks.archguard.metrics.domain.MetricsRepository
+import org.archguard.arch.LogicModuleUtil
 import org.archguard.metric.coupling.ClassCoupling
 import org.archguard.metric.coupling.ModuleCoupling
 import org.archguard.metric.coupling.PackageCoupling
@@ -83,7 +83,9 @@ class CouplingServiceImpl(
     override fun calculateModuleCoupling(systemId: Long, logicModule: LogicModule): ModuleCoupling {
         val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
-        val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
+        val classesBelongToModule = classes.filter {
+            LogicModuleUtil.getModule(logicModules, it.toVO()).contains(logicModule)
+        }
         val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
         if (classCouplingsCached.isNotEmpty()) {
             return ModuleCoupling.of(logicModule, classCouplingsCached)
@@ -101,7 +103,9 @@ class CouplingServiceImpl(
         val moduleCouplings = mutableListOf<ModuleCoupling>()
         val classDependency = mutableListOf<Dependency<JClassVO>>()
         logicModules.parallelStream().forEach { logicModule ->
-            val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
+            val classesBelongToModule = classes.filter {
+                LogicModuleUtil.getModule(logicModules, it.toVO()).contains(logicModule)
+            }
             val classCouplingsCached = metricsRepository.getClassCoupling(classesBelongToModule.map { it.toVO() })
             if (classCouplingsCached.isNotEmpty()) {
                 moduleCouplings.add(ModuleCoupling.of(logicModule, classCouplingsCached))
@@ -130,8 +134,8 @@ class CouplingServiceImpl(
     }
 
     private fun isInSameModule(modules: List<LogicModule>, it: Dependency<JClassVO>): Boolean {
-        val callerModules = getModule(modules, it.caller)
-        val calleeModules = getModule(modules, it.callee)
+        val callerModules = LogicModuleUtil.getModule(modules, it.caller)
+        val calleeModules = LogicModuleUtil.getModule(modules, it.callee)
         return callerModules.intersect(calleeModules.toSet()).isNotEmpty()
     }
 }

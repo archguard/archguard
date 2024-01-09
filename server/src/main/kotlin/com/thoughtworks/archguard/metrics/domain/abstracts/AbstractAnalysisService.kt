@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.metrics.domain.abstracts
 
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
-import org.archguard.arch.getModule
 import org.archguard.arch.LogicModule
+import org.archguard.arch.LogicModuleUtil
 import org.archguard.metric.abstracts.ModuleAbstractRatio
 import org.archguard.metric.abstracts.PackageAbstractRatio
 import org.archguard.model.vos.PackageVO
@@ -25,7 +25,9 @@ class AbstractAnalysisService(
     fun calculateModuleAbstractRatio(systemId: Long, logicModule: LogicModule): ModuleAbstractRatio {
         val classes = jClassRepository.getAllBySystemId(systemId)
         val logicModules = logicModuleRepository.getAllBySystemId(systemId)
-        val classesBelongToModule = classes.filter { getModule(logicModules, it.toVO()).contains(logicModule) }
+        val classesBelongToModule = classes.filter {
+            LogicModuleUtil.getModule(logicModules, it.toVO()).contains(logicModule)
+        }
         val abstractClassesBelongToModule = classesBelongToModule.filter { it.isAbstractClass() || it.isInterface() }
         return ModuleAbstractRatio(abstractClassesBelongToModule.size.toDouble() / classesBelongToModule.size, logicModule)
     }

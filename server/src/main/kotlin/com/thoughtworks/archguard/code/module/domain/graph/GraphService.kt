@@ -2,9 +2,9 @@ package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import org.archguard.arch.getModule
 import org.archguard.arch.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
+import org.archguard.arch.LogicModuleUtil
 import org.archguard.graph.Graph
 import org.archguard.graph.GraphStore
 import org.archguard.model.Dependency
@@ -41,9 +41,12 @@ class GraphService(val logicModuleRepository: LogicModuleRepository, val depende
         return logicModuleDependencies.filter { it.caller != it.callee }
     }
 
-    private fun mapMethodDependencyToModuleDependency(methodDependency: Dependency<JClassVO>, logicModules: List<LogicModule>): List<Dependency<LogicModule>> {
-        val callerModules = getModule(logicModules, methodDependency.caller)
-        val calleeModules = getModule(logicModules, methodDependency.callee)
+    private fun mapMethodDependencyToModuleDependency(
+        methodDependency: Dependency<JClassVO>,
+        logicModules: List<LogicModule>
+    ): List<Dependency<LogicModule>> {
+        val callerModules = LogicModuleUtil.getModule(logicModules, methodDependency.caller)
+        val calleeModules = LogicModuleUtil.getModule(logicModules, methodDependency.callee)
 
         return callerModules.flatMap { caller -> calleeModules.map { callee -> Dependency(caller, callee) } }
     }
