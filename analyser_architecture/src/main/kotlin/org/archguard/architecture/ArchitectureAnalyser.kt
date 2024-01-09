@@ -12,11 +12,6 @@ import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
-data class SampleArchitectureContext(
-    override val path: String,
-    override val client: ArchGuardClient = EmptyArchGuardClient(),
-) : ArchitectureContext
-
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
     override fun analyse(): List<ArchitectureView> {
@@ -41,16 +36,23 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
     }
 }
 
+val archGuardClient = EmptyArchGuardClient()
+
+data class SampleArchitectureContext(
+    override val path: String,
+    override val client: ArchGuardClient = archGuardClient,
+) : ArchitectureContext
+
 data class ArchEstimateContext(
     override val path: String,
     override val branch: String = "",
-    override val client: ArchGuardClient = EmptyArchGuardClient(),
+    override val client: ArchGuardClient = archGuardClient,
 ) : EstimateContext
 
 data class ArchSourceCodeContext(
     override val language: String,
     override val features: List<String> = listOf(),
-    override val client: ArchGuardClient = EmptyArchGuardClient(),
+    override val client: ArchGuardClient = archGuardClient,
     override val path: String,
     override val withFunctionCode: Boolean = true,
     override val debug: Boolean = false,
@@ -58,6 +60,6 @@ data class ArchSourceCodeContext(
 
 data class ArchScaContext(
     override val path: String,
-    override val client: ArchGuardClient = EmptyArchGuardClient(),
+    override val client: ArchGuardClient = archGuardClient,
     override val language: String,
 ) : ScaContext
