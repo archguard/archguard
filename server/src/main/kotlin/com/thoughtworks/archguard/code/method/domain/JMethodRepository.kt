@@ -1,6 +1,7 @@
 package com.thoughtworks.archguard.code.method.domain
 
 import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 
 interface JMethodRepository {
     fun findMethodsByModuleAndClass(systemId: Long, module: String?, name: String): List<JMethod>

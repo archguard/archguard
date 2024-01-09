@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.code.method.domain
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCallersService
 import com.thoughtworks.archguard.config.domain.ConfigureService
+import org.archguard.model.code.JMethod
 import org.springframework.stereotype.Service
 
 @Service

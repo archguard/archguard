@@ -4,7 +4,6 @@ import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassConfigService
 import com.thoughtworks.archguard.code.clazz.domain.service.ClassMethodCalleesService
-import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
 import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
@@ -12,6 +11,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.JMethod
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -61,7 +61,9 @@ class ClassMethodCalleesServiceTest {
         every { jMethodRepository.findMethodsByModuleAndClass(systemId, module, parent.name) } returns listOf(method1)
         every { jClassRepository.findClassParents(systemId, module, name) } returns listOf(parent)
         every { jClassRepository.findClassParents(systemId, parent.module!!, parent.name) } returns listOf()
-        every { methodCalleesService.buildMethodCallees(systemId, listOf(method1, method2), 1, true) } returns listOf(method1)
+        every { methodCalleesService.buildMethodCallees(systemId, listOf(method1, method2), 1, true) } returns listOf(
+            method1
+        )
         every { methodCalleesService.buildMethodCallees(systemId, listOf(method1), 1, true) } returns listOf(method2)
         every { configureService.isDisplayNode(any(), any()) } returns true
         every { classConfigService.buildJClassColorConfig(any(), any()) } returns Unit

@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.method.domain
 
-import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.MethodService
 import com.thoughtworks.archguard.code.method.domain.service.MethodCalleesService
@@ -9,6 +8,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.JMethod
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -42,7 +42,8 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
+        val target =
+            listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
@@ -61,7 +62,8 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
+        val target =
+            listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target
@@ -80,7 +82,8 @@ class MethodServiceTest {
         val moduleName = "module"
         val clazzName = "clazz"
         val methodName = "method"
-        val target = listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
+        val target =
+            listOf(JMethod("id", methodName, clazzName, moduleName, "void", emptyList()))
         val deep = 1
         // when
         every { repo.findMethodByModuleAndClazzAndName(systemId, moduleName, clazzName, methodName) } returns target

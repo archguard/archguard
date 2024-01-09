@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.method.domain.service
 
-import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.code.method.domain.JMethodRepository
 import com.thoughtworks.archguard.code.method.domain.service.MethodCallersService
 import com.thoughtworks.archguard.code.method.domain.service.MethodConfigService
@@ -8,6 +7,7 @@ import com.thoughtworks.archguard.config.domain.ConfigureService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.JMethod
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -1,10 +1,10 @@
 package com.thoughtworks.archguard.code.clazz.domain
 
-import com.thoughtworks.archguard.code.method.domain.JMethod
 import org.archguard.config.ConfigType
 import org.archguard.config.Configure
 import org.archguard.model.code.ClazzType
 import org.archguard.model.code.JField
+import org.archguard.model.code.JMethod
 import org.archguard.model.vos.JClassVO
 import org.slf4j.LoggerFactory
 
