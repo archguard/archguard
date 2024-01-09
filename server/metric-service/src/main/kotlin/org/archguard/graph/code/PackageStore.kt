@@ -1,5 +1,15 @@
 package org.archguard.graph.code
 
+/**
+ * The `PackageStore` class represents a package store that stores information about packages and their relationships.
+ * It provides methods to add nodes and edges to the package graph, as well as retrieve the package graph.
+ *
+ * @property packageNodes The list of package nodes in the store.
+ * @property packageEdges The list of package edges in the store.
+ * @property index The index used to assign unique IDs to package nodes.
+ *
+ * @constructor Creates a new instance of the `PackageStore` class.
+ */
 class PackageStore {
 
     private var packageNodes: ArrayList<PackageNode> = ArrayList()
@@ -8,7 +18,7 @@ class PackageStore {
 
     private var index: Int = 0
 
-    private fun addNode(name: String): Int {
+    fun addNode(name: String): Int {
         return if (nodeContains(name)) {
             getNodeId(name)
         } else {
@@ -27,7 +37,7 @@ class PackageStore {
         return packageNodes.find { it.name == name }?.id ?: addNode(name)
     }
 
-    private fun nodeContains(name: String): Boolean {
+    fun nodeContains(name: String): Boolean {
         return packageNodes.any { it.name == name }
     }
 
@@ -38,19 +48,19 @@ class PackageStore {
     }
 
     fun getPackageGraph(): PackageGraph {
-        val indexs = ArrayList<Pair<Int, Int>>()
+        val indexes = ArrayList<Pair<Int, Int>>()
         packageNodes.sortBy { it.name }
         packageNodes.forEachIndexed { index, node ->
-            indexs.add(Pair(node.id, index + 1))
+            indexes.add(Pair(node.id, index + 1))
             node.id = index + 1
         }
         packageNodes.forEach {
-            it.parent = indexs.find { i -> i.first == it.parent }?.second ?: 0
+            it.parent = indexes.find { i -> i.first == it.parent }?.second ?: 0
             it.name = it.name.substringAfterLast('.')
         }
         packageEdges.forEach {
-            it.a = indexs.find { i -> i.first == it.a }?.second ?: -1
-            it.b = indexs.find { i -> i.first == it.b }?.second ?: -1
+            it.a = indexes.find { i -> i.first == it.a }?.second ?: -1
+            it.b = indexes.find { i -> i.first == it.b }?.second ?: -1
         }
         return PackageGraph(packageNodes, packageEdges.filter { it.a != it.b }.sortedBy { i -> i.a * 1000 + i.b })
     }

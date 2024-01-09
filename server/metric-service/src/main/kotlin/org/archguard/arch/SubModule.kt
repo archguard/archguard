@@ -3,7 +3,10 @@ package org.archguard.arch
 import org.slf4j.LoggerFactory
 
 /**
- * SubModule is a Value Object, use for LogicModule aggregation
+ * SubModule is a Value Object that represents a submodule.
+ * It is used for aggregation in the [LogicModule].
+ *
+ * @property name The name of the submodule.
  */
 data class SubModule(val name: String) : LogicComponent() {
     private val log = LoggerFactory.getLogger(SubModule::class.java)
