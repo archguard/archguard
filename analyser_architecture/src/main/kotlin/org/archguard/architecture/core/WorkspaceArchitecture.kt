@@ -67,11 +67,6 @@ enum class DevelMethodology {
     Unknown
 }
 
-// from Git History
-enum class ScmStrategy {
-    GitFlow,
-}
-
 // base on Framework mapping
 enum class ArchitectureStyle {
     // 分层
