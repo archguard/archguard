@@ -15,7 +15,8 @@
         "org.antlr:antlr4-runtime"
       ],
       "cli": [
-        "com.github.ajalt.clikt:clikt"
+        "com.github.ajalt.clikt:clikt",
+        "info.picocli:picocli"
       ],
       "data": [
         "org.apache.flink:flink-core"

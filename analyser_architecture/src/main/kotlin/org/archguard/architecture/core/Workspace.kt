@@ -3,6 +3,8 @@ package org.archguard.architecture.core
 import chapi.domain.core.CodeDataStruct
 import org.archguard.architecture.ArchitectureView
 import org.archguard.architecture.detect.ArchitectureDetect
+import org.archguard.architecture.view.concept.ConceptArchitecture
+import org.archguard.architecture.view.concept.DomainModel
 import org.archguard.scanner.core.sca.PackageDependencies
 import org.archguard.scanner.core.sourcecode.ContainerService
 
@@ -24,7 +26,9 @@ class Workspace(
         val identPotential = ArchitectureDetect().identPotential(this)
         println(identPotential)
         return ArchitectureView(
-
+            conceptArchitecture = ConceptArchitecture(
+                domainModels = DomainModel.from(identPotential.concepts)
+            ),
         )
     }
 }

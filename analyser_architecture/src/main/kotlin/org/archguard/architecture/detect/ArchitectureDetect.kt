@@ -43,8 +43,8 @@ class ArchitectureDetect {
         // 4. create concepts domain
         when (layeredStyle) {
             CodeStructureStyle.MVC -> {
-                execArch.concepts = workspace.dataStructs.filter {
-                    it.NodeName.contains("Entity")
+                execArch.concepts = workspace.dataStructs.filter { dataStruct ->
+                    dataStruct.Annotations.any { it.Name == "Entity" }
                 }
             }
 

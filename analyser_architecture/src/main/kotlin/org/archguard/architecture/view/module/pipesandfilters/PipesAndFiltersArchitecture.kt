@@ -3,13 +3,13 @@ package org.archguard.architecture.view.module.pipesandfilters
 import org.archguard.architecture.view.module.DependencyType
 import org.archguard.architecture.view.module.ModuleArchitecture
 
-class PipesAndFiltersArchitecture : org.archguard.architecture.view.module.ModuleArchitecture {
-    val pipes = mutableListOf<org.archguard.architecture.view.module.pipesandfilters.Pipe>()
-    val filters = mutableListOf<org.archguard.architecture.view.module.pipesandfilters.Filter>()
-    val dependencies = mutableListOf<org.archguard.architecture.view.module.pipesandfilters.Dependency>()
+class PipesAndFiltersArchitecture : ModuleArchitecture {
+    val pipes = mutableListOf<Pipe>()
+    val filters = mutableListOf<Filter>()
+    val dependencies = mutableListOf<Dependency>()
 }
 
-class Pipe(val name: String, val type: org.archguard.architecture.view.module.pipesandfilters.PipeType)
+class Pipe(val name: String, val type: PipeType)
 
 enum class PipeType {
     Data,
@@ -24,4 +24,4 @@ enum class FilterType {
     Sink
 }
 
-class Dependency(val type: org.archguard.architecture.view.module.DependencyType, val dependent: String, val dependence: String)
+class Dependency(val type: DependencyType, val dependent: String, val dependence: String)
