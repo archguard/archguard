@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.report.infrastructure.cohesion
 
 import com.thoughtworks.archguard.report.domain.redundancy.DataClass
 import com.thoughtworks.archguard.report.domain.redundancy.DataClassRepository
-import com.thoughtworks.archguard.report.domain.redundancy.FieldVO
+import org.archguard.model.vos.FieldVO
 import com.thoughtworks.archguard.report.util.NameUtil
 import org.jdbi.v3.core.Jdbi
 import org.springframework.stereotype.Repository

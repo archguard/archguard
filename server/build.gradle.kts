@@ -88,9 +88,6 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin:3.10.1")
     implementation("org.jdbi:jdbi3-testing:3.28.0")
 
-//    implementation("io.springfox:springfox-boot-starter:3.0.0")
-//    implementation("io.springfox:springfox-swagger-ui:3.0.0")
-
     implementation("com.google.protobuf:protobuf-java:3.21.5")
     implementation("com.googlecode.protobuf-java-format:protobuf-java-format:1.4")
 
@@ -109,7 +106,7 @@ dependencies {
     implementation("dom4j:dom4j:1.6.1")
 
     implementation("com.google.code.gson:gson:2.8.6")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.+")
 
     runtimeOnly("mysql:mysql-connector-java:8.0.29")
 
