@@ -21,6 +21,15 @@ class RedundancyService(val redundancyRepository: RedundancyRepository, val data
         return (oneFieldClassCount to oneFieldClassList)
     }
 
+    /**
+     * Retrieves the redundant report for a given system.
+     *
+     * This method takes a system ID as a parameter and returns a map containing the count of redundant elements
+     * categorized by their bad smell type. The bad smell types include [BadSmellType.REDUNDANT_ELEMENT].
+     *
+     * @param systemId the ID of the system for which the redundant report is generated
+     * @return a map containing the count of redundant elements categorized by their bad smell type
+     */
     fun getRedundantReport(systemId: Long): Map<BadSmellType, Long> {
         val oneMethodCount = redundancyRepository.getOneMethodClassCount(systemId)
         val oneFieldCount = dataClassRepository.getAllDataClassWithOnlyOneFieldCount(systemId)

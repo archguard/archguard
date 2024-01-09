@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class OverGeneralizationService(val overGeneralizationRepository: OverGeneralizationRepository) {
-
     fun getOneExtendsWithTotalCount(systemId: Long, limit: Long, offset: Long): Pair<Long, List<OverGeneralizationPair>> {
         ValidPagingParam.validPagingParam(limit, offset)
         val parentClasses = overGeneralizationRepository.getOverGeneralizationParentClassId(systemId)
