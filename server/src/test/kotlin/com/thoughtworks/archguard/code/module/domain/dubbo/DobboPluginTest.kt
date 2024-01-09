@@ -3,12 +3,12 @@ package com.thoughtworks.archguard.code.module.domain.dubbo
 import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.Dependency
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

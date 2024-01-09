@@ -1,11 +1,11 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.plugin.AbstractDependPlugin
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginType
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
 import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequest
+import org.archguard.model.Dependency
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

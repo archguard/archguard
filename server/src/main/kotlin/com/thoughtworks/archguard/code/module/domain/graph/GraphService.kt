@@ -3,10 +3,10 @@ package com.thoughtworks.archguard.code.module.domain.graph
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.getModule
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
+import org.archguard.model.Dependency
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
 import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequest
@@ -9,6 +8,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.Dependency
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

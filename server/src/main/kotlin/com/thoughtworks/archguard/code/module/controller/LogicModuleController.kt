@@ -5,9 +5,9 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNod
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.graph.Graph
 import com.thoughtworks.archguard.code.module.domain.graph.GraphService
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.infrastructure.dto.LogicModuleLegacy
+import org.archguard.model.Dependency
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

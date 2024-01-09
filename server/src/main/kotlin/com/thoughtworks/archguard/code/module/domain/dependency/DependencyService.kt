@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.code.module.domain.dependency
 
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
+import org.archguard.model.Dependency
 
 interface DependencyService {
     fun getAllMethodDependencies(systemId: Long): List<Dependency<JMethodVO>>

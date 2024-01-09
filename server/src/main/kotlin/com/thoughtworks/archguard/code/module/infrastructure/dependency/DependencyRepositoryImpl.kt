@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.code.module.infrastructure.dependency
 
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyRepository
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.infrastructure.dto.JMethodDependencyDto
+import org.archguard.model.Dependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.mapper.reflect.ConstructorMapper
 import org.springframework.beans.factory.annotation.Autowired

@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.code.module.domain.graph
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
-import com.thoughtworks.archguard.code.module.domain.model.Dependency
 import com.thoughtworks.archguard.code.module.domain.model.JClassVO
 import com.thoughtworks.archguard.code.module.domain.model.LogicComponent
 import com.thoughtworks.archguard.code.module.domain.model.LogicModule
@@ -11,6 +10,7 @@ import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.Dependency
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
