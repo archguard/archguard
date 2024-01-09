@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.packages.controller
 
-import com.thoughtworks.archguard.code.packages.domain.ModulePackage
+import org.archguard.graph.code.ModulePackage
 import com.thoughtworks.archguard.code.packages.domain.PackageService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

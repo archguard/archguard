@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.code.packages.domain
+package org.archguard.graph.code
 
 class PackageStore {
 
@@ -55,8 +55,3 @@ class PackageStore {
         return PackageGraph(packageNodes, packageEdges.filter { it.a != it.b }.sortedBy { i -> i.a * 1000 + i.b })
     }
 }
-
-data class ModulePackage(val module: String, val packageGraph: PackageGraph)
-data class PackageGraph(var nodes: List<PackageNode>, var edges: List<PackageEdge>)
-data class PackageEdge(var a: Int, var b: Int, var num: Int)
-data class PackageNode(var id: Int, var name: String, var parent: Int)

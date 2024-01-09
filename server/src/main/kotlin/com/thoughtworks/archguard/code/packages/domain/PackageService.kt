@@ -2,6 +2,9 @@ package com.thoughtworks.archguard.code.packages.domain
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
 import com.thoughtworks.archguard.code.packages.infrastructure.PackageDependenceDTO
+import org.archguard.graph.code.ModulePackage
+import org.archguard.graph.code.PackageGraph
+import org.archguard.graph.code.PackageStore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
