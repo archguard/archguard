@@ -3,8 +3,8 @@ package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.code.module.domain.model.JAnnotation
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
-import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequest
-import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequestArg
+import org.archguard.protocol.http.HttpRequest
+import org.archguard.protocol.http.HttpRequestArg
 import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequestService
 import io.mockk.MockKAnnotations
 import io.mockk.every

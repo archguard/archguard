@@ -2,9 +2,11 @@ package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
-import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequest
+import org.archguard.protocol.http.HttpRequest
 import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequestService
 import org.archguard.model.Dependency
+import org.archguard.protocol.feigh.FeignClient
+import org.archguard.protocol.feigh.FeignClientArg
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.lang.annotation.ElementType

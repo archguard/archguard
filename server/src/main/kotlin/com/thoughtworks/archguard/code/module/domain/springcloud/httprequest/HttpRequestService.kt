@@ -2,7 +2,9 @@ package com.thoughtworks.archguard.code.module.domain.springcloud.httprequest
 
 import com.thoughtworks.archguard.code.module.domain.JAnnotationRepository
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
-import com.thoughtworks.archguard.common.JsonUtils
+import org.archguard.json.JsonUtils
+import org.archguard.protocol.http.HttpRequest
+import org.archguard.protocol.http.HttpRequestArg
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestMethod

@@ -1,4 +1,4 @@
-package com.thoughtworks.archguard.common
+package org.archguard.json
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

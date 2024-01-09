@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.architecture.controller
 
 import com.thoughtworks.archguard.architecture.application.request.ArchSystemCreateRequest
 import com.thoughtworks.archguard.architecture.domain.repository.ArchSystemRepository
-import com.thoughtworks.archguard.common.JsonUtils
+import org.archguard.json.JsonUtils
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

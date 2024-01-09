@@ -1,6 +1,6 @@
-package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
+package org.archguard.protocol.feigh
 
-import com.thoughtworks.archguard.common.JsonUtils
+import org.archguard.json.JsonUtils
 
 class FeignClientArg(values: Map<String, String>) {
     val name: String = JsonUtils.json2obj(values.getOrDefault("name", JsonUtils.obj2json("")))

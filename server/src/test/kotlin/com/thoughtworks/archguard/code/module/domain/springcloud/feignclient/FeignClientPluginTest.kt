@@ -2,8 +2,8 @@ package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 
 import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
-import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequest
-import com.thoughtworks.archguard.code.module.domain.springcloud.httprequest.HttpRequestArg
+import org.archguard.protocol.http.HttpRequest
+import org.archguard.protocol.http.HttpRequestArg
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
