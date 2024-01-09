@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud.feignclient
 
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.springcloud.SpringCloudServiceRepository
 import org.archguard.protocol.http.HttpRequest
 import org.archguard.protocol.http.HttpRequestArg
@@ -9,6 +8,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.Dependency
+import org.archguard.model.vos.JMethodVO
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -38,7 +38,14 @@ class FeignClientPluginTest {
 
         val methodDependencies = listOf(Dependency(method1, method2))
 
-        every { feignClientService.getFeignClientMethodDependencies() } returns listOf(Dependency(HttpRequest("id2", HttpRequestArg()), HttpRequest("id3", HttpRequestArg())))
+        every { feignClientService.getFeignClientMethodDependencies() } returns listOf(
+            Dependency(
+                HttpRequest(
+                    "id2",
+                    HttpRequestArg()
+                ), HttpRequest("id3", HttpRequestArg())
+            )
+        )
         every { springCloudServiceRepository.getMethodById("id2") } returns method2
         every { springCloudServiceRepository.getMethodById("id3") } returns method3
 
@@ -46,6 +53,7 @@ class FeignClientPluginTest {
         val methodMethodDependenciesAfterFix = plugin.fixMethodDependencies(systemId, methodDependencies)
 
         // then
-        Assertions.assertThat(methodMethodDependenciesAfterFix).isEqualTo(methodDependencies + Dependency(method2, method3))
+        Assertions.assertThat(methodMethodDependenciesAfterFix)
+            .isEqualTo(methodDependencies + Dependency(method2, method3))
     }
 }

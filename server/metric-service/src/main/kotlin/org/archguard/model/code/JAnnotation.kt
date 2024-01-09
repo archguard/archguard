@@ -1,5 +1,11 @@
 package org.archguard.model.code
 
-class JAnnotation(var id: String, var targetType: String, var targetId: String, var name: String) {
+import org.jdbi.v3.core.mapper.reflect.ColumnName
+
+data class JAnnotation(
+    @ColumnName("id") var id: String,
+    @ColumnName("targetType") var targetType: String,
+    @ColumnName("targetId") var targetId: String,
+    @ColumnName("name") var name: String) {
     var values: Map<String, String>? = null
 }

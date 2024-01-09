@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.code.clazz.domain
 import com.thoughtworks.archguard.code.method.domain.JMethod
 import com.thoughtworks.archguard.config.domain.ConfigType
 import com.thoughtworks.archguard.config.domain.Configure
+import org.archguard.model.code.ClazzType
 import org.archguard.model.vos.JClassVO
 import org.slf4j.LoggerFactory
 
@@ -84,9 +85,4 @@ open class JClass(val id: String, val name: String, val module: String?) {
             configuresMap[ConfigType.COLOR.typeName] = color
         }
     }
-}
-
-// 暂时只有接口和类
-enum class ClazzType {
-    INTERFACE, CLASS, NOT_DEFINED, ABSTRACT_CLASS
 }

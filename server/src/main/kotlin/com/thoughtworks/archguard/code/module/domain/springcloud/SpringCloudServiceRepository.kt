@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.code.module.domain.springcloud
 
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
+import org.archguard.model.vos.JMethodVO
 import org.springframework.stereotype.Repository
 
 @Repository

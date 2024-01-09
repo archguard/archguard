@@ -1,11 +1,11 @@
 package com.thoughtworks.archguard.code.module.domain.dependency
 
 import com.thoughtworks.archguard.code.module.domain.LogicModuleRepository
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.domain.plugin.DependPlugin
 import com.thoughtworks.archguard.code.module.domain.plugin.PluginManager
 import org.archguard.model.Dependency
 import org.archguard.model.vos.JClassVO
+import org.archguard.model.vos.JMethodVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

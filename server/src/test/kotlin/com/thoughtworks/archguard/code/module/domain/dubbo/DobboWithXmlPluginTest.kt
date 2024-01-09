@@ -1,14 +1,14 @@
 package com.thoughtworks.archguard.code.module.domain.dubbo
 
-import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.archguard.model.Dependency
+import org.archguard.model.code.ClazzType
+import org.archguard.model.vos.JMethodVO
 import org.archguard.protocol.dubbo.SubModuleDubbo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -47,8 +47,17 @@ class DobboWithXmlPluginTest {
         val methodDependencies = listOf(Dependency(method1, method2))
 
         every { jClassRepository.getJClassesHasModules(systemId) } returns listOf(class2)
-        every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(class3, class4)
-        every { xmlConfigService.getRealCalleeModuleByXmlConfig(systemId, method1.clazz, method2.clazz) } returns listOf(
+        every { jClassRepository.findClassImplements(systemId, class2.name, class2.module!!) } returns listOf(
+            class3,
+            class4
+        )
+        every {
+            xmlConfigService.getRealCalleeModuleByXmlConfig(
+                systemId,
+                method1.clazz,
+                method2.clazz
+            )
+        } returns listOf(
             SubModuleDubbo("any", "module3", "any")
         )
 
@@ -57,6 +66,7 @@ class DobboWithXmlPluginTest {
 
         // then
         assertEquals(1, fixedMethodDependencies.size)
-        assertThat(fixedMethodDependencies).usingDefaultElementComparator().containsExactlyElementsOf(listOf(Dependency(method1, method3)))
+        assertThat(fixedMethodDependencies).usingDefaultElementComparator()
+            .containsExactlyElementsOf(listOf(Dependency(method1, method3)))
     }
 }

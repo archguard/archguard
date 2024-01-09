@@ -12,6 +12,7 @@ dependencies {
 
     implementation(libs.springboot.jdbc)
     implementation(libs.springboot.web)
+    implementation("org.jdbi:jdbi3-core:3.28.0")
 
     testImplementation(libs.bundles.test)
     testImplementation(libs.springboot.test)

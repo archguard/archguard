@@ -1,6 +1,5 @@
 package com.thoughtworks.archguard.code.module.domain
 
-import com.thoughtworks.archguard.code.clazz.domain.ClazzType
 import com.thoughtworks.archguard.code.clazz.domain.JClass
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import org.archguard.arch.LogicModule
@@ -10,6 +9,7 @@ import com.thoughtworks.archguard.metrics.domain.abstracts.AbstractAnalysisServi
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import org.archguard.model.code.ClazzType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -26,6 +26,6 @@ internal class JAnnotationRepositoryImplTest {
             "org.springframework.cloud.netflix.feign.FeignClient"
         )
         expectedJAnnotation.values = mapOf("name" to "\"spring-cloud-producer\"")
-        Assertions.assertThat(jAnnotations.get(0)).isEqualToComparingFieldByField(expectedJAnnotation)
+        Assertions.assertThat(jAnnotations[0]).isEqualToComparingFieldByField(expectedJAnnotation)
     }
 }

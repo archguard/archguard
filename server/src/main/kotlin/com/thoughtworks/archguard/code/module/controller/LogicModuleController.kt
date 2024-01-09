@@ -4,10 +4,10 @@ import com.thoughtworks.archguard.code.module.domain.LogicModuleService
 import com.thoughtworks.archguard.code.module.domain.LogicModuleWithCompositeNodes
 import com.thoughtworks.archguard.code.module.domain.dependency.DependencyService
 import com.thoughtworks.archguard.code.module.domain.graph.GraphService
-import com.thoughtworks.archguard.code.module.domain.model.JMethodVO
 import com.thoughtworks.archguard.code.module.infrastructure.dto.LogicModuleLegacy
 import org.archguard.graph.Graph
 import org.archguard.model.Dependency
+import org.archguard.model.vos.JMethodVO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
