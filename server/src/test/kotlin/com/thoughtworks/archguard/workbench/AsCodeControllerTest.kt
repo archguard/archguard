@@ -95,7 +95,7 @@ class AsCodeControllerTest {
         result.andExpect(status().isOk)
             .andExpect(content().json(
                 """
-                {"msgType":"NORMAL","content":{"success":["repo1","repo2"],"existed":[]}}
+                {"content":{"success":["repo1","repo2"],"existed":[]}}
                 """
             ))
     }
