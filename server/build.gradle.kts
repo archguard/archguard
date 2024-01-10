@@ -23,6 +23,7 @@ plugins {
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.jvm)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.serialization)
 
     id("org.flywaydb.flyway").version("7.15.0")
     id("io.spring.dependency-management") version "1.0.9.RELEASE"

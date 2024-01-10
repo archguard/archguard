@@ -1,7 +1,9 @@
 package com.thoughtworks.archguard.systeminfo.controller.dto
 
 import com.thoughtworks.archguard.systeminfo.domain.ScannedType
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SystemInfoDTO(
     val id: Long?,
     val systemName: String,
