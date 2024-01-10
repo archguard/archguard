@@ -35,6 +35,6 @@ internal class CohesionControllerTest(@LocalServerPort val port: Int) {
         assertThat(entity.body?.currentPageNumber).isEqualTo(1)
         assertThat(entity.body?.data?.size).isEqualTo(1)
         assertThat(entity.body?.data?.get(0)?.commitMessage).isEqualTo("only leave java codes")
-        assertThat(entity.body?.data?.get(0)?.clazzes?.size).isEqualTo(9)
+        assertThat(entity.body?.data?.get(0)?.clazzes?.size).isEqualTo(10)
     }
 }
