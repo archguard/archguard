@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
 class ContainerServiceControllerTest {
     private val service = mock(ServicesMapService::class.java)
     private val controller = ContainerServiceController(service)

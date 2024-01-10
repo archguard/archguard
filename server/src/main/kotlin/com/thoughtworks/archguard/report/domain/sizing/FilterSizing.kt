@@ -1,5 +1,8 @@
 package com.thoughtworks.archguard.report.domain.sizing
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FilterSizing(
     val limit: Long,
     val offset: Long,
