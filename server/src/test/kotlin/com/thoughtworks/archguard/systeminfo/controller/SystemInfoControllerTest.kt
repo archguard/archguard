@@ -14,8 +14,11 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
@@ -85,5 +88,26 @@ class SystemInfoControllerTest {
 
         // Then
         assertEquals(Json.decodeFromString<SystemInfoDTO>(result.response.contentAsString), expectedSystemInfoDTO)
+    }
+
+    @Test
+    fun shouldReturnFilePathWhenUploadZipFile() {
+        val file = MockMultipartFile("file", "test.zip", "application/zip", "test data".toByteArray())
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/api/system-info/upload")
+            .file(file))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().string("null"))
+    }
+
+    @Test
+    fun shouldReturnErrorMessageWhenUploadEmptyZipFile() {
+        val file = MockMultipartFile("file", "test.zip", "application/zip", ByteArray(0))
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/system-info/upload")
+            .file(file))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().string("upload failed, please select file"))
     }
 }

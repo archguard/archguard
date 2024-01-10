@@ -78,7 +78,7 @@ class SystemInfoController(
     @PostMapping("/upload")
     fun uploadZip(@RequestParam("file") file: MultipartFile): String {
         if (file.isEmpty) {
-            return "上传失败，请选择文件"
+            return "upload failed, please select file"
         }
 
 //         createTempDir("temp", null, CreateFileUtil.createDir("/tmp/zip/files"))
