@@ -6,9 +6,9 @@ import java.nio.file.Path
 data class ClassVO(val moduleName: String, val packageName: String, val className: String) {
     companion object {
         fun create(fullName: String): ClassVO {
-            val moduleName = fullName.substring(0, fullName.indexOfFirst { it == '.' })
-            val packageName = fullName.substring(fullName.indexOfFirst { it == '.' } + 1, fullName.indexOfLast { it == '.' })
-            val className = fullName.substring(fullName.indexOfLast { it == '.' } + 1)
+            val moduleName = fullName.substringBefore('.')
+            val packageName = fullName.substringAfter('.').substringBeforeLast('.')
+            val className = fullName.substringAfterLast('.')
             return ClassVO(moduleName, packageName, className)
         }
 
@@ -19,26 +19,67 @@ data class ClassVO(val moduleName: String, val packageName: String, val classNam
         }
 
         fun create(path: Path): ClassVO? {
-            if (path.toString().endsWith(".java") || path.toString().endsWith(".kt")) {
-                var i = path.nameCount
-                var parentFile: File = path.toFile().parentFile
-
-                while (i > 1) {
-                    if (path.subpath(i - 1, i).toFile().name == "src")
-                        break
-                    if (parentFile.parentFile == null) {
-                        return null
-                    }
-                    parentFile = parentFile.parentFile
-                    i--
-                }
-                val moduleName: String = parentFile.toString()
-                val packageName: String = path.subpath(i + 2, path.nameCount - 1).toString().replace("/", ".")
-                val classFullName = path.subpath(path.nameCount - 1, path.nameCount).toString()
-                val className = classFullName.substring(0, classFullName.indexOfLast { it == '.' })
-                return ClassVO(moduleName, packageName, className)
+            if (!isJavaOrKotlinFile(path)) {
+                return null
             }
-            return null
+
+            val moduleName = findModuleName(path)
+            val packageName = findPackageName(path)
+            val className = findClassName(path)
+
+            return ClassVO(moduleName, packageName, className)
+        }
+
+        private fun isJavaOrKotlinFile(path: Path): Boolean {
+            val fileName = path.fileName.toString()
+            return fileName.endsWith(".java") || fileName.endsWith(".kt")
+        }
+
+        private fun findModuleName(path: Path): String {
+            var parentFile = path.toFile().parentFile
+            var i = path.nameCount
+
+            while (i > 1) {
+                if (path.subpath(i - 1, i).toFile().name == "src") {
+                    break
+                }
+
+                if (parentFile.parentFile == null) {
+                    return ""
+                }
+
+                parentFile = parentFile.parentFile
+                i--
+            }
+
+            return parentFile.toString()
+        }
+
+        private fun findPackageName(path: Path): String {
+            val startIndex = findPackageNameStartIndex(path)
+            val endIndex = path.nameCount - 1
+            val packageNamePath = path.subpath(startIndex, endIndex)
+            return packageNamePath.toString().replace("/", ".")
+        }
+
+        private fun findPackageNameStartIndex(path: Path): Int {
+            var i = path.nameCount - 1
+
+            while (i > 1) {
+                if (path.subpath(i - 1, i).toFile().name == "src") {
+                    break
+                }
+
+                i--
+            }
+
+            return i + 2
+        }
+
+        private fun findClassName(path: Path): String {
+            val classFullName = path.subpath(path.nameCount - 1, path.nameCount).toString()
+            val className = classFullName.substring(0, classFullName.indexOfLast { it == '.' })
+            return className
         }
     }
 }
