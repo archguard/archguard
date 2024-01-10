@@ -26,7 +26,6 @@ class CouplingController(
     val classCouplingRepository: ClassCouplingRepository,
     val classCouplingAppService: ClassCouplingAppService
 ) {
-
     @PostMapping("/data-clumps")
     fun getClassesDataClumpsWithTotalCount(@PathVariable("systemId") systemId: Long, @RequestBody @Valid filterSizing: FilterSizingDto): ResponseEntity<ClassDataClumpsListDto> {
         val request = ValidPagingParam.validFilterParam(filterSizing)
