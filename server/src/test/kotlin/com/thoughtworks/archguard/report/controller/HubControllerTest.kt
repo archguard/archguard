@@ -3,7 +3,8 @@ package com.thoughtworks.archguard.report.controller;
 import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
 import com.thoughtworks.archguard.report.domain.coupling.hub.*
 import io.mockk.MockKAnnotations
-import org.archguard.json.JsonUtils
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
@@ -63,7 +64,7 @@ class HubControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/systems/1/hub/classes/above-threshold", systemId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtils.obj2json(filterSizing))
+                .content(Json.encodeToString(filterSizing))
                 .param("orderByFanIn", orderByFanIn.toString())
         )
             .andExpect(status().isOk)
@@ -105,7 +106,7 @@ class HubControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/systems/1/hub/methods/above-threshold", systemId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtils.obj2json(filterSizing))
+                .content(Json.encodeToString(filterSizing))
                 .param("orderByFanIn", orderByFanIn.toString())
         )
             .andExpect(status().isOk)
@@ -144,7 +145,7 @@ class HubControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/systems/1/hub/packages/above-threshold", systemId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtils.obj2json(filterSizing))
+                .content(Json.encodeToString(filterSizing))
                 .param("orderByFanIn", orderByFanIn.toString())
         )
             .andExpect(status().isOk)
@@ -182,7 +183,7 @@ class HubControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/systems/1/hub/modules/above-threshold", systemId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtils.obj2json(filterSizing))
+                .content(Json.encodeToString(filterSizing))
                 .param("orderByFanIn", orderByFanIn.toString())
         )
             .andExpect(status().isOk)
