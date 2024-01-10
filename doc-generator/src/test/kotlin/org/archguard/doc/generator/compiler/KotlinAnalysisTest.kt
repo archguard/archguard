@@ -1,6 +1,5 @@
-package org.archguard.doc.generator
+package org.archguard.doc.generator.compiler
 
-import org.archguard.doc.generator.compiler.KotlinAnalysis
 import org.jetbrains.kotlin.name.FqName
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -9,7 +8,6 @@ import kotlin.test.assertEquals
 
 internal class KotlinAnalysisTest {
     @Test
-    @Disabled
     internal fun compiler_file() {
         val scriptFile = "src/"
         val parser = KotlinAnalysis()

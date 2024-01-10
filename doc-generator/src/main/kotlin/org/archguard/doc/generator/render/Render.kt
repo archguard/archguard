@@ -1,11 +1,5 @@
 package org.archguard.doc.generator.render
 
-abstract class Render<T> {
-    abstract fun T.buildMetadata(content: T.() -> Unit)
-    abstract fun T.buildLink(address: String, content: T.() -> Unit)
-    abstract fun T.buildLineBreak()
-}
-
 interface ContentNode
 
 data class DocPage(var content: List<ContentNode>) : ContentNode
