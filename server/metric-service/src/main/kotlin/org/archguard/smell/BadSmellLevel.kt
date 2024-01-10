@@ -10,7 +10,7 @@ package org.archguard.smell
  *
  * @constructor Creates a `BadSmellLevel` instance with the specified levels of bad smell.
  */
-class BadSmellLevel(var level1: Long = 0, var level2: Long = 0, var level3: Long = 0) {
+data class BadSmellLevel(var level1: Long = 0, var level2: Long = 0, var level3: Long = 0) {
     fun totalCount(): Long {
         return level1 + level2 + level3
     }
