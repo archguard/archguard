@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 class ScannerHubController(
     @Value("\${spring.datasource.url}") val dbUrl: String,
     @Value("\${spring.datasource.username}") val username: String,
-    @Value("\${spring.datasource.password}") val password: String
+    @Value("\${spring.datasource.password}") val password: String,
+    @Autowired var hubService: HubExecutorService
 ) {
 
-    @Autowired
-    private lateinit var hubService: HubExecutorService
 
     val url = dbUrl.replace("://", "://$username:$password@")
 
