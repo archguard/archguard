@@ -1,17 +1,12 @@
 package com.thoughtworks.archguard.report.controller;
 
 import com.thoughtworks.archguard.report.controller.coupling.FilterSizingDto
-import com.thoughtworks.archguard.report.domain.coupling.circulardependency.CircularDependencyService
 import com.thoughtworks.archguard.report.domain.coupling.hub.*
 import io.mockk.MockKAnnotations
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.json.JsonUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
