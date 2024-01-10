@@ -1,6 +1,5 @@
-package com.thoughtworks.archguard.report.infrastructure
+package com.thoughtworks.archguard.report.infrastructure.coupling
 
-import com.thoughtworks.archguard.report.infrastructure.coupling.DataClumpsRepositoryImpl
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

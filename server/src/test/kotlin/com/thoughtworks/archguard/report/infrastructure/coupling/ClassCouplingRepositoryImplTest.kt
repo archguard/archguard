@@ -1,7 +1,6 @@
-package com.thoughtworks.archguard.report.infrastructure
+package com.thoughtworks.archguard.report.infrastructure.coupling
 
 import com.thoughtworks.archguard.report.domain.coupling.hub.ClassCoupling
-import com.thoughtworks.archguard.report.infrastructure.coupling.ClassCouplingRepositoryImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
