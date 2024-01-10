@@ -5,8 +5,8 @@ import org.archguard.smell.BadSmellType
 import org.archguard.threshold.ThresholdKey
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 
 class DeepInheritanceServiceTest {
 
@@ -55,3 +55,4 @@ class DeepInheritanceServiceTest {
         assertEquals(mapOf(BadSmellType.DEEPINHERITANCE to ditAboveThresholdCount), result)
     }
 }
+
