@@ -57,11 +57,7 @@ data class TreeNode(val name: String, val children: MutableList<TreeNode> = muta
          * @return The found or newly created child node.
          */
         fun findOrCreateChild(parent: TreeNode, childName: String): TreeNode {
-            for (child in parent.children) {
-                if (child.name == childName) {
-                    return child
-                }
-            }
+            parent.children.find { child -> child.name == childName }?.let { return it }
 
             val newChild = TreeNode(childName)
             parent.children.add(newChild)
