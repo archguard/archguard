@@ -24,8 +24,8 @@ enum class AnalyserType {
     ;
 
     companion object {
-        fun fromString(type: String): AnalyserType {
-            return values().first { it.name.lowercase() == type.lowercase() }
+        fun fromString(type: String): AnalyserType? {
+            return values().firstOrNull() { it.name.lowercase() == type.lowercase() }
         }
     }
 }
