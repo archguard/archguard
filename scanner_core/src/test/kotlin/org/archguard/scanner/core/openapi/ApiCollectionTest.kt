@@ -1,5 +1,8 @@
 package org.archguard.scanner.core.openapi;
 
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
@@ -81,5 +84,81 @@ class ApiCollectionTest {
         assertEquals("(bodyParam1: bodyValue1, bodyParam2: bodyValue2)", result)
     }
 
+    @Test
+    fun shouldRenderDisplayTextWithOperationIdAndDescription() {
+        // given
+        val apiItem = ApiItem(
+            path = "/users",
+            method = "GET",
+            description = "Get all users",
+            operationId = "getAllUsers",
+            tags = listOf("users")
+        )
 
+        // when
+        val displayText = apiItem.renderDisplayText()
+
+        // then
+        assertEquals("### getAllUsers\n> Get all users\nGET /users", displayText)
+    }
+
+    @Test
+    fun shouldRenderDisplayTextWithoutOperationIdAndDescription() {
+        // given
+        val apiItem = ApiItem(
+            path = "/users",
+            method = "GET",
+            description = "",
+            operationId = "",
+            tags = listOf("users")
+        )
+
+        // when
+        val displayText = apiItem.renderDisplayText()
+
+        // then
+        assertEquals("GET /users", displayText)
+    }
+
+    @Test
+    fun shouldRenderDisplayTextWithRequestParameters() {
+        // given
+        val parameters = listOf(
+            Parameter(name = "page", type = "Int"),
+            Parameter(name = "size", type = "Int")
+        )
+        val request = Request(parameters = parameters)
+        val apiItem = ApiItem(
+            path = "/users",
+            method = "GET",
+            description = "Get all users",
+            operationId = "getAllUsers",
+            tags = listOf("users"),
+            request = request
+        )
+
+        // when
+        val displayText = apiItem.renderDisplayText()
+
+        // then
+        assertEquals("### getAllUsers\n> Get all users\nGET /users?page=Int&size=Int", displayText)
+    }
+
+    @Test
+    fun shouldRenderDisplayTextWithoutResponse() {
+        // given
+        val apiItem = ApiItem(
+            path = "/users",
+            method = "GET",
+            description = "Get all users",
+            operationId = "getAllUsers",
+            tags = listOf("users")
+        )
+
+        // when
+        val displayText = apiItem.renderDisplayText()
+
+        // then
+        assertEquals("### getAllUsers\n> Get all users\nGET /users", displayText)
+    }
 }
