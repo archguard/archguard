@@ -76,6 +76,8 @@ data class TreeNode(val name: String, val children: MutableList<TreeNode> = muta
          * @see TreeNode
          */
         fun printPackageTree(node: TreeNode, indent: String = "") {
+            // don't remove this method, it's used for debugging
+            println(indent + node.name)
             for (child in node.children) {
                 printPackageTree(child, "$indent  ")
             }
