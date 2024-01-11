@@ -23,13 +23,10 @@ class PostmanParser {
     private fun parseFolder(item: PostmanFolder, folderName: String?): List<ApiCollection> {
         val details: MutableList<ApiCollection> = mutableListOf()
         if (item.item != null) {
-            val childTypes = item.item.map {
-                parseChildItem(it, folderName, item.name)
-            }.flatten()
+            val childTypes = item.item.flatMap { parseChildItem(it, folderName, item.name) }
 
-            childTypes.filterIsInstance<ChildType.Folder>().forEach {
-                details.add(it.collection)
-            }
+            details.addAll(childTypes.filterIsInstance<ChildType.Folder>()
+                .map { it.collection })
 
             childTypes.filterIsInstance<ChildType.NestedFolder>().forEach {
                 val folder = it.folders.map(ChildType.Folder::collection)
