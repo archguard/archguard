@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.analyser.backend.GoApiAnalyser
 import org.archguard.scanner.analyser.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.ContainerService
@@ -18,54 +19,50 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
         val language = context.language.lowercase()
         val path = context.path
 
-        val apiCalls = when (language) {
-            "typescript", "javascript" -> {
-                logger.info("start analysis frontend api ---- $language")
+        logger.info("start analysis api ---- $language")
 
-                val feApiAnalyser = FrontendApiAnalyser()
+        val analyser: ApiAnalyser? = when (language) {
+            "typescript", "javascript" -> {
+                val feApiAnalyser = FrontendApiAnalyser(listOf())
                 input.forEach { data ->
                     feApiAnalyser.analysisByNode(data, path)
                 }
 
-                feApiAnalyser.toContainerServices()
+                feApiAnalyser
             }
 
             "c#", "csharp" -> {
-                logger.info("start analysis backend api ---- CSharp")
-
                 val csharpApiAnalyser = CSharpApiAnalyser()
                 input.forEach { data ->
                     csharpApiAnalyser.analysisByNode(data, "")
                 }
 
-                csharpApiAnalyser.toContainerServices()
+                csharpApiAnalyser
             }
 
             "java", "kotlin" -> {
-                logger.info("start analysis backend api ---- $language")
-
                 val apiAnalyser = JavaApiAnalyser()
                 input.forEach { data ->
                     apiAnalyser.analysisByNode(data, "")
                 }
 
-                apiAnalyser.toContainerServices()
+                apiAnalyser
             }
 
             "golang" -> {
-                logger.info("start analysis backend api ---- $language")
-
                 val apiAnalyser = GoApiAnalyser()
                 input.forEach { data ->
                     apiAnalyser.analysisByNode(data, "")
                 }
 
-                apiAnalyser.toContainerServices()
+                apiAnalyser
             }
 
-            else -> throw IllegalArgumentException("Unsupported language: $language")
+            else -> null
         }
 
+
+        val apiCalls = analyser?.toContainerServices() ?: listOf()
         client.saveApi(apiCalls)
         return apiCalls
     }

@@ -2,12 +2,14 @@ package org.archguard.scanner.analyser.frontend
 
 import chapi.domain.core.*
 import kotlinx.serialization.Serializable
+import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.identify.AxiosHttpIdentify
 import org.archguard.scanner.analyser.frontend.identify.UmiHttpIdentify
 import org.archguard.scanner.analyser.frontend.path.ecmaImportConvert
 import org.archguard.scanner.analyser.frontend.path.relativeRoot
 import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.scanner.core.sourcecode.ContainerSupply
 
 @Serializable
 class ApiCodeCall(
@@ -35,7 +37,7 @@ class ApiCodeCall(
     }
 }
 
-class FrontendApiAnalyser {
+class FrontendApiAnalyser(override var resources: List<ContainerSupply> = listOf()) : ApiAnalyser {
     private var componentCallMap: HashMap<String, MutableList<String>> = hashMapOf()
     private var componentInbounds: HashMap<String, MutableList<String>> = hashMapOf()
     private var callMap: HashMap<String, CodeCall> = hashMapOf()
@@ -56,7 +58,7 @@ class FrontendApiAnalyser {
         return toContainerServices()
     }
 
-    fun analysisByNode(node: CodeDataStruct, workspace: String) {
+    override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         var isComponent: Boolean
         val isComponentExt = node.fileExt() == "tsx" || node.fileExt() == "jsx"
         val isNotInterface = node.Type != DataStructType.INTERFACE
@@ -106,7 +108,7 @@ class FrontendApiAnalyser {
 
     class LoopDepth(var index: Int)
 
-    fun toContainerServices(): List<ContainerService> {
+    override fun toContainerServices(): List<ContainerService> {
         val componentCalls: MutableList<ContainerService> = mutableListOf()
 
         componentInbounds.forEach { inbound ->
