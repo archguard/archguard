@@ -125,26 +125,4 @@ data class VersionNumber(val major: Int, val minor: Int, val micro: Int, val pat
             return VersionNumber(major, minor, micro, patch, parser.qualifier())
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is VersionNumber) return false
-
-        if (major != other.major) return false
-        if (minor != other.minor) return false
-        if (micro != other.micro) return false
-        if (patch != other.patch) return false
-        if (qualifier != other.qualifier) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = major
-        result = 31 * result + minor
-        result = 31 * result + micro
-        result = 31 * result + patch
-        result = 31 * result + (qualifier?.hashCode() ?: 0)
-        return result
-    }
 }
