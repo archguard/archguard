@@ -16,7 +16,6 @@ class SimpleEstimateContext(
 
 class EstimateServiceTest {
     @Test
-    @Disabled
     fun analyse() {
         val context = SimpleEstimateContext(
             path = ".",
@@ -24,6 +23,9 @@ class EstimateServiceTest {
         )
 
         val estimates = EstimateService(context).analyse()
-        println("estimates: $estimates")
+        assert(estimates.isNotEmpty())
+
+        val self = estimates.filter { it.name == "Kotlin" }
+        assert(self.isNotEmpty())
     }
 }
