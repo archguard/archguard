@@ -47,13 +47,31 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
     }
 
     /**
-     * output example:
-     * ```code
+     * This method generates a formatted display of a given Kotlin language function.
+     *
+     * @param function The CodeFunction object representing the function to be displayed.
+     * @return A string containing the formatted display of the function.
+     *
+     * Example usage:
+     * ```kotlin
+     * val function = CodeFunction()
+     * // Set function properties
+     * val display = display(function)
+     * println(display)
+     * ```
+     *
+     * The output will be:
+     * ```
      * @{annotation}
-     * function_name(param1, param2) -> return_TYPE {
+     * function_name(param1: Type1, param2: Type2) -> return_TYPE {
      *    // function-call
      * }
      * ```
+     *
+     * The `display` method takes a CodeFunction object as input and generates a formatted display of the function.
+     * It starts by extracting the annotations of the function and concatenating them into a single string,
+     * with each annotation formatted as `@annotationName(key1 = value1, key2 = value2)`. This string is stored in
+     * the `annotation` variable.
      */
     fun display(function: CodeFunction): String {
         val annotation = function.Annotations.joinToString("\n") {
@@ -64,7 +82,8 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
         val params = function.Parameters.joinToString(", ") { "${it.TypeValue}: ${it.TypeType}" }
         val returnType = function.ReturnType
         val body = function.FunctionCalls.joinToString("\n") {
-            "// ->" + it.Package + "." + it.NodeName + "." + it.FunctionName + "(" + it.Parameters.joinToString(", ") + ")"
+            val parameters = it.Parameters.joinToString(", ") { "${it.TypeValue}: ${it.TypeType}" }
+            "// ->" + it.Package + "." + it.NodeName + "." + it.FunctionName + "(" + parameters + ")"
         }
 
         return """
