@@ -56,7 +56,7 @@ val NEW_LINE = Regex("[ \t\n\r]")
 
 data class Token(val type: TokenType, val value: String, val start: Int, val end: Int)
 
-class Either<A, B> private constructor(private val innerVal: Any, val isLeft: Boolean) {
+data class Either<A, B> private constructor(private val innerVal: Any, val isLeft: Boolean) {
     companion object {
         @Suppress("FunctionName")
         fun <T : Any, O> Left(a: T): Either<T, O> {
@@ -83,22 +83,6 @@ class Either<A, B> private constructor(private val innerVal: Any, val isLeft: Bo
         }
 
         return null
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Either<*, *>) return false
-
-        if (innerVal != other.innerVal) return false
-        if (isLeft != other.isLeft) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = innerVal.hashCode()
-        result = 31 * result + isLeft.hashCode()
-        return result
     }
 }
 
