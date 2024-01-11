@@ -8,15 +8,14 @@ import org.archguard.architecture.view.module.mvc.View
 import org.archguard.architecture.view.module.shared.Dependency
 
 @Serializable
-data class MVCArchitecture(
-    val models: List<Model>,
-    val views: List<View>,
-    val controllers: List<Controller>,
-    val dependencies: List<Dependency>
-) :
-    ArchitectureStyle {
-    override fun buildArchitecture(identPotential: PotentialExecArch) {
+class MVCArchitecture : ArchitectureStyle {
+    val models: List<Model> = listOf()
+    val views: List<View> = listOf()
+    val controllers: List<Controller> = listOf()
+    val dependencies: List<Dependency> = listOf()
 
+    override fun canBeApplied(identPotential: PotentialExecArch): Boolean {
+        return false
     }
 }
 

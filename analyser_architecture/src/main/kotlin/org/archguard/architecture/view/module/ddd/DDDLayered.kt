@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class DomainLayer(
-    val aggregates: List<CodeDataStruct>,
-    val repositories: List<CodeDataStruct>,
-    val domainServices: List<CodeDataStruct>,
-    val factories: List<CodeDataStruct>
+    val aggregates: List<CodeDataStruct> = listOf(),
+    val repositories: List<CodeDataStruct> = listOf(),
+    val domainServices: List<CodeDataStruct> = listOf(),
+    val factories: List<CodeDataStruct> = listOf()
 )

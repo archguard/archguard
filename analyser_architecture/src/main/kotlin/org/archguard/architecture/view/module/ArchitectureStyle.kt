@@ -5,13 +5,21 @@ import org.archguard.architecture.detect.PotentialExecArch
 
 @Serializable
 sealed interface ArchitectureStyle {
-    fun buildArchitecture(identPotential: PotentialExecArch)
+    fun canBeApplied(identPotential: PotentialExecArch): Boolean
 
     companion object {
         fun from(identPotential: PotentialExecArch): ArchitectureStyle {
-            return LayeredArchitecture(listOf()).also {
-                it.buildArchitecture(identPotential)
-            }
+            // get all the potential architecture styles
+            val styles = listOf(
+                PipesAndFilterArchitecture(),
+                DDDStyleArchitecture(),
+                MVCArchitecture(),
+                LayeredArchitecture()
+            )
+
+            // find the first style that can be applied
+            return styles.firstOrNull { it.canBeApplied(identPotential) }
+                ?: LayeredArchitecture()
         }
     }
 }

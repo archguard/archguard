@@ -16,7 +16,7 @@ class DomainModel(
         fun from(concepts: List<CodeDataStruct>): List<DomainModel> {
             return concepts.map { ds ->
                 DomainModel(
-                    name = ds.NodeName,
+                    name = ds.getClassFullName(),
                     fields = ds.Fields.map { it.TypeKey },
                     behaviors = ds.Functions.mapNotNull {
                         val notConstructor = it.Name != ds.NodeName

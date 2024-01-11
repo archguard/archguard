@@ -17,7 +17,7 @@ import org.archguard.architecture.detect.PotentialExecArch
  */
 @Serializable
 class MicroKernelArchitecture : ArchitectureStyle {
-    override fun buildArchitecture(identPotential: PotentialExecArch) {
-
+    override fun canBeApplied(identPotential: PotentialExecArch): Boolean {
+        return false
     }
 }

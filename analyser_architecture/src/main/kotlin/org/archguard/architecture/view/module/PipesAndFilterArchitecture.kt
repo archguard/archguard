@@ -9,8 +9,8 @@ class PipesAndFilterArchitecture : ArchitectureStyle {
     val pipes = mutableListOf<Pipe>()
     val filters = mutableListOf<Filter>()
     val dependencies = mutableListOf<Dependency>()
-    override fun buildArchitecture(identPotential: PotentialExecArch) {
-
+    override fun canBeApplied(identPotential: PotentialExecArch): Boolean {
+        return false
     }
 }
 

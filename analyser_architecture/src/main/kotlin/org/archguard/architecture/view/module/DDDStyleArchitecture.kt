@@ -7,14 +7,13 @@ import org.archguard.architecture.view.module.ddd.DomainLayer
 import org.archguard.architecture.view.module.shared.Dependency
 
 @Serializable
-class DDDStyleArchitecture(
-    val infra: List<CodeDataStruct>,
-    val application: List<CodeDataStruct>,
-    val domainLayer: DomainLayer,
-    val interfaceLayer: List<CodeDataStruct>,
-    val dependencies: List<Dependency>
-) : ArchitectureStyle {
-    override fun buildArchitecture(identPotential: PotentialExecArch) {
-
+class DDDStyleArchitecture() : ArchitectureStyle {
+    val infra: List<CodeDataStruct> = listOf()
+    val application: List<CodeDataStruct> = listOf()
+    val domainLayer: DomainLayer = DomainLayer()
+    val interfaceLayer: List<CodeDataStruct> = listOf()
+    val dependencies: List<Dependency> = listOf()
+    override fun canBeApplied(identPotential: PotentialExecArch): Boolean {
+        return false
     }
 }

@@ -14,7 +14,7 @@ import org.archguard.scanner.core.estimate.LanguageEstimate
 @Serializable
 class ArchitectureView(
     var conceptArchitecture: ConceptArchitecture = ConceptArchitecture(),
-    var architectureStyle: ArchitectureStyle = LayeredArchitecture(listOf()),
+    var architectureStyle: ArchitectureStyle = LayeredArchitecture(),
     var executionArchitecture: ExecutionArchitecture = ExecutionArchitecture(),
     var codeArchitecture: CodeArchitecture = CodeArchitecture(
         Language.Java,

@@ -9,8 +9,10 @@ import org.archguard.architecture.view.module.layer.MLayer
  * So in module architecture have one or more layers.
  */
 @Serializable
-class LayeredArchitecture(val layers: List<MLayer>) : ArchitectureStyle {
-    override fun buildArchitecture(identPotential: PotentialExecArch) {
+class LayeredArchitecture : ArchitectureStyle {
+    val layers: List<MLayer> = listOf()
 
+    override fun canBeApplied(identPotential: PotentialExecArch): Boolean {
+        return false
     }
 }
