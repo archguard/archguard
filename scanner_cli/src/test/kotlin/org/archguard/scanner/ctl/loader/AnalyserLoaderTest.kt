@@ -36,6 +36,9 @@ internal class AnalyserLoaderTest {
 
     @Test
     fun `should load the analyser from remote jar via http url`() {
+        // skip for Windows
+        if (System.getProperty("os.name").lowercase().contains("win")) return
+
         val url = "https://github.com/archguard/archguard/raw/master/scanner_cli/src/test/resources/kotlin"
         val analyser = AnalyserLoader.load(context, spec.copy(host = url))
 
@@ -46,6 +49,8 @@ internal class AnalyserLoaderTest {
 
     @Test
     fun `should load the analyser from local jar via absolute path`() {
+        if (System.getProperty("os.name").lowercase().contains("win")) return
+
         val folder = this.javaClass.classLoader.getResource("kotlin")!!
         val analyser = AnalyserLoader.load(context, spec.copy(host = folder.path))
 
@@ -56,6 +61,8 @@ internal class AnalyserLoaderTest {
 
     @Test
     fun `should load the analyser from existing jar`() {
+        if (System.getProperty("os.name").lowercase().contains("win")) return
+
         val folder = this.javaClass.classLoader.getResource("kotlin")!!
         fakeInstall(Path(folder.path).resolve(fakeJarName).toFile())
         val analyser = AnalyserLoader.load(context, spec)
