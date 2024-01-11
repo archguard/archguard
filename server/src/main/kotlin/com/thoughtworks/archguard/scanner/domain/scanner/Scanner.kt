@@ -4,8 +4,6 @@ import com.thoughtworks.archguard.scanner.domain.config.model.ToolConfigure
 import com.thoughtworks.archguard.scanner.domain.scanner.javaext.bs.ScanContext
 
 interface Scanner {
-    val toolList: List<ToolConfigure>
-        get() = toolListGenerator()
 
     fun getScannerName(): String
 
