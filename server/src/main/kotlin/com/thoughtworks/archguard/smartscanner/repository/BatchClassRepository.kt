@@ -57,7 +57,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         var clzFullName = "${clz.Package}.${clz.NodeName}"
 
         if (isJs()) {
-            val component = processNameForReactComponent(clz)
+            val component = ReactComponentClass.from(clz)
             clzFullName = "${component.packageName}.${component.className}"
         }
 
@@ -538,7 +538,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         var fullName = "$pkgName.$clzName"
 
         if (isJs()) {
-            val component = processNameForReactComponent(clz)
+            val component = ReactComponentClass.from(clz)
             fullName = "${component.packageName}.${component.className}"
             pkgName = component.packageName
             clzName = component.className
@@ -563,41 +563,6 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         return clzId
     }
 
-    // todo: need to default package name
-    private fun processNameForReactComponent(clz: CodeDataStruct): ReactComponentClass {
-        var pkgName = clz.Package
-        var clzName = clz.NodeName
-        var isProcessedComponent = false
-
-        // for `Component/index.tsx`
-        val mayBeAComponent = pkgName.endsWith(".index") && clzName == "default"
-        if (mayBeAComponent) {
-            val functions = clz.Functions.filter { it.IsReturnHtml }
-            val isAComponent = functions.isNotEmpty()
-            if (isAComponent) {
-                isProcessedComponent = true
-
-                pkgName = pkgName.removeSuffix(".index")
-                clzName = functions[0].Name
-            }
-        }
-
-        // for `Component/SomeComponent.tsx`
-        val filePath = clz.FilePath
-        if (!isProcessedComponent && clzName == "default" && isComponent(filePath)) {
-            val functions = clz.Functions.filter { it.IsReturnHtml }
-            val isAComponent = functions.isNotEmpty()
-            if (isAComponent) {
-                pkgName = pkgName.removeSuffix(".index")
-                clzName = functions[0].Name
-            }
-        }
-
-        return ReactComponentClass(pkgName, clzName)
-    }
-
-    private fun isComponent(filePath: String) = filePath.endsWith(".tsx") || filePath.endsWith(".jsx")
-
     fun findId(table: String, keys: Map<String, String>): Optional<String>? {
         return batch.findId(table, keys)
     }
@@ -615,5 +580,5 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         batch.execute()
         batch.close()
     }
-}
 
+}
