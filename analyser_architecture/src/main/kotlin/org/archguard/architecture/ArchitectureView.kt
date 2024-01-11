@@ -3,8 +3,8 @@ package org.archguard.architecture
 import kotlinx.serialization.Serializable
 import org.archguard.architecture.graph.TreeNode
 import org.archguard.architecture.view.code.CodeArchitecture
-import org.archguard.architecture.view.code.CodeType
-import org.archguard.architecture.view.code.LangType
+import org.archguard.architecture.view.code.RepositoryType
+import org.archguard.architecture.view.code.Language
 import org.archguard.architecture.view.concept.ConceptArchitecture
 import org.archguard.architecture.view.execution.ExecutionArchitecture
 import org.archguard.architecture.view.module.ArchitectureStyle
@@ -17,8 +17,8 @@ class ArchitectureView(
     var architectureStyle: ArchitectureStyle = LayeredArchitecture(listOf()),
     var executionArchitecture: ExecutionArchitecture = ExecutionArchitecture(),
     var codeArchitecture: CodeArchitecture = CodeArchitecture(
-        LangType.Java,
-        CodeType.Interface
+        Language.Java,
+        RepositoryType.Interface
     ),
     var physicalStructure: PhysicalStructure = PhysicalStructure()
 )

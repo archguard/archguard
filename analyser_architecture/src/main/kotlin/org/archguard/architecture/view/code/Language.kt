@@ -1,6 +1,6 @@
 package org.archguard.architecture.view.code
 
-enum class LangType {
+enum class Language {
     Java,
     Kotlin,
     Scala,

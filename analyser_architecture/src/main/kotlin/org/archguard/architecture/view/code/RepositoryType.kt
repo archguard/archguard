@@ -1,6 +1,6 @@
 package org.archguard.architecture.view.code
 
-enum class CodeType {
+enum class RepositoryType {
     Interface,
     InterfaceImpl,
     Util,
