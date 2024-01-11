@@ -42,6 +42,10 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
     }
 
     override fun saveGitLogs(gitLogs: List<GitLogs>) {
+        if (gitLogs.isEmpty()) {
+            return
+        }
+
         writeCsvFile(gitLogs[0].commitLog, buildFileName("gitlogs-commit"))
         writeCsvFile(gitLogs[0].changeEntry, buildFileName("gitlogs-change-entry"))
         writeCsvFile(gitLogs[0].pathChangeCount, buildFileName("gitlogs-change-count"))

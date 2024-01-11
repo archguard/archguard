@@ -2,3 +2,5 @@ dependencies/analysers/*
 
 localtester.sh
 *.proto
+*.json
+*.csv
