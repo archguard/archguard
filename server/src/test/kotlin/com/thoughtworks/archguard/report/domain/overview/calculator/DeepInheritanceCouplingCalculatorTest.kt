@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.springframework.stereotype.Component
 
-@Component
 class DeepInheritanceCouplingCalculatorTest {
 
     @Test
