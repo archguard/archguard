@@ -1,6 +1,7 @@
 package org.archguard.architecture.view.module
 
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.detect.PotentialExecArch
 import org.archguard.architecture.view.module.ddd.ApplicationLayer
 import org.archguard.architecture.view.module.ddd.DomainLayer
 import org.archguard.architecture.view.module.ddd.InfrastructureLayer
@@ -14,4 +15,9 @@ class DDDStyleArchitecture(
     val domainLayer: DomainLayer,
     val interfaceLayer: InterfaceLayer,
     val dependencies: List<Dependency>
-) : ArchitectureStyle
+) : ArchitectureStyle {
+    override fun buildArchitecture(identPotential: PotentialExecArch) {
+
+    }
+
+}

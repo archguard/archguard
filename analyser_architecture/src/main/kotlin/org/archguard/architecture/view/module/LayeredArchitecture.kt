@@ -1,6 +1,7 @@
 package org.archguard.architecture.view.module
 
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.detect.PotentialExecArch
 import org.archguard.architecture.view.module.layer.MLayer
 
 /**
@@ -8,4 +9,8 @@ import org.archguard.architecture.view.module.layer.MLayer
  * So in module architecture have one or more layers.
  */
 @Serializable
-class LayeredArchitecture(val layers: List<MLayer>) : ArchitectureStyle
+class LayeredArchitecture(val layers: List<MLayer>) : ArchitectureStyle {
+    override fun buildArchitecture(identPotential: PotentialExecArch) {
+
+    }
+}

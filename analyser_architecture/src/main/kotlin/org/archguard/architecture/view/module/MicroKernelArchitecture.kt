@@ -1,6 +1,7 @@
 package org.archguard.architecture.view.module
 
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.detect.PotentialExecArch
 
 /**
  * The `MicroKernelArchitecture` class is a concrete implementation of the `ModuleArchitecture` interface.
@@ -15,4 +16,8 @@ import kotlinx.serialization.Serializable
  * @constructor Creates a new instance of the `MicroKernelArchitecture` class.
  */
 @Serializable
-class MicroKernelArchitecture : ArchitectureStyle
+class MicroKernelArchitecture : ArchitectureStyle {
+    override fun buildArchitecture(identPotential: PotentialExecArch) {
+
+    }
+}

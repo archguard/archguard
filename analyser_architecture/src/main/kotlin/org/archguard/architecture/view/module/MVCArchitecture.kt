@@ -1,6 +1,7 @@
 package org.archguard.architecture.view.module
 
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.detect.PotentialExecArch
 import org.archguard.architecture.view.module.mvc.Controller
 import org.archguard.architecture.view.module.mvc.Model
 import org.archguard.architecture.view.module.mvc.View
@@ -13,5 +14,9 @@ data class MVCArchitecture(
     val controllers: List<Controller>,
     val dependencies: List<Dependency>
 ) :
-    ArchitectureStyle
+    ArchitectureStyle {
+    override fun buildArchitecture(identPotential: PotentialExecArch) {
+
+    }
+}
 
