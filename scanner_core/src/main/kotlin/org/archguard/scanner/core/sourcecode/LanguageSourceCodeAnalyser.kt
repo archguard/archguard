@@ -3,19 +3,29 @@ package org.archguard.scanner.core.sourcecode
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodePosition
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.slf4j.LoggerFactory
 import java.io.File
 import kotlin.streams.asStream
 import kotlin.streams.toList
 
-// 重载函数, 实现细粒度的接口定义
+/**
+ * The `LanguageSourceCodeAnalyser` interface is a Kotlin language class that provides functionality for analysing
+ * source code written in various programming languages. It extends the `SourceCodeAnalyser` interface and defines
+ * additional methods and functions specific to the Kotlin language.
+ *
+ *
+ * Example usage:
+ * ```kotlin
+ * val analyser: LanguageSourceCodeAnalyser = KotlinAnalyser()
+ * val codeDataStructs = analyser.analyse()
+ * for (codeDataStruct in codeDataStructs) {
+ *     println(codeDataStruct)
+ * }
+ * ```
+ *
+ * Note: This interface does not provide an implementation for the methods. It is meant to be implemented by
+ * concrete classes that provide the actual functionality.
+ */
 interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
-    companion object {
-        private val logger = LoggerFactory.getLogger(LanguageSourceCodeAnalyser::class.java)
-    }
-
     override fun analyse(input: Any?): List<Any>? = analyse()
 
     fun analyse(): List<CodeDataStruct>
