@@ -3,6 +3,7 @@ package com.thoughtworks.archguard.smartscanner.repository
 import chapi.domain.core.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
+import com.thoughtworks.archguard.smartscanner.infra.importConvert
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.jetbrains.annotations.TestOnly
 import java.io.File
@@ -562,8 +563,6 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         return clzId
     }
 
-    class ReactComponentClass(val packageName: String, val className: String)
-
     // todo: need to default package name
     private fun processNameForReactComponent(clz: CodeDataStruct): ReactComponentClass {
         var pkgName = clz.Package
@@ -617,3 +616,4 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         batch.close()
     }
 }
+

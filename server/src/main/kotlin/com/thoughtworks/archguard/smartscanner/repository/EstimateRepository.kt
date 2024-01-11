@@ -1,7 +1,5 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.estimate.LanguageEstimate
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.customizer.BindBean
@@ -24,10 +22,6 @@ class EstimateRepository(private val jdbi: Jdbi) {
 
         log.debug("save new data for systemId: $systemId done")
     }
-}
-
-class EstimateDto {
-
 }
 
 interface EstimateDao {

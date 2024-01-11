@@ -1,29 +1,6 @@
-package com.thoughtworks.archguard.smartscanner.repository
+package com.thoughtworks.archguard.smartscanner.infra
 
 import java.io.File
-
-enum class OS {
-    WINDOWS, LINUX, MAC, SOLARIS
-}
-
-fun getOS(): OS? {
-    val os = System.getProperty("os.name").lowercase()
-    return when {
-        os.contains("win") -> {
-            OS.WINDOWS
-        }
-        os.contains("nix") || os.contains("nux") || os.contains("aix") -> {
-            OS.LINUX
-        }
-        os.contains("mac") -> {
-            OS.MAC
-        }
-        os.contains("sunos") -> {
-            OS.SOLARIS
-        }
-        else -> null
-    }
-}
 
 /**
  * Converts a TypeScript import statement to the corresponding import statement in the target language.

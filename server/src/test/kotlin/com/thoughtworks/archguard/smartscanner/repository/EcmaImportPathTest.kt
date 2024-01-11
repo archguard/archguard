@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.smartscanner.repository;
 
+import com.thoughtworks.archguard.smartscanner.infra.importConvert
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class EcmaImportPathTest {
 
