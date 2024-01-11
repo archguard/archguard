@@ -36,7 +36,6 @@ internal class ScannerCliClientTest {
         it.features = listOf("apicalls", "datamap")
     }
 
-    @Disabled
     @Test
     fun `should execute the scan command with java jar command`() {
         mockkObject(RemoteFileLoader)

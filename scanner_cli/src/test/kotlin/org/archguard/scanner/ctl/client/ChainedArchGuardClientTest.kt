@@ -1,7 +1,6 @@
 package org.archguard.scanner.ctl.client
 
-import io.mockk.every
-import io.mockk.mockkConstructor
+import io.mockk.*
 import java.io.File
 import kotlin.test.Test
 
@@ -32,5 +31,6 @@ class ChainedArchGuardClientTest {
         chainedArchGuardClient.saveOpenApi(emptyList())
 
         // then
+//        unmockkObject(File::class)
     }
 }
