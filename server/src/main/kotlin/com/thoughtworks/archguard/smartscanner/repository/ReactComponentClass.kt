@@ -1,6 +1,9 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
 import chapi.domain.core.CodeDataStruct
+import chapi.domain.core.CodeFunction
+import com.thoughtworks.archguard.smartscanner.infra.importConvert
+import java.io.File
 
 class ReactComponentClass(val packageName: String, val className: String) {
     companion object {
@@ -36,6 +39,28 @@ class ReactComponentClass(val packageName: String, val className: String) {
             }
 
             return ReactComponentClass(pkgName, clzName)
+        }
+
+        fun isTest(function: CodeFunction, filePath: String): String {
+            val testPath = arrayOf("src", "test").joinToString(File.separator)
+            if (filePath.contains(testPath)) {
+                return "true"
+            }
+
+            return if (function.isJUnitTest()) "true" else "false"
+        }
+
+        fun convertTypeScriptImport(importSource: String, filePath: String): String {
+            var imp = importSource
+            if (!imp.startsWith("@")) {
+                imp = importConvert(filePath, imp)
+                if (imp.startsWith("src/")) {
+                    imp = imp.replaceFirst("src/", "@/")
+                }
+            }
+
+            imp = imp.replace("/", ".")
+            return imp
         }
     }
 }

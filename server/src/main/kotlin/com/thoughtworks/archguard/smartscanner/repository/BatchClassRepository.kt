@@ -3,10 +3,8 @@ package com.thoughtworks.archguard.smartscanner.repository
 import chapi.domain.core.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
-import com.thoughtworks.archguard.smartscanner.infra.importConvert
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.jetbrains.annotations.TestOnly
-import java.io.File
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -216,7 +214,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
                     var sourceName = packageName
 
                     var targetName = import.Source
-                    targetName = convertTypeScriptImport(targetName, filePath)
+                    targetName = ReactComponentClass.convertTypeScriptImport(targetName, filePath)
 
                     val mayBeComponent = packageName.endsWith(".index") && clzName == "default"
                     if (mayBeComponent) {
@@ -245,19 +243,6 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
                 doSaveClassDependence(clzId, clzDependenceId, sourceName, importSource)
             }
         }
-    }
-
-    private fun convertTypeScriptImport(importSource: String, filePath: String): String {
-        var imp = importSource
-        if (!imp.startsWith("@")) {
-            imp = importConvert(filePath, imp)
-            if (imp.startsWith("src/")) {
-                imp = imp.replaceFirst("src/", "@/")
-            }
-        }
-
-        imp = imp.replace("/", ".")
-        return imp
     }
 
     private fun isJs() = language == "typescript" || language == "javascript"
@@ -431,22 +416,14 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["class_name"] = clzName
         values["updatedAt"] = time
         values["createdAt"] = time
-        values["is_test"] = isTest(m, filePath)
+        values["is_test"] = ReactComponentClass.isTest(m, filePath)
         values["loc"] = (m.Position.StopLine - m.Position.StartLine).toString()
         batch.add("code_method", values)
         return mId
     }
 
-    private fun isTest(function: CodeFunction, filePath: String): String {
-        val testPath = arrayOf("src", "test").joinToString(File.separator)
-        if (filePath.contains(testPath)) {
-            return "true"
-        }
-
-        return if (function.isJUnitTest()) "true" else "false"
-    }
-
     private val FIELD_NAME = "[a-zA-Z_\$@]+".toRegex()
+
     private fun saveClassFields(clzId: String, fields: List<CodeField>, clzName: String) {
         for (field in fields) {
             val id = generateId()
@@ -580,5 +557,4 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         batch.execute()
         batch.close()
     }
-
 }

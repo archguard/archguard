@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class ReactComponentClassTest {
 
@@ -97,5 +98,46 @@ class ReactComponentClassTest {
         // then
         assertEquals("com.thoughtworks.archguard.smartscanner.repository.ReactComponentClass", result.packageName)
         assertEquals("SomeComponent", result.className)
+    }
+
+    @Test
+    fun shouldReturnTrueIfFilePathContainsTestPath() {
+        // Given
+        val filePath =
+            "src${File.separator}test${File.separator}com${File.separator}example${File.separator}TestFile.kt"
+        val function = CodeFunction()
+
+        // When
+        val result = ReactComponentClass.isTest(function, filePath)
+
+        // Then
+        assertEquals("true", result)
+    }
+
+    @Test
+    fun shouldReturnFalseIfFilePathDoesNotContainTestPathAndFunctionIsNotJUnitTest() {
+        // Given
+        val filePath =
+            "src${File.separator}main${File.separator}com${File.separator}example${File.separator}MainFile.kt"
+        val function = CodeFunction()
+
+        // When
+        val result = ReactComponentClass.isTest(function, filePath)
+
+        // Then
+        assertEquals("false", result)
+    }
+
+    @Test
+    fun shouldConvertTypeScriptImport() {
+        // Given
+        val importSource = "src/components/Button"
+        val filePath = "src/components/App.tsx"
+
+        // When
+        val convertedImport = ReactComponentClass.convertTypeScriptImport(importSource, filePath)
+
+        // Then
+        assertEquals("@.components.Button", convertedImport)
     }
 }
