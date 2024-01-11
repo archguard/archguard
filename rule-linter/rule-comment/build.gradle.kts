@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.kotlin.reflect)
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.chapi.java)
 }
 
 application {
