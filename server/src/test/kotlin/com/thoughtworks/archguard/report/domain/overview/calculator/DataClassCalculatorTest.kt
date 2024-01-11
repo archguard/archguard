@@ -17,7 +17,6 @@ class DataClassCalculatorTest {
         // given
         val systemId = 1L
         val count = 20L
-        val range = dataClassCalculator.getLevelRanges()
         `when`(dataClassRepository.getAllDataClassCount(systemId)).thenReturn(count)
 
         // when
@@ -49,7 +48,6 @@ class DataClassCalculatorTest {
         // given
         val systemId = 1L
         val count = 150L
-        val range = dataClassCalculator.getLevelRanges()
         `when`(dataClassRepository.getAllDataClassCount(systemId)).thenReturn(count)
 
         // when
@@ -65,7 +63,6 @@ class DataClassCalculatorTest {
         // given
         val systemId = 1L
         val count = 5L
-        val range = dataClassCalculator.getLevelRanges()
         `when`(dataClassRepository.getAllDataClassCount(systemId)).thenReturn(count)
 
         // when
