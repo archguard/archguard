@@ -23,7 +23,7 @@ class DataClassCalculator(val dataClassRepository: DataClassRepository) : BadSme
         }
     }
 
-    private fun getLevelRanges(): Array<LongRange> {
+    fun getLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 10L until 30L
         val countRangeLevel2 = 30L until 100L
         val countRangeLevel3 = 100L until Long.MAX_VALUE

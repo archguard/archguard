@@ -11,7 +11,7 @@ class DataClumpsCouplingCalculator(val dataClumpsRepository: DataClumpsRepositor
         return dataClumpsRepository.getLCOM4AboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    private fun getTypeCountLevelRanges(): Array<LongRange> {
+    fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 7L until 14L
         val countRangeLevel2 = 14L until 40L
         val countRangeLevel3 = 40L until Long.MAX_VALUE
