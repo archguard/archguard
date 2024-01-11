@@ -7,15 +7,12 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.archguard.scanner.ctl.loader.AnalyserLoader.installPath
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
 import kotlin.reflect.full.memberFunctions
 
-// for local testing?, related to networking/os, not applicable for CI
-@Disabled
 internal class AnalyserLoaderTest {
     private val fakeJarName = "testonly-lang_kotlin-1.6.1-all.jar"
     private val spec = AnalyserSpec(
