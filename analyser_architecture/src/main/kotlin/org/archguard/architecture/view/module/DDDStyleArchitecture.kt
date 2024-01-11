@@ -17,5 +17,4 @@ class DDDStyleArchitecture(
     override fun buildArchitecture(identPotential: PotentialExecArch) {
 
     }
-
 }

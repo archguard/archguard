@@ -18,4 +18,5 @@ data class PotentialExecArch(
     var coreStacks: List<String> = listOf(),
     var concepts: List<CodeDataStruct> = listOf(),
     var physicalStructure: TreeNode = TreeNode("root"),
+    var dataStructures: List<CodeDataStruct> = listOf(),
 )

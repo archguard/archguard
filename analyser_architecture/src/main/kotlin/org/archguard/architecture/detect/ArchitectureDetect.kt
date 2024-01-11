@@ -45,6 +45,9 @@ class ArchitectureDetect {
         // 5. create concepts domain based on the identified layered architecture style
         execArch.concepts = buildConcepts(layeredStyle, workspace)
 
+        // 6. keep all ds for second steps
+        execArch.dataStructures = workspace.dataStructs
+
         return execArch
     }
 
