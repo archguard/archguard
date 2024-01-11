@@ -13,7 +13,3 @@ open class PostmanItem {
     open var protocolProfileBehavior: PostmanProtocolProfileBehavior? = null
 }
 
-@Serializable
-class PostmanProtocolProfileBehavior {
-    var disableBodyPruning: Boolean? = null
-}
