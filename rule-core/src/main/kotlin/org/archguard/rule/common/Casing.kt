@@ -1,17 +1,21 @@
 package org.archguard.rule.common
 
-val FLAT_CASING = Regex("[a-z][a-z0-9]*")
-val CAMEL_CASING = Regex("[a-z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
-val PASCAL_CASING = Regex("[A-Z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
-val KEBAB_CASING = Regex("[a-z][a-z0-9]*(?:-[a-z0-9]+)*")
-val COBOL_CASING = Regex("[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)")
-val SNAKE_CASING = Regex("[a-z][a-z0-9]*(?:_[a-z0-9]+)*")
-val MACRO_CASING = Regex("[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*")
-
 class Casing {
     companion object {
-        // SNAKE-NAMING
+        val FLAT_CASING = Regex("[a-z][a-z0-9]*")
+        val CAMEL_CASING = Regex("[a-z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
+        val PASCAL_CASING = Regex("[A-Z][a-z0-9]*(?:[A-Z0-9](?:[a-z0-9]+|\$))*")
+        val KEBAB_CASING = Regex("[a-z][a-z0-9]*(?:-[a-z0-9]+)*")
+        val COBOL_CASING = Regex("[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)")
+        val SNAKE_CASING = Regex("[a-z][a-z0-9]*(?:_[a-z0-9]+)*")
+        val MACRO_CASING = Regex("[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*")
+
+
         fun `IS-COBOL`(s: String): Boolean {
+            return COBOL_CASING.matches(s)
+        }
+
+        fun isCobol(s: String): Boolean {
             return COBOL_CASING.matches(s)
         }
 
@@ -27,6 +31,10 @@ class Casing {
 
         // kebab-naming
         fun `is-kebab`(s: String): Boolean {
+            return KEBAB_CASING.matches(s)
+        }
+
+        fun isKebab(s: String): Boolean {
             return KEBAB_CASING.matches(s)
         }
 
