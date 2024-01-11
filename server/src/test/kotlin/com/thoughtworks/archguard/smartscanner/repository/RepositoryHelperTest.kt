@@ -9,18 +9,6 @@ import java.util.*
 class RepositoryHelperTest {
 
     @Test
-    fun shouldGenerateId() {
-        // given
-        val expectedId = UUID.randomUUID().toString()
-
-        // when
-        val actualId = RepositoryHelper.generateId()
-
-        // then
-        assertEquals(expectedId, actualId)
-    }
-
-    @Test
     fun shouldGetCurrentTime() {
         // given
         val expectedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
