@@ -13,27 +13,11 @@ class SizingService(
     val sizingRepository: SizingRepository
 ) {
 
-    fun getModulePackageCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ModuleSizing>, Long, Int> {
-        validPagingParam(limit, offset)
-        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_PACKAGE_COUNT)
-        val count = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold)
-        val data = sizingRepository.getModuleSizingListAbovePackageCountThreshold(systemId, threshold, limit, offset)
-        return Triple(data, count, threshold)
-    }
-
     fun getModulePackageCountSizingAboveThresholdByFilterSizing(systemId: Long, filter: FilterSizing): Triple<List<ModuleSizing>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_PACKAGE_COUNT)
         val count = sizingRepository.getModuleSizingListAbovePackageCountThresholdCount(systemId, threshold, filter.module)
         val data = sizingRepository.getModuleSizingListAbovePackageCountThresholdByFilterSizing(systemId, threshold, filter.limit, filter.offset, filter.module)
-        return Triple(data, count, threshold)
-    }
-
-    fun getModuleSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<ModuleSizing>, Long, Int> {
-        validPagingParam(limit, offset)
-        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_MODULE_BY_LOC)
-        val count = sizingRepository.getModuleSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getModuleSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
     }
 
@@ -45,14 +29,6 @@ class SizingService(
         return Triple(data, count, threshold)
     }
 
-    fun getPackageClassCountSizingAboveThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<PackageSizing>, Long, Int> {
-        validPagingParam(limit, offset)
-        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
-        val count = sizingRepository.getPackageSizingListAboveClassCountThresholdCount(systemId, threshold)
-        val data = sizingRepository.getPackageSizingListAboveClassCountThreshold(systemId, threshold, limit, offset)
-        return Triple(data, count, threshold)
-    }
-
     fun getPackageClassCountSizingAboveThresholdByFilterSizing(systemId: Long, filter: FilterSizing): Triple<List<PackageSizing>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_CLASS_COUNT)
@@ -61,27 +37,11 @@ class SizingService(
         return Triple(data, count, threshold)
     }
 
-    fun getPackageSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<PackageSizing>, Long, Int> {
-        validPagingParam(limit, offset)
-        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_LOC)
-        val count = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getPackageSizingAboveLineThreshold(systemId, threshold, limit, offset)
-        return Triple(data, count, threshold)
-    }
-
     fun getPackageSizingListAboveLineThresholdByFilterSizing(systemId: Long, filter: FilterSizing): Triple<List<PackageSizing>, Long, Int> {
         validPagingParam(filter.limit, filter.offset)
         val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_PACKAGE_BY_LOC)
         val count = sizingRepository.getPackageSizingAboveLineThresholdCount(systemId, threshold, fromFilterSizing(filter))
         val data = sizingRepository.getPackageSizingAboveLineThresholdByFilterSizing(systemId, threshold, fromFilterSizing(filter))
-        return Triple(data, count, threshold)
-    }
-
-    fun getMethodSizingListAboveLineThreshold(systemId: Long, limit: Long, offset: Long): Triple<List<MethodSizing>, Long, Int> {
-        validPagingParam(limit, offset)
-        val threshold = thresholdSuiteService.getThresholdValue(systemId, ThresholdKey.SIZING_METHOD_BY_LOC)
-        val count = sizingRepository.getMethodSizingAboveLineThresholdCount(systemId, threshold)
-        val data = sizingRepository.getMethodSizingAboveLineThreshold(systemId, threshold, limit, offset)
         return Triple(data, count, threshold)
     }
 
