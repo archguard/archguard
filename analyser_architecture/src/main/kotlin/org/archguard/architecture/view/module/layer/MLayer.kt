@@ -1,6 +1,5 @@
 package org.archguard.architecture.view.module.layer
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 
