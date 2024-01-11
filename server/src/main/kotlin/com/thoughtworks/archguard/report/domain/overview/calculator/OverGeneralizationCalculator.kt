@@ -11,10 +11,12 @@ class OverGeneralizationCalculator(val overGeneralizationRepository: OverGeneral
 
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val overGeneralizationCount = overGeneralizationRepository.getOverGeneralizationCount(systemId)
-        return getOverGeneralizationLevel(overGeneralizationCount, getOverGeneralizationCountLevelRanges())
+        return getOverGeneralizationLevel(overGeneralizationCount,
+            getTypeCountLevelRanges()
+        )
     }
 
-    private fun getOverGeneralizationCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 10L until 30L
         val countRangeLevel2 = 30L until 100L
         val countRangeLevel3 = 100L until Long.MAX_VALUE

@@ -32,7 +32,7 @@ class DataClassCalculatorTest {
         // given
         val systemId = 1L
         val count = 50L
-        val range = dataClassCalculator.getLevelRanges()
+        val range = dataClassCalculator.getTypeCountLevelRanges()
         `when`(dataClassRepository.getAllDataClassCount(systemId)).thenReturn(count)
 
         // when

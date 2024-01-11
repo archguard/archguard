@@ -11,7 +11,7 @@ class PackageHubCouplingCalculator(val packageCouplingRepository: PackageCouplin
         return packageCouplingRepository.getCouplingAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    private fun getTypeCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 8L until 40L
         val countRangeLevel2 = 40L until 80L
         val countRangeLevel3 = 80L until Long.MAX_VALUE

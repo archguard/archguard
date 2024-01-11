@@ -12,7 +12,7 @@ class DeepInheritanceCouplingCalculator(val deepInheritanceRepository: DeepInher
         return deepInheritanceRepository.getDitAboveBadSmellCalculateResult(systemId, getTypeCountLevelRanges())
     }
 
-    fun getTypeCountLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 6L until 8L
         val countRangeLevel2 = 8L until 10L
         val countRangeLevel3 = 10L until Long.MAX_VALUE

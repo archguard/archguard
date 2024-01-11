@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component
 class ModuleOverSizingCalculator(val sizingService: SizingService) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val count = sizingService.getModuleSizingSmellCount(systemId)
-        return getBadSmellLevel(count, getLevelRanges())
+        return getBadSmellLevel(count, getTypeCountLevelRanges())
     }
 
-    private fun getLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val linesRangeLevel1 = 3L until 8L
         val linesRangeLevel2 = 8L until 20L
         val linesRangeLevel3 = 20L until Long.MAX_VALUE

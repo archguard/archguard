@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class DataClassCalculator(val dataClassRepository: DataClassRepository) : BadSmellLevelCalculator {
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val allDataClassCount = dataClassRepository.getAllDataClassCount(systemId)
-        return getBadSmellLevel(allDataClassCount, getLevelRanges())
+        return getBadSmellLevel(allDataClassCount, getTypeCountLevelRanges())
     }
 
     private fun getBadSmellLevel(count: Long, range: Array<LongRange>): BadSmellLevel {
@@ -23,7 +23,7 @@ class DataClassCalculator(val dataClassRepository: DataClassRepository) : BadSme
         }
     }
 
-    fun getLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 10L until 30L
         val countRangeLevel2 = 30L until 100L
         val countRangeLevel3 = 100L until Long.MAX_VALUE

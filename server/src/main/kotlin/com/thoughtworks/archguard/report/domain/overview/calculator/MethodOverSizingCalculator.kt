@@ -10,10 +10,10 @@ class MethodOverSizingCalculator(val sizingService: SizingService) : BadSmellLev
 
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val count = sizingService.getMethodSizingSmellCount(systemId)
-        return getBadSmellLevel(count, getLevelRanges())
+        return getBadSmellLevel(count, getTypeCountLevelRanges())
     }
 
-    private fun getLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val linesRangeLevel1 = 20L until 60L
         val linesRangeLevel2 = 60L until 150L
         val linesRangeLevel3 = 150L until Long.MAX_VALUE

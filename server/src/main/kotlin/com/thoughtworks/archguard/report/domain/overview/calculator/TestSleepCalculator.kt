@@ -10,10 +10,10 @@ class TestSleepCalculator(val testBadSmellRepository: TestBadSmellRepository) : 
 
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val sleepTestMethodCount = testBadSmellRepository.countTestSmellByType(systemId, "SleepyTest")
-        return getBadSmellLevel(sleepTestMethodCount, getLevelRanges())
+        return getBadSmellLevel(sleepTestMethodCount, getTypeCountLevelRanges())
     }
 
-    private fun getLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 10L until 30L
         val countRangeLevel2 = 30L until 100L
         val countRangeLevel3 = 100L until Long.MAX_VALUE

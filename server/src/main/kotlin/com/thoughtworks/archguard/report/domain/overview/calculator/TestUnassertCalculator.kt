@@ -10,10 +10,10 @@ class TestUnassertCalculator(val testBadSmellRepository: TestBadSmellRepository)
 
     override fun getCalculateResult(systemId: Long): BadSmellLevel {
         val unassertTestCount = testBadSmellRepository.countTestSmellByType(systemId, "UnknownTest")
-        return getBadSmellLevel(unassertTestCount, getLevelRanges())
+        return getBadSmellLevel(unassertTestCount, getTypeCountLevelRanges())
     }
 
-    private fun getLevelRanges(): Array<LongRange> {
+    override fun getTypeCountLevelRanges(): Array<LongRange> {
         val countRangeLevel1 = 10L until 30L
         val countRangeLevel2 = 30L until 100L
         val countRangeLevel3 = 100L until Long.MAX_VALUE
