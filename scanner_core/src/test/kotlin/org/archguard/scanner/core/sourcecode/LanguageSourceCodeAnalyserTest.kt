@@ -3,13 +3,11 @@ package org.archguard.scanner.core.sourcecode;
 import chapi.domain.core.*
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.EmptyArchGuardClient
-import org.archguard.scanner.core.context.AnalyserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class LanguageSourceCodeAnalyserTest {
-    val testParser = object : LanguageSourceCodeAnalyser {
+    val analyser = object : LanguageSourceCodeAnalyser {
         override fun analyse(): List<CodeDataStruct> {
             return listOf()
         }
@@ -28,7 +26,7 @@ class LanguageSourceCodeAnalyserTest {
     @Test
     fun should_return_displayed_function_when_display_called() {
         // Given
-        val analyser = testParser
+        val analyser = analyser
 
         val function = CodeFunction(
             Name = "function_name",
@@ -70,5 +68,25 @@ class LanguageSourceCodeAnalyserTest {
             }
         """.trimIndent()
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldReturnContentOfCodeSnippet() {
+        // Given
+        val lines = listOf(
+            "fun add(a: Int, b: Int): Int {",
+            "    return a + b",
+            "}"
+        )
+        val position = CodePosition(0, 0, 3, 1)
+
+        // When
+        val content = analyser.contentByPosition(lines, position)
+
+        // Then
+        val expectedContent = "fun add(a: Int, b: Int): Int {" +
+                "    return a + b" +
+                "}"
+        assertEquals(expectedContent, content)
     }
 }

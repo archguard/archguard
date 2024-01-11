@@ -94,6 +94,13 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
         """.trimIndent()
     }
 
+    /**
+     * Returns the content of a code snippet specified by the given position in a list of lines.
+     *
+     * @param lines The list of lines containing the code snippet.
+     * @param position The position of the code snippet.
+     * @return The content of the code snippet specified by the position.
+     */
     fun contentByPosition(lines: List<String>, position: CodePosition): String {
         val startLine = if (position.StartLine == 0) {
             0
