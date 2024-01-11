@@ -31,6 +31,8 @@ internal class AnalyserLoaderTest {
 
     @AfterEach
     internal fun tearDown() {
+        if (System.getProperty("os.name").lowercase().contains("win")) return
+
         fakeUninstall()
     }
 
