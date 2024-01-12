@@ -36,11 +36,11 @@ data class TreeNode(val name: String, val children: MutableList<TreeNode> = muta
         fun create(packageNames: List<String>): TreeNode {
             val root = TreeNode("root")
 
-            for (packageName in packageNames) {
+            packageNames.forEach { packageName ->
                 val parts = packageName.split(".")
                 var currentNode = root
 
-                for (part in parts) {
+                parts.forEach { part ->
                     currentNode = findOrCreateChild(currentNode, part)
                 }
             }
