@@ -7,7 +7,7 @@ import io.mockk.spyk
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class GitHotFilePOScannerToolTest {
+internal class GitHotFileDTOPOScannerToolTest {
 
     @Test
     internal fun shouldGetGitHotFileModifiedCountMap() {

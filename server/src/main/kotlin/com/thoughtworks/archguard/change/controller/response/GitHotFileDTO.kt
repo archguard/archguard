@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.change.controller.response
 import com.thoughtworks.archguard.change.domain.model.GitHotFilePO
 import org.archguard.model.vos.JClassVO
 
-class GitHotFile(private val gitHotFilePO: GitHotFilePO) {
+class GitHotFileDTO(private val gitHotFilePO: GitHotFilePO) {
     val jclassId: String
         get() = gitHotFilePO.jclassId!!
 

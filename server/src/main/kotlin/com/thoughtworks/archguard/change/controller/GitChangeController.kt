@@ -1,8 +1,8 @@
 package com.thoughtworks.archguard.change.controller
 
 import com.thoughtworks.archguard.change.application.GitChangeApplicationService
-import com.thoughtworks.archguard.change.controller.response.GitHotFile
-import com.thoughtworks.archguard.change.controller.response.GitPathCount
+import com.thoughtworks.archguard.change.controller.response.GitHotFileDTO
+import com.thoughtworks.archguard.change.controller.response.GitPathCountDTO
 import com.thoughtworks.archguard.change.domain.model.GitPathChangeCount
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 class GitChangeController(val gitChangeApplicationService: GitChangeApplicationService) {
 
     @GetMapping("/hot-files")
-    fun getGitHotFilesBySystemId(@PathVariable("systemId") systemId: Long): List<GitHotFile> {
-        return gitChangeApplicationService.getGitHotFilesBySystemId(systemId).map { GitHotFile(it) }
+    fun getGitHotFilesBySystemId(@PathVariable("systemId") systemId: Long): List<GitHotFileDTO> {
+        return gitChangeApplicationService.getGitHotFilesBySystemId(systemId).map { GitHotFileDTO(it) }
     }
 
     @GetMapping("/commit-ids")
@@ -29,8 +29,8 @@ class GitChangeController(val gitChangeApplicationService: GitChangeApplicationS
     }
 
     @GetMapping("/path-change-count")
-    fun getChangeCountByPath(@PathVariable("systemId") systemId: Long): List<GitPathCount> {
-        return gitChangeApplicationService.getPathChangeCount(systemId).map { GitPathCount(it) }
+    fun getChangeCountByPath(@PathVariable("systemId") systemId: Long): List<GitPathCountDTO> {
+        return gitChangeApplicationService.getPathChangeCount(systemId).map { GitPathCountDTO(it) }
     }
 
     @GetMapping("/unstable-file")
