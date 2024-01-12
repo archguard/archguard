@@ -1,10 +1,12 @@
 package org.archguard.model.code
 
+import kotlinx.serialization.Serializable
 import org.archguard.config.ConfigType
 import org.archguard.config.Configure
 import org.archguard.model.vos.JMethodVO
 
-class JMethod(
+@Serializable
+data class JMethod(
     val id: String,
     val name: String,
     val clazz: String,

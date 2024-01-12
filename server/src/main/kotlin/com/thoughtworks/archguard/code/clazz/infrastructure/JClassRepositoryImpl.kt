@@ -2,7 +2,6 @@ package com.thoughtworks.archguard.code.clazz.infrastructure
 
 import com.thoughtworks.archguard.code.clazz.domain.JClassRepository
 import com.thoughtworks.archguard.common.IdUtils.NOT_EXIST_ID
-import org.archguard.bytecode.TypeMap
 import org.archguard.model.code.ClassRelation
 import org.archguard.model.code.JClass
 import org.archguard.model.code.JField
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
-    private val log = LoggerFactory.getLogger(JClassRepositoryImpl::class.java)
-
     override fun getJClassBy(systemId: Long, name: String, module: String?): JClass? {
         val sql =
             "select id, name, module, loc, access from code_class where system_id=:systemId and name=:name and module <=> :module"
@@ -173,18 +170,3 @@ class JClassRepositoryImpl(val jdbi: Jdbi) : JClassRepository {
     }
 }
 
-data class ClassRelationDTO(val clzname: String, val module: String?, val count: Int)
-
-class JClassDto(val id: String, val name: String, val module: String?, val loc: Int?, val access: String?) {
-    fun toJClass(): JClass {
-        val jClass = JClass(id, name, module)
-        if (access == null) {
-            return jClass
-        }
-        val accessInt = access.toIntOrNull()
-        if (accessInt != null) {
-            TypeMap.getClassType(accessInt).forEach { jClass.addClassType(it) }
-        }
-        return jClass
-    }
-}
