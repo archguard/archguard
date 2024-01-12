@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.change.domain.model
 
-class GitHotFile(
+data class GitHotFilePO(
     val systemId: Long,
     val repo: String,
     val path: String,

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.change.application
 
-import com.thoughtworks.archguard.change.domain.model.GitHotFile
+import com.thoughtworks.archguard.change.domain.model.GitHotFilePO
 import com.thoughtworks.archguard.change.domain.model.GitPathChangeCount
 import com.thoughtworks.archguard.change.domain.repository.GitChangeRepository
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +12,7 @@ class GitChangeApplicationService(
     @Value("\${scm_git_hot_file.modified_count_baseline}")
     val modifiedCountBaseline: Int,
 ) {
-    fun getGitHotFilesBySystemId(systemId: Long): List<GitHotFile> {
+    fun getGitHotFilesBySystemId(systemId: Long): List<GitHotFilePO> {
         return gitChangeRepository.findBySystemId(systemId)
             .filter { (it.jclassId != null) && (it.modifiedCount >= modifiedCountBaseline) }
     }

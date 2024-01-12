@@ -1,26 +1,26 @@
 package com.thoughtworks.archguard.change.controller.response
 
-import com.thoughtworks.archguard.change.domain.model.GitHotFile
+import com.thoughtworks.archguard.change.domain.model.GitHotFilePO
 import org.archguard.model.vos.JClassVO
 
-class GitHotFile(private val gitHotFile: GitHotFile) {
+class GitHotFile(private val gitHotFilePO: GitHotFilePO) {
     val jclassId: String
-        get() = gitHotFile.jclassId!!
+        get() = gitHotFilePO.jclassId!!
 
     val systemId: Long
-        get() = gitHotFile.systemId
+        get() = gitHotFilePO.systemId
 
     val moduleName: String
         get() {
-            return if (gitHotFile.moduleName != null) return gitHotFile.moduleName else ""
+            return if (gitHotFilePO.moduleName != null) return gitHotFilePO.moduleName else ""
         }
 
     val packageName: String
-        get() = JClassVO(gitHotFile.className!!, moduleName).getPackageName()
+        get() = JClassVO(gitHotFilePO.className!!, moduleName).getPackageName()
 
     val typeName: String
-        get() = JClassVO(gitHotFile.className!!, moduleName).getTypeName()
+        get() = JClassVO(gitHotFilePO.className!!, moduleName).getTypeName()
 
     val modifiedCount: Int
-        get() = gitHotFile.modifiedCount
+        get() = gitHotFilePO.modifiedCount
 }

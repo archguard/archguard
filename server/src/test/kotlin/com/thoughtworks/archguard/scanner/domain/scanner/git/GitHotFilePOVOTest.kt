@@ -6,7 +6,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-internal class GitHotFileVOTest {
+internal class GitHotFilePOVOTest {
     @Test
     internal fun shouldReturnFalseWhenCheckIfJVMClassGivenNonJVMFile() {
         val gitHotFile = GitHotFileVO("README.MD", 10)

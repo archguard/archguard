@@ -1,12 +1,12 @@
 package com.thoughtworks.archguard.change.infrastructure
 
-import com.thoughtworks.archguard.change.domain.model.GitHotFile
+import com.thoughtworks.archguard.change.domain.model.GitHotFilePO
 import com.thoughtworks.archguard.change.domain.model.GitPathChangeCount
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 
 interface GitChangeDao {
     @SqlQuery("select * from scm_git_hot_file where system_id = :systemId")
-    fun findBySystemId(systemId: Long): List<GitHotFile>
+    fun findBySystemId(systemId: Long): List<GitHotFilePO>
 
     @SqlQuery(
         "select system_id as systemId, line_count as lineCount, path, changes" +
