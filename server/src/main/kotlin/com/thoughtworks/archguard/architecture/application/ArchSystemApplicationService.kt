@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class ArchSystemApplicationService(val archSystemRepository: ArchSystemRepository) {
-
     fun createArchSystem(request: ArchSystemCreateRequest): ArchSystemCreateResponse {
         val name = request.name
 
