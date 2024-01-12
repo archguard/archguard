@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.change.domain.model
 
-class DiffChange(
+data class DiffChange(
     val systemId: Long,
     val sinceRev: String,
     val untilRev: String,
