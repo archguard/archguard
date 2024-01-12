@@ -1,15 +1,20 @@
+// You Must use @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
-class /* Controller name */Test {
+class PluginControllerTest {
 
     private lateinit var mockMvc: MockMvc
 
-    // some mock beans
-
     @BeforeEach
     fun setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(/* Controller mocks */).build()
+        // You can use MockMvcBuilders.standaloneSetup() to build mockMvc
+        mockMvc = MockMvcBuilders.standaloneSetup(PluginController()).build()
     }
 
-   // some test methods
+    @Test
+    fun shouldReturnPluginTypes() {
+        mockMvc.perform(get("/api/plugin/type"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$[0]").value("DUBBO"))
+    }
 }
