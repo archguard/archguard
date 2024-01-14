@@ -11,7 +11,8 @@
 
 > ArchGuard is an architecture governance tool which can analysis architecture in container, component, code level, database, create architecture fitness functions, and test for architecture rules. 
 
-Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构工作台/治理工具。它可以帮助架构师、开发人员进行架构自助，自定义架构的洞察、分析系统间的远程服务依赖情况、数据库依赖、API 依赖等。并根据一些架构治理模型，对现有系统提出改进建议。
+Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构工作台/治理工具。它可以帮助架构师、开发人员进行架构自助，自定义架构的洞察、
+分析系统间的远程服务依赖情况、数据库依赖、API 依赖等。并根据一些架构治理模型，对现有系统提出改进建议。
 
 - Document: [https://archguard.org/](https://archguard.org/)
 - Roadmap: [Roadmap](https://github.com/archguard/archguard/discussions/5)
@@ -19,6 +20,7 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
 - SubProjects:
     - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
     - [Chapi](https://github.com/modernizing/chapi) source code analysis
+    - [ArchGuard Co-mate](https://github.com/unit-mesh/co-mate) an AI-powered architecture copilot, design and governance tools.
 
 特性（Features）：
 
@@ -29,6 +31,7 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
   - 架构扫描
     - 扫描配置
     - 插件化规则定制
+    - 规则化治理：Code Smell, Test Code Smell, SQL Smell, API Smell, Documentation Smell, etc.
   - 架构可视化
     - 基于 C4 模型的可视化分析
       - 上下文：API 服务地图（API 生产者支持语言：Java、Kotlin、C#，API 消费者支持语言：TypeScript/JavaScript、Kotlin、Java 等）
@@ -46,18 +49,23 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
     - 质量维度：测试保护
   - 代码分析
     - CLOCO：代码复杂度 [#79](https://github.com/archguard/archguard/issues/79)
+    - SCA 分析
+    - OpenAPI 分析
+    - Architecture analysis
 - **运行态**
   - APM（TODO）
 - **架构工作台**
 
 Features：
 
-- **Design State** (DOING)
+- **Design State**
   - Architecture Design, Analysis and Governance DSL
+  - Feakin: [https://github.com/feakin/fklang](https://github.com/feakin/fklang)
 - **Development state**
   - Schema scan
     - Scan configuration
     - Plug-in rule customization
+    - Rule-based governance: Code Smell, Test Code Smell, SQL Smell, API Smell, Documentation Smell, etc.
   - Architecture visualization
     - Visual analysis based on C4 model
       - Context: API service map (API producer supported languages: Java, Kotlin, C#, API consumer supported languages: TypeScript/JavaScript, Kotlin, Java, etc.)
@@ -74,6 +82,11 @@ Features：
     - Redundant dimensions: redundant elements, overgeneralization
     - Quality dimension: test protection
     - Continuous Integration
+  - External analysis
+    - CLOCO: Code Complexity [#79](https://github.com/archguard/archguard/issues/79)
+    - SCA analysis
+    - OpenAPI analysis
+    - Architecture analysis
 - **Running state**
   - APM (TODO)
 - **Architecture Workbench**
