@@ -21,6 +21,9 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
     - [ArchGuard Frontend](https://github.com/archguard/archguard-frontend)
     - [Chapi](https://github.com/modernizing/chapi) source code analysis
     - [ArchGuard Co-mate](https://github.com/unit-mesh/co-mate) an AI-powered architecture copilot, design and governance tools.
+- Architecture:
+
+![Architecture](https://archguard.org/architecture.svg)
 
 特性（Features）：
 
