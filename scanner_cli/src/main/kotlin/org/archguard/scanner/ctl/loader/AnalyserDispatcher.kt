@@ -36,7 +36,7 @@ class AnalyserDispatcher {
             AnalyserType.ARCHITECTURE -> TODO()
             AnalyserType.OPENAPI -> OpenApiWorker(command)
             AnalyserType.DOCUMENT -> DocumentWorker(command)
-n        }.run()
+        }.run()
     }
 }
 
