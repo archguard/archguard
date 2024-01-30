@@ -40,12 +40,13 @@ COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "analyser_sourcecode/lang_python/build/libs/lang_python*-all.jar",                \
 "analyser_sourcecode/lang_scala/build/libs/lang_scala*-all.jar",                   \
 "analyser_sourcecode/lang_typescript/build/libs/lang_typescript*-all.jar",          \
-"analyser_sourcecode/lang_c/build/libs/lang_c*-all.jar",                            \
-"analyser_sourcecode/lang_rust/build/libs/lang_rust*-all.jar",                      \
-"rule-core/build/libs/rule-core*.jar",                                              \
-"rule-linter/rule-sql/build/libs/rule-sql*.jar",                                    \
-"rule-linter/rule-webapi/build/libs/rule-webapi*.jar",                              \
-"rule-linter/rule-test/build/libs/rule-test*.jar",                                  \
+"analyser_sourcecode/lang_c/build/libs/lang_c*-all.jar",                             \
+"analyser_sourcecode/lang_cpp/build/libs/lang_cpp*-all.jar",                          \
+"analyser_sourcecode/lang_rust/build/libs/lang_rust*-all.jar",                         \
+"rule-core/build/libs/rule-core*.jar",                                                  \
+"rule-linter/rule-sql/build/libs/rule-sql*.jar",                                         \
+"rule-linter/rule-webapi/build/libs/rule-webapi*.jar",                                    \
+"rule-linter/rule-test/build/libs/rule-test*.jar",                                         \
 # target directory
 "/home/spring/dependencies/analysers/"]
 
