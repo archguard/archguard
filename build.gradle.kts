@@ -172,6 +172,8 @@ dependencies {
     jacocoAggregation(project(":analyser_sourcecode:lang_golang"))
     jacocoAggregation(project(":analyser_sourcecode:lang_csharp"))
     jacocoAggregation(project(":analyser_sourcecode:lang_scala"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_c"))
+    jacocoAggregation(project(":analyser_sourcecode:lang_cpp"))
     jacocoAggregation(project(":analyser_sourcecode:feat_apicalls"))
     jacocoAggregation(project(":analyser_sourcecode:feat_datamap"))
     jacocoAggregation(project(":analyser_git"))

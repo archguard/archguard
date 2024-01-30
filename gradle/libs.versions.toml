@@ -68,7 +68,9 @@ chapi-scala = { group = "com.phodal.chapi", name = "chapi-ast-scala", version.re
 chapi-typescript = { group = "com.phodal.chapi", name = "chapi-ast-typescript", version.ref = "chapi" }
 chapi-rust = { group = "com.phodal.chapi", name = "chapi-ast-rust", version.ref = "chapi" }
 chapi-c = { group = "com.phodal.chapi", name = "chapi-ast-c", version.ref = "chapi" }
+chapi-cpp = { group = "com.phodal.chapi", name = "chapi-ast-cpp", version.ref = "chapi" }
 chapi-parser-toml = { group = "com.phodal.chapi", name = "chapi-parser-toml", version.ref = "chapi" }
+chapi-parser-cmake = { group = "com.phodal.chapi", name = "chapi-parser-cmake", version.ref = "chapi" }
 
 # clikt
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" }

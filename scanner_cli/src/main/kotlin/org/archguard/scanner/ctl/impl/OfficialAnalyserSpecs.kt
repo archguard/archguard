@@ -17,6 +17,8 @@ enum class OfficialAnalyserSpecs(
     PYTHON("PythonAnalyser"),
     SCALA("ScalaAnalyser"),
     TYPESCRIPT("TypeScriptAnalyser"),
+    C("CAnalyser"),
+    CPP("CppAnalyser"),
     JAVASCRIPT(TYPESCRIPT.className),
 
     // features
