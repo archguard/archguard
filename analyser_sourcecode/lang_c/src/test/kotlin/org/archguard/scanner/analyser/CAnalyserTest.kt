@@ -8,7 +8,7 @@ import io.mockk.verify
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class CAnalyserTest {
@@ -31,7 +31,8 @@ internal class CAnalyserTest {
 
         val result = CAnalyser(mockContext).analyse()
 
-//        Assertions.assertEquals(result.size, 2)
-//        Assertions.assertEquals(result[0].NodeName, "sample")
+        assertEquals(result.size, 2)
+        assertEquals(result[0].NodeName, "default")
+        assertEquals(result[1].NodeName, "point")
     }
 }
