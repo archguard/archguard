@@ -8,12 +8,16 @@ import org.springframework.validation.annotation.Validated
 @Serializable
 @Validated
 data class FilterSizingDto(
-    @NotNull val currentPageNumber: Long,
-    @NotNull val numberPerPage: Long,
-    val module: String?,
-    val className: String?,
-    val packageName: String?,
-    val name: String?
+    @Transient
+    @NotNull
+    val currentPageNumber: Long,
+    @Transient
+    @NotNull
+    val numberPerPage: Long,
+    val module: String? = null,
+    val className: String? = null,
+    val packageName: String? = null,
+    val name: String? = null,
 ) {
     fun getLimit(): Long {
         return numberPerPage
