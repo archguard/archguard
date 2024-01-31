@@ -74,6 +74,7 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
     }
 
     override fun run(): Unit = runBlocking {
+        logger.info("Start analysing source code: ${context.language}, ${context.path}")
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
         val ast = languageAnalyser.analyse(null) ?: return@runBlocking
 
@@ -81,12 +82,16 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
 
         context.features.asyncMap {
             try {
-                val data = getOrInstall<SourceCodeAnalyser>(it).analyse(ast)
+                val featureAnalyser = getOrInstall<SourceCodeAnalyser>(it)
+                logger.info("Start analysing feature: $it")
+                val data = featureAnalyser.analyse(ast)
                 slotHub.consumer(data)
             } catch (e: Exception) {
                 logger.error("Error while analysing feature: $it", e)
             }
         }
+
+        logger.info("Finish analysing source code: ${context.language}, ${context.path}")
     }
 }
 
