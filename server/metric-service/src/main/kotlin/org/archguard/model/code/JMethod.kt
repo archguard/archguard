@@ -4,9 +4,12 @@ import kotlinx.serialization.Serializable
 import org.archguard.config.ConfigType
 import org.archguard.config.Configure
 import org.archguard.model.vos.JMethodVO
+import org.jdbi.v3.core.mapper.reflect.JdbiConstructor
 
 @Serializable
-data class JMethod(
+data class JMethod
+@JdbiConstructor
+constructor(
     val id: String,
     val name: String,
     val clazz: String,
