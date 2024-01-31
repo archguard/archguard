@@ -13,6 +13,8 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
     private val client = context.client
     private val impl = chapi.ast.typescriptast.TypeScriptAnalyser()
 
+    private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
+
     // TODO put into context or as an additional parameter
     private val ignoreMinFile = true
 
@@ -41,6 +43,8 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
+        logger.info("analysis file: ${file.absolutePath}")
+
         val workspace = File(context.path)
         val content = file.readContent()
         val lines = content.lines()

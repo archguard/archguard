@@ -11,6 +11,7 @@ import java.io.File
 class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
     private val client = context.client
     private val impl = chapi.ast.cast.CAnalyser()
+    private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         getFilesByPath(context.path) {
@@ -22,6 +23,7 @@ class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAna
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {
+        logger.info("analysis file: ${file.absolutePath}")
         val content = file.readContent()
         val lines = content.lines()
         val codeContainer = impl.analysis(content, file.name)

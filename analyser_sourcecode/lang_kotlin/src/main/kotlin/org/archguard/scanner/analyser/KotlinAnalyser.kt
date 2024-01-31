@@ -14,6 +14,8 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     private val client = context.client
     private val impl = chapi.ast.kotlinast.KotlinAnalyser()
 
+    private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
+
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         val basepath = File(context.path)
         getFilesByPath(context.path) {
@@ -25,6 +27,8 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
+        logger.info("analysis file: ${file.absolutePath}")
+
         val content = file.readContent()
         val lines = content.lines()
         val moduleName = ModuleIdentify.lookupModuleName(file, basepath)

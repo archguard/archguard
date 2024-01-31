@@ -15,6 +15,8 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     private lateinit var basicNodes: List<CodeDataStruct>
     private lateinit var classes: List<String>
 
+    private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
+
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         val files = getFilesByPath(context.path) {
             it.absolutePath.endsWith(".java")
@@ -33,6 +35,8 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     }
 
     private fun analysisFullInfoByFile(file: File, basepath: File): List<CodeDataStruct> {
+        logger.info("analysis file: ${file.absolutePath}")
+
         val moduleName = ModuleIdentify.lookupModuleName(file, basepath)
         val content = file.readContent()
         val lines = content.lines()

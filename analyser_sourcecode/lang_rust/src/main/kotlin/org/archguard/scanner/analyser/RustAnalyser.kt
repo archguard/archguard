@@ -12,6 +12,8 @@ class RustAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     private val client = context.client
     private val impl = chapi.ast.rustast.RustAnalyser()
 
+    private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
+
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         getFilesByPath(context.path) {
             it.absolutePath.endsWith(".rs")
@@ -22,6 +24,8 @@ class RustAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {
+        logger.info("analysis file: ${file.absolutePath}")
+
         val content = file.readContent()
         val lines = content.lines()
         val codeContainer = impl.analysis(content, file.name)
