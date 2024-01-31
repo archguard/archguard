@@ -20,6 +20,7 @@ enum class OfficialAnalyserSpecs(
     C("CAnalyser"),
     CPP("CppAnalyser"),
     JAVASCRIPT(TYPESCRIPT.className),
+    RUST("RustAnalyser"),
 
     // features
     APICALLS("ApiCallAnalyser"),
