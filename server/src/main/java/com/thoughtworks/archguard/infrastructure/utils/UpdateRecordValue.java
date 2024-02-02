@@ -3,7 +3,7 @@ package com.thoughtworks.archguard.infrastructure.utils;
 import java.util.Map;
 
 public class UpdateRecordValue {
-    private Map<String, String> values;
+    private final Map<String, String> values;
 
     public Map<String, String> getValues() {
         return values;
@@ -14,9 +14,7 @@ public class UpdateRecordValue {
     }
 
     public void addValues(Map<String, String> values) {
-        values.forEach((key, value) ->
-                // 覆盖
-                this.values.put(key, value));
+        this.values.putAll(values);
     }
 
     public static UpdateRecordValue of(Map<String, String> values) {
