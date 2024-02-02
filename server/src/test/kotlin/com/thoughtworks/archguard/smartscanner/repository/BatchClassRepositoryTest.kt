@@ -31,4 +31,74 @@ class BatchClassRepositoryTest {
 
         assertEquals(26, mutableMaps!!.size)
     }
+
+    @Test
+    fun shouldHandlePackageNameForGivenPath() {
+        // Given
+        val path = "src/main/java/com/example/project/PluginController.java"
+        val packageName = "com.example.project"
+
+        // When
+        val result = BatchClassRepository.handleForPackageName(path, packageName)
+
+        // Then
+        val expected = "com.example.project"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldHandlePackageNameForGivenPathWithEmptyPackageName() {
+        // Given
+        val path = "src/main/java/com/example/project/PluginController.java"
+        val packageName = ""
+
+        // When
+        val result = BatchClassRepository.handleForPackageName(path, packageName)
+
+        // Then
+        val expected = ""
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldHandlePackageNameForGivenPathWithCFileExtension() {
+        // Given
+        val path = "src/main/java/com/example/project/PluginController.c"
+        val packageName = ""
+
+        // When
+        val result = BatchClassRepository.handleForPackageName(path, packageName)
+
+        // Then
+        val expected = "PluginController"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldHandlePackageNameForGivenPathWithHFileExtension() {
+        // Given
+        val path = "src/main/java/com/example/project/PluginController.h"
+        val packageName = ""
+
+        // When
+        val result = BatchClassRepository.handleForPackageName(path, packageName)
+
+        // Then
+        val expected = "PluginController"
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldHandlePackageNameForGivenPathWithCppFileExtension() {
+        // Given
+        val path = "src/main/java/com/example/project/PluginController.cpp"
+        val packageName = ""
+
+        // When
+        val result = BatchClassRepository.handleForPackageName(path, packageName)
+
+        // Then
+        val expected = "PluginController"
+        assertEquals(expected, result)
+    }
 }

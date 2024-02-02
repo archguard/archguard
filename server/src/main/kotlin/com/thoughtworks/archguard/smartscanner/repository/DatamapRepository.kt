@@ -5,21 +5,10 @@ import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.gener
 import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
 import java.util.concurrent.atomic.AtomicInteger
 
-class DatamapRepository(systemId: String, language: String, workspace: String) {
-    private val batch: SourceBatch =
-        SourceBatch()
+class DatamapRepository(private val systemId: String, private val language: String, private val workspace: String) {
+    private val batch: SourceBatch = SourceBatch()
     private val count = AtomicInteger(0)
     private val batchStep = 100
-
-    private val systemId: String
-    private val language: String
-    private val workspace: String
-
-    init {
-        this.systemId = systemId
-        this.language = language
-        this.workspace = workspace
-    }
 
     fun saveRelations(records: List<CodeDatabaseRelation>) {
         records.forEach {

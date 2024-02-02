@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
 import org.jetbrains.annotations.TestOnly
+import java.io.File
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -510,7 +511,9 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         val time = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
         val values: MutableMap<String, String> = HashMap()
-        var pkgName = clz.Package
+        // in C/C++, package name is empty
+        var pkgName = Companion.handleForPackageName(clz.FilePath, clz.Package)
+
         var clzName = clz.NodeName
         var fullName = "$pkgName.$clzName"
 
@@ -556,5 +559,24 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
     fun close() {
         batch.execute()
         batch.close()
+    }
+
+    companion object {
+        /**
+         * This method is used to handle the package name for a given path.
+         *
+         * @see File.separator
+         */
+        fun handleForPackageName(path: String, packageName: String) = packageName.ifEmpty {
+            val filePath = path
+                .substringAfterLast(File.separator)
+                .substringBeforeLast(".")
+            // xxx.c -> xxx
+            if (path.endsWith(".c") || path.endsWith(".h") || path.endsWith(".cpp")) {
+                filePath
+            } else {
+                packageName
+            }
+        }
     }
 }
