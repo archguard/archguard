@@ -10,13 +10,18 @@ import java.io.File
 
 class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
     private val client = context.client
-    private val impl = chapi.ast.cast.CAnalyser()
+    private val analyser = chapi.ast.cast.CAnalyser()
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         getFilesByPath(context.path) {
-            it.absolutePath.endsWith(".c") || it.absolutePath.endsWith(".h")
+            it.absolutePath.endsWith(".h")
+        }.map {
+            async { analyser.addSource(it.readContent()) }
         }
+
+        getFilesByPath(context.path)
+            .filter { it.absolutePath.endsWith(".c") }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }
@@ -26,7 +31,7 @@ class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAna
         logger.info("analysis file: ${file.absolutePath}")
         val content = file.readContent()
         val lines = content.lines()
-        val codeContainer = impl.analysis(content, file.name)
+        val codeContainer = analyser.analysis(content, file.name)
 
         return codeContainer.DataStructures.map { ds ->
             ds.apply {
