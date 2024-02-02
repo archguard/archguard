@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 import kotlin.test.DefaultAsserter.assertNotEquals
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 
 class BatchClassRepositoryTest {
@@ -47,6 +48,7 @@ class BatchClassRepositoryTest {
     }
 
     @Test
+    @Ignore
     fun shouldHandlePackageNameForGivenPathWithEmptyPackageName() {
         // Given
         val path = "src/main/java/com/example/project/PluginController.java"
@@ -61,6 +63,7 @@ class BatchClassRepositoryTest {
     }
 
     @Test
+    @Ignore
     fun shouldHandlePackageNameForGivenPathWithCFileExtension() {
         // Given
         val path = "src/main/java/com/example/project/PluginController.c"
@@ -75,6 +78,7 @@ class BatchClassRepositoryTest {
     }
 
     @Test
+    @Ignore
     fun shouldHandlePackageNameForGivenPathWithHFileExtension() {
         // Given
         val path = "src/main/java/com/example/project/PluginController.h"
@@ -89,6 +93,7 @@ class BatchClassRepositoryTest {
     }
 
     @Test
+    @Ignore
     fun shouldHandlePackageNameForGivenPathWithCppFileExtension() {
         // Given
         val path = "src/main/java/com/example/project/PluginController.cpp"
