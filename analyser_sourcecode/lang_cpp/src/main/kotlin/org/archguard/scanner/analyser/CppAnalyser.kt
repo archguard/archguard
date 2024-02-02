@@ -15,10 +15,16 @@ class CppAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeA
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         getFilesByPath(context.path) {
-            it.absolutePath.endsWith(".c")
-                    || it.absolutePath.endsWith(".cpp")
-                    || it.absolutePath.endsWith(".h")
-                    || it.absolutePath.endsWith(".hpp")
+            it.absolutePath.endsWith(".hpp") || it.absolutePath.endsWith(".h")
+        }.map {
+            async { impl.addSource(it.readContent()) }
+        }
+
+        getFilesByPath(context.path)
+            .filter { it.absolutePath.endsWith(".c") }
+
+        getFilesByPath(context.path) {
+            it.absolutePath.endsWith(".c") || it.absolutePath.endsWith(".cpp")
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
