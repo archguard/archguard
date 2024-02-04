@@ -73,13 +73,11 @@ allprojects {
 configure(
     allprojects
             - project(":server")
+            // parent of modules
             - project(":architecture-as-code")
+            // parent of modules
             - project(":rule-linter")
-//            - project(":doc-generator")
-//            - project(":analyser_architecture")
-//            - project(":analyser_diff_changes")
-//            - project(":analyser_git")
-//            - project(":analyser_sca")
+            // parent of modules
             - project(":analyser_sourcecode")
 ) {
     apply(plugin = "java-library")
@@ -133,17 +131,13 @@ configure(
 
                 credentials {
                     username =
-                        (
-                                if (project.findProperty("sonatypeUsername") != null) project.findProperty("sonatypeUsername") else System.getenv(
-                                    "MAVEN_USERNAME"
-                                )
-                                ).toString()
+                        (if (project.findProperty("sonatypeUsername") != null) project.findProperty("sonatypeUsername") else {
+                            System.getenv("MAVEN_USERNAME")
+                        }).toString()
                     password =
-                        (
-                                if (project.findProperty("sonatypePassword") != null) project.findProperty("sonatypePassword") else System.getenv(
-                                    "MAVEN_PASSWORD"
-                                )
-                                ).toString()
+                        (if (project.findProperty("sonatypePassword") != null) project.findProperty("sonatypePassword") else {
+                            System.getenv("MAVEN_PASSWORD")
+                        }).toString()
                 }
             }
         }

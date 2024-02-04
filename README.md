@@ -9,7 +9,7 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-green?label=gitpod&logo=gitpod&logoColor=white)](https://gitpod.io/#https://github.com/archguard/archguard)
 ![Maven Central](https://img.shields.io/maven-central/v/org.archguard.scanner/scanner_core)
 
-> ArchGuard is an architecture governance tool which can analysis architecture in container, component, code level, database, create architecture fitness functions, and test for architecture rules. 
+> ArchGuard is an architecture governance tool that can analysis architecture in container, component, code level, database, create architecture fitness functions, and test for architecture rules. 
 
 Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构工作台/治理工具。它可以帮助架构师、开发人员进行架构自助，自定义架构的洞察、
 分析系统间的远程服务依赖情况、数据库依赖、API 依赖等。并根据一些架构治理模型，对现有系统提出改进建议。
@@ -79,7 +79,7 @@ Features：
       - System instability module analysis.
       - Between containers: precise testing/variation analysis
   - Architecture metrics (single DONE, distributed DOING)
-    - Volume dimension: oversized components
+    - Volume dimension: oversize components
     - Coupling dimension: hub components, too deep calls, circular dependencies
     - Cohesive Dimension: Shotgun Modification
     - Redundant dimensions: redundant elements, overgeneralization
@@ -109,13 +109,13 @@ Screenshots:
 
 Languages parse by [Chapi](https://github.com/modernizing/chapi)
 
-| Features/Languages  | Java | Python | Go  | Kotlin | TypeScript | C   | C#  | Scala | C++ |
-|---------------------|------|--------|-----|--------|------------|-----|-----|-------|-----|
-| http api decl       | ✅    | 🆕     | 🆕  | ✅      | ✅          | 🆕  | ✅   | 🆕    | 🆕  |
-| syntax parse        | ✅    | ✅      | ✅   | ✅      | ✅          | 🆕  | ✅   | ✅     | 🆕  |
-| function call       | ✅    | 🆕     | ✅   | ✅      | ✅          |     |     |       |     |
-| arch/package        | ✅    |        |     | ✅      | ✅          |     | ✅   | ✅     |     |
-| real world validate | ✅    |        |     |        | ✅          |     |     |       |     |
+| Features/Languages  | Java | Python | Go | Kotlin | TypeScript | C  | C# | Scala | C++ |
+|---------------------|------|--------|----|--------|------------|----|----|-------|-----|
+| http api decl       | ✅    | 🆕     | 🆕 | ✅      | ✅          | 🆕 | ✅  | 🆕    | 🆕  |
+| syntax parse        | ✅    | ✅      | ✅  | ✅      | ✅          | ✅  | ✅  | ✅     | 🆕  |
+| function call       | ✅    | 🆕     | ✅  | ✅      | ✅          |    |    |       |     |
+| arch/package        | ✅    |        |    | ✅      | ✅          | 🆕 | ✅  | ✅     |     |
+| real world validate | ✅    |        |    |        | ✅          |    |    |       |     |
 
 ## Custom Backend
 
