@@ -130,7 +130,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["updatedAt"] = time
         values["createdAt"] = time
         values["is_test"] = "false"
-        values["loc"] = 0.toString()
+        values["loc"] = "0"
         batch.add("code_method", values)
         return mId
     }
@@ -381,12 +381,8 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["id"] = id
         values["system_id"] = systemId
         values["annotationId"] = annotationId
-        values["key"] = map.Key
-        var value = map.Value
-        if (value.contains("'")) {
-            value = value.replace("'", "''")
-        }
-        values["value"] = value
+        values["key"] = escapeSingleQuotes(map.Key)
+        values["value"] = escapeSingleQuotes(map.Value)
 
         batch.add("code_annotation_value", values)
     }
@@ -400,11 +396,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["clzname"] = "$pkgName.$clzName"
         values["name"] = m.Name
         values["returntype"] = m.ReturnType
-        var arguments = m.Parameters.map { it.TypeType }.joinToString(",")
-        if (arguments.contains("'")) {
-            arguments = arguments.replace("'", "''")
-        }
-        values["argumenttypes"] = arguments
+        values["argumenttypes"] = escapeSingleQuotes(m.Parameters.joinToString(",") { it.TypeType })
 
         if (m.Modifiers.isNotEmpty()) {
             values["access"] = m.Modifiers[0]
@@ -443,11 +435,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
             values["system_id"] = systemId
             values["name"] = name
             values["clzname"] = clzName
-            var valueType = field.TypeType
-            if (valueType.contains("'")) {
-                valueType = valueType.replace("'", "''")
-            }
-            values["type"] = valueType
+            values["type"] = escapeSingleQuotes(field.TypeType)
 
             values["updatedAt"] = time
             values["createdAt"] = time
@@ -467,6 +455,13 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
                 saveCodeRefClassFields(clzId, id)
             }
         }
+    }
+
+    private fun escapeSingleQuotes(value: String): String {
+        if (value.contains("'")) {
+            return value.replace("'", "''")
+        }
+        return value
     }
 
     private fun saveCodeRefClassFields(clzId: String, id: String) {
