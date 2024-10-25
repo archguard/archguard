@@ -8,6 +8,8 @@ group = "org.archguard.aaac"
 
 dependencies {
     api(libs.serialization.json)
+    implementation(libs.chapi.domain)
+    implementation(project(":server:metric-service"))
 
     testImplementation(libs.bundles.test)
 }

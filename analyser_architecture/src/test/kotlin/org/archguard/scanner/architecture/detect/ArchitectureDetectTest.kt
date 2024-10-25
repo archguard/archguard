@@ -3,8 +3,10 @@ package org.archguard.scanner.architecture.detect
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeImport
 import org.archguard.scanner.analyser.ArchitectureDetect
-import org.archguard.scanner.architecture.core.ConnectorType
-import org.archguard.scanner.analyser.WorkspaceAnaylser
+import org.archguard.architecture.code.ConnectorType
+import org.archguard.architecture.detect.AppType
+import org.archguard.architecture.detect.OutboundProtocol
+import org.archguard.scanner.analyser.WorkspaceAnalyser
 import org.archguard.scanner.analyser.techstack.FrameworkMarkup
 import org.archguard.model.DependencyEntry
 import org.archguard.model.PackageDependencies
@@ -32,7 +34,7 @@ internal class ArchitectureDetectTest {
 
         val potentialExecArch = ArchitectureDetect()
             .inferenceByDependencies(markup, listOf(packageDependencies))
-        Assertions.assertEquals(org.archguard.scanner.architecture.detect.AppType.Web, potentialExecArch.appTypes[0])
+        Assertions.assertEquals(AppType.Web, potentialExecArch.appTypes[0])
     }
 
     @Test
@@ -54,7 +56,7 @@ internal class ArchitectureDetectTest {
 
         val potentialExecArch = ArchitectureDetect()
             .inferenceByDependencies(markup, listOf(packageDependencies))
-        Assertions.assertEquals(org.archguard.scanner.architecture.detect.OutboundProtocol.RPC, potentialExecArch.protocols[0])
+        Assertions.assertEquals(OutboundProtocol.RPC, potentialExecArch.protocols[0])
     }
 
     @Test
@@ -62,7 +64,7 @@ internal class ArchitectureDetectTest {
         val struct = CodeDataStruct(
             Imports = listOf(CodeImport(Source = "java.io.File"))
         )
-        val execArch = ArchitectureDetect().identPotential(WorkspaceAnaylser(listOf(struct)))
+        val execArch = ArchitectureDetect().identPotential(WorkspaceAnalyser(listOf(struct)))
 
         assertEquals(1, execArch.connectorTypes.size)
         assertEquals(ConnectorType.FileIO, execArch.connectorTypes[0])

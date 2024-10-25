@@ -1,5 +1,6 @@
 package org.archguard.scanner.architecture.graph;
 
+import org.archguard.architecture.graph.TreeNode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream

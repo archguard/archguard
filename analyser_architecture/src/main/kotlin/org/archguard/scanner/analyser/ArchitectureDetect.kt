@@ -2,12 +2,12 @@ package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.model.PackageDependencies
-import org.archguard.scanner.architecture.core.CodeStructureStyle
-import org.archguard.scanner.architecture.core.ConnectorType
-import org.archguard.scanner.architecture.detect.AppType
-import org.archguard.scanner.architecture.detect.OutboundProtocol
-import org.archguard.scanner.architecture.detect.PotentialExecArch
-import org.archguard.scanner.architecture.graph.TreeNode
+import org.archguard.architecture.code.CodeStructureStyle
+import org.archguard.architecture.code.ConnectorType
+import org.archguard.architecture.detect.AppType
+import org.archguard.architecture.detect.OutboundProtocol
+import org.archguard.architecture.detect.PotentialExecArch
+import org.archguard.architecture.graph.TreeNode
 import org.archguard.scanner.analyser.layered.LayeredIdentify
 import org.archguard.scanner.analyser.techstack.FrameworkMarkup
 
@@ -20,24 +20,24 @@ class ArchitectureDetect {
     /**
      * Identifies the potential execution architecture based on the given workspace.
      *
-     * @param workspaceAnaylser The workspace containing the project information.
+     * @param workspaceAnalyser The workspace containing the project information.
      * @return The `PotentialExecArch` object representing the identified execution architecture.
      */
-    fun identPotential(workspaceAnaylser: WorkspaceAnaylser): PotentialExecArch {
+    fun identPotential(workspaceAnalyser: WorkspaceAnalyser): PotentialExecArch {
         // 1. create exec arch
         var execArch = PotentialExecArch()
 
         // Identify execution architecture based on the project's language
-        val byLanguage = FrameworkMarkup.byLanguage(workspaceAnaylser.language)
+        val byLanguage = FrameworkMarkup.byLanguage(workspaceAnalyser.language)
         byLanguage?.also {
-            execArch = inferenceByDependencies(it, workspaceAnaylser.projectDependencies)
+            execArch = inferenceByDependencies(it, workspaceAnalyser.projectDependencies)
         }
 
         // 2. update exec arch from call nodeName
-        fillArchFromSourceCode(workspaceAnaylser, execArch)
+        fillArchFromSourceCode(workspaceAnalyser, execArch)
 
         // 3. load all package name for layered architecture
-        val packages = workspaceAnaylser.dataStructs.map { it.Package }.toList()
+        val packages = workspaceAnalyser.dataStructs.map { it.Package }.toList()
         val layeredStyle = LayeredIdentify(packages).identify()
         execArch.layeredStyle = layeredStyle
 
@@ -45,10 +45,10 @@ class ArchitectureDetect {
         execArch.physicalStructure = TreeNode.create(packages)
 
         // 5. create concepts domain based on the identified layered architecture style
-        execArch.concepts = buildConcepts(layeredStyle, workspaceAnaylser)
+        execArch.concepts = buildConcepts(layeredStyle, workspaceAnalyser)
 
         // 6. keep all ds for second steps
-        execArch.dataStructures = workspaceAnaylser.dataStructs
+        execArch.dataStructures = workspaceAnalyser.dataStructs
 
         return execArch
     }
@@ -62,23 +62,23 @@ class ArchitectureDetect {
      * Builds a list of code data structures based on the given layered style and workspace.
      *
      * @param layeredStyle The layered style of the code structure.
-     * @param workspaceAnaylser The workspace containing the code data structures.
+     * @param workspaceAnalyser The workspace containing the code data structures.
      * @return A list of code data structures that match the given layered style and workspace.
      */
     private fun buildConcepts(
         layeredStyle: CodeStructureStyle,
-        workspaceAnaylser: WorkspaceAnaylser
+        workspaceAnalyser: WorkspaceAnalyser
     ): List<CodeDataStruct> {
         // check workspace.dataStructs language if is idl
         val codeDataStructs = when (layeredStyle) {
             CodeStructureStyle.MVC -> {
-                workspaceAnaylser.dataStructs.filter { dataStruct ->
+                workspaceAnalyser.dataStructs.filter { dataStruct ->
                     dataStruct.Annotations.any { it.Name == "Entity" }
                 }
             }
 
             CodeStructureStyle.ModuleDDD, CodeStructureStyle.DDD -> {
-                workspaceAnaylser.dataStructs.filter {
+                workspaceAnalyser.dataStructs.filter {
                     it.Package.contains("domain") && !it.NodeName.contains("Factory")
                 }
             }
@@ -93,7 +93,7 @@ class ArchitectureDetect {
         }.toMutableList()
 
         /// some special case
-        val protoBufs = workspaceAnaylser.dataStructs.mapNotNull { dataStruct ->
+        val protoBufs = workspaceAnalyser.dataStructs.mapNotNull { dataStruct ->
             if (dataStruct.FilePath.endsWith(".proto")) {
                 protobufDtoEnds.forEach {
                     if (dataStruct.NodeName.endsWith(it)) {
@@ -123,11 +123,11 @@ class ArchitectureDetect {
     /**
      * Fills the execution architecture information from the source code of the workspace.
      *
-     * @param workspaceAnaylser The workspace containing the project information.
+     * @param workspaceAnalyser The workspace containing the project information.
      * @param execArch The `PotentialExecArch` object to be updated.
      */
-    private fun fillArchFromSourceCode(workspaceAnaylser: WorkspaceAnaylser, execArch: PotentialExecArch) {
-        workspaceAnaylser.dataStructs.forEach { struct ->
+    private fun fillArchFromSourceCode(workspaceAnalyser: WorkspaceAnalyser, execArch: PotentialExecArch) {
+        workspaceAnalyser.dataStructs.forEach { struct ->
             struct.Imports.forEach {
                 if (it.Source == "java.io.File") {
                     execArch.connectorTypes += ConnectorType.FileIO

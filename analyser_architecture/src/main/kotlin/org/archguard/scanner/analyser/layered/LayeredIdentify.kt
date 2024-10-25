@@ -1,6 +1,6 @@
 package org.archguard.scanner.analyser.layered
 
-import org.archguard.scanner.architecture.core.CodeStructureStyle
+import org.archguard.architecture.code.CodeStructureStyle
 
 /**
  * The `LayeredIdentify` class is responsible for identifying the code structure style of a given list of packages.

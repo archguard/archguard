@@ -1,6 +1,6 @@
 package org.archguard.scanner.analyser.layered
 
-import org.archguard.scanner.architecture.base.*
+import org.archguard.architecture.base.*
 
 /**
  * The `DddLayeredChecker` class is an implementation of the `LayeredChecker` interface in the Kotlin language.

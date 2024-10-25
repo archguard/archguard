@@ -2,7 +2,7 @@ package org.archguard.scanner.analyser
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.architecture.ArchitectureView
+import org.archguard.architecture.ArchitectureView
 import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.EmptyArchGuardClient
@@ -53,7 +53,7 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val languageEstimates = EstimateAnalyser(ArchEstimateContext(context.path)).analyse()
 
         logger.info("start analysis workspace ---- ${context.language}")
-        val architectureView: ArchitectureView = WorkspaceAnaylser(
+        val architectureView: ArchitectureView = WorkspaceAnalyser(
             dataStructs,
             projectDependencies,
             service = services,

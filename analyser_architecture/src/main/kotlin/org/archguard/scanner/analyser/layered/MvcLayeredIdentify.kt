@@ -1,9 +1,9 @@
 package org.archguard.scanner.analyser.layered
 
-import org.archguard.scanner.architecture.base.CONTROLLERS
-import org.archguard.scanner.architecture.base.LayeredChecker
-import org.archguard.scanner.architecture.base.REPO
-import org.archguard.scanner.architecture.base.SERVICES
+import org.archguard.architecture.base.CONTROLLERS
+import org.archguard.architecture.base.LayeredChecker
+import org.archguard.architecture.base.REPO
+import org.archguard.architecture.base.SERVICES
 
 class MvcLayeredIdentify : LayeredChecker {
     private var hasController: Boolean = false
