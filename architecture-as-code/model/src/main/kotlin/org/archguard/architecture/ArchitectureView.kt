@@ -15,7 +15,7 @@ class ArchitectureView(
     var architectureStyle: org.archguard.architecture.view.module.ArchitectureStyle = LayeredArchitecture(),
     var executionArchitecture: ExecutionArchitecture = ExecutionArchitecture(),
     var codeArchitecture: CodeArchitecture = CodeArchitecture(
-        RepositoryType.Service
+        RepositoryType.Service,
     ),
     var physicalStructure: PhysicalStructure = PhysicalStructure(),
     var outboundService: List<ContainerService> = listOf(),

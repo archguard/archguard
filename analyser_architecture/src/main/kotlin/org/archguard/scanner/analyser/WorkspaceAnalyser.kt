@@ -3,6 +3,8 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import org.archguard.architecture.ArchitectureView
 import org.archguard.architecture.PhysicalStructure
+import org.archguard.architecture.view.code.CodeArchitecture
+import org.archguard.architecture.view.code.RepositoryType
 import org.archguard.architecture.view.concept.ConceptArchitecture
 import org.archguard.architecture.view.concept.DomainModel
 import org.archguard.architecture.view.module.ArchitectureStyle
@@ -32,6 +34,10 @@ class WorkspaceAnalyser(
             ),
             outboundService = service,
             architectureStyle = ArchitectureStyle.from(identPotential),
+            codeArchitecture = CodeArchitecture(
+                RepositoryType.Service,
+                stacks = identPotential.coreStacks
+            ),
             physicalStructure = PhysicalStructure(
                 languageEstimate = listOf(),
                 codeStructure = identPotential.physicalStructure,
