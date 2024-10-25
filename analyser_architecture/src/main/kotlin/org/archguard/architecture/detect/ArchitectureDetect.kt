@@ -51,6 +51,11 @@ class ArchitectureDetect {
         return execArch
     }
 
+    /// protobuf end suffix format
+    private val protobufDtoEnds = listOf(
+        "Request", "Response", "DTO", "VO", "Model", "Req", "Resp", "Reply"
+    )
+
     /**
      * Builds a list of code data structures based on the given layered style and workspace.
      *
@@ -62,7 +67,8 @@ class ArchitectureDetect {
         layeredStyle: CodeStructureStyle,
         workspace: Workspace
     ): List<CodeDataStruct> {
-        return when (layeredStyle) {
+        // check workspace.dataStructs language if is idl
+        val codeDataStructs = when (layeredStyle) {
             CodeStructureStyle.MVC -> {
                 workspace.dataStructs.filter { dataStruct ->
                     dataStruct.Annotations.any { it.Name == "Entity" }
@@ -82,7 +88,35 @@ class ArchitectureDetect {
             CodeStructureStyle.UNKNOWN -> {
                 listOf()
             }
+        }.toMutableList()
+
+        /// some special case
+        val protoBufs = workspace.dataStructs.mapNotNull { dataStruct ->
+            if (dataStruct.FilePath.endsWith(".proto")) {
+                val end = dataStruct.NodeName.substringAfterLast(".")
+                /// skip for dtos
+                protobufDtoEnds.forEach {
+                    if (end.endsWith(it)) {
+                        return@forEach
+                    }
+                }
+                // skip for service
+                if (dataStruct.NodeName.endsWith("Service")) {
+                    return@mapNotNull null
+                }
+
+                // skip for Functions not empty
+                if (dataStruct.Functions.isNotEmpty()) {
+                    return@mapNotNull null
+                }
+
+                dataStruct
+            } else {
+                null
+            }
         }
+
+        return codeDataStructs + protoBufs
     }
 
     /**
