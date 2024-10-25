@@ -6,9 +6,9 @@ import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerService
 import org.archguard.scanner.core.sourcecode.ContainerSupply
 
-class ProtobufAnalyser : ApiAnalyser {
+class ProtobufApiAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
-    var demands: List<ContainerDemand> = listOf()
+    private var demands: List<ContainerDemand> = listOf()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         node.Functions.map {

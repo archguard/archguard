@@ -71,6 +71,7 @@ chapi-c = { group = "com.phodal.chapi", name = "chapi-ast-c", version.ref = "cha
 chapi-cpp = { group = "com.phodal.chapi", name = "chapi-ast-cpp", version.ref = "chapi" }
 chapi-parser-toml = { group = "com.phodal.chapi", name = "chapi-parser-toml", version.ref = "chapi" }
 chapi-parser-cmake = { group = "com.phodal.chapi", name = "chapi-parser-cmake", version.ref = "chapi" }
+chapi-proto = { group = "com.phodal.chapi", name = "chapi-ast-protobuf", version.ref = "chapi" }
 
 # clikt
 clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref="clikt" }

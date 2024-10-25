@@ -22,6 +22,12 @@ dependencies {
     // analysis source code
     implementation(projects.analyserSourcecode.langJava)
     implementation(projects.analyserSourcecode.langKotlin)
+    implementation(projects.analyserSourcecode.langGolang)
+
+    implementation(libs.chapi.proto) {
+        exclude(group = "com.ibm.icu", module = "icu4j")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
+    }
 
     testImplementation(libs.bundles.test)
 }

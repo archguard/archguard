@@ -1,10 +1,7 @@
 package org.archguard.architecture
 
 import org.archguard.architecture.core.Workspace
-import org.archguard.scanner.analyser.ApiCallAnalyser
-import org.archguard.scanner.analyser.EstimateAnalyser
-import org.archguard.scanner.analyser.JavaAnalyser
-import org.archguard.scanner.analyser.ScaAnalyser
+import org.archguard.scanner.analyser.*
 import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.client.EmptyArchGuardClient
@@ -18,8 +15,20 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val sourceCodeContext = ArchSourceCodeContext(language = language, path = context.path)
 
         /// try to add by different languages
-        val dataStructs = JavaAnalyser(sourceCodeContext)
-            .analyse()
+        val dataStructs = when (language) {
+            "java" -> {
+                JavaAnalyser(sourceCodeContext).analyse()
+            }
+            "kotlin" -> {
+                KotlinAnalyser(sourceCodeContext).analyse()
+            }
+            "go" -> {
+                GoAnalyser(sourceCodeContext).analyse()
+            }
+            else -> {
+                throw IllegalArgumentException("Unsupported language: $language")
+            }
+        }
 
         val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = language))
             .analysisByPackages()
