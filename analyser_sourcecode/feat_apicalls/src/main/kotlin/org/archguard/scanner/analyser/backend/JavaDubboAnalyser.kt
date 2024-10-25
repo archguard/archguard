@@ -1,7 +1,6 @@
 package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
-import chapi.domain.core.CodeField
 import chapi.domain.core.CodeFunction
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.core.sourcecode.ContainerDemand
@@ -58,10 +57,6 @@ class JavaDubboAnalyser : ApiAnalyser {
                 .filter { annotation -> annotation.Name == "DubboReference" || annotation.Name == "Reference" }
                 .any { dubboAnnotationMap.containsKey(it.Name) || dubboAnnotationMap.containsKey("*") }
         }.associate { Pair(it.TypeValue, "") }
-    }
-
-    private fun createDemand(method: CodeField, node: CodeDataStruct) {
-        demands = demands + ContainerDemand()
     }
 
     private fun createResource(func: CodeFunction, service: String, node: CodeDataStruct) {
