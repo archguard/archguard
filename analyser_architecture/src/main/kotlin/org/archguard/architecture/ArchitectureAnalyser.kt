@@ -14,11 +14,14 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
-    override fun analyse(): List<ArchitectureView> {
-        val sourceCodeContext = ArchSourceCodeContext(language = "Java", path = context.path)
+    override fun analyse(language: String): List<ArchitectureView> {
+        val sourceCodeContext = ArchSourceCodeContext(language = language, path = context.path)
+
+        /// try to add by different languages
         val dataStructs = JavaAnalyser(sourceCodeContext)
             .analyse()
-        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = "java"))
+
+        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = language))
             .analysisByPackages()
 
         val services = ApiCallAnalyser(sourceCodeContext).analyse(dataStructs)

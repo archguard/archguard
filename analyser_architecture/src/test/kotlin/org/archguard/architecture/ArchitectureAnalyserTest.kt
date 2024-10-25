@@ -18,7 +18,7 @@ class ArchitectureAnalyserTest {
         )
 
         // When
-        val result = analyser.analyse()
+        val result = analyser.analyse(language = "java")
 
         // Then
         println(Json.encodeToString(result))
