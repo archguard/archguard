@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.po
 
-import org.archguard.context.ChangeEntry
+import org.archguard.model.ChangeEntry
 
 class ChangeEntryPO(
     val changeMode: String,
