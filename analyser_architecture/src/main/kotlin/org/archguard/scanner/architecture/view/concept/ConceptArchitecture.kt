@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class ConceptArchitecture(
-    val type: org.archguard.scanner.architecture.view.concept.ConceptType = org.archguard.scanner.architecture.view.concept.ConceptType.CComponent,
-    val domainModels: List<org.archguard.scanner.architecture.view.concept.DomainModel> = listOf(),
+    val type: ConceptType = ConceptType.CComponent,
+    val domainModels: List<DomainModel> = listOf(),
     val reliability: Float = 0.0f,
     val desc: String = "",
 )
