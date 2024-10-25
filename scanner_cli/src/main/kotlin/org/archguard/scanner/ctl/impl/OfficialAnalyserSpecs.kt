@@ -51,11 +51,12 @@ enum class OfficialAnalyserSpecs(
     fun jarFileName(): String {
         val identifier = identifier()
         val prefix = when (this) {
-            GIT, SCA, DIFF_CHANGES, ESTIMATE, OPENAPI -> "analyser"
+            GIT, SCA, DIFF_CHANGES, ESTIMATE, OPENAPI, ARCHITECTURE -> "analyser"
             DATAMAP, APICALLS -> "feat"
             RULE -> "rule"
             else -> "lang"
         }
+
         return "${prefix}_$identifier-$ARCHGUARD_VERSION-all.jar"
     }
 

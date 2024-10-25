@@ -1,72 +1,14 @@
-# 架构分析
+# Architecture Analyser
 
-Refs:
+Run:
 
-- [Architecture Description Language (ADL)](https://cio-wiki.org/wiki/Architecture_Description_Language_(ADL))
-
-## 通过领域生成架构特征
-
-1. 如何识别领域知识？
-
-## 多个子系统导入
-
-基于 CSV, JSON， Markdown
-
-## 基于依赖的框架映射，分析出架构分格
-
-Maven Index: [https://maven.apache.org/repository/central-index.html](https://maven.apache.org/repository/central-index.html) 
-
-示例：
-
-1. Spring Boot => 微服务架构
-2. Equinox => OSGI
-3. Flink, Kafka => Data => ServiceBased
-
-## Arch
-
-```yaml
-# 分析态输出
-- langauge: java
-  conceptualArch:
-    domains: [ "" ]
-    styles:
-      layeredStyle: [""]
-  moduleArch:
-    systems: [ "" ]
-    subSystems: [ "" ]
-    # from Gradle or maven
-    modules: [ "" ]
-    layers: [ "" ]
-    interfaces: [ "" ]
-    changeImpact: [ "" ]
-  executionArch:
-    # Interface description language
-    interfaceDescriptionLanguage: [ "proto" ]
-    messageQueue: [ "RabbitMQ", "Kafka" ]
-    # hasProcesses
-    processes: [ "ProcessBuilder" ]
-    # thread
-    # kotlin.concurrent.thread
-    servers: [ "" ]
-  codeArch:
-    # from CLOC
-    languages: [ "" ]
-    # packageManager
-    developmentTools: [ "" ]
-    libraries: [ "" ]
-    packages: [ "" ]
-    directories: [ "" ]
-    files: [ "" ]
+```
+java -jar scanner_cli.jar --language=go --type=architecture --output=json --path=server 
 ```
 
-## 案例库
+Debug run
 
-```yaml
-# Domain
-- domain: GUI
-  characteristics:
-    - WindowManager
-- domain: finance
-  characteristics:
-    - 并发
+```bash
+cp build/libs/analyser_architecture-2.1.5-all.jar dependencies/analysers
+java -jar ../scanner_cli/build/libs/scanner_cli-2.1.5-all.jar --type=architecture --output=json --path=/Users/phodal/test/Bilibili-Go-Backup 
 ```
