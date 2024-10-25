@@ -1,6 +1,7 @@
 package org.archguard.scanner.core.client
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.architecture.ArchitectureView
 import org.archguard.rule.core.Issue
 import org.archguard.context.LanguageEstimate
 import org.archguard.context.ChangedCall
@@ -31,6 +32,7 @@ interface ArchGuardClient {
      */
     fun saveEstimates(estimates: List<LanguageEstimate>)
     fun saveOpenApi(collections: List<ApiCollection>)
+    fun saveArchitecture(listOf: List<ArchitectureView>)
 }
 
 class EmptyArchGuardClient : ArchGuardClient {
@@ -43,4 +45,5 @@ class EmptyArchGuardClient : ArchGuardClient {
     override fun saveRuleIssues(issues: List<Issue>) = Unit
     override fun saveEstimates(estimates: List<LanguageEstimate>) = Unit
     override fun saveOpenApi(collections: List<ApiCollection>) = Unit
+    override fun saveArchitecture(listOf: List<ArchitectureView>) = Unit
 }

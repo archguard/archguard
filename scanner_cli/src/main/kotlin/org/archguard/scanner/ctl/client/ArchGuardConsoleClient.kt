@@ -3,6 +3,7 @@ package org.archguard.scanner.ctl.client
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.archguard.architecture.ArchitectureView
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.context.LanguageEstimate
@@ -67,5 +68,11 @@ open class ArchGuardConsoleClient(private val systemId: String) : ArchGuardClien
         println("==============================================================")
         println("Output project openapi to console")
         println(Json.encodeToString(collections))
+    }
+
+    override fun saveArchitecture(listOf: List<ArchitectureView>) {
+        println("==============================================================")
+        println("Output project architecture to console")
+        println(Json.encodeToString(listOf))
     }
 }

@@ -3,6 +3,7 @@ package org.archguard.scanner.ctl.client
 import chapi.domain.core.CodeDataStruct
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.archguard.architecture.ArchitectureView
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.context.LanguageEstimate
@@ -69,5 +70,9 @@ class ArchGuardCsvClient(private val systemId: String) : ArchGuardClient {
 
     override fun saveOpenApi(collections: List<ApiCollection>) {
         writeCsvFile(collections, buildFileName("openapi"))
+    }
+
+    override fun saveArchitecture(listOf: List<ArchitectureView>) {
+        writeCsvFile(listOf, buildFileName("architecture"))
     }
 }

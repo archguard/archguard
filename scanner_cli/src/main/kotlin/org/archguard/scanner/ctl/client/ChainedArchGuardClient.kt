@@ -1,6 +1,7 @@
 package org.archguard.scanner.ctl.client
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.architecture.ArchitectureView
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.context.LanguageEstimate
@@ -32,5 +33,9 @@ class ChainedArchGuardClient(
 
     override fun saveOpenApi(collections: List<ApiCollection>) {
         clients.forEach { it.saveOpenApi(collections) }
+    }
+
+    override fun saveArchitecture(listOf: List<ArchitectureView>) {
+        clients.forEach { it.saveArchitecture(listOf) }
     }
 }

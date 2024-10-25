@@ -64,7 +64,8 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
 
         logger.info("finish analysis architecture ---- ${context.language}")
         /// write to file
-        File("architecture.json").writeText(Json.encodeToString(architectureView))
+//        File("architecture.json").writeText(Json.encodeToString(architectureView))
+        context.client.saveArchitecture(listOf(architectureView))
         return listOf(architectureView)
     }
 }
