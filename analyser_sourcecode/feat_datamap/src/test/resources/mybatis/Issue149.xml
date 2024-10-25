@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserMapper">
+    <!-- 结果映射，将数据库字段映射到Java对象的属性 -->
+    <resultMap id="userResultMap" type="com.example.entity.User">
+        <id property="id" column="user_id"/>
+        <id property="couponType" column="couponType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+    </resultMap>
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="com.example.entity.User">
+        INSERT INTO users (username, password, email, couponType)
+        VALUES (#{username}, #{password}, #{email}, #{couponType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler})
+    </insert>
+</mapper>

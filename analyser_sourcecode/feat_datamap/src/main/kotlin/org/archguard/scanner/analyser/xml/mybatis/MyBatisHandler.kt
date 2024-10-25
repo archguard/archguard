@@ -7,7 +7,6 @@ import org.apache.ibatis.builder.xml.XMLMapperEntityResolver
 import org.apache.ibatis.executor.keygen.NoKeyGenerator
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator
 import org.apache.ibatis.mapping.*
-import org.apache.ibatis.ognl.ASTGreater
 import org.apache.ibatis.ognl.ComparisonExpression
 import org.apache.ibatis.ognl.Ognl
 import org.apache.ibatis.parsing.XNode
@@ -56,12 +55,15 @@ class MyBatisHandler : BasedXmlHandler() {
         return streamToSqls(filePath)
     }
 
+
     fun streamToSqls(resource: String): MybatisEntry {
         val configuration = createConfiguration()
 
         var xml = File(resource).readText()
         xml = xml.replace("http://mybatis.org/dtd/mybatis-3-mapper.dtd", "classpath:/mybatis-3-mapper.dtd")
         xml = xml.replace("http://mybatis.org/dtd/mybatis-3-config.dtd", "classpath:/mybatis-3-config.dtd")
+
+        xml = preHandleTypeHandler(xml)
 
         val parser = XPathParser(xml, true, configuration.variables, XMLMapperEntityResolver())
         val context = parser.evalNode("/mapper")
@@ -82,6 +84,15 @@ class MyBatisHandler : BasedXmlHandler() {
         }
 
         return mybatisEntry
+    }
+
+    val preHandleRegex = Regex(",typeHandler\\s*=\\s*[^}]+")
+
+    // pre-handle for typeHandler
+    // #{couponType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+    private fun preHandleTypeHandler(input: String): String {
+        // ,typeHandler\s*=\s*[^}]+
+        return input.replace(preHandleRegex, "")
     }
 
     private fun buildCrudSqlMap(

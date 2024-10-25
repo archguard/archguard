@@ -51,4 +51,18 @@ internal class MyBatisHandlerTest {
 
         assertEquals(1, sqls.methodSqlMap.size)
     }
+
+    @Test
+    internal fun should_handle_for_issue_149() {
+        // https://github.com/archguard/archguard/issues/149
+        val resource = this.javaClass.classLoader.getResource("mybatis/Issue149.xml")!!
+        val toURI = resource.toURI().toPath().toAbsolutePath()
+        val sqls = MyBatisHandler().streamToSqls(toURI.toString())
+
+        assertEquals(1, sqls.methodSqlMap.size)
+        assertEquals(
+            "INSERT INTO users (username, password, email, couponType) VALUES (?, ?, ?, ?)",
+            sqls.methodSqlMap["insertUser"]
+        )
+    }
 }
