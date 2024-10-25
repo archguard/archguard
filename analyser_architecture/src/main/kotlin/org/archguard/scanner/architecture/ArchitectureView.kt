@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import org.archguard.scanner.architecture.graph.TreeNode
 import org.archguard.scanner.architecture.view.code.CodeArchitecture
 import org.archguard.scanner.architecture.view.code.RepositoryType
-import org.archguard.scanner.architecture.view.code.Language
 import org.archguard.scanner.architecture.view.concept.ConceptArchitecture
 import org.archguard.scanner.architecture.view.execution.ExecutionArchitecture
 import org.archguard.scanner.architecture.view.module.ArchitectureStyle
@@ -18,11 +17,10 @@ class ArchitectureView(
     var architectureStyle: ArchitectureStyle = LayeredArchitecture(),
     var executionArchitecture: ExecutionArchitecture = ExecutionArchitecture(),
     var codeArchitecture: CodeArchitecture = CodeArchitecture(
-        Language.Java,
-        RepositoryType.Interface
+        RepositoryType.Service
     ),
     var physicalStructure: PhysicalStructure = PhysicalStructure(),
-    var service: List<ContainerService> = listOf(),
+    var outboundService: List<ContainerService> = listOf(),
 )
 
 @Serializable

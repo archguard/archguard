@@ -73,7 +73,9 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
 
         val services = protobufApiAnalyser.toContainerServices()
 
-        val results = apiCalls + services
+        val results = (apiCalls + services).mapNotNull {
+            if (it.resources.isEmpty() && it.demands.isEmpty()) null else it
+        }
         client.saveApi(results)
         return results
     }
