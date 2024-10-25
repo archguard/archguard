@@ -1,5 +1,4 @@
 @Suppress("DSL_SCOPE_VIOLATION")
-
 plugins {
     application
     alias(libs.plugins.jvm)
@@ -8,25 +7,10 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.meta)
-    implementation(projects.scannerCore)
-
-    // analysis software composition analysis
-    implementation(projects.analyserSca)
-    implementation(projects.analyserEstimate)
-
-    // architecture will load Database, HttpAPIs
-    implementation(projects.analyserSourcecode.featDatamap)
-    implementation(projects.analyserSourcecode.featApicalls)
-
-    // analysis source code
-    implementation(projects.analyserSourcecode.langJava)
-    implementation(projects.analyserSourcecode.langKotlin)
-    implementation(projects.analyserSourcecode.langGolang)
-
-    implementation(projects.analyserSourcecode.idlProtobuf)
+    api(projects.scannerCore)
 
     implementation(libs.chapi.protobuf) {
+        // around 10mb, only documents files, exclude (reuse in cli?)
         exclude(group = "com.ibm.icu", module = "icu4j")
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
     }

@@ -60,6 +60,10 @@ include(
     ":analyser_sourcecode:lang_c",
     ":analyser_sourcecode:lang_cpp",
 
+    // idl, Interface description language
+    ":analyser_sourcecode:idl_protobuf",
+
+    // features
     ":analyser_sourcecode:feat_apicalls",
     ":analyser_sourcecode:feat_datamap",
 

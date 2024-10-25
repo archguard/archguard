@@ -19,16 +19,21 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             "java" -> {
                 JavaAnalyser(sourceCodeContext).analyse()
             }
+
             "kotlin" -> {
                 KotlinAnalyser(sourceCodeContext).analyse()
             }
+
             "go" -> {
                 GoAnalyser(sourceCodeContext).analyse()
             }
+
             else -> {
                 throw IllegalArgumentException("Unsupported language: $language")
             }
-        }
+        }.toMutableList()
+
+        dataStructs += ProtoAnalyser(sourceCodeContext).analyse()
 
         val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = language))
             .analysisByPackages()
@@ -42,6 +47,7 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             projectDependencies,
             service = services
         ).analysis()
+
         workspace.physicalStructure.languageEstimate = languageEstimates
 
         return listOf(workspace)
