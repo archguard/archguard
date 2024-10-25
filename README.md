@@ -25,6 +25,13 @@ Chinese: ArchGuard 是一个针对于微服务（分布式场景）下的架构�
 
 ![Architecture](https://archguard.org/architecture.svg)
 
+You can use:
+
+- [ArchGuard Library in Maven Central](https://search.maven.org/search?q=org.archguard) to integrate with your backend.
+- [ArchGuard Scanner CLI](./scanner_cli) to scan your codebase, upload to your backend or ArchGuard backend.
+- [ArchGuard Gradle Plugin](https://github.com/archguard/archguard-gradle-plugin) to scan your codebase in CI/CD.
+- [ArchGuard Web](./server) is the backend of ArchGuard, it provides a RESTful API for frontend.
+
 特性（Features）：
 
 - **设计态**
