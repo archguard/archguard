@@ -11,11 +11,11 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
-    override fun analyse(language: String): List<ArchitectureView> {
-        val sourceCodeContext = ArchSourceCodeContext(language = language, path = context.path)
+    override fun analyse(): List<ArchitectureView> {
+        val sourceCodeContext = ArchSourceCodeContext(language = context.language, path = context.path)
 
         /// try to add by different languages
-        val dataStructs = when (language) {
+        val dataStructs = when (context.language) {
             "java" -> {
                 JavaAnalyser(sourceCodeContext).analyse()
             }
@@ -29,13 +29,13 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             }
 
             else -> {
-                throw IllegalArgumentException("Unsupported language: $language")
+                throw IllegalArgumentException("Unsupported language: $context.language")
             }
         }.toMutableList()
 
         dataStructs += ProtoAnalyser(sourceCodeContext).analyse()
 
-        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = language))
+        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = context.language))
             .analysisByPackages()
 
         val services = ApiCallAnalyser(sourceCodeContext).analyse(dataStructs)
@@ -56,9 +56,10 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
 
 val archGuardClient = EmptyArchGuardClient()
 
-data class SampleArchitectureContext(
+data class CliArchitectureAnalysisContext(
     override val path: String,
     override val client: ArchGuardClient = archGuardClient,
+    override val language: String,
 ) : ArchitectureContext
 
 data class ArchEstimateContext(

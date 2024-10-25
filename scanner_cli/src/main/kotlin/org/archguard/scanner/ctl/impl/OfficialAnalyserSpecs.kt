@@ -32,7 +32,9 @@ enum class OfficialAnalyserSpecs(
     DIFF_CHANGES("DiffChangesAnalyser"),
     ESTIMATE("EstimateAnalyser"),
     OPENAPI("OpenApiAnalyser"),
-    DOCUMENT("DocumentAnalyser")
+    DOCUMENT("DocumentAnalyser"),
+
+    ARCHITECTURE("ArchitectureAnalyser")
     ;
 
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, ARCHGUARD_VERSION, jarFileName(), className)

@@ -2,7 +2,6 @@ package org.archguard.architecture;
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.io.path.toPath
@@ -14,11 +13,11 @@ class ArchitectureAnalyserTest {
         // Given
         val resource = this.javaClass.classLoader.getResource("spring-blog")!!.toURI().toPath()
         val analyser = ArchitectureAnalyser(
-            SampleArchitectureContext(path = resource.toString())
+            CliArchitectureAnalysisContext(path = resource.toString(), language = "java")
         )
 
         // When
-        val result = analyser.analyse(language = "java")
+        val result = analyser.analyse()
 
         // Then
         println(Json.encodeToString(result))

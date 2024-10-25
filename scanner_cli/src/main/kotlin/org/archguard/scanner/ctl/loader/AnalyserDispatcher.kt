@@ -3,6 +3,9 @@ package org.archguard.scanner.ctl.loader
 import kotlinx.coroutines.runBlocking
 import org.archguard.meta.Slot
 import org.archguard.scanner.core.AnalyserSpec
+import org.archguard.scanner.core.architecture.ArchitectureAnalyser
+import org.archguard.scanner.core.architecture.ArchitectureContext
+import org.archguard.scanner.core.architecture.CliArchitectureContext
 import org.archguard.scanner.core.context.AnalyserType
 import org.archguard.scanner.core.context.Context
 import org.archguard.scanner.core.diffchanges.DiffChangesAnalyser
@@ -33,7 +36,7 @@ class AnalyserDispatcher {
             AnalyserType.SCA -> ScaWorker(command)
             AnalyserType.RULE -> RuleWorker(command)
             AnalyserType.ESTIMATE -> EstimateWorker(command)
-            AnalyserType.ARCHITECTURE -> TODO()
+            AnalyserType.ARCHITECTURE -> ArchitectureWorker(command)
             AnalyserType.OPENAPI -> OpenApiWorker(command)
             AnalyserType.DOCUMENT -> DocumentWorker(command)
         }.run()
@@ -169,6 +172,18 @@ class OpenApiWorker(override val command: ScannerCommand) : Worker<OpenApiContex
 
     override fun run() {
         getOrInstall<OpenApiAnalyser>(OfficialAnalyserSpecs.OPENAPI).analyse()
+    }
+}
+
+class ArchitectureWorker(override val command: ScannerCommand) : Worker<ArchitectureContext> {
+    override val context = CliArchitectureContext(
+        path = command.path,
+        client = command.buildClient(),
+        language = command.language!!,
+    )
+
+    override fun run() {
+        getOrInstall<ArchitectureAnalyser>(OfficialAnalyserSpecs.ARCHITECTURE).analyse()
     }
 }
 
