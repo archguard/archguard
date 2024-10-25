@@ -71,7 +71,10 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             protobufApiAnalyser.analysisByNode(data, path)
         }
 
-        client.saveApi(apiCalls + protobufApiAnalyser.toContainerServices())
-        return apiCalls
+        val services = protobufApiAnalyser.toContainerServices()
+
+        val results = apiCalls + services
+        client.saveApi(results)
+        return results
     }
 }
