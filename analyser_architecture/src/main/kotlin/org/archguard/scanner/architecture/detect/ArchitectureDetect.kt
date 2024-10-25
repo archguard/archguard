@@ -93,11 +93,9 @@ class ArchitectureDetect {
         /// some special case
         val protoBufs = workspace.dataStructs.mapNotNull { dataStruct ->
             if (dataStruct.FilePath.endsWith(".proto")) {
-                val end = dataStruct.NodeName.substringAfterLast(".")
-                /// skip for dtos
                 protobufDtoEnds.forEach {
-                    if (end.endsWith(it)) {
-                        return@forEach
+                    if (dataStruct.NodeName.endsWith(it)) {
+                        return@mapNotNull null
                     }
                 }
                 // skip for service
