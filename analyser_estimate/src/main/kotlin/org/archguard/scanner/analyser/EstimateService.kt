@@ -7,7 +7,7 @@ import org.archguard.scanner.analyser.count.FileWorker
 import org.archguard.scanner.analyser.estimate.CocomoEstimate
 import java.io.File
 
-class EstimateService(val context: EstimateContext) {
+class EstimateService(private val context: EstimateContext) {
     fun analyse(): List<LanguageEstimate> {
         return runBlocking {
             val path = File(context.path).canonicalPath.toString()

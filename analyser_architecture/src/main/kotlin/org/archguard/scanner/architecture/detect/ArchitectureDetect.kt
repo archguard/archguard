@@ -98,10 +98,11 @@ class ArchitectureDetect {
                         return@mapNotNull null
                     }
                 }
-                // skip for service
-                if (dataStruct.NodeName.endsWith("Service")) {
-                    return@mapNotNull null
-                }
+
+                // if the model is anemic, it needs a service
+//                if (dataStruct.NodeName.endsWith("Service")) {
+//                    return@mapNotNull null
+//                }
 
                 // skip for Functions not empty
                 if (dataStruct.Functions.isNotEmpty()) {
