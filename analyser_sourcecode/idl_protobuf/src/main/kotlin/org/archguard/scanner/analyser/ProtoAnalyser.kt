@@ -17,7 +17,16 @@ class ProtoAnalyser(override val context: SourceCodeContext) : LanguageSourceCod
         getFilesByPath(context.path) {
             it.absolutePath.endsWith(".proto")
         }
-            .map { async { analysisByFile(it) } }.awaitAll()
+            .map {
+                async {
+                    try {
+                        analysisByFile(it)
+                    } catch (e: Exception) {
+                        logger.error("Failed to analysis file: ${it.absolutePath}", e)
+                        emptyList()
+                    }
+                }
+            }.awaitAll()
             .flatten()
             .also { client.saveDataStructure(it) }
     }
