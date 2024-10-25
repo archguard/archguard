@@ -1,5 +1,7 @@
 package org.archguard.scanner.analyser
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.architecture.ArchitectureView
 import org.archguard.scanner.architecture.core.Workspace
 import org.archguard.scanner.core.architecture.ArchitectureContext
@@ -9,6 +11,7 @@ import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
+import java.io.File
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
@@ -51,17 +54,19 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val languageEstimates = EstimateAnalyser(ArchEstimateContext(context.path)).analyse()
 
         logger.info("start analysis workspace ---- ${context.language}")
-        val workspace = Workspace(
+        val architectureView: ArchitectureView = Workspace(
             dataStructs,
             projectDependencies,
             service = services,
             language = context.language
         ).analysis()
 
-        workspace.physicalStructure.languageEstimate = languageEstimates
+        architectureView.physicalStructure.languageEstimate = languageEstimates
 
         logger.info("finish analysis architecture ---- ${context.language}")
-        return listOf(workspace)
+        /// write to file
+        File("architecture.json").writeText(Json.encodeToString(architectureView))
+        return listOf(architectureView)
     }
 }
 

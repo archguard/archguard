@@ -10,6 +10,7 @@ import org.archguard.scanner.architecture.view.execution.ExecutionArchitecture
 import org.archguard.scanner.architecture.view.module.ArchitectureStyle
 import org.archguard.scanner.architecture.view.module.LayeredArchitecture
 import org.archguard.scanner.core.estimate.LanguageEstimate
+import org.archguard.scanner.core.sourcecode.ContainerService
 
 @Serializable
 class ArchitectureView(
@@ -20,7 +21,8 @@ class ArchitectureView(
         Language.Java,
         RepositoryType.Interface
     ),
-    var physicalStructure: PhysicalStructure = PhysicalStructure()
+    var physicalStructure: PhysicalStructure = PhysicalStructure(),
+    var service: List<ContainerService> = listOf(),
 )
 
 @Serializable

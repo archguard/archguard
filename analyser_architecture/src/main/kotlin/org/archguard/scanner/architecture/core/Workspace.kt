@@ -30,6 +30,7 @@ class Workspace(
             conceptArchitecture = org.archguard.scanner.architecture.view.concept.ConceptArchitecture(
                 domainModels = DomainModel.from(identPotential.concepts)
             ),
+            service = service,
             architectureStyle = ArchitectureStyle.from(identPotential),
             physicalStructure = PhysicalStructure(
                 languageEstimate = listOf(),
