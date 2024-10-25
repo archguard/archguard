@@ -1,6 +1,5 @@
 package org.archguard.scanner.analyser
 
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -59,6 +58,13 @@ internal class JavaAnalyserTest {
             every { mockContext.path } returns this.javaClass.classLoader.getResource("spring/DemoController.java").path
             val nodes = JavaAnalyser(mockContext).analyse()
             File("structs_DemoController.json").writeText(Json.encodeToString(nodes))
+        }
+
+        @Test
+        fun should_support_for_dubbo() {
+            every { mockContext.path } returns this.javaClass.classLoader.getResource("spring/DubboService.java").path
+            val nodes = JavaAnalyser(mockContext).analyse()
+            File("structs_DubboService.json").writeText(Json.encodeToString(nodes))
         }
     }
 }

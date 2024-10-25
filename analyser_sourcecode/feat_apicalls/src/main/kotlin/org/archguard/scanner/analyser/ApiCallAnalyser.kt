@@ -3,7 +3,7 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.analyser.backend.GoApiAnalyser
-import org.archguard.scanner.analyser.backend.JavaApiAnalyser
+import org.archguard.scanner.analyser.backend.JavaCompositeApiAnalyser
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
@@ -41,7 +41,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             }
 
             "java", "kotlin" -> {
-                val apiAnalyser = JavaApiAnalyser()
+                val apiAnalyser = JavaCompositeApiAnalyser()
                 input.forEach { data ->
                     apiAnalyser.analysisByNode(data, "")
                 }

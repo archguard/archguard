@@ -26,5 +26,13 @@ data class ContainerSupply(
     var sourceHttpMethod: String = "",
     var packageName: String = "",
     var className: String = "",
-    var methodName: String = ""
+    var methodName: String = "",
+    var supplyType: ServiceSupplyType = ServiceSupplyType.HTTP_API
 )
+
+
+enum class ServiceSupplyType {
+    HTTP_API,
+    DUBBO_API,
+}
+

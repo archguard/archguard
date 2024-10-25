@@ -7,9 +7,9 @@ import org.archguard.scanner.core.sourcecode.ContainerDemand
 import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ContainerService
 
-class JavaApiAnalyser: ApiAnalyser {
+class JavaSpringAnalyser: ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
-    var demands: List<ContainerDemand> = listOf()
+    private var demands: List<ContainerDemand> = listOf()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         val routeAnnotation = node.filterAnnotations("RestController", "Controller", "RequestMapping")
