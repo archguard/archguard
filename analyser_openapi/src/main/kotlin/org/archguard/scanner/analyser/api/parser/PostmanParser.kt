@@ -1,7 +1,6 @@
 package org.archguard.scanner.analyser.api.parser
 
 import org.archguard.context.*
-import org.archguard.model.*
 import org.archguard.scanner.analyser.api.postman.*
 import java.net.URI
 

@@ -6,7 +6,6 @@ import io.swagger.v3.oas.models.media.Schema
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.parser.OpenAPIV3Parser
 import org.archguard.context.*
-import org.archguard.model.*
 import org.archguard.scanner.analyser.api.base.ApiProcessor
 import java.io.File
 
