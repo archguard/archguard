@@ -1,6 +1,6 @@
 package org.archguard.scanner.architecture.detect
 
-import org.archguard.scanner.architecture.techstack.FrameworkMarkup
+import org.archguard.scanner.analyser.techstack.FrameworkMarkup
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

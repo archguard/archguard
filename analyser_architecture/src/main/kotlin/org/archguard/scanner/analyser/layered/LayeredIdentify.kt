@@ -1,4 +1,4 @@
-package org.archguard.scanner.architecture.layered
+package org.archguard.scanner.analyser.layered
 
 import org.archguard.scanner.architecture.core.CodeStructureStyle
 
@@ -14,7 +14,7 @@ import org.archguard.scanner.architecture.core.CodeStructureStyle
 class LayeredIdentify(private val packages: List<String>) {
 
     private var ddd = DddLayeredChecker()
-    private var mvc = org.archguard.scanner.architecture.layered.MvcLayeredIdentify()
+    private var mvc = MvcLayeredIdentify()
 
     /**
      * Identifies the code structure style of the given packages.

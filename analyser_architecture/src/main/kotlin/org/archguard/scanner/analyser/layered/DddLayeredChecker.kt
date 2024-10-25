@@ -1,4 +1,6 @@
-package org.archguard.scanner.architecture.layered
+package org.archguard.scanner.analyser.layered
+
+import org.archguard.scanner.architecture.base.*
 
 /**
  * The `DddLayeredChecker` class is an implementation of the `LayeredChecker` interface in the Kotlin language.
@@ -27,7 +29,7 @@ package org.archguard.scanner.architecture.layered
  * val canMarked = checker.canMarked() // true
  * ```
  */
-class DddLayeredChecker() : org.archguard.scanner.architecture.layered.LayeredChecker {
+class DddLayeredChecker() : LayeredChecker {
     private var hasDomain: Boolean = false
     private var hasInfra: Boolean = false
     private var hasInterfaces: Boolean = false

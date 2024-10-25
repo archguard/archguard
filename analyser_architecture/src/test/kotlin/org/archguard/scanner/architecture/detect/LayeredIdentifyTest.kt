@@ -1,7 +1,7 @@
 package org.archguard.scanner.architecture.detect
 
 import org.archguard.scanner.architecture.core.CodeStructureStyle
-import org.archguard.scanner.architecture.layered.LayeredIdentify
+import org.archguard.scanner.analyser.layered.LayeredIdentify
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

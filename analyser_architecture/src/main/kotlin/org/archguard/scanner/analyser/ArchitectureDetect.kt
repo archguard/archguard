@@ -8,8 +8,8 @@ import org.archguard.scanner.architecture.detect.AppType
 import org.archguard.scanner.architecture.detect.OutboundProtocol
 import org.archguard.scanner.architecture.detect.PotentialExecArch
 import org.archguard.scanner.architecture.graph.TreeNode
-import org.archguard.scanner.architecture.layered.LayeredIdentify
-import org.archguard.scanner.architecture.techstack.FrameworkMarkup
+import org.archguard.scanner.analyser.layered.LayeredIdentify
+import org.archguard.scanner.analyser.techstack.FrameworkMarkup
 
 /**
  * The `ArchitectureDetect` class is responsible for identifying the potential execution architecture based on the given

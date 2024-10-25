@@ -1,4 +1,4 @@
-package org.archguard.scanner.architecture.layered
+package org.archguard.scanner.architecture.base
 
 var CONTROLLERS: List<String> = listOf("controller", "interface")
 var DOMAIN: List<String> = listOf("domain")

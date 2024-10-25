@@ -1,4 +1,4 @@
-package org.archguard.scanner.architecture.techstack
+package org.archguard.scanner.analyser.techstack
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
