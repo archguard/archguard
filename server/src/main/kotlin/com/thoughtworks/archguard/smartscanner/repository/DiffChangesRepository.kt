@@ -1,7 +1,7 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.archguard.scanner.core.diffchanges.ChangedCall
+import org.archguard.model.ChangedCall
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch

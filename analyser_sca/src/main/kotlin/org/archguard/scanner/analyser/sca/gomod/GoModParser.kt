@@ -1,9 +1,9 @@
 package org.archguard.scanner.analyser.sca.gomod
 
 import org.archguard.scanner.analyser.sca.base.Parser
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.core.sca.DependencyEntry
-import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.model.DeclFileTree
+import org.archguard.model.DependencyEntry
+import org.archguard.model.PackageDependencies
 
 
 class GoModParser : Parser() {

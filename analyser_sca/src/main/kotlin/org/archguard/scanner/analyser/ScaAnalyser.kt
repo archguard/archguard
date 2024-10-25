@@ -5,8 +5,8 @@ import org.archguard.scanner.analyser.sca.gomod.GoModFinder
 import org.archguard.scanner.analyser.sca.gradle.GradleFinder
 import org.archguard.scanner.analyser.sca.maven.MavenFinder
 import org.archguard.scanner.analyser.sca.npm.NpmFinder
-import org.archguard.scanner.core.sca.CompositionDependency
-import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.model.CompositionDependency
+import org.archguard.model.PackageDependencies
 import org.archguard.scanner.core.sca.ScaAnalyser
 import org.archguard.scanner.core.sca.ScaContext
 import java.util.UUID

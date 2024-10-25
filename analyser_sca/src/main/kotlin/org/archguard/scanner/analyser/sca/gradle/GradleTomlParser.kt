@@ -3,7 +3,7 @@ package org.archguard.scanner.analyser.sca.gradle
 import chapi.domain.core.CodeContainer
 import chapi.domain.core.CodeField
 import chapi.parser.toml.TomlAnalyser
-import org.archguard.scanner.core.sca.DependencyEntry
+import org.archguard.model.DependencyEntry
 
 
 /**

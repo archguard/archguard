@@ -14,5 +14,7 @@ dependencies {
     api(libs.coroutines.core)
     api(libs.serialization.json)
 
+    api(projects.architectureAsCode.model)
+
     testImplementation(libs.bundles.test)
 }

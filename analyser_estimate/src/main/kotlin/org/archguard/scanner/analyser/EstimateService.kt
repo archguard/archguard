@@ -2,7 +2,7 @@ package org.archguard.scanner.analyser
 
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.core.estimate.EstimateContext
-import org.archguard.scanner.core.estimate.LanguageEstimate
+import org.archguard.model.LanguageEstimate
 import org.archguard.scanner.analyser.count.FileWorker
 import org.archguard.scanner.analyser.estimate.CocomoEstimate
 import java.io.File

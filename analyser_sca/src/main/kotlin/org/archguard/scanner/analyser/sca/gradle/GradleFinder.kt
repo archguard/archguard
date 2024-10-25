@@ -1,9 +1,8 @@
 package org.archguard.scanner.analyser.sca.gradle
 
 import org.archguard.scanner.analyser.sca.base.Finder
-import org.archguard.scanner.analyser.sca.base.Parser
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.model.DeclFileTree
+import org.archguard.model.PackageDependencies
 import java.io.File
 
 class GradleFinder : Finder() {

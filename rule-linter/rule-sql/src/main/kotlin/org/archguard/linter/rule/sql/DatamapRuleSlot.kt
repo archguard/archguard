@@ -6,7 +6,7 @@ import org.archguard.meta.OutputType
 import org.archguard.meta.Slot
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
-import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.model.CodeDatabaseRelation
 
 class DatamapRuleSlot() : Slot {
     override var material: Materials = listOf()

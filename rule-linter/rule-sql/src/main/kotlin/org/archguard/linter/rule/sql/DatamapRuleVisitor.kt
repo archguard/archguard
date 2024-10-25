@@ -2,7 +2,6 @@ package org.archguard.linter.rule.sql
 
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statement
-import net.sf.jsqlparser.statement.Statements
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.Rule
@@ -10,7 +9,7 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
-import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.model.CodeDatabaseRelation
 
 data class CodeSqlStmt(
     val packageName: String = "",

@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser.api.parser
 
+import org.archguard.model.*
 import org.archguard.scanner.analyser.api.postman.*
-import org.archguard.scanner.core.openapi.*
 import java.net.URI
 
 sealed class ChildType {

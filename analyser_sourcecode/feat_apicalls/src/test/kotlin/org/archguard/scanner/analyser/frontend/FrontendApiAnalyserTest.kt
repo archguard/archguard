@@ -4,7 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File

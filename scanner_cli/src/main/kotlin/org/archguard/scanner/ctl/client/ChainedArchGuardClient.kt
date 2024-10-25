@@ -3,13 +3,13 @@ package org.archguard.scanner.ctl.client
 import chapi.domain.core.CodeDataStruct
 import org.archguard.rule.core.Issue
 import org.archguard.scanner.core.client.ArchGuardClient
-import org.archguard.scanner.core.estimate.LanguageEstimate
-import org.archguard.scanner.core.diffchanges.ChangedCall
-import org.archguard.scanner.core.git.GitLogs
-import org.archguard.scanner.core.openapi.ApiCollection
-import org.archguard.scanner.core.sca.CompositionDependency
-import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.LanguageEstimate
+import org.archguard.model.ChangedCall
+import org.archguard.model.GitLogs
+import org.archguard.model.ApiCollection
+import org.archguard.model.CompositionDependency
+import org.archguard.model.CodeDatabaseRelation
+import org.archguard.model.ContainerService
 
 class ChainedArchGuardClient(
     private val clients: List<ArchGuardClient>,

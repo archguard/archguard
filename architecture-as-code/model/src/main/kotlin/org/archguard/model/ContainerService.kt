@@ -1,4 +1,4 @@
-package org.archguard.scanner.core.sourcecode
+package org.archguard.model
 
 import kotlinx.serialization.Serializable
 

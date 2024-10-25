@@ -7,9 +7,9 @@ import org.archguard.scanner.analyser.frontend.identify.AxiosHttpIdentify
 import org.archguard.scanner.analyser.frontend.identify.UmiHttpIdentify
 import org.archguard.scanner.analyser.frontend.path.ecmaImportConvert
 import org.archguard.scanner.analyser.frontend.path.relativeRoot
-import org.archguard.scanner.core.sourcecode.ContainerDemand
-import org.archguard.scanner.core.sourcecode.ContainerService
-import org.archguard.scanner.core.sourcecode.ContainerSupply
+import org.archguard.model.ContainerDemand
+import org.archguard.model.ContainerService
+import org.archguard.model.ContainerSupply
 
 @Serializable
 class ApiCodeCall(

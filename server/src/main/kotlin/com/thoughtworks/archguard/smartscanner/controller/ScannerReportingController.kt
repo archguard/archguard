@@ -2,12 +2,12 @@ package com.thoughtworks.archguard.smartscanner.controller
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.rule.core.Issue
-import org.archguard.scanner.core.diffchanges.ChangedCall
-import org.archguard.scanner.core.estimate.LanguageEstimate
-import org.archguard.scanner.core.git.GitLogs
-import org.archguard.scanner.core.sca.CompositionDependency
-import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ChangedCall
+import org.archguard.model.LanguageEstimate
+import org.archguard.model.GitLogs
+import org.archguard.model.CompositionDependency
+import org.archguard.model.CodeDatabaseRelation
+import org.archguard.model.ContainerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

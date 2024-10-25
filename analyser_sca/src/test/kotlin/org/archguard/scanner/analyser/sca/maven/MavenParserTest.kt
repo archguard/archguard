@@ -1,8 +1,7 @@
 package org.archguard.scanner.analyser.sca.maven
 
-import org.archguard.scanner.core.sca.DEP_SCOPE
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.analyser.sca.maven.MavenParser
+import org.archguard.model.DEP_SCOPE
+import org.archguard.model.DeclFileTree
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

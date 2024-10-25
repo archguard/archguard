@@ -2,6 +2,7 @@ package org.archguard.scanner.core.diffchanges
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.model.NodeRelation
 
 const val SHORT_ID_LENGTH = 7
 

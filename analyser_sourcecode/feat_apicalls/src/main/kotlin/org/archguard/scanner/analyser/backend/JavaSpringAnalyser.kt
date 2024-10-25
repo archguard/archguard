@@ -3,9 +3,9 @@ package org.archguard.scanner.analyser.backend
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import org.archguard.scanner.analyser.base.ApiAnalyser
-import org.archguard.scanner.core.sourcecode.ContainerDemand
-import org.archguard.scanner.core.sourcecode.ContainerSupply
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerDemand
+import org.archguard.model.ContainerSupply
+import org.archguard.model.ContainerService
 
 class JavaSpringAnalyser: ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()

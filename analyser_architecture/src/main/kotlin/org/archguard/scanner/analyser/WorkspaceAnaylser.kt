@@ -5,8 +5,8 @@ import org.archguard.scanner.architecture.ArchitectureView
 import org.archguard.scanner.architecture.PhysicalStructure
 import org.archguard.scanner.architecture.view.concept.DomainModel
 import org.archguard.scanner.architecture.view.module.ArchitectureStyle
-import org.archguard.scanner.core.sca.PackageDependencies
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.PackageDependencies
+import org.archguard.model.ContainerService
 
 /**
  * Workspace is like IDE/Editor's workspace, same as to project.

@@ -7,7 +7,7 @@ plugins {
 group = "org.archguard.aaac"
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    api(libs.serialization.json)
 
     testImplementation(libs.bundles.test)
 }

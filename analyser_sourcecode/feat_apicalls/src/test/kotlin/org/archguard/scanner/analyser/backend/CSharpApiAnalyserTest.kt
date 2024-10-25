@@ -4,9 +4,8 @@ import chapi.domain.core.AnnotationKeyValue
 import chapi.domain.core.CodeAnnotation
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
-import org.archguard.scanner.analyser.base.ApiAnalyser
-import org.archguard.scanner.core.sourcecode.ContainerSupply
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerSupply
+import org.archguard.model.ContainerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

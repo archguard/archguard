@@ -8,7 +8,7 @@ import org.archguard.scanner.analyser.backend.ProtobufApiAnalyser
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerService
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
 

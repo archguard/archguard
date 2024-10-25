@@ -5,7 +5,7 @@ import org.archguard.rule.core.IssuePosition
 import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.Severity
 import org.archguard.linter.rule.webapi.WebApiRule
-import org.archguard.scanner.core.sourcecode.ContainerSupply
+import org.archguard.model.ContainerSupply
 
 class NoHttpMethodInUrlRule : WebApiRule() {
     init {

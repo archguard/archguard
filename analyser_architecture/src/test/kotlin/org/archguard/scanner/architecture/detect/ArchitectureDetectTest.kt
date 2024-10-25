@@ -6,8 +6,8 @@ import org.archguard.scanner.analyser.ArchitectureDetect
 import org.archguard.scanner.architecture.core.ConnectorType
 import org.archguard.scanner.analyser.WorkspaceAnaylser
 import org.archguard.scanner.analyser.techstack.FrameworkMarkup
-import org.archguard.scanner.core.sca.DependencyEntry
-import org.archguard.scanner.core.sca.PackageDependencies
+import org.archguard.model.DependencyEntry
+import org.archguard.model.PackageDependencies
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

@@ -26,6 +26,8 @@ dependencies {
 
     implementation(projects.analyserSourcecode.idlProtobuf)
 
+    implementation(projects.architectureAsCode.model)
+
     implementation(libs.chapi.protobuf) {
         exclude(group = "com.ibm.icu", module = "icu4j")
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")

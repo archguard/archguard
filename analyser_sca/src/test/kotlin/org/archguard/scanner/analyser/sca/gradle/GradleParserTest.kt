@@ -1,8 +1,7 @@
 package org.archguard.scanner.analyser.sca.gradle
 
-import org.archguard.scanner.core.sca.DEP_SCOPE
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.analyser.sca.gradle.GradleParser
+import org.archguard.model.DEP_SCOPE
+import org.archguard.model.DeclFileTree
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

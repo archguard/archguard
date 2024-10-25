@@ -1,8 +1,8 @@
 package org.archguard.scanner.analyser.base
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.scanner.core.sourcecode.ContainerService
-import org.archguard.scanner.core.sourcecode.ContainerSupply
+import org.archguard.model.ContainerService
+import org.archguard.model.ContainerSupply
 
 interface ApiAnalyser {
     var resources: List<ContainerSupply>

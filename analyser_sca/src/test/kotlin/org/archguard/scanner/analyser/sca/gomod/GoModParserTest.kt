@@ -2,10 +2,9 @@ package org.archguard.scanner.analyser.sca.gomod
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.core.sca.DependencyEntry
-import org.archguard.scanner.core.sca.PackageDependencies
-import org.assertj.core.api.Assertions.assertThat
+import org.archguard.model.DeclFileTree
+import org.archguard.model.DependencyEntry
+import org.archguard.model.PackageDependencies
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

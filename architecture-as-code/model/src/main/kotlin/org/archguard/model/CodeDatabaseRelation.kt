@@ -1,7 +1,6 @@
-package org.archguard.scanner.core.sourcecode
+package org.archguard.model
 
 import kotlinx.serialization.Serializable
-import org.archguard.scanner.core.diffchanges.NodeRelation
 
 @Serializable
 data class CodeDatabaseRelation(

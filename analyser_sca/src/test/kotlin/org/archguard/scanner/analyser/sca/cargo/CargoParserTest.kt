@@ -1,9 +1,7 @@
 package org.archguard.scanner.analyser.sca.cargo;
 
-import org.archguard.scanner.core.sca.DEP_SCOPE
-import org.archguard.scanner.core.sca.DeclFileTree
-import org.archguard.scanner.core.sca.DepSource
-import org.junit.jupiter.api.Disabled
+import org.archguard.model.DEP_SCOPE
+import org.archguard.model.DeclFileTree
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

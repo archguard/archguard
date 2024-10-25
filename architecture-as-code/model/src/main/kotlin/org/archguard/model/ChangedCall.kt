@@ -1,4 +1,4 @@
-package org.archguard.scanner.core.diffchanges
+package org.archguard.model
 
 import kotlinx.serialization.Serializable
 

@@ -1,8 +1,8 @@
 package org.archguard.scanner.analyser.api.render
 
 import org.archguard.scanner.analyser.api.base.ApiDetailRender
-import org.archguard.scanner.core.openapi.ApiCollection
-import org.archguard.scanner.core.openapi.ApiItem
+import org.archguard.model.ApiCollection
+import org.archguard.model.ApiItem
 
 class SimpleApiRender : ApiDetailRender {
     override fun renderCollection(collection: ApiCollection): String {

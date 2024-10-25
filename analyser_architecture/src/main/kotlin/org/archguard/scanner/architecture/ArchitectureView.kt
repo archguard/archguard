@@ -8,8 +8,8 @@ import org.archguard.scanner.architecture.view.concept.ConceptArchitecture
 import org.archguard.scanner.architecture.view.execution.ExecutionArchitecture
 import org.archguard.scanner.architecture.view.module.ArchitectureStyle
 import org.archguard.scanner.architecture.view.module.LayeredArchitecture
-import org.archguard.scanner.core.estimate.LanguageEstimate
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.LanguageEstimate
+import org.archguard.model.ContainerService
 
 @Serializable
 class ArchitectureView(

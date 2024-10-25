@@ -2,7 +2,7 @@ package com.thoughtworks.archguard.smartscanner.repository
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
-import org.archguard.scanner.core.sourcecode.CodeDatabaseRelation
+import org.archguard.model.CodeDatabaseRelation
 import java.util.concurrent.atomic.AtomicInteger
 
 class DatamapRepository(private val systemId: String, private val language: String, private val workspace: String) {

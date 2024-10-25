@@ -2,9 +2,9 @@ package com.thoughtworks.archguard.smartscanner.repository
 
 import com.thoughtworks.archguard.infrastructure.SourceBatch
 import com.thoughtworks.archguard.smartscanner.repository.RepositoryHelper.generateId
-import org.archguard.scanner.core.sourcecode.ContainerDemand
-import org.archguard.scanner.core.sourcecode.ContainerSupply
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerDemand
+import org.archguard.model.ContainerSupply
+import org.archguard.model.ContainerService
 
 class ContainerRepository(systemId: String, language: String, workspace: String) {
     private val batch: SourceBatch = SourceBatch()

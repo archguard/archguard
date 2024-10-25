@@ -7,8 +7,8 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
-import org.archguard.scanner.core.sourcecode.ContainerSupply
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerSupply
+import org.archguard.model.ContainerService
 
 class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services) {
     private var resources: List<ContainerSupply>

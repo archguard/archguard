@@ -7,7 +7,7 @@ import org.archguard.meta.Materials
 import org.archguard.meta.Slot
 import org.archguard.rule.core.Issue
 import org.archguard.rule.core.RuleSet
-import org.archguard.scanner.core.sourcecode.ContainerService
+import org.archguard.model.ContainerService
 
 class CommentRuleSlot : Slot {
     override var material: Materials = listOf()

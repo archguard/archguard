@@ -1,8 +1,8 @@
 package org.archguard.scanner.analyser
 
-import org.archguard.scanner.core.git.ChangeEntry
-import org.archguard.scanner.core.git.CommitLog
-import org.archguard.scanner.core.git.GitBranch
+import org.archguard.model.ChangeEntry
+import org.archguard.model.CommitLog
+import org.archguard.model.GitBranch
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.diff.DiffEntry
