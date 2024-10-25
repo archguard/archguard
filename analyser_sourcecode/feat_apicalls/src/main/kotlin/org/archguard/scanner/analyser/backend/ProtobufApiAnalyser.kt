@@ -16,8 +16,8 @@ class ProtobufApiAnalyser : ApiAnalyser {
                 sourceUrl = it.Name,
                 sourceHttpMethod = it.Type.toString(),
                 packageName = it.Package,
-                className = "",
-                methodName = ""
+                className = node.NodeName,
+                methodName = it.Name,
             )
         }
     }
