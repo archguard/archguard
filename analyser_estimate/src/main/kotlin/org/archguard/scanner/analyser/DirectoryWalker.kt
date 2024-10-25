@@ -15,13 +15,13 @@ class DirectoryJob(
     val ignores: List<IgnoreMatcher>
 )
 
-// ".git", ".hg", ".svn"
-val PathDenyList: List<String> = listOf(".git", ".hg", ".svn")
+val PathDenyList: List<String> = listOf(".git", ".hg", ".svn", "node_modules", "vendor", "build", "dist", "target", "out")
 
 class DirectoryWalker(
     val output: Channel<FileJob>,
     val excludes: List<Regex> = listOf()
 ) {
+    private val logger = org.slf4j.LoggerFactory.getLogger(DirectoryWalker::class.java)
     private var root: String = ""
     private val ignores: MutableList<IgnoreMatcher> = mutableListOf()
     private val dirChannels = mutableListOf<Channel<DirectoryJob>>()
@@ -79,6 +79,7 @@ class DirectoryWalker(
             if (name == ".gitignore" || it.name == ".ignore") {
                 val path = File(workdir).resolve(name).toString()
                 val file = Gitignore.create(path) ?: return@map
+                logger.info("load ignore file: $path")
                 ignores.add(file)
             }
         }
