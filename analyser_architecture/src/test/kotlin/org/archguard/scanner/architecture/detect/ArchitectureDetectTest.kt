@@ -2,8 +2,9 @@ package org.archguard.scanner.architecture.detect
 
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeImport
+import org.archguard.scanner.analyser.ArchitectureDetect
 import org.archguard.scanner.architecture.core.ConnectorType
-import org.archguard.scanner.architecture.core.Workspace
+import org.archguard.scanner.analyser.WorkspaceAnaylser
 import org.archguard.scanner.architecture.techstack.FrameworkMarkup
 import org.archguard.scanner.core.sca.DependencyEntry
 import org.archguard.scanner.core.sca.PackageDependencies
@@ -61,7 +62,7 @@ internal class ArchitectureDetectTest {
         val struct = CodeDataStruct(
             Imports = listOf(CodeImport(Source = "java.io.File"))
         )
-        val execArch = ArchitectureDetect().identPotential(Workspace(listOf(struct)))
+        val execArch = ArchitectureDetect().identPotential(WorkspaceAnaylser(listOf(struct)))
 
         assertEquals(1, execArch.connectorTypes.size)
         assertEquals(ConnectorType.FileIO, execArch.connectorTypes[0])

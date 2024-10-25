@@ -1,9 +1,8 @@
-package org.archguard.scanner.architecture.core
+package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.architecture.ArchitectureView
 import org.archguard.scanner.architecture.PhysicalStructure
-import org.archguard.scanner.architecture.detect.ArchitectureDetect
 import org.archguard.scanner.architecture.view.concept.DomainModel
 import org.archguard.scanner.architecture.view.module.ArchitectureStyle
 import org.archguard.scanner.core.sca.PackageDependencies
@@ -17,7 +16,7 @@ import org.archguard.scanner.core.sourcecode.ContainerService
  * @property service the analysis result of container services.
  *
  */
-class Workspace(
+class WorkspaceAnaylser(
     val dataStructs: List<CodeDataStruct> = listOf(),
     val projectDependencies: List<PackageDependencies> = listOf(),
     val service: List<ContainerService> = listOf(),
