@@ -10,7 +10,7 @@ import org.archguard.scanner.core.sourcecode.ContainerSupply
 import org.archguard.scanner.core.sourcecode.ServiceSupplyType
 
 /**
- * By @wertycn
+ * Author By [@wertycn](https://github.com/wertycn)
  */
 class JavaDubboAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
