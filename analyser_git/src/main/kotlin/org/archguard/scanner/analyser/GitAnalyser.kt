@@ -1,6 +1,6 @@
 package org.archguard.scanner.analyser
 
-import org.archguard.model.GitLogs
+import org.archguard.context.GitLogs
 import org.archguard.scanner.core.git.GitContext
 
 class GitAnalyser(override val context: GitContext) : org.archguard.scanner.core.git.GitAnalyser {

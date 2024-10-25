@@ -3,7 +3,7 @@ package org.archguard.scanner.analyser.frontend.identify
 import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeImport
 import org.archguard.scanner.analyser.frontend.ApiCodeCall
-import org.archguard.model.ContainerDemand
+import org.archguard.context.ContainerDemand
 
 class UmiHttpIdentify : HttpIdentify {
     override fun isMatch(call: CodeCall, imports: List<CodeImport>): Boolean {

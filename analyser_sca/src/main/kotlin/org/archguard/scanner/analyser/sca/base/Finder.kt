@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser.sca.base
 
-import org.archguard.model.DeclFileTree
-import org.archguard.model.PackageDependencies
+import org.archguard.context.DeclFileTree
+import org.archguard.context.PackageDependencies
 import java.io.File
 
 abstract class Finder {

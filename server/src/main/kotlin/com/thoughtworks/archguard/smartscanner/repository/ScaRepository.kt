@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
-import org.archguard.model.CompositionDependency
+import org.archguard.context.CompositionDependency
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch

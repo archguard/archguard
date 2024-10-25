@@ -1,5 +1,6 @@
 package org.archguard.scanner.core.openapi;
 
+import org.archguard.context.*
 import org.archguard.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test

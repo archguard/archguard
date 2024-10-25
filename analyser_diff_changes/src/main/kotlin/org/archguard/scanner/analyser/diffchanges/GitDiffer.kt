@@ -3,8 +3,8 @@ package org.archguard.scanner.analyser.diffchanges
 import chapi.domain.core.CodeDataStruct
 import chapi.parser.ParseMode
 import kotlinx.serialization.Serializable
-import org.archguard.model.NodeRelation
-import org.archguard.model.ChangedCall
+import org.archguard.context.NodeRelation
+import org.archguard.context.ChangedCall
 import org.archguard.scanner.core.diffchanges.NodeRelationBuilder
 import org.archguard.scanner.core.diffchanges.SHORT_ID_LENGTH
 import org.eclipse.jgit.api.Git

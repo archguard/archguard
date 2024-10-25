@@ -8,8 +8,8 @@ import org.archguard.architecture.detect.AppType
 import org.archguard.architecture.detect.OutboundProtocol
 import org.archguard.scanner.analyser.WorkspaceAnalyser
 import org.archguard.scanner.analyser.techstack.FrameworkMarkup
-import org.archguard.model.DependencyEntry
-import org.archguard.model.PackageDependencies
+import org.archguard.context.DependencyEntry
+import org.archguard.context.PackageDependencies
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

@@ -2,13 +2,13 @@ package org.archguard.scanner.core.client
 
 import chapi.domain.core.CodeDataStruct
 import org.archguard.rule.core.Issue
-import org.archguard.model.LanguageEstimate
-import org.archguard.model.ChangedCall
-import org.archguard.model.GitLogs
-import org.archguard.model.ApiCollection
-import org.archguard.model.CompositionDependency
-import org.archguard.model.CodeDatabaseRelation
-import org.archguard.model.ContainerService
+import org.archguard.context.LanguageEstimate
+import org.archguard.context.ChangedCall
+import org.archguard.context.GitLogs
+import org.archguard.context.ApiCollection
+import org.archguard.context.CompositionDependency
+import org.archguard.context.CodeDatabaseRelation
+import org.archguard.context.ContainerService
 
 /**
  * api of the archguard, scanner can communicate to server via this api with limited functions

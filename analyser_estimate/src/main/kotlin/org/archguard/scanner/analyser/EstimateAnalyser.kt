@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser
 
 import org.archguard.scanner.core.estimate.EstimateContext
-import org.archguard.model.LanguageEstimate
+import org.archguard.context.LanguageEstimate
 
 
 class EstimateAnalyser(override val context: EstimateContext) : org.archguard.scanner.core.estimate.EstimateAnalyser {

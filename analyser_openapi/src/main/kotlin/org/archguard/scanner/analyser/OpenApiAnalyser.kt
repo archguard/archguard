@@ -1,6 +1,6 @@
 package org.archguard.scanner.analyser
 
-import org.archguard.model.ApiCollection
+import org.archguard.context.ApiCollection
 import org.archguard.scanner.core.openapi.OpenApiContext
 import java.nio.file.Path
 import kotlin.io.path.*

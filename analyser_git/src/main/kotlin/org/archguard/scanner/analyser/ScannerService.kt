@@ -2,9 +2,9 @@ package org.archguard.scanner.analyser
 
 import org.archguard.scanner.analyser.language.LanguageService
 import org.archguard.scanner.analyser.language.LineCounter
-import org.archguard.model.ChangeEntry
-import org.archguard.model.GitLogs
-import org.archguard.model.PathChangeCount
+import org.archguard.context.ChangeEntry
+import org.archguard.context.GitLogs
+import org.archguard.context.PathChangeCount
 import java.io.File
 import java.util.UUID
 

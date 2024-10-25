@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.scanner2.infrastructure.mysql
 
-import org.archguard.model.ChangeEntry
+import org.archguard.context.ChangeEntry
 import com.thoughtworks.archguard.scanner2.domain.repository.ChangeEntryRepository
 import com.thoughtworks.archguard.scanner2.infrastructure.po.ChangeEntryPO
 import org.jdbi.v3.core.Jdbi

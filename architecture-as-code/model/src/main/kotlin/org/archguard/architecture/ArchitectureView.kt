@@ -6,8 +6,8 @@ import org.archguard.architecture.view.code.CodeArchitecture
 import org.archguard.architecture.view.code.RepositoryType
 import org.archguard.architecture.view.execution.ExecutionArchitecture
 import org.archguard.architecture.view.module.LayeredArchitecture
-import org.archguard.model.LanguageEstimate
-import org.archguard.model.ContainerService
+import org.archguard.context.LanguageEstimate
+import org.archguard.context.ContainerService
 
 @Serializable
 class ArchitectureView(

@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser.database
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.model.CodeDatabaseRelation
+import org.archguard.context.CodeDatabaseRelation
 import org.archguard.scanner.analyser.xml.mybatis.MybatisEntry
 import org.slf4j.LoggerFactory
 

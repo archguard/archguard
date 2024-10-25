@@ -2,7 +2,7 @@ package org.archguard.linter.rule.sql
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.archguard.model.CodeDatabaseRelation
+import org.archguard.context.CodeDatabaseRelation
 import org.junit.jupiter.api.Test
 
 internal class DatamapRuleVisitorTest {

@@ -1,9 +1,9 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
-import org.archguard.model.ChangeEntry
-import org.archguard.model.CommitLog
-import org.archguard.model.GitLogs
-import org.archguard.model.PathChangeCount
+import org.archguard.context.ChangeEntry
+import org.archguard.context.CommitLog
+import org.archguard.context.GitLogs
+import org.archguard.context.PathChangeCount
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch

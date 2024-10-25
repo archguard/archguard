@@ -1,4 +1,4 @@
-package org.archguard.model
+package org.archguard.context
 
 import kotlinx.serialization.Serializable
 

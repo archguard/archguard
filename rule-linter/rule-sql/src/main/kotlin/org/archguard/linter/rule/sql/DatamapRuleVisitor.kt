@@ -9,7 +9,7 @@ import org.archguard.rule.core.RuleContext
 import org.archguard.rule.core.RuleSet
 import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
-import org.archguard.model.CodeDatabaseRelation
+import org.archguard.context.CodeDatabaseRelation
 
 data class CodeSqlStmt(
     val packageName: String = "",

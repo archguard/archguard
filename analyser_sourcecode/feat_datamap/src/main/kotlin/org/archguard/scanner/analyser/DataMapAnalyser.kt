@@ -3,9 +3,9 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.database.JvmSqlAnalyser
 import org.archguard.scanner.analyser.xml.XmlParser
-import org.archguard.model.NodeRelation
+import org.archguard.context.NodeRelation
 import org.archguard.scanner.core.diffchanges.NodeRelationBuilder
-import org.archguard.model.CodeDatabaseRelation
+import org.archguard.context.CodeDatabaseRelation
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory

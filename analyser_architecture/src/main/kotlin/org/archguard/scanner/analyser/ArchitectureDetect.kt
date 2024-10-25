@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.model.PackageDependencies
+import org.archguard.context.PackageDependencies
 import org.archguard.architecture.code.CodeStructureStyle
 import org.archguard.architecture.code.ConnectorType
 import org.archguard.architecture.detect.AppType

@@ -4,10 +4,10 @@ import chapi.domain.core.CodeField
 import chapi.parser.toml.TomlAnalyser
 import chapi.parser.toml.TomlType
 import org.archguard.scanner.analyser.sca.base.Parser
-import org.archguard.model.DEP_SCOPE
-import org.archguard.model.DeclFileTree
-import org.archguard.model.DependencyEntry
-import org.archguard.model.PackageDependencies
+import org.archguard.context.DEP_SCOPE
+import org.archguard.context.DeclFileTree
+import org.archguard.context.DependencyEntry
+import org.archguard.context.PackageDependencies
 
 class CargoParser : Parser() {
     val analyser = TomlAnalyser()

@@ -1,6 +1,6 @@
 package com.thoughtworks.archguard.smartscanner.repository
 
-import org.archguard.model.LanguageEstimate
+import org.archguard.context.LanguageEstimate
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.customizer.BindBean
 import org.jdbi.v3.sqlobject.statement.SqlBatch

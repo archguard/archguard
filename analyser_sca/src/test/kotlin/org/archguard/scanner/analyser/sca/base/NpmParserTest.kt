@@ -1,7 +1,7 @@
 package org.archguard.scanner.analyser.sca.base
 
-import org.archguard.model.DEP_SCOPE
-import org.archguard.model.DeclFileTree
+import org.archguard.context.DEP_SCOPE
+import org.archguard.context.DeclFileTree
 import org.archguard.scanner.analyser.sca.npm.NpmParser
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
