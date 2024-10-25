@@ -4,6 +4,7 @@ import chapi.domain.core.CodeDataStruct
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
 import org.archguard.scanner.analyser.backend.GoApiAnalyser
 import org.archguard.scanner.analyser.backend.JavaCompositeApiAnalyser
+import org.archguard.scanner.analyser.backend.ProtobufAnalyser
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
@@ -61,9 +62,16 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             else -> null
         }
 
-
         val apiCalls = analyser?.toContainerServices() ?: listOf()
-        client.saveApi(apiCalls)
+
+        // get all input and filter `.proto` files to analysis
+        val protobufs = input.filter { it.FilePath.endsWith(".proto") }
+        val protobufAnalyser = ProtobufAnalyser()
+        protobufs.forEach { data ->
+            protobufAnalyser.analysisByNode(data, path)
+        }
+
+        client.saveApi(apiCalls + protobufAnalyser.toContainerServices())
         return apiCalls
     }
 }
