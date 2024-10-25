@@ -8,12 +8,16 @@ import org.archguard.scanner.core.client.EmptyArchGuardClient
 import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
+import org.slf4j.LoggerFactory
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     override fun analyse(): List<ArchitectureView> {
         val sourceCodeContext = ArchSourceCodeContext(language = context.language, path = context.path)
 
+        logger.info("start analysis architecture ---- ${context.language}")
         /// try to add by different languages
         val dataStructs = when (context.language) {
             "java" -> {
@@ -33,23 +37,30 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             }
         }.toMutableList()
 
+        logger.info("start analysis proto ---- ${context.language}")
         dataStructs += ProtoAnalyser(sourceCodeContext).analyse()
 
+        logger.info("start analysis sca ---- ${context.language}")
         val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = context.language))
             .analysisByPackages()
 
+        logger.info("start analysis api ---- ${context.language}")
         val services = ApiCallAnalyser(sourceCodeContext).analyse(dataStructs)
 
+        logger.info("start analysis estimate ---- ${context.language}")
         val languageEstimates = EstimateAnalyser(ArchEstimateContext(context.path)).analyse()
 
+        logger.info("start analysis workspace ---- ${context.language}")
         val workspace = Workspace(
             dataStructs,
             projectDependencies,
-            service = services
+            service = services,
+            language = context.language
         ).analysis()
 
         workspace.physicalStructure.languageEstimate = languageEstimates
 
+        logger.info("finish analysis architecture ---- ${context.language}")
         return listOf(workspace)
     }
 }
