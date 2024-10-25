@@ -1,9 +1,8 @@
 package org.archguard.scanner.core.openapi
 
 import org.archguard.context.*
-import org.archguard.model.*
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
 
 class ApiItemTest {
     @Test
