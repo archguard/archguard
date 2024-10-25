@@ -34,6 +34,7 @@ include(":doc-generator")
  */
 
 include(
+    ":architecture-as-code:model",
     ":architecture-as-code:domain",
     ":architecture-as-code:dsl",
     ":architecture-as-code:repl-api"
