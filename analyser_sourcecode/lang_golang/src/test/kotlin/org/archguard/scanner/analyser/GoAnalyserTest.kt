@@ -1,17 +1,18 @@
 package org.archguard.scanner.analyser
 
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class GoAnalyserTest {
     private val mockClient = mockk<ArchGuardClient> {
@@ -36,4 +37,14 @@ internal class GoAnalyserTest {
         Assertions.assertEquals(result.size, 1)
         assert(result[0].FilePath.contains("hello.go"))
     }
+
+    @Test
+    fun `should save data structure to client`() {
+        every { mockContext.path } returns this.javaClass.classLoader.getResource("gen/db-query.go").path
+
+        val structs = GoAnalyser(mockContext).analyse()
+
+        Assertions.assertEquals(structs.size, 3)
+    }
 }
+

@@ -6,6 +6,7 @@ import org.archguard.scanner.analyser.xml.XmlParser
 import org.archguard.context.NodeRelation
 import org.archguard.scanner.core.diffchanges.NodeRelationBuilder
 import org.archguard.context.CodeDatabaseRelation
+import org.archguard.scanner.analyser.database.GoSqlAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
@@ -47,6 +48,16 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 }
 
                 databaseRelations
+            }
+
+            "go", "golang" -> {
+                logger.info("start analysis database api ---- ${language.lowercase()}")
+                val sqlAnalyser = GoSqlAnalyser()
+                val records = input.flatMap { data ->
+                    sqlAnalyser.analysisByNode(data, "")
+                }
+
+                records
             }
 
             else -> throw IllegalArgumentException("Unsupported language: $language")
