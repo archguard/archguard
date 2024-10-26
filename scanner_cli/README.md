@@ -34,6 +34,82 @@ Options:
   -h, --help                       Show this message and exit
 ```
 
+## ArchGuard CLI Usage
+
+```bash
+[SCANNER] org.archguard.scanner.ctl.Runner <cli parameters>
+|type: GIT
+|systemId: 6
+|serverUrl: http://localhost:8080
+|workspace: /tmp/archguard14370627952499838085
+|path: /tmp/archguard14370627952499838085
+|output: [http]
+<customized analysers>
+|analyzerSpec: []
+|slotSpec: []
+<additional parameters>
+|language: Java
+|features: []
+|repoId: https://gitee.com/thoughtworks/coca
+|branch: master
+|startedAt: 0
+|since: null
+|until: null
+|depth: 7
+|rules: []
+
+
+
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader workspace path: /home/spring
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader analyser install path: /home/spring/dependencies/analysers
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader analyser: git - [2.2.0] is installed
+[SCANNER] org.archguard.scanner.ctl.Runner <cli parameters>
+|type: SCA
+|systemId: 6
+|serverUrl: http://localhost:8080
+|workspace: /tmp/archguard14370627952499838085
+|path: /tmp/archguard14370627952499838085
+|output: [http]
+<customized analysers>
+|analyzerSpec: []
+|slotSpec: []
+<additional parameters>
+|language: java
+|features: []
+|repoId: null
+|branch: master
+|startedAt: 0
+|since: null
+|until: null
+|depth: 7
+|rules: []
+
+
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader workspace path: /home/spring
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader analyser install path: /home/spring/dependencies/analysers
+[SCANNER] o.a.s.ctl.loader.AnalyserLoader analyser: sca - [2.2.0] is installed
+[SCANNER] org.archguard.scanner.ctl.Runner <cli parameters>
+|type: SOURCE_CODE
+|systemId: 6
+|serverUrl: http://localhost:8080
+|workspace: /tmp/archguard14370627952499838085
+|path: /tmp/archguard14370627952499838085
+|output: [http]
+<customized analysers>
+|analyzerSpec: []
+|slotSpec: []
+<additional parameters>
+|language: Java
+|features: [apicalls, datamap]
+|repoId: null
+|branch: master
+|startedAt: 0
+|since: null
+|until: null
+|depth: 7
+|rules: [webapi, test, sql]
+```
+
 ## Sample CLI
 
 ### push to server
