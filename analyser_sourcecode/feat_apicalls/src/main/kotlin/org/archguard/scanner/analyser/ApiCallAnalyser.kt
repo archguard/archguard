@@ -50,7 +50,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 apiAnalyser
             }
 
-            "golang" -> {
+            "go", "golang" -> {
                 val apiAnalyser = GoApiAnalyser()
                 input.forEach { data ->
                     apiAnalyser.analysisByNode(data, "")
