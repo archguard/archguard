@@ -33,7 +33,7 @@ services:
     restart: on-failure:10
 
   archguard-mysql:
-    image: "mysql:8"
+    image: "mysql:8.3"
     container_name: archguard-mysql
     platform: linux/amd64
     command: --default-authentication-plugin=mysql_native_password
