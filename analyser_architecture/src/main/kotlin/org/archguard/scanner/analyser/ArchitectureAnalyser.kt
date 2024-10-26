@@ -30,7 +30,7 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
                 KotlinAnalyser(sourceCodeContext).analyse()
             }
 
-            "go" -> {
+            "go", "golang" -> {
                 GoAnalyser(sourceCodeContext).analyse()
             }
 
