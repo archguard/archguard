@@ -1,5 +1,6 @@
 package org.archguard.scanner.ctl.loader
 
+import chapi.domain.core.CodeDataStruct
 import kotlinx.coroutines.runBlocking
 import org.archguard.meta.Slot
 import org.archguard.scanner.core.AnalyserSpec
@@ -79,7 +80,11 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
     override fun run(): Unit = runBlocking {
         logger.info("Start analysing source code: ${context.language}, ${context.path}")
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
-        val ast = languageAnalyser.analyse(null) ?: return@runBlocking
+        var ast = languageAnalyser.analyse(null) ?: emptyList()
+
+        /// concat idl proto
+        val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOANALYSER)
+        ast += idlProtoAnalyser.analyse(null) ?: emptyList()
 
         slotHub.consumer(ast)
 

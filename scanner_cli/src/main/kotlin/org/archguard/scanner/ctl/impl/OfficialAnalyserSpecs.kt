@@ -22,6 +22,10 @@ enum class OfficialAnalyserSpecs(
     JAVASCRIPT(TYPESCRIPT.className),
     RUST("RustAnalyser"),
 
+    // idl analyser
+    /// will manual add to adl: SourceCodeWorker
+    PROTOANALYSER("ProtoAnalyser"),
+
     // features
     APICALLS("ApiCallAnalyser"),
     DATAMAP("DataMapAnalyser"),
