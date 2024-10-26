@@ -39,5 +39,93 @@
   {
     "extends": "java",
     "language": "kotlin"
+  },
+  {
+    "language": "go",
+    "core_stacks": [
+      "net/http",
+      "database/sql",
+      "context",
+      "encoding/json",
+      "log",
+      "sync",
+      "time"
+    ],
+    "app_type_mapping": {
+      "web": [
+        "net/http",
+        "github.com/gin-gonic/gin",
+        "github.com/gorilla/mux",
+        "github.com/labstack/echo",
+        "github.com/beego/beego/v2",
+        "github.com/gin-gonic/gin"
+      ],
+      "cli": [
+        "github.com/spf13/cobra",
+        "github.com/urfave/cli",
+        "github.com/alecthomas/kingpin",
+        "github.com/spf13/pflag"
+      ],
+      "data": [
+        "gorm.io/gorm",
+        "github.com/jmoiron/sqlx",
+        "go.mongodb.org/mongo-driver/mongo",
+        "github.com/redis/go-redis/v9"
+      ],
+      "microservices": [
+        "go-micro.dev/v4",
+        "github.com/micro/go-micro",
+        "github.com/AsynkronIT/protoactor-go",
+        "github.com/zeromicro/go-zero"
+      ],
+      "testing": [
+        "github.com/stretchr/testify",
+        "github.com/onsi/ginkgo",
+        "github.com/onsi/gomega"
+      ]
+    },
+    "protocol_mapping": {
+      "http": [
+        "net/http",
+        "github.com/gin-gonic/gin",
+        "github.com/gorilla/mux",
+        "github.com/labstack/echo",
+        "github.com/beego/beego/v2"
+      ],
+      "grpc": [
+        "google.golang.org/grpc",
+        "github.com/golang/protobuf",
+        "github.com/grpc-ecosystem/grpc-gateway"
+      ],
+      "rpc": [
+        "net/rpc",
+        "github.com/smallnest/rpcx",
+        "github.com/apache/thrift/lib/go/thrift"
+      ],
+      "db": [
+        "database/sql",
+        "gorm.io/gorm",
+        "github.com/jmoiron/sqlx",
+        "go.mongodb.org/mongo-driver/mongo",
+        "github.com/redis/go-redis/v9"
+      ],
+      "message_queue": [
+        "github.com/nsqio/go-nsq",
+        "github.com/segmentio/kafka-go",
+        "github.com/apache/pulsar-client-go/pulsar",
+        "github.com/nats-io/nats.go",
+        "github.com/streadway/amqp"
+      ],
+      "websocket": [
+        "github.com/gorilla/websocket",
+        "nhooyr.io/websocket",
+        "github.com/olahol/melody"
+      ],
+      "graphQL": [
+        "github.com/99designs/gqlgen",
+        "github.com/graphql-go/graphql",
+        "github.com/graph-gophers/graphql-go"
+      ]
+    }
   }
 ]
