@@ -9,6 +9,7 @@ import org.archguard.rule.core.RuleType
 import org.archguard.rule.core.RuleVisitor
 import org.archguard.context.ContainerSupply
 import org.archguard.context.ContainerService
+import org.archguard.context.ServiceSupplyType
 
 class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services) {
     private var resources: List<ContainerSupply>
@@ -27,6 +28,10 @@ class WebApiRuleVisitor(services: List<ContainerService>) : RuleVisitor(services
             ruleSet.rules.forEach { rule ->
                 val apiRule = rule as WebApiRule
                 resources.map {
+                    if (it.supplyType != ServiceSupplyType.HTTP_API) {
+                        return@map
+                    }
+
                     apiRule.visitResource(it, context, fun(rule: Rule, position: IssuePosition) {
                         results += Issue(
                             position,
