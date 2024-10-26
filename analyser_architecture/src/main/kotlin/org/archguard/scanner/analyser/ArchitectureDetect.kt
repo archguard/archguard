@@ -106,10 +106,10 @@ class ArchitectureDetect {
 //                    return@mapNotNull null
 //                }
 
-                // skip for Functions not empty
-                if (dataStruct.Functions.isNotEmpty()) {
-                    return@mapNotNull null
-                }
+//                // skip for Functions is not empty
+//                if (dataStruct.Functions.isNotEmpty()) {
+//                    return@mapNotNull null
+//                }
 
                 dataStruct
             } else {
