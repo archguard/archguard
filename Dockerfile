@@ -29,11 +29,12 @@ RUN chown -R spring:spring /home/spring/dependencies/analysers/
 
 # copy features & langs & rules
 COPY ["analyser_architecture/build/libs/analyser_architecture*-all.jar", \
-"analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
+"analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar",       \
 "analyser_git/build/libs/analyser_git*-all.jar",                          \
 "analyser_sca/build/libs/analyser_sca*-all.jar",                           \
 "analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar",      \
 "analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar",         \
+"analyser_sourcecode/idl_protobuf/build/libs/idl_protobuf*-all.jar",         \
 "analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar",            \
 "analyser_sourcecode/lang_golang/build/libs/lang_golang*-all.jar",             \
 "analyser_sourcecode/lang_java/build/libs/lang_java*-all.jar",                  \
