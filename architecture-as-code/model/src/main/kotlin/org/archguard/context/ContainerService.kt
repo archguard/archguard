@@ -34,5 +34,6 @@ data class ContainerSupply(
 enum class ServiceSupplyType {
     HTTP_API,
     DUBBO_API,
+    PROTO_RPC_API
 }
 

@@ -5,6 +5,7 @@ import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.context.ContainerDemand
 import org.archguard.context.ContainerService
 import org.archguard.context.ContainerSupply
+import org.archguard.context.ServiceSupplyType
 
 class ProtobufApiAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
@@ -18,6 +19,7 @@ class ProtobufApiAnalyser : ApiAnalyser {
                 packageName = it.Package,
                 className = node.NodeName,
                 methodName = it.Name,
+                supplyType = ServiceSupplyType.PROTO_RPC_API
             )
         }
     }
