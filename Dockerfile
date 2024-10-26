@@ -28,7 +28,8 @@ RUN ["mkdir", "-p", "/home/spring/dependencies/analysers/"]
 RUN chown -R spring:spring /home/spring/dependencies/analysers/
 
 # copy features & langs & rules
-COPY ["analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
+COPY ["analyser_architecture/build/libs/analyser_architecture*-all.jar", \
+"analyser_diff_changes/build/libs/analyser_diff_changes*-all.jar", \
 "analyser_git/build/libs/analyser_git*-all.jar",                          \
 "analyser_sca/build/libs/analyser_sca*-all.jar",                           \
 "analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar",      \
