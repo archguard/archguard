@@ -6,9 +6,7 @@ const val ARCHGUARD_VERSION = "2.2.1"
 private const val TAG = "v$ARCHGUARD_VERSION"
 private const val RELEASE_REPO_URL = "https://github.com/archguard/archguard/releases/download/$TAG"
 
-enum class OfficialAnalyserSpecs(
-    private val className: String,
-) {
+enum class OfficialAnalyserSpecs(private val className: String) {
     // languages
     CSHARP("CSharpAnalyser"),
     GOLANG("GoAnalyser"),
@@ -22,9 +20,8 @@ enum class OfficialAnalyserSpecs(
     JAVASCRIPT(TYPESCRIPT.className),
     RUST("RustAnalyser"),
 
-    // idl analyser
     /// will manual add to adl: SourceCodeWorker
-    PROTOANALYSER("ProtoAnalyser"),
+    PROTOBUF("ProtoAnalyser"),
 
     // features
     APICALLS("ApiCallAnalyser"),
@@ -44,8 +41,8 @@ enum class OfficialAnalyserSpecs(
     fun spec() = AnalyserSpec(identifier(), RELEASE_REPO_URL, ARCHGUARD_VERSION, jarFileName(), className)
     fun version() = ARCHGUARD_VERSION
     fun identifier(): String {
+        // we use the same analyser for javascript and typescript
         return if (name.lowercase() == "javascript") {
-            // we use the same analyser for javascript and typescript
             "typescript"
         } else {
             name.lowercase()
@@ -57,6 +54,7 @@ enum class OfficialAnalyserSpecs(
         val prefix = when (this) {
             GIT, SCA, DIFF_CHANGES, ESTIMATE, OPENAPI, ARCHITECTURE -> "analyser"
             DATAMAP, APICALLS -> "feat"
+            PROTOBUF -> "idl"
             RULE -> "rule"
             else -> "lang"
         }

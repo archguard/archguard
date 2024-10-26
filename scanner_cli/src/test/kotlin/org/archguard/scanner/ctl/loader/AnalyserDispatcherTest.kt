@@ -30,6 +30,7 @@ internal class AnalyserDispatcherTest {
     @Nested
     inner class ForSourceCodeContext {
         private val languageAnalyser = mockk<SourceCodeAnalyser>()
+        private val idlAnalyser = mockk<SourceCodeAnalyser>()
         private val feature1Analyser = mockk<SourceCodeAnalyser>()
         private val feature2Analyser = mockk<SourceCodeAnalyser>()
         private val context = mockk<CliSourceCodeContext>()
@@ -55,15 +56,17 @@ internal class AnalyserDispatcherTest {
         private fun stubLoad() {
             every {
                 AnalyserLoader.load(any(), any())
-            } returns (languageAnalyser as Analyser<Context>) andThen (feature1Analyser as Analyser<Context>) andThen (feature2Analyser as Analyser<Context>)
+            } returns (languageAnalyser as Analyser<Context>) andThen (idlAnalyser as Analyser<Context>) andThen (feature1Analyser as Analyser<Context>) andThen (feature2Analyser as Analyser<Context>)
         }
 
         private fun mockAnalysers() {
             val ast = mockk<List<CodeDataStruct>>()
 
             every { ast.isEmpty() } returns true
+            every { ast.size } returns 0
 
             every { languageAnalyser.analyse(null) } returns ast
+            every { idlAnalyser.analyse(null) } returns ast
             every { feature1Analyser.analyse(ast) } returns null
             every { feature2Analyser.analyse(ast) } returns null
         }

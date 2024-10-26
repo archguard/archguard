@@ -84,11 +84,13 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
 
         /// concat idl proto
         try {
-            val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOANALYSER)
+            val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOBUF)
             ast += idlProtoAnalyser.analyse(null) ?: emptyList()
         } catch (e: Exception) {
             logger.warn("Error while analysing idl proto", e)
         }
+
+        logger.info("build CodeDataStructs: ${ast.size}")
 
         slotHub.consumer(ast)
 
