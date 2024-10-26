@@ -43,7 +43,7 @@ class ScaAnalyser(override val context: ScaContext) : ScaAnalyser {
                 NpmFinder().process(path)
             }
 
-            "golang" -> {
+            "go", "golang" -> {
                 GoModFinder().process(path)
             }
 
