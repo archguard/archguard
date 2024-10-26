@@ -1,15 +1,38 @@
-## scanner cli
+# ArchGuard Scanner CLI
 
-全权(规划中)接收archguard的扫描请求, 并将结果发送到archguard的服务器.
+###
 
-- 判断执行条件
-- 拉取scanner lib, 包括自定义的
-- 执行计算并发送结果
+```bash
+java -jar scanner_cli-2.2.0-all.jar --help
 
-### 后续
-
-接收HTTP的扫描请求, 以实现分布式运行
-拆分和规整已有的scanner
+Options:
+  --type [SOURCE_CODE|GIT|DIFF_CHANGES|SCA|RULE|ARCHITECTURE|ESTIMATE|OPENAPI|DOCUMENT]
+  --system-id TEXT                 system id
+  --server-url TEXT                the base url of the archguard api server
+  --workspace TEXT                 the workspace directory
+  --path TEXT                      the path of target project
+  --output TEXT                    http, csv, json, console
+  --output-dir TEXT                output directory
+  --analyser-spec TEXT             Override the analysers via json.
+  --slot-spec TEXT                 Override the slot via json.
+  --language TEXT                  language: Java, Kotlin, TypeScript, CSharp,
+                                   Python, Golang.
+  --rules TEXT                     rules: webapi, test, sql
+  --features TEXT                  features: apicalls, datamap.
+  --repo-id TEXT                   repository id used for git analysing
+  --branch TEXT                    repository branch
+  --started-at INT                 TIMESTAMP, the start date of the scanned
+                                   commit
+  --since TEXT                     COMMIT ID, the specific revision of the
+                                   baseline
+  --until TEXT                     COMMIT ID, the specific revision of the
+                                   target
+  --depth INT                      INTEGER, the max loop depth
+  --with-function-code             BOOLEAN, whether to include the function
+                                   code
+  --debug                          BOOLEAN, whether to enable debug mode
+  -h, --help                       Show this message and exit
+```
 
 ## Sample CLI
 

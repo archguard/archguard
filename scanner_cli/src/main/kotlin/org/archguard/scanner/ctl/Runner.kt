@@ -25,8 +25,8 @@ class Runner : CliktCommand(help = "scanner cli") {
 
     // cli parameters
     private val type by option().enum<AnalyserType>(ignoreCase = true).default(AnalyserType.SOURCE_CODE)
-    private val systemId by option(help = "system id").default("0")
-    private val serverUrl by option(help = "the base url of the archguard api server").default("http://localhost:8080")
+    private val systemId by option(help = "system id for use ArchGuard backend").default("0")
+    private val serverUrl by option(help = "the server for receive data, for example ArchGuard backend").default("http://localhost:8080")
     private val workspace by option(help = "the workspace directory").default(".")
     private val path by option(help = "the path of target project").default(".")
 
