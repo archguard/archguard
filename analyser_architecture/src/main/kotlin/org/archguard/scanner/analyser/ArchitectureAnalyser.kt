@@ -1,7 +1,5 @@
 package org.archguard.scanner.analyser
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.archguard.architecture.ArchitectureView
 import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.archguard.scanner.core.client.ArchGuardClient
@@ -10,7 +8,6 @@ import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
-import java.io.File
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
