@@ -83,8 +83,12 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
         var ast = languageAnalyser.analyse(null) ?: emptyList()
 
         /// concat idl proto
-        val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOANALYSER)
-        ast += idlProtoAnalyser.analyse(null) ?: emptyList()
+        try {
+            val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOANALYSER)
+            ast += idlProtoAnalyser.analyse(null) ?: emptyList()
+        } catch (e: Exception) {
+            logger.warn("Error while analysing idl proto", e)
+        }
 
         slotHub.consumer(ast)
 
