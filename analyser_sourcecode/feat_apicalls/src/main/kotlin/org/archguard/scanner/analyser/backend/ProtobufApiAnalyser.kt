@@ -13,7 +13,7 @@ class ProtobufApiAnalyser : ApiAnalyser {
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         node.Functions.map {
             resources += ContainerSupply(
-                sourceUrl = it.Name,
+                sourceUrl = ("""rpc.${it.Package}.${node.NodeName}.${it.Name}""").replace(".", "/"),
                 sourceHttpMethod = it.Type.toString(),
                 packageName = it.Package,
                 className = node.NodeName,
