@@ -10,8 +10,10 @@ import org.archguard.context.ServiceSupplyType
 class ProtobufApiAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
     private var demands: List<ContainerDemand> = listOf()
+    private var workspace: String = ""
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
+        this.workspace = workspace
         node.Functions.map {
             resources += ContainerSupply(
                 sourceUrl = ("""rpc.${it.Package}.${node.NodeName}.${it.Name}""").replace(".", "/"),
@@ -25,9 +27,11 @@ class ProtobufApiAnalyser : ApiAnalyser {
     }
 
     override fun toContainerServices(): List<ContainerService> {
+        /// get last part of the workspace path
+        val workspaceName = workspace.split("/").last()
         return mutableListOf(
             ContainerService(
-                name = "",
+                name = workspaceName,
                 resources = resources,
                 demands = demands
             )
