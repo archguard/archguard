@@ -63,6 +63,7 @@ include(
 
     // idl, Interface description language
     ":analyser_sourcecode:idl_protobuf",
+    ":analyser_sourcecode:idl_thrift",
 
     // features
     ":analyser_sourcecode:feat_apicalls",
