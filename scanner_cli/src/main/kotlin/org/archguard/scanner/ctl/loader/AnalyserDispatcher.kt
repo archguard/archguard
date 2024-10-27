@@ -86,6 +86,9 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
         try {
             val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOBUF)
             ast += idlProtoAnalyser.analyse(null) ?: emptyList()
+
+            val thriftAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.THRIFT)
+            ast += thriftAnalyser.analyse(null) ?: emptyList()
         } catch (e: Exception) {
             logger.warn("Error while analysing idl proto", e)
         }

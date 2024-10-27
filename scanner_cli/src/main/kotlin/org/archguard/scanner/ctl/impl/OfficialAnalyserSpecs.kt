@@ -22,6 +22,7 @@ enum class OfficialAnalyserSpecs(private val className: String) {
 
     /// will manual add to adl: SourceCodeWorker
     PROTOBUF("ProtoAnalyser"),
+    THRIFT("ThriftAnalyser"),
 
     // features
     APICALLS("ApiCallAnalyser"),
@@ -54,7 +55,7 @@ enum class OfficialAnalyserSpecs(private val className: String) {
         val prefix = when (this) {
             GIT, SCA, DIFF_CHANGES, ESTIMATE, OPENAPI, ARCHITECTURE -> "analyser"
             DATAMAP, APICALLS -> "feat"
-            PROTOBUF -> "idl"
+            PROTOBUF, THRIFT -> "idl"
             RULE -> "rule"
             else -> "lang"
         }
