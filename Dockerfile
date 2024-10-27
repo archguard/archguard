@@ -35,6 +35,7 @@ COPY ["analyser_architecture/build/libs/analyser_architecture*-all.jar", \
 "analyser_sourcecode/feat_apicalls/build/libs/feat_apicalls*-all.jar",      \
 "analyser_sourcecode/feat_datamap/build/libs/feat_datamap*-all.jar",         \
 "analyser_sourcecode/idl_protobuf/build/libs/idl_protobuf*-all.jar",         \
+"analyser_sourcecode/idl_thrift/build/libs/idl_thrift*-all.jar",             \
 "analyser_sourcecode/lang_csharp/build/libs/lang_csharp*-all.jar",            \
 "analyser_sourcecode/lang_golang/build/libs/lang_golang*-all.jar",             \
 "analyser_sourcecode/lang_java/build/libs/lang_java*-all.jar",                  \
