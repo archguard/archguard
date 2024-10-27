@@ -8,7 +8,7 @@ import org.archguard.context.ContainerSupply
 
 class GoApiAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
-    var apiGroupStack = ArrayDeque<String>()
+    private var apiGroupStack = ArrayDeque<String>()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         node.Functions.forEach {
@@ -19,7 +19,7 @@ class GoApiAnalyser : ApiAnalyser {
 
     private fun analysisFunctionCall(function: CodeFunction): String? {
         function.FunctionCalls.forEach { funcCall ->
-            if (isGin(funcCall.NodeName)) {
+            if (isGinNode(funcCall.NodeName)) {
                 if (funcCall.Parameters.isEmpty()) {
                     return@forEach
                 }
@@ -60,18 +60,10 @@ class GoApiAnalyser : ApiAnalyser {
         return null
     }
 
-    private fun isGin(nodeName: String): Boolean {
+    private fun isGinNode(nodeName: String): Boolean {
         val name = nodeName.removePrefix("*")
-
-        if (isGinNode(name)) {
-            return true
-        }
-
-        return false
+        return name == "gin" || name == "gin.Engine" || name == "gin.RouterGroup" || name == "gin.Default"
     }
-
-    private fun isGinNode(nodeName: String) =
-        nodeName == "gin" || nodeName == "gin.Engine" || nodeName == "gin.RouterGroup" || nodeName == "gin.Default"
 
     override fun toContainerServices(): List<ContainerService> {
         return mutableListOf(
