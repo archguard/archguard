@@ -23,7 +23,7 @@ class DomainModel(
         fun from(concepts: List<CodeDataStruct>, workspace: String): List<DomainModel> {
             return concepts.map { ds ->
                 val relativePath = try {
-                    ds.FilePath.substring(workspace.length)
+                    ds.FilePath.substring(workspace.length).removePrefix("/")
                 } catch (e: Exception) {
                     ds.FilePath
                 }
