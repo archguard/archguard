@@ -55,7 +55,7 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
             projectDependencies,
             service = services,
             language = context.language
-        ).analysis()
+        ).analysis(workspace = context.path)
 
         architectureView.physicalStructure.languageEstimate = languageEstimates
 

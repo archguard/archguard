@@ -25,12 +25,12 @@ class WorkspaceAnalyser(
     val service: List<ContainerService> = listOf(),
     val language: String = "Java",
 ) {
-    fun analysis(): ArchitectureView {
+    fun analysis(workspace: String): ArchitectureView {
         val identPotential = ArchitectureDetect().identPotential(this)
 
         return ArchitectureView(
             conceptArchitecture = ConceptArchitecture(
-                domainModels = DomainModel.from(identPotential.concepts)
+                domainModels = DomainModel.from(identPotential.concepts, workspace)
             ),
             outboundService = service,
             architectureStyle = ArchitectureStyle.from(identPotential),
