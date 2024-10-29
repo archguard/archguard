@@ -10,7 +10,7 @@ java -jar ../scanner_cli/build/libs/scanner_cli-2.2.0-all.jar --language=go --ty
 
 2. run with JSON output:
 
-```
+```bash
 curl -X POST -H "Content-Type: application/json" -d @0_architecture.json http://localhost:3000/api/scanner/1/reporting
 ```
 

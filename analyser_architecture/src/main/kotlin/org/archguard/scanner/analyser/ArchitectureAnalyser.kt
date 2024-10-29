@@ -17,7 +17,6 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val sourceCodeContext = ArchSourceCodeContext(language = context.language, path = context.path)
 
         logger.info("start analysis architecture ---- ${context.language}")
-        /// try to add by different languages
         val dataStructs = when (context.language) {
             "java" -> {
                 JavaAnalyser(sourceCodeContext).analyse()
@@ -60,9 +59,8 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         architectureView.physicalStructure.languageEstimate = languageEstimates
 
         logger.info("finish analysis architecture ---- ${context.language}")
-        /// write to file
-//        File("architecture.json").writeText(Json.encodeToString(architectureView))
         context.client.saveArchitecture(listOf(architectureView))
+        logger.info("save architecture ---- ${context.language}")
         return listOf(architectureView)
     }
 }
