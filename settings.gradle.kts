@@ -90,4 +90,5 @@ include(
     ":rule-linter:rule-code",
     ":rule-linter:rule-layer",
     ":rule-linter:rule-comment",
+    ":rule-linter:rule-protobuf",
 )
