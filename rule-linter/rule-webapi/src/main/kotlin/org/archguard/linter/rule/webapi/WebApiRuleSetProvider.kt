@@ -14,7 +14,7 @@ import org.archguard.linter.rule.webapi.rules.SpliceNamingRule
 class WebApiRuleSetProvider: RuleSetProvider {
     override fun get(): RuleSet {
         return RuleSet(
-            RuleType.CHANGE_SMELL,
+            RuleType.HTTP_API_SMELL,
             "normal",
             SpliceNamingRule(),
             NoCrudEndRule(),

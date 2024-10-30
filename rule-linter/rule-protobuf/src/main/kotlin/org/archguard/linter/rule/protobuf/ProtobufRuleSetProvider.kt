@@ -1,10 +1,19 @@
 package org.archguard.linter.rule.protobuf
 
-import org.archguard.rule.core.RuleSet
-import org.archguard.rule.core.RuleSetProvider
+import org.archguard.rule.core.*
 
-class ProtobufRuleSetProvider: RuleSetProvider {
+class ProtobufRuleSetProvider : RuleSetProvider {
     override fun get(): RuleSet {
-        TODO("Not yet implemented")
+        return RuleSet(
+            RuleType.PROTOBUF_SMELL,
+            "normal",
+            SampleRule(),
+        )
+    }
+}
+
+class SampleRule : ProtobufRule() {
+    override fun visitSegment(it: String, context: RuleContext, callback: IssueEmit) {
+
     }
 }

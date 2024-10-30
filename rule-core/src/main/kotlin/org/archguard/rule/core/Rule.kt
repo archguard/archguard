@@ -55,6 +55,11 @@ enum class RuleType {
     HTTP_API_SMELL,
 
     /*
+     * Protobuf Smell
+     */
+    PROTOBUF_SMELL,
+
+    /*
      * Database smell, if a Controller has to many smells
      */
     SQL_SMELL,
