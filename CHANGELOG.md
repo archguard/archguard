@@ -1,4 +1,75 @@
-# [](https://github.com/archguard/archguard/compare/v2.1.4...v) (2024-02-02)
+# [](https://github.com/archguard/archguard/compare/v2.3.3...v) (2024-11-05)
+
+
+
+## [2.3.3](https://github.com/archguard/archguard/compare/v2.2.2...v2.3.3) (2024-11-05)
+
+
+### Bug Fixes
+
+* **idl:** fix idl scanner override default structure issue for [#153](https://github.com/archguard/archguard/issues/153) [#152](https://github.com/archguard/archguard/issues/152) ([b4955c6](https://github.com/archguard/archguard/commit/b4955c61227a24b60e3799fc68ca839e037ba029))
+* **scanner:** ensure type safety for analysed code data structures [#153](https://github.com/archguard/archguard/issues/153) ([7120187](https://github.com/archguard/archguard/commit/7120187982950cd901821f52b996bf63df19b74f))
+
+
+### Features
+
+* **architecture:** add relative path and workspace to DomainModel ([6d8c4b3](https://github.com/archguard/archguard/commit/6d8c4b3e785f92e3e79c06d4749ddbe4a4da82a5))
+* **rule-linter:** add initial protobuf rule implementation [#152](https://github.com/archguard/archguard/issues/152) ([933d8e3](https://github.com/archguard/archguard/commit/933d8e36b2f17ca66dd88575e478e65234f10e59))
+* **rule-linter:** implement ProtobufRuleVisitor and ProtobufRule [#152](https://github.com/archguard/archguard/issues/152) ([e2e456e](https://github.com/archguard/archguard/commit/e2e456ea7294faf39c62584891967e4c8a04240a))
+
+
+
+## [2.2.2](https://github.com/archguard/archguard/compare/v2.2.1...v2.2.2) (2024-10-27)
+
+
+### Features
+
+* **analyser:** add ProtoAnalyser and concatenate IDL results [#151](https://github.com/archguard/archguard/issues/151) ([34d4ee6](https://github.com/archguard/archguard/commit/34d4ee6e6087ee772dd6824750472d3478950b1f))
+* **analyser:** add Thrift analyser with build configuration ([1a7a7dc](https://github.com/archguard/archguard/commit/1a7a7dcc10495c5a06d905de16b9eae2c24137bb))
+* **analyser:** add Thrift IDL analyser and test ([f30e04e](https://github.com/archguard/archguard/commit/f30e04e71a14c3b786f37bac30fdec9e8fccaaa6))
+* **analyser:** add ThriftAnalyser support and integrate in dispatcher ([ac32d39](https://github.com/archguard/archguard/commit/ac32d39e60e612908ee8c1a721305930a46d85f6))
+* **context:** add PROTO_RPC_API support in ServiceSupplyType ([9e31d88](https://github.com/archguard/archguard/commit/9e31d88cbede326a0be5a8d17ddd8d87657fe672))
+
+
+
+## [2.2.1](https://github.com/archguard/archguard/compare/v2.2.0...v2.2.1) (2024-10-26)
+
+
+### Features
+
+* **database:** implement Go SQL analysis and add related tests ([ebbb8bb](https://github.com/archguard/archguard/commit/ebbb8bb70e9ce68a424207ffeab2a384a0380d90))
+
+
+
+# [2.2.0](https://github.com/archguard/archguard/compare/v2.1.5...v2.2.0) (2024-10-25)
+
+
+### Bug Fixes
+
+* **analyser:** handle exceptions during Proto file analysis ([48fef4a](https://github.com/archguard/archguard/commit/48fef4aff29f8c3871dce7897bfee8cd5b8c35d2))
+* fix rename typos of IDEA ([fd894a6](https://github.com/archguard/archguard/commit/fd894a6f585aa0aa1a243494f04b1732ed60fe5a))
+* **mybatis:** handle typeHandler in SQL generation fixed [#149](https://github.com/archguard/archguard/issues/149) ([8c5163c](https://github.com/archguard/archguard/commit/8c5163c45d23194006c96ac722ee2e8cbf91a636))
+
+
+### Features
+
+* **analyser:** add Dubbo API support and refactor Java API analyser ([5e1c5a3](https://github.com/archguard/archguard/commit/5e1c5a337e121838a420c19e9cf46b98c0158934)), closes [#30](https://github.com/archguard/archguard/issues/30)
+* **analyser:** add ProtoAnalyser for protobuf files [#151](https://github.com/archguard/archguard/issues/151) ([61a1278](https://github.com/archguard/archguard/commit/61a1278a2a13d56a8b304288f97135da92c4b241))
+* **analyser:** add Protobuf API call analyser [#151](https://github.com/archguard/archguard/issues/151) ([6de4444](https://github.com/archguard/archguard/commit/6de4444e50f4606300ec5c1155d7f1d59a7de42b))
+* **architecture:** add 'model' module and setup build files ([29e7f01](https://github.com/archguard/archguard/commit/29e7f01ffdc59f5cfbf13d71792386654fba73e2))
+* **architecture:** add service data and write result to JSON file ([38111bc](https://github.com/archguard/archguard/commit/38111bc5d04caa19ca514b473a261094470c5942))
+* **architecture:** add stacks to CodeArchitecture and WorkspaceAnalyser [#151](https://github.com/archguard/archguard/issues/151) ([de88928](https://github.com/archguard/archguard/commit/de8892888ed29a12bd76deb91f3c682f28e9e14a))
+* **scanner:** implement saving architecture view in clients and analyser interface ([01aac71](https://github.com/archguard/archguard/commit/01aac71ccc9ce47aa6511115e1a02c7edcfd0c27))
+
+
+
+## [2.1.5](https://github.com/archguard/archguard/compare/v2.1.4...v2.1.5) (2024-07-10)
+
+
+### Bug Fixes
+
+* fix ci ([09cb71e](https://github.com/archguard/archguard/commit/09cb71ecf2bb81807a0b40723dd7432888ffb833))
+* the SQL syntax error caused by single quotes ([049f3cc](https://github.com/archguard/archguard/commit/049f3cc8f2c0e2c34e65bb0049f645caa5be9bf8))
 
 
 
@@ -1421,6 +1492,16 @@
 * 修改Report时区默认为上海时区 ([5cc4a7b](https://github.com/archguard/archguard/commit/5cc4a7b3629182813129174d9722bdaa3081dfc0))
 
 
+### Reverts
+
+* Revert "#N/A: run flyway in Jenkinsfile" ([fa3a4f0](https://github.com/archguard/archguard/commit/fa3a4f06a05cc4249556929c0ba12eafd1ca05b3))
+* Revert "#N/A: rename module package to model" ([241e83c](https://github.com/archguard/archguard/commit/241e83ccf38e7300d9b4d0950197b68f9d480e39))
+* Revert "#446: add view object for circular dependency api" ([8e05924](https://github.com/archguard/archguard/commit/8e059249ca30487b6c9afacd09852a01eb178746)), closes [#446](https://github.com/archguard/archguard/issues/446)
+* Revert "#452 fix: fix StringEscape error in method name like <init>" ([d8c4196](https://github.com/archguard/archguard/commit/d8c4196b61c92701ea7194aed5279076de24200e))
+* Revert "feat: use parallelStream update JClass Info in getAllClassDependency" ([465fd6b](https://github.com/archguard/archguard/commit/465fd6b7e63a991cb042c7fe02664e2c00b41495))
+* Revert "feat: add scanners" ([44dce36](https://github.com/archguard/archguard/commit/44dce3679e6767b67cc2a245e56ce8350de986aa))
+
+
 
 # [2.0.0-alpha.7](https://github.com/archguard/archguard/compare/v1.7.0...v2.0.0-alpha.7) (2022-05-17)
 
@@ -1994,6 +2075,7 @@
 * correct compile issue ([a7fdc4c](https://github.com/archguard/archguard/commit/a7fdc4ce90dc0d97455fa18a4eb8ae65772f2ab5))
 * correct main class ([42e0307](https://github.com/archguard/archguard/commit/42e03075db203bdf9eb3a3ca8fed3419ba6b2ab6))
 * correct test ([497204a](https://github.com/archguard/archguard/commit/497204a9050ee5cb5cb1d187b57fd50e1bc64471))
+* correct test ([32c3755](https://github.com/archguard/archguard/commit/32c3755166b5df9e49e62b8ce4c8c1f394fb354c))
 * enable to class lists ([572a0d7](https://github.com/archguard/archguard/commit/572a0d7dabf42803ecb1d191f351d8da3400d0c0))
 * export first sql files ([ce93dbd](https://github.com/archguard/archguard/commit/ce93dbd3fe9fc6a768c11748a2e61586a805d880))
 * **httpapi:** init basic typescript part ([e15c237](https://github.com/archguard/archguard/commit/e15c23772625dec61a8da1df2fc650a875c84060))
@@ -2012,7 +2094,7 @@
 
 ### Reverts
 
-* Revert "feat: correct JGitTest" ([a9879d9](https://github.com/archguard/archguard/commit/a9879d9af03072e4e39e55c99b470176c3c6310a))
+* Revert "chore: run test when build" ([29686a0](https://github.com/archguard/archguard/commit/29686a0b53300e763a3eea88df46be0d283086a1))
 
 
 
@@ -2753,6 +2835,16 @@
 * 修改Report时区默认为上海时区 ([5cc4a7b](https://github.com/archguard/archguard/commit/5cc4a7b3629182813129174d9722bdaa3081dfc0))
 
 
+### Reverts
+
+* Revert "#N/A: run flyway in Jenkinsfile" ([fa3a4f0](https://github.com/archguard/archguard/commit/fa3a4f06a05cc4249556929c0ba12eafd1ca05b3))
+* Revert "#N/A: rename module package to model" ([241e83c](https://github.com/archguard/archguard/commit/241e83ccf38e7300d9b4d0950197b68f9d480e39))
+* Revert "#446: add view object for circular dependency api" ([8e05924](https://github.com/archguard/archguard/commit/8e059249ca30487b6c9afacd09852a01eb178746)), closes [#446](https://github.com/archguard/archguard/issues/446)
+* Revert "#452 fix: fix StringEscape error in method name like <init>" ([d8c4196](https://github.com/archguard/archguard/commit/d8c4196b61c92701ea7194aed5279076de24200e))
+* Revert "feat: use parallelStream update JClass Info in getAllClassDependency" ([465fd6b](https://github.com/archguard/archguard/commit/465fd6b7e63a991cb042c7fe02664e2c00b41495))
+* Revert "feat: add scanners" ([44dce36](https://github.com/archguard/archguard/commit/44dce3679e6767b67cc2a245e56ce8350de986aa))
+
+
 
 ## [1.3.2](https://github.com/archguard/archguard/compare/v1.3.1...v1.3.2) (2022-03-25)
 
@@ -2997,6 +3089,7 @@
 * correct compile issue ([a7fdc4c](https://github.com/archguard/archguard/commit/a7fdc4ce90dc0d97455fa18a4eb8ae65772f2ab5))
 * correct main class ([42e0307](https://github.com/archguard/archguard/commit/42e03075db203bdf9eb3a3ca8fed3419ba6b2ab6))
 * correct test ([497204a](https://github.com/archguard/archguard/commit/497204a9050ee5cb5cb1d187b57fd50e1bc64471))
+* correct test ([32c3755](https://github.com/archguard/archguard/commit/32c3755166b5df9e49e62b8ce4c8c1f394fb354c))
 * enable to class lists ([572a0d7](https://github.com/archguard/archguard/commit/572a0d7dabf42803ecb1d191f351d8da3400d0c0))
 * export first sql files ([ce93dbd](https://github.com/archguard/archguard/commit/ce93dbd3fe9fc6a768c11748a2e61586a805d880))
 * **httpapi:** init basic typescript part ([e15c237](https://github.com/archguard/archguard/commit/e15c23772625dec61a8da1df2fc650a875c84060))
@@ -3015,7 +3108,7 @@
 
 ### Reverts
 
-* Revert "feat: correct JGitTest" ([a9879d9](https://github.com/archguard/archguard/commit/a9879d9af03072e4e39e55c99b470176c3c6310a))
+* Revert "chore: run test when build" ([29686a0](https://github.com/archguard/archguard/commit/29686a0b53300e763a3eea88df46be0d283086a1))
 
 
 
@@ -3474,6 +3567,16 @@
 * use new ci host ([8871ba7](https://github.com/archguard/archguard/commit/8871ba71ddeb09f36f3a126d048bf1885805e481))
 * use parallelStream update JClass Info in getAllClassDependency ([22a5c98](https://github.com/archguard/archguard/commit/22a5c98a5ba1bf459548a3ed100750422d9863de))
 * 修改Report时区默认为上海时区 ([5cc4a7b](https://github.com/archguard/archguard/commit/5cc4a7b3629182813129174d9722bdaa3081dfc0))
+
+
+### Reverts
+
+* Revert "#N/A: run flyway in Jenkinsfile" ([fa3a4f0](https://github.com/archguard/archguard/commit/fa3a4f06a05cc4249556929c0ba12eafd1ca05b3))
+* Revert "#N/A: rename module package to model" ([241e83c](https://github.com/archguard/archguard/commit/241e83ccf38e7300d9b4d0950197b68f9d480e39))
+* Revert "#446: add view object for circular dependency api" ([8e05924](https://github.com/archguard/archguard/commit/8e059249ca30487b6c9afacd09852a01eb178746)), closes [#446](https://github.com/archguard/archguard/issues/446)
+* Revert "#452 fix: fix StringEscape error in method name like <init>" ([d8c4196](https://github.com/archguard/archguard/commit/d8c4196b61c92701ea7194aed5279076de24200e))
+* Revert "feat: use parallelStream update JClass Info in getAllClassDependency" ([465fd6b](https://github.com/archguard/archguard/commit/465fd6b7e63a991cb042c7fe02664e2c00b41495))
+* Revert "feat: add scanners" ([44dce36](https://github.com/archguard/archguard/commit/44dce3679e6767b67cc2a245e56ce8350de986aa))
 
 
 
