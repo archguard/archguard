@@ -94,6 +94,10 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
             logger.warn("Error while analysing idl", e)
         }
 
+        // re-save data structure since in every analyser, the data structure may be changed, so we should combine them
+        // and save them to the client
+        context.client.saveDataStructure(ast)
+
         logger.info("build CodeDataStructs: ${ast.size}")
 
         slotHub.consumer(ast)
