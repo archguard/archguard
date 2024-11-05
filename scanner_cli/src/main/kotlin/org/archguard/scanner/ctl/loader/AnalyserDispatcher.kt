@@ -80,17 +80,18 @@ class SourceCodeWorker(override val command: ScannerCommand) : Worker<SourceCode
     override fun run(): Unit = runBlocking {
         logger.info("Start analysing source code: ${context.language}, ${context.path}")
         val languageAnalyser = getOrInstall<SourceCodeAnalyser>(context.language)
-        var ast = languageAnalyser.analyse(null) ?: emptyList()
+        val ast: MutableList<CodeDataStruct> = languageAnalyser.analyse(null) as MutableList<CodeDataStruct>
 
-        /// concat idl proto
         try {
             val idlProtoAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.PROTOBUF)
-            ast += idlProtoAnalyser.analyse(null) ?: emptyList()
+            val protoList = idlProtoAnalyser.analyse(null) as MutableList<CodeDataStruct>
+            ast += protoList
 
             val thriftAnalyser = getOrInstall<SourceCodeAnalyser>(OfficialAnalyserSpecs.THRIFT)
-            ast += thriftAnalyser.analyse(null) ?: emptyList()
+            val thriftList = thriftAnalyser.analyse(null) as MutableList<CodeDataStruct>
+            ast += thriftList
         } catch (e: Exception) {
-            logger.warn("Error while analysing idl proto", e)
+            logger.warn("Error while analysing idl", e)
         }
 
         logger.info("build CodeDataStructs: ${ast.size}")
