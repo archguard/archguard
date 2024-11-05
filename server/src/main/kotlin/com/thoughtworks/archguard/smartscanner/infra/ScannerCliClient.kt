@@ -38,7 +38,7 @@ class ScannerCliClient : ScannerClient {
     }
 
     companion object {
-        private const val VERSION = "2.2.2"
+        private const val VERSION = "2.2.3"
         private const val TAG = "v$VERSION"
         private const val RELEASE_REPO_URL = "https://github.com/archguard/archguard/releases/download/$TAG"
         private const val DOWNLOAD_URL = "$RELEASE_REPO_URL/scanner_cli-$VERSION-all.jar"
