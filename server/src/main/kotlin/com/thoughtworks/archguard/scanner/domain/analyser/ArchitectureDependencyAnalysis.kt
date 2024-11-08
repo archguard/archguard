@@ -94,7 +94,7 @@ class ArchitectureDependencyAnalysis(
                 systemInfo.workdir = workdir.pathString
                 postMetrics(systemId, workdir)
             } catch (e: Exception) {
-                log.error("Exception in asyncAnalyse: {}", e)
+                log.error("Exception in postAnalyse: {0} ", e)
             } finally {
                 stopScanSystem(systemInfo, ScannedType.SCANNED)
             }
