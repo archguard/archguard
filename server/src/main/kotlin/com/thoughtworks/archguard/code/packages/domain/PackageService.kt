@@ -18,17 +18,18 @@ class PackageService {
 
     fun getPackageDependencies(systemId: Long, language: String): List<ModulePackage> {
         return moduleRepository.getAllSubModule(systemId).map { it.name }.map {
-            when (language.lowercase()) {
-                "kotlin", "java", "typescript", "csharp", "c#" -> {
-                    val dependencies = packageRepository.getPackageDependenceByClass(systemId, it)
-                    ModulePackage(it, getPackageGraph(dependencies))
-                }
-                // when jvm
-                else -> {
-                    val dependencies = packageRepository.getPackageDependenceByModuleFull(systemId, it)
-                    ModulePackage(it, getPackageGraph(dependencies))
-                }
-            }
+            val dependencies = packageRepository.getPackageDependenceByClass(systemId, it)
+            ModulePackage(it, getPackageGraph(dependencies))
+// old code modules
+//            when (language.lowercase()) {
+//                "kotlin", "java", "typescript", "csharp", "c#", "golang", "proto" -> {
+//                    val dependencies = packageRepository.getPackageDependenceByClass(systemId, it)
+//                    ModulePackage(it, getPackageGraph(dependencies))
+//                }
+//                else -> {
+//                    val dependencies = packageRepository.getPackageDependenceByModuleFull(systemId, it)
+//                    ModulePackage(it, getPackageGraph(dependencies))
+//                }
         }
     }
 
