@@ -488,6 +488,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["id"] = clzId
         values["system_id"] = systemId
         values["name"] = name
+        values["loc"] = "0"
         values["is_thirdparty"] = if (thirdParty) "true" else "false"
         values["is_test"] = if (isTest) "true" else "false"
         values["updatedAt"] = time
@@ -496,12 +497,12 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["package_name"] = packageName.orEmpty()
         values["class_name"] = className
         values["access"] = accessName
-        values["loc"] = "0"
 
         batch.add("code_class", values)
         return clzId
     }
 
+    /// make sure order sample to dep class
     private fun saveClass(clz: CodeDataStruct): String {
         val time = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
@@ -522,9 +523,7 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         values["id"] = clzId
         values["system_id"] = systemId
         values["name"] = fullName
-
         values["loc"] = (clz.Position.StopLine - clz.Position.StartLine).toString()
-
         values["is_thirdparty"] = "false"
         values["is_test"] = "false"
         values["updatedAt"] = time
