@@ -66,6 +66,9 @@ class ScannerReportingService(
             val repo = BatchClassRepository(systemId, language, path)
             input.forEach { data -> repo.saveClassItem(data) }
             input.forEach { data -> repo.saveClassBody(data) }
+
+            // should flush last data
+            repo.close()
             execute(systemId, tables)
 
             // todo: post
@@ -239,8 +242,8 @@ class ScannerReportingService(
     }
 
     private fun cleanSqlFile(tables: Array<String>) {
-        cleanInsertSqlFile(tables)
-        cleanUpdateSqlFile(tables)
+//        cleanInsertSqlFile(tables)
+//        cleanUpdateSqlFile(tables)
         // SqlExecuteThreadPool.close()
     }
 
