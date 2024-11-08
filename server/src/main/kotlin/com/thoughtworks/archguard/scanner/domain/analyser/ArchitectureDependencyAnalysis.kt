@@ -93,11 +93,10 @@ class ArchitectureDependencyAnalysis(
                 val workdir = createWorkspace(systemInfo.id, systemInfo.workdir)
                 systemInfo.workdir = workdir.pathString
                 postMetrics(systemId, workdir)
-
-                stopScanSystem(systemInfo, ScannedType.SCANNED)
             } catch (e: Exception) {
                 log.error("Exception in asyncAnalyse: {}", e)
-                stopScanSystem(systemInfo, ScannedType.FAILED)
+            } finally {
+                stopScanSystem(systemInfo, ScannedType.SCANNED)
             }
         }
     }
