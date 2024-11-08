@@ -40,8 +40,8 @@ internal class PackageServiceTest {
             )
         )
         val dependencies2 = listOf<PackageDependenceDTO>()
-        every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module1") } returns dependencies1
-        every { packageRepository.getPackageDependenceByModuleFull(systemId, "com.module2") } returns dependencies2
+        every { packageRepository.getPackageDependenceByClass(systemId, "com.module1") } returns dependencies1
+        every { packageRepository.getPackageDependenceByClass(systemId, "com.module2") } returns dependencies2
         // when
         val packageDependencies = packageService.getPackageDependencies(systemId, "jvm")
         // then
