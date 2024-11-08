@@ -9,7 +9,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val analyser = chapi.ast.cast.CAnalyser()
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
@@ -24,7 +23,6 @@ class CAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAna
             .filter { it.absolutePath.endsWith(".c") }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

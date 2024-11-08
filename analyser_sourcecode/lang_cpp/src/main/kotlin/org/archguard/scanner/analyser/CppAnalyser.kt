@@ -9,7 +9,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class CppAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.cppast.CPPAnalyser()
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
@@ -28,7 +27,6 @@ class CppAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeA
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

@@ -9,7 +9,6 @@ import org.archguard.scanner.core.utils.CoroutinesExtension.asyncMap
 import java.io.File
 
 class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.javaast.JavaAnalyser()
 
     private lateinit var basicNodes: List<CodeDataStruct>
@@ -26,7 +25,6 @@ class JavaAnalyser(override val context: SourceCodeContext) : LanguageSourceCode
 
         val basepath = File(context.path)
         files.asyncMap { analysisFullInfoByFile(it, basepath) }.flatten().toList()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisBasicInfoByFile(file: File): List<CodeDataStruct> {

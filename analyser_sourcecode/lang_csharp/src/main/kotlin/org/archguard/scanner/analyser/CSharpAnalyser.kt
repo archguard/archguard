@@ -9,7 +9,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class CSharpAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.csharpast.CSharpAnalyser()
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
@@ -20,7 +19,6 @@ class CSharpAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
         }
             .map { async { analysisByFile(it, basepath) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {

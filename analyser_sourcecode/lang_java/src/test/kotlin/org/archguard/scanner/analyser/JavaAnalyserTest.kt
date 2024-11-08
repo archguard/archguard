@@ -1,16 +1,11 @@
 package org.archguard.scanner.analyser
 
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
-import io.mockk.runs
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -22,11 +17,6 @@ internal class JavaAnalyserTest {
     private val mockContext = mockk<SourceCodeContext> {
         every { client } returns mockClient
         every { withFunctionCode } returns false
-    }
-
-    @AfterEach
-    internal fun tearDown() {
-        verify { mockClient.saveDataStructure(any()) }
     }
 
     // print these files and copy to analyser [feat_apicalls/backend] to finish the contract tests

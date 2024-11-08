@@ -33,11 +33,6 @@ internal class CSharpAnalyserTest {
         every { withFunctionCode } returns false
     }
 
-    @AfterEach
-    internal fun tearDown() {
-        verify { mockClient.saveDataStructure(any()) }
-    }
-
     @Nested
     inner class E2E {
         @Test

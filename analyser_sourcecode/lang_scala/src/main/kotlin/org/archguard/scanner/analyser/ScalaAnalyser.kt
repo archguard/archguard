@@ -9,7 +9,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class ScalaAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.scalaast.ScalaAnalyser()
 
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
@@ -20,7 +19,6 @@ class ScalaAnalyser(override val context: SourceCodeContext) : LanguageSourceCod
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

@@ -9,7 +9,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class ThriftAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.thrift.ThriftAnalyser()
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
@@ -28,7 +27,6 @@ class ThriftAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
                 }
             }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

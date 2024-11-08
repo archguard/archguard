@@ -22,11 +22,6 @@ internal class ScalaAnalyserTest {
         every { withFunctionCode } returns false
     }
 
-    @AfterEach
-    internal fun tearDown() {
-        verify { mockClient.saveDataStructure(any()) }
-    }
-
     @Test
     fun `should return nodes of the sample code file`() {
         every { mockContext.path } returns this.javaClass.classLoader.getResource("scala").path

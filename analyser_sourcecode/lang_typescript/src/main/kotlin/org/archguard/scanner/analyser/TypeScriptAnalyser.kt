@@ -10,12 +10,9 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.typescriptast.TypeScriptAnalyser()
-
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
-    // TODO put into context or as an additional parameter
     private val ignoreMinFile = true
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
@@ -39,7 +36,6 @@ class TypeScriptAnalyser(override val context: SourceCodeContext) : LanguageSour
                 }
             }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {

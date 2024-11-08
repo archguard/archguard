@@ -3,14 +3,12 @@ package org.archguard.scanner.analyser
 import chapi.domain.core.CodeDataStruct
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
 import org.archguard.scanner.core.sourcecode.LanguageSourceCodeAnalyser
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.goast.GoAnalyser()
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
@@ -20,7 +18,6 @@ class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAn
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File): List<CodeDataStruct> {

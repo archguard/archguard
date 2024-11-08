@@ -11,7 +11,6 @@ import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import java.io.File
 
 class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAnalyser {
-    private val client = context.client
     private val impl = chapi.ast.kotlinast.KotlinAnalyser()
 
     private val logger = org.slf4j.LoggerFactory.getLogger(this.javaClass)
@@ -23,7 +22,6 @@ class KotlinAnalyser(override val context: SourceCodeContext) : LanguageSourceCo
         }
             .map { async { analysisByFile(it, basepath) } }.awaitAll()
             .flatten()
-            .also { client.saveDataStructure(it) }
     }
 
     private fun analysisByFile(file: File, basepath: File): List<CodeDataStruct> {
