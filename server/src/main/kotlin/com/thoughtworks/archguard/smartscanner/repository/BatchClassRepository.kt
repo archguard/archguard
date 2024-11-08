@@ -473,7 +473,41 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         batch.add("code_ref_class_fields", relation)
     }
 
-    private fun saveDepClass(
+    data class CodeClass(
+        val id: String,
+        val systemId: String,
+        val name: String,
+        val loc: String,
+        val isThirdParty: Boolean,
+        val isTest: Boolean,
+        val updatedAt: String,
+        val createdAt: String,
+        val module: String,
+        val packageName: String,
+        val className: String,
+        val access: String
+    )
+
+    fun createCodeClass(codeClass: CodeClass) {
+        val values = linkedMapOf(
+            "id" to codeClass.id,
+            "system_id" to codeClass.systemId,
+            "name" to codeClass.name,
+            "loc" to codeClass.loc,
+            "is_thirdparty" to codeClass.isThirdParty.toString(),
+            "is_test" to codeClass.isTest.toString(),
+            "updatedAt" to codeClass.updatedAt,
+            "createdAt" to codeClass.createdAt,
+            "module" to codeClass.module,
+            "package_name" to codeClass.packageName,
+            "class_name" to codeClass.className,
+            "access" to codeClass.access
+        )
+
+        batch.add("code_class", values)
+    }
+
+    fun saveDepClass(
         name: String,
         moduleName: String,
         accessName: String,
@@ -482,34 +516,33 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
         packageName: String?,
         className: String
     ): String {
-        val time: String = RepositoryHelper.getCurrentTime()
+        val time = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
-        val values: MutableMap<String, String> = HashMap()
-        values["id"] = clzId
-        values["system_id"] = systemId
-        values["name"] = name
-        values["loc"] = "0"
-        values["is_thirdparty"] = if (thirdParty) "true" else "false"
-        values["is_test"] = if (isTest) "true" else "false"
-        values["updatedAt"] = time
-        values["createdAt"] = time
-        values["module"] = moduleName
-        values["package_name"] = packageName.orEmpty()
-        values["class_name"] = className
-        values["access"] = accessName
 
-        batch.add("code_class", values)
+        val codeClass = CodeClass(
+            id = clzId,
+            systemId = systemId,
+            name = name,
+            loc = "0",
+            isThirdParty = thirdParty,
+            isTest = isTest,
+            updatedAt = time,
+            createdAt = time,
+            module = moduleName,
+            packageName = packageName.orEmpty(),
+            className = className,
+            access = accessName
+        )
+
+        createCodeClass(codeClass)
         return clzId
     }
 
-    /// make sure order sample to dep class
-    private fun saveClass(clz: CodeDataStruct): String {
+    fun saveClass(clz: CodeDataStruct): String {
         val time = RepositoryHelper.getCurrentTime()
         val clzId = generateId()
-        val values: MutableMap<String, String> = HashMap()
-        // in C/C++, package name is empty
-        var pkgName = Companion.handleForPackageName(clz.FilePath, clz.Package)
 
+        var pkgName = handleForPackageName(clz.FilePath, clz.Package)
         var clzName = clz.NodeName
         var fullName = "$pkgName.$clzName"
 
@@ -520,20 +553,22 @@ class BatchClassRepository(systemId: String, language: String, workspace: String
             clzName = component.className
         }
 
-        values["id"] = clzId
-        values["system_id"] = systemId
-        values["name"] = fullName
-        values["loc"] = (clz.Position.StopLine - clz.Position.StartLine).toString()
-        values["is_thirdparty"] = "false"
-        values["is_test"] = "false"
-        values["updatedAt"] = time
-        values["createdAt"] = time
-        values["module"] = DEFAULT_MODULE_NAME
-        values["package_name"] = pkgName
-        values["class_name"] = clzName
-        values["access"] = "todo"
-        batch.add("code_class", values)
+        val codeClass = CodeClass(
+            id = clzId,
+            systemId = systemId,
+            name = fullName,
+            loc = (clz.Position.StopLine - clz.Position.StartLine).toString(),
+            isThirdParty = false,
+            isTest = false,
+            updatedAt = time,
+            createdAt = time,
+            module = DEFAULT_MODULE_NAME,
+            packageName = pkgName,
+            className = clzName,
+            access = "todo"
+        )
 
+        createCodeClass(codeClass)
         return clzId
     }
 
