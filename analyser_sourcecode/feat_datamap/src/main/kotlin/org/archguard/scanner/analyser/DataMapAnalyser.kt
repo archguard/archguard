@@ -53,11 +53,11 @@ class DataMapAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             "go", "golang" -> {
                 logger.info("start analysis database api ---- ${language.lowercase()}")
                 val sqlAnalyser = GoSqlAnalyser()
-                val records = input.flatMap { data ->
+                val databaseRelations = input.flatMap { data ->
                     sqlAnalyser.analysisByNode(data, "")
                 }
 
-                records
+                databaseRelations
             }
 
             else -> throw IllegalArgumentException("Unsupported language: $language")

@@ -10,9 +10,13 @@ class GoSqlAnalyser {
 
         node.Functions.map { codeFunction ->
             codeFunction.FunctionCalls.map { call ->
-                if (call.NodeName.contains("sql.DB")) {
+                if (call.FunctionName == "Raw") {
+                    val parameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
+                    analysisParams(parameter, relations, node, codeFunction)
+                }
+                if (call.NodeName.contains("sql.DB") || call.NodeName.contains("Dao.db")) {
                     when (call.FunctionName) {
-                        "Query" -> {
+                        "Raw", "Query" -> {
                             val parameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
                             analysisParams(parameter, relations, node, codeFunction)
                         }
