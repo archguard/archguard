@@ -10,20 +10,20 @@ class GoSqlAnalyser {
 
         node.Functions.map { codeFunction ->
             codeFunction.FunctionCalls.map { call ->
-                if (call.FunctionName == "Raw") {
-                    val parameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
-                    analysisParams(parameter, relations, node, codeFunction)
-                }
-                if (call.NodeName.contains("sql.DB") || call.NodeName.contains("Dao.db")) {
+                if (call.NodeName.contains("sql.DB") || call.NodeName == "Dao.db") {
                     when (call.FunctionName) {
-                        "Raw", "Query" -> {
-                            val parameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
-                            analysisParams(parameter, relations, node, codeFunction)
-                        }
-
-                        "QueryRow", "Exec" -> {
-                            val parameter = call.Parameters.getOrNull(1)?.TypeValue ?: ""
-                            analysisParams(parameter, relations, node, codeFunction)
+                        "Raw", "Query", "QueryRow", "Exec" -> {
+                            val firstParameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
+                            val relation = analysisParams(firstParameter, node, codeFunction)
+                            if (relation != null) {
+                                relations += relation
+                            } else {
+                                val secondParameter = call.Parameters.getOrNull(1)?.TypeValue ?: ""
+                                val second = analysisParams(secondParameter, node, codeFunction)
+                                if (second != null) {
+                                    relations += second
+                                }
+                            }
                         }
                     }
                 }
@@ -34,31 +34,26 @@ class GoSqlAnalyser {
     }
 
     private fun analysisParams(
-        parameter: String,
-        relations: MutableList<CodeDatabaseRelation>,
-        node: CodeDataStruct,
-        codeFunction: CodeFunction
-    ) {
+        parameter: String, node: CodeDataStruct, codeFunction: CodeFunction
+    ): CodeDatabaseRelation? {
         if (parameter.contains("\"") && parameter.length > 10) {
-            relations.add(
-                CodeDatabaseRelation(
-                    packageName = node.Package,
-                    className = node.NodeName,
-                    functionName = codeFunction.Name,
-                    sqls = listOf(parameter)
-                )
+            return CodeDatabaseRelation(
+                packageName = node.Package,
+                className = node.NodeName,
+                functionName = codeFunction.Name,
+                sqls = listOf(parameter)
             )
         } else {
             codeFunction.LocalVariables.filter { it.TypeValue == parameter }.forEach {
-                relations.add(
-                    CodeDatabaseRelation(
-                        packageName = node.Package,
-                        className = node.NodeName,
-                        functionName = codeFunction.Name,
-                        sqls = listOf(it.TypeType)
-                    )
+                return CodeDatabaseRelation(
+                    packageName = node.Package,
+                    className = node.NodeName,
+                    functionName = codeFunction.Name,
+                    sqls = listOf(it.TypeType)
                 )
             }
         }
+
+        return null
     }
 }
