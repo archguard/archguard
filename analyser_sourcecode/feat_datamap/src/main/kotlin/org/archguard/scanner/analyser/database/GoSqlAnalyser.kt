@@ -21,7 +21,7 @@ class GoSqlAnalyser {
                             analysisParams(parameter, relations, node, codeFunction)
                         }
 
-                        "QueryRow" -> {
+                        "QueryRow", "Exec" -> {
                             val parameter = call.Parameters.getOrNull(1)?.TypeValue ?: ""
                             analysisParams(parameter, relations, node, codeFunction)
                         }
