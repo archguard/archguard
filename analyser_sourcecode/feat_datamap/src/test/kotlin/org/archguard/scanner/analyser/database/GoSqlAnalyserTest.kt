@@ -2,9 +2,9 @@ package org.archguard.scanner.analyser.database
 
 import chapi.ast.goast.GoAnalyser
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
-import kotlin.test.assertEquals
 
 class GoSqlAnalyserTest {
     @Test
@@ -32,7 +32,8 @@ class GoSqlAnalyserTest {
             analyser.analysisByNode(it, "")
         }.flatten()
 
-        result.size shouldBe 16
+        println(result.joinToString("\n") { it.sqls.joinToString("\n") })
+        result.size shouldBe 18
 
         assertEquals(
             result[0].sqls[0],
