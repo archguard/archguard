@@ -1,6 +1,5 @@
 package org.archguard.scanner.analyser.database
 
-import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -56,7 +55,8 @@ internal class MysqlIdentAppTest {
 
     @Test
     internal fun should_parse_for_mybatis_questions() {
-        val code = "INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)"
+        val code =
+            "INSERT INTO oms_order_operate_history (order_id, operate_man, create_time, order_status, note) VALUES (?, ?, ?, ?, ?)"
         val relation = MysqlIdentApp.analysis(code)
 
         assertEquals("oms_order_operate_history", relation!!.tableNames.joinToString(","))
@@ -84,6 +84,23 @@ internal class MysqlIdentAppTest {
         val relation = MysqlIdentApp.analysis(code)
 
         assertEquals("table", relation!!.tableNames.joinToString(","))
+    }
+
+    @Test
+    internal fun select_from_substring_end_error() {
+        val code =
+            "SELECT COUNT(*) FROM vip_price_config_v2 WHERE platform = ? AND month = ? AND sub_type = ? AND suit_type = ? %s;\", \""
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("vip_price_config_v2", relation!!.tableNames.joinToString(","))
+    }
+
+    @Test
+    internal fun select_from_substring_start_error() {
+        val code = "\"INSERT INTO playlist_archive_0 (pid,aid,sort,`desc`) VALUES (?,?,?,?)\", plArcHit(pid)"
+        val relation = MysqlIdentApp.analysis(code)
+
+        assertEquals("playlist_archive_0", relation!!.tableNames.joinToString(","))
     }
 
 //    @Test
