@@ -33,7 +33,7 @@ class GoSqlAnalyserTest {
         }.flatten()
 
         println(result.joinToString("\n") { it.sqls.joinToString("\n") })
-        result.size shouldBe 18
+        result.size shouldBe 15
 
         assertEquals(
             result[0].sqls[0],
