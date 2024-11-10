@@ -69,4 +69,10 @@ class GoSqlAnalyser {
 
         return null
     }
+
+    fun handleForPrintFunctionString(input: String): String {
+        /// SELECT id, name, receivers, `interval`, ctime, mtime FROM `alert_group` WHERE id in (%s) AND is_deleted = 0
+        /// should replace %s, %d, to mock value
+        return input.replace("%s", "1").replace("%d", "1")
+    }
 }
