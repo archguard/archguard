@@ -38,21 +38,30 @@ class GoSqlAnalyser {
     ): CodeDatabaseRelation? {
         if (parameter.contains("\"") && parameter.length > 10) {
             val sql = parameter.removeSurrounding("\"")
+            val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
+            if (tables.isEmpty()) {
+                return null
+            }
+
             return CodeDatabaseRelation(
                 packageName = node.Package,
                 className = node.NodeName,
                 functionName = codeFunction.Name,
-                tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList(),
+                tables = tables,
                 sqls = listOf(sql)
             )
         } else {
             codeFunction.LocalVariables.filter { it.TypeValue == parameter }.forEach {
                 val sql = it.TypeType.removeSurrounding("\"")
+                val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
+                if (tables.isEmpty()) {
+                    return null
+                }
                 return CodeDatabaseRelation(
                     packageName = node.Package,
                     className = node.NodeName,
                     functionName = codeFunction.Name,
-                    tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList(),
+                    tables = tables,
                     sqls = listOf(sql)
                 )
             }
