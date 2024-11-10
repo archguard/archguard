@@ -3,13 +3,8 @@ package com.thoughtworks.archguard.smartscanner.controller
 import chapi.domain.core.CodeDataStruct
 import com.thoughtworks.archguard.infrastructure.DBIStore
 import com.thoughtworks.archguard.smartscanner.repository.*
+import org.archguard.context.*
 import org.archguard.rule.core.Issue
-import org.archguard.context.ChangedCall
-import org.archguard.context.LanguageEstimate
-import org.archguard.context.GitLogs
-import org.archguard.context.CompositionDependency
-import org.archguard.context.CodeDatabaseRelation
-import org.archguard.context.ContainerService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -124,6 +119,7 @@ class ScannerReportingService(
         try {
             val repo = DatamapRepository(systemId, language, path)
             repo.saveRelations(input)
+            repo.close()
             execute(systemId, tables)
         } finally {
             cleanSqlFile(tables)
