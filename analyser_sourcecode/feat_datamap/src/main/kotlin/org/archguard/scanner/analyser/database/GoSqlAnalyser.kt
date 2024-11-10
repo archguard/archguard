@@ -37,7 +37,7 @@ class GoSqlAnalyser {
         parameter: String, node: CodeDataStruct, codeFunction: CodeFunction
     ): CodeDatabaseRelation? {
         if (parameter.contains("\"") && parameter.length > 10) {
-            val sql = parameter.removeSurrounding("\"")
+            val sql = postFixSql(parameter.removeSurrounding("\""))
             val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
             if (tables.isEmpty()) {
                 return null
@@ -52,7 +52,7 @@ class GoSqlAnalyser {
             )
         } else {
             codeFunction.LocalVariables.filter { it.TypeValue == parameter }.forEach {
-                val sql = it.TypeType.removeSurrounding("\"")
+                val sql = postFixSql(it.TypeType.removeSurrounding("\""))
                 val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
                 if (tables.isEmpty()) {
                     return null
@@ -70,9 +70,11 @@ class GoSqlAnalyser {
         return null
     }
 
-    fun handleForPrintFunctionString(input: String): String {
+    fun postFixSql(input: String): String {
         /// SELECT id, name, receivers, `interval`, ctime, mtime FROM `alert_group` WHERE id in (%s) AND is_deleted = 0
         /// should replace %s, %d, to mock value
-        return input.replace("%s", "1").replace("%d", "1")
+        return input.replace("%s", "1")
+            .replace("%02d", "1")
+            .replace("%d", "1")
     }
 }
