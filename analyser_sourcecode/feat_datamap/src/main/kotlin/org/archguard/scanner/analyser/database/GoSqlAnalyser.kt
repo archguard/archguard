@@ -41,7 +41,7 @@ class GoSqlAnalyser {
                 packageName = node.Package,
                 className = node.NodeName,
                 functionName = codeFunction.Name,
-                sqls = listOf(parameter)
+                sqls = listOf(parameter.removeSurrounding("\""))
             )
         } else {
             codeFunction.LocalVariables.filter { it.TypeValue == parameter }.forEach {
@@ -49,7 +49,7 @@ class GoSqlAnalyser {
                     packageName = node.Package,
                     className = node.NodeName,
                     functionName = codeFunction.Name,
-                    sqls = listOf(it.TypeType)
+                    sqls = listOf(it.TypeType.removeSurrounding("\""))
                 )
             }
         }

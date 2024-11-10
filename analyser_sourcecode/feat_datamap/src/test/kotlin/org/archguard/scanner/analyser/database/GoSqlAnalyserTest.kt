@@ -37,11 +37,11 @@ class GoSqlAnalyserTest {
 
         assertEquals(
             result[0].sqls[0],
-            "\"SELECT id,business_id,flow_id,rid,admin_id,uid,state,weight,utime,gtime,mid,fans,`group`,reason,ctime,mtime from task WHERE id=?\""
+            "SELECT id,business_id,flow_id,rid,admin_id,uid,state,weight,utime,gtime,mid,fans,`group`,reason,ctime,mtime from task WHERE id=?"
         )
         assertEquals(
             result[1].sqls[0],
-            "\"SELECT gtime FROM task WHERE id=? AND state=? AND uid=?\""
+            "SELECT gtime FROM task WHERE id=? AND state=? AND uid=?"
         )
     }
 }
