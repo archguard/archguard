@@ -32,9 +32,10 @@ class GoProtobufConsumerAnalyser {
 
     fun analysis(): List<ContainerDemand> {
         val singleMapping: MutableMap<String, List<String>> = analyzeAndMapCodePaths(dataStructs)
-        val result: MutableList<ContainerDemand> = mutableListOf()
+        if (singleMapping.isEmpty()) return listOf()
 
-        singleMapping.filter { it.key.startsWith("RPC") }.map {
+        val result: MutableList<ContainerDemand> = mutableListOf()
+        singleMapping.filter { it.key.startsWith("RPC") || it.key.contains(".") }.map {
             val call = buildCallChain(singleMapping, it.key)
             result += ContainerDemand(
                 source_caller = call.last(), call_routes = call, target_url = call.first(), target_http_method = "RPC"
@@ -92,6 +93,12 @@ class GoProtobufConsumerAnalyser {
                     val sourceStruct = call.NodeName.startsWith("Service")
                             || call.NodeName.startsWith("Dao")
                             || call.NodeName.startsWith("RPC")
+
+                    if (call.NodeName == "doRPCRequest") {
+                        call.Parameters.getOrNull(3)?.let {
+                            targetToSource[it.TypeValue.removeSurrounding("\"")] = listOf(pathify(ds, function))
+                        }
+                    }
 
                     if (sourceStruct && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
