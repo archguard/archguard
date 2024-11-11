@@ -10,6 +10,10 @@ dependencies {
     api(projects.scannerCore)
 
     testImplementation(libs.bundles.test)
+
+    testImplementation(libs.chapi.go)
+    testImplementation(libs.chapi.domain)
+    testImplementation(projects.analyserSourcecode.langGolang)
 }
 
 application {
