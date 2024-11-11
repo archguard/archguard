@@ -7,7 +7,7 @@ import org.archguard.context.ContainerService
 import org.archguard.context.ContainerSupply
 import org.archguard.scanner.analyser.base.ApiAnalyser
 
-class GoApiAnalyser : ApiAnalyser {
+class GoApiSupplyAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
     private var apiGroupStack = ArrayDeque<String>()
 

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class GoApiAnalyserTest {
+internal class GoApiSupplyAnalyserTest {
     private fun loadNodes(source: String): List<CodeDataStruct> {
         return Json { ignoreUnknownKeys = true }.decodeFromString(
             File(this.javaClass.classLoader.getResource(source)!!.file).readText()
@@ -18,7 +18,7 @@ internal class GoApiAnalyserTest {
     @Test
     fun analysisByNode() {
         val nodes = loadNodes("backend/golang_GinController.json")
-        val javaApiAnalyser = GoApiAnalyser()
+        val javaApiAnalyser = GoApiSupplyAnalyser()
         nodes.forEach {
             javaApiAnalyser.analysisByNode(it, "")
         }
@@ -38,7 +38,7 @@ internal class GoApiAnalyserTest {
     @Test
     fun analysisHelloWorld() {
         val nodes = loadNodes("backend/golang_HelloWorld.json")
-        val analyser = GoApiAnalyser()
+        val analyser = GoApiSupplyAnalyser()
         nodes.forEach {
             analyser.analysisByNode(it, "")
         }
@@ -69,7 +69,7 @@ func main() {
        """.trimIndent()
         val nodes = chapi.ast.goast.GoAnalyser().analysis(code, "main.go").DataStructures
 
-        val analyser = GoApiAnalyser()
+        val analyser = GoApiSupplyAnalyser()
         nodes.forEach {
             analyser.analysisByNode(it, "")
         }
