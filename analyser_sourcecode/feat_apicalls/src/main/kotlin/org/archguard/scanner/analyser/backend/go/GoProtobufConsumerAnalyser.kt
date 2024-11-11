@@ -21,12 +21,20 @@ class GoProtobufConsumerAnalyser(val dataStructs: List<CodeDataStruct>) {
                 acc
             }
 
-        singleMapping.filter { it.key.startsWith("RPC") }.forEach {
-            buildCallChain(singleMapping, it.key)
+        val result: MutableList<ContainerDemand> = mutableListOf()
+
+        singleMapping.filter { it.key.startsWith("RPC") }.map {
+            val call = buildCallChain(singleMapping, it.key)
+            result += ContainerDemand(
+                source_caller = call.last(),
+                call_routes = call,
+                target_url = call.first(),
+                target_http_method = "RPC"
+            )
+
         }
 
-
-        return listOf()
+        return result
     }
 
     /// if start with RPC. try to find the call routers => iterate the value, and value as key to find the next value

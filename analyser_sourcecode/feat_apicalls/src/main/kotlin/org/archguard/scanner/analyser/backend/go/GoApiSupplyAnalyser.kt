@@ -3,12 +3,15 @@ package org.archguard.scanner.analyser.backend.go
 import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
+import org.archguard.context.ContainerDemand
 import org.archguard.context.ContainerService
 import org.archguard.context.ContainerSupply
 import org.archguard.scanner.analyser.base.ApiAnalyser
 
 class GoApiSupplyAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
+    private var demands: List<ContainerDemand> = listOf()
+
     private var apiGroupStack = ArrayDeque<String>()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
@@ -135,8 +138,13 @@ class GoApiSupplyAnalyser : ApiAnalyser {
             ContainerService(
                 name = "",
                 resources = resources,
-                demands = arrayListOf()
+                demands = demands
             )
         )
+    }
+
+    fun analysisDemands(input: List<CodeDataStruct>) {
+        val demands = GoProtobufConsumerAnalyser(input).analysis()
+        this.demands = demands
     }
 }

@@ -55,6 +55,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
                 input.forEach { data ->
                     apiAnalyser.analysisByNode(data, "")
                 }
+                apiAnalyser.analysisDemands(input)
 
                 apiAnalyser
             }
@@ -63,7 +64,6 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
         }
 
         val apiCalls = analyser?.toContainerServices() ?: listOf()
-
         // get all input and filter `.proto` files to analysis
         val protobufs = input.filter { it.FilePath.endsWith(".proto") }
         val protobufApiAnalyser = ProtobufApiAnalyser()
@@ -76,6 +76,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
         val results = (apiCalls + services).mapNotNull {
             if (it.resources.isEmpty() && it.demands.isEmpty()) null else it
         }
+
         client.saveApi(results)
         return results
     }
