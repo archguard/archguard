@@ -44,7 +44,7 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             "java", "kotlin" -> {
                 val apiAnalyser = JavaCompositeApiAnalyser()
                 input.forEach { data ->
-                    apiAnalyser.analysisByNode(data, "")
+                    apiAnalyser.analysisByNode(data, path)
                 }
 
                 apiAnalyser
@@ -53,10 +53,10 @@ class ApiCallAnalyser(override val context: SourceCodeContext) : ASTSourceCodeAn
             "go", "golang" -> {
                 val apiAnalyser = GoApiSupplyAnalyser()
                 input.forEach { data ->
-                    apiAnalyser.analysisByNode(data, "")
+                    apiAnalyser.analysisByNode(data, path)
                 }
-                apiAnalyser.analysisDemands(input)
 
+                apiAnalyser.analysisDemands(input, path)
                 apiAnalyser
             }
 

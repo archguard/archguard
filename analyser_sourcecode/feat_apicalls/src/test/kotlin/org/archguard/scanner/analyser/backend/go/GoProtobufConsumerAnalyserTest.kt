@@ -132,7 +132,7 @@ type B struct {
         val containers = listOf(client, server, service, third)
         val dataStructs = containers.map { it.DataStructures }.flatten()
 
-        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs)
+        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs, "")
         val sourceTargetMap = consumerAnalyser.analyzeAndMapCodePaths(third.DataStructures)
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(

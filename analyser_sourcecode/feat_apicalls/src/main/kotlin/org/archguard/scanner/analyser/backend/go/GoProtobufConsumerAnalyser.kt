@@ -5,17 +5,18 @@ import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 import org.archguard.context.ContainerDemand
 
-class GoProtobufConsumerAnalyser(val dataStructs: List<CodeDataStruct>) {
-    private val allDs: Map<String, List<CodeDataStruct>> = dataStructs.groupBy {
-        it.FilePath.split(".").dropLast(1).joinToString("/")
-    }
-
-    val protobufs = dataStructs.filter { it.FilePath.endsWith(".proto") }
+class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, val workspace: String) {
+    private val allDs: Map<String, List<CodeDataStruct>> = dataStructs
+        .map {
+            it.FilePath = it.FilePath.replace(workspace, "")
+            it
+        }
+        .groupBy {
+            it.FilePath.split(".").dropLast(1).joinToString("/")
+        }
 
     fun analysis(): List<ContainerDemand> {
-        /// "RPC.UserTotalLike" -> path, package , class ,method
         val singleMapping: MutableMap<String, List<String>> = dataStructs
-            .filter { it.FilePath.endsWith(".go") }
             .map { analyzeAndMapCodePaths(listOf(it)) }.reduce { acc, map ->
                 acc.putAll(map)
                 acc

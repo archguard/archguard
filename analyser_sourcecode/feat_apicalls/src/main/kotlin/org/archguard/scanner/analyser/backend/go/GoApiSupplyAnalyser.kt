@@ -143,8 +143,8 @@ class GoApiSupplyAnalyser : ApiAnalyser {
         )
     }
 
-    fun analysisDemands(input: List<CodeDataStruct>) {
-        val demands = GoProtobufConsumerAnalyser(input).analysis()
+    fun analysisDemands(input: List<CodeDataStruct>, path: String) {
+        val demands = GoProtobufConsumerAnalyser(input, path).analysis()
         this.demands = demands
     }
 }
