@@ -136,14 +136,15 @@ class GoApiSupplyAnalyser : ApiAnalyser {
     override fun toContainerServices(): List<ContainerService> {
         return mutableListOf(
             ContainerService(
-                name = "",
+                name = "web",
                 resources = resources,
                 demands = demands
             )
         )
     }
 
-    fun analysisDemands(input: List<CodeDataStruct>, path: String) {
+    fun analysisDemands(input: List<CodeDataStruct>, path: String): List<ContainerDemand> {
         this.demands = GoProtobufConsumerAnalyser(input, path).analysis()
+        return this.demands
     }
 }
