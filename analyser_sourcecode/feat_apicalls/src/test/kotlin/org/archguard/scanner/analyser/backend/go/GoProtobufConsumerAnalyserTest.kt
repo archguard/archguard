@@ -147,18 +147,14 @@ type B struct {
             clientMap["RPC.UserTotalLike"]
         )
 
-        val buildCallChain =
-            consumerAnalyser.buildCallChain((clientMap + sourceTargetMap).toMutableMap(), "RPC.UserTotalLike")
-        assert(buildCallChain.isNotEmpty())
-
-        // RPC.UserTotalLike, go-common/app/service/main/thumbup/rpc/client$Service.UserTotalLike, go-common/app/interface/main/space/service/dynamic$Service.likeVideos
+        val demands = consumerAnalyser.analysis()
         assertEquals(
             listOf(
                 "RPC.UserTotalLike",
                 "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
                 "go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"
             ),
-            buildCallChain
+            demands.first().call_routes
         )
     }
 
