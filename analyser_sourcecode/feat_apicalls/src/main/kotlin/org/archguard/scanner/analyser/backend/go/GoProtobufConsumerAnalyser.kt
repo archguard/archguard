@@ -9,6 +9,8 @@ import java.io.File
 class GoProtobufConsumerAnalyser {
     private val dataStructs: List<CodeDataStruct>
     private val workspace: String
+    private val parentSpace: String
+    private val dsMap: Map<String, List<CodeDataStruct>>
 
     constructor(dataStructs: List<CodeDataStruct>, workspace: String) {
         this.parentSpace = File(workspace).parent
@@ -18,14 +20,10 @@ class GoProtobufConsumerAnalyser {
         }
 
         this.workspace = workspace
-        this.allDs = dataStructs.groupBy {
+        this.dsMap = dataStructs.groupBy {
             it.FilePath.split(".").dropLast(1).joinToString("/")
         }
     }
-
-    private val parentSpace: String
-
-    private val allDs: Map<String, List<CodeDataStruct>>
 
     fun analysis(): List<ContainerDemand> {
         val singleMapping: MutableMap<String, List<String>> =
@@ -104,7 +102,7 @@ class GoProtobufConsumerAnalyser {
 
                             importPath.let {
                                 val import = importMap[it]
-                                val targetFile = allDs[import?.Source ?: return@let]
+                                val targetFile = dsMap[import?.Source ?: return@let]
                                 val source = pathify(ds, function)
                                 val callName = call.FunctionName
 
