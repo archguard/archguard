@@ -1,5 +1,6 @@
 package org.archguard.scanner.analyser.backend.go
 
+import chapi.domain.core.CodeCall
 import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
@@ -94,11 +95,8 @@ class GoProtobufConsumerAnalyser {
                             || call.NodeName.startsWith("Dao")
                             || call.NodeName.startsWith("RPC")
 
-                    if (call.NodeName == "doRPCRequest") {
-                        call.Parameters.getOrNull(3)?.let {
-                            targetToSource[it.TypeValue.removeSurrounding("\"")] = listOf(pathify(ds, function))
-                        }
-                    }
+                    /// todo refactor this
+                    handleSpecCall(call, targetToSource, ds, function)
 
                     if (sourceStruct && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
@@ -157,6 +155,37 @@ class GoProtobufConsumerAnalyser {
         }
 
         return targetToSource
+    }
+
+    /**
+     * TODO()  refactor this to go through the code
+     * ```go
+     * func (c *bubbleRPCClient) MultiAdd(ctx context.Context, in *BubbleMultiAddReq, opts ...liverpc.CallOption) (*BubbleMultiAddResp, error) {
+     * 	out := new(BubbleMultiAddResp)
+     * 	err := doRPCRequest(ctx, c.client, 1, "Bubble.multiAdd", in, out, opts)
+     * 	if err != nil {
+     * 		return nil, err
+     * 	}
+     * 	return out, nil
+     * }
+     *
+     * func doRPCRequest(ctx context.Context, client *liverpc.Client, version int, method string, in, out proto.Message, opts []liverpc.CallOption) (err error) {
+     * 	err = client.Call(ctx, version, method, in, out, opts...)
+     * 	return
+     * }
+     * ```
+     */
+    private fun handleSpecCall(
+        call: CodeCall,
+        targetToSource: MutableMap<String, List<String>>,
+        ds: CodeDataStruct,
+        function: CodeFunction
+    ) {
+        if (call.NodeName == "doRPCRequest") {
+            call.Parameters.getOrNull(3)?.let {
+                targetToSource[it.TypeValue.removeSurrounding("\"")] = listOf(pathify(ds, function))
+            }
+        }
     }
 
     private fun pathify(ds: CodeDataStruct, function: CodeFunction) =
