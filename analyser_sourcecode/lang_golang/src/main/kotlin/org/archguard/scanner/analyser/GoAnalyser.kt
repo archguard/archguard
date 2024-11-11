@@ -14,8 +14,9 @@ class GoAnalyser(override val context: SourceCodeContext) : LanguageSourceCodeAn
 
     override fun analyse(): List<CodeDataStruct> = runBlocking {
         getFilesByPath(context.path) {
+            it.absolutePath.endsWith(".go")
             /// skip .pb.go file
-            it.absolutePath.endsWith(".go") && !it.absolutePath.endsWith(".pb.go") && !it.absolutePath.endsWith(".pbg.go")
+            /// && !it.absolutePath.endsWith(".pb.go") && !it.absolutePath.endsWith(".pbg.go")
         }
             .map { async { analysisByFile(it) } }.awaitAll()
             .flatten()
