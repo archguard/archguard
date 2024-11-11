@@ -6,21 +6,30 @@ import chapi.domain.core.CodeImport
 import org.archguard.context.ContainerDemand
 import java.io.File
 
-class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, val workspace: String) {
-    private val parentSpace: String = File(workspace).parent
+class GoProtobufConsumerAnalyser {
+    private val dataStructs: List<CodeDataStruct>
+    private val workspace: String
 
-    private val allDs: Map<String, List<CodeDataStruct>> = dataStructs
-        .map {
+    constructor(dataStructs: List<CodeDataStruct>, workspace: String) {
+        this.parentSpace = File(workspace).parent
+        this.dataStructs = dataStructs.map {
             it.FilePath = it.FilePath.replace(parentSpace, "").removePrefix("/")
             it
         }
-        .groupBy {
+
+        this.workspace = workspace
+        this.allDs = dataStructs.groupBy {
             it.FilePath.split(".").dropLast(1).joinToString("/")
         }
+    }
+
+    private val parentSpace: String
+
+    private val allDs: Map<String, List<CodeDataStruct>>
 
     fun analysis(): List<ContainerDemand> {
-        val singleMapping: MutableMap<String, List<String>> = dataStructs
-            .map { analyzeAndMapCodePaths(listOf(it)) }.reduce { acc, map ->
+        val singleMapping: MutableMap<String, List<String>> =
+            dataStructs.map { analyzeAndMapCodePaths(listOf(it)) }.reduce { acc, map ->
                 acc.putAll(map)
                 acc
             }
@@ -30,12 +39,8 @@ class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, 
         singleMapping.filter { it.key.startsWith("RPC") }.map {
             val call = buildCallChain(singleMapping, it.key)
             result += ContainerDemand(
-                source_caller = call.last(),
-                call_routes = call,
-                target_url = call.first(),
-                target_http_method = "RPC"
+                source_caller = call.last(), call_routes = call, target_url = call.first(), target_http_method = "RPC"
             )
-
         }
 
         return result
@@ -129,8 +134,5 @@ class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, 
     }
 
     private fun pathify(ds: CodeDataStruct, function: CodeFunction) =
-        ds.FilePath
-            .replace(parentSpace, "")
-            .removePrefix("/")
-            .split(".").dropLast(1).joinToString("/") + "$" + ds.NodeName + "." + function.Name
+        ds.FilePath.split(".").dropLast(1).joinToString("/") + "$" + ds.NodeName + "." + function.Name
 }
