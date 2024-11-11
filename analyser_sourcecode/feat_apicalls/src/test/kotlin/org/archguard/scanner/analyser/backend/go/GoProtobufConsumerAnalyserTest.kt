@@ -163,4 +163,18 @@ type B struct {
             ds.Imports = this.Imports
         }
     }
+
+    /// load rom filr for testing
+//    @Test
+//    fun should_parse_for_projects() {
+//        val file = File("/Volumes/source/archguard/archguard-backend/0_codes.json")
+//        val dataStructs: List<CodeDataStruct> = Json.decodeFromString(file.readText())
+//
+//        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs, "/Users/phodal/test/go-common")
+//        val sourceTargetMap = consumerAnalyser.analysis()
+//
+//        sourceTargetMap.forEach {
+//            println(it)
+//        }
+//    }
 }

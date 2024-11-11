@@ -14,10 +14,10 @@ class GoProtobufConsumerAnalyser {
 
     constructor(dataStructs: List<CodeDataStruct>, workspace: String) {
         this.parentSpace = File(workspace).parent
-        this.dataStructs = dataStructs.map {
+        dataStructs.forEach {
             it.FilePath = it.FilePath.replace(parentSpace, "").removePrefix("/")
-            it
         }
+        this.dataStructs = dataStructs
 
         this.workspace = workspace
         this.dsMap = dataStructs.groupBy {
@@ -26,12 +26,7 @@ class GoProtobufConsumerAnalyser {
     }
 
     fun analysis(): List<ContainerDemand> {
-        val singleMapping: MutableMap<String, List<String>> =
-            dataStructs.map { analyzeAndMapCodePaths(listOf(it)) }.reduce { acc, map ->
-                acc.putAll(map)
-                acc
-            }
-
+        val singleMapping: MutableMap<String, List<String>> = analyzeAndMapCodePaths(dataStructs)
         val result: MutableList<ContainerDemand> = mutableListOf()
 
         singleMapping.filter { it.key.startsWith("RPC") }.map {
@@ -76,15 +71,16 @@ class GoProtobufConsumerAnalyser {
         }
 
         val importMap: MutableMap<String, CodeImport> = mutableMapOf()
-        val imports = codeDataStructs.first().Imports
-        imports.forEach { codeImport ->
-            codeImport.UsageName.forEach {
-                importMap[it] = codeImport
-            }
-        }
-
         val targetToSource: MutableMap<String, List<String>> = mutableMapOf()
+
         codeDataStructs.forEach { ds ->
+            val imports = ds.Imports
+            imports.forEach { codeImport ->
+                codeImport.UsageName.forEach {
+                    importMap[it] = codeImport
+                }
+            }
+
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
                     if (call.NodeName.startsWith("Service") && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
@@ -116,7 +112,9 @@ class GoProtobufConsumerAnalyser {
                             }
                         }
                     } else if (call.NodeName == "Service.client" && call.FunctionName == "Call") {
-                        if (imports.map { it.Source }.contains("net/rpc")) {
+                        /// or handle the net/rpc
+                        if (imports.map { it.Source }
+                                .contains("net/rpc") || imports.any { it.Source.contains("net/rpc") }) {
                             if (call.Parameters.size > 1) {
                                 val secondCall = call.Parameters[1]
                                 targetToSource[secondCall.TypeValue.removeSurrounding("\"")] =
