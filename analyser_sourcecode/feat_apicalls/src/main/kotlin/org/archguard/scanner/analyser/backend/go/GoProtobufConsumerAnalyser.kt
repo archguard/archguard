@@ -89,7 +89,10 @@ class GoProtobufConsumerAnalyser {
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
                     /// resolve NodeName in same package
-                    val sourceStruct = call.NodeName.startsWith("Service") || call.NodeName.startsWith("Dao")
+                    val sourceStruct = call.NodeName.startsWith("Service")
+                            || call.NodeName.startsWith("Dao")
+                            || call.NodeName.startsWith("RPC")
+
                     if (sourceStruct && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
                         val struct = split.first()
