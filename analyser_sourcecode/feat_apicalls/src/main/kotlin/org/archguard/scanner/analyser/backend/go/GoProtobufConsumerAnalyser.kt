@@ -11,6 +11,7 @@ class GoProtobufConsumerAnalyser {
     private val workspace: String
     private val parentSpace: String
     private val dsMap: Map<String, List<CodeDataStruct>>
+    private var packageDsMap: Map<String, List<CodeDataStruct>>
 
     constructor(dataStructs: List<CodeDataStruct>, workspace: String) {
         this.parentSpace = File(workspace).parent
@@ -22,6 +23,10 @@ class GoProtobufConsumerAnalyser {
         this.workspace = workspace
         this.dsMap = dataStructs.groupBy {
             it.FilePath.split(".").dropLast(1).joinToString("/")
+        }
+
+        this.packageDsMap = dataStructs.groupBy {
+            it.FilePath.split("/").dropLast(1).joinToString("/")
         }
     }
 
@@ -83,14 +88,28 @@ class GoProtobufConsumerAnalyser {
 
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
+                    /// resolve NodeName in same package
                     if (call.NodeName.startsWith("Service") && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
                         val struct = split.first()
                         val model = split.drop(1).joinToString(".")
 
                         val serviceStruct = currentDsMap[struct] ?: return@forEach
-                        val serviceField =
+                        var serviceField =
                             serviceStruct.map { it.Fields.filter { field -> field.TypeValue == model } }.flatten()
+
+                        /// lookup current dir to find the service
+                        if (serviceField.isEmpty()) {
+                            // get parent
+                            val parent = ds.FilePath.split("/").dropLast(1).joinToString("/")
+                            val underPackageDs = packageDsMap[parent]
+                            underPackageDs?.forEach { parentDs ->
+                                val parentStruct = parentDs.Fields.filter { field -> field.TypeValue == model }
+                                if (parentStruct.isNotEmpty()) {
+                                    serviceField = parentStruct
+                                }
+                            }
+                        }
 
                         serviceField.forEach { codeField ->
                             val typeType = codeField.TypeType.removePrefix("*")

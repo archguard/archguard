@@ -66,24 +66,7 @@ import (
 type Service struct {
 	dao    *dao.Dao
 	close  bool
-}
-
-func (s *Service) UserTotalLike(c context.Context, business string, mid int64, pn, ps int) (res *model.UserTotalLike, err error) {
-	group, ctx := errgroup.WithContext(c)
-	res = &model.UserTotalLike{}
-	group.Go(func() (err error) {
-		res.List, err = s.UserLikes(ctx, business, mid, pn, ps)
-		return
-	})
-	group.Go(func() (err error) {
-		res.Total, err = s.userTotal(ctx, business, mid)
-		return
-	})
-	if err = group.Wait(); err != nil {
-		res = nil
-		return
-	}
-	return
+    thumbup  *thumbup.Service
 }
 """
 
@@ -93,11 +76,6 @@ package service
 import (
     thumbup "go-common/app/service/main/thumbup/rpc/client"
 )
-
-type Service struct {
-   dao *dao.Dao
-   thumbup  *thumbup.Service
-}
 
 func (s *Service) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.DyActItem, err error) {
 	var (
@@ -118,18 +96,14 @@ func (s *Service) likeVideos(c context.Context, mid int64, pcy bool) (list []*mo
 	}
 	return
 }
-
-type B struct {
-
-}
-
 """.trimIndent()
 
         val client = GoAnalyser().analysis(clientCode, "/root/go-common/app/service/main/thumbup/rpc/client.go")
             .apply { fillImports() }
         val server = GoAnalyser().analysis(serverCode, "/root/go-common/app/service/main/thumbup/server/grpc/server.go")
             .apply { fillImports() }
-        val service = GoAnalyser().analysis(serviceCode, "/root/go-common/app/service/main/thumbup/service/service.go")
+        // /Users/phodal/test/go-common/app/interface/main/space/service/service.go
+        val service = GoAnalyser().analysis(serviceCode, "/root/go-common/app/interface/main/space/service/service.go")
             .apply { fillImports() }
         val third = GoAnalyser().analysis(thirdParty, "/root/go-common/app/interface/main/space/service/dynamic.go")
             .apply { fillImports() }
