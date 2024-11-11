@@ -17,12 +17,12 @@ class GoProtobufConsumerAnalyserTest {
         @Language("Go") val clientCode = """
 package client
             
-import "net/rpc"
+import "go-common/library/net/rpc"
    
 const _userTotalLike = "RPC.UserTotalLike"
 
 type Service struct {
-	client *rpc.Client
+	client *rpc.Client2
 }
 
 func (s *Service) UserTotalLike(c context.Context, arg *model.ArgUserLikes) (res *model.UserTotalLike, err error) {
@@ -63,7 +63,7 @@ import (
    "go-common/app/service/main/thumbup/dao"
 )
 
-type Service struct {
+type Dao struct {
 	dao    *dao.Dao
 	close  bool
     thumbup  *thumbup.Service
@@ -77,7 +77,7 @@ import (
     thumbup "go-common/app/service/main/thumbup/rpc/client"
 )
 
-func (s *Service) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.DyActItem, err error) {
+func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.DyActItem, err error) {
 	var (
 		likes *thumbup.UserTotalLike
 		ip    = metadata.String(c, metadata.RemoteIP)
@@ -115,7 +115,7 @@ func (s *Service) likeVideos(c context.Context, mid int64, pcy bool) (list []*mo
         val sourceTargetMap = consumerAnalyser.analyzeAndMapCodePaths(third.DataStructures)
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(
-            listOf("go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"),
+            listOf("go-common/app/interface/main/space/service/dynamic\$Dao.likeVideos"),
             sourceTargetMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
         )
 
@@ -131,7 +131,7 @@ func (s *Service) likeVideos(c context.Context, mid int64, pcy bool) (list []*mo
             listOf(
                 "RPC.UserTotalLike",
                 "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
-                "go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"
+                "go-common/app/interface/main/space/service/dynamic\$Dao.likeVideos"
             ),
             demands.first().call_routes
         )
