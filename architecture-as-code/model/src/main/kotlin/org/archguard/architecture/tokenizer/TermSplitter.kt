@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.domain.tokenizer
+package org.archguard.architecture.tokenizer
 
 /**
  * The `TermSplitter` object provides methods for splitting an input string into terms based on different naming styles of identifiers.

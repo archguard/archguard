@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.domain.tokenizer
+package org.archguard.architecture.tokenizer
 
 interface RegexTokenizerOptions {
     val pattern: Regex?

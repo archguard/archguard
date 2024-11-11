@@ -2,6 +2,7 @@ package org.archguard.architecture.view.concept
 
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.Serializable
+import org.archguard.architecture.tokenizer.CodeNamingTokenizer
 
 @Serializable
 data class DomainMeta(
@@ -18,9 +19,12 @@ class DomainModel(
     val fields: List<String>,
     val behaviors: List<String>,
     val meta: DomainMeta? = null,
+    val dict: List<String>,
 ) {
     companion object {
         fun from(concepts: List<CodeDataStruct>, workspace: String): List<DomainModel> {
+            val tokenizer = CodeNamingTokenizer()
+
             return concepts.map { ds ->
                 val relativePath = try {
                     ds.FilePath.substring(workspace.length).removePrefix("/")
@@ -43,6 +47,9 @@ class DomainModel(
                         } else {
                             null
                         }
+                    },
+                    dict = tokenizer.tokenize(ds.NodeName) + ds.Functions.flatMap {
+                        tokenizer.tokenize(it.Name)
                     }
                 )
             }

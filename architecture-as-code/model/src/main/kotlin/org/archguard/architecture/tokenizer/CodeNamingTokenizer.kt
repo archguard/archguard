@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.domain.tokenizer
+package org.archguard.architecture.tokenizer
 
 class CodeNamingTokenizer(opts: RegexTokenizerOptions? = null) : RegexpTokenizer(opts) {
     init {
@@ -11,8 +11,16 @@ class CodeNamingTokenizer(opts: RegexTokenizerOptions? = null) : RegexpTokenizer
         )
     }
 
+    /// number regex
+    private val numberPattern = Regex("[0-9]+")
+
     override fun tokenize(input: String): List<String> {
-        val results = whitespacePattern.split(input)
+        var results = whitespacePattern.split(input)
+        /// without number
+        results = results.filter {
+            it.isNotEmpty() && !numberPattern.matches(it)
+        }
+
         return if (discardEmpty) {
             without(results, "", " ").map { it.lowercase() }
         } else {

@@ -11,7 +11,6 @@ import kotlinx.serialization.Serializable
 class ConceptArchitecture(
     val type: ConceptType = ConceptType.CComponent,
     val domainModels: List<DomainModel> = listOf(),
-    val domainWords: List<String> = listOf(),
     val reliability: Float = 0.0f,
     val desc: String = "",
 )

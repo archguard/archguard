@@ -10,7 +10,6 @@ import org.archguard.architecture.view.concept.DomainModel
 import org.archguard.architecture.view.module.ArchitectureStyle
 import org.archguard.context.ContainerService
 import org.archguard.context.PackageDependencies
-import org.archguard.scanner.analyser.domain.DomainDictDetector
 
 /**
  * Workspace is like IDE/Editor's workspace, same as to project.
@@ -32,8 +31,7 @@ class WorkspaceAnalyser(
         val domainModels = DomainModel.from(identPotential.concepts, workspace)
         return ArchitectureView(
             conceptArchitecture = ConceptArchitecture(
-                domainModels = domainModels,
-                domainWords = DomainDictDetector.analysis(domainModels),
+                domainModels = domainModels
             ),
             outboundService = service,
             architectureStyle = ArchitectureStyle.from(identPotential),
