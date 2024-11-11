@@ -126,7 +126,7 @@ type B struct {
         val containers = listOf(client, server, service, third)
         val dataStructs = containers.map { it.DataStructures }.flatten()
 
-        val sourceTargetMap = GoApiConsumerAnalyser.analysis(dataStructs, third)
+        val sourceTargetMap = GoApiConsumerAnalyser(dataStructs).analysis(third)
         println(sourceTargetMap)
     }
 

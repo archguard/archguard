@@ -5,19 +5,18 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 
-object GoApiConsumerAnalyser {
-    fun analysis(dataStructs: List<CodeDataStruct>, third: CodeContainer): MutableMap<String, String> {
-        val allDs: Map<String, List<CodeDataStruct>> = dataStructs.groupBy {
-            it.FilePath.split(".").dropLast(1).joinToString("/")
-        }
+class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
+    private val allDs: Map<String, List<CodeDataStruct>> = dataStructs.groupBy {
+        it.FilePath.split(".").dropLast(1).joinToString("/")
+    }
 
-        val currentDss = third.DataStructures
-        val currentDsMap = currentDss.groupBy {
+    fun analysis(input: CodeContainer): MutableMap<String, String> {
+        val currentDsMap = input.DataStructures.groupBy {
             it.NodeName
         }
 
         val sourceTargetMap: MutableMap<String, String> = mutableMapOf()
-        currentDss.forEach { ds ->
+        input.DataStructures.forEach { ds ->
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
                     if (call.NodeName.startsWith("Service") && call.NodeName.contains(".")) {
@@ -30,7 +29,7 @@ object GoApiConsumerAnalyser {
                             codeDataStruct.map { it.Fields.filter { field -> field.TypeValue == model } }.flatten()
 
                         val importMap: MutableMap<String, CodeImport> = mutableMapOf()
-                        third.Imports.forEach { codeImport ->
+                        input.Imports.forEach { codeImport ->
                             codeImport.UsageName.forEach { it ->
                                 importMap[it] = codeImport
                             }
