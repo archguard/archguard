@@ -1,13 +1,14 @@
 package org.archguard.scanner.analyser.backend.go
 
 import chapi.ast.goast.GoAnalyser
+import chapi.domain.core.CodeContainer
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class GoApiConsumerAnalyserTest {
+class GoProtobufConsumerAnalyserTest {
     @Test
-    fun analysisHelloWorld() {
+    fun analyzeAndMapCodePathsHelloWorld() {
         @Language("Go") val clientCode = """
 package client
             
@@ -120,27 +121,35 @@ type B struct {
 """.trimIndent()
 
         val client = GoAnalyser().analysis(clientCode, "go-common/app/service/main/thumbup/rpc/client.go")
+            .apply { fillImports() }
         val server = GoAnalyser().analysis(serverCode, "go-common/app/service/main/thumbup/server/grpc/server.go")
+            .apply { fillImports() }
         val service = GoAnalyser().analysis(serviceCode, "go-common/app/service/main/thumbup/service/service.go")
+            .apply { fillImports() }
         val third = GoAnalyser().analysis(thirdParty, "go-common/app/interface/main/space/service/dynamic.go")
+            .apply { fillImports() }
 
         val containers = listOf(client, server, service, third)
         val dataStructs = containers.map { it.DataStructures }.flatten()
 
-        val consumerAnalyser = GoApiConsumerAnalyser(dataStructs)
-        val sourceTargetMap = consumerAnalyser.analysis(third)
+        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs)
+        val sourceTargetMap = consumerAnalyser.analyzeAndMapCodePaths(third.DataStructures)
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(
             "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
             sourceTargetMap["go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"]
         )
 
-        val clientMap = consumerAnalyser.analysis(client)
+        val clientMap = consumerAnalyser.analyzeAndMapCodePaths(client.DataStructures)
         assert(clientMap.isNotEmpty())
         assertEquals(
-            "RPC.UserTotalLike",
-            clientMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
+            "RPC.UserTotalLike", clientMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
         )
     }
 
+    private fun CodeContainer.fillImports() {
+        DataStructures.forEach { ds ->
+            ds.Imports = this.Imports
+        }
+    }
 }
