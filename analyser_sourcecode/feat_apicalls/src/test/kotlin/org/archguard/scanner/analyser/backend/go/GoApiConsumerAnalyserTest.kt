@@ -3,6 +3,7 @@ package org.archguard.scanner.analyser.backend.go
 import chapi.ast.goast.GoAnalyser
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 class GoApiConsumerAnalyserTest {
     @Test
@@ -126,8 +127,20 @@ type B struct {
         val containers = listOf(client, server, service, third)
         val dataStructs = containers.map { it.DataStructures }.flatten()
 
-        val sourceTargetMap = GoApiConsumerAnalyser(dataStructs).analysis(third)
-        println(sourceTargetMap)
+        val consumerAnalyser = GoApiConsumerAnalyser(dataStructs)
+        val sourceTargetMap = consumerAnalyser.analysis(third)
+        assert(sourceTargetMap.isNotEmpty())
+        assertEquals(
+            "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
+            sourceTargetMap["go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"]
+        )
+
+        val clientMap = consumerAnalyser.analysis(client)
+        assert(clientMap.isNotEmpty())
+        assertEquals(
+            "RPC.UserTotalLike",
+            clientMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
+        )
     }
 
 }

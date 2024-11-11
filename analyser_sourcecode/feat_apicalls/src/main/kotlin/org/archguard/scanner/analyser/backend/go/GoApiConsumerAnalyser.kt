@@ -26,7 +26,7 @@ class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
         input.DataStructures.forEach { ds ->
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
-                    if (call.NodeName.startsWith("Service") && call.NodeName.contains(".")) {
+                    if (call.NodeName.startsWith("Service") && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
                         val struct = split.first()
                         val model = split.drop(1).joinToString(".")
@@ -41,7 +41,7 @@ class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
 
                             importPath.let {
                                 val import = importMap[it]
-                                val targetFile = allDs[import!!.Source]
+                                val targetFile = allDs[import?.Source ?: return@let]
                                 val source = pathify(ds, function)
                                 val callName = call.FunctionName
 
@@ -52,6 +52,14 @@ class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
                                         }
                                     }
                                 }
+                            }
+                        }
+                    } else if (call.NodeName == "Service.client" && call.FunctionName == "Call") {
+                        if (input.Imports.map { it.Source }.contains("net/rpc")) {
+                            /// get second Call parameters
+                            if (call.Parameters.size > 1) {
+                                val secondCall = call.Parameters[1]
+                                sourceTargetMap[pathify(ds, function)] = secondCall.TypeValue.removeSurrounding("\"")
                             }
                         }
                     }
