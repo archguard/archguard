@@ -5,22 +5,23 @@ import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 import org.archguard.context.ContainerDemand
 
-class GoProtobufConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
+class GoProtobufConsumerAnalyser(val dataStructs: List<CodeDataStruct>) {
     private val allDs: Map<String, List<CodeDataStruct>> = dataStructs.groupBy {
         it.FilePath.split(".").dropLast(1).joinToString("/")
     }
 
     fun analysis(): List<ContainerDemand> {
-        // var source_caller: String = "",
-        //    var call_routes: List<String> = listOf(),
-        //    var base: String = "",
-        //    var target_url: String = "",
-        //    var target_http_method: String = "",
-        //    var call_data: String = ""
+        /// "RPC.UserTotalLike" -> path, package , class ,method
+        val mappings = dataStructs
+            .filter { it.FilePath.endsWith(".go") }
+            .map { analyzeAndMapCodePaths(listOf(it)) }
+
         return listOf()
     }
 
-    fun analyzeAndMapCodePaths(codeDataStructs: List<CodeDataStruct>): MutableMap<String, String> {
+    var potentialCallRoutes: MutableMap<String, String> = mutableMapOf()
+
+    fun analyzeAndMapCodePaths(codeDataStructs: List<CodeDataStruct>): MutableMap<String, List<String>> {
         val currentDsMap = codeDataStructs.groupBy {
             it.NodeName
         }
@@ -33,7 +34,7 @@ class GoProtobufConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
             }
         }
 
-        val sourceTargetMap: MutableMap<String, String> = mutableMapOf()
+        val targetToSource: MutableMap<String, List<String>> = mutableMapOf()
         codeDataStructs.forEach { ds ->
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
@@ -59,7 +60,7 @@ class GoProtobufConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
                                 targetFile?.forEach { ds ->
                                     ds.Functions.forEach { targetFunction ->
                                         if (targetFunction.Name == callName) {
-                                            sourceTargetMap[source] = pathify(ds, targetFunction)
+                                            targetToSource[pathify(ds, targetFunction)] = listOf(source)
                                         }
                                     }
                                 }
@@ -67,10 +68,10 @@ class GoProtobufConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
                         }
                     } else if (call.NodeName == "Service.client" && call.FunctionName == "Call") {
                         if (imports.map { it.Source }.contains("net/rpc")) {
-                            /// get second Call parameters
                             if (call.Parameters.size > 1) {
                                 val secondCall = call.Parameters[1]
-                                sourceTargetMap[pathify(ds, function)] = secondCall.TypeValue.removeSurrounding("\"")
+                                targetToSource[secondCall.TypeValue.removeSurrounding("\"")] =
+                                    listOf(pathify(ds, function))
                             }
                         }
                     }
@@ -78,7 +79,7 @@ class GoProtobufConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
             }
         }
 
-        return sourceTargetMap
+        return targetToSource
     }
 
     private fun pathify(ds: CodeDataStruct, function: CodeFunction) =

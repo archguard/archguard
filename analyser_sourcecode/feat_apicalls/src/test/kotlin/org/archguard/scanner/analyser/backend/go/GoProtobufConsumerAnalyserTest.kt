@@ -136,14 +136,15 @@ type B struct {
         val sourceTargetMap = consumerAnalyser.analyzeAndMapCodePaths(third.DataStructures)
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(
-            "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
-            sourceTargetMap["go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"]
+            listOf("go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"),
+            sourceTargetMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
         )
 
         val clientMap = consumerAnalyser.analyzeAndMapCodePaths(client.DataStructures)
         assert(clientMap.isNotEmpty())
         assertEquals(
-            "RPC.UserTotalLike", clientMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
+            listOf("go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"),
+            clientMap["RPC.UserTotalLike"]
         )
     }
 
