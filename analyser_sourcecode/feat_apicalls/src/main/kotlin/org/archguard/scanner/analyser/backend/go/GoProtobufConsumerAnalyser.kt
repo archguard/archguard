@@ -4,11 +4,14 @@ import chapi.domain.core.CodeDataStruct
 import chapi.domain.core.CodeFunction
 import chapi.domain.core.CodeImport
 import org.archguard.context.ContainerDemand
+import java.io.File
 
 class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, val workspace: String) {
+    private val parentSpace: String = File(workspace).parent
+
     private val allDs: Map<String, List<CodeDataStruct>> = dataStructs
         .map {
-            it.FilePath = it.FilePath.replace(workspace, "")
+            it.FilePath = it.FilePath.replace(parentSpace, "").removePrefix("/")
             it
         }
         .groupBy {
@@ -126,5 +129,8 @@ class GoProtobufConsumerAnalyser(private val dataStructs: List<CodeDataStruct>, 
     }
 
     private fun pathify(ds: CodeDataStruct, function: CodeFunction) =
-        ds.FilePath.split(".").dropLast(1).joinToString("/") + "$" + ds.NodeName + "." + function.Name
+        ds.FilePath
+            .replace(parentSpace, "")
+            .removePrefix("/")
+            .split(".").dropLast(1).joinToString("/") + "$" + ds.NodeName + "." + function.Name
 }

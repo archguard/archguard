@@ -120,19 +120,19 @@ type B struct {
 
 """.trimIndent()
 
-        val client = GoAnalyser().analysis(clientCode, "go-common/app/service/main/thumbup/rpc/client.go")
+        val client = GoAnalyser().analysis(clientCode, "/root/go-common/app/service/main/thumbup/rpc/client.go")
             .apply { fillImports() }
-        val server = GoAnalyser().analysis(serverCode, "go-common/app/service/main/thumbup/server/grpc/server.go")
+        val server = GoAnalyser().analysis(serverCode, "/root/go-common/app/service/main/thumbup/server/grpc/server.go")
             .apply { fillImports() }
-        val service = GoAnalyser().analysis(serviceCode, "go-common/app/service/main/thumbup/service/service.go")
+        val service = GoAnalyser().analysis(serviceCode, "/root/go-common/app/service/main/thumbup/service/service.go")
             .apply { fillImports() }
-        val third = GoAnalyser().analysis(thirdParty, "go-common/app/interface/main/space/service/dynamic.go")
+        val third = GoAnalyser().analysis(thirdParty, "/root/go-common/app/interface/main/space/service/dynamic.go")
             .apply { fillImports() }
 
         val containers = listOf(client, server, service, third)
         val dataStructs = containers.map { it.DataStructures }.flatten()
 
-        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs, "")
+        val consumerAnalyser = GoProtobufConsumerAnalyser(dataStructs, "/root/go-common")
         val sourceTargetMap = consumerAnalyser.analyzeAndMapCodePaths(third.DataStructures)
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(
