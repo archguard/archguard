@@ -15,6 +15,13 @@ class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
             it.NodeName
         }
 
+        val importMap: MutableMap<String, CodeImport> = mutableMapOf()
+        input.Imports.forEach { codeImport ->
+            codeImport.UsageName.forEach {
+                importMap[it] = codeImport
+            }
+        }
+
         val sourceTargetMap: MutableMap<String, String> = mutableMapOf()
         input.DataStructures.forEach { ds ->
             ds.Functions.forEach { function ->
@@ -24,31 +31,24 @@ class GoApiConsumerAnalyser(dataStructs: List<CodeDataStruct>) {
                         val struct = split.first()
                         val model = split.drop(1).joinToString(".")
 
-                        val codeDataStruct = currentDsMap[struct] ?: return@forEach
-                        val field =
-                            codeDataStruct.map { it.Fields.filter { field -> field.TypeValue == model } }.flatten()
+                        val serviceStruct = currentDsMap[struct] ?: return@forEach
+                        val serviceField =
+                            serviceStruct.map { it.Fields.filter { field -> field.TypeValue == model } }.flatten()
 
-                        val importMap: MutableMap<String, CodeImport> = mutableMapOf()
-                        input.Imports.forEach { codeImport ->
-                            codeImport.UsageName.forEach { it ->
-                                importMap[it] = codeImport
-                            }
-                        }
-
-                        field.forEach { codeField ->
+                        serviceField.forEach { codeField ->
                             val typeType = codeField.TypeType.removePrefix("*")
                             val importPath = typeType.split(".").first()
 
                             importPath.let {
                                 val import = importMap[it]
                                 val targetFile = allDs[import!!.Source]
-                                val s = pathify(ds, function)
-                                //
+                                val source = pathify(ds, function)
                                 val callName = call.FunctionName
+
                                 targetFile?.forEach { ds ->
                                     ds.Functions.forEach { targetFunction ->
                                         if (targetFunction.Name == callName) {
-                                            sourceTargetMap[s] = pathify(ds, targetFunction)
+                                            sourceTargetMap[source] = pathify(ds, targetFunction)
                                         }
                                     }
                                 }
