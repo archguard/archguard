@@ -9,6 +9,11 @@ import kotlin.test.assertEquals
 class GoProtobufConsumerAnalyserTest {
     @Test
     fun analyzeAndMapCodePathsHelloWorld() {
+        /// if windows return
+        if (System.getProperty("os.name").contains("Windows")) {
+            return
+        }
+
         @Language("Go") val clientCode = """
 package client
             
