@@ -1,14 +1,14 @@
 package org.archguard.scanner.analyser
 
 import chapi.domain.core.CodeDataStruct
+import org.archguard.context.ContainerService
 import org.archguard.scanner.analyser.backend.CSharpApiAnalyser
-import org.archguard.scanner.analyser.backend.GoApiAnalyser
 import org.archguard.scanner.analyser.backend.JavaCompositeApiAnalyser
 import org.archguard.scanner.analyser.backend.ProtobufApiAnalyser
+import org.archguard.scanner.analyser.backend.go.GoApiAnalyser
 import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.scanner.analyser.frontend.FrontendApiAnalyser
 import org.archguard.scanner.core.sourcecode.ASTSourceCodeAnalyser
-import org.archguard.context.ContainerService
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
 

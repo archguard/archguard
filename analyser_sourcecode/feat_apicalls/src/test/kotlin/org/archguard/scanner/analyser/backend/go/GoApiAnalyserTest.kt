@@ -1,4 +1,4 @@
-package org.archguard.scanner.analyser.backend
+package org.archguard.scanner.analyser.backend.go
 
 import chapi.domain.core.CodeDataStruct
 import kotlinx.serialization.decodeFromString

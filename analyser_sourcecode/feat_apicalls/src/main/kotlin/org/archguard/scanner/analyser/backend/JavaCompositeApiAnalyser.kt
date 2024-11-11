@@ -1,17 +1,17 @@
 package org.archguard.scanner.analyser.backend
 
 import chapi.domain.core.CodeDataStruct
-import org.archguard.scanner.analyser.base.ApiAnalyser
 import org.archguard.context.ContainerDemand
 import org.archguard.context.ContainerService
 import org.archguard.context.ContainerSupply
+import org.archguard.scanner.analyser.base.ApiAnalyser
 
 class JavaCompositeApiAnalyser : ApiAnalyser {
     override var resources: List<ContainerSupply> = listOf()
     var demands: List<ContainerDemand> = listOf()
 
-    var javaSpringAnalyser = JavaSpringAnalyser()
-    var javaDubboAnalyser = JavaDubboAnalyser()
+    private var javaSpringAnalyser = JavaSpringAnalyser()
+    private var javaDubboAnalyser = JavaDubboAnalyser()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         javaSpringAnalyser.analysisByNode(node, workspace)
