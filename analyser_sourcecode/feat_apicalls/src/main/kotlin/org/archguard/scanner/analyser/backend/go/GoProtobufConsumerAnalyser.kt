@@ -10,16 +10,50 @@ class GoProtobufConsumerAnalyser(val dataStructs: List<CodeDataStruct>) {
         it.FilePath.split(".").dropLast(1).joinToString("/")
     }
 
+    val protobufs = dataStructs.filter { it.FilePath.endsWith(".proto") }
+
     fun analysis(): List<ContainerDemand> {
         /// "RPC.UserTotalLike" -> path, package , class ,method
-        val mappings = dataStructs
+        val singleMapping: MutableMap<String, List<String>> = dataStructs
             .filter { it.FilePath.endsWith(".go") }
-            .map { analyzeAndMapCodePaths(listOf(it)) }
+            .map { analyzeAndMapCodePaths(listOf(it)) }.reduce { acc, map ->
+                acc.putAll(map)
+                acc
+            }
+
+        singleMapping.filter { it.key.startsWith("RPC") }.forEach {
+            buildCallChain(singleMapping, it.key)
+        }
+
 
         return listOf()
     }
 
-    var potentialCallRoutes: MutableMap<String, String> = mutableMapOf()
+    /// if start with RPC. try to find the call routers => iterate the value, and value as key to find the next value
+    /// if  classB.methodB call classA.methodA, RPC.someMethod, then the mapping should be
+    //  - "RPC.someMethod" <-- classA.methodA
+    /// - classA.methodA <-- classB.methodB
+    /// But the result should be ["RPC.someMethod", classA.methodA, classB.methodB]
+    fun buildCallChain(reverseMapping: MutableMap<String, List<String>>, target: String): List<String> {
+        val result = mutableListOf<String>()
+        val visited = mutableSetOf<String>()
+
+        fun dfs(node: String) {
+            if (visited.contains(node)) {
+                return
+            }
+
+            visited.add(node)
+            result.add(node)
+
+            reverseMapping[node]?.forEach {
+                dfs(it)
+            }
+        }
+
+        dfs(target)
+        return result
+    }
 
     fun analyzeAndMapCodePaths(codeDataStructs: List<CodeDataStruct>): MutableMap<String, List<String>> {
         val currentDsMap = codeDataStructs.groupBy {

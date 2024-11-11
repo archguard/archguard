@@ -146,6 +146,20 @@ type B struct {
             listOf("go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"),
             clientMap["RPC.UserTotalLike"]
         )
+
+        val buildCallChain =
+            consumerAnalyser.buildCallChain((clientMap + sourceTargetMap).toMutableMap(), "RPC.UserTotalLike")
+        assert(buildCallChain.isNotEmpty())
+
+        // RPC.UserTotalLike, go-common/app/service/main/thumbup/rpc/client$Service.UserTotalLike, go-common/app/interface/main/space/service/dynamic$Service.likeVideos
+        assertEquals(
+            listOf(
+                "RPC.UserTotalLike",
+                "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
+                "go-common/app/interface/main/space/service/dynamic\$Service.likeVideos"
+            ),
+            buildCallChain
+        )
     }
 
     private fun CodeContainer.fillImports() {
