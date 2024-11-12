@@ -118,6 +118,12 @@ Options:
 java -jar scanner_cli.jar --language=Kotlin --features=apicalls --output=http --output=json --path=. --server-url=http://localhost:8080
 ```
 
+Or export to json, upload with `cURL`
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d @0_apis.json http://localhost:3000/api/scanner/1/reporting
+```
+
 ### custom slot like test smell
 
 ```
@@ -129,3 +135,5 @@ java -jar scanner_cli.jar --language=Kotlin --features=apicalls --output=json --
 ```bash
  java  --add-opens=java.base/java.nio=ALL-UNNAMED -jar plugins/scanner-v2.jar --type=source_code --path=. --output=json --language=kotlin --output=arrow
 ```
+
+
