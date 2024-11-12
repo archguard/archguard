@@ -11,7 +11,7 @@ class GoProtobufConsumerAnalyser {
     private val dataStructs: List<CodeDataStruct>
     private val workspace: String
     private val parentSpace: String
-    private val dsMap: Map<String, List<CodeDataStruct>>
+    private val fullPathMap: Map<String, List<CodeDataStruct>>
     private var packageDsMap: Map<String, List<CodeDataStruct>>
 
     constructor(dataStructs: List<CodeDataStruct>, workspace: String) {
@@ -22,7 +22,7 @@ class GoProtobufConsumerAnalyser {
         this.dataStructs = dataStructs
 
         this.workspace = workspace
-        this.dsMap = dataStructs.groupBy {
+        this.fullPathMap = dataStructs.groupBy {
             it.FilePath.split(".").dropLast(1).joinToString("/")
         }
 
@@ -90,23 +90,23 @@ class GoProtobufConsumerAnalyser {
 
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
-                    /// todo refactor this
                     handleSpecCall(call, targetToSource, ds, function)
 
-                    /// resolve NodeName in same package
-                    val sourceStruct = call.NodeName.startsWith("Service")
-                            || call.NodeName.startsWith("Dao")
-                            || call.NodeName.startsWith("RPC")
-
-                    /// handle for normal call
-                    if (sourceStruct && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
+                    if (call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
                         val struct = split.first()
                         val model = split.drop(1).joinToString(".")
 
+                        if (call.FunctionName == "Userstatus") {
+                            println(struct)
+                        }
+
                         val serviceStruct = currentDsMap[struct] ?: return@forEach
                         var serviceField =
-                            serviceStruct.map { it.Fields.filter { field -> field.TypeValue == model } }.flatten()
+                            serviceStruct.map {
+                                it.Fields.filter { field -> field.TypeValue == model }
+                            }
+                                .flatten()
 
                         /// lookup current dir to find the service
                         if (serviceField.isEmpty()) {
@@ -127,7 +127,7 @@ class GoProtobufConsumerAnalyser {
 
                             importPath.let {
                                 val import = importMap[it]
-                                val targetFile = dsMap[import?.Source ?: return@let]
+                                val targetFile = packageDsMap[import?.Source ?: return@let]
                                 val source = pathify(ds, function)
                                 val callName = call.FunctionName
 

@@ -98,7 +98,7 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
 }
 """.trimIndent()
 
-        val client = GoAnalyser().analysis(clientCode, "/root/go-common/app/service/main/thumbup/rpc/client.go")
+        val client = GoAnalyser().analysis(clientCode, "/root/go-common/app/service/main/thumbup/rpc/client/thumpup.go")
             .apply { fillImports() }
         val server = GoAnalyser().analysis(serverCode, "/root/go-common/app/service/main/thumbup/server/grpc/server.go")
             .apply { fillImports() }
@@ -116,13 +116,13 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
         assert(sourceTargetMap.isNotEmpty())
         assertEquals(
             listOf("go-common/app/interface/main/space/service/dynamic\$Dao.likeVideos"),
-            sourceTargetMap["go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"]
+            sourceTargetMap["go-common/app/service/main/thumbup/rpc/client/thumpup\$Service.UserTotalLike"]
         )
 
         val clientMap = consumerAnalyser.analyzeAndMapCodePaths(client.DataStructures)
         assert(clientMap.isNotEmpty())
         assertEquals(
-            listOf("go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike"),
+            listOf("go-common/app/service/main/thumbup/rpc/client/thumpup\$Service.UserTotalLike"),
             clientMap["RPC.UserTotalLike"]
         )
 
@@ -130,10 +130,9 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
         assertEquals(
             listOf(
                 "RPC.UserTotalLike",
-                "go-common/app/service/main/thumbup/rpc/client\$Service.UserTotalLike",
+                "go-common/app/service/main/thumbup/rpc/client/thumpup\$Service.UserTotalLike",
                 "go-common/app/interface/main/space/service/dynamic\$Dao.likeVideos"
-            ),
-            demands.first().call_routes
+            ), demands.first().call_routes
         )
     }
 
@@ -142,7 +141,7 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
             ds.Imports = this.Imports
         }
     }
-
+//
 //    @Test
 //    fun should_parse_for_projects() {
 //        val file = File("/Volumes/source/archguard/archguard-backend/0_codes.json")
