@@ -90,14 +90,15 @@ class GoProtobufConsumerAnalyser {
 
             ds.Functions.forEach { function ->
                 function.FunctionCalls.forEach { call ->
+                    /// todo refactor this
+                    handleSpecCall(call, targetToSource, ds, function)
+
                     /// resolve NodeName in same package
                     val sourceStruct = call.NodeName.startsWith("Service")
                             || call.NodeName.startsWith("Dao")
                             || call.NodeName.startsWith("RPC")
 
-                    /// todo refactor this
-                    handleSpecCall(call, targetToSource, ds, function)
-
+                    /// handle for normal call
                     if (sourceStruct && call.NodeName.contains(".") && !call.NodeName.contains(".client")) {
                         val split = call.NodeName.split(".")
                         val struct = split.first()
@@ -139,10 +140,9 @@ class GoProtobufConsumerAnalyser {
                                 }
                             }
                         }
-                    } else if (call.NodeName == "Service.client" && call.FunctionName == "Call") {
+                    } else if ((call.NodeName == "Service.client") && call.FunctionName == "Call") {
                         /// or handle the net/rpc
-                        if (imports.map { it.Source }
-                                .contains("net/rpc") || imports.any { it.Source.contains("net/rpc") }) {
+                        if (imports.any { it.Source.contains("net/rpc") }) {
                             if (call.Parameters.size > 1) {
                                 val secondCall = call.Parameters[1]
                                 targetToSource[secondCall.TypeValue.removeSurrounding("\"")] =
@@ -176,10 +176,7 @@ class GoProtobufConsumerAnalyser {
      * ```
      */
     private fun handleSpecCall(
-        call: CodeCall,
-        targetToSource: MutableMap<String, List<String>>,
-        ds: CodeDataStruct,
-        function: CodeFunction
+        call: CodeCall, targetToSource: MutableMap<String, List<String>>, ds: CodeDataStruct, function: CodeFunction
     ) {
         if (call.NodeName == "doRPCRequest") {
             call.Parameters.getOrNull(3)?.let {
