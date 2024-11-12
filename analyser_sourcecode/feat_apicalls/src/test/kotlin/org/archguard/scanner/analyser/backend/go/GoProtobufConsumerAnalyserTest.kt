@@ -143,7 +143,6 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
         }
     }
 
-    /// load rom filr for testing
 //    @Test
 //    fun should_parse_for_projects() {
 //        val file = File("/Volumes/source/archguard/archguard-backend/0_codes.json")
@@ -153,7 +152,9 @@ func (s *Dao) likeVideos(c context.Context, mid int64, pcy bool) (list []*model.
 //        val sourceTargetMap = consumerAnalyser.analysis()
 //
 //        sourceTargetMap.forEach {
-//            println(it)
+//            if (it.call_routes.size > 2) {
+//                println(it)
+//            }
 //        }
 //    }
 }
