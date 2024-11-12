@@ -36,7 +36,7 @@ class GoProtobufConsumerAnalyser {
         if (singleMapping.isEmpty()) return listOf()
 
         val result: MutableList<ContainerDemand> = mutableListOf()
-        singleMapping.filter { it.key.startsWith("RPC") || it.key.contains(".") }.map {
+        singleMapping.filter { it.key.startsWith("RPC") && !it.key.contains("/") }.map {
             val call = buildCallChain(singleMapping, it.key)
             result += ContainerDemand(
                 source_caller = call.last(), call_routes = call, target_url = call.first(), target_http_method = "RPC"
