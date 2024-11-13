@@ -1,5 +1,8 @@
 package org.archguard.scanner.analyser
 
+import chapi.domain.core.CodeDataStruct
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.archguard.architecture.ArchitectureView
 import org.archguard.scanner.core.architecture.ArchitectureContext
 import org.archguard.scanner.core.client.ArchGuardClient
@@ -8,6 +11,7 @@ import org.archguard.scanner.core.estimate.EstimateContext
 import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
+import java.io.File
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
@@ -17,23 +21,19 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         val sourceCodeContext = ArchSourceCodeContext(language = context.language, path = context.path)
 
         logger.info("start analysis architecture ---- ${context.language}")
-        val dataStructs = when (context.language) {
-            "java" -> {
-                JavaAnalyser(sourceCodeContext).analyse()
+        /// if
+        var dataStructs: MutableList<CodeDataStruct> = mutableListOf()
+        if (context.withStructureCache) {
+            ///  load and serialize the dataStructs from 0_code.json
+            val file = File("0_code.json")
+            if (file.exists()) {
+                dataStructs = Json.decodeFromString(file.readText())
+            } else {
+                dataStructs = analysisBasedSourceCode(sourceCodeContext)
             }
-
-            "kotlin" -> {
-                KotlinAnalyser(sourceCodeContext).analyse()
-            }
-
-            "go", "golang" -> {
-                GoAnalyser(sourceCodeContext).analyse()
-            }
-
-            else -> {
-                throw IllegalArgumentException("Unsupported language: $context.language")
-            }
-        }.toMutableList()
+        } else {
+            dataStructs = analysisBasedSourceCode(sourceCodeContext)
+        }
 
         logger.info("start analysis proto ---- ${context.language}")
         dataStructs += ProtoAnalyser(sourceCodeContext).analyse()
@@ -67,6 +67,25 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         logger.info("save architecture ---- ${context.language}")
         return listOf(architectureView)
     }
+
+    private fun analysisBasedSourceCode(sourceCodeContext: ArchSourceCodeContext) =
+        when (context.language) {
+            "java" -> {
+                JavaAnalyser(sourceCodeContext).analyse()
+            }
+
+            "kotlin" -> {
+                KotlinAnalyser(sourceCodeContext).analyse()
+            }
+
+            "go", "golang" -> {
+                GoAnalyser(sourceCodeContext).analyse()
+            }
+
+            else -> {
+                throw IllegalArgumentException("Unsupported language: $context.language")
+            }
+        }.toMutableList()
 }
 
 val archGuardClient = EmptyArchGuardClient()
@@ -75,6 +94,7 @@ data class CliArchitectureAnalysisContext(
     override val path: String,
     override val client: ArchGuardClient = archGuardClient,
     override val language: String,
+    override val withStructureCache: Boolean = false
 ) : ArchitectureContext
 
 data class ArchEstimateContext(

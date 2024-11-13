@@ -40,6 +40,8 @@ data class ScannerCommand(
     val withFunctionCode: Boolean = false,
 
     val debug: Boolean = false,
+
+    val withStructureCache: Boolean = false,
 ) {
     private val allAnalyserSpecs = customizedAnalyserSpecs + slots + OfficialAnalyserSpecs.specs()
     fun getAnalyserSpec(identifier: String) = allAnalyserSpecs.find { it.identifier == identifier.lowercase() }

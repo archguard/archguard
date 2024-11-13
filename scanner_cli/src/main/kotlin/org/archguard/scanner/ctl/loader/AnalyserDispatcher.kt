@@ -199,6 +199,7 @@ class ArchitectureWorker(override val command: ScannerCommand) : Worker<Architec
         path = command.path,
         client = command.buildClient(),
         language = command.language!!,
+        withStructureCache = command.withStructureCache,
     )
 
     override fun run() {

@@ -9,10 +9,12 @@ interface ArchitectureContext : Context {
 
     val path: String
     val language: String
+    val withStructureCache: Boolean
 }
 
 class CliArchitectureContext(
     override val path: String,
     override val language: String,
-    override val client: ArchGuardClient
+    override val client: ArchGuardClient,
+    override val withStructureCache: Boolean,
 ) : ArchitectureContext

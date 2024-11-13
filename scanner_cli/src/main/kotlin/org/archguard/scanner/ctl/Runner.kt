@@ -56,6 +56,7 @@ class Runner : CliktCommand(help = "scanner cli") {
     private val until by option(help = "COMMIT ID, the specific revision of the target")
     private val depth by option(help = "INTEGER, the max loop depth").int().default(7)
     private val withFunctionCode by option(help = "BOOLEAN, whether to include the function code").flag(default = false)
+    private val withStructureCache by option(help = "BOOLEAN, whether to enable structure cache").flag(default = false)
     private val debug by option(help = "BOOLEAN, whether to enable debug mode").flag(default = false)
 
     /**
@@ -101,8 +102,9 @@ class Runner : CliktCommand(help = "scanner cli") {
             // additional parameters
             language?.lowercase(), features.map { it.lowercase() }, repoId, branch, startedAt, since, until, depth,
             slotsFromJson,
-            withFunctionCode,
-            debug
+            withFunctionCode = withFunctionCode,
+            debug = debug,
+            withStructureCache = withStructureCache
         )
         AnalyserDispatcher().dispatch(command)
     }
