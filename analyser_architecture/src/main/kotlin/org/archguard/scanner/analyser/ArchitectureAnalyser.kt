@@ -12,6 +12,7 @@ import org.archguard.scanner.core.sca.ScaContext
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.slf4j.LoggerFactory
 import java.io.File
+import kotlin.io.path.Path
 
 class ArchitectureAnalyser(override val context: ArchitectureContext) :
     org.archguard.scanner.core.architecture.ArchitectureAnalyser {
@@ -20,18 +21,20 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
     override fun analyse(): List<ArchitectureView> {
         val sourceCodeContext = ArchSourceCodeContext(language = context.language, path = context.path)
 
-        logger.info("start analysis architecture ---- ${context.language}")
-        /// if
         var dataStructs: MutableList<CodeDataStruct> = mutableListOf()
         if (context.withStructureCache) {
-            ///  load and serialize the dataStructs from 0_code.json
-            val file = File("0_code.json")
+            logger.info("load from structure cache ---- ${context.language}")
+            val path = Path(context.path, "0_codes.json")
+            val file = File(path.toString())
+            logger.info("try to load from structure cache ---- ${file.absolutePath}")
             if (file.exists()) {
                 dataStructs = Json.decodeFromString(file.readText())
             } else {
+                logger.warn("no cache file found ---- ${file.absolutePath}, start analysis architecture ---- ${context.language}")
                 dataStructs = analysisBasedSourceCode(sourceCodeContext)
             }
         } else {
+            logger.info("start analysis architecture ---- ${context.language}")
             dataStructs = analysisBasedSourceCode(sourceCodeContext)
         }
 
@@ -39,8 +42,8 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         dataStructs += ProtoAnalyser(sourceCodeContext).analyse()
 
         logger.info("start analysis sca ---- ${context.language}")
-        val projectDependencies = ScaAnalyser(ArchScaContext(path = context.path, language = context.language))
-            .analysisByPackages()
+        val projectDependencies =
+            ScaAnalyser(ArchScaContext(path = context.path, language = context.language)).analysisByPackages()
 
         logger.info("start analysis api ---- ${context.language}")
         val services = ApiCallAnalyser(sourceCodeContext).analyse(dataStructs)
@@ -68,24 +71,23 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         return listOf(architectureView)
     }
 
-    private fun analysisBasedSourceCode(sourceCodeContext: ArchSourceCodeContext) =
-        when (context.language) {
-            "java" -> {
-                JavaAnalyser(sourceCodeContext).analyse()
-            }
+    private fun analysisBasedSourceCode(sourceCodeContext: ArchSourceCodeContext) = when (context.language) {
+        "java" -> {
+            JavaAnalyser(sourceCodeContext).analyse()
+        }
 
-            "kotlin" -> {
-                KotlinAnalyser(sourceCodeContext).analyse()
-            }
+        "kotlin" -> {
+            KotlinAnalyser(sourceCodeContext).analyse()
+        }
 
-            "go", "golang" -> {
-                GoAnalyser(sourceCodeContext).analyse()
-            }
+        "go", "golang" -> {
+            GoAnalyser(sourceCodeContext).analyse()
+        }
 
-            else -> {
-                throw IllegalArgumentException("Unsupported language: $context.language")
-            }
-        }.toMutableList()
+        else -> {
+            throw IllegalArgumentException("Unsupported language: $context.language")
+        }
+    }.toMutableList()
 }
 
 val archGuardClient = EmptyArchGuardClient()

@@ -5,7 +5,7 @@
 1. Generate the report:
 
 ```bash
-java -jar ../scanner_cli/build/libs/scanner_cli-2.2.0-all.jar --language=go --type=architecture --output=http --server-url=http://localhost:3000 --path=. 
+java -jar ../scanner_cli/build/libs/scanner_cli-2.2.6-all.jar --language=go --with-structure-cache --type=architecture --output=http --server-url=http://localhost:3000 --path=. 
 ```
 
 2. run with JSON output:

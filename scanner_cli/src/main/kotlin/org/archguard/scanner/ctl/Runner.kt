@@ -88,6 +88,8 @@ class Runner : CliktCommand(help = "scanner cli") {
             |until: $until
             |depth: $depth
             |rules: $rules
+            |withFunctionCode: $withFunctionCode
+            |withStructureCache: $withStructureCache
            """.trimIndent()
         )
 
