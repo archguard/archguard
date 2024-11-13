@@ -8,6 +8,7 @@ import org.archguard.architecture.view.code.RepositoryType
 import org.archguard.architecture.view.concept.ConceptArchitecture
 import org.archguard.architecture.view.concept.DomainModel
 import org.archguard.architecture.view.module.ArchitectureStyle
+import org.archguard.context.CodeDatabaseRelation
 import org.archguard.context.ContainerService
 import org.archguard.context.PackageDependencies
 
@@ -24,11 +25,12 @@ class WorkspaceAnalyser(
     val projectDependencies: List<PackageDependencies> = listOf(),
     val service: List<ContainerService> = listOf(),
     val language: String = "Java",
+    val databaseRelations: List<CodeDatabaseRelation> = listOf(),
 ) {
     fun analysis(workspace: String): ArchitectureView {
         val identPotential = ArchitectureDetect().identPotential(this)
-
         val domainModels = DomainModel.from(identPotential.concepts, workspace)
+
         return ArchitectureView(
             conceptArchitecture = ConceptArchitecture(
                 domainModels = domainModels
@@ -42,6 +44,7 @@ class WorkspaceAnalyser(
             physicalStructure = PhysicalStructure(
                 languageEstimate = listOf(),
                 codeStructure = identPotential.physicalStructure,
+                databaseRelations = databaseRelations
             )
         )
     }

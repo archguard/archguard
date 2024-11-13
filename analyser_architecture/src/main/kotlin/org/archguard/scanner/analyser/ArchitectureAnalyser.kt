@@ -48,11 +48,15 @@ class ArchitectureAnalyser(override val context: ArchitectureContext) :
         logger.info("start analysis estimate ---- ${context.language}")
         val languageEstimates = EstimateAnalyser(ArchEstimateContext(context.path)).analyse()
 
+        logger.info("start analysis database relation ---- ${context.language}")
+        val databaseRelations = DataMapAnalyser(sourceCodeContext).analyse(dataStructs)
+
         logger.info("start analysis workspace ---- ${context.language}")
         val architectureView: ArchitectureView = WorkspaceAnalyser(
             dataStructs,
             projectDependencies,
             service = services,
+            databaseRelations = databaseRelations,
             language = context.language
         ).analysis(workspace = context.path)
 

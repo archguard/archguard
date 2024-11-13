@@ -6,8 +6,9 @@ import org.archguard.architecture.view.code.CodeArchitecture
 import org.archguard.architecture.view.code.RepositoryType
 import org.archguard.architecture.view.execution.ExecutionArchitecture
 import org.archguard.architecture.view.module.LayeredArchitecture
-import org.archguard.context.LanguageEstimate
+import org.archguard.context.CodeDatabaseRelation
 import org.archguard.context.ContainerService
+import org.archguard.context.LanguageEstimate
 
 @Serializable
 class ArchitectureView(
@@ -22,8 +23,9 @@ class ArchitectureView(
 )
 
 @Serializable
-data class PhysicalStructure (
+data class PhysicalStructure(
     var languageEstimate: List<LanguageEstimate> = listOf(),
     var codeStructure: TreeNode = TreeNode("root"),
+    var databaseRelations: List<CodeDatabaseRelation> = listOf(),
 )
 
