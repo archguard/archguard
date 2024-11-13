@@ -97,13 +97,9 @@ class GoProtobufConsumerAnalyser {
                         val struct = split.first()
                         val model = split.drop(1).joinToString(".")
 
-                        if (call.FunctionName == "Userstatus") {
-                            println(struct)
-                        }
-
-                        val serviceStruct = currentDsMap[struct] ?: return@forEach
+                        val fieldStruct = currentDsMap[struct] ?: return@forEach
                         var serviceField =
-                            serviceStruct.map {
+                            fieldStruct.map {
                                 it.Fields.filter { field -> field.TypeValue == model }
                             }
                                 .flatten()
@@ -141,7 +137,6 @@ class GoProtobufConsumerAnalyser {
                             }
                         }
                     } else if ((call.NodeName == "Service.client") && call.FunctionName == "Call") {
-                        /// or handle the net/rpc
                         if (imports.any { it.Source.contains("net/rpc") }) {
                             if (call.Parameters.size > 1) {
                                 val secondCall = call.Parameters[1]
