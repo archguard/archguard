@@ -70,11 +70,10 @@ internal class AnalyserDispatcherTest {
         }
 
         private fun mockAnalysers() {
-            val ast = mockk<MutableList<CodeDataStruct>>()
+            val ast = mockk<List<CodeDataStruct>>(relaxed = true)
 
             every { ast.isEmpty() } returns true
             every { ast.size } returns 0
-            every { ast.addAll(any()) } returns true
             every { ast.iterator() } returns mutableListOf<CodeDataStruct>().iterator()
 
             every { languageAnalyser.analyse(null) } returns ast
