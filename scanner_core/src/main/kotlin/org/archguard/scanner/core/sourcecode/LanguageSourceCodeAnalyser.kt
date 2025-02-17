@@ -102,49 +102,41 @@ interface LanguageSourceCodeAnalyser : SourceCodeAnalyser {
      * @return The content of the code snippet specified by the position.
      */
     fun contentByPosition(lines: List<String>, position: CodePosition): String {
-        val startLine = if (position.StartLine == 0) {
-            0
-        } else {
-            position.StartLine - 1
-        }
-        val endLine = if (position.StopLine == 0) {
-            0
-        } else {
-            position.StopLine - 1
-        }
+        // Convert one-based indices to zero-based, with a guard for 0.
+        val startLine: Int = if (position.StartLine == 0) 0 else position.StartLine - 1
+        val endLine: Int = if (position.StopLine == 0) 0 else position.StopLine - 1
 
-        val startLineContent = lines[startLine]
-        val endLineContent = lines[endLine]
+        // Safely get the start and end line contents.
+        val startLineContent: String = lines.getOrElse(startLine) { "" }
+        val endLineContent: String = lines.getOrElse(endLine) { "" }
 
-        val startColumn = if (position.StartLinePosition > startLineContent.length) {
-            if (startLineContent.isBlank()) {
-                0
-            } else {
-                startLineContent.length - 1
-            }
+        // Determine the effective start column.
+        val startColumn: Int = if (position.StartLinePosition > startLineContent.length) {
+            if (startLineContent.isBlank()) 0 else startLineContent.length - 1
         } else {
             position.StartLinePosition
         }
 
-        val endColumn = if (position.StopLinePosition > endLineContent.length) {
-            if (endLineContent.isBlank()) {
-                0
-            } else {
-                endLineContent.length - 1
-            }
+        // Determine the effective end column.
+        val endColumn: Int = if (position.StopLinePosition > endLineContent.length) {
+            if (endLineContent.isBlank()) 0 else endLineContent.length - 1
         } else {
             position.StopLinePosition
         }
 
-        val start = startLineContent.substring(startColumn)
-        val end = endLineContent.substring(0, endColumn)
+        // Extract the substring from the start line.
+        val start: String = startLineContent.substring(startColumn)
+        // Extract the substring from the end line.
+        val end: String = endLineContent.substring(0, endColumn)
 
-        // start + ... + end
+        // Single-line case.
         return if (startLine == endLine) {
             start
         } else {
-            start + lines.subList(startLine + 1, endLine).joinToString("") + end
+            // Rejoin middle lines with "\n" to preserve newline formatting.
+            start + "\n" + lines.subList(startLine + 1, endLine).joinToString(separator = "\n") + "\n" + end
         }
     }
 }
 
+// 
