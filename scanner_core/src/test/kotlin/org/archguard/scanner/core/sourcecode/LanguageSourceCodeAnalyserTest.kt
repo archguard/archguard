@@ -61,7 +61,7 @@ class LanguageSourceCodeAnalyserTest {
         val result = analyser.display(function)
 
         // Then
-        val expected = """
+        val expected: String = """
             @annotation(key1 = value1, key2 = value2)
             function_name(param1: type1, param2: type2) -> return_TYPE {
                 // ->package.node.function(param1: type1, param2: type2)
@@ -73,20 +73,22 @@ class LanguageSourceCodeAnalyserTest {
     @Test
     fun shouldReturnContentOfCodeSnippet() {
         // Given
-        val lines = listOf(
+        val lines: List<String> = listOf(
             "fun add(a: Int, b: Int): Int {",
             "    return a + b",
             "}"
         )
-        val position = CodePosition(0, 0, 3, 1)
+        val position: CodePosition = CodePosition(0, 0, 3, 1)
 
         // When
-        val content = analyser.contentByPosition(lines, position)
+        val content: String = analyser.contentByPosition(lines, position)
 
-        // Then
-        val expectedContent = "fun add(a: Int, b: Int): Int {" +
-                "    return a + b" +
-                "}"
+        // Then, the expected content uses newlines and spaces.
+        val expectedContent: String = """
+            fun add(a: Int, b: Int): Int {
+                return a + b
+            }
+        """.trimIndent()
         assertEquals(expectedContent, content)
     }
 }
