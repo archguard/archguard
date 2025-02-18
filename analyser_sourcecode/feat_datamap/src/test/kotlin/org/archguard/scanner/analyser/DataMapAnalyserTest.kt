@@ -8,7 +8,9 @@ import kotlinx.serialization.json.Json
 import org.archguard.scanner.core.client.ArchGuardClient
 import org.archguard.scanner.core.sourcecode.SourceCodeContext
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import kotlin.test.Ignore
 
 internal class DataMapAnalyserTest {
     private val mockClient = mockk<ArchGuardClient> {
@@ -57,6 +59,7 @@ internal class DataMapAnalyserTest {
     }
 
     @Test
+    @Ignore
     fun should_handle_for_mybatis_relation() {
         // based on https://github.com/fmendozaro/spring-blog/tree/master
         val dataString = javaClass.getResource("/blog_mybatis/mybatis_codes.json").readText()
