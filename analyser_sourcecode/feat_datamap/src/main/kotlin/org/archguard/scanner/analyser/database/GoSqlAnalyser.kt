@@ -13,7 +13,9 @@ class GoSqlAnalyser {
 
         node.Functions.map { codeFunction ->
             codeFunction.FunctionCalls.map { call ->
-                if (call.NodeName.contains("sql.DB") || call.NodeName == "Dao.db") {
+                // Check for database method calls on any object (sql.DB, Dao.db, or transaction objects like tx)
+                if (call.NodeName.contains("sql.DB") || call.NodeName == "Dao.db" ||
+                    call.FunctionName in listOf("Raw", "Query", "QueryRow", "Exec")) {
                     when (call.FunctionName) {
                         "Raw", "Query", "QueryRow", "Exec" -> {
                             val firstParameter = call.Parameters.firstOrNull()?.TypeValue ?: ""
@@ -54,6 +56,7 @@ class GoSqlAnalyser {
                 sqls = listOf(sql)
             )
         } else {
+            // First try exact match
             codeFunction.LocalVariables.filter { it.TypeValue == parameter }.forEach {
                 val sql = postFixSql(it.TypeType.removeSurrounding("\""))
                 val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
@@ -67,6 +70,28 @@ class GoSqlAnalyser {
                     tables = tables,
                     sqls = listOf(sql)
                 )
+            }
+
+            // Handle complex expressions like fmt.Sprintf(_listCheckSQL, args) + " AND "
+            // Extract SQL constant references (identifiers starting with _ and ending with SQL)
+            val sqlConstantPattern = Regex("""_\w+SQL""")
+            val matches = sqlConstantPattern.findAll(parameter)
+            for (match in matches) {
+                val constantName = match.value
+                codeFunction.LocalVariables.filter { it.TypeValue == constantName }.forEach {
+                    val sql = postFixSql(it.TypeType.removeSurrounding("\""))
+                    val tables = MysqlIdentApp.analysis(sql)?.tableNames ?: emptyList()
+                    if (tables.isEmpty()) {
+                        return null
+                    }
+                    return CodeDatabaseRelation(
+                        packageName = packageName,
+                        className = node.NodeName,
+                        functionName = codeFunction.Name,
+                        tables = tables,
+                        sqls = listOf(sql)
+                    )
+                }
             }
         }
 
