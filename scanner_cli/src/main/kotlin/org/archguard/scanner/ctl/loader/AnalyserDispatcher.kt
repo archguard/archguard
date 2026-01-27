@@ -31,16 +31,22 @@ import org.slf4j.LoggerFactory
 class AnalyserDispatcher {
     fun dispatch(command: ScannerCommand) {
         when (command.type) {
-            AnalyserType.SOURCE_CODE -> SourceCodeWorker(command)
-            AnalyserType.GIT -> GitWorker(command)
-            AnalyserType.DIFF_CHANGES -> DiffChangesWorker(command)
-            AnalyserType.SCA -> ScaWorker(command)
-            AnalyserType.RULE -> RuleWorker(command)
-            AnalyserType.ESTIMATE -> EstimateWorker(command)
-            AnalyserType.ARCHITECTURE -> ArchitectureWorker(command)
-            AnalyserType.OPENAPI -> OpenApiWorker(command)
-            AnalyserType.DOCUMENT -> DocumentWorker(command)
-        }.run()
+            AnalyserType.SOURCE_CODE -> SourceCodeWorker(command).run()
+            AnalyserType.GIT -> GitWorker(command).run()
+            AnalyserType.DIFF_CHANGES -> DiffChangesWorker(command).run()
+            AnalyserType.SCA -> ScaWorker(command).run()
+            AnalyserType.RULE -> RuleWorker(command).run()
+            AnalyserType.ESTIMATE -> EstimateWorker(command).run()
+            AnalyserType.ARCHITECTURE -> ArchitectureWorker(command).run()
+            AnalyserType.OPENAPI -> OpenApiWorker(command).run()
+            AnalyserType.DOCUMENT -> DocumentWorker(command).run()
+            AnalyserType.RUNTIME,
+            AnalyserType.TELEMETRY,
+            -> {
+                LoggerFactory.getLogger(this.javaClass)
+                    .warn("AnalyserType ${command.type} is not supported by scanner_cli yet")
+            }
+        }
     }
 }
 

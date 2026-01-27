@@ -19,7 +19,9 @@ enum class AnalyserType {
     ARCHITECTURE,
     ESTIMATE,
     OPENAPI,
-    DOCUMENT
+    DOCUMENT,
+    RUNTIME,          // Runtime monitoring and APM
+    TELEMETRY         // Telemetry data collection
     ;
 
     companion object {
