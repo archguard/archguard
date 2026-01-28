@@ -1,0 +1,123 @@
+[
+  {
+    "NodeName": "OrderServiceClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "getOrders",
+        "ReturnType": "List<Order>",
+        "Parameters": [],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "RequestMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/orders\""
+              },
+              {
+                "Key": "method",
+                "Value": "RequestMethod.GET"
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 4,
+              "StopLine": 10,
+              "StopLinePosition": 60
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 11,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 40
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      },
+      {
+        "Name": "createOrder",
+        "ReturnType": "Order",
+        "Parameters": [
+          {
+            "TypeValue": "order",
+            "TypeType": "Order"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "RequestMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/orders\""
+              },
+              {
+                "Key": "method",
+                "Value": "RequestMethod.POST"
+              }
+            ],
+            "Position": {
+              "StartLine": 14,
+              "StartLinePosition": 4,
+              "StopLine": 14,
+              "StopLinePosition": 62
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 15,
+          "StartLinePosition": 4,
+          "StopLine": 15,
+          "StopLinePosition": 45
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "value",
+            "Value": "\"order-service\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 40
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.openfeign.FeignClient"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.RequestMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.RequestMethod"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.RequestBody"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 17,
+      "StopLinePosition": 1
+    }
+  }
+]

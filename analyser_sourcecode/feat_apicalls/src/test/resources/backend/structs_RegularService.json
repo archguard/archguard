@@ -1,0 +1,49 @@
+[
+  {
+    "NodeName": "RegularService",
+    "Module": "root",
+    "Type": "CLASS",
+    "Package": "com.example.service",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "doSomething",
+        "ReturnType": "void",
+        "Parameters": [],
+        "FunctionCalls": [],
+        "Annotations": [],
+        "Position": {
+          "StartLine": 8,
+          "StartLinePosition": 4,
+          "StopLine": 10,
+          "StopLinePosition": 5
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "Service",
+        "KeyValues": [],
+        "Position": {
+          "StartLine": 6,
+          "StartLinePosition": 0,
+          "StopLine": 6,
+          "StopLinePosition": 8
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.stereotype.Service"
+      }
+    ],
+    "Position": {
+      "StartLine": 6,
+      "StartLinePosition": 0,
+      "StopLine": 11,
+      "StopLinePosition": 1
+    }
+  }
+]

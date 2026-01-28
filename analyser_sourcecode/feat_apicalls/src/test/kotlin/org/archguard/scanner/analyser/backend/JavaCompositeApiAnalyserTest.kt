@@ -109,4 +109,40 @@ internal class JavaCompositeApiAnalyserTest {
         // supplyType
         assertEquals(ServiceSupplyType.DUBBO_API, resources[0].supplyType)
     }
+
+    @Test
+    fun identFeignClientDemands() {
+        val nodes = loadNodes("backend/structs_FeignClient.json")
+        val apiAnalyser = JavaFeignClientAnalyser()
+        nodes.forEach {
+            apiAnalyser.analysisByNode(it, "")
+        }
+
+        val services = apiAnalyser.toContainerServices()
+        assertEquals(4, services[0].demands.size)
+        assertEquals(0, services[0].resources.size)
+
+        val demands = services[0].demands
+        // Verify all HTTP methods are captured
+        val methods = demands.map { it.target_http_method }.toSet()
+        assertEquals(setOf("GET", "POST", "PUT", "DELETE"), methods)
+    }
+
+    @Test
+    fun compositeAnalyserShouldIncludeFeignClient() {
+        val nodes = loadNodes("backend/structs_FeignClient.json")
+        val compositeAnalyser = JavaCompositeApiAnalyser()
+        nodes.forEach {
+            compositeAnalyser.analysisByNode(it, "")
+        }
+
+        val services = compositeAnalyser.toContainerServices()
+        // The composite analyser returns separate services from each sub-analyser
+        val allDemands = services.flatMap { it.demands }
+        assertEquals(4, allDemands.size)
+        
+        // Verify FeignClient demands are present
+        val feignDemands = allDemands.filter { it.base == "user-service" }
+        assertEquals(4, feignDemands.size)
+    }
 }

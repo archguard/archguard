@@ -12,14 +12,18 @@ class JavaCompositeApiAnalyser : ApiAnalyser {
 
     private var javaSpringAnalyser = JavaSpringAnalyser()
     private var javaDubboAnalyser = JavaDubboAnalyser()
+    private var javaFeignClientAnalyser = JavaFeignClientAnalyser()
 
     override fun analysisByNode(node: CodeDataStruct, workspace: String) {
         javaSpringAnalyser.analysisByNode(node, workspace)
         javaDubboAnalyser.analysisByNode(node, workspace)
+        javaFeignClientAnalyser.analysisByNode(node, workspace)
     }
 
     override fun toContainerServices(): List<ContainerService> {
-        return javaSpringAnalyser.toContainerServices() + javaDubboAnalyser.toContainerServices()
+        return javaSpringAnalyser.toContainerServices() + 
+               javaDubboAnalyser.toContainerServices() + 
+               javaFeignClientAnalyser.toContainerServices()
     }
 }
 

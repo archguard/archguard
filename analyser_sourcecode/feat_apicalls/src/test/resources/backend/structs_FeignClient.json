@@ -1,0 +1,209 @@
+[
+  {
+    "NodeName": "UserServiceClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "getUserById",
+        "ReturnType": "User",
+        "Parameters": [
+          {
+            "TypeValue": "id",
+            "TypeType": "Long"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "GetMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/users/{id}\""
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 4,
+              "StopLine": 10,
+              "StopLinePosition": 30
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 11,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 50
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      },
+      {
+        "Name": "createUser",
+        "ReturnType": "User",
+        "Parameters": [
+          {
+            "TypeValue": "user",
+            "TypeType": "User"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "PostMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/users\""
+              }
+            ],
+            "Position": {
+              "StartLine": 14,
+              "StartLinePosition": 4,
+              "StopLine": 14,
+              "StopLinePosition": 25
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 15,
+          "StartLinePosition": 4,
+          "StopLine": 15,
+          "StopLinePosition": 40
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      },
+      {
+        "Name": "updateUser",
+        "ReturnType": "User",
+        "Parameters": [
+          {
+            "TypeValue": "id",
+            "TypeType": "Long"
+          },
+          {
+            "TypeValue": "user",
+            "TypeType": "User"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "PutMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/users/{id}\""
+              }
+            ],
+            "Position": {
+              "StartLine": 18,
+              "StartLinePosition": 4,
+              "StopLine": 18,
+              "StopLinePosition": 30
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 19,
+          "StartLinePosition": 4,
+          "StopLine": 19,
+          "StopLinePosition": 55
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      },
+      {
+        "Name": "deleteUser",
+        "ReturnType": "void",
+        "Parameters": [
+          {
+            "TypeValue": "id",
+            "TypeType": "Long"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "DeleteMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/users/{id}\""
+              }
+            ],
+            "Position": {
+              "StartLine": 22,
+              "StartLinePosition": 4,
+              "StopLine": 22,
+              "StopLinePosition": 32
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 23,
+          "StartLinePosition": 4,
+          "StopLine": 23,
+          "StopLinePosition": 35
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "name",
+            "Value": "\"user-service\""
+          },
+          {
+            "Key": "path",
+            "Value": "\"/api/v1\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 55
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.openfeign.FeignClient"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.GetMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PostMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PutMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.DeleteMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PathVariable"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.RequestBody"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 25,
+      "StopLinePosition": 1
+    }
+  }
+]

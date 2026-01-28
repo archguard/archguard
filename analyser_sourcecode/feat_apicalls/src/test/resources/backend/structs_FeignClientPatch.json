@@ -1,0 +1,88 @@
+[
+  {
+    "NodeName": "PatchServiceClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "patchResource",
+        "ReturnType": "Resource",
+        "Parameters": [
+          {
+            "TypeValue": "id",
+            "TypeType": "Long"
+          },
+          {
+            "TypeValue": "updates",
+            "TypeType": "Map<String, Object>"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "PatchMapping",
+            "KeyValues": [
+              {
+                "Key": "path",
+                "Value": "\"/resources/{id}\""
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 4,
+              "StopLine": 10,
+              "StopLinePosition": 40
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 11,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 70
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "name",
+            "Value": "\"patch-service\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 38
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.openfeign.FeignClient"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PatchMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PathVariable"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.RequestBody"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 13,
+      "StopLinePosition": 1
+    }
+  }
+]

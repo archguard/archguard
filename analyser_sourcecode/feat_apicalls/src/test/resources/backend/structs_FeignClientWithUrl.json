@@ -1,0 +1,77 @@
+[
+  {
+    "NodeName": "ExternalApiClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "getData",
+        "ReturnType": "String",
+        "Parameters": [],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "GetMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/data\""
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 4,
+              "StopLine": 10,
+              "StopLinePosition": 25
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 11,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 30
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "name",
+            "Value": "\"external-api\""
+          },
+          {
+            "Key": "url",
+            "Value": "\"http://api.external.com\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 70
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.openfeign.FeignClient"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.GetMapping"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 13,
+      "StopLinePosition": 1
+    }
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "NodeName": "NoMethodAnnotationClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "someMethod",
+        "ReturnType": "String",
+        "Parameters": [],
+        "FunctionCalls": [],
+        "Annotations": [],
+        "Position": {
+          "StartLine": 10,
+          "StartLinePosition": 4,
+          "StopLine": 10,
+          "StopLinePosition": 30
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "name",
+            "Value": "\"some-service\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 35
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.openfeign.FeignClient"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 12,
+      "StopLinePosition": 1
+    }
+  }
+]

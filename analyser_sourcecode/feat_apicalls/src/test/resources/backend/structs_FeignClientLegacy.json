@@ -1,0 +1,81 @@
+[
+  {
+    "NodeName": "LegacyServiceClient",
+    "Module": "root",
+    "Type": "INTERFACE",
+    "Package": "com.example.client.legacy",
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "getResource",
+        "ReturnType": "Resource",
+        "Parameters": [
+          {
+            "TypeValue": "id",
+            "TypeType": "String"
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [
+          {
+            "Name": "GetMapping",
+            "KeyValues": [
+              {
+                "Key": "value",
+                "Value": "\"/resources/{id}\""
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 4,
+              "StopLine": 10,
+              "StopLinePosition": 35
+            }
+          }
+        ],
+        "Position": {
+          "StartLine": 11,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 50
+        },
+        "LocalVariables": [],
+        "BodyHash": 0
+      }
+    ],
+    "Annotations": [
+      {
+        "Name": "FeignClient",
+        "KeyValues": [
+          {
+            "Key": "name",
+            "Value": "\"legacy-service\""
+          }
+        ],
+        "Position": {
+          "StartLine": 7,
+          "StartLinePosition": 0,
+          "StopLine": 7,
+          "StopLinePosition": 40
+        }
+      }
+    ],
+    "Imports": [
+      {
+        "Source": "org.springframework.cloud.netflix.feign.FeignClient"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.GetMapping"
+      },
+      {
+        "Source": "org.springframework.web.bind.annotation.PathVariable"
+      }
+    ],
+    "Position": {
+      "StartLine": 7,
+      "StartLinePosition": 0,
+      "StopLine": 13,
+      "StopLinePosition": 1
+    }
+  }
+]
