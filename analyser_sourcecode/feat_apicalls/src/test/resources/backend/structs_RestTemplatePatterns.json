@@ -1,0 +1,389 @@
+[
+  {
+    "NodeName": "UserApiClient",
+    "Module": "",
+    "Type": "CLASS",
+    "Package": "com.example.client",
+    "FilePath": "/src/main/kotlin/com/example/client/UserApiClient.kt",
+    "Fields": [
+      {
+        "TypeType": "kotlin.String",
+        "TypeKey": "apiHost",
+        "Annotaiton": [],
+        "Modifiers": ["val"],
+        "Calls": []
+      }
+    ],
+    "MultipleExtend": [],
+    "Implements": [],
+    "Functions": [
+      {
+        "Name": "PrimaryConstructor",
+        "Package": "com.example.client",
+        "ReturnType": "com.example.client.UserApiClient",
+        "MultipleReturns": [],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "apiHost",
+            "TypeType": "kotlin.String",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "Position": {
+          "StartLine": 8,
+          "StartLinePosition": 20,
+          "StopLine": 8,
+          "StopLinePosition": 60
+        },
+        "LocalVariables": [],
+        "IsConstructor": true
+      },
+      {
+        "Name": "getUser",
+        "Package": "com.example.client",
+        "ReturnType": "com.example.model.User",
+        "MultipleReturns": [],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "userId",
+            "TypeType": "kotlin.String",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [
+          {
+            "Package": "org.springframework.web.client.RestTemplate",
+            "NodeName": "RestTemplate",
+            "FunctionName": "RestTemplate",
+            "Parameters": [],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 20,
+              "StopLine": 10,
+              "StopLinePosition": 100
+            }
+          },
+          {
+            "Package": "org.springframework.web.client",
+            "NodeName": "RestTemplate",
+            "FunctionName": "getForObject",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "$apiHost/users/$userId",
+                "TypeType": "kotlin.String",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "User::class.java",
+                "TypeType": "",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ],
+            "Position": {
+              "StartLine": 10,
+              "StartLinePosition": 20,
+              "StopLine": 10,
+              "StopLinePosition": 100
+            }
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "Position": {
+          "StartLine": 9,
+          "StartLinePosition": 4,
+          "StopLine": 11,
+          "StopLinePosition": 4
+        },
+        "LocalVariables": []
+      },
+      {
+        "Name": "createUser",
+        "Package": "com.example.client",
+        "ReturnType": "com.example.model.User",
+        "MultipleReturns": [],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "user",
+            "TypeType": "com.example.model.User",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [
+          {
+            "Package": "org.springframework.web.client.RestTemplate",
+            "NodeName": "RestTemplate",
+            "FunctionName": "RestTemplate",
+            "Parameters": [],
+            "Position": {
+              "StartLine": 14,
+              "StartLinePosition": 20,
+              "StopLine": 14,
+              "StopLinePosition": 100
+            }
+          },
+          {
+            "Package": "org.springframework.web.client",
+            "NodeName": "RestTemplate",
+            "FunctionName": "postForObject",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "${apiHost}/users",
+                "TypeType": "kotlin.String",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "user",
+                "TypeType": "com.example.model.User",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "User::class.java",
+                "TypeType": "",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ],
+            "Position": {
+              "StartLine": 14,
+              "StartLinePosition": 20,
+              "StopLine": 14,
+              "StopLinePosition": 100
+            }
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "Position": {
+          "StartLine": 13,
+          "StartLinePosition": 4,
+          "StopLine": 15,
+          "StopLinePosition": 4
+        },
+        "LocalVariables": []
+      },
+      {
+        "Name": "updateUser",
+        "Package": "com.example.client",
+        "ReturnType": "kotlin.Unit",
+        "MultipleReturns": [],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "userId",
+            "TypeType": "kotlin.String",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          },
+          {
+            "Modifiers": [],
+            "TypeValue": "user",
+            "TypeType": "com.example.model.User",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [
+          {
+            "Package": "org.springframework.web.client.RestTemplate",
+            "NodeName": "RestTemplate",
+            "FunctionName": "RestTemplate",
+            "Parameters": [],
+            "Position": {
+              "StartLine": 18,
+              "StartLinePosition": 20,
+              "StopLine": 18,
+              "StopLinePosition": 100
+            }
+          },
+          {
+            "Package": "org.springframework.web.client",
+            "NodeName": "RestTemplate",
+            "FunctionName": "put",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "$apiHost/users/$userId",
+                "TypeType": "kotlin.String",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              },
+              {
+                "Modifiers": [],
+                "TypeValue": "user",
+                "TypeType": "com.example.model.User",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ],
+            "Position": {
+              "StartLine": 18,
+              "StartLinePosition": 20,
+              "StopLine": 18,
+              "StopLinePosition": 100
+            }
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "Position": {
+          "StartLine": 17,
+          "StartLinePosition": 4,
+          "StopLine": 19,
+          "StopLinePosition": 4
+        },
+        "LocalVariables": []
+      },
+      {
+        "Name": "deleteUser",
+        "Package": "com.example.client",
+        "ReturnType": "kotlin.Unit",
+        "MultipleReturns": [],
+        "Parameters": [
+          {
+            "Modifiers": [],
+            "TypeValue": "userId",
+            "TypeType": "kotlin.String",
+            "Annotations": [],
+            "ObjectValue": [],
+            "ReturnTypes": [],
+            "Parameters": []
+          }
+        ],
+        "FunctionCalls": [
+          {
+            "Package": "org.springframework.web.client.RestTemplate",
+            "NodeName": "RestTemplate",
+            "FunctionName": "RestTemplate",
+            "Parameters": [],
+            "Position": {
+              "StartLine": 22,
+              "StartLinePosition": 20,
+              "StopLine": 22,
+              "StopLinePosition": 100
+            }
+          },
+          {
+            "Package": "org.springframework.web.client",
+            "NodeName": "RestTemplate",
+            "FunctionName": "delete",
+            "Parameters": [
+              {
+                "Modifiers": [],
+                "TypeValue": "$apiHost/users/$userId",
+                "TypeType": "kotlin.String",
+                "Annotations": [],
+                "ObjectValue": [],
+                "ReturnTypes": [],
+                "Parameters": []
+              }
+            ],
+            "Position": {
+              "StartLine": 22,
+              "StartLinePosition": 20,
+              "StopLine": 22,
+              "StopLinePosition": 100
+            }
+          }
+        ],
+        "Annotations": [],
+        "Modifiers": [],
+        "InnerStructures": [],
+        "InnerFunctions": [],
+        "Position": {
+          "StartLine": 21,
+          "StartLinePosition": 4,
+          "StopLine": 23,
+          "StopLinePosition": 4
+        },
+        "LocalVariables": []
+      }
+    ],
+    "InnerStructures": [],
+    "Annotations": [
+      {
+        "Name": "Component",
+        "KeyValues": []
+      }
+    ],
+    "FunctionCalls": [],
+    "Parameters": [],
+    "Imports": [
+      {
+        "Source": "com.example.model.User",
+        "AsName": "User",
+        "UsageName": []
+      },
+      {
+        "Source": "org.springframework.beans.factory.annotation.Value",
+        "AsName": "Value",
+        "UsageName": []
+      },
+      {
+        "Source": "org.springframework.stereotype.Component",
+        "AsName": "Component",
+        "UsageName": []
+      },
+      {
+        "Source": "org.springframework.web.client.RestTemplate",
+        "AsName": "RestTemplate",
+        "UsageName": []
+      }
+    ],
+    "Exports": [],
+    "Position": {
+      "StartLine": 6,
+      "StopLine": 25
+    }
+  }
+]

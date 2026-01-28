@@ -5,6 +5,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.archguard.context.ServiceSupplyType
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -89,6 +90,48 @@ internal class JavaCompositeApiAnalyserTest {
 
         val services = apiAnalyser.toContainerServices()
         assertEquals(1, services[0].demands.size)
+
+        // Verify that URL template variables are resolved to path parameters
+        val demand = services[0].demands[0]
+        assertEquals("QualityGateClientImpl", demand.source_caller)
+        assertEquals("Get", demand.target_http_method)
+        // $baseUrl and $qualityGateName should be replaced with {baseUrl} and {qualityGateName}
+        assertEquals("{baseUrl}/api/quality-gate-profile/{qualityGateName}", demand.target_url)
+    }
+
+    @Test
+    fun identRestTemplateCallWithDifferentPatterns() {
+        val nodes = loadNodes("backend/structs_RestTemplatePatterns.json")
+        val apiAnalyser = JavaSpringAnalyser()
+        nodes.forEach {
+            apiAnalyser.analysisByNode(it, "")
+        }
+
+        val services = apiAnalyser.toContainerServices()
+        val demands = services[0].demands
+
+        // Should handle multiple RestTemplate calls with different HTTP methods
+        assertEquals(4, demands.size)
+
+        // Verify GET request with simple variable
+        val getDemand = demands.find { it.target_http_method == "Get" }
+        assertNotNull(getDemand)
+        assertEquals("{apiHost}/users/{userId}", getDemand!!.target_url)
+
+        // Verify POST request with brace variable ${varName}
+        val postDemand = demands.find { it.target_http_method == "Post" }
+        assertNotNull(postDemand)
+        assertEquals("{apiHost}/users", postDemand!!.target_url)
+
+        // Verify PUT request
+        val putDemand = demands.find { it.target_http_method == "Put" }
+        assertNotNull(putDemand)
+        assertEquals("{apiHost}/users/{userId}", putDemand!!.target_url)
+
+        // Verify DELETE request
+        val deleteDemand = demands.find { it.target_http_method == "Delete" }
+        assertNotNull(deleteDemand)
+        assertEquals("{apiHost}/users/{userId}", deleteDemand!!.target_url)
     }
 
     @Test

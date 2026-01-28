@@ -60,6 +60,8 @@ class JavaSpringAnalyser: ApiAnalyser {
                 var url = ""
                 if (call.Parameters.isNotEmpty() && call.Parameters[0].TypeValue.isNotEmpty()) {
                     url = call.Parameters[0].TypeValue.removePrefix("\"").removeSuffix("\"")
+                    // Resolve URL template variables from class fields and method parameters
+                    url = resolveUrlVariables(url, node, it)
                 }
 
                 if (method.isNotEmpty()) {
@@ -71,6 +73,47 @@ class JavaSpringAnalyser: ApiAnalyser {
                 }
             }
         }
+    }
+
+    /**
+     * Resolve URL template variables by replacing Kotlin/Java string template variables
+     * (e.g., $varName or ${varName}) with path parameter placeholders (e.g., {varName}).
+     * This helps with API matching and dependency analysis.
+     *
+     * @param url The URL template that may contain variable references
+     * @param node The class containing fields that may be referenced
+     * @param function The function containing parameters that may be referenced
+     * @return The URL with variable references converted to path parameter placeholders
+     */
+    private fun resolveUrlVariables(url: String, node: CodeDataStruct, function: CodeFunction): String {
+        var resolvedUrl = url
+
+        // Collect all available variable names from class fields and function parameters
+        val fieldNames = node.Fields.map { it.TypeKey }.toSet()
+        val paramNames = function.Parameters.map { it.TypeValue }.toSet()
+        val allVariables = fieldNames + paramNames
+
+        // Replace ${varName} pattern with {varName} for path parameters
+        val bracePattern = Regex("""\$\{(\w+)}""")
+        resolvedUrl = bracePattern.replace(resolvedUrl) { match ->
+            val varName = match.groupValues[1]
+            "{$varName}"
+        }
+
+        // Replace $varName pattern with {varName} for path parameters
+        // Only replace if the variable name exists in fields or parameters
+        val simplePattern = Regex("""\$(\w+)""")
+        resolvedUrl = simplePattern.replace(resolvedUrl) { match ->
+            val varName = match.groupValues[1]
+            if (allVariables.contains(varName)) {
+                "{$varName}"
+            } else {
+                // Keep original if variable is not found (might be a string like "$1")
+                match.value
+            }
+        }
+
+        return resolvedUrl
     }
 
     private fun createResource(func: CodeFunction, baseUrl: String, node: CodeDataStruct) {
