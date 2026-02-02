@@ -2,6 +2,7 @@
 plugins {
     application
     alias(libs.plugins.jvm)
+    alias(libs.plugins.serialization)
     alias(libs.plugins.shadow)
 }
 
@@ -10,8 +11,13 @@ dependencies {
     api(projects.scannerCore)
 
     implementation(libs.kotlin.reflect)
+    implementation(libs.serialization.json)
 
     testImplementation(libs.bundles.test)
+    testImplementation(libs.chapi.protobuf) {
+        exclude(group = "com.ibm.icu", module = "icu4j")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-test-junit")
+    }
 }
 
 application {

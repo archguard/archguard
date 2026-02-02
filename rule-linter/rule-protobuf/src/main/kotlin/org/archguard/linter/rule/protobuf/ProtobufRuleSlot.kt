@@ -1,6 +1,6 @@
 package org.archguard.linter.rule.protobuf
 
-import org.archguard.context.ContainerService
+import chapi.domain.core.CodeDataStruct
 import org.archguard.meta.Coin
 import org.archguard.meta.Materials
 import org.archguard.meta.Slot
@@ -12,7 +12,8 @@ class ProtobufRuleSlot : Slot {
     override var outClass: String = Issue.Companion::class.java.name
 
     override fun ticket(): Coin {
-        return listOf(ContainerService::class.java.name)
+        // SourceCodeWorker feeds CodeDataStruct (including `.proto`) to SlotHub.
+        return listOf(CodeDataStruct::class.java.name)
     }
 
     override fun prepare(items: List<Any>): List<Any> {
@@ -22,6 +23,7 @@ class ProtobufRuleSlot : Slot {
     }
 
     override fun process(items: List<Any>): List<Any> {
-        return ProtobufRuleVisitor(items as List<ContainerService>).visitor(this.material as Iterable<RuleSet>)
+        @Suppress("UNCHECKED_CAST")
+        return ProtobufRuleVisitor(items as List<CodeDataStruct>).visitor(this.material as Iterable<RuleSet>)
     }
 }
