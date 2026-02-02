@@ -1,6 +1,9 @@
 package org.archguard.linter.rule.protobuf
 
 import org.archguard.linter.rule.protobuf.rules.FileNamesLowerSnakeCaseRule
+import org.archguard.linter.rule.protobuf.rules.FieldNamesLowerSnakeCaseRule
+import org.archguard.linter.rule.protobuf.rules.ImportsSortedRule
+import org.archguard.linter.rule.protobuf.rules.MessageNamesUpperCamelCaseRule
 import org.archguard.linter.rule.protobuf.rules.PackageNameLowerCaseRule
 import org.archguard.linter.rule.protobuf.rules.RpcNamesUpperCamelCaseRule
 import org.archguard.linter.rule.protobuf.rules.ServiceNamesUpperCamelCaseRule
@@ -15,6 +18,9 @@ class ProtobufRuleSetProvider : RuleSetProvider {
             "normal",
             FileNamesLowerSnakeCaseRule(),
             PackageNameLowerCaseRule(),
+            ImportsSortedRule(),
+            MessageNamesUpperCamelCaseRule(),
+            FieldNamesLowerSnakeCaseRule(),
             ServiceNamesUpperCamelCaseRule(),
             RpcNamesUpperCamelCaseRule(),
         )

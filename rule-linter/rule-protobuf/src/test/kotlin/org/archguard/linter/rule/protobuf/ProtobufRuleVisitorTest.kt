@@ -16,16 +16,23 @@ class ProtobufRuleVisitorTest {
             
             package My.Package;
             
+            import "z.proto";
+            import "a.proto";
+            
             service foo_service {
               rpc get_user (GetUserRequest) returns (GetUserResponse);
             }
             
             message GetUserRequest {
-              string user_id = 1;
+              string userId = 1;
             }
             
             message GetUserResponse {
               string user_id = 1;
+            }
+            
+            message bad_message_name {
+              string ok_field = 1;
             }
             """.trimIndent()
         )
@@ -41,6 +48,9 @@ class ProtobufRuleVisitorTest {
 
         assertThat(ruleIds).contains("FILE_NAMES_LOWER_SNAKE_CASE")
         assertThat(ruleIds).contains("PACKAGE_NAME_LOWER_CASE")
+        assertThat(ruleIds).contains("IMPORTS_SORTED")
+        assertThat(ruleIds).contains("MESSAGE_NAMES_UPPER_CAMEL_CASE")
+        assertThat(ruleIds).contains("FIELD_NAMES_LOWER_SNAKE_CASE")
         assertThat(ruleIds).contains("SERVICE_NAMES_UPPER_CAMEL_CASE")
         assertThat(ruleIds).contains("RPC_NAMES_UPPER_CAMEL_CASE")
     }
