@@ -145,6 +145,25 @@ POST http://127.0.0.1:8765/scanner/:systemId/reporting/datamap-relations
 ...
 ```
 
+## MCP Server (Model Context Protocol)
+
+🚀 **New Feature Proposal**: Expose ArchGuard's architecture linter as an MCP server for AI-assisted development!
+
+The MCP server would enable AI assistants (Claude, ChatGPT, etc.) and development tools to leverage ArchGuard's linting capabilities through a lightweight, standardized interface.
+
+**Key Benefits:**
+- ⚡ **Lightweight**: <100MB memory, <2s startup (vs. full server)
+- 🤖 **AI Integration**: Works with Claude, ChatGPT, GitHub Copilot
+- 🔌 **Standard Protocol**: Compatible with any MCP-enabled tool
+- 🎯 **Stateless**: Quick analysis without database overhead
+
+**Documentation:**
+- [Detailed Proposal](./doc/mcp-server-proposal.md) - Full specification and architecture
+- [GitHub Issue Template](./doc/mcp-server-issue.md) - Ready to submit feature request
+- [Implementation Guide](./doc/mcp-server-implementation-guide.md) - Step-by-step development guide
+
+This would complement the existing server and CLI, adding a modern AI-friendly interface for architectural governance.
+
 ### Chat
 
 关注我们：
