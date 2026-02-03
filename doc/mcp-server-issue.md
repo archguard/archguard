@@ -92,7 +92,8 @@ Linter Core (rule-core, rule-linter/*)
 **Dependencies:**
 - Existing: rule-core, rule-linter modules
 - New: Ktor (lightweight HTTP), kotlinx.serialization (already used)
-- No database, no authentication required
+- No database required
+- Authentication: Designed for single-user local use (stdio mode); HTTP mode must use localhost binding or be deployed behind an authenticated, TLS-terminating reverse proxy for any network/multi-user access
 
 **Key Design Principles:**
 - ⚡ **Fast**: <2s startup, <5s analysis for 1000 files
@@ -100,6 +101,7 @@ Linter Core (rule-core, rule-linter/*)
 - 🔄 **Stateless**: No persistent storage, purely request/response
 - 🔌 **Pluggable**: Works with existing rule plugin system
 - 📦 **Standalone**: Single JAR or Docker container
+- 🔒 **Secure by Default**: stdio mode (local-only) is default; HTTP mode binds to localhost
 
 ### Example Usage
 

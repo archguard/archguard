@@ -105,7 +105,7 @@ tasks {
             attributes["Main-Class"] = "org.archguard.mcp.MainKt"
         }
         // Create fat JAR
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+        from(configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) })
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }
@@ -398,8 +398,21 @@ class RulesResource {
     }
 
     private fun getRulesByCategory(category: String): ResourceContent {
-        // Implementation for specific category
-        TODO("Implement category-specific rules")
+        // Basic stub implementation for specific categories.
+        // Replace this with logic that filters rules from ruleSetProviders based on the category.
+        return ResourceContent(
+            uri = "archguard://rules/$category",
+            text = kotlinx.serialization.json.Json.encodeToString(
+                kotlinx.serialization.json.JsonObject.serializer(),
+                kotlinx.serialization.json.buildJsonObject {
+                    put("category", category)
+                    put("rules", kotlinx.serialization.json.buildJsonArray {
+                        // This stub intentionally returns an empty rules array for the given category.
+                        // Implement rule filtering logic here based on the category.
+                    })
+                }
+            )
+        )
     }
 }
 ```
@@ -549,9 +562,11 @@ class ToolRegistry {
 
     init {
         register(LintCodeTool())
-        register(LintWebapiTool())
-        register(LintSqlTool())
-        // ... register other tools
+        // Example: register additional tools once implemented
+        // register(LintWebapiTool())
+        // register(LintSqlTool())
+        // register(LintTestTool())
+        // register(LintLayerTool())
     }
 
     private fun register(tool: Tool) {
@@ -568,6 +583,69 @@ class ToolRegistry {
         val tool = tools[name] 
             ?: throw IllegalArgumentException("Tool not found: $name")
         return tool.execute(arguments)
+    }
+}
+```
+
+### 4.4 Prompt Registry
+
+```kotlin
+// src/main/kotlin/org/archguard/mcp/prompts/PromptRegistry.kt
+package org.archguard.mcp.prompts
+
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.buildJsonArray
+
+@Serializable
+data class PromptDefinition(
+    val name: String,
+    val description: String,
+    val arguments: List<PromptArgument> = emptyList()
+)
+
+@Serializable
+data class PromptArgument(
+    val name: String,
+    val description: String,
+    val required: Boolean = false
+)
+
+class PromptRegistry {
+    private val prompts = mutableMapOf<String, PromptDefinition>()
+
+    init {
+        registerDefaultPrompts()
+    }
+
+    private fun registerDefaultPrompts() {
+        prompts["analyze-architecture"] = PromptDefinition(
+            name = "analyze-architecture",
+            description = "Analyze the architecture of a codebase",
+            arguments = listOf(
+                PromptArgument("path", "Path to the codebase", required = true),
+                PromptArgument("aspects", "Focus areas (code quality, API design, etc.)", required = false)
+            )
+        )
+        
+        prompts["fix-issues"] = PromptDefinition(
+            name = "fix-issues",
+            description = "Review and suggest fixes for linting issues",
+            arguments = listOf(
+                PromptArgument("file", "File with issues", required = true),
+                PromptArgument("issues", "JSON list of issues", required = true)
+            )
+        )
+    }
+
+    fun listPrompts(): Map<String, List<PromptDefinition>> {
+        return mapOf("prompts" to prompts.values.toList())
+    }
+
+    fun getPrompt(name: String): PromptDefinition {
+        return prompts[name] ?: throw IllegalArgumentException("Prompt not found: $name")
     }
 }
 ```
@@ -596,7 +674,7 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 
 fun main(args: Array<String>) {
-    val mode = System.getenv("MCP_MODE") ?: "http"
+    val mode = System.getenv("MCP_MODE") ?: "stdio"
     val port = System.getenv("MCP_PORT")?.toIntOrNull() ?: 8080
 
     when (mode) {
@@ -625,8 +703,9 @@ fun runStdioServer() {
 
 fun runHttpServer(port: Int) {
     logger.info { "Starting MCP server on port $port" }
+    logger.warn { "HTTP mode is enabled. Bind to localhost only for local use. For remote/network access, use an authenticated TLS-terminating reverse proxy." }
     
-    embeddedServer(Netty, port = port) {
+    embeddedServer(Netty, port = port, host = "127.0.0.1") {
         install(ContentNegotiation) {
             json()
         }
@@ -668,13 +747,46 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.application.*
+import io.ktor.server.routing.*
+import io.ktor.server.response.*
 import kotlin.test.*
 import kotlinx.serialization.json.Json
+import org.archguard.mcp.server.McpProtocolHandler
+import org.archguard.mcp.resources.ResourceProvider
+import org.archguard.mcp.tools.ToolRegistry
+import org.archguard.mcp.prompts.PromptRegistry
 
 class McpServerIntegrationTest {
     
+    private fun Application.testModule() {
+        install(ContentNegotiation) {
+            json()
+        }
+
+        val handler = McpProtocolHandler(
+            resourceProvider = ResourceProvider(),
+            toolRegistry = ToolRegistry(),
+            promptRegistry = PromptRegistry()
+        )
+
+        routing {
+            post("/mcp") {
+                val request = call.receiveText()
+                val response = handler.handleRequest(request)
+                call.respondText(response, ContentType.Application.Json)
+            }
+        }
+    }
+    
     @Test
     fun testInitializeRequest() = testApplication {
+        application {
+            testModule()
+        }
+        
         val response = client.post("/mcp") {
             contentType(ContentType.Application.Json)
             setBody("""
@@ -693,6 +805,10 @@ class McpServerIntegrationTest {
 
     @Test
     fun testListResources() = testApplication {
+        application {
+            testModule()
+        }
+        
         val response = client.post("/mcp") {
             contentType(ContentType.Application.Json)
             setBody("""
@@ -716,7 +832,7 @@ class McpServerIntegrationTest {
 ### 7.1 Build Fat JAR
 
 ```bash
-./gradlew :mcp-server:shadowJar
+./gradlew :mcp-server:jar
 ```
 
 ### 7.2 Docker Image
@@ -729,7 +845,8 @@ WORKDIR /app
 
 COPY mcp-server/build/libs/mcp-server-all.jar /app/archguard-mcp-server.jar
 
-ENV MCP_MODE=http
+# Default to stdio mode for security. Set MCP_MODE=http only for localhost binding.
+ENV MCP_MODE=stdio
 ENV MCP_PORT=8080
 
 EXPOSE 8080
@@ -765,14 +882,20 @@ docker build -t archguard/mcp-server:latest .
 }
 ```
 
-### 8.2 With Docker (HTTP mode)
+### 8.2 With Docker (HTTP mode - localhost only)
+
+**⚠️ Security Warning**: HTTP mode binds to localhost by default for security. For remote access, use an authenticated, TLS-terminating reverse proxy (nginx, Traefik, etc.) with proper access control.
 
 ```bash
+# Safe: localhost binding only (default)
 docker run -d \
-  -p 8080:8080 \
+  -p 127.0.0.1:8080:8080 \
   -v /path/to/project:/workspace \
   -e MCP_MODE=http \
   archguard/mcp-server:latest
+
+# For remote access, use a reverse proxy with authentication:
+# nginx/Traefik with TLS + basic auth or OAuth → archguard-mcp-server
 ```
 
 ### 8.3 Direct HTTP Request

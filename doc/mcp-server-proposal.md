@@ -87,9 +87,9 @@ Current access methods have limitations:
 - **Technology**: Kotlin with Ktor or Vert.x (lightweight HTTP/WebSocket)
 - **Dependencies**: Only rule-core and rule-linter modules
 - **No Database**: Stateless, processes files directly
-- **No Authentication**: Local/trusted network deployment
+- **Authentication Model**: Designed for single-user, local use (stdio mode default); HTTP mode binds to `localhost` by default. For any multi-user or remote/network deployment, the server must be protected by authentication (e.g., behind an authenticated, TLS-terminating reverse proxy) and must not be exposed unauthenticated on the network
 - **Resource Usage**: ~50-100MB memory, fast startup (<2s)
-- **Deployment**: Single JAR, Docker container, or native binary
+- **Deployment**: Single JAR, Docker container, or native binary; HTTP mode should bind to `localhost` by default, and any non-local exposure must be fronted by a TLS-terminating proxy enforcing authentication and access control
 
 **Why Not Use Existing Server?**
 
@@ -253,10 +253,10 @@ dependencies {
     implementation(project(":rule-linter:rule-layer"))
     
     // Lightweight server
-    implementation("io.ktor:ktor-server-core:2.3.+")
-    implementation("io.ktor:ktor-server-netty:2.3.+")
-    implementation("io.ktor:ktor-server-content-negotiation:2.3.+")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.+")
+    implementation("io.ktor:ktor-server-core:2.3.7")
+    implementation("io.ktor:ktor-server-netty:2.3.7")
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
 }
 \`\`\`
 
@@ -282,17 +282,18 @@ dependencies {
 
 ### Communication Protocol
 
-**Option 1: Standard Input/Output (stdio)** - Recommended for local use
-- Pros: Simple, no network configuration, secure by default
+**Option 1: Standard Input/Output (stdio)** - Recommended for local use (Default)
+- Pros: Simple, no network configuration, secure by default (no network exposure)
 - Cons: Limited to local processes
-- Use case: VSCode extensions, local CLI tools
+- Use case: VSCode extensions, local CLI tools, Claude Desktop
 
 **Option 2: HTTP/WebSocket**
 - Pros: Remote access, browser-based tools
-- Cons: Requires port binding, authentication needed
-- Use case: Cloud-based AI assistants, team deployments
+- Cons: Requires security measures (authentication, TLS, localhost binding)
+- Use case: Must bind to localhost (127.0.0.1) by default; for remote access, deploy behind an authenticated, TLS-terminating reverse proxy
+- Security: Never expose HTTP mode directly on the network without authentication
 
-**Decision**: Support both, with stdio as default
+**Decision**: Support both, with stdio as default for security. HTTP mode binds to localhost and requires explicit configuration for remote access.
 
 ### Serialization Format
 
@@ -308,6 +309,24 @@ Follow MCP error codes:
 - \`-32602\`: Invalid params
 - \`-32603\`: Internal error
 - \`-32000 to -32099\`: Custom errors
+
+### Security Model
+
+**Default Security Posture:**
+- **stdio mode (default)**: Secure by design - no network exposure, runs as user process
+- **HTTP mode**: Binds to localhost (127.0.0.1) by default to prevent network exposure
+
+**For Remote/Multi-User Deployments:**
+- HTTP mode must never be exposed directly on the network without authentication
+- Deploy behind an authenticated, TLS-terminating reverse proxy (nginx, Traefik, etc.)
+- Implement access control to prevent unauthorized analysis of sensitive code
+- Consider using VPN or SSH tunneling for remote access instead of exposing HTTP
+
+**Risk Without Authentication:**
+If HTTP mode is exposed without authentication, any network client could:
+- Invoke linting tools against arbitrary paths in mounted workspace
+- Obtain architectural analysis and code structure information
+- Leak details about private repositories and internal APIs
 
 ## Example Usage Scenarios
 
