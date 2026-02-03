@@ -182,7 +182,7 @@ Claude: "I found 15 API design issues:
 - [Model Context Protocol Specification](https://modelcontextprotocol.io/)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [Anthropic MCP Announcement](https://www.anthropic.com/news/model-context-protocol)
-- [Detailed Proposal Document](./mcp-server-proposal.md)
+- [Detailed Proposal Document](mcp-server-proposal.md)
 
 ### Related Issues
 

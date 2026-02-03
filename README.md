@@ -158,9 +158,9 @@ The MCP server would enable AI assistants (Claude, ChatGPT, etc.) and developmen
 - 🎯 **Stateless**: Quick analysis without database overhead
 
 **Documentation:**
-- [Detailed Proposal](./doc/mcp-server-proposal.md) - Full specification and architecture
-- [GitHub Issue Template](./doc/mcp-server-issue.md) - Ready to submit feature request
-- [Implementation Guide](./doc/mcp-server-implementation-guide.md) - Step-by-step development guide
+- [Detailed Proposal](doc/mcp/mcp-server-proposal.md) - Full specification and architecture
+- [GitHub Issue Template](doc/mcp/mcp-server-issue.md) - Ready to submit feature request
+- [Implementation Guide](doc/mcp/mcp-server-implementation-guide.md) - Step-by-step development guide
 
 This would complement the existing server and CLI, adding a modern AI-friendly interface for architectural governance.
 
