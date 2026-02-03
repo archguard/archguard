@@ -10,12 +10,21 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import mu.KotlinLogging
 import org.archguard.mcp.server.ArchGuardMcpServer
 import org.archguard.mcp.server.ServerConfig
 import org.archguard.mcp.server.ServerMode
+import java.io.File
 
 private val logger = KotlinLogging.logger {}
+private val prettyJson = Json { prettyPrint = true }
 
 /**
  * Main entry point for the ArchGuard MCP Server.
@@ -57,8 +66,19 @@ fun main(args: Array<String>) {
  */
 private fun runStdioServer(config: ServerConfig) {
     // Write server info to stderr (stdout is reserved for MCP protocol)
+    val jarPath = resolveRunningJarPath()
+    val jarPathHint = jarPath ?: "/path/to/archguard-mcp-server.jar"
+
     System.err.println("Starting ArchGuard MCP Server in stdio mode")
     System.err.println("Server: ${ArchGuardMcpServer.SERVER_NAME} v${ArchGuardMcpServer.SERVER_VERSION}")
+    System.err.println("Workspace: ${config.workspacePath}")
+    System.err.println()
+    System.err.println("MCP (Claude Desktop) config snippet (copy/paste):")
+    System.err.println(prettyJson.encodeToString(buildClaudeDesktopConfig(jarPathHint, config)))
+    System.err.println()
+    System.err.println("Quick self-check (stdio):")
+    System.err.println("  echo '{\"jsonrpc\":\"2.0\",\"method\":\"initialize\",\"id\":1}' | java -jar \"$jarPathHint\" stdio")
+    System.err.println()
 
     val handler = ArchGuardMcpServer.createHandler(config)
 
@@ -91,6 +111,10 @@ private fun runHttpServer(config: ServerConfig) {
     logger.info { "Starting ArchGuard MCP Server in HTTP mode" }
     logger.info { "Server: ${ArchGuardMcpServer.SERVER_NAME} v${ArchGuardMcpServer.SERVER_VERSION}" }
     logger.info { "Listening on http://${config.host}:${config.port}" }
+    logger.info { "Workspace: ${config.workspacePath}" }
+    logger.info { "MCP endpoint: POST http://${config.host}:${config.port}/mcp" }
+    logger.info { "Health check: GET  http://${config.host}:${config.port}/health" }
+    logger.info { "Quick self-check: curl -sS -X POST http://${config.host}:${config.port}/mcp -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"method\":\"initialize\",\"id\":1}'" }
 
     if (config.host != "127.0.0.1" && config.host != "localhost") {
         logger.warn { "WARNING: Server is bound to ${config.host}. For security, consider using localhost or placing behind an authenticated reverse proxy." }
@@ -129,4 +153,31 @@ private fun runHttpServer(config: ServerConfig) {
             }
         }
     }.start(wait = true)
+}
+
+private fun resolveRunningJarPath(): String? {
+    return runCatching {
+        val uri = object {}.javaClass.protectionDomain.codeSource.location.toURI()
+        val file = File(uri)
+        file.takeIf { it.isFile && it.extension.lowercase() == "jar" }?.absolutePath
+    }.getOrNull()
+}
+
+private fun buildClaudeDesktopConfig(jarPath: String, config: ServerConfig): JsonObject {
+    return buildJsonObject {
+        put("mcpServers", buildJsonObject {
+            put("archguard", buildJsonObject {
+                put("command", JsonPrimitive("java"))
+                put("args", buildJsonArray {
+                    add(JsonPrimitive("-jar"))
+                    add(JsonPrimitive(jarPath))
+                    add(JsonPrimitive("stdio"))
+                })
+                put("env", buildJsonObject {
+                    put("MCP_MODE", JsonPrimitive("stdio"))
+                    put("MCP_WORKSPACE", JsonPrimitive(config.workspacePath))
+                })
+            })
+        })
+    }
 }
