@@ -92,3 +92,8 @@ include(
     ":rule-linter:rule-comment",
     ":rule-linter:rule-protobuf",
 )
+
+/**
+ * MCP (Model Context Protocol) server for AI assistant integration
+ */
+include(":mcp-server")
