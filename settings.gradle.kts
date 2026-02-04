@@ -97,3 +97,8 @@ include(
  * MCP (Model Context Protocol) server for AI assistant integration
  */
 include(":mcp-server")
+
+/**
+ * Agent Trace server for AI code attribution and OTEL integration
+ */
+include(":trace_server")
