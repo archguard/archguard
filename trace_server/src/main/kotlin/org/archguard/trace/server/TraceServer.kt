@@ -15,8 +15,10 @@ import org.archguard.trace.converter.AgentTraceToOtelConverter
 import org.archguard.trace.converter.OtelToAgentTraceConverter
 import org.archguard.trace.receiver.OtelTraceReceiver
 import org.archguard.trace.receiver.OtlpExportRequest
+import org.archguard.trace.storage.DatabaseTraceStorage
 import org.archguard.trace.storage.InMemoryTraceStorage
 import org.archguard.trace.storage.TraceStorage
+import java.time.Instant
 
 private val logger = KotlinLogging.logger {}
 
@@ -124,18 +126,45 @@ class TraceServer(
             }
         }
         
-        // List all traces
+        // List all traces with filtering
         get("/api/traces") {
             val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
             val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val revision = call.request.queryParameters["revision"]
+            val tool = call.request.queryParameters["tool"]
+            val startTime = call.request.queryParameters["start_time"]
+            val endTime = call.request.queryParameters["end_time"]
             
-            val traces = storage.list(offset, limit)
+            val traces = when {
+                revision != null && storage is DatabaseTraceStorage -> {
+                    storage.findByRevision(revision, offset, limit)
+                }
+                tool != null && storage is DatabaseTraceStorage -> {
+                    storage.findByTool(tool, offset, limit)
+                }
+                startTime != null && endTime != null && storage is DatabaseTraceStorage -> {
+                    storage.findByTimeRange(
+                        Instant.parse(startTime),
+                        Instant.parse(endTime),
+                        offset,
+                        limit
+                    )
+                }
+                else -> storage.list(offset, limit)
+            }
+            
             call.respond(
                 mapOf(
                     "traces" to traces,
                     "offset" to offset,
                     "limit" to limit,
-                    "total" to storage.count()
+                    "total" to storage.count(),
+                    "filters" to mapOf(
+                        "revision" to revision,
+                        "tool" to tool,
+                        "start_time" to startTime,
+                        "end_time" to endTime
+                    )
                 )
             )
         }

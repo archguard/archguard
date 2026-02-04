@@ -83,33 +83,16 @@ class InMemoryTraceStorage : TraceStorage {
 }
 
 /**
- * File System Trace Storage
- * 
- * Stores traces as JSON files in a directory structure.
+ * Storage factory
  */
-class FileSystemTraceStorage(
-    private val baseDir: String = ".agent-trace"
-) : TraceStorage {
-    
-    override suspend fun store(record: TraceRecord) {
-        TODO("Implement file system storage")
+object TraceStorageFactory {
+    /**
+     * Create storage based on type
+     */
+    fun create(type: String = "memory"): TraceStorage {
+        return when (type.lowercase()) {
+            "memory", "in-memory" -> InMemoryTraceStorage()
+            else -> InMemoryTraceStorage()
+        }
     }
-    
-    override suspend fun get(id: String): TraceRecord? {
-        TODO("Implement file system retrieval")
-    }
-    
-    override suspend fun list(offset: Int, limit: Int): List<TraceRecord> {
-        TODO("Implement file system listing")
-    }
-    
-    override fun count(): Long {
-        TODO("Implement file system counting")
-    }
-    
-    override suspend fun delete(id: String): Boolean {
-        TODO("Implement file system deletion")
-    }
-    
-    override fun type(): String = "filesystem"
 }
