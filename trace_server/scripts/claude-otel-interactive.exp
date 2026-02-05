@@ -76,7 +76,9 @@ puts "  OTEL_METRICS_EXPORTER=$env(OTEL_METRICS_EXPORTER)"
 puts "  OTEL_LOGS_EXPORTER=$env(OTEL_LOGS_EXPORTER)"
 puts "Message: $message"
 
-spawn claude
+# Start claude in bypass permissions mode to avoid workspace trust TUI.
+# This shows a safety warning screen that we auto-accept.
+spawn claude --dangerously-skip-permissions
 
 proc press_enter {} {
   send "\r"
@@ -89,12 +91,19 @@ proc select_yes_accept {} {
   send "\r"
 }
 
+set consecutive_timeouts 0
+
 set ready 0
 set sent 0
 
 # Main loop: try to clear onboarding and reach input.
 for {set step 0} {$step < 80} {incr step} {
   expect {
+    -re {WARNING: Claude Code running in Bypass Permissions mode} {
+      puts "Detected bypass warning -> select Yes, I accept"
+      select_yes_accept
+      exp_continue
+    }
     -re {Quick safety check:.*trust\?} {
       puts "Detected workspace trust prompt -> Enter"
       press_enter
@@ -138,10 +147,17 @@ for {set step 0} {$step < 80} {incr step} {
       break
     }
     timeout {
-      # no more output; assume we can type
-      set ready 1
-      puts "No new UI output; assuming ready"
-      break
+      incr consecutive_timeouts
+      if {$consecutive_timeouts >= 3} {
+        # after several timeouts, assume ready and try to type
+        set ready 1
+        puts "No new UI output after multiple waits; assuming ready"
+        break
+      }
+      # Nudge UI forward
+      puts "No output yet; sending Enter to continue..."
+      press_enter
+      exp_continue
     }
     eof {
       puts "Claude exited unexpectedly. See /tmp/claude-otel-interactive.expect.log"
@@ -160,14 +176,15 @@ puts "Sending message..."
 send -- "$message\r"
 set sent 1
 
-# Best-effort wait for any response output (not strict), then allow OTEL flush.
-set timeout 20
+# Best-effort wait for some post-submit output. We want Claude to actually
+# process at least one prompt so logs/events have a chance to export.
+set timeout 25
 expect {
   -re {.+} {
     # got some output; good enough
   }
   timeout {
-    # still fine; continue
+    # still fine; continue to flush wait
   }
 }
 

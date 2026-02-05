@@ -1,11 +1,13 @@
 ## `trace_server/scripts/`
 
-This folder contains **repeatable smoke tests** for validating that Claude Code can export OpenTelemetry traces to `trace_server`.
+This folder contains **repeatable smoke tests** for validating that Claude Code can export OpenTelemetry telemetry to `trace_server`.
+
+Important: Claude Code exports **metrics** and **logs/events** (not spans/traces).
 
 ### Files
 
 - `claude-otel-smoketest.sh`
-  - End-to-end runner: checks server health, runs Claude in interactive mode via `expect`, compares trace count before/after, and prints diagnostics.
+  - End-to-end runner: checks server health, runs Claude in interactive mode via `expect`, and validates OTLP metrics/logs counters.
 - `claude-otel-interactive.exp`
   - The `expect` automation that drives Claude's interactive TUI.
   - It is intentionally tolerant (TUI output changes across Claude versions).
