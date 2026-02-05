@@ -7,6 +7,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -135,6 +136,22 @@ class TraceServer(
      * Configure Ktor application
      */
     private fun Application.configureServer() {
+        // CORS - Allow browser access from any origin
+        install(CORS) {
+            anyHost()  // Allow all hosts (for development)
+            allowHeader(HttpHeaders.ContentType)
+            allowHeader(HttpHeaders.Authorization)
+            allowHeader(HttpHeaders.Accept)
+            allowHeader("X-Requested-With")
+            allowMethod(HttpMethod.Get)
+            allowMethod(HttpMethod.Post)
+            allowMethod(HttpMethod.Put)
+            allowMethod(HttpMethod.Delete)
+            allowMethod(HttpMethod.Options)
+            allowCredentials = true
+            maxAgeInSeconds = 3600
+        }
+
         // Request logging (critical for diagnosing OTLP clients)
         install(CallLogging) {
             // keep default level; narrow to OTLP and API endpoints
