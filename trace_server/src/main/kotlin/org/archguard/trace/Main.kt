@@ -15,14 +15,10 @@ private val logger = KotlinLogging.logger {}
 fun main(args: Array<String>) {
     logger.info { "Agent Trace Server starting..." }
     
-    // Parse command line arguments
     val port = args.getOrNull(0)?.toIntOrNull() ?: 4318
     val host = args.getOrNull(1) ?: "0.0.0.0"
     
-    // Create storage (in-memory for now)
     val storage = InMemoryTraceStorage()
-    
-    // Create and start server
     val server = TraceServer(storage, port, host)
     
     logger.info { "Starting server on $host:$port" }
@@ -38,6 +34,5 @@ fun main(args: Array<String>) {
     logger.info { "  GET    /api/stats          - Get statistics" }
     logger.info { "  GET    /health             - Health check" }
     
-    // Start server (blocking)
     server.start(wait = true)
 }

@@ -1,12 +1,7 @@
 package org.archguard.trace.server
 
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.json.Json
-import org.archguard.trace.model.*
-import org.archguard.trace.receiver.OtlpExportRequest
 import org.archguard.trace.storage.InMemoryTraceStorage
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
