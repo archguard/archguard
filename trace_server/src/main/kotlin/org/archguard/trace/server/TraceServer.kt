@@ -9,10 +9,12 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import org.archguard.trace.converter.AgentTraceToOtelConverter
 import org.archguard.trace.converter.OtelToAgentTraceConverter
+import org.archguard.trace.model.TraceRecord
 import org.archguard.trace.receiver.OtelTraceReceiver
 import org.archguard.trace.receiver.OtlpExportRequest
 import org.archguard.trace.storage.DatabaseTraceStorage
@@ -21,6 +23,43 @@ import org.archguard.trace.storage.TraceStorage
 import java.time.Instant
 
 private val logger = KotlinLogging.logger {}
+
+/**
+ * Response models for API endpoints
+ */
+@Serializable
+data class TracesListResponse(
+    val traces: List<TraceRecord>,
+    val offset: Int,
+    val limit: Int,
+    val total: Long,
+    val filters: TraceFilters
+)
+
+@Serializable
+data class TraceFilters(
+    val revision: String? = null,
+    val tool: String? = null,
+    val startTime: String? = null,
+    val endTime: String? = null
+)
+
+@Serializable
+data class ErrorResponse(
+    val error: String
+)
+
+@Serializable
+data class HealthResponse(
+    val status: String,
+    val service: String
+)
+
+@Serializable
+data class OtelExportResponse(
+    val traceId: String?,
+    val spans: List<org.archguard.trace.model.OtelSpan>
+)
 
 /**
  * Agent Trace Server
@@ -89,9 +128,9 @@ class TraceServer(
         // Health check
         get("/health") {
             call.respond(
-                mapOf(
-                    "status" to "healthy",
-                    "service" to "agent-trace-server"
+                HealthResponse(
+                    status = "healthy",
+                    service = "agent-trace-server"
                 )
             )
         }
@@ -106,7 +145,7 @@ class TraceServer(
                 logger.error(e) { "Failed to process OTLP request: ${e.message}" }
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to (e.message ?: "Unknown error"))
+                    ErrorResponse(error = e.message ?: "Unknown error")
                 )
             }
         }
@@ -115,14 +154,14 @@ class TraceServer(
         get("/api/traces/{id}") {
             val id = call.parameters["id"] ?: return@get call.respond(
                 HttpStatusCode.BadRequest,
-                mapOf("error" to "Missing trace ID")
+                ErrorResponse(error = "Missing trace ID")
             )
             
             val trace = storage.get(id)
             if (trace != null) {
                 call.respond(trace)
             } else {
-                call.respond(HttpStatusCode.NotFound, mapOf("error" to "Trace not found"))
+                call.respond(HttpStatusCode.NotFound, ErrorResponse(error = "Trace not found"))
             }
         }
         
@@ -154,16 +193,16 @@ class TraceServer(
             }
             
             call.respond(
-                mapOf(
-                    "traces" to traces,
-                    "offset" to offset,
-                    "limit" to limit,
-                    "total" to storage.count(),
-                    "filters" to mapOf(
-                        "revision" to revision,
-                        "tool" to tool,
-                        "start_time" to startTime,
-                        "end_time" to endTime
+                TracesListResponse(
+                    traces = traces,
+                    offset = offset,
+                    limit = limit,
+                    total = storage.count(),
+                    filters = TraceFilters(
+                        revision = revision,
+                        tool = tool,
+                        startTime = startTime,
+                        endTime = endTime
                     )
                 )
             )
@@ -179,20 +218,20 @@ class TraceServer(
         get("/api/traces/{id}/otel") {
             val id = call.parameters["id"] ?: return@get call.respond(
                 HttpStatusCode.BadRequest,
-                mapOf("error" to "Missing trace ID")
+                ErrorResponse(error = "Missing trace ID")
             )
             
             val trace = storage.get(id)
             if (trace != null) {
                 val otelSpans = agentToOtelConverter.convert(trace)
                 call.respond(
-                    mapOf(
-                        "traceId" to otelSpans.firstOrNull()?.traceId,
-                        "spans" to otelSpans
+                    OtelExportResponse(
+                        traceId = otelSpans.firstOrNull()?.traceId,
+                        spans = otelSpans
                     )
                 )
             } else {
-                call.respond(HttpStatusCode.NotFound, mapOf("error" to "Trace not found"))
+                call.respond(HttpStatusCode.NotFound, ErrorResponse(error = "Trace not found"))
             }
         }
         
@@ -200,14 +239,14 @@ class TraceServer(
         delete("/api/traces/{id}") {
             val id = call.parameters["id"] ?: return@delete call.respond(
                 HttpStatusCode.BadRequest,
-                mapOf("error" to "Missing trace ID")
+                ErrorResponse(error = "Missing trace ID")
             )
             
             val deleted = storage.delete(id)
             if (deleted) {
                 call.respond(HttpStatusCode.NoContent)
             } else {
-                call.respond(HttpStatusCode.NotFound, mapOf("error" to "Trace not found"))
+                call.respond(HttpStatusCode.NotFound, ErrorResponse(error = "Trace not found"))
             }
         }
     }
