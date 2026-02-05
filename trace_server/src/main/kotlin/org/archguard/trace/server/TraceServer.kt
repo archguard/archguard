@@ -1,5 +1,7 @@
 package org.archguard.trace.server
 
+import io.grpc.Server
+import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -11,11 +13,13 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
-import io.grpc.Server
-import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 import org.archguard.trace.converter.AgentTraceToOtelConverter
 import org.archguard.trace.converter.OtelToAgentTraceConverter
 import org.archguard.trace.model.TelemetryListResponse
@@ -26,14 +30,15 @@ import org.archguard.trace.receiver.OtlpGrpcReceiver
 import org.archguard.trace.receiver.OtlpGrpcLogsReceiver
 import org.archguard.trace.receiver.OtlpGrpcMetricsReceiver
 import org.archguard.trace.receiver.OtelTraceReceiver
-import org.archguard.trace.receiver.OtlpExportRequest
 import org.archguard.trace.receiver.handleOtlpRequest
 import org.archguard.trace.storage.DatabaseTraceStorage
 import org.archguard.trace.storage.InMemoryTelemetryStorage
 import org.archguard.trace.storage.InMemoryTraceStorage
 import org.archguard.trace.storage.TelemetryStorage
 import org.archguard.trace.storage.TraceStorage
+import java.io.IOException
 import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
@@ -92,6 +97,7 @@ class TraceServer(
     private val agentToOtelConverter = AgentTraceToOtelConverter()
     private val receiver = OtelTraceReceiver(otelToAgentConverter, storage)
     private val counters = TelemetryCounters()
+    private val grpcScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     
     private lateinit var server: NettyApplicationEngine
     private var grpcServer: Server? = null
@@ -103,13 +109,18 @@ class TraceServer(
         logger.info { "Starting Agent Trace Server on $host:$port" }
 
         // Start OTLP gRPC receiver (default OTEL SDKs: 4317)
-        grpcServer = NettyServerBuilder
-            .forPort(grpcPort)
-            .addService(OtlpGrpcReceiver(otelToAgentConverter, storage, counters))
-            .addService(OtlpGrpcMetricsReceiver(counters, telemetryStorage))
-            .addService(OtlpGrpcLogsReceiver(counters, telemetryStorage))
-            .build()
-            .start()
+        grpcServer = try {
+            NettyServerBuilder
+                .forPort(grpcPort)
+                .addService(OtlpGrpcReceiver(otelToAgentConverter, storage, counters, grpcScope))
+                .addService(OtlpGrpcMetricsReceiver(counters, telemetryStorage, grpcScope))
+                .addService(OtlpGrpcLogsReceiver(counters, telemetryStorage, grpcScope))
+                .build()
+                .start()
+        } catch (e: IOException) {
+            logger.error(e) { "Failed to start OTLP gRPC server on port $grpcPort (port already in use?)" }
+            throw e
+        }
         logger.info { "OTLP gRPC endpoint: $host:$grpcPort (metrics/logs/traces)" }
         
         server = embeddedServer(Netty, port = port, host = host) {
@@ -127,8 +138,17 @@ class TraceServer(
      */
     fun stop() {
         logger.info { "Stopping Agent Trace Server" }
-        grpcServer?.shutdown()
+        grpcServer?.let { s ->
+            s.shutdown()
+            val ok = runCatching { s.awaitTermination(5, TimeUnit.SECONDS) }.getOrDefault(true)
+            if (!ok) {
+                logger.warn { "gRPC server did not stop in time; forcing shutdown" }
+                s.shutdownNow()
+                runCatching { s.awaitTermination(5, TimeUnit.SECONDS) }
+            }
+        }
         grpcServer = null
+        grpcScope.cancel("TraceServer stopping")
         server.stop(1000, 5000)
     }
     
@@ -136,9 +156,18 @@ class TraceServer(
      * Configure Ktor application
      */
     private fun Application.configureServer() {
-        // CORS - Allow browser access from any origin
+        // CORS - keep safe by default (no credentials + restricted origins).
+        // If you really need wide-open CORS for local demos, set:
+        //   ARCHGUARD_TRACE_CORS_ANY_HOST=true
+        val corsAnyHost = System.getenv("ARCHGUARD_TRACE_CORS_ANY_HOST")
+            ?.toBooleanStrictOrNull() == true
         install(CORS) {
-            anyHost()  // Allow all hosts (for development)
+            if (corsAnyHost) {
+                anyHost()
+            } else {
+                allowHost("localhost", schemes = listOf("http", "https"))
+                allowHost("127.0.0.1", schemes = listOf("http", "https"))
+            }
             allowHeader(HttpHeaders.ContentType)
             allowHeader(HttpHeaders.Authorization)
             allowHeader(HttpHeaders.Accept)
@@ -148,7 +177,8 @@ class TraceServer(
             allowMethod(HttpMethod.Put)
             allowMethod(HttpMethod.Delete)
             allowMethod(HttpMethod.Options)
-            allowCredentials = true
+            // No cookies/auth sessions for this service; keep CORS non-credentialed by default.
+            allowCredentials = false
             maxAgeInSeconds = 3600
         }
 
@@ -223,12 +253,22 @@ class TraceServer(
         
         // List all traces with filtering
         get("/api/traces") {
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val paging = call.requireOffsetLimit(defaultLimit = 100) ?: return@get
+            val offset = paging.first
+            val limit = paging.second
             val revision = call.request.queryParameters["revision"]
             val tool = call.request.queryParameters["tool"]
             val startTime = call.request.queryParameters["start_time"]
             val endTime = call.request.queryParameters["end_time"]
+
+            val startInstant = if (startTime != null) {
+                runCatching { Instant.parse(startTime) }.getOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid start_time"))
+            } else null
+            val endInstant = if (endTime != null) {
+                runCatching { Instant.parse(endTime) }.getOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid end_time"))
+            } else null
             
             val traces = when {
                 revision != null && storage is DatabaseTraceStorage -> {
@@ -237,10 +277,10 @@ class TraceServer(
                 tool != null && storage is DatabaseTraceStorage -> {
                     storage.findByTool(tool, offset, limit)
                 }
-                startTime != null && endTime != null && storage is DatabaseTraceStorage -> {
+                startInstant != null && endInstant != null && storage is DatabaseTraceStorage -> {
                     storage.findByTimeRange(
-                        Instant.parse(startTime),
-                        Instant.parse(endTime),
+                        startInstant,
+                        endInstant,
                         offset,
                         limit
                     )
@@ -284,8 +324,9 @@ class TraceServer(
 
         // Claude Code telemetry APIs (OTLP metrics + logs/events)
         get("/api/telemetry/logs") {
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val paging = call.requireOffsetLimit(defaultLimit = 100) ?: return@get
+            val offset = paging.first
+            val limit = paging.second
             val eventName = call.request.queryParameters["event_name"]
 
             val items = telemetryStorage.listLogs(offset, limit, eventName)
@@ -300,8 +341,9 @@ class TraceServer(
         }
 
         get("/api/telemetry/metrics") {
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val paging = call.requireOffsetLimit(defaultLimit = 100) ?: return@get
+            val offset = paging.first
+            val limit = paging.second
             val metricName = call.request.queryParameters["metric_name"]
 
             val items = telemetryStorage.listMetrics(offset, limit, metricName)
@@ -351,6 +393,43 @@ class TraceServer(
             }
         }
     }
+}
+
+private suspend fun ApplicationCall.requireOffsetLimit(
+    defaultOffset: Int = 0,
+    defaultLimit: Int = 100,
+    maxLimit: Int = 5000
+): Pair<Int, Int>? {
+    val offsetRaw = request.queryParameters["offset"]
+    val limitRaw = request.queryParameters["limit"]
+
+    val offset = when {
+        offsetRaw == null -> defaultOffset
+        offsetRaw.toIntOrNull() == null -> {
+            respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid offset"))
+            return null
+        }
+        else -> offsetRaw.toInt()
+    }
+    if (offset < 0) {
+        respond(HttpStatusCode.BadRequest, ErrorResponse(error = "offset must be >= 0"))
+        return null
+    }
+
+    val limit = when {
+        limitRaw == null -> defaultLimit
+        limitRaw.toIntOrNull() == null -> {
+            respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid limit"))
+            return null
+        }
+        else -> limitRaw.toInt()
+    }
+    if (limit <= 0 || limit > maxLimit) {
+        respond(HttpStatusCode.BadRequest, ErrorResponse(error = "limit must be in 1..$maxLimit"))
+        return null
+    }
+
+    return offset to limit
 }
 
 /**

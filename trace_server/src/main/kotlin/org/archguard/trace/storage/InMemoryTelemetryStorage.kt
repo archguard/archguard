@@ -2,11 +2,12 @@ package org.archguard.trace.storage
 
 import org.archguard.trace.model.TelemetryLogRecord
 import org.archguard.trace.model.TelemetryMetricDataPoint
-import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.ArrayDeque
 
 class InMemoryTelemetryStorage : TelemetryStorage {
-    private val logs = ConcurrentLinkedDeque<TelemetryLogRecord>()
-    private val metrics = ConcurrentLinkedDeque<TelemetryMetricDataPoint>()
+    private val lock = Any()
+    private val logs = ArrayDeque<TelemetryLogRecord>()
+    private val metrics = ArrayDeque<TelemetryMetricDataPoint>()
 
     // keep memory bounded
     private val maxLogs = 50_000
@@ -14,46 +15,50 @@ class InMemoryTelemetryStorage : TelemetryStorage {
 
     override suspend fun storeLogs(records: List<TelemetryLogRecord>) {
         if (records.isEmpty()) return
-        records.forEach { logs.addFirst(it) }
-        trim(logs, maxLogs)
+        synchronized(lock) {
+            records.forEach { logs.addFirst(it) }
+            trim(logs, maxLogs)
+        }
     }
 
     override suspend fun storeMetrics(points: List<TelemetryMetricDataPoint>) {
         if (points.isEmpty()) return
-        points.forEach { metrics.addFirst(it) }
-        trim(metrics, maxMetrics)
+        synchronized(lock) {
+            points.forEach { metrics.addFirst(it) }
+            trim(metrics, maxMetrics)
+        }
     }
 
     override suspend fun listLogs(offset: Int, limit: Int, eventName: String?): List<TelemetryLogRecord> {
         val safeOffset = offset.coerceAtLeast(0)
         val safeLimit = limit.coerceIn(1, 5000)
-        val seq = logs.asSequence().let { s ->
-            if (eventName.isNullOrBlank()) s else s.filter { it.eventName == eventName }
+        synchronized(lock) {
+            val seq = logs.asSequence().let { s ->
+                if (eventName.isNullOrBlank()) s else s.filter { it.eventName == eventName }
+            }
+            return seq.drop(safeOffset).take(safeLimit).toList()
         }
-        return seq.drop(safeOffset).take(safeLimit).toList()
     }
 
     override suspend fun listMetrics(offset: Int, limit: Int, metricName: String?): List<TelemetryMetricDataPoint> {
         val safeOffset = offset.coerceAtLeast(0)
         val safeLimit = limit.coerceIn(1, 5000)
-        val seq = metrics.asSequence().let { s ->
-            if (metricName.isNullOrBlank()) s else s.filter { it.metricName == metricName }
+        synchronized(lock) {
+            val seq = metrics.asSequence().let { s ->
+                if (metricName.isNullOrBlank()) s else s.filter { it.metricName == metricName }
+            }
+            return seq.drop(safeOffset).take(safeLimit).toList()
         }
-        return seq.drop(safeOffset).take(safeLimit).toList()
     }
 
-    override fun logsCount(): Long = logs.size.toLong()
-    override fun metricsCount(): Long = metrics.size.toLong()
+    override fun logsCount(): Long = synchronized(lock) { logs.size.toLong() }
+    override fun metricsCount(): Long = synchronized(lock) { metrics.size.toLong() }
 
     override fun type(): String = "in-memory"
 
-    private fun <T> trim(deque: ConcurrentLinkedDeque<T>, max: Int) {
+    private fun <T> trim(deque: ArrayDeque<T>, max: Int) {
         while (deque.size > max) {
-            try {
-                deque.removeLast()
-            } catch (_: NoSuchElementException) {
-                break
-            }
+            deque.pollLast() ?: break
         }
     }
 }

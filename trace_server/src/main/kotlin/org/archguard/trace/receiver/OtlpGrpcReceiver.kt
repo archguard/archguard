@@ -1,9 +1,14 @@
 package org.archguard.trace.receiver
 
+import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse
 import io.opentelemetry.proto.collector.trace.v1.TraceServiceGrpc
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import org.archguard.trace.converter.OtelToAgentTraceConverter
 import org.archguard.trace.storage.TraceStorage
@@ -19,7 +24,8 @@ private val logger = KotlinLogging.logger {}
 class OtlpGrpcReceiver(
     private val converter: OtelToAgentTraceConverter,
     private val storage: TraceStorage,
-    private val counters: TelemetryCounters? = null
+    private val counters: TelemetryCounters? = null,
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 ) : TraceServiceGrpc.TraceServiceImplBase() {
     private val receiver = OtelTraceReceiver(converter, storage)
 
@@ -27,24 +33,38 @@ class OtlpGrpcReceiver(
         request: ExportTraceServiceRequest,
         responseObserver: StreamObserver<ExportTraceServiceResponse>
     ) {
-        try {
-            counters?.otlpGrpcTraceRequests?.incrementAndGet()
-            logger.info { "OTLP/gRPC export: ${request.resourceSpansCount} resourceSpans" }
+        counters?.otlpGrpcTraceRequests?.incrementAndGet()
+        logger.info { "OTLP/gRPC export: ${request.resourceSpansCount} resourceSpans" }
 
-            // Convert protobuf request into our simplified model and reuse existing processing pipeline.
-            val modelReq = request.toModelRequest()
-
-            // Run suspend pipeline in a blocking way (gRPC thread).
-            // This keeps the implementation small; we can optimize with coroutines later if needed.
-            kotlinx.coroutines.runBlocking {
-                receiver.receiveOtlpTraces(modelReq)
-            }
-
-            responseObserver.onNext(ExportTraceServiceResponse.newBuilder().build())
-            responseObserver.onCompleted()
+        // Convert protobuf request into our simplified model and reuse existing processing pipeline.
+        val modelReq = try {
+            request.toModelRequest()
         } catch (e: Exception) {
-            logger.error(e) { "Failed to handle OTLP/gRPC export: ${e.message}" }
-            responseObserver.onError(e)
+            logger.warn(e) { "Failed to parse OTLP/gRPC export request: ${e.message}" }
+            responseObserver.onError(
+                Status.INVALID_ARGUMENT
+                    .withDescription("Invalid OTLP export request")
+                    .withCause(e)
+                    .asRuntimeException()
+            )
+            return
+        }
+
+        // Run the suspend pipeline off the gRPC handler thread to avoid thread starvation under load.
+        scope.launch {
+            try {
+                receiver.receiveOtlpTraces(modelReq)
+                responseObserver.onNext(ExportTraceServiceResponse.newBuilder().build())
+                responseObserver.onCompleted()
+            } catch (e: Exception) {
+                logger.error(e) { "Failed to handle OTLP/gRPC export: ${e.message}" }
+                responseObserver.onError(
+                    Status.INTERNAL
+                        .withDescription("Failed to ingest traces")
+                        .withCause(e)
+                        .asRuntimeException()
+                )
+            }
         }
     }
 }
