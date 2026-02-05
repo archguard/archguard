@@ -131,6 +131,16 @@ data class ReceiverStatistics(
     val otlpGrpcLogsRequests: Long = 0,
     val otlpGrpcTraceRequests: Long = 0,
     val otlpHttpTraceRequests: Long = 0,
+    val otlpHttpMetricsRequests: Long = 0,
+    val otlpHttpLogsRequests: Long = 0,
     val telemetryLogsStored: Long = 0,
     val telemetryMetricsStored: Long = 0
+)
+
+/**
+ * OTEL-compliant error response
+ */
+@Serializable
+data class OtlpErrorResponse(
+    val error: String
 )

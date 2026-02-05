@@ -6,6 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.pipeline.*
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse
 import mu.KotlinLogging
 import org.archguard.trace.converter.OtelToAgentTraceConverter
 import org.archguard.trace.storage.TraceStorage
@@ -16,7 +17,7 @@ private val logger = KotlinLogging.logger {}
  * OTEL Protobuf Request Handler
  * 
  * Handles both JSON and Protobuf formats for OTLP trace ingestion.
- * This implementation provides basic protobuf parsing for the OTEL trace format.
+ * Per OTEL spec: response format matches request format.
  */
 suspend fun PipelineContext<Unit, ApplicationCall>.handleOtlpRequest(
     converter: OtelToAgentTraceConverter,
@@ -30,14 +31,17 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleOtlpRequest(
                 handleJsonRequest(converter, storage)
             }
             contentType.match(ContentType.Application.ProtoBuf) ||
-            contentType.toString().contains("application/x-protobuf") -> {
+            contentType.toString().contains("application/x-protobuf") ||
+            contentType.toString().contains("application/octet-stream") -> {
                 handleProtobufRequest(converter, storage)
             }
             else -> {
                 logger.warn { "Unsupported content type: $contentType" }
                 call.respond(
                     HttpStatusCode.UnsupportedMediaType,
-                    mapOf("error" to "Unsupported content type: $contentType. Use application/json or application/x-protobuf")
+                    OtlpErrorResponse(
+                        error = "Unsupported content type: $contentType. Use application/json or application/x-protobuf"
+                    )
                 )
             }
         }
@@ -45,13 +49,13 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleOtlpRequest(
         logger.error(e) { "Failed to process OTLP request: ${e.message}" }
         call.respond(
             HttpStatusCode.InternalServerError,
-            mapOf("error" to (e.message ?: "Unknown error"))
+            OtlpErrorResponse(error = e.message ?: "Unknown error")
         )
     }
 }
 
 /**
- * Handle JSON format OTLP request
+ * Handle JSON format OTLP request - returns JSON response
  */
 private suspend fun PipelineContext<Unit, ApplicationCall>.handleJsonRequest(
     converter: OtelToAgentTraceConverter,
@@ -59,15 +63,14 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleJsonRequest(
 ) {
     val request = call.receive<OtlpExportRequest>()
     val receiver = OtelTraceReceiver(converter, storage)
-    val response = receiver.receiveOtlpTraces(request)
-    call.respond(HttpStatusCode.OK, response)
+    val result = receiver.receiveOtlpTraces(request)
+    
+    // Return OTEL-compliant JSON response with partialSuccess
+    call.respond(HttpStatusCode.OK, result)
 }
 
 /**
- * Handle Protobuf format OTLP request
- * 
- * This is a simplified implementation that extracts trace data from the protobuf format.
- * For a production system, you would use the official OTLP protobuf definitions.
+ * Handle Protobuf format OTLP request - returns Protobuf response (per OTEL spec)
  */
 private suspend fun PipelineContext<Unit, ApplicationCall>.handleProtobufRequest(
     converter: OtelToAgentTraceConverter,
@@ -80,6 +83,9 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleProtobufRequest
     val request = proto.toModelRequest()
 
     val receiver = OtelTraceReceiver(converter, storage)
-    val response = receiver.receiveOtlpTraces(request)
-    call.respond(HttpStatusCode.OK, response)
+    receiver.receiveOtlpTraces(request)
+
+    // Return OTEL-compliant protobuf response (empty = full success)
+    val response = ExportTraceServiceResponse.newBuilder().build()
+    call.respondBytes(response.toByteArray(), ContentType.parse("application/x-protobuf"))
 }

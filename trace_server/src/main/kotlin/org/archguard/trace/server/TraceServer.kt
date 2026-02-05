@@ -186,8 +186,8 @@ class TraceServer(
             handleOtlpRequest(otelToAgentConverter, storage)
         }
 
-        // OTLP HTTP endpoints for Claude Code telemetry (protobuf)
-        installOtlpHttpTelemetryRoutes(telemetryStorage)
+        // OTLP HTTP endpoints for Claude Code telemetry (JSON and protobuf)
+        installOtlpHttpTelemetryRoutes(telemetryStorage, counters)
         
         // Get trace by ID
         get("/api/traces/{id}") {
@@ -257,6 +257,8 @@ class TraceServer(
                     otlpGrpcLogsRequests = counters.otlpGrpcLogsRequests.get(),
                     otlpGrpcTraceRequests = counters.otlpGrpcTraceRequests.get(),
                     otlpHttpTraceRequests = counters.otlpHttpTraceRequests.get(),
+                    otlpHttpMetricsRequests = counters.otlpHttpMetricsRequests.get(),
+                    otlpHttpLogsRequests = counters.otlpHttpLogsRequests.get(),
                     telemetryLogsStored = telemetryStorage.logsCount(),
                     telemetryMetricsStored = telemetryStorage.metricsCount()
                 )

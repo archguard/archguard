@@ -71,9 +71,12 @@ private fun Metric.flatten(
             }
         }
         Metric.DataCase.HISTOGRAM -> {
-            // Best-effort: store count and sum (if present) as separate points
+            // Store count, sum, and bucket data as separate points
             val pts = ArrayList<TelemetryMetricDataPoint>()
+            val temporality = this.histogram.aggregationTemporality.toStringValue()
             for (dp in this.histogram.dataPointsList) {
+                val attrs = dp.attributesList.toStringMap()
+                // Count
                 pts.add(
                     TelemetryMetricDataPoint(
                         id = UUID.randomUUID().toString(),
@@ -84,12 +87,14 @@ private fun Metric.flatten(
                         startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
                         timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
                         valueLong = dp.count,
-                        attributes = dp.attributesList.toStringMap(),
+                        attributes = attrs,
                         resourceAttributes = resourceAttrs,
                         scopeName = scopeName,
-                        scopeVersion = scopeVersion
+                        scopeVersion = scopeVersion,
+                        aggregationTemporality = temporality
                     )
                 )
+                // Sum (if present)
                 if (dp.hasSum()) {
                     pts.add(
                         TelemetryMetricDataPoint(
@@ -101,7 +106,222 @@ private fun Metric.flatten(
                             startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
                             timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
                             valueDouble = dp.sum,
-                            attributes = dp.attributesList.toStringMap(),
+                            attributes = attrs,
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+                // Bucket data (if present)
+                if (dp.bucketCountsCount > 0) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "histogram_buckets",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            attributes = attrs + mapOf(
+                                "_bucket_counts" to dp.bucketCountsList.joinToString(","),
+                                "_explicit_bounds" to dp.explicitBoundsList.joinToString(",")
+                            ),
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+                // Min/Max (if present)
+                if (dp.hasMin()) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "histogram_min",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            valueDouble = dp.min,
+                            attributes = attrs,
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+                if (dp.hasMax()) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "histogram_max",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            valueDouble = dp.max,
+                            attributes = attrs,
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+            }
+            pts
+        }
+        Metric.DataCase.EXPONENTIAL_HISTOGRAM -> {
+            val pts = ArrayList<TelemetryMetricDataPoint>()
+            val temporality = this.exponentialHistogram.aggregationTemporality.toStringValue()
+            for (dp in this.exponentialHistogram.dataPointsList) {
+                val attrs = dp.attributesList.toStringMap()
+                // Count
+                pts.add(
+                    TelemetryMetricDataPoint(
+                        id = UUID.randomUUID().toString(),
+                        metricName = name,
+                        description = desc,
+                        unit = unit,
+                        metricType = "exponential_histogram_count",
+                        startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                        timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                        valueLong = dp.count,
+                        attributes = attrs + mapOf(
+                            "_scale" to dp.scale.toString(),
+                            "_zero_count" to dp.zeroCount.toString()
+                        ),
+                        resourceAttributes = resourceAttrs,
+                        scopeName = scopeName,
+                        scopeVersion = scopeVersion,
+                        aggregationTemporality = temporality
+                    )
+                )
+                // Sum (if present)
+                if (dp.hasSum()) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "exponential_histogram_sum",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            valueDouble = dp.sum,
+                            attributes = attrs,
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+                // Positive buckets
+                if (dp.positive.bucketCountsCount > 0) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "exponential_histogram_positive",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            attributes = attrs + mapOf(
+                                "_bucket_offset" to dp.positive.offset.toString(),
+                                "_bucket_counts" to dp.positive.bucketCountsList.joinToString(",")
+                            ),
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+                // Negative buckets
+                if (dp.negative.bucketCountsCount > 0) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "exponential_histogram_negative",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            attributes = attrs + mapOf(
+                                "_bucket_offset" to dp.negative.offset.toString(),
+                                "_bucket_counts" to dp.negative.bucketCountsList.joinToString(",")
+                            ),
+                            resourceAttributes = resourceAttrs,
+                            scopeName = scopeName,
+                            scopeVersion = scopeVersion,
+                            aggregationTemporality = temporality
+                        )
+                    )
+                }
+            }
+            pts
+        }
+        Metric.DataCase.SUMMARY -> {
+            val pts = ArrayList<TelemetryMetricDataPoint>()
+            for (dp in this.summary.dataPointsList) {
+                val attrs = dp.attributesList.toStringMap()
+                // Count
+                pts.add(
+                    TelemetryMetricDataPoint(
+                        id = UUID.randomUUID().toString(),
+                        metricName = name,
+                        description = desc,
+                        unit = unit,
+                        metricType = "summary_count",
+                        startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                        timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                        valueLong = dp.count,
+                        attributes = attrs,
+                        resourceAttributes = resourceAttrs,
+                        scopeName = scopeName,
+                        scopeVersion = scopeVersion
+                    )
+                )
+                // Sum
+                pts.add(
+                    TelemetryMetricDataPoint(
+                        id = UUID.randomUUID().toString(),
+                        metricName = name,
+                        description = desc,
+                        unit = unit,
+                        metricType = "summary_sum",
+                        startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                        timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                        valueDouble = dp.sum,
+                        attributes = attrs,
+                        resourceAttributes = resourceAttrs,
+                        scopeName = scopeName,
+                        scopeVersion = scopeVersion
+                    )
+                )
+                // Quantile values
+                for (qv in dp.quantileValuesList) {
+                    pts.add(
+                        TelemetryMetricDataPoint(
+                            id = UUID.randomUUID().toString(),
+                            metricName = name,
+                            description = desc,
+                            unit = unit,
+                            metricType = "summary_quantile",
+                            startTimeUnixNano = dp.startTimeUnixNano.takeIf { it != 0L },
+                            timeUnixNano = dp.timeUnixNano.takeIf { it != 0L },
+                            valueDouble = qv.value,
+                            attributes = attrs + mapOf("_quantile" to qv.quantile.toString()),
                             resourceAttributes = resourceAttrs,
                             scopeName = scopeName,
                             scopeVersion = scopeVersion
@@ -111,8 +331,6 @@ private fun Metric.flatten(
             }
             pts
         }
-        Metric.DataCase.EXPONENTIAL_HISTOGRAM,
-        Metric.DataCase.SUMMARY,
         Metric.DataCase.DATA_NOT_SET,
         null -> emptyList()
     }
