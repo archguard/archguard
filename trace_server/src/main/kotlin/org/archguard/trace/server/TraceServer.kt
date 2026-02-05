@@ -17,6 +17,7 @@ import io.grpc.Server
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 import org.archguard.trace.converter.AgentTraceToOtelConverter
 import org.archguard.trace.converter.OtelToAgentTraceConverter
+import org.archguard.trace.model.TelemetryListResponse
 import org.archguard.trace.model.TraceRecord
 import org.archguard.trace.receiver.TelemetryCounters
 import org.archguard.trace.receiver.ReceiverStatistics
@@ -27,7 +28,9 @@ import org.archguard.trace.receiver.OtelTraceReceiver
 import org.archguard.trace.receiver.OtlpExportRequest
 import org.archguard.trace.receiver.handleOtlpRequest
 import org.archguard.trace.storage.DatabaseTraceStorage
+import org.archguard.trace.storage.InMemoryTelemetryStorage
 import org.archguard.trace.storage.InMemoryTraceStorage
+import org.archguard.trace.storage.TelemetryStorage
 import org.archguard.trace.storage.TraceStorage
 import java.time.Instant
 
@@ -80,7 +83,8 @@ class TraceServer(
     private val storage: TraceStorage = InMemoryTraceStorage(),
     private val port: Int = 4318,
     private val grpcPort: Int = 4317,
-    private val host: String = "0.0.0.0"
+    private val host: String = "0.0.0.0",
+    private val telemetryStorage: TelemetryStorage = InMemoryTelemetryStorage()
 ) {
     
     private val otelToAgentConverter = OtelToAgentTraceConverter()
@@ -101,8 +105,8 @@ class TraceServer(
         grpcServer = NettyServerBuilder
             .forPort(grpcPort)
             .addService(OtlpGrpcReceiver(otelToAgentConverter, storage, counters))
-            .addService(OtlpGrpcMetricsReceiver(counters))
-            .addService(OtlpGrpcLogsReceiver(counters))
+            .addService(OtlpGrpcMetricsReceiver(counters, telemetryStorage))
+            .addService(OtlpGrpcLogsReceiver(counters, telemetryStorage))
             .build()
             .start()
         logger.info { "OTLP gRPC endpoint: $host:$grpcPort (metrics/logs/traces)" }
@@ -136,7 +140,7 @@ class TraceServer(
             // keep default level; narrow to OTLP and API endpoints
             filter { call: ApplicationCall ->
                 val p = call.request.path()
-                p.startsWith("/v1/traces") || p.startsWith("/api/") || p == "/health"
+                p.startsWith("/v1/") || p.startsWith("/api/") || p == "/health"
             }
             format { call: ApplicationCall ->
                 val ct = call.request.contentType().toString()
@@ -181,6 +185,9 @@ class TraceServer(
             counters.otlpHttpTraceRequests.incrementAndGet()
             handleOtlpRequest(otelToAgentConverter, storage)
         }
+
+        // OTLP HTTP endpoints for Claude Code telemetry (protobuf)
+        installOtlpHttpTelemetryRoutes(telemetryStorage)
         
         // Get trace by ID
         get("/api/traces/{id}") {
@@ -249,7 +256,42 @@ class TraceServer(
                     otlpGrpcMetricsRequests = counters.otlpGrpcMetricsRequests.get(),
                     otlpGrpcLogsRequests = counters.otlpGrpcLogsRequests.get(),
                     otlpGrpcTraceRequests = counters.otlpGrpcTraceRequests.get(),
-                    otlpHttpTraceRequests = counters.otlpHttpTraceRequests.get()
+                    otlpHttpTraceRequests = counters.otlpHttpTraceRequests.get(),
+                    telemetryLogsStored = telemetryStorage.logsCount(),
+                    telemetryMetricsStored = telemetryStorage.metricsCount()
+                )
+            )
+        }
+
+        // Claude Code telemetry APIs (OTLP metrics + logs/events)
+        get("/api/telemetry/logs") {
+            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
+            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val eventName = call.request.queryParameters["event_name"]
+
+            val items = telemetryStorage.listLogs(offset, limit, eventName)
+            call.respond(
+                TelemetryListResponse(
+                    items = items,
+                    offset = offset,
+                    limit = limit,
+                    total = telemetryStorage.logsCount()
+                )
+            )
+        }
+
+        get("/api/telemetry/metrics") {
+            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
+            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 100
+            val metricName = call.request.queryParameters["metric_name"]
+
+            val items = telemetryStorage.listMetrics(offset, limit, metricName)
+            call.respond(
+                TelemetryListResponse(
+                    items = items,
+                    offset = offset,
+                    limit = limit,
+                    total = telemetryStorage.metricsCount()
                 )
             )
         }

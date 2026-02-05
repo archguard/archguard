@@ -130,5 +130,7 @@ data class ReceiverStatistics(
     val otlpGrpcMetricsRequests: Long = 0,
     val otlpGrpcLogsRequests: Long = 0,
     val otlpGrpcTraceRequests: Long = 0,
-    val otlpHttpTraceRequests: Long = 0
+    val otlpHttpTraceRequests: Long = 0,
+    val telemetryLogsStored: Long = 0,
+    val telemetryMetricsStored: Long = 0
 )
