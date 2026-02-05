@@ -50,11 +50,19 @@ for {set i 0} {$i < $argc} {incr i} {
 }
 
 set env(CLAUDE_CODE_ENABLE_TELEMETRY) 1
-set env(OTEL_EXPORTER_OTLP_ENDPOINT) $endpoint
-set env(OTEL_EXPORTER_OTLP_TRACES_ENDPOINT) $tracesEndpoint
-set env(OTEL_TRACES_EXPORTER) "otlp"
-set env(OTEL_EXPORTER_OTLP_PROTOCOL) "http/protobuf"
-set env(OTEL_SDK_DISABLED) "false"
+
+# Claude Code docs: it exports METRICS + LOGS (events) via OTLP.
+# It does NOT export traces/spans.
+set env(OTEL_METRICS_EXPORTER) "otlp"
+set env(OTEL_LOGS_EXPORTER) "otlp"
+
+# Use OTLP/gRPC default collector port.
+set env(OTEL_EXPORTER_OTLP_PROTOCOL) "grpc"
+set env(OTEL_EXPORTER_OTLP_ENDPOINT) "http://localhost:4317"
+
+# Speed up for smoke testing.
+set env(OTEL_METRIC_EXPORT_INTERVAL) "1000"
+set env(OTEL_LOGS_EXPORT_INTERVAL) "1000"
 
 # Keep a transcript for debugging flaky UI changes
 log_file -noappend "/tmp/claude-otel-interactive.expect.log"
@@ -63,9 +71,9 @@ set timeout 60
 
 puts "Starting claude with telemetry enabled..."
 puts "  OTEL_EXPORTER_OTLP_ENDPOINT=$env(OTEL_EXPORTER_OTLP_ENDPOINT)"
-puts "  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=$env(OTEL_EXPORTER_OTLP_TRACES_ENDPOINT)"
 puts "  OTEL_EXPORTER_OTLP_PROTOCOL=$env(OTEL_EXPORTER_OTLP_PROTOCOL)"
-puts "  OTEL_TRACES_EXPORTER=$env(OTEL_TRACES_EXPORTER)"
+puts "  OTEL_METRICS_EXPORTER=$env(OTEL_METRICS_EXPORTER)"
+puts "  OTEL_LOGS_EXPORTER=$env(OTEL_LOGS_EXPORTER)"
 puts "Message: $message"
 
 spawn claude

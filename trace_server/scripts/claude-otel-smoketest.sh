@@ -13,7 +13,6 @@ set -euo pipefail
 #   ENDPOINT=http://localhost:4318 WAIT_SECONDS=10 MESSAGE="hi" ./claude-otel-smoketest.sh
 
 ENDPOINT="${ENDPOINT:-http://localhost:4318}"
-TRACES_ENDPOINT="${TRACES_ENDPOINT:-$ENDPOINT/v1/traces}"
 WAIT_SECONDS="${WAIT_SECONDS:-10}"
 MESSAGE="${MESSAGE:-hi}"
 
@@ -21,7 +20,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "== Claude OTEL smoketest =="
 echo "endpoint:       $ENDPOINT"
-echo "traces endpoint:$TRACES_ENDPOINT"
 echo "message:        $MESSAGE"
 echo "wait seconds:   $WAIT_SECONDS"
 echo
@@ -31,6 +29,9 @@ curl -fsS "$ENDPOINT/health" >/dev/null
 
 before_total="$(curl -fsS "$ENDPOINT/api/traces" | python3 -c 'import json,sys; print(json.load(sys.stdin)["total"])')"
 echo "traces before: $before_total"
+
+before_stats="$(curl -fsS "$ENDPOINT/api/stats")"
+echo "stats before:  $before_stats"
 
 echo
 echo "Running Claude interactive automation..."
@@ -42,8 +43,6 @@ server_log_hint="/tmp/claude-otel-smoketest.server-hint.log"
 
 # Run expect script in background and sample TCP connections while it runs.
 "$SCRIPT_DIR/claude-otel-interactive.exp" \
-  --endpoint "$ENDPOINT" \
-  --traces-endpoint "$TRACES_ENDPOINT" \
   --message "$MESSAGE" \
   --wait-seconds "$WAIT_SECONDS" &
 expect_pid="$!"
@@ -64,10 +63,15 @@ echo "Connection sample log: $conn_log"
 echo
 after_total="$(curl -fsS "$ENDPOINT/api/traces" | python3 -c 'import json,sys; print(json.load(sys.stdin)["total"])')"
 echo "traces after:  $after_total"
+after_stats="$(curl -fsS "$ENDPOINT/api/stats")"
+echo "stats after:   $after_stats"
 
-if [[ "$after_total" -le "$before_total" ]]; then
+grpc_metrics_after="$(echo "$after_stats" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("otlpGrpcMetricsRequests", 0))')"
+grpc_logs_after="$(echo "$after_stats" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("otlpGrpcLogsRequests", 0))')"
+
+if [[ "$grpc_metrics_after" -le 0 && "$grpc_logs_after" -le 0 && "$after_total" -le "$before_total" ]]; then
   echo
-  echo "FAIL: traces did not increase."
+  echo "FAIL: no OTLP data observed (no gRPC metrics/logs, no traces)."
   echo "See transcript at: /tmp/claude-otel-interactive.expect.log"
   echo
   echo "Diagnostics:"
@@ -80,22 +84,8 @@ if [[ "$after_total" -le "$before_total" ]]; then
 fi
 
 echo
-echo "PASS: traces increased ($before_total -> $after_total)."
-echo "Latest trace summary:"
-curl -fsS "$ENDPOINT/api/traces?offset=0&limit=1" | python3 - <<'PY'
-import json,sys
-data=json.load(sys.stdin)
-tr=data.get("traces") or []
-if not tr:
-    print("(no traces returned)")
-else:
-    t=tr[0]
-    print(json.dumps({
-        "id": t.get("id"),
-        "timestamp": t.get("timestamp"),
-        "vcs": t.get("vcs"),
-        "tool": t.get("tool"),
-        "metadata": t.get("metadata"),
-    }, indent=2))
-PY
+echo "PASS: OTLP data observed."
+echo "gRPC metrics requests: $grpc_metrics_after"
+echo "gRPC logs requests:    $grpc_logs_after"
+echo "trace records stored:  $after_total"
 
