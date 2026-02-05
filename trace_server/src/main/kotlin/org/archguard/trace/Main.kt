@@ -15,13 +15,14 @@ private val logger = KotlinLogging.logger {}
 fun main(args: Array<String>) {
     logger.info { "Agent Trace Server starting..." }
     
-    val port = args.getOrNull(0)?.toIntOrNull() ?: 4318
-    val host = args.getOrNull(1) ?: "0.0.0.0"
+    val httpPort = args.getOrNull(0)?.toIntOrNull() ?: 4318
+    val grpcPort = args.getOrNull(1)?.toIntOrNull() ?: 4317
+    val host = args.getOrNull(2) ?: "0.0.0.0"
     
     val storage = InMemoryTraceStorage()
-    val server = TraceServer(storage, port, host)
+    val server = TraceServer(storage, httpPort, grpcPort, host)
     
-    logger.info { "Starting server on $host:$port" }
+    logger.info { "Starting server on $host:$httpPort (HTTP), $host:$grpcPort (gRPC)" }
     logger.info { "Phase 1 ✅: Models, Converters, and Tests" }
     logger.info { "Phase 2 ✅: OTEL Receiver, Storage, and HTTP endpoints" }
     logger.info { "" }

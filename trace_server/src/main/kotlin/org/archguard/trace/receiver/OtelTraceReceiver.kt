@@ -126,5 +126,9 @@ data class PartialSuccess(
 @Serializable
 data class ReceiverStatistics(
     val totalTraces: Long,
-    val storageType: String
+    val storageType: String,
+    val otlpGrpcMetricsRequests: Long = 0,
+    val otlpGrpcLogsRequests: Long = 0,
+    val otlpGrpcTraceRequests: Long = 0,
+    val otlpHttpTraceRequests: Long = 0
 )
