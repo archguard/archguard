@@ -12,8 +12,15 @@ application {
 // OpenTelemetry version
 val otelVersion = "1.34.1"
 val ktorVersion = "2.3.7"
+val grpcVersion = "1.63.0"
 
 dependencies {
+    // gRPC (for OTLP gRPC receiver)
+    implementation(platform("io.grpc:grpc-bom:$grpcVersion"))
+    implementation("io.grpc:grpc-netty-shaded")
+    implementation("io.grpc:grpc-protobuf")
+    implementation("io.grpc:grpc-stub")
+
     // ArchGuard dependencies
     api(projects.scannerCore)
     
@@ -31,10 +38,16 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    
+    // Protocol Buffers
+    implementation("io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha")
     
     // Database - Exposed ORM
     implementation("org.jetbrains.exposed:exposed-core:0.45.0")

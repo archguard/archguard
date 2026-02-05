@@ -1,0 +1,219 @@
+#!/usr/bin/expect -f
+
+# Claude Code interactive-mode OTEL smoke test.
+#
+# Purpose:
+# - Launch Claude in interactive mode
+# - Automatically get through the common onboarding prompts
+# - Send a small message (default: "hi")
+# - Wait a bit so the OTEL exporter can flush
+# - Exit
+#
+# Usage:
+#   ./claude-otel-interactive.exp \
+#     --endpoint http://localhost:4318 \
+#     --traces-endpoint http://localhost:4318/v1/traces \
+#     --message "hi" \
+#     --wait-seconds 8
+#
+# Notes:
+# - Claude UI is a TUI; prompts vary by version. This script is best-effort and
+#   intentionally uses tolerant matching + time-based fallbacks.
+
+proc usage {} {
+  puts "Usage: claude-otel-interactive.exp --endpoint <url> --traces-endpoint <url> --message <text> --wait-seconds <n>"
+  exit 2
+}
+
+set endpoint "http://localhost:4318"
+set tracesEndpoint "http://localhost:4318/v1/traces"
+set message "hi"
+set waitSeconds 8
+
+for {set i 0} {$i < $argc} {incr i} {
+  set a [lindex $argv $i]
+  if {$a eq "--endpoint"} {
+    incr i; if {$i >= $argc} {usage}
+    set endpoint [lindex $argv $i]
+  } elseif {$a eq "--traces-endpoint"} {
+    incr i; if {$i >= $argc} {usage}
+    set tracesEndpoint [lindex $argv $i]
+  } elseif {$a eq "--message"} {
+    incr i; if {$i >= $argc} {usage}
+    set message [lindex $argv $i]
+  } elseif {$a eq "--wait-seconds"} {
+    incr i; if {$i >= $argc} {usage}
+    set waitSeconds [lindex $argv $i]
+  } elseif {$a eq "--help"} {
+    usage
+  }
+}
+
+set env(CLAUDE_CODE_ENABLE_TELEMETRY) 1
+
+# Claude Code docs: it exports METRICS + LOGS (events) via OTLP.
+# It does NOT export traces/spans.
+set env(OTEL_METRICS_EXPORTER) "otlp"
+set env(OTEL_LOGS_EXPORTER) "otlp"
+
+# Use OTLP/gRPC default collector port.
+set env(OTEL_EXPORTER_OTLP_PROTOCOL) "grpc"
+set env(OTEL_EXPORTER_OTLP_ENDPOINT) "http://localhost:4317"
+
+# Speed up for smoke testing.
+set env(OTEL_METRIC_EXPORT_INTERVAL) "1000"
+set env(OTEL_LOGS_EXPORT_INTERVAL) "1000"
+
+# Keep a transcript for debugging flaky UI changes
+log_file -noappend "/tmp/claude-otel-interactive.expect.log"
+
+set timeout 60
+
+puts "Starting claude with telemetry enabled..."
+puts "  OTEL_EXPORTER_OTLP_ENDPOINT=$env(OTEL_EXPORTER_OTLP_ENDPOINT)"
+puts "  OTEL_EXPORTER_OTLP_PROTOCOL=$env(OTEL_EXPORTER_OTLP_PROTOCOL)"
+puts "  OTEL_METRICS_EXPORTER=$env(OTEL_METRICS_EXPORTER)"
+puts "  OTEL_LOGS_EXPORTER=$env(OTEL_LOGS_EXPORTER)"
+puts "Message: $message"
+
+# Start claude in bypass permissions mode to avoid workspace trust TUI.
+# This shows a safety warning screen that we auto-accept.
+spawn claude --dangerously-skip-permissions
+
+proc press_enter {} {
+  send "\r"
+}
+
+proc select_yes_accept {} {
+  # typical selector: default on "No, exit"; press Down then Enter
+  send "\033\[B"
+  after 200
+  send "\r"
+}
+
+set consecutive_timeouts 0
+
+set ready 0
+set sent 0
+
+# Main loop: try to clear onboarding and reach input.
+for {set step 0} {$step < 80} {incr step} {
+  expect {
+    -re {WARNING: Claude Code running in Bypass Permissions mode} {
+      puts "Detected bypass warning -> select Yes, I accept"
+      select_yes_accept
+      exp_continue
+    }
+    -re {Quick safety check:.*trust\?} {
+      puts "Detected workspace trust prompt -> Enter"
+      press_enter
+      exp_continue
+    }
+    -re {Enter to confirm} {
+      # appears on trust prompt + other screens
+      puts "Detected confirm prompt -> Enter"
+      press_enter
+      exp_continue
+    }
+    -re {WARNING: Claude Code running in Bypass Permissions mode} {
+      # shouldn't happen without flags, but handle anyway
+      puts "Detected bypass warning -> select Yes"
+      select_yes_accept
+      exp_continue
+    }
+    -re {Press Enter to continue} {
+      puts "Detected 'Press Enter to continue' -> Enter"
+      press_enter
+      exp_continue
+    }
+    -re {Welcome to Claude Code for Cursor} {
+      puts "Detected Cursor onboarding screen -> Enter"
+      press_enter
+      exp_continue
+    }
+    -re {Try ".*"} {
+      set ready 1
+      puts "Detected main prompt (Try ...) -> ready"
+      break
+    }
+    -re {-- INSERT --} {
+      set ready 1
+      puts "Detected editor insert mode -> ready"
+      break
+    }
+    -re {❯} {
+      set ready 1
+      puts "Detected prompt symbol -> ready"
+      break
+    }
+    timeout {
+      incr consecutive_timeouts
+      if {$consecutive_timeouts >= 3} {
+        # after several timeouts, assume ready and try to type
+        set ready 1
+        puts "No new UI output after multiple waits; assuming ready"
+        break
+      }
+      # Nudge UI forward
+      puts "No output yet; sending Enter to continue..."
+      press_enter
+      exp_continue
+    }
+    eof {
+      puts "Claude exited unexpectedly. See /tmp/claude-otel-interactive.expect.log"
+      exit 1
+    }
+  }
+}
+
+if {!$ready} {
+  puts "Failed to reach a ready state. See /tmp/claude-otel-interactive.expect.log"
+  exit 1
+}
+
+after 500
+puts "Sending message..."
+send -- "$message\r"
+set sent 1
+
+# Best-effort wait for some post-submit output. We want Claude to actually
+# process at least one prompt so logs/events have a chance to export.
+set timeout 25
+expect {
+  -re {.+} {
+    # got some output; good enough
+  }
+  timeout {
+    # still fine; continue to flush wait
+  }
+}
+
+puts "Waiting ${waitSeconds}s for OTEL flush..."
+after [expr {$waitSeconds * 1000}]
+
+puts "Exiting (/exit)..."
+send "/exit\r"
+
+# If there's any extra confirmation, just Enter a couple times.
+# If we still don't exit, fall back to Ctrl+C.
+set timeout 12
+expect {
+  -re {Enter to confirm} { press_enter; exp_continue }
+  eof { puts "Claude exited."; }
+  timeout {
+    puts "No EOF after /exit; sending Ctrl+C..."
+    send "\003"
+    after 500
+    send "\003"
+  }
+}
+
+# Give it a little time to terminate after Ctrl+C
+set timeout 8
+expect {
+  eof { puts "Claude exited."; }
+  timeout { puts "Claude may still be running; check manually if needed."; }
+}
+
+puts "Done. Transcript: /tmp/claude-otel-interactive.expect.log"
+

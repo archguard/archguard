@@ -126,5 +126,21 @@ data class PartialSuccess(
 @Serializable
 data class ReceiverStatistics(
     val totalTraces: Long,
-    val storageType: String
+    val storageType: String,
+    val otlpGrpcMetricsRequests: Long = 0,
+    val otlpGrpcLogsRequests: Long = 0,
+    val otlpGrpcTraceRequests: Long = 0,
+    val otlpHttpTraceRequests: Long = 0,
+    val otlpHttpMetricsRequests: Long = 0,
+    val otlpHttpLogsRequests: Long = 0,
+    val telemetryLogsStored: Long = 0,
+    val telemetryMetricsStored: Long = 0
+)
+
+/**
+ * OTEL-compliant error response
+ */
+@Serializable
+data class OtlpErrorResponse(
+    val error: String
 )
