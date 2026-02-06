@@ -56,4 +56,42 @@ class TraceServerTest {
         // Integration test structure
         assertTrue(true)
     }
+
+    @Test
+    fun `should retrieve all registered routes`() {
+        val storage = InMemoryTraceStorage()
+        val server = TraceServer(storage, port = 14318, grpcPort = 14317)
+
+        try {
+            // Start server to initialize routes
+            server.start(wait = false)
+
+            // Give server a moment to initialize
+            Thread.sleep(500)
+
+            // Get registered routes
+            val routes = server.getRegisteredRoutes()
+
+            // Verify we have routes
+            assertTrue(routes.isNotEmpty(), "Should have registered routes")
+
+            // Verify key endpoints exist
+            val paths = routes.map { it.path }
+            assertTrue(paths.contains("/health"), "Should have /health endpoint")
+            assertTrue(paths.contains("/v1/traces"), "Should have /v1/traces endpoint")
+            assertTrue(paths.contains("/api/traces"), "Should have /api/traces endpoint")
+            assertTrue(paths.contains("/api/stats"), "Should have /api/stats endpoint")
+
+            // Verify HTTP methods
+            val postRoutes = routes.filter { it.method == "POST" }
+            assertTrue(postRoutes.any { it.path == "/v1/traces" }, "Should have POST /v1/traces")
+
+            val getRoutes = routes.filter { it.method == "GET" }
+            assertTrue(getRoutes.any { it.path == "/health" }, "Should have GET /health")
+            assertTrue(getRoutes.any { it.path == "/api/traces" }, "Should have GET /api/traces")
+
+        } finally {
+            server.stop()
+        }
+    }
 }

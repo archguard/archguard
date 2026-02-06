@@ -2,6 +2,7 @@ package org.archguard.trace
 
 import mu.KotlinLogging
 import org.archguard.trace.server.TraceServer
+import org.archguard.trace.server.formatForLogging
 import org.archguard.trace.storage.InMemoryTraceStorage
 
 private val logger = KotlinLogging.logger {}
@@ -21,19 +22,29 @@ fun main(args: Array<String>) {
     
     val storage = InMemoryTraceStorage()
     val server = TraceServer(storage, httpPort, grpcPort, host)
-    
+
     logger.info { "Starting server on $host:$httpPort (HTTP), $host:$grpcPort (gRPC)" }
     logger.info { "Phase 1 ✅: Models, Converters, and Tests" }
     logger.info { "Phase 2 ✅: OTEL Receiver, Storage, and HTTP endpoints" }
     logger.info { "" }
-    logger.info { "Endpoints:" }
-    logger.info { "  POST   /v1/traces          - OTLP trace ingestion (OTEL compatible)" }
-    logger.info { "  GET    /api/traces         - List all traces" }
-    logger.info { "  GET    /api/traces/{id}    - Get trace by ID" }
-    logger.info { "  GET    /api/traces/{id}/otel - Export trace as OTEL format" }
-    logger.info { "  DELETE /api/traces/{id}    - Delete trace" }
-    logger.info { "  GET    /api/stats          - Get statistics" }
-    logger.info { "  GET    /health             - Health check" }
-    
-    server.start(wait = true)
+
+    // Start server (non-blocking to allow route introspection)
+    server.start(wait = false)
+
+    // Log all registered endpoints dynamically
+    logger.info { "Registered HTTP Endpoints:" }
+    val routes = server.getRegisteredRoutes()
+    routes.formatForLogging().forEach { route ->
+        logger.info { route }
+    }
+    logger.info { "" }
+
+    // Wait for server to complete
+    Runtime.getRuntime().addShutdownHook(Thread {
+        logger.info { "Shutting down Agent Trace Server..." }
+        server.stop()
+    })
+
+    // Keep the main thread alive
+    Thread.currentThread().join()
 }

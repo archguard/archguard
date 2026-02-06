@@ -98,9 +98,10 @@ class TraceServer(
     private val receiver = OtelTraceReceiver(otelToAgentConverter, storage)
     private val counters = TelemetryCounters()
     private val grpcScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    
+
     private lateinit var server: NettyApplicationEngine
     private var grpcServer: Server? = null
+    private var routing: Routing? = null
     
     /**
      * Start the server
@@ -133,6 +134,13 @@ class TraceServer(
         logger.info { "OTLP HTTP endpoint: http://$host:$port/v1/traces" }
     }
     
+    /**
+     * Get all registered HTTP routes
+     */
+    fun getRegisteredRoutes(): List<RegisteredRoute> {
+        return routing?.getAllRoutes() ?: emptyList()
+    }
+
     /**
      * Stop the server
      */
@@ -210,6 +218,8 @@ class TraceServer(
         
         routing {
             configureRoutes()
+            // Save routing reference for introspection
+            routing = this
         }
     }
     
